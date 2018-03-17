@@ -1,0 +1,16 @@
+<cli
+  xmlns="http://lib4j.org/cli-2.1.6.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://lib4j.org/cli-2.1.6.xsd http://lib4j.org/cli.xsd">
+  <option>
+    <name long="dir" short="d"/>
+    <argument label="DEST_DIR" default="."/>
+    <description>destination directory</description>
+  </option>
+  <option>
+    <name long="compile" short="c"/>
+    <argument label="COMPILE" default="true"/>
+    <description>compile generated code [true|false]</description>
+  </option>
+  <arguments label="JSONX" maxOccurs="unbounded"/>
+</cli>

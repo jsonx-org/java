@@ -1,0 +1,41 @@
+<!--
+  Copyright (c) 2017 lib4j
+  
+  Permission ill s hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.libx4j</groupId>
+    <artifactId>jsonx</artifactId>
+    <version>0.9.7-SNAPSHOT</version>
+  </parent>
+  <groupId>org.libx4j.jsonx</groupId>
+  <artifactId>jsonx-runtime</artifactId>
+  <version>0.9.7-SNAPSHOT</version>
+  <name>${project.groupId}:${project.artifactId}</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.lib4j</groupId>
+      <artifactId>lib4j-math</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.lib4j</groupId>
+      <artifactId>lib4j-net</artifactId>
+    </dependency>
+  </dependencies>
+</project>
