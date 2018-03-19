@@ -57,12 +57,14 @@ class ObjectModel extends ComplexModel {
 
   protected static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectProperty objectProperty, final Field field) {
     final ObjectModel objectModel = (ObjectModel)registry.getElement(objectProperty.type().getName());
-    return new RefElement(getName(objectProperty.name(), field), objectProperty.required(), objectProperty.nullable(), objectModel == null ? registry.declare(objectProperty.type()).value(new ObjectModel(registry, objectProperty, field), referrer) : registry.reference(objectModel, referrer));
+    // FIXME: Can we get doc comments from code?
+    return new RefElement(getName(objectProperty.name(), field), objectProperty.required(), objectProperty.nullable(), objectModel == null ? registry.declare(objectProperty.type()).value(new ObjectModel(registry, objectProperty, field), referrer) : registry.reference(objectModel, referrer), null);
   }
 
   protected static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectElement objectElement) {
     final ObjectModel objectModel = (ObjectModel)registry.getElement(objectElement.type().getName());
-    return new RefElement(objectElement.nullable(), objectElement.minOccurs(), objectElement.maxOccurs(), objectModel == null ? registry.declare(objectElement.type()).value(new ObjectModel(registry, objectElement), referrer) : registry.reference(objectModel, referrer));
+    // FIXME: Can we get doc comments from code?
+    return new RefElement(objectElement.nullable(), objectElement.minOccurs(), objectElement.maxOccurs(), objectModel == null ? registry.declare(objectElement.type()).value(new ObjectModel(registry, objectElement), referrer) : registry.reference(objectModel, referrer), null);
   }
 
   public static ObjectModel reference(final Registry registry, final ComplexModel referrer, final $Array.Object binding, final String superClassName) {
@@ -150,14 +152,14 @@ class ObjectModel extends ComplexModel {
 
   // Nameable
   private ObjectModel(final Registry registry, final Jsonx.Object binding) {
-    super(null, null, null, null, null);
+    super(null, null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.className = binding.getClass$().text();
     if ("org.libx4j.jjb.runtime.Publishing".equals(this.className))
       x();
 
     this.isAbstract = binding.getAbstract$().text();
     this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
-    this.superObject = getParent(binding.getExtends$().text(), registry);
+    this.superObject = binding.getExtends$() == null ? null : getParent(binding.getExtends$().text(), registry);
     this.members = Collections.unmodifiableMap(parseMembers(registry, binding, this));
   }
 
@@ -185,7 +187,7 @@ class ObjectModel extends ComplexModel {
       }
       else if (element instanceof $Object.Object) {
         final $Object.Object member = ($Object.Object)element;
-        final ObjectModel child = ObjectModel.reference(registry, model, member, member.getExtends$().text());
+        final ObjectModel child = ObjectModel.reference(registry, model, member, member.getExtends$() == null ? null : member.getExtends$().text());
         members.put(member.getName$().text(), child);
       }
       else if (element instanceof $Object.Ref) {
@@ -205,7 +207,8 @@ class ObjectModel extends ComplexModel {
   }
 
   private ObjectModel(final Registry registry, final String name, final Class<?> clazz, final JsonxObject jsObject) {
-    super(name, null, null, null, null);
+    // FIXME: Can we get doc comments from code?
+    super(name, null, null, null, null, null);
     this.className = clazz.getName();
     if ("org.libx4j.jjb.runtime.Publishing".equals(this.className))
       x();
@@ -348,63 +351,63 @@ class ObjectModel extends ComplexModel {
 
   @Override
   protected final String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder(super.toJSON(pacakgeName));
-    if (string.length() > 0)
-      string.insert(0, ",\n");
+    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+    if (builder.length() > 0)
+      builder.insert(0, ",\n");
 
-    string.append(",\n  class: \"").append(getShortName(className, pacakgeName)).append('"');
+    builder.append(",\n  class: \"").append(getShortName(className, pacakgeName)).append('"');
 
     if (superObject != null)
-      string.append(",\n  extends: \"").append(getShortName(superObject.className(), pacakgeName)).append('"');
+      builder.append(",\n  extends: \"").append(getShortName(superObject.className(), pacakgeName)).append('"');
 
     if (isAbstract != null)
-      string.append(",\n  abstract: ").append(isAbstract);
+      builder.append(",\n  abstract: ").append(isAbstract);
 
     if (unknown != null)
-      string.append(",\n  unknown: \"").append(unknown.toString().toLowerCase()).append('"');
+      builder.append(",\n  unknown: \"").append(unknown.toString().toLowerCase()).append('"');
 
     if (members != null && members.size() > 0) {
-      string.append(",\n  members: ");
+      builder.append(",\n  members: ");
       final StringBuilder members = new StringBuilder();
       for (final Map.Entry<String,Element> entry : this.members.entrySet())
         members.append(",\n    \"").append(entry.getKey()).append("\": ").append(entry.getValue().toJSON(pacakgeName).replace("\n", "\n    "));
 
-      string.append("{");
+      builder.append('{');
       if (members.length() > 0)
-        string.append("\n").append(members.substring(2)).append("\n  ");
+        builder.append("\n").append(members.substring(2)).append("\n  ");
 
-      string.append("}");
+      builder.append('}');
     }
 
-    return "{\n" + (string.length() > 0 ? string.substring(2) : string.toString()) + "\n}";
+    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("<object");
-    string.append(" class=\"").append(getShortName(className, pacakgeName)).append('"');
+    final StringBuilder builder = new StringBuilder("<object");
+    builder.append(" class=\"").append(getShortName(className, pacakgeName)).append('"');
 
     if (superObject != null)
-      string.append(" extends=\"").append(getShortName(superObject.className(), pacakgeName)).append('"');
+      builder.append(" extends=\"").append(getShortName(superObject.className(), pacakgeName)).append('"');
 
     if (isAbstract != null && isAbstract)
-      string.append(" abstract=\"").append(isAbstract).append('"');
+      builder.append(" abstract=\"").append(isAbstract).append('"');
 
     if (unknown != Unknown.ERROR)
-      string.append(" unknown=\"").append(unknown.toString().toLowerCase()).append('"');
+      builder.append(" unknown=\"").append(unknown.toString().toLowerCase()).append('"');
 
     if (members != null && members.size() > 0) {
       final StringBuilder members = new StringBuilder();
       for (final Element member : this.members.values())
         members.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
 
-      string.append(super.toJSONX(pacakgeName)).append(">").append(members).append("\n</object>");
+      builder.append(super.toJSONX(pacakgeName)).append('>').append(members).append("\n</object>");
     }
     else {
-      string.append(super.toJSONX(pacakgeName)).append("/>");
+      builder.append(super.toJSONX(pacakgeName)).append("/>");
     }
 
-    return string.toString();
+    return builder.toString();
   }
 
   protected final String toObjectAnnotation() {
@@ -413,20 +416,20 @@ class ObjectModel extends ComplexModel {
 
   @Override
   protected final String toAnnotation(final boolean full) {
-    final StringBuilder string = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
-    if (string.length() > 0)
-      string.append(", ");
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+    if (builder.length() > 0)
+      builder.append(", ");
 
-    string.append("type=").append(className.replace('$', '.')).append(".class");
-    return string.toString();
+    builder.append("type=").append(className.replace('$', '.')).append(".class");
+    return builder.toString();
   }
 
   protected final String toJava() {
-    final StringBuilder string = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0)
       for (final Element member : this.members.values())
-        string.append("\n\n").append(member.toField());
+        builder.append("\n\n").append(member.toField());
 
-    return string.length() > 1 ? string.substring(2).toString() : string.toString();
+    return builder.length() > 1 ? builder.substring(2).toString() : builder.toString();
   }
 }

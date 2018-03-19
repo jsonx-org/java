@@ -17,7 +17,6 @@
 package org.libx4j.jsonx.generator;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -52,15 +51,15 @@ class Registry {
     return key;
   }
 
-  private final Map<String,Model> refToModel;
-  private final Map<String,List<ComplexModel>> references;
+  private final LinkedHashMap<String,Model> refToModel;
+  private final LinkedHashMap<String,List<ComplexModel>> references;
 
   public Registry() {
     refToModel = new LinkedHashMap<String,Model>();
     references = new LinkedHashMap<String,List<ComplexModel>>();
   }
 
-  private Registry(final Map<String,Model> refToModel, final Map<String,List<ComplexModel>> references) {
+  private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<ComplexModel>> references) {
     this.refToModel = refToModel;
     this.references = references;
   }
@@ -128,6 +127,6 @@ class Registry {
       entry.setValue(normalized instanceof RefElement ? ((RefElement)normalized).ref() : (Model)normalized);
     }
 
-    return new Registry(Collections.unmodifiableMap(clone), Collections.unmodifiableMap(references));
+    return new Registry(clone, references);
   }
 }

@@ -32,12 +32,12 @@ abstract class SimpleModel extends Model {
   }
 
   // Nameable
-  public SimpleModel(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    super(name, required, nullable, minOccurs, maxOccurs);
+  public SimpleModel(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(name, required, nullable, minOccurs, maxOccurs, doc);
   }
 
-  public SimpleModel() {
-    super(null, null, null, null, null);
+  public SimpleModel(final String doc) {
+    super(null, null, null, null, null, doc);
   }
 
   public SimpleModel(final Element element) {

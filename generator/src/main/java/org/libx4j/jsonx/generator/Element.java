@@ -113,36 +113,38 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
   private final Boolean nullable;
   private final Integer minOccurs;
   private final Integer maxOccurs;
+  private final String doc;
 
-  public Element(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
+  public Element(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
     this.name = name;
     this.required = required;
     this.nullable = nullable;
     this.minOccurs = minOccurs;
-    this.maxOccurs = maxOccurs != null && maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
+    this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
+    this.doc = doc;
   }
 
   // Annullable, Recurrable
-  public Element(final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    this(name, null, nullable, minOccurs, maxOccurs);
+  public Element(final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    this(name, null, nullable, minOccurs, maxOccurs, doc);
   }
 
   public Element(final $Element binding, final String name, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
+    this(name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs), binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   // Annullable, Nameable, Requirable
-  public Element(final String name, final boolean required, final boolean nullable) {
-    this(name, required, nullable, null, null);
+  public Element(final String name, final boolean required, final boolean nullable, final String doc) {
+    this(name, required, nullable, null, null, doc);
   }
 
   // Nameable
-  public Element(final String name) {
-    this(name, null, null, null, null);
+  public Element(final String name, final String doc) {
+    this(name, null, null, null, null, doc);
   }
 
   public Element(final $Element binding, final String name) {
-    this(name);
+    this(name, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   public Element(final Element copy) {
@@ -151,6 +153,7 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
     this.nullable = copy.nullable;
     this.minOccurs = copy.minOccurs;
     this.maxOccurs = copy.maxOccurs;
+    this.doc = copy.doc;
   }
 
   @Override
@@ -184,44 +187,50 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
 
   @Override
   protected String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("  type: \"").append(getClass().getSimpleName().toLowerCase()).append('"');
+    final StringBuilder builder = new StringBuilder("  type: \"").append(getClass().getSimpleName().toLowerCase()).append('"');
     if (name != null)
-      string.append(",\n  name: \"").append(name).append('"');
+      builder.append(",\n  name: \"").append(name).append('"');
 
     if (required != null)
-      string.append(",\n  required: ").append(required);
+      builder.append(",\n  required: ").append(required);
 
     if (nullable != null)
-      string.append(",\n  nullable: ").append(nullable);
+      builder.append(",\n  nullable: ").append(nullable);
 
     if (minOccurs != null)
-      string.append(",\n  minOccurs: ").append(minOccurs);
+      builder.append(",\n  minOccurs: ").append(minOccurs);
 
     if (maxOccurs != null)
-      string.append(",\n  maxOccurs: ").append(maxOccurs);
+      builder.append(",\n  maxOccurs: ").append(maxOccurs);
 
-    return string.toString();
+    if (doc != null)
+      builder.append(",\n  doc: \"").append(doc.replace("\\", "\\\\").replace("\"", "\\\"")).append('"');
+
+    return builder.toString();
   }
 
   @Override
   protected String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     if (name != null)
-      string.append(" name=\"").append(name).append('"');
+      builder.append(" name=\"").append(name).append('"');
 
     if (required != null && !required)
-      string.append(" required=\"").append(required).append('"');
+      builder.append(" required=\"").append(required).append('"');
 
     if (nullable != null && !nullable)
-      string.append(" nullable=\"").append(nullable).append('"');
+      builder.append(" nullable=\"").append(nullable).append('"');
 
     if (minOccurs != null && minOccurs != 0)
-      string.append(" minOccurs=\"").append(minOccurs).append('"');
+      builder.append(" minOccurs=\"").append(minOccurs).append('"');
 
     if (maxOccurs != null)
-      string.append(" maxOccurs=\"").append(maxOccurs).append('"');
+      builder.append(" maxOccurs=\"").append(maxOccurs).append('"');
 
-    return string.toString();
+    if (doc != null)
+      builder.append(" doc=\"").append(doc.replace("&", "&amp;").replace("\"", "&quot;")).append('"');
+
+    return builder.toString();
   }
 
   @Override
@@ -235,38 +244,38 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
   }
 
   protected String toAnnotation(final boolean full) {
-    final StringBuilder string = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
 //    if (name != null)
 //      string.append(", name=\"").append(name).append('"');
 
     if (required != null && !required)
-      string.append(", required=").append(required);
+      builder.append(", required=").append(required);
 
     if (nullable != null && !nullable)
-      string.append(", nullable=").append(nullable);
+      builder.append(", nullable=").append(nullable);
 
     if (minOccurs != null && minOccurs != 0)
-      string.append(", minOccurs=").append(minOccurs);
+      builder.append(", minOccurs=").append(minOccurs);
 
     if (maxOccurs != null)
-      string.append(", maxOccurs=").append(maxOccurs);
+      builder.append(", maxOccurs=").append(maxOccurs);
 
-    return string.length() == 0 ? "" : string.substring(2);
+    return builder.length() == 0 ? "" : builder.substring(2);
   }
 
   protected String toField() {
-    final StringBuilder string = new StringBuilder();
-    string.append("@").append(propertyAnnotation().getName());
+    final StringBuilder builder = new StringBuilder();
+    builder.append('@').append(propertyAnnotation().getName());
     final String annotation = toAnnotation(true);
     if (annotation.length() > 0)
-      string.append("(").append(annotation).append(")");
+      builder.append('(').append(annotation).append(')');
 
-    string.append('\n');
-    string.append("public ");
-    string.append(className());
-    string.append(" ").append(name());
-    string.append(";");
-    return string.toString();
+    builder.append('\n');
+    builder.append("public ");
+    builder.append(className());
+    builder.append(' ').append(name());
+    builder.append(';');
+    return builder.toString();
   }
 
   protected abstract String className();

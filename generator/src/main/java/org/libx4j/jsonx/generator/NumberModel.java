@@ -42,8 +42,8 @@ class NumberModel extends SimpleModel {
   public NumberModel(final $Array.Number binding) {
     super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
-    this.min = binding.getMin$().text();
-    this.max = binding.getMax$().text();
+    this.min = binding.getMin$() == null ? null : binding.getMin$().text();
+    this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
   public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Object.Number binding) {
@@ -54,8 +54,8 @@ class NumberModel extends SimpleModel {
   public NumberModel(final $Object.Number binding) {
     super(binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
-    this.min = binding.getMin$().text();
-    this.max = binding.getMax$().text();
+    this.min = binding.getMin$() == null ? null : binding.getMin$().text();
+    this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
   public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
@@ -64,10 +64,10 @@ class NumberModel extends SimpleModel {
 
   // Nameable
   public NumberModel(final Jsonx.Number binding) {
-    super(binding.getName$().text(), null, null, null, null);
+    super(binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
-    this.min = binding.getMin$().text();
-    this.max = binding.getMax$().text();
+    this.min = binding.getMin$() == null ? null : binding.getMin$().text();
+    this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
   public static NumberModel referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty numberProperty, final Field field) {
@@ -75,7 +75,8 @@ class NumberModel extends SimpleModel {
   }
 
   public NumberModel(final NumberProperty numberProperty, final Field field) {
-    super(getName(numberProperty.name(), field), numberProperty.required(), numberProperty.nullable(), null, null);
+    // FIXME: Can we get doc comments from code?
+    super(getName(numberProperty.name(), field), numberProperty.required(), numberProperty.nullable(), null, null, null);
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || numberProperty.nullable()))
       throw new IllegalAnnotationException(numberProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
@@ -89,7 +90,8 @@ class NumberModel extends SimpleModel {
   }
 
   public NumberModel(final NumberElement numberElement) {
-    super(null, null, numberElement.nullable(), numberElement.minOccurs(), numberElement.maxOccurs());
+    // FIXME: Can we get doc comments from code?
+    super(null, null, numberElement.nullable(), numberElement.minOccurs(), numberElement.maxOccurs(), null);
     this.form = numberElement.form();
     this.min = numberElement.min().length() == 0 ? null : new BigDecimal(numberElement.min());
     this.max = numberElement.max().length() == 0 ? null : new BigDecimal(numberElement.max());
@@ -141,49 +143,49 @@ class NumberModel extends SimpleModel {
 
   @Override
   protected String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder(super.toJSON(pacakgeName));
-    if (string.length() > 0)
-      string.insert(0, ",\n");
+    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+    if (builder.length() > 0)
+      builder.insert(0, ",\n");
 
     if (form != null)
-      string.append(",\n  form: \"").append(form.toString().toLowerCase()).append('"');
+      builder.append(",\n  form: \"").append(form.toString().toLowerCase()).append('"');
 
     if (min != null)
-      string.append(",\n  min: ").append(min);
+      builder.append(",\n  min: ").append(min);
 
     if (max != null)
-      string.append(",\n  max: ").append(max);
+      builder.append(",\n  max: ").append(max);
 
-    return "{\n" + (string.length() > 0 ? string.substring(2) : string.toString()) + "\n}";
+    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("<number");
+    final StringBuilder builder = new StringBuilder("<number");
     if (form != Form.REAL)
-      string.append(" form=\"").append(form.toString().toLowerCase()).append('"');
+      builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
 
     if (min != null)
-      string.append(" min=\"").append(min).append('"');
+      builder.append(" min=\"").append(min).append('"');
 
     if (max != null)
-      string.append(" max=\"").append(max).append('"');
+      builder.append(" max=\"").append(max).append('"');
 
-    return string.append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
   }
 
   @Override
   protected String toAnnotation(final boolean full) {
-    final StringBuilder string = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
     if (form != Form.REAL)
-      string.append(", form=").append(Form.class.getName()).append('.').append(form);
+      builder.append(", form=").append(Form.class.getName()).append('.').append(form);
 
     if (min != null)
-      string.append(", min=\"").append(min).append('"');
+      builder.append(", min=\"").append(min).append('"');
 
     if (max != null)
-      string.append(", max=\"").append(max).append('"');
+      builder.append(", max=\"").append(max).append('"');
 
-    return string.toString();
+    return builder.toString();
   }
 }

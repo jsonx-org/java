@@ -30,43 +30,47 @@ import java.util.Map;
 import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.Iterators;
+import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
 
-class Jsonx extends Factor {
+public class Jsonx extends Factor {
   private final Registry registry;
-  private final org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx jsonx;
+  private final xL2gluGCXYYJc.Jsonx jsonx;
   private final String packageName;
 
-  public Jsonx(final org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx jsonx) {
+  public Jsonx(final xL2gluGCXYYJc.Jsonx jsonx) {
     this.jsonx = jsonx;
     this.packageName = (String)jsonx.getPackage$().text();
     final Iterator<? extends $Element> elements = Iterators.filter(jsonx.elementIterator(), $Element.class);
-    final StrictRefDigraph<org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object,String> digraph = new StrictRefDigraph<org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object,String>("Object cannot inherit from itself", obj -> obj.getClass$().text());
+    final StrictRefDigraph<xL2gluGCXYYJc.Jsonx.Object,String> digraph = new StrictRefDigraph<xL2gluGCXYYJc.Jsonx.Object,String>("Object cannot inherit from itself", obj -> obj.getClass$().text());
     final Registry registry = new Registry();
     while (elements.hasNext()) {
       final $Element element = elements.next();
-      if (element instanceof org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Boolean)
-        BooleanModel.declare(registry, (org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Boolean)element);
-      else if (element instanceof org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Number)
-        NumberModel.declare(registry, (org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Number)element);
-      else if (element instanceof org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.String)
-        StringModel.declare(registry, (org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.String)element);
-      else if (element instanceof org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Array)
-        ArrayModel.declare(registry, (org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Array)element);
-      else if (element instanceof org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object) {
-        final org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object object = (org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object)element;
-        digraph.addEdgeRef(object, object.getExtends$().text());
+      if (element instanceof xL2gluGCXYYJc.Jsonx.Boolean)
+        BooleanModel.declare(registry, (xL2gluGCXYYJc.Jsonx.Boolean)element);
+      else if (element instanceof xL2gluGCXYYJc.Jsonx.Number)
+        NumberModel.declare(registry, (xL2gluGCXYYJc.Jsonx.Number)element);
+      else if (element instanceof xL2gluGCXYYJc.Jsonx.String)
+        StringModel.declare(registry, (xL2gluGCXYYJc.Jsonx.String)element);
+      else if (element instanceof xL2gluGCXYYJc.Jsonx.Array)
+        ArrayModel.declare(registry, (xL2gluGCXYYJc.Jsonx.Array)element);
+      else if (element instanceof xL2gluGCXYYJc.Jsonx.Object) {
+        final xL2gluGCXYYJc.Jsonx.Object object = (xL2gluGCXYYJc.Jsonx.Object)element;
+        if (object.getExtends$() != null)
+          digraph.addEdgeRef(object, object.getExtends$().text());
+        else
+          digraph.addVertex(object);
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + jsonx.getClass().getSimpleName() + " member type: " + element.getClass().getName());
       }
     }
 
-    final List<org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object> cycle = digraph.getCycle();
+    final List<xL2gluGCXYYJc.Jsonx.Object> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Inheritance cycle detected in object hierarchy: " + Collections.toString(digraph.getCycle(), " -> "));
 
-    final ListIterator<org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx.Object> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
+    final ListIterator<xL2gluGCXYYJc.Jsonx.Object> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious())
       ObjectModel.declare(registry, topologicalOrder.previous());
 
@@ -85,7 +89,7 @@ class Jsonx extends Factor {
     this.packageName = classPrefix == null ? null : classPrefix.substring(0, classPrefix.length() - 1);
   }
 
-  public final org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx jsonx() {
+  public final xL2gluGCXYYJc.Jsonx jsonx() {
     return this.jsonx;
   }
 
@@ -106,32 +110,32 @@ class Jsonx extends Factor {
 
   @Override
   protected final String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder();
-    string.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
+    final StringBuilder builder = new StringBuilder();
+    builder.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
     for (final Model member : members())
       if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        string.append(",\n  \"").append(member.ref()).append("\": ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
+        builder.append(",\n  \"").append(member.ref()).append("\": ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
 
-    string.append("\n}");
-    return string.toString();
+    builder.append("\n}");
+    return builder.toString();
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("<jsonx\n  package=\"" + (pacakgeName == null ? "" : pacakgeName) + "\"\n  xmlns=\"http://jjb.libx4j.org/jsonx.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jjb.libx4j.org/jsonx.xsd /Users/seva/Work/SevaSafris/java/libx4j/jjb/generator/src/main/resources/jsonx.xsd\"");
+    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (pacakgeName == null ? "" : pacakgeName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.7.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.7.xsd /Users/seva/Work/SevaSafris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
     if (this.registry.size() > 0) {
-      string.append(">");
+      builder.append('>');
       for (final Model member : members())
         if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-          string.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
+          builder.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
 
-      string.append("\n</jsonx>");
+      builder.append("\n</jsonx>");
     }
     else {
-      string.append("/>");
+      builder.append("/>");
     }
 
-    return string.toString();
+    return builder.toString();
   }
 
   private final String getClassPrefix() {
@@ -165,8 +169,15 @@ class Jsonx extends Factor {
         final ObjectModel objectModel = (ObjectModel)member;
         final String code = objectModel.toJava();
         final ClassHolder classHolder = new ClassHolder(objectModel.classSimpleName(), objectModel.superObject() == null ? null : objectModel.superObject().className(), objectModel.toObjectAnnotation(), code);
-        if (objectModel.className().contains("$"))
-          map.get(objectModel.className().substring(0, objectModel.className().lastIndexOf('$'))).memberClasses.add(classHolder);
+        System.err.println(objectModel.className());
+        if (objectModel.className().contains("$")) {
+          final String name = objectModel.className().substring(0, objectModel.className().lastIndexOf('$'));
+          ClassHolder parent = map.get(name);
+          if (parent == null)
+            map.put(name, parent = new ClassHolder(name));
+
+          parent.memberClasses.add(classHolder);
+        }
         else
           map.put(objectModel.className(), classHolder);
       }
@@ -175,7 +186,7 @@ class Jsonx extends Factor {
     for (final Map.Entry<String,ClassHolder> entry : map.entrySet()) {
       final String className = entry.getKey();
       final ClassHolder holder = entry.getValue();
-      final File file = new File(dir, className.replace('.', '/') + ".java");
+      final File file = new File(new File(dir, packageName.replace('.', '/')), className.replace('.', '/') + ".java");
       file.getParentFile().mkdirs();
       try (final FileOutputStream out = new FileOutputStream(file)) {
         final String string = holder.getAnnotation() + "\npublic " + holder.toString();

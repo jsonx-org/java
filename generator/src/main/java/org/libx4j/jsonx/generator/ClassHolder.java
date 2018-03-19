@@ -21,25 +21,32 @@ public class ClassHolder {
     this.code = code;
   }
 
+  public ClassHolder(final String name) {
+    this.name = name;
+    this.superName = null;
+    this.annotation = "";
+    this.code = "";
+  }
+
   public String getAnnotation() {
     return "@" + JsonxObject.class.getName() + (annotation.length() == 0 ? "" : "(" + annotation + ")");
   }
 
   @Override
   public String toString() {
-    final StringBuilder string = new StringBuilder();
-    string.append("class ").append(name);
+    final StringBuilder builder = new StringBuilder();
+    builder.append("class ").append(name);
     if (superName != null)
-      string.append(" extends ").append(superName);
+      builder.append(" extends ").append(superName);
 
-    string.append(" {");
+    builder.append(" {");
     for (final ClassHolder memberClass : memberClasses)
-      string.append("\n  ").append(memberClass.getAnnotation()).append("\n  public static ").append(memberClass.toString().replace("\n", "\n  ")).append("\n");
+      builder.append("\n  ").append(memberClass.getAnnotation()).append("\n  public static ").append(memberClass.toString().replace("\n", "\n  ")).append("\n");
 
     if (code.length() > 0)
-      string.append("\n  ").append(code.replace("\n", "\n  "));
+      builder.append("\n  ").append(code.replace("\n", "\n  "));
 
-    return string.append("\n}").toString();
+    return builder.append("\n}").toString();
   }
 
   public final List<ClassHolder> memberClasses = new ArrayList<ClassHolder>();

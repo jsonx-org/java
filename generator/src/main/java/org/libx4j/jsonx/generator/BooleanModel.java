@@ -51,7 +51,7 @@ class BooleanModel extends SimpleModel {
 
   // Nameable
   private BooleanModel(final Jsonx.Boolean binding) {
-    super(binding.getName$().text(), null, null, null, null);
+    super(binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   public static BooleanModel referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanProperty booleanProperty, final Field field) {
@@ -59,7 +59,8 @@ class BooleanModel extends SimpleModel {
   }
 
   private BooleanModel(final BooleanProperty booleanProperty, final Field field) {
-    super(getName(booleanProperty.name(), field), booleanProperty.required(), booleanProperty.nullable(), null, null);
+    // FIXME: Can we get doc comments from code?
+    super(getName(booleanProperty.name(), field), booleanProperty.required(), booleanProperty.nullable(), null, null, null);
     if (field.getType() != Boolean.class && (field.getType() != boolean.class || booleanProperty.nullable()))
       throw new IllegalAnnotationException(booleanProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
   }
@@ -69,7 +70,8 @@ class BooleanModel extends SimpleModel {
   }
 
   private BooleanModel(final BooleanElement booleanElement) {
-    super(null, null, booleanElement.nullable(), booleanElement.minOccurs(), booleanElement.maxOccurs());
+    // FIXME: Can we get doc comments from code?
+    super(null, null, booleanElement.nullable(), booleanElement.minOccurs(), booleanElement.maxOccurs(), null);
   }
 
   private BooleanModel(final Element element) {

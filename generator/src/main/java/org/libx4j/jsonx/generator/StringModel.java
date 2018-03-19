@@ -43,7 +43,7 @@ class StringModel extends SimpleModel {
   // Annullable, Recurrable
   public StringModel(final $Array.String binding) {
     super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.pattern = binding.getPattern$().text();
+    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
@@ -55,7 +55,7 @@ class StringModel extends SimpleModel {
   // Nameable, Annullable
   public StringModel(final $Object.String binding) {
     super(binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
-    this.pattern = binding.getPattern$().text();
+    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
@@ -66,7 +66,7 @@ class StringModel extends SimpleModel {
 
   // Nameable
   public StringModel(final Jsonx.String binding) {
-    super(binding.getName$().text(), null, null, null, null);
+    super(binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.pattern = binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
@@ -77,7 +77,8 @@ class StringModel extends SimpleModel {
   }
 
   public StringModel(final StringProperty stringProperty, final Field field) {
-    super(getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null);
+    // FIXME: Can we get doc comments from code?
+    super(getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null, null);
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(stringProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -91,7 +92,8 @@ class StringModel extends SimpleModel {
   }
 
   public StringModel(final StringElement stringElement) {
-    super(null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs());
+    // FIXME: Can we get doc comments from code?
+    super(null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs(), null);
     this.pattern = parsePattern(stringElement.pattern());
     this.urlEncode = stringElement.urlEncode();
     this.urlDecode = stringElement.urlDecode();
@@ -143,45 +145,45 @@ class StringModel extends SimpleModel {
 
   @Override
   protected final String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder(super.toJSON(pacakgeName));
-    if (string.length() > 0)
-      string.insert(0, ",\n");
+    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+    if (builder.length() > 0)
+      builder.insert(0, ",\n");
 
     if (pattern != null)
-      string.append(",\n  pattern: \"").append(pattern).append('"');
+      builder.append(",\n  pattern: \"").append(pattern).append('"');
 
-    string.append(",\n  urlEncode: ").append(urlEncode);
-    string.append(",\n  urlDecode: ").append(urlDecode);
-    return "{\n" + (string.length() > 0 ? string.substring(2) : string.toString()) + "\n}";
+    builder.append(",\n  urlEncode: ").append(urlEncode);
+    builder.append(",\n  urlDecode: ").append(urlDecode);
+    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("<string");
+    final StringBuilder builder = new StringBuilder("<string");
     if (pattern != null)
-      string.append(" pattern=\"").append(pattern).append('"');
+      builder.append(" pattern=\"").append(pattern).append('"');
 
     if (urlEncode)
-      string.append(" urlEncode=\"").append(urlEncode).append('"');
+      builder.append(" urlEncode=\"").append(urlEncode).append('"');
 
     if (urlDecode)
-      string.append(" urlDecode=\"").append(urlDecode).append('"');
+      builder.append(" urlDecode=\"").append(urlDecode).append('"');
 
-    return string.append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
   }
 
   @Override
   protected final String toAnnotation(final boolean full) {
-    final StringBuilder string = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
     if (pattern != null)
-      string.append(", pattern=\"").append(Strings.escapeForJava(pattern)).append('"');
+      builder.append(", pattern=\"").append(Strings.escapeForJava(pattern)).append('"');
 
     if (urlEncode)
-      string.append(", urlEncode=").append(urlEncode);
+      builder.append(", urlEncode=").append(urlEncode);
 
     if (urlDecode)
-      string.append(", urlDecode=").append(urlDecode);
+      builder.append(", urlDecode=").append(urlDecode);
 
-    return string.toString();
+    return builder.toString();
   }
 }

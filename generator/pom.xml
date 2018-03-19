@@ -58,6 +58,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.libx4j.xsb</groupId>
       <artifactId>xsb-runtime</artifactId>
     </dependency>

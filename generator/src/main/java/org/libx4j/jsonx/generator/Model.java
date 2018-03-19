@@ -28,7 +28,7 @@ abstract class Model extends Element {
 
   // Nameable, Annullable
   public Model(final $Element binding, final String name, final boolean required, final boolean nullable) {
-    super(name, required, nullable);
+    super(name, required, nullable, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   // Nameable
@@ -37,13 +37,13 @@ abstract class Model extends Element {
   }
 
   // *Property
-  public Model(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    super(name, required, nullable, minOccurs, maxOccurs);
+  public Model(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(name, required, nullable, minOccurs, maxOccurs, doc);
   }
 
   // *Element
-  public Model() {
-    super((String)null);
+  public Model(final String doc) {
+    super((String)null, doc);
   }
 
   public Model(final Element copy) {

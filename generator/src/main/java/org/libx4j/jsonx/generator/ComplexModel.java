@@ -32,8 +32,8 @@ abstract class ComplexModel extends Model {
   }
 
   // Nameable
-  public ComplexModel(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    super(name, required, nullable, minOccurs, maxOccurs);
+  public ComplexModel(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(name, required, nullable, minOccurs, maxOccurs, doc);
   }
 
   protected ComplexModel(final Element copy) {

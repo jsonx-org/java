@@ -32,17 +32,17 @@ class RefElement extends Element {
 
   // Nameable, Annullable
   public RefElement(final $Object.Ref binding, final Model ref) {
-    super(binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
+    super(binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text(), binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.ref = ref;
   }
 
-  public RefElement(final String name, final boolean required, final boolean nullable, final Model ref) {
-    super(name, required, nullable);
+  public RefElement(final String name, final boolean required, final boolean nullable, final Model ref, final String doc) {
+    super(name, required, nullable, doc);
     this.ref = ref;
   }
 
-  public RefElement(final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model ref) {
-    super(null, nullable, minOccurs, maxOccurs);
+  public RefElement(final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model ref, final String doc) {
+    super(null, nullable, minOccurs, maxOccurs, doc);
     this.ref = ref;
   }
 
@@ -72,32 +72,32 @@ class RefElement extends Element {
 
   @Override
   protected final String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder(super.toJSON(pacakgeName));
-    if (string.length() > 0)
-      string.insert(0, ",\n");
+    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+    if (builder.length() > 0)
+      builder.insert(0, ",\n");
 
     if (ref != null)
-      string.append(",\n  ref: \"").append(getShortName(ref.ref(), pacakgeName)).append('"');
+      builder.append(",\n  ref: \"").append(getShortName(ref.ref(), pacakgeName)).append('"');
 
-    return "{\n" + (string.length() > 0 ? string.substring(2) : string.toString()) + "\n}";
+    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("<property");
+    final StringBuilder builder = new StringBuilder("<ref");
     if (ref != null)
-      string.append(" ref=\"").append(getShortName(ref.ref(), pacakgeName)).append('"');
+      builder.append(" property=\"").append(getShortName(ref.ref(), pacakgeName)).append('"');
 
-    return string.append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
   }
 
   @Override
   protected final String toAnnotation(final boolean full) {
-    final StringBuilder string = new StringBuilder(super.toAnnotation(true));
+    final StringBuilder builder = new StringBuilder(super.toAnnotation(true));
     final String annotation = ref.toAnnotation(false);
-    if (string.length() > 0 && annotation.length() > 0)
-      string.append(", ");
+    if (builder.length() > 0 && annotation.length() > 0)
+      builder.append(", ");
 
-    return string.append(annotation).toString();
+    return builder.append(annotation).toString();
   }
 }

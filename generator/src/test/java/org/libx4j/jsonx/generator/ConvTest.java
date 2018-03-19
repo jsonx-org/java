@@ -39,11 +39,4 @@ public class ConvTest {
 //    jsonx.toJava(target);
     // System.out.println(jsonx.toJSON());
   }
-
-  @Test
-  @Ignore
-  public void testFromJsonx() throws MalformedURLException, ParseException, IOException, ValidationException {
-    final Jsonx jsonx = new Jsonx((org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx)Bindings.parse(new File("/Users/seva/Work/SevaSafris/java/libx4j/maven/plugin/jjb-maven-plugin/src/test/resources/type.jsonx").toURI().toURL()));
-    System.out.println(jsonx.toJSONX());
-  }
 }

@@ -44,19 +44,19 @@ import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.xsb.runtime.Bindings;
 
 class ArrayModel extends ComplexModel {
-  private static StringBuilder writeElementIdsClause(final StringBuilder string, final int numElements, final int offset) {
-    string.append("elementIds=");
+  private static StringBuilder writeElementIdsClause(final StringBuilder builder, final int numElements, final int offset) {
+    builder.append("elementIds=");
     if (numElements == 0)
-      return string.append("{}");
+      return builder.append("{}");
 
     if (numElements == 1)
-      return string.append(offset);
+      return builder.append(offset);
 
-    string.append("{");
+    builder.append('{');
     for (int i = 0; i < numElements - 1; i++)
-      string.append(i + offset).append(", ");
+      builder.append(i + offset).append(", ");
 
-    return string.append(numElements - 1 + offset).append("}");
+    return builder.append(numElements - 1 + offset).append('}');
   }
 
   private static List<Object> getGreatestCommonSuperObject(final List<Element> elements) {
@@ -135,7 +135,7 @@ class ArrayModel extends ComplexModel {
       }
       else if (element instanceof $Array.Object) {
         final $Array.Object member = ($Array.Object)element;
-        final ObjectModel child = ObjectModel.reference(registry, referrer, member, member.getExtends$().text());
+        final ObjectModel child = ObjectModel.reference(registry, referrer, member, member.getExtends$() == null ? null : member.getExtends$().text());
         members.add(child);
       }
       else if (element instanceof $Array.Ref) {
@@ -201,11 +201,11 @@ class ArrayModel extends ComplexModel {
 
   // Nameable
   public static ArrayModel declare(final Registry registry, final Jsonx.Array binding) {
-    return registry.declare(binding).value(new ArrayModel(registry, binding), null);
+    return registry.declare(binding).value(new ArrayModel(registry, binding, binding.getDoc$() == null ? null : binding.getDoc$().text()), null);
   }
 
-  private ArrayModel(final Registry registry, final Jsonx.Array binding) {
-    super(binding.getName$().text(), null, null, null, null);
+  private ArrayModel(final Registry registry, final Jsonx.Array binding, final String doc) {
+    super(binding.getName$().text(), null, null, null, null, doc);
     this.members = parseMembers(registry, this, binding);
   }
 
@@ -244,7 +244,8 @@ class ArrayModel extends ComplexModel {
   }
 
   private ArrayModel(final Registry registry, final ArrayProperty arrayProperty, final Field field) {
-    super(getName(arrayProperty.name(), field), arrayProperty.required(), arrayProperty.nullable(), null, null);
+    // FIXME: Can we get doc comments from code?
+    super(getName(arrayProperty.name(), field), arrayProperty.required(), arrayProperty.nullable(), null, null, null);
     if (field.getType() != List.class && !field.getType().isArray())
       throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
@@ -297,7 +298,8 @@ class ArrayModel extends ComplexModel {
   }
 
   private ArrayModel(final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
-    super(null, null, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs());
+    // FIXME: Can we get doc comments from code?
+    super(null, null, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), null);
     this.members = parseMembers(registry, this, field, arrayElement, arrayElement.elementIds(), annotations);
   }
 
@@ -313,14 +315,14 @@ class ArrayModel extends ComplexModel {
   @Override
   protected final String className() {
     final List<Object> cls = getGreatestCommonSuperObject(members);
-    final StringBuilder string = new StringBuilder(List.class.getName());
+    final StringBuilder builder = new StringBuilder(List.class.getName());
     for (final Object part : cls)
-      string.append("<").append(part instanceof Element ? ((Element)part).className() : (String)part);
+      builder.append('<').append(part instanceof Element ? ((Element)part).className() : (String)part);
 
-    for (final Object part : cls)
-      string.append(">");
+    for (int i = 0; i < cls.size(); i++)
+      builder.append('>');
 
-    return string.toString().replace('$', '.');
+    return builder.toString().replace('$', '.');
   }
 
   @Override
@@ -352,81 +354,81 @@ class ArrayModel extends ComplexModel {
 
   @Override
   protected final String toJSON(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder(super.toJSON(pacakgeName));
-    if (string.length() > 0)
-      string.insert(0, ",\n");
+    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+    if (builder.length() > 0)
+      builder.insert(0, ",\n");
 
     if (members != null) {
-      string.append(",\n  members: ");
+      builder.append(",\n  members: ");
       final StringBuilder members = new StringBuilder();
       for (final Element member : this.members)
         members.append(", ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
 
-      string.append("[").append(members.length() > 0 ? members.substring(2) : members.toString()).append("]");
+      builder.append('[').append(members.length() > 0 ? members.substring(2) : members.toString()).append(']');
     }
 
-    return "{\n" + (string.length() > 0 ? string.substring(2) : string.toString()) + "\n}";
+    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder string = new StringBuilder("<array");
+    final StringBuilder builder = new StringBuilder("<array");
     if (members.size() > 0) {
-      string.append(super.toJSONX(pacakgeName)).append(">");
+      builder.append(super.toJSONX(pacakgeName)).append('>');
       for (final Element member : this.members)
-        string.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
+        builder.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
 
-      string.append("\n</array>");
+      builder.append("\n</array>");
     }
     else {
-      string.append(super.toJSONX(pacakgeName)).append("/>");
+      builder.append(super.toJSONX(pacakgeName)).append("/>");
     }
 
-    return string.toString();
+    return builder.toString();
   }
 
   @Override
   protected final String toAnnotation(final boolean full) {
-    final StringBuilder string = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
-    if (string.length() > 0)
-      string.append(", ");
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+    if (builder.length() > 0)
+      builder.append(", ");
 
-    return writeElementIdsClause(string, members.size(), 0).toString();
+    return writeElementIdsClause(builder, members.size(), 0).toString();
   }
 
-  protected final StringBuilder toAnnotation(final StringBuilder string, final int numElements, final int offset) {
-    string.append(super.toAnnotation(true));
-    if (string.length() > 0)
-      string.append(", ");
+  protected final StringBuilder toAnnotation(final StringBuilder builder, final int numElements, final int offset) {
+    builder.append(super.toAnnotation(true));
+    if (builder.length() > 0)
+      builder.append(", ");
 
-    return writeElementIdsClause(string, members.size(), offset);
+    return writeElementIdsClause(builder, members.size(), offset);
   }
 
-  private static int writeElementAnnotations(final StringBuilder string, final Element element, final int index) {
-    final StringBuilder params = new StringBuilder("@").append(element.elementAnnotation().getName()).append("(id=").append(index).append(", ");
+  private static int writeElementAnnotations(final StringBuilder builder, final Element element, final int index) {
+    final StringBuilder params = new StringBuilder("@").append(element.elementAnnotation().getName()).append("(id=").append(index);
     if (element instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)element;
       int diff = arrayModel.members().size();
-      string.insert(0, arrayModel.toAnnotation(params, arrayModel.members().size(), index + arrayModel.members().size()).append(")\n"));
+      builder.insert(0, arrayModel.toAnnotation(params, arrayModel.members().size(), index + arrayModel.members().size()).append(")\n"));
       for (int i = 0; i < arrayModel.members().size(); i++) {
         final Element member = arrayModel.members().get(i);
-        diff += writeElementAnnotations(string, member, i + arrayModel.members().size());
+        diff += writeElementAnnotations(builder, member, i + arrayModel.members().size());
       }
 
       return diff;
     }
 
-    string.insert(0, params.append(element.toAnnotation(true)).append(")\n"));
+    builder.insert(0, params.append(element.toAnnotation(true)).append(")\n"));
     return 1;
   }
 
   @Override
   protected final String toField() {
-    final StringBuilder string = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     int diff = 0;
     for (int i = 0; i < members.size(); i++)
-      diff += writeElementAnnotations(string, members.get(i), diff);
+      diff += writeElementAnnotations(builder, members.get(i), diff);
 
-    return string.append(super.toField()).toString();
+    return builder.append(super.toField()).toString();
   }
 }
