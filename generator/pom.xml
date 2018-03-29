@@ -42,6 +42,24 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <property>
+          <name>!maven.test.skip</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.libx4j.jsonx</groupId>
+          <artifactId>jsonx-runtime</artifactId>
+          <type>test-jar</type>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
   <dependencies>
     <dependency>
       <groupId>org.lib4j</groupId>
@@ -50,12 +68,6 @@
     <dependency>
       <groupId>org.libx4j.jsonx</groupId>
       <artifactId>jsonx-runtime</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.libx4j.jsonx</groupId>
-      <artifactId>jsonx-runtime</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.xmlunit</groupId>
