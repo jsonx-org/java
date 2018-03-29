@@ -22,28 +22,28 @@ import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Model extends Element {
   // Annullable, Recurrable
-  public Model(final $Element binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(binding, null, nullable, minOccurs, maxOccurs);
+  public Model(final Schema schema, final $Element binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(schema, binding, null, nullable, minOccurs, maxOccurs);
   }
 
   // Nameable, Annullable
-  public Model(final $Element binding, final String name, final boolean required, final boolean nullable) {
-    super(name, required, nullable, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Model(final Schema schema, final $Element binding, final String name, final boolean required, final boolean nullable) {
+    super(schema, name, required, nullable, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   // Nameable
-  public Model(final $Element binding, final String name) {
-    super(binding, name);
+  public Model(final Schema schema, final $Element binding, final String name) {
+    super(schema, binding, name);
   }
 
   // *Property
-  public Model(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    super(name, required, nullable, minOccurs, maxOccurs, doc);
+  public Model(final Schema schema, final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(schema, name, required, nullable, minOccurs, maxOccurs, doc);
   }
 
   // *Element
-  public Model(final String doc) {
-    super((String)null, doc);
+  public Model(final Schema schema, final String doc) {
+    super(schema, (String)null, doc);
   }
 
   public Model(final Element copy) {

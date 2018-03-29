@@ -35,26 +35,26 @@ import org.libx4j.xsb.runtime.Bindings;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Element extends Factor implements Annullable, Nameable, Recurrable, Requirable {
-  protected static Element toElement(final Registry registry, final ComplexModel declarer, final Field field, final Object object) {
+  protected static Element toElement(final Schema schema, final Registry registry, final ComplexModel declarer, final Field field, final Object object) {
     final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
     if (booleanProperty != null)
-      return BooleanModel.referenceOrDeclare(registry, declarer, booleanProperty, field);
+      return BooleanModel.referenceOrDeclare(schema, registry, declarer, booleanProperty, field);
 
     final NumberProperty numberProperty = field.getDeclaredAnnotation(NumberProperty.class);
     if (numberProperty != null)
-      return NumberModel.referenceOrDeclare(registry, declarer, numberProperty, field);
+      return NumberModel.referenceOrDeclare(schema, registry, declarer, numberProperty, field);
 
     final StringProperty stringProperty = field.getDeclaredAnnotation(StringProperty.class);
     if (stringProperty != null)
-      return StringModel.referenceOrDeclare(registry, declarer, stringProperty, field);
+      return StringModel.referenceOrDeclare(schema, registry, declarer, stringProperty, field);
 
     final ObjectProperty objectProperty = field.getDeclaredAnnotation(ObjectProperty.class);
     if (objectProperty != null)
-      return ObjectModel.referenceOrDeclare(registry, declarer, objectProperty, field);
+      return ObjectModel.referenceOrDeclare(schema, registry, declarer, objectProperty, field);
 
     final ArrayProperty arrayProperty = field.getDeclaredAnnotation(ArrayProperty.class);
     if (arrayProperty != null)
-      return ArrayModel.referenceOrDeclare(registry, declarer, arrayProperty, field);
+      return ArrayModel.referenceOrDeclare(schema, registry, declarer, arrayProperty, field);
 
     return null;
   }
@@ -108,6 +108,7 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
     return max;
   }
 
+  private final Schema schema;
   private final String name;
   private final Boolean required;
   private final Boolean nullable;
@@ -115,7 +116,8 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
   private final Integer maxOccurs;
   private final String doc;
 
-  public Element(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+  public Element(final Schema schema, final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    this.schema = schema;
     this.name = name;
     this.required = required;
     this.nullable = nullable;
@@ -125,35 +127,40 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
   }
 
   // Annullable, Recurrable
-  public Element(final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    this(name, null, nullable, minOccurs, maxOccurs, doc);
+  public Element(final Schema schema, final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    this(schema, name, null, nullable, minOccurs, maxOccurs, doc);
   }
 
-  public Element(final $Element binding, final String name, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs), binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Element(final Schema schema, final $Element binding, final String name, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    this(schema, name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs), binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   // Annullable, Nameable, Requirable
-  public Element(final String name, final boolean required, final boolean nullable, final String doc) {
-    this(name, required, nullable, null, null, doc);
+  public Element(final Schema schema, final String name, final boolean required, final boolean nullable, final String doc) {
+    this(schema, name, required, nullable, null, null, doc);
   }
 
   // Nameable
-  public Element(final String name, final String doc) {
-    this(name, null, null, null, null, doc);
+  public Element(final Schema schema, final String name, final String doc) {
+    this(schema, name, null, null, null, null, doc);
   }
 
-  public Element(final $Element binding, final String name) {
-    this(name, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Element(final Schema schema, final $Element binding, final String name) {
+    this(schema, name, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   public Element(final Element copy) {
+    this.schema = copy.schema;
     this.name = copy.name;
     this.required = copy.required;
     this.nullable = copy.nullable;
     this.minOccurs = copy.minOccurs;
     this.maxOccurs = copy.maxOccurs;
     this.doc = copy.doc;
+  }
+
+  public final Schema getSchema() {
+    return schema;
   }
 
   @Override
@@ -278,7 +285,7 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
     return builder.toString();
   }
 
-  protected abstract String className();
+  protected abstract Type className();
   protected abstract Class<? extends Annotation> propertyAnnotation();
   protected abstract Class<? extends Annotation> elementAnnotation();
   protected abstract Element normalize(final Registry registry);

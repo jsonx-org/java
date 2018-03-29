@@ -56,7 +56,7 @@ abstract class Factor {
     return clone;
   }
 
-  protected void collectClassNames(final List<String> classNames) {
+  protected void collectClassNames(final List<Type> types) {
   }
 
   protected abstract String toJSON(final String pacakgeName);

@@ -11,7 +11,7 @@
  * all copies or substantial portions of the Software.
  *
  * You should have received a copy of The MIT License (MIT) along with this
- * program. If not, see <http://opensource.org/licenses/MIT/>.
+// * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
 package org.libx4j.jsonx.generator;
@@ -36,49 +36,49 @@ class StringModel extends SimpleModel {
   private final boolean urlEncode;
   private final boolean urlDecode;
 
-  public static StringModel reference(final Registry registry, final ComplexModel referrer, final $Array.String binding) {
-    return new StringModel(binding);
+  public static StringModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Array.String binding) {
+    return new StringModel(schema, binding);
   }
 
   // Annullable, Recurrable
-  public StringModel(final $Array.String binding) {
-    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  public StringModel(final Schema schema, final $Array.String binding) {
+    super(schema, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  public static StringModel reference(final Registry registry, final ComplexModel referrer, final $Object.String binding) {
-    return new StringModel(binding);
+  public static StringModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Object.String binding) {
+    return new StringModel(schema, binding);
   }
 
   // Nameable, Annullable
-  public StringModel(final $Object.String binding) {
-    super(binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
+  public StringModel(final Schema schema, final $Object.String binding) {
+    super(schema, binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  public static StringModel declare(final Registry registry, final Jsonx.String binding) {
-    return registry.declare(binding).value(new StringModel(binding), null);
+  public static StringModel declare(final Schema schema, final Registry registry, final Jsonx.String binding) {
+    return registry.declare(binding).value(new StringModel(schema, binding), null);
   }
 
   // Nameable
-  public StringModel(final Jsonx.String binding) {
-    super(binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public StringModel(final Schema schema, final Jsonx.String binding) {
+    super(schema, binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.pattern = binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  public static StringModel referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringProperty stringProperty, final Field field) {
-    return new StringModel(stringProperty, field);
+  public static StringModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final StringProperty stringProperty, final Field field) {
+    return new StringModel(schema, stringProperty, field);
   }
 
-  public StringModel(final StringProperty stringProperty, final Field field) {
+  public StringModel(final Schema schema, final StringProperty stringProperty, final Field field) {
     // FIXME: Can we get doc comments from code?
-    super(getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null, null);
+    super(schema, getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null, null);
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(stringProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -87,13 +87,13 @@ class StringModel extends SimpleModel {
     this.urlDecode = stringProperty.urlDecode();
   }
 
-  public static StringModel referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringElement stringElement) {
-    return new StringModel(stringElement);
+  public static StringModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final StringElement stringElement) {
+    return new StringModel(schema, stringElement);
   }
 
-  public StringModel(final StringElement stringElement) {
+  public StringModel(final Schema schema, final StringElement stringElement) {
     // FIXME: Can we get doc comments from code?
-    super(null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs(), null);
+    super(schema, null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs(), null);
     this.pattern = parsePattern(stringElement.pattern());
     this.urlEncode = stringElement.urlEncode();
     this.urlDecode = stringElement.urlDecode();
@@ -119,8 +119,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final String className() {
-    return String.class.getName();
+  protected final Type className() {
+    return Type.get(String.class);
   }
 
   @Override
@@ -176,13 +176,13 @@ class StringModel extends SimpleModel {
   protected final String toAnnotation(final boolean full) {
     final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
     if (pattern != null)
-      builder.append(", pattern=\"").append(Strings.escapeForJava(pattern)).append('"');
+      builder.append((builder.length() > 0 ? ", " : "") + "pattern=\"").append(Strings.escapeForJava(pattern)).append('"');
 
     if (urlEncode)
-      builder.append(", urlEncode=").append(urlEncode);
+      builder.append((builder.length() > 0 ? ", " : "") + "urlEncode=").append(urlEncode);
 
     if (urlDecode)
-      builder.append(", urlDecode=").append(urlDecode);
+      builder.append((builder.length() > 0 ? ", " : "") + "urlDecode=").append(urlDecode);
 
     return builder.toString();
   }

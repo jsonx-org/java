@@ -37,7 +37,7 @@ public class ClassHolder {
     final StringBuilder builder = new StringBuilder();
     builder.append("class ").append(name);
     if (superName != null)
-      builder.append(" extends ").append(superName);
+      builder.append(" extends ").append(superName.replaceAll("([^\\\\])\\$", "$1."));
 
     builder.append(" {");
     for (final ClassHolder memberClass : memberClasses)

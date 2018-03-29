@@ -34,49 +34,49 @@ class NumberModel extends SimpleModel {
   private final BigDecimal min;
   private final BigDecimal max;
 
-  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
-    return new NumberModel(binding);
+  public static NumberModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
+    return new NumberModel(schema, binding);
   }
 
   // Annullable, Recurrable
-  public NumberModel(final $Array.Number binding) {
-    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  public NumberModel(final Schema schema, final $Array.Number binding) {
+    super(schema, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
-  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Object.Number binding) {
-    return new NumberModel(binding);
+  public static NumberModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Object.Number binding) {
+    return new NumberModel(schema, binding);
   }
 
   // Nameable, Annullable
-  public NumberModel(final $Object.Number binding) {
-    super(binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
+  public NumberModel(final Schema schema, final $Object.Number binding) {
+    super(schema, binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
-  public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
-    return registry.declare(binding).value(new NumberModel(binding), null);
+  public static NumberModel declare(final Schema schema, final Registry registry, final Jsonx.Number binding) {
+    return registry.declare(binding).value(new NumberModel(schema, binding), null);
   }
 
   // Nameable
-  public NumberModel(final Jsonx.Number binding) {
-    super(binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public NumberModel(final Schema schema, final Jsonx.Number binding) {
+    super(schema, binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
-  public static NumberModel referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty numberProperty, final Field field) {
-    return new NumberModel(numberProperty, field);
+  public static NumberModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final NumberProperty numberProperty, final Field field) {
+    return new NumberModel(schema, numberProperty, field);
   }
 
-  public NumberModel(final NumberProperty numberProperty, final Field field) {
+  public NumberModel(final Schema schema, final NumberProperty numberProperty, final Field field) {
     // FIXME: Can we get doc comments from code?
-    super(getName(numberProperty.name(), field), numberProperty.required(), numberProperty.nullable(), null, null, null);
+    super(schema, getName(numberProperty.name(), field), numberProperty.required(), numberProperty.nullable(), null, null, null);
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || numberProperty.nullable()))
       throw new IllegalAnnotationException(numberProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
@@ -85,13 +85,13 @@ class NumberModel extends SimpleModel {
     this.max = numberProperty.max().length() == 0 ? null : new BigDecimal(numberProperty.max());
   }
 
-  public static NumberModel referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement numberElement) {
-    return new NumberModel(numberElement);
+  public static NumberModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final NumberElement numberElement) {
+    return new NumberModel(schema, numberElement);
   }
 
-  public NumberModel(final NumberElement numberElement) {
+  public NumberModel(final Schema schema, final NumberElement numberElement) {
     // FIXME: Can we get doc comments from code?
-    super(null, null, numberElement.nullable(), numberElement.minOccurs(), numberElement.maxOccurs(), null);
+    super(schema, null, null, numberElement.nullable(), numberElement.minOccurs(), numberElement.maxOccurs(), null);
     this.form = numberElement.form();
     this.min = numberElement.min().length() == 0 ? null : new BigDecimal(numberElement.min());
     this.max = numberElement.max().length() == 0 ? null : new BigDecimal(numberElement.max());
@@ -117,8 +117,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected String className() {
-    return form == Form.INTEGER ? BigInteger.class.getName() : BigDecimal.class.getName();
+  protected Type className() {
+    return Type.get(form == Form.INTEGER ? BigInteger.class : BigDecimal.class);
   }
 
   @Override
@@ -178,13 +178,13 @@ class NumberModel extends SimpleModel {
   protected String toAnnotation(final boolean full) {
     final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
     if (form != Form.REAL)
-      builder.append(", form=").append(Form.class.getName()).append('.').append(form);
+      builder.append((builder.length() > 0 ? ", " : "") + "form=").append(Form.class.getName()).append('.').append(form);
 
     if (min != null)
-      builder.append(", min=\"").append(min).append('"');
+      builder.append((builder.length() > 0 ? ", " : "") + "min=\"").append(min).append('"');
 
     if (max != null)
-      builder.append(", max=\"").append(max).append('"');
+      builder.append((builder.length() > 0 ? ", " : "") + "max=\"").append(max).append('"');
 
     return builder.toString();
   }

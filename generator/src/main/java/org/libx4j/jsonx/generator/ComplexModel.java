@@ -18,22 +18,23 @@ package org.libx4j.jsonx.generator;
 
 import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
 import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$MaxCardinality;
+import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class ComplexModel extends Model {
   // Annullable, Recurrable
-  public ComplexModel(final $Element binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(binding, nullable, minOccurs, maxOccurs);
+  public ComplexModel(final Schema schema, final $Element binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(schema, binding, nullable, minOccurs, maxOccurs);
   }
 
   // Nameable, Annullable
-  public ComplexModel(final $Element binding, final String name, final boolean required, final boolean nullable) {
-    super(binding, name, required, nullable);
+  public ComplexModel(final Schema schema, final $Element binding, final String name, final boolean required, final boolean nullable) {
+    super(schema, binding, name, required, nullable);
   }
 
   // Nameable
-  public ComplexModel(final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    super(name, required, nullable, minOccurs, maxOccurs, doc);
+  public ComplexModel(final Schema schema, final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(schema, name, required, nullable, minOccurs, maxOccurs, doc);
   }
 
   protected ComplexModel(final Element copy) {

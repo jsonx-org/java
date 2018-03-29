@@ -31,9 +31,9 @@ import org.libx4j.xsb.runtime.ParseException;
 
 public class ConvTest {
   @Test
-//  @Ignore
+  @Ignore
   public void testFromClass() throws IOException {
-    final Jsonx jsonx = new Jsonx(Library.class, Book.class, OnlineArticle.class);
+    final Schema jsonx = new Schema(Library.class, Book.class, OnlineArticle.class);
     System.out.println(jsonx.toJSONX());
 //    final File target = new File("/Users/seva/Work/SevaSafris/java/libx4j/jjb/generator/target/generated-sources/jsonx");
 //    jsonx.toJava(target);

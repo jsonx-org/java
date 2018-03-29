@@ -33,12 +33,12 @@ import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
 
-public class Jsonx extends Factor {
+public class Schema extends Factor {
   private final Registry registry;
   private final xL2gluGCXYYJc.Jsonx jsonx;
   private final String packageName;
 
-  public Jsonx(final xL2gluGCXYYJc.Jsonx jsonx) {
+  public Schema(final xL2gluGCXYYJc.Jsonx jsonx) {
     this.jsonx = jsonx;
     this.packageName = (String)jsonx.getPackage$().text();
     final Iterator<? extends $Element> elements = Iterators.filter(jsonx.elementIterator(), $Element.class);
@@ -47,13 +47,13 @@ public class Jsonx extends Factor {
     while (elements.hasNext()) {
       final $Element element = elements.next();
       if (element instanceof xL2gluGCXYYJc.Jsonx.Boolean)
-        BooleanModel.declare(registry, (xL2gluGCXYYJc.Jsonx.Boolean)element);
+        BooleanModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.Boolean)element);
       else if (element instanceof xL2gluGCXYYJc.Jsonx.Number)
-        NumberModel.declare(registry, (xL2gluGCXYYJc.Jsonx.Number)element);
+        NumberModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.Number)element);
       else if (element instanceof xL2gluGCXYYJc.Jsonx.String)
-        StringModel.declare(registry, (xL2gluGCXYYJc.Jsonx.String)element);
+        StringModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.String)element);
       else if (element instanceof xL2gluGCXYYJc.Jsonx.Array)
-        ArrayModel.declare(registry, (xL2gluGCXYYJc.Jsonx.Array)element);
+        ArrayModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.Array)element);
       else if (element instanceof xL2gluGCXYYJc.Jsonx.Object) {
         final xL2gluGCXYYJc.Jsonx.Object object = (xL2gluGCXYYJc.Jsonx.Object)element;
         if (object.getExtends$() != null)
@@ -72,16 +72,16 @@ public class Jsonx extends Factor {
 
     final ListIterator<xL2gluGCXYYJc.Jsonx.Object> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious())
-      ObjectModel.declare(registry, topologicalOrder.previous());
+      ObjectModel.declare(this, registry, topologicalOrder.previous());
 
     this.registry = registry;
   }
 
-  public Jsonx(final Class<?> ... classes) {
+  public Schema(final Class<?> ... classes) {
     final Registry registry = new Registry();
     this.jsonx = null;
     for (final Class<?> clazz : classes)
-      ObjectModel.referenceOrDeclare(registry, null, clazz);
+      ObjectModel.referenceOrDeclare(this, registry, null, clazz);
 
     this.registry = registry.normalize();
 
@@ -102,10 +102,10 @@ public class Jsonx extends Factor {
   }
 
   @Override
-  protected final void collectClassNames(final List<String> classNames) {
+  protected final void collectClassNames(final List<Type> types) {
     if (members() != null)
       for (final Model member : members())
-        member.collectClassNames(classNames);
+        member.collectClassNames(types);
   }
 
   @Override
@@ -139,9 +139,9 @@ public class Jsonx extends Factor {
   }
 
   private final String getClassPrefix() {
-    final List<String> classNames = new LinkedList<String>();
-    collectClassNames(classNames);
-    final String classPrefix = Strings.getCommonPrefix(classNames);
+    final List<Type> types = new LinkedList<Type>();
+    collectClassNames(types);
+    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getName()).toArray(String[]::new));
     if (classPrefix == null)
       return null;
 
@@ -168,10 +168,10 @@ public class Jsonx extends Factor {
       if (member instanceof ObjectModel && (registry.getNumReferrers(member) <= 1 || ((ObjectModel)member).isAbstract())) {
         final ObjectModel objectModel = (ObjectModel)member;
         final String code = objectModel.toJava();
-        final ClassHolder classHolder = new ClassHolder(objectModel.classSimpleName(), objectModel.superObject() == null ? null : objectModel.superObject().className(), objectModel.toObjectAnnotation(), code);
+        final ClassHolder classHolder = new ClassHolder(objectModel.classSimpleName(), objectModel.superObject() == null ? null : objectModel.superObject().className().getName(), objectModel.toObjectAnnotation(), code);
         System.err.println(objectModel.className());
-        if (objectModel.className().contains("$")) {
-          final String name = objectModel.className().substring(0, objectModel.className().lastIndexOf('$'));
+        if (objectModel.className().getContainerType() != null) {
+          final String name = objectModel.className().getContainerType().getName();
           ClassHolder parent = map.get(name);
           if (parent == null)
             map.put(name, parent = new ClassHolder(name));
@@ -179,7 +179,7 @@ public class Jsonx extends Factor {
           parent.memberClasses.add(classHolder);
         }
         else
-          map.put(objectModel.className(), classHolder);
+          map.put(objectModel.className().getName(), classHolder);
       }
     }
 
