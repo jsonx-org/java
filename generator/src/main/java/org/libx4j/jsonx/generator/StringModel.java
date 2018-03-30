@@ -21,9 +21,9 @@ import java.lang.reflect.Field;
 
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.lang.Strings;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringProperty;
 

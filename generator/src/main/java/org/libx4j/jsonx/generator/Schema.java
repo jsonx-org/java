@@ -30,8 +30,8 @@ import java.util.Map;
 import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.Iterators;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
 
 public class Schema extends Factor {
   private final Registry registry;
@@ -122,7 +122,7 @@ public class Schema extends Factor {
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (pacakgeName == null ? "" : pacakgeName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.7.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.7.xsd /Users/seva/Work/SevaSafris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
+    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (pacakgeName == null ? "" : pacakgeName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/SevaSafris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
     if (this.registry.size() > 0) {
       builder.append('>');
       for (final Model member : members())

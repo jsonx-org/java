@@ -18,9 +18,9 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 
 class RefElement extends Element {
   private final Model ref;

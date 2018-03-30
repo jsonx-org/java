@@ -21,10 +21,10 @@ import java.lang.reflect.Field;
 import java.util.function.Function;
 
 import org.lib4j.util.JavaIdentifiers;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$MaxCardinality;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.BooleanProperty;
 import org.libx4j.jsonx.runtime.NumberProperty;

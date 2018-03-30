@@ -1,5 +1,5 @@
 <cli
-  xmlns="http://lib4j.org/cli-2.1.6.xsd"
+  xmlns="http://lib4j.org/cli-2.1.7.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://lib4j.org/cli-2.1.6.xsd http://lib4j.org/cli.xsd">
   <option>

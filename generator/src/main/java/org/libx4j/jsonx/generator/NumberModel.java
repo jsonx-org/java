@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.lib4j.lang.IllegalAnnotationException;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.Form;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;

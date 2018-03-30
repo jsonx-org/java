@@ -27,10 +27,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.lib4j.util.Iterators;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.JsonxObject;
 import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.ObjectProperty;

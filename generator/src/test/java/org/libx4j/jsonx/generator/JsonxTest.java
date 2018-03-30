@@ -37,7 +37,7 @@ import org.lib4j.xml.SimpleNamespaceContext;
 import org.lib4j.xml.dom.DOMStyle;
 import org.lib4j.xml.dom.DOMs;
 import org.lib4j.xml.validate.ValidationException;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
 import org.libx4j.xsb.runtime.ParseException;
@@ -77,7 +77,7 @@ public class JsonxTest {
   private static final Map<String,String> prefixToNamespaceURI = new HashMap<String,String>();
 
   static {
-    prefixToNamespaceURI.put("jsonx", "http://rdb.libx4j.org/jsonx-0.9.7.xsd");
+    prefixToNamespaceURI.put("jsonx", "http://rdb.libx4j.org/jsonx-0.9.8.xsd");
     prefixToNamespaceURI.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
   }
 

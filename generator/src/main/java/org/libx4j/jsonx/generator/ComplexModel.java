@@ -16,9 +16,9 @@
 
 package org.libx4j.jsonx.generator;
 
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Element;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$MaxCardinality;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class ComplexModel extends Model {

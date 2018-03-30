@@ -21,9 +21,9 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Number;
-import org.libx4j.jsonx.jsonx_0_9_7.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 
 public class ArrayModelTest {
   @Test
