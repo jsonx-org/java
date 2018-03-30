@@ -22,11 +22,11 @@
   <parent>
     <groupId>org.libx4j</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8-SNAPSHOT</version>
   </parent>
   <groupId>org.libx4j.jsonx</groupId>
   <artifactId>jsonx-runtime</artifactId>
-  <version>0.9.7</version>
+  <version>0.9.8-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <dependencies>
     <dependency>
