@@ -3,5 +3,6 @@
 .recommenders/
 .settings/
 target/
+*.iml
 .classpath
 .project

@@ -31,7 +31,7 @@ public class TypeTest {
 
   @Test
   public void testName() {
-    final Type type = Type.get(TypeTest.class.getPackageName(), TypeTest.class.getSimpleName());
+    final Type type = Type.get(TypeTest.class.getPackage().getName(), TypeTest.class.getSimpleName());
     Assert.assertEquals(TypeTest.class.getName(), type.getName());
     Assert.assertEquals(Object.class.getName(), type.getSuperType().getName());
     Assert.assertNull(type.getSuperType().getSuperType());

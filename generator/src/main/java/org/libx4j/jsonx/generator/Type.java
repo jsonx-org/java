@@ -44,7 +44,7 @@ public class Type {
   }
 
   public static Type get(final String packageName, final String simpleName, final Class<?> superType) {
-    return get(packageName, simpleName, superType.getPackageName(), superType.getSimpleName());
+    return get(packageName, simpleName, superType.getPackage().getName(), superType.getSimpleName());
   }
 
   public static Type get(final Class<?> clazz) {
@@ -94,7 +94,7 @@ public class Type {
   }
 
   private Type(final Class<?> clazz) {
-    this(clazz.getPackageName(), clazz.getSimpleName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? OBJECT : new Type(clazz.getSuperclass()));
+    this(clazz.getPackage().getName(), clazz.getSimpleName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? OBJECT : new Type(clazz.getSuperclass()));
   }
 
   public String getName() {
