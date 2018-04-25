@@ -103,7 +103,7 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
   <plugin>
     <groupId>org.libx4j.maven.plugin</groupId>
     <artifactId>jsonx-maven-plugin</artifactId>
-    <version>0.9.7-SNAPSHOT</version>
+    <version>0.9.8-SNAPSHOT</version>
     <executions>
       <execution>
         <goals>
@@ -126,7 +126,7 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
   <dependency>
     <groupId>org.libx4j.jsonx</groupId>
     <artifactId>jsonx-generator</artifactId>
-    <version>0.9.7-SNAPSHOT</version>
+    <version>0.9.8-SNAPSHOT</version>
   </dependency>
   ```
 
