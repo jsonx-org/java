@@ -23,12 +23,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-abstract class Factor {
+abstract class Member {
   @SuppressWarnings("unchecked")
   protected static <T extends Element>List<T> normalize(final Registry registry, final List<T> members) {
     final List<T> clone = new ArrayList<T>(members);
-    final ListIterator<T> iterator = clone.listIterator();
-    while (iterator.hasNext()) {
+    for (final ListIterator<T> iterator = clone.listIterator(); iterator.hasNext();) {
       final Element entry = iterator.next();
       final Element normalized = entry.normalize(registry);
       if (normalized != entry)
@@ -43,8 +42,7 @@ abstract class Factor {
   @SuppressWarnings("unchecked")
   protected static <T extends Element>Map<String,T> normalize(final Registry registry, final Map<String,T> members) {
     final Map<String,T> clone = new LinkedHashMap<String,T>(members);
-    final Iterator<? extends Map.Entry<String,T>> iterator = clone.entrySet().iterator();
-    while (iterator.hasNext()) {
+    for (final Iterator<? extends Map.Entry<String,T>> iterator = clone.entrySet().iterator(); iterator.hasNext();) {
       final Map.Entry<String,T> entry = iterator.next();
       final Element normalized = entry.getValue().normalize(registry);
       if (normalized != entry)
@@ -58,6 +56,8 @@ abstract class Factor {
 
   protected void collectClassNames(final List<Type> types) {
   }
+
+  protected abstract Schema getSchema();
 
   protected abstract String toJSON(final String pacakgeName);
   protected abstract String toJSONX(final String pacakgeName);

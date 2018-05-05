@@ -21,57 +21,54 @@ import java.lang.reflect.Field;
 
 import org.lib4j.lang.IllegalAnnotationException;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.BooleanElement;
 import org.libx4j.jsonx.runtime.BooleanProperty;
 
 class BooleanModel extends SimpleModel {
-  public static BooleanModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Array.Boolean binding) {
-    return new BooleanModel(schema, binding);
-  }
-
-  // Annullable, Recurrable
-  private BooleanModel(final Schema schema, final $Array.Boolean binding) {
-    super(schema, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-  }
-
-  public static BooleanModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Object.Boolean binding) {
-    return new BooleanModel(schema, binding);
-  }
-
-  // Nameable, Annullable
-  private BooleanModel(final Schema schema, final $Object.Boolean binding) {
-    super(schema, binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
-  }
-
   public static BooleanModel declare(final Schema schema, final Registry registry, final Jsonx.Boolean binding) {
     return registry.declare(binding).value(new BooleanModel(schema, binding), null);
   }
 
-  // Nameable
+  public static BooleanModel referenceOrDeclare(final Member owner, final BooleanProperty booleanProperty, final Field field) {
+    return new BooleanModel(owner, booleanProperty, field);
+  }
+
+  public static BooleanModel referenceOrDeclare(final Member owner, final BooleanElement booleanElement) {
+    return new BooleanModel(owner, booleanElement);
+  }
+
+  public static BooleanModel reference(final Member owner, final $Array.Boolean binding) {
+    return new BooleanModel(owner, binding);
+  }
+
+  public static BooleanModel reference(final Member owner, final $Boolean binding) {
+    return new BooleanModel(owner, binding);
+  }
+
   private BooleanModel(final Schema schema, final Jsonx.Boolean binding) {
-    super(schema, binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+    super(schema, binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
-  public static BooleanModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final BooleanProperty booleanProperty, final Field field) {
-    return new BooleanModel(schema, booleanProperty, field);
+  private BooleanModel(final Member owner, final $Boolean binding) {
+    super(owner, binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
   }
 
-  private BooleanModel(final Schema schema, final BooleanProperty booleanProperty, final Field field) {
+  private BooleanModel(final Member owner, final $Array.Boolean binding) {
+    super(owner, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  }
+
+  private BooleanModel(final Member owner, final BooleanProperty booleanProperty, final Field field) {
     // FIXME: Can we get doc comments from code?
-    super(schema, getName(booleanProperty.name(), field), booleanProperty.required(), booleanProperty.nullable(), null, null, null);
+    super(owner, getName(booleanProperty.name(), field), booleanProperty.required(), booleanProperty.nullable(), null, null, null);
     if (field.getType() != Boolean.class && (field.getType() != boolean.class || booleanProperty.nullable()))
       throw new IllegalAnnotationException(booleanProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
   }
 
-  public static BooleanModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final BooleanElement booleanElement) {
-    return new BooleanModel(schema, booleanElement);
-  }
-
-  private BooleanModel(final Schema schema, final BooleanElement booleanElement) {
+  private BooleanModel(final Member owner, final BooleanElement booleanElement) {
     // FIXME: Can we get doc comments from code?
-    super(schema, null, null, booleanElement.nullable(), booleanElement.minOccurs(), booleanElement.maxOccurs(), null);
+    super(owner, null, null, booleanElement.nullable(), booleanElement.minOccurs(), booleanElement.maxOccurs(), null);
   }
 
   private BooleanModel(final Element element) {
@@ -79,7 +76,7 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected Type className() {
+  protected Type type() {
     return Type.get(Boolean.class);
   }
 
@@ -94,8 +91,8 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected BooleanModel merge(final RefElement propertyElement) {
-    return new BooleanModel(propertyElement);
+  protected BooleanModel merge(final Reference reference) {
+    return new BooleanModel(reference);
   }
 
   @Override
@@ -110,6 +107,6 @@ class BooleanModel extends SimpleModel {
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    return new StringBuilder("<boolean").append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"boolean\"" : "<boolean").append(super.toJSONX(pacakgeName)).append("/>").toString();
   }
 }

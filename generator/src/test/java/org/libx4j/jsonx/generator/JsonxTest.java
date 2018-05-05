@@ -30,7 +30,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.lib4j.lang.Strings;
 import org.lib4j.xml.SimpleNamespaceContext;
@@ -57,14 +56,15 @@ public class JsonxTest {
   private static final Logger logger = LoggerFactory.getLogger(JsonxTest.class);
 
   private static xL2gluGCXYYJc.Jsonx newControlBinding() throws IOException, MalformedURLException, ParseException, ValidationException {
-    return (xL2gluGCXYYJc.Jsonx)Bindings.parse(new File("../../maven/plugin/jsonx-maven-plugin/src/test/resources/type.jsonx").toURI().toURL());
+    return (xL2gluGCXYYJc.Jsonx)Bindings.parse(Thread.currentThread().getContextClassLoader().getResourceAsStream("test1.jsonx"));
   }
 
   @Test
-  @Ignore
   public void testToJsonx() throws IOException, MalformedURLException, ParseException, ValidationException, XPathExpressionException {
     final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding();
-    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(new ByteArrayInputStream(new Schema(controlBinding).toJSONX().getBytes()));
+    final String jsonx = new Schema(controlBinding).toJSONX();
+    logger.debug(jsonx);
+    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(new ByteArrayInputStream(jsonx.getBytes()));
     assertEqual(controlBinding, testBinding);
   }
 
@@ -104,7 +104,6 @@ public class JsonxTest {
 
     final String controlXml = DOMs.domToString(controlElement, DOMStyle.INDENT);
     final String testXml = DOMs.domToString(testElement, DOMStyle.INDENT);
-    System.out.println(testXml);
 
     final Source controlSource = Input.fromString(controlXml).build();
     final Source testSource = Input.fromString(testXml).build();

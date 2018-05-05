@@ -16,31 +16,50 @@
 
 package org.libx4j.jsonx.generator;
 
+import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 
 public class ArrayModelTest {
+  private static class Number extends $Number {
+    private static final long serialVersionUID = 763116191728279846L;
+
+    public Number() {
+    }
+
+    @SuppressWarnings("unused")
+    public Number(final $Member inherits) {
+      super(inherits);
+    }
+
+    @Override
+    protected $Member inherits() {
+      return this;
+    }
+  }
+
   @Test
-  @Ignore
   public void testGreatestCommonSuperObject() {
-    xL2gluGCXYYJc.Jsonx jsonx = new xL2gluGCXYYJc.Jsonx();
+    final xL2gluGCXYYJc.Jsonx jsonx = new xL2gluGCXYYJc.Jsonx();
     jsonx.setPackage$(new xL2gluGCXYYJc.Jsonx.Package$("org.libx4j.jsonx.generator"));
     final Schema schema = new Schema(jsonx);
-    final $Object.Number integer1 = new $Object.Number();
-    integer1.setName$(new $Object.Number.Name$("integer1"));
-    integer1.setForm$(new $Number.Form$($Number.Form$.integer));
-    final NumberModel number1 = new NumberModel(schema, integer1);
 
-    final $Object.Number integer2 = new $Object.Number();
-    integer2.setName$(new $Object.Number.Name$("integer2"));
-    integer2.setForm$(new $Number.Form$($Number.Form$.integer));
-    final NumberModel number2 = new NumberModel(schema, integer2);
-    Assert.assertEquals(Arrays.asList(Integer.class), ArrayModel.getGreatestCommonSuperObject(Arrays.asList(new Element[] {number1, number2})));
+    final $Number number1 = new Number();
+    number1.setName$(new $Number.Name$("integer1"));
+    number1.setForm$(new $Number.Form$($Number.Form$.integer));
+    final NumberModel model1 = NumberModel.reference(schema, number1);
+
+    final $Number number2 = new Number();
+    number2.setName$(new $Number.Name$("integer2"));
+    number2.setForm$(new $Number.Form$($Number.Form$.integer));
+    final NumberModel model2 = NumberModel.reference(schema, number2);
+
+    Assert.assertEquals(Type.get(List.class, BigInteger.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(new Element[] {model1, model2})));
   }
 }

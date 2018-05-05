@@ -19,10 +19,10 @@ package org.libx4j.jsonx.generator;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -30,47 +30,47 @@ import java.util.Map;
 import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.Iterators;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 
-public class Schema extends Factor {
+public class Schema extends Member {
   private final Registry registry;
-  private final xL2gluGCXYYJc.Jsonx jsonx;
+  private final Jsonx jsonx;
   private final String packageName;
 
-  public Schema(final xL2gluGCXYYJc.Jsonx jsonx) {
+  public Schema(final Jsonx jsonx) {
     this.jsonx = jsonx;
     this.packageName = (String)jsonx.getPackage$().text();
-    final Iterator<? extends $Element> elements = Iterators.filter(jsonx.elementIterator(), $Element.class);
-    final StrictRefDigraph<xL2gluGCXYYJc.Jsonx.Object,String> digraph = new StrictRefDigraph<xL2gluGCXYYJc.Jsonx.Object,String>("Object cannot inherit from itself", obj -> obj.getClass$().text());
+    final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
+    final StrictRefDigraph<Jsonx.Object,String> digraph = new StrictRefDigraph<Jsonx.Object,String>("Object cannot inherit from itself", obj -> obj.getClass$().text());
     final Registry registry = new Registry();
-    while (elements.hasNext()) {
-      final $Element element = elements.next();
-      if (element instanceof xL2gluGCXYYJc.Jsonx.Boolean)
-        BooleanModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.Boolean)element);
-      else if (element instanceof xL2gluGCXYYJc.Jsonx.Number)
-        NumberModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.Number)element);
-      else if (element instanceof xL2gluGCXYYJc.Jsonx.String)
-        StringModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.String)element);
-      else if (element instanceof xL2gluGCXYYJc.Jsonx.Array)
-        ArrayModel.declare(this, registry, (xL2gluGCXYYJc.Jsonx.Array)element);
-      else if (element instanceof xL2gluGCXYYJc.Jsonx.Object) {
-        final xL2gluGCXYYJc.Jsonx.Object object = (xL2gluGCXYYJc.Jsonx.Object)element;
+    while (iterator.hasNext()) {
+      final $Member member = ($Member)iterator.next();
+      if (member instanceof Jsonx.Boolean)
+        BooleanModel.declare(this, registry, (Jsonx.Boolean)member);
+      else if (member instanceof Jsonx.Number)
+        NumberModel.declare(this, registry, (Jsonx.Number)member);
+      else if (member instanceof Jsonx.String)
+        StringModel.declare(this, registry, (Jsonx.String)member);
+      else if (member instanceof Jsonx.Array)
+        ArrayModel.declare(this, registry, (Jsonx.Array)member);
+      else if (member instanceof Jsonx.Object) {
+        final Jsonx.Object object = (Jsonx.Object)member;
         if (object.getExtends$() != null)
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
           digraph.addVertex(object);
       }
       else {
-        throw new UnsupportedOperationException("Unsupported " + jsonx.getClass().getSimpleName() + " member type: " + element.getClass().getName());
+        throw new UnsupportedOperationException("Unsupported " + jsonx.getClass().getSimpleName() + " member type: " + member.getClass().getName());
       }
     }
 
-    final List<xL2gluGCXYYJc.Jsonx.Object> cycle = digraph.getCycle();
+    final List<Jsonx.Object> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Inheritance cycle detected in object hierarchy: " + Collections.toString(digraph.getCycle(), " -> "));
 
-    final ListIterator<xL2gluGCXYYJc.Jsonx.Object> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
+    final ListIterator<Jsonx.Object> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious())
       ObjectModel.declare(this, registry, topologicalOrder.previous());
 
@@ -81,15 +81,13 @@ public class Schema extends Factor {
     final Registry registry = new Registry();
     this.jsonx = null;
     for (final Class<?> clazz : classes)
-      ObjectModel.referenceOrDeclare(this, registry, null, clazz);
+      ObjectModel.referenceOrDeclare(registry, this, clazz);
 
     this.registry = registry.normalize();
-
-    final String classPrefix = getClassPrefix();
-    this.packageName = classPrefix == null ? null : classPrefix.substring(0, classPrefix.length() - 1);
+    this.packageName = getClassPrefix();
   }
 
-  public final xL2gluGCXYYJc.Jsonx jsonx() {
+  public final Jsonx jsonx() {
     return this.jsonx;
   }
 
@@ -114,7 +112,7 @@ public class Schema extends Factor {
     builder.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
     for (final Model member : members())
       if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        builder.append(",\n  \"").append(member.ref()).append("\": ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
+        builder.append(",\n  \"").append(member.reference()).append("\": ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
 
     builder.append("\n}");
     return builder.toString();
@@ -126,7 +124,7 @@ public class Schema extends Factor {
     if (this.registry.size() > 0) {
       builder.append('>');
       for (final Model member : members())
-        if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
+        if (!(member instanceof ObjectModel) || member.owner() instanceof Schema)
           builder.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
 
       builder.append("\n</jsonx>");
@@ -138,10 +136,10 @@ public class Schema extends Factor {
     return builder.toString();
   }
 
-  private final String getClassPrefix() {
-    final List<Type> types = new LinkedList<Type>();
+  private String getClassPrefix() {
+    final List<Type> types = new ArrayList<Type>();
     collectClassNames(types);
-    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getName()).toArray(String[]::new));
+    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.toString()).toArray(String[]::new));
     if (classPrefix == null)
       return null;
 
@@ -150,6 +148,11 @@ public class Schema extends Factor {
       return null;
 
     return classPrefix.substring(0, index + 1);
+  }
+
+  @Override
+  protected Schema getSchema() {
+    return this;
   }
 
   @Override
@@ -162,31 +165,52 @@ public class Schema extends Factor {
     return toJSONX(packageName);
   }
 
+  private ClassHolder x(final ClassHolder classHolder, final Map<Type,ClassHolder> typeToClassHolder, final Type type) {
+    ClassHolder parent = typeToClassHolder.get(type);
+    if (parent == null) {
+      if (type.getDeclaringType() != null)
+        parent = x(parent, typeToClassHolder, type.getDeclaringType());
+      else
+        typeToClassHolder.put(type, parent = new ClassHolder(type));
+    }
+
+    parent.memberClasses.add(classHolder);
+    return parent;
+  }
+
   public void toJava(final File dir) throws IOException {
-    final Map<String,ClassHolder> map = new HashMap<String,ClassHolder>();
+    final Map<Type,ClassHolder> all = new HashMap<Type,ClassHolder>();
+    final Map<Type,ClassHolder> typeToClassHolder = new HashMap<Type,ClassHolder>();
     for (final Model member : members()) {
-      if (member instanceof ObjectModel && (registry.getNumReferrers(member) <= 1 || ((ObjectModel)member).isAbstract())) {
-        final ObjectModel objectModel = (ObjectModel)member;
-        final String code = objectModel.toJava();
-        final ClassHolder classHolder = new ClassHolder(objectModel.classSimpleName(), objectModel.superObject() == null ? null : objectModel.superObject().className().getName(), objectModel.toObjectAnnotation(), code);
-        System.err.println(objectModel.className());
-        if (objectModel.className().getContainerType() != null) {
-          final String name = objectModel.className().getContainerType().getName();
-          ClassHolder parent = map.get(name);
-          if (parent == null)
-            map.put(name, parent = new ClassHolder(name));
+      if (member instanceof ObjectModel) {
+        final ObjectModel model = (ObjectModel)member;
+        if ("objectExtendsAbstract".equals(model.name())) {
+          int i = 0;
+        }
+        final ClassHolder classHolder = new ClassHolder(model.type(), model.toObjectAnnotation(), model.toJava());
+        if (model.type().getDeclaringType() != null) {
+          final Type declaringType = model.type().getDeclaringType();
+          ClassHolder parent = all.get(declaringType);
+          if (parent == null) {
+            parent = new ClassHolder(declaringType);
+            typeToClassHolder.put(declaringType, parent);
+            all.put(declaringType, parent);
+          }
 
           parent.memberClasses.add(classHolder);
         }
-        else
-          map.put(objectModel.className().getName(), classHolder);
+        else {
+          typeToClassHolder.put(model.type(), classHolder);
+        }
+
+        all.put(model.type(), classHolder);
       }
     }
 
-    for (final Map.Entry<String,ClassHolder> entry : map.entrySet()) {
-      final String className = entry.getKey();
+    for (final Map.Entry<Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
+      final Type type = entry.getKey();
       final ClassHolder holder = entry.getValue();
-      final File file = new File(new File(dir, packageName.replace('.', '/')), className.replace('.', '/') + ".java");
+      final File file = new File(dir, type.getName().replace('.', '/') + ".java");
       file.getParentFile().mkdirs();
       try (final FileOutputStream out = new FileOutputStream(file)) {
         final String string = holder.getAnnotation() + "\npublic " + holder.toString();

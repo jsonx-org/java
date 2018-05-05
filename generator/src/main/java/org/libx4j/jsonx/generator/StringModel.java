@@ -22,12 +22,32 @@ import java.lang.reflect.Field;
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.lang.Strings;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringProperty;
 
 class StringModel extends SimpleModel {
+  public static StringModel declare(final Schema schema, final Registry registry, final Jsonx.String binding) {
+    return registry.declare(binding).value(new StringModel(schema, binding), null);
+  }
+
+  public static StringModel referenceOrDeclare(final Member owner, final StringProperty stringProperty, final Field field) {
+    return new StringModel(owner, stringProperty, field);
+  }
+
+  public static StringModel referenceOrDeclare(final Member owner, final StringElement stringElement) {
+    return new StringModel(owner, stringElement);
+  }
+
+  public static StringModel reference(final Member owner, final $Array.String binding) {
+    return new StringModel(owner, binding);
+  }
+
+  public static StringModel reference(final Member owner, final $String binding) {
+    return new StringModel(owner, binding);
+  }
+
   private static String parsePattern(final String pattern) {
     return pattern.length() == 0 ? null : pattern;
   }
@@ -36,49 +56,30 @@ class StringModel extends SimpleModel {
   private final boolean urlEncode;
   private final boolean urlDecode;
 
-  public static StringModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Array.String binding) {
-    return new StringModel(schema, binding);
-  }
-
-  // Annullable, Recurrable
-  public StringModel(final Schema schema, final $Array.String binding) {
-    super(schema, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.urlEncode = binding.getUrlEncode$().text();
-    this.urlDecode = binding.getUrlDecode$().text();
-  }
-
-  public static StringModel reference(final Schema schema, final Registry registry, final ComplexModel referrer, final $Object.String binding) {
-    return new StringModel(schema, binding);
-  }
-
-  // Nameable, Annullable
-  public StringModel(final Schema schema, final $Object.String binding) {
-    super(schema, binding, binding.getName$().text(), binding.getRequired$().text(), binding.getNullable$().text());
-    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.urlEncode = binding.getUrlEncode$().text();
-    this.urlDecode = binding.getUrlDecode$().text();
-  }
-
-  public static StringModel declare(final Schema schema, final Registry registry, final Jsonx.String binding) {
-    return registry.declare(binding).value(new StringModel(schema, binding), null);
-  }
-
-  // Nameable
-  public StringModel(final Schema schema, final Jsonx.String binding) {
-    super(schema, binding.getName$().text(), null, null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  private StringModel(final Schema schema, final Jsonx.String binding) {
+    super(schema, binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.pattern = binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  public static StringModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final StringProperty stringProperty, final Field field) {
-    return new StringModel(schema, stringProperty, field);
+  private StringModel(final Member owner, final $String binding) {
+    super(owner, binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
+    this.urlEncode = binding.getUrlEncode$().text();
+    this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  public StringModel(final Schema schema, final StringProperty stringProperty, final Field field) {
+  private StringModel(final Member owner, final $Array.String binding) {
+    super(owner, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
+    this.urlEncode = binding.getUrlEncode$().text();
+    this.urlDecode = binding.getUrlDecode$().text();
+  }
+
+  private StringModel(final Member owner, final StringProperty stringProperty, final Field field) {
     // FIXME: Can we get doc comments from code?
-    super(schema, getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null, null);
+    super(owner, getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null, null);
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(stringProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -87,13 +88,9 @@ class StringModel extends SimpleModel {
     this.urlDecode = stringProperty.urlDecode();
   }
 
-  public static StringModel referenceOrDeclare(final Schema schema, final Registry registry, final ComplexModel referrer, final StringElement stringElement) {
-    return new StringModel(schema, stringElement);
-  }
-
-  public StringModel(final Schema schema, final StringElement stringElement) {
+  private StringModel(final Member owner, final StringElement stringElement) {
     // FIXME: Can we get doc comments from code?
-    super(schema, null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs(), null);
+    super(owner, null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs(), null);
     this.pattern = parsePattern(stringElement.pattern());
     this.urlEncode = stringElement.urlEncode();
     this.urlDecode = stringElement.urlDecode();
@@ -119,7 +116,7 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final Type className() {
+  protected final Type type() {
     return Type.get(String.class);
   }
 
@@ -134,8 +131,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected StringModel merge(final RefElement propertyElement) {
-    return new StringModel(propertyElement, this);
+  protected StringModel merge(final Reference reference) {
+    return new StringModel(reference, this);
   }
 
   @Override
@@ -159,7 +156,7 @@ class StringModel extends SimpleModel {
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder("<string");
+    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"string\"" : "<string");
     if (pattern != null)
       builder.append(" pattern=\"").append(pattern).append('"');
 

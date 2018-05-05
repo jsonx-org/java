@@ -16,13 +16,14 @@
 
 package org.libx4j.jsonx.generator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 
 class Registry {
@@ -44,7 +45,7 @@ class Registry {
   }
 
   private static String getKey(final Model model) {
-    final String key = model.ref();
+    final String key = model.reference();
     if (key == null)
       throw new NullPointerException("key == null");
 
@@ -54,14 +55,13 @@ class Registry {
   private final LinkedHashMap<String,Model> refToModel;
   private final LinkedHashMap<String,List<ComplexModel>> references;
 
-  public Registry() {
-    refToModel = new LinkedHashMap<String,Model>();
-    references = new LinkedHashMap<String,List<ComplexModel>>();
-  }
-
   private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<ComplexModel>> references) {
     this.refToModel = refToModel;
     this.references = references;
+  }
+
+  public Registry() {
+    this(new LinkedHashMap<String,Model>(), new LinkedHashMap<String,List<ComplexModel>>());
   }
 
   public Value declare(final Class<?> clazz) {
@@ -69,23 +69,27 @@ class Registry {
   }
 
   public Value declare(final Jsonx.Boolean binding) {
-    return new Value(binding.getName$().text());
+    return new Value(binding.getTemplate$().text());
   }
 
   public Value declare(final Jsonx.Number binding) {
-    return new Value(binding.getName$().text());
+    return new Value(binding.getTemplate$().text());
   }
 
   public Value declare(final Jsonx.String binding) {
-    return new Value(binding.getName$().text());
+    return new Value(binding.getTemplate$().text());
   }
 
   public Value declare(final Jsonx.Array binding) {
-    return new Value(binding.getName$().text());
+    return new Value(binding.getTemplate$().text());
   }
 
   public Value declare(final Jsonx.Object binding) {
     return new Value(binding.getClass$().text());
+  }
+
+  public Value declare(final $Object binding) {
+    return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 
   public <T extends Model>T reference(final T model, final ComplexModel referrer) {
@@ -95,7 +99,7 @@ class Registry {
     final String key = getKey(model);
     List<ComplexModel> referrers = references.get(key);
     if (referrers == null)
-      references.put(key, referrers = new LinkedList<ComplexModel>());
+      references.put(key, referrers = new ArrayList<ComplexModel>());
 
     referrers.add(referrer);
     return model;
@@ -114,17 +118,17 @@ class Registry {
   }
 
   public int getNumReferrers(final Model model) {
-    final List<ComplexModel> referrers = references.get(model.ref());
+    final List<ComplexModel> referrers = references.get(model.reference());
     return referrers == null ? 0 : referrers.size();
   }
 
-  protected Registry normalize() {
-    final LinkedHashMap<String,Model> clone = new LinkedHashMap<String,Model>(refToModel);
-    final Iterator<? extends Map.Entry<String,Model>> iterator = clone.entrySet().iterator();
-    while (iterator.hasNext()) {
+  @SuppressWarnings("unchecked")
+  public Registry normalize() {
+    final LinkedHashMap<String,Model> clone = (LinkedHashMap<String,Model>)refToModel.clone();
+    for (final Iterator<? extends Map.Entry<String,Model>> iterator = clone.entrySet().iterator(); iterator.hasNext();) {
       final Map.Entry<String,Model> entry = iterator.next();
-      final Factor normalized = entry.getValue().normalize(this);
-      entry.setValue(normalized instanceof RefElement ? ((RefElement)normalized).ref() : (Model)normalized);
+      final Member normalized = entry.getValue().normalize(this);
+      entry.setValue(normalized instanceof Reference ? ((Reference)normalized).template() : (Model)normalized);
     }
 
     return new Registry(clone, references);

@@ -21,9 +21,14 @@ import java.lang.reflect.Field;
 import java.util.function.Function;
 
 import org.lib4j.util.JavaIdentifiers;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.BooleanProperty;
@@ -34,27 +39,33 @@ import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
-abstract class Element extends Factor implements Annullable, Nameable, Recurrable, Requirable {
-  protected static Element toElement(final Schema schema, final Registry registry, final ComplexModel declarer, final Field field, final Object object) {
+abstract class Element extends Member implements Annullable, Nameable, Recurrable, Requirable {
+  static enum Kind {
+    TEMPLATE,
+    PROPERTY,
+    MEMBER
+  }
+
+  protected static Element toElement(final Registry registry, final ComplexModel declarer, final Field field, final Object object) {
     final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
     if (booleanProperty != null)
-      return BooleanModel.referenceOrDeclare(schema, registry, declarer, booleanProperty, field);
+      return BooleanModel.referenceOrDeclare(declarer, booleanProperty, field);
 
     final NumberProperty numberProperty = field.getDeclaredAnnotation(NumberProperty.class);
     if (numberProperty != null)
-      return NumberModel.referenceOrDeclare(schema, registry, declarer, numberProperty, field);
+      return NumberModel.referenceOrDeclare(declarer, numberProperty, field);
 
     final StringProperty stringProperty = field.getDeclaredAnnotation(StringProperty.class);
     if (stringProperty != null)
-      return StringModel.referenceOrDeclare(schema, registry, declarer, stringProperty, field);
+      return StringModel.referenceOrDeclare(declarer, stringProperty, field);
 
     final ObjectProperty objectProperty = field.getDeclaredAnnotation(ObjectProperty.class);
     if (objectProperty != null)
-      return ObjectModel.referenceOrDeclare(schema, registry, declarer, objectProperty, field);
+      return ObjectModel.referenceOrDeclare(registry, declarer, objectProperty, field);
 
     final ArrayProperty arrayProperty = field.getDeclaredAnnotation(ArrayProperty.class);
     if (arrayProperty != null)
-      return ArrayModel.referenceOrDeclare(schema, registry, declarer, arrayProperty, field);
+      return ArrayModel.referenceOrDeclare(declarer, registry, arrayProperty, field);
 
     return null;
   }
@@ -71,32 +82,32 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
     @Override
     public String apply(final Binding t) {
       final String name;
-      if (t instanceof Jsonx.Boolean)
-        name = ((Jsonx.Boolean)t).getName$().text();
-      else if (t instanceof Jsonx.Number)
-        name = ((Jsonx.Number)t).getName$().text();
-      else if (t instanceof Jsonx.String)
-        name = ((Jsonx.String)t).getName$().text();
-      else if (t instanceof Jsonx.Array)
-        name = ((Jsonx.Array)t).getName$().text();
+      if (t instanceof $Boolean)
+        name = (($Boolean)t).getName$().text();
+      else if (t instanceof $Number)
+        name = (($Number)t).getName$().text();
+      else if (t instanceof $String)
+        name = (($String)t).getName$().text();
+      else if (t instanceof $Array)
+        name = (($Array)t).getName$().text();
       else if (t instanceof Jsonx.Object)
         name = ((Jsonx.Object)t).getClass$().text();
-      else if (t instanceof $Object.Boolean)
-        name = (($Object.Boolean)t).getName$().text();
-      else if (t instanceof $Object.Number)
-        name = (($Object.Number)t).getName$().text();
-      else if (t instanceof $Object.String)
-        name = (($Object.String)t).getName$().text();
-      else if (t instanceof $Object.Array)
-        name = (($Object.Array)t).getName$().text();
-      else if (t instanceof $Object.Object)
-        name = (($Object.Object)t).getName$().text();
-      else if (t instanceof $Object.Ref)
-        name = (($Object.Ref)t).getName$().text();
+      else if (t instanceof $Boolean)
+        name = (($Boolean)t).getName$().text();
+      else if (t instanceof $Number)
+        name = (($Number)t).getName$().text();
+      else if (t instanceof $String)
+        name = (($String)t).getName$().text();
+      else if (t instanceof $Array)
+        name = (($Array)t).getName$().text();
+      else if (t instanceof $Reference)
+        name = (($Reference)t).getName$().text();
+      else if (t instanceof $Object)
+        name = (($Object)t).getName$().text();
       else
         name = null;
 
-      return name != null ? t.name().getLocalPart() + "[@" + (t instanceof $Object ? "class" : "name=") + name + "]" : t.name().getLocalPart();
+      return name != null ? t.name().getLocalPart() + "[@" + (t instanceof $Object ? "class=" : "name=") + name + "]" : t.name().getLocalPart();
     }
   };
 
@@ -108,59 +119,71 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
     return max;
   }
 
-  private final Schema schema;
+  private final Member owner;
   private final String name;
   private final Boolean required;
   private final Boolean nullable;
   private final Integer minOccurs;
   private final Integer maxOccurs;
   private final String doc;
+  private final Kind kind;
 
-  public Element(final Schema schema, final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    this.schema = schema;
+  // Templates
+  public Element(final Member owner, final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc, final Kind kind) {
+    this.owner = owner;
     this.name = name;
-    this.required = required;
     this.nullable = nullable;
+    this.required = required;
     this.minOccurs = minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
     this.doc = doc;
+    this.kind = kind;
   }
 
-  // Annullable, Recurrable
-  public Element(final Schema schema, final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    this(schema, name, null, nullable, minOccurs, maxOccurs, doc);
+  // Members
+  public Element(final Member owner, final $Member binding, final String name, final Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    this(owner, name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs), binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
-  public Element(final Schema schema, final $Element binding, final String name, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(schema, name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs), binding.getDoc$() == null ? null : binding.getDoc$().text());
+  // Properties
+  public Element(final Member owner, final String name, final Boolean nullable, final Boolean required, final String doc) {
+    this(owner, name, nullable, required, null, null, doc, Kind.PROPERTY);
   }
 
-  // Annullable, Nameable, Requirable
-  public Element(final Schema schema, final String name, final boolean required, final boolean nullable, final String doc) {
-    this(schema, name, required, nullable, null, null, doc);
+  public Element(final Member owner, final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    this(owner, name, nullable, null, minOccurs, maxOccurs, doc, Kind.MEMBER);
   }
 
-  // Nameable
-  public Element(final Schema schema, final String name, final String doc) {
-    this(schema, name, null, null, null, null, doc);
+  public Element(final Member owner, final String name, final String doc) {
+    this(owner, name, null, null, null, doc);
   }
 
-  public Element(final Schema schema, final $Element binding, final String name) {
-    this(schema, name, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Element(final Member owner, final $Member binding, final String name) {
+    this(owner, name, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
   public Element(final Element copy) {
-    this.schema = copy.schema;
+    this.owner = copy.owner;
     this.name = copy.name;
-    this.required = copy.required;
     this.nullable = copy.nullable;
+    this.required = copy.required;
     this.minOccurs = copy.minOccurs;
     this.maxOccurs = copy.maxOccurs;
     this.doc = copy.doc;
+    this.kind = copy.kind;
   }
 
+  @Override
   public final Schema getSchema() {
-    return schema;
+    return owner instanceof Schema ? (Schema)owner : owner.getSchema();
+  }
+
+  public final Member owner() {
+    return owner;
+  }
+
+  public final Kind kind() {
+    return this.kind;
   }
 
   @Override
@@ -173,13 +196,13 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
   }
 
   @Override
-  public final Boolean required() {
-    return required;
+  public Boolean nullable() {
+    return nullable;
   }
 
   @Override
-  public final Boolean nullable() {
-    return nullable;
+  public final Boolean required() {
+    return required;
   }
 
   @Override
@@ -220,7 +243,7 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
   protected String toJSONX(final String pacakgeName) {
     final StringBuilder builder = new StringBuilder();
     if (name != null)
-      builder.append(" name=\"").append(name).append('"');
+      builder.append(kind == Kind.TEMPLATE ? " template=\"" : " name=\"").append(name).append('"');
 
     if (required != null && !required)
       builder.append(" required=\"").append(required).append('"');
@@ -277,15 +300,11 @@ abstract class Element extends Factor implements Annullable, Nameable, Recurrabl
     if (annotation.length() > 0)
       builder.append('(').append(annotation).append(')');
 
-    builder.append('\n');
-    builder.append("public ");
-    builder.append(className());
-    builder.append(' ').append(name());
-    builder.append(';');
+    builder.append('\n').append("public ").append(type()).append(' ').append(name()).append(';');
     return builder.toString();
   }
 
-  protected abstract Type className();
+  protected abstract Type type();
   protected abstract Class<? extends Annotation> propertyAnnotation();
   protected abstract Class<? extends Annotation> elementAnnotation();
   protected abstract Element normalize(final Registry registry);

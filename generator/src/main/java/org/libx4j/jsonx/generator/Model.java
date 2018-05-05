@@ -16,43 +16,38 @@
 
 package org.libx4j.jsonx.generator;
 
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Element;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Model extends Element {
-  // Annullable, Recurrable
-  public Model(final Schema schema, final $Element binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(schema, binding, null, nullable, minOccurs, maxOccurs);
+  public Model(final Member owner, final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(owner, name, nullable, required, minOccurs, maxOccurs, doc, Kind.TEMPLATE);
   }
 
-  // Nameable, Annullable
-  public Model(final Schema schema, final $Element binding, final String name, final boolean required, final boolean nullable) {
-    super(schema, name, required, nullable, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Model(final Member owner, final $Member binding, final String name, final Boolean nullable, final boolean required) {
+    super(owner, name, nullable, required, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
-  // Nameable
-  public Model(final Schema schema, final $Element binding, final String name) {
-    super(schema, binding, name);
+  public Model(final Member owner, final $Member binding, final String name, final Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(owner, binding, name, nullable, minOccurs, maxOccurs);
   }
 
-  // *Property
-  public Model(final Schema schema, final String name, final Boolean required, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    super(schema, name, required, nullable, minOccurs, maxOccurs, doc);
+  public Model(final Member owner, final $Member binding, final String name) {
+    super(owner, binding, name);
   }
 
-  // *Element
-  public Model(final Schema schema, final String doc) {
-    super(schema, (String)null, doc);
+  public Model(final Member owner, final String doc) {
+    super(owner, (String)null, doc);
   }
 
   public Model(final Element copy) {
     super(copy);
   }
 
-  protected String ref() {
+  protected String reference() {
     return name();
   }
 
-  protected abstract Model merge(final RefElement propertyElement);
+  protected abstract Model merge(final Reference reference);
 }
