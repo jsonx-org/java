@@ -268,6 +268,23 @@
       <string doc="Array member string"/>
       <boolean doc="Array member boolean"/>
     </property>
+    <property xsi:type="array" name="arrayArray" doc="{0, 1, 2}">
+      <array doc="0 {1, 2, 3, 9}">
+        <string doc="1"/>
+        <boolean doc="2"/>
+        <array doc="3 {4, 5, 8}">
+          <string doc="4"/>
+          <array doc="5 {6, 7}">
+            <number doc="6"/>
+            <boolean doc="7"/>
+          </array>
+          <number doc="8"/>
+        </array>
+        <number doc="9"/>
+      </array>
+      <string doc="10"/>
+      <boolean doc="11"/>
+    </property>
   </object>
   <object class="test1.AbstractObject" abstract="true" doc="Abstract object test1">
     <property xsi:type="reference" name="booleanProperty" template="rootBoolean" doc="Property ref to rootBoolean"/>

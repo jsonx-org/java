@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.lib4j.lang.AnnotationParameterException;
+import org.lib4j.lang.Arrays;
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -77,19 +78,19 @@ class ArrayModel extends ComplexModel {
     return Type.get(List.class, gcc);
   }
 
-  private static StringBuilder writeElementIdsClause(final StringBuilder builder, final int numElements, final int offset) {
+  private static StringBuilder writeElementIdsClause(final StringBuilder builder, final int ... indices) {
     builder.append("elementIds=");
-    if (numElements == 0)
+    if (indices.length == 0)
       return builder.append("{}");
 
-    if (numElements == 1)
-      return builder.append(offset);
+    if (indices.length == 1)
+      return builder.append(indices[0]);
 
     builder.append('{');
-    for (int i = 0; i < numElements - 1; i++)
-      builder.append(i + offset).append(", ");
+    for (int i = 0; i < indices.length - 1; i++)
+      builder.append(indices[i]).append(", ");
 
-    return builder.append(numElements - 1 + offset).append('}');
+    return builder.append(indices[indices.length - 1]).append('}');
   }
 
   private static List<Element> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember binding) {
@@ -337,42 +338,49 @@ class ArrayModel extends ComplexModel {
     if (builder.length() > 0)
       builder.append(", ");
 
-    return writeElementIdsClause(builder, members.size(), 0).toString();
+    return writeElementIdsClause(builder, Arrays.fillIncremental(new int[members.size()], 0)).toString();
   }
 
-  protected final StringBuilder toAnnotation(final StringBuilder builder, final int numElements, final int offset) {
+  protected final StringBuilder toAnnotation(final StringBuilder builder, final int ... indices) {
     builder.append(super.toAnnotation(true));
     if (builder.length() > 0)
       builder.append(", ");
 
-    return writeElementIdsClause(builder, members.size(), offset);
+    return writeElementIdsClause(builder, indices);
   }
 
   private static int writeElementAnnotations(final StringBuilder builder, final Element element, final int index) {
-    final StringBuilder params = new StringBuilder("@").append(element.elementAnnotation().getName()).append("(id=").append(index);
+    final StringBuilder outer = new StringBuilder("@").append(element.elementAnnotation().getName()).append("(id=").append(index).append(", ");
     if (element instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)element;
-      int diff = arrayModel.members().size();
-      builder.insert(0, arrayModel.toAnnotation(params, arrayModel.members().size(), index + arrayModel.members().size()).append(")\n"));
+      int offset = 1;
+      final StringBuilder inner = new StringBuilder();
+      final int[] indices = new int[arrayModel.members().size()];
       for (int i = 0; i < arrayModel.members().size(); i++) {
-        final Element member = arrayModel.members().get(i);
-        diff += writeElementAnnotations(builder, member, i + arrayModel.members().size());
+        indices[i] = index + offset;
+        offset += writeElementAnnotations(inner, arrayModel.members().get(i), index + offset);
       }
 
-      return diff;
+      builder.insert(0, arrayModel.toAnnotation(outer, indices).append(")\n"));
+      builder.insert(0, inner);
+      return offset;
     }
 
     final String annotation = element.toAnnotation(true);
-    builder.insert(0, (annotation.length() > 0 ? params.append(", ").append(annotation) : params).append(")\n"));
+    if (annotation.length() > 0)
+      builder.insert(0, outer.append(annotation).append(")\n"));
+    else
+      builder.append(outer.replace(0, outer.length() - 2, ")\n"));
+
     return 1;
   }
 
   @Override
   protected final String toField() {
     final StringBuilder builder = new StringBuilder();
-    int diff = 0;
-    for (int i = 0; i < members.size(); i++)
-      diff += writeElementAnnotations(builder, members.get(i), diff);
+    int index = 0;
+    for (final Element element : members())
+      index += writeElementAnnotations(builder, element, index);
 
     return builder.append(super.toField()).toString();
   }

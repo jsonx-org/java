@@ -184,9 +184,6 @@ public class Schema extends Member {
     for (final Model member : members()) {
       if (member instanceof ObjectModel) {
         final ObjectModel model = (ObjectModel)member;
-        if ("objectExtendsAbstract".equals(model.name())) {
-          int i = 0;
-        }
         final ClassHolder classHolder = new ClassHolder(model.type(), model.toObjectAnnotation(), model.toJava());
         if (model.type().getDeclaringType() != null) {
           final Type declaringType = model.type().getDeclaringType();

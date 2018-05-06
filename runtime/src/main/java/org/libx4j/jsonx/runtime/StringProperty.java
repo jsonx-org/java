@@ -14,4 +14,6 @@ public @interface StringProperty {
   String pattern() default "";
   boolean urlEncode() default false;
   boolean urlDecode() default false;
+  String doc() default "";
+
 }

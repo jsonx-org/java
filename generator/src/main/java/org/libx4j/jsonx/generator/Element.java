@@ -290,6 +290,9 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     if (maxOccurs != null)
       builder.append(", maxOccurs=").append(maxOccurs);
 
+    if (doc != null)
+      builder.append(", doc=\"").append(doc).append('"');
+
     return builder.length() == 0 ? "" : builder.substring(2);
   }
 

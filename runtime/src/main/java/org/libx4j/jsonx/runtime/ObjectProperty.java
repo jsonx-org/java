@@ -14,4 +14,6 @@ public @interface ObjectProperty {
   String name() default "";
   boolean required() default true;
   boolean nullable() default true;
+  String doc() default "";
+
 }

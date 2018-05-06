@@ -47,9 +47,6 @@ class ObjectModel extends ComplexModel {
   }
 
   public static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object binding, final String superClassName) {
-    if ("objectExtendsAbstract".equals(binding.getName$().text())) {
-      int i = 0;
-    }
     return registry.declare(binding).value(new ObjectModel(referrer, registry, binding, getParent(superClassName, registry)), referrer);
   }
 
@@ -377,9 +374,6 @@ class ObjectModel extends ComplexModel {
   @Override
   protected final String toJSONX(final String pacakgeName) {
     final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"object\"" : "<object");
-    if ("objectExtendsAbstract".equals(name())) {
-      int i = 0;
-    }
     builder.append(" class=\"").append(getShortName(owner() instanceof ObjectModel ? compoundClassName.substring(((ObjectModel)owner()).compoundClassName.length() + 1) : compoundClassName, pacakgeName)).append('"');
 
     if (superObject != null)

@@ -14,4 +14,6 @@ public @interface BooleanElement {
   boolean nullable() default true;
   int minOccurs() default 0;
   int maxOccurs() default Integer.MAX_VALUE;
+  String doc() default "";
+
 }

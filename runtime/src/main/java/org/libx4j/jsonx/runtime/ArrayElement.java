@@ -15,4 +15,5 @@ public @interface ArrayElement {
   int minOccurs() default 0;
   int maxOccurs() default Integer.MAX_VALUE;
   int[] elementIds();
+  String doc() default "";
 }

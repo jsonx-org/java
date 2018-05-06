@@ -14,4 +14,6 @@ public @interface NumberProperty {
   Form form() default Form.REAL;
   String min() default "";
   String max() default "";
+  String doc() default "";
+
 }
