@@ -165,19 +165,6 @@ public class Schema extends Member {
     return toJSONX(packageName);
   }
 
-  private ClassHolder x(final ClassHolder classHolder, final Map<Type,ClassHolder> typeToClassHolder, final Type type) {
-    ClassHolder parent = typeToClassHolder.get(type);
-    if (parent == null) {
-      if (type.getDeclaringType() != null)
-        parent = x(parent, typeToClassHolder, type.getDeclaringType());
-      else
-        typeToClassHolder.put(type, parent = new ClassHolder(type));
-    }
-
-    parent.memberClasses.add(classHolder);
-    return parent;
-  }
-
   public void toJava(final File dir) throws IOException {
     final Map<Type,ClassHolder> all = new HashMap<Type,ClassHolder>();
     final Map<Type,ClassHolder> typeToClassHolder = new HashMap<Type,ClassHolder>();
