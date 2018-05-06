@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.lib4j.lang.AnnotationParameterException;
-import org.lib4j.lang.Arrays;
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -78,15 +77,11 @@ class ArrayModel extends ComplexModel {
     return Type.get(List.class, gcc);
   }
 
-  private static StringBuilder writeElementIdsClause(final StringBuilder builder, final int ... indices) {
-    builder.append("elementIds=");
+  private static StringBuilder writeElementIdsClause(final StringBuilder builder, final int[] indices) {
+    builder.append("elementIds={");
     if (indices.length == 0)
-      return builder.append("{}");
+      return builder.append("}");
 
-    if (indices.length == 1)
-      return builder.append(indices[0]);
-
-    builder.append('{');
     for (int i = 0; i < indices.length - 1; i++)
       builder.append(indices[i]).append(", ");
 
@@ -115,11 +110,11 @@ class ArrayModel extends ComplexModel {
       }
       else if (member instanceof $ArrayMember.Reference) {
         final $ArrayMember.Reference reference = ($ArrayMember.Reference)member;
-        final Element ref = registry.getElement(reference.getTemplate$().text());
-        if (ref == null)
+        final Element element = registry.getElement(reference.getTemplate$().text());
+        if (element == null)
           throw new IllegalStateException("Reference template=\"" + reference.getTemplate$().text() + "\" in array not found");
 
-        members.add(ref instanceof Model ? new Reference(referrer, reference, (Model)ref) : ref);
+        members.add(element instanceof Model ? new Reference(referrer, reference, (Model)element) : element);
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -338,7 +333,15 @@ class ArrayModel extends ComplexModel {
     if (builder.length() > 0)
       builder.append(", ");
 
-    return writeElementIdsClause(builder, Arrays.fillIncremental(new int[members.size()], 0)).toString();
+    final int[] indices = new int[members().size()];
+    final StringBuilder foo = new StringBuilder();
+    int index = 0;
+    for (int i = 0; i < members().size(); i++) {
+      indices[i] = index;
+      index += writeElementAnnotations(foo, members().get(i), index);
+    }
+
+    return writeElementIdsClause(builder, indices).toString();
   }
 
   protected final StringBuilder toAnnotation(final StringBuilder builder, final int ... indices) {
@@ -370,7 +373,7 @@ class ArrayModel extends ComplexModel {
     if (annotation.length() > 0)
       builder.insert(0, outer.append(annotation).append(")\n"));
     else
-      builder.append(outer.replace(0, outer.length() - 2, ")\n"));
+      builder.append(outer.replace(outer.length() - 2, outer.length(), ")\n"));
 
     return 1;
   }
