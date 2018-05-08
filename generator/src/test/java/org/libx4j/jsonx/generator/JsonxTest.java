@@ -122,6 +122,7 @@ public class JsonxTest {
           final String testXPath = comparison.getTestDetails().getXPath() == null ? null : comparison.getTestDetails().getXPath().replaceAll("/([^@])", "/jsonx:$1");
           final String testEval = testXPath == null ? null : evalXPath(testElement, testXPath);
           logger.info(Strings.printColumns("Expected: " + controlXPath + "\n" + controlEval, "Actual: " + testXPath + "\n" + testEval));
+          logger.info(actual.toString());
         }
         catch (final XPathExpressionException e) {
           throw new RuntimeException(e);

@@ -108,13 +108,13 @@ class ArrayModel extends ComplexModel {
       else if (member instanceof $Array.Object) {
         members.add(ObjectModel.reference(registry, referrer, ($Array.Object)member));
       }
-      else if (member instanceof $ArrayMember.Reference) {
-        final $ArrayMember.Reference reference = ($ArrayMember.Reference)member;
-        final Element element = registry.getElement(reference.getTemplate$().text());
+      else if (member instanceof $ArrayMember.Template) {
+        final $ArrayMember.Template template = ($ArrayMember.Template)member;
+        final Element element = registry.getElement(template.getReference$().text());
         if (element == null)
-          throw new IllegalStateException("Reference template=\"" + reference.getTemplate$().text() + "\" in array not found");
+          throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
 
-        members.add(element instanceof Model ? new Reference(referrer, reference, (Model)element) : element);
+        members.add(element instanceof Model ? new Template(referrer, template, (Model)element) : element);
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -280,7 +280,7 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected ArrayModel merge(final Reference reference) {
+  protected ArrayModel merge(final Template reference) {
     return new ArrayModel(reference, members);
   }
 

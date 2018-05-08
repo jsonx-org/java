@@ -128,7 +128,7 @@ class Registry {
     for (final Iterator<? extends Map.Entry<String,Model>> iterator = clone.entrySet().iterator(); iterator.hasNext();) {
       final Map.Entry<String,Model> entry = iterator.next();
       final Member normalized = entry.getValue().normalize(this);
-      entry.setValue(normalized instanceof Reference ? ((Reference)normalized).template() : (Model)normalized);
+      entry.setValue(normalized instanceof Template ? ((Template)normalized).reference() : (Model)normalized);
     }
 
     return new Registry(clone, references);

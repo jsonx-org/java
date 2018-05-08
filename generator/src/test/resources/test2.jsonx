@@ -26,26 +26,36 @@
   <array template="booleanArray" doc="Boolean array" nullable="false">
     <template reference="rootBoolean" maxOccurs="3" doc="Property ref to rootBoolean"/>
   </array>
-  <array template="arrayArray" doc="Array array">
-    <array minOccurs="1" maxOccurs="1">
-      <array maxOccurs="2">
-        <boolean/>
-        <number/>
+  <object class="One" doc="One">
+    <property xsi:type="template" name="booleanRef" reference="rootBoolean" doc="Boolean"/>
+    <property xsi:type="template" name="stringRef" reference="rootString" doc="String"/>
+    <property xsi:type="template" name="numberRef" reference="rootNumber" doc="Number"/>
+    <property xsi:type="array" name="arrayArray" doc="{0, 12, 13}">
+      <array doc="0 {1, 2, 3, 11}">
+        <string doc="1"/>
+        <boolean doc="2"/>
+        <array doc="3 {4, 5, 10}">
+          <string doc="4"/>
+          <array doc="5 {6, 7, 9}">
+            <number doc="6"/>
+            <array doc="7 {8}">
+              <template reference="booleanArray"/>
+            </array>
+            <boolean doc="9"/>
+          </array>
+          <number doc="10"/>
+        </array>
+        <number doc="11"/>
       </array>
-      <array minOccurs="2" maxOccurs="2">
-        <template reference="rootBoolean"/>
-      </array>
-    </array>
-  </array>
-  <object class="test1.simple$Booleans" doc="Booleans test1">
-    <property xsi:type="template" name="booleanRefDefault" reference="rootBoolean" doc="Boolean ref"/>
-    <property xsi:type="template" name="booleanRefNotRequired" reference="rootBoolean" required="false" doc="Boolean ref not required"/>
-    <property xsi:type="boolean" name="booleanDefault" doc="Boolean"/>
-    <property xsi:type="boolean" name="booleanNotRequired" required="false" doc="Boolean not required"/>
-    <property xsi:type="boolean" name="booleanNotNull" nullable="false" doc="Boolean not null"/>
-    <property xsi:type="boolean" name="booleanNotRequiredNotNull" required="false" doc="Boolean not required not null"/>
+      <string doc="12"/>
+      <boolean doc="13"/>
+    </property>
   </object>
-  <object class="test1.simple$BooleanArrays" doc="Boolean array test1">
+  <object class="One$Two.sd" doc="One.Two">
+    <property xsi:type="object" name="ext" class="empty$One" extends="One" nullable="false" doc="Object not null"/>
+    <property xsi:type="template" name="ref" reference="One"/>
+  </object>
+  <object class="test2.BooleanArrays" doc="Boolean array test2">
     <property xsi:type="template" name="booleanRefArrayDefault" reference="booleanArray" doc="Boolean ref array"/>
     <property xsi:type="template" name="booleanRefArrayNotRequired" reference="booleanArray" required="false" doc="Boolean ref array not required"/>
     <property xsi:type="array" name="booleanArrayDefault" doc="Boolean array default">
@@ -61,8 +71,7 @@
       <boolean nullable="false"/>
     </property>
   </object>
-  <object class="test1.simple$Strings" doc="String test1">
-    <property xsi:type="template" name="stringRefDefault" reference="rootString" doc="Property ref"/>
+  <object class="test2.Strings" doc="String test2">
     <property xsi:type="template" name="stringRefNotRequired" reference="rootString" required="false" doc="Property ref not required"/>
     <property xsi:type="string" name="stringDefault" doc="String"/>
     <property xsi:type="string" name="stringNotRequired" required="false" doc="String not required"/>
@@ -72,7 +81,7 @@
     <property xsi:type="string" name="stringUrlDecode" urlDecode="true" doc="String url-decode"/>
     <property xsi:type="string" name="stringUrlEncode" urlEncode="true" doc="String url-encode"/>
   </object>
-  <object class="test1.simple$StringArrays" doc="String array test1">
+  <object class="test2.StringArrays" doc="String array test2">
     <property xsi:type="array" name="stringArrayRefDefault" doc="String array ref">
       <template reference="rootString" doc="Property ref"/>
     </property>
@@ -102,8 +111,7 @@
       <string urlEncode="true" urlDecode="true" maxOccurs="1" doc="String array member url-encode decode"/>
     </property>
   </object>
-  <object class="test1.simple$Numbers" doc="Number test1" unknown="ignore">
-    <property xsi:type="template" name="numberRefDefault" reference="rootNumber" doc="Property ref"/>
+  <object class="test2.Numbers" doc="Number test2" unknown="ignore">
     <property xsi:type="template" name="numberRefNotRequired" reference="rootNumber" required="false" doc="Property ref not required"/>
     <property xsi:type="number" name="numberDefault" doc="Number"/>
     <property xsi:type="number" name="numberNotRequired" required="false" doc="Number not required"/>
@@ -113,7 +121,7 @@
     <property xsi:type="number" name="numberMax" max="0" doc="Number max"/>
     <property xsi:type="number" name="numberInteger" form="integer" doc="Number integer"/>
   </object>
-  <object class="test1.simple$NumberArrays" doc="Number array test1">
+  <object class="test2.NumberArrays" doc="Number array test2">
     <property xsi:type="array" name="numberArrayRefDefault" doc="Number array ref">
       <template reference="rootNumber" maxOccurs="3" doc="Property ref to topNumber, not null"/>
     </property>
@@ -193,44 +201,44 @@
       <number minOccurs="4" doc="Number 4"/>
     </property>
     <property xsi:type="array" name="objectArray1" doc="Object array 1">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
     </property>
     <property xsi:type="array" name="objectArraySame2" doc="Object array same 2">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
     </property>
     <property xsi:type="array" name="objectArraySame3" doc="Object array same 3">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
     </property>
     <property xsi:type="array" name="objectArraySame4" doc="Object array same 4">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
     </property>
     <property xsi:type="array" name="objectArrayDiff2" doc="Object array diff 2">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Strings" minOccurs="1" maxOccurs="1" doc="test1.simple$Strings"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Strings" minOccurs="1" maxOccurs="1" doc="test2.Strings"/>
     </property>
     <property xsi:type="array" name="objectArrayDiff3" doc="Object array diff 3">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Strings" minOccurs="1" maxOccurs="1" doc="test1.simple$Strings"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Strings" minOccurs="1" maxOccurs="1" doc="test2.Strings"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
     </property>
     <property xsi:type="array" name="objectArrayDiff4" doc="Object array diff 4">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Strings" minOccurs="1" maxOccurs="1" doc="test1.simple$Strings"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Strings" minOccurs="1" maxOccurs="1" doc="test1.simple$Strings"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Strings" minOccurs="1" maxOccurs="1" doc="test2.Strings"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Strings" minOccurs="1" maxOccurs="1" doc="test2.Strings"/>
     </property>
     <property xsi:type="array" name="objectArrayDiff5" doc="Object array diff 4">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Strings" minOccurs="1" maxOccurs="1" doc="test1.simple$Strings"/>
-      <object class="test1.simple$Numbers" minOccurs="1" maxOccurs="1" doc="test1.simple$Numbers"/>
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1" doc="test1.simple$Booleans"/>
-      <object class="test1.simple$Numbers" minOccurs="1" maxOccurs="1" doc="test1.simple$Numbers"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Strings" minOccurs="1" maxOccurs="1" doc="test2.Strings"/>
+      <object class="test2.Numbers" minOccurs="1" maxOccurs="1" doc="test2.Numbers"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1" doc="test2.Booleans"/>
+      <object class="test2.Numbers" minOccurs="1" maxOccurs="1" doc="test2.Numbers"/>
     </property>
     <property xsi:type="array" name="numberArrayMin" doc="Number array max &amp; min">
       <number min="0" minOccurs="2" doc="Number array member min"/>
@@ -268,54 +276,34 @@
       <string doc="Array member string"/>
       <boolean doc="Array member boolean"/>
     </property>
-    <property xsi:type="array" name="arrayArray" doc="{0, 12, 13}">
-      <array doc="0 {1, 2, 3, 11}">
-        <string doc="1"/>
-        <boolean doc="2"/>
-        <array doc="3 {4, 5, 10}">
-          <string doc="4"/>
-          <array doc="5 {6, 7, 9}">
-            <number doc="6"/>
-            <array doc="7 {8}">
-              <array doc="8 {}"/>
-            </array>
-            <boolean doc="9"/>
-          </array>
-          <number doc="10"/>
-        </array>
-        <number doc="11"/>
-      </array>
-      <string doc="12"/>
-      <boolean doc="13"/>
-    </property>
   </object>
-  <object class="test1.pkg.cls$AbstractObject" abstract="true" doc="Abstract object test1">
+  <object class="test2.AbstractObject" abstract="true" doc="Abstract object test2">
     <property xsi:type="template" name="booleanProperty" reference="rootBoolean" doc="Property ref to rootBoolean"/>
   </object>
-  <object class="test1.Objects" doc="Object test1" nullable="false">
+  <object class="test2.Objects" doc="Object test2" nullable="false">
     <property xsi:type="object" name="objectDefault" class="ObjectDefault" doc="Object default"/>
     <property xsi:type="object" name="objectNotNull" class="ObjectNotNull" nullable="false" doc="Object not null"/>
     <property xsi:type="object" name="objectNotRequired" class="ObjectNotRequired" required="false" doc="Object not required"/>
     <property xsi:type="object" name="objectNotNullNotRequired" class="ObjectNotNullNotRequired" nullable="false" required="false" doc="Object not null not required"/>
-    <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract" extends="test1.pkg.cls$AbstractObject" doc="Object with properties, extending abstractObject">
+    <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract" extends="test2.AbstractObject" doc="Object with properties, extending abstractObject">
       <property xsi:type="template" name="objectString" reference="rootString" required="false" doc="Property ref to topString, not required"/>
       <property xsi:type="number" name="objectNumber" doc="Number property"/>
-      <property xsi:type="object" name="objectExtendsBooleans" class="ObjectExtendsBooleans" extends="test1.simple$Booleans" doc="Object property, extending booleans"/>
-      <property xsi:type="object" name="objectExtendsBooleans2" class="ObjectExtendsBooleans2" extends="test1.simple$Booleans" doc="Object property, extending booleans"/>
+      <property xsi:type="object" name="objectExtendsBooleans" class="ObjectExtendsBooleans" extends="test2.Booleans" doc="Object property, extending booleans"/>
+      <property xsi:type="object" name="objectExtendsBooleans2" class="ObjectExtendsBooleans2" extends="test2.Booleans" doc="Object property, extending booleans"/>
     </property>
-    <property xsi:type="object" name="objectExtendsStrings" class="ObjectExtendsStrings" extends="test1.simple$Strings" doc="Object extending strings">
+    <property xsi:type="object" name="objectExtendsStrings" class="ObjectExtendsStrings" extends="test2.Strings" doc="Object extending strings">
       <property xsi:type="string" name="additionalString" doc="Additional string property"/>
     </property>
   </object>
-  <object class="test1.pkg.ObjectArrays" extends="test1.pkg.cls$AbstractObject" doc="Object array test1">
+  <object class="test2.ObjectArrays" extends="test2.AbstractObject" doc="Object array test2">
     <property xsi:type="array" name="objectArrayDefault" doc="Object array default">
-      <object class="test1.simple$Booleans" minOccurs="1" maxOccurs="1"/>
+      <object class="test2.Booleans" minOccurs="1" maxOccurs="1"/>
     </property>
     <property xsi:type="array" name="objectArrayNotRequired" required="false" doc="Object array not required">
-      <object class="test1.simple$Strings" minOccurs="1" maxOccurs="1"/>
+      <object class="test2.Strings" minOccurs="1" maxOccurs="1"/>
     </property>
     <property xsi:type="array" name="objectArrayPropertiesSkipUnknown">
-      <object class="test1.simple$Numbers" doc="Object array with properties, skipping unknowns"/>
+      <object class="test2.Numbers" doc="Object array with properties, skipping unknowns"/>
     </property>
   </object>
 </jsonx>

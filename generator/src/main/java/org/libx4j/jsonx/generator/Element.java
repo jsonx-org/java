@@ -27,8 +27,8 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.BooleanProperty;
@@ -74,10 +74,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     return name.length() > 0 ? name : field.getName();
   }
 
-  protected static String getShortName(final String longName, final String pacakgeName) {
-    return pacakgeName != null && longName.startsWith(pacakgeName) ? longName.substring(pacakgeName.length() + 1) : longName;
-  }
-
   protected static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
     @Override
     public String apply(final Binding t) {
@@ -100,8 +96,8 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
         name = (($String)t).getName$().text();
       else if (t instanceof $Array)
         name = (($Array)t).getName$().text();
-      else if (t instanceof $Reference)
-        name = (($Reference)t).getName$().text();
+      else if (t instanceof $Template)
+        name = (($Template)t).getName$().text();
       else if (t instanceof $Object)
         name = (($Object)t).getName$().text();
       else
@@ -303,7 +299,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     if (annotation.length() > 0)
       builder.append('(').append(annotation).append(')');
 
-    builder.append('\n').append("public ").append(type()).append(' ').append(name()).append(';');
+    builder.append('\n').append("public ").append(type().toStrictString()).append(' ').append(name()).append(';');
     return builder.toString();
   }
 

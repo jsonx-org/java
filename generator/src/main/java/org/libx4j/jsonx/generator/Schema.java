@@ -40,7 +40,7 @@ public class Schema extends Member {
 
   public Schema(final Jsonx jsonx) {
     this.jsonx = jsonx;
-    this.packageName = (String)jsonx.getPackage$().text();
+    this.packageName = jsonx.getPackage$().text() == null || jsonx.getPackage$().text().length() == 0 ? null : jsonx.getPackage$().text();
     final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
     final StrictRefDigraph<Jsonx.Object,String> digraph = new StrictRefDigraph<Jsonx.Object,String>("Object cannot inherit from itself", obj -> obj.getClass$().text());
     final Registry registry = new Registry();
@@ -198,7 +198,7 @@ public class Schema extends Member {
       file.getParentFile().mkdirs();
       try (final FileOutputStream out = new FileOutputStream(file)) {
         final String string = holder.getAnnotation() + "\npublic " + holder.toString();
-        out.write((packageName != null && packageName.length() > 0 ? "package " + packageName + ";\n\n" + string : string).getBytes());
+        out.write((type.getPackage() != null ? "package " + type.getPackage() + ";\n\n" + string : string).getBytes());
       }
     }
   }

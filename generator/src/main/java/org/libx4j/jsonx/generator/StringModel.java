@@ -131,7 +131,7 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected StringModel merge(final Reference reference) {
+  protected StringModel merge(final Template reference) {
     return new StringModel(reference, this);
   }
 

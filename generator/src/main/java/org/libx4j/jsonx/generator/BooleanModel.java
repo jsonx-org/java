@@ -91,7 +91,7 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected BooleanModel merge(final Reference reference) {
+  protected BooleanModel merge(final Template reference) {
     return new BooleanModel(reference);
   }
 

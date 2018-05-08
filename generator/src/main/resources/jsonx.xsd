@@ -23,6 +23,18 @@
   
   <xs:import namespace="http://xml.lib4j.org/datatypes-1.0.4.xsd" schemaLocation="http://xml.lib4j.org/datatypes-1.0.4.xsd"/>
   
+  <xs:simpleType name="identifier">
+    <xs:restriction base="dt:stringNonEmpty">
+      <xs:pattern value="((\\\$|[a-zA-Z_])(\\\$|[a-zA-Z\d_])*\$)+(\\\$|[a-zA-Z_])(\\\$|[a-zA-Z\d_]*)+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="qualifiedIdentifier">
+    <xs:restriction base="dt:stringNonEmpty">
+      <xs:pattern value="((\\\$|[a-zA-Z_])(\\\$|[a-zA-Z\d_])*\.)*((\\\$|[a-zA-Z_])(\\\$|[a-zA-Z\d_])*\$)*(\\\$|[a-zA-Z_])(\\\$|[a-zA-Z\d_]*)+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
   <xs:complexType name="member" abstract="true">
     <xs:attribute name="doc" type="dt:stringNonEmpty">
       <xs:annotation>
@@ -63,21 +75,29 @@
     </xs:attribute>
   </xs:attributeGroup>
   
-  <xs:complexType name="abstractReference" abstract="true">
+  <xs:attributeGroup name="templatable">
+    <xs:attribute name="template" type="dt:javaIdentifier" use="required">
+      <xs:annotation>
+        <xs:documentation>Name of template. Required.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  
+  <xs:complexType name="abstractTemplate" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
-        <xs:attribute name="template" type="dt:javaQualifiedIdentifier" use="required">
+        <xs:attribute name="reference" type="jsonx:qualifiedIdentifier" use="required">
           <xs:annotation>
-            <xs:documentation>Name of referenced property. Required.</xs:documentation>
+            <xs:documentation>Name of referenced template or class. Required.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:complexType name="reference">
+  <xs:complexType name="template">
     <xs:complexContent>
-      <xs:extension base="jsonx:abstractReference">
+      <xs:extension base="jsonx:abstractTemplate">
         <xs:attributeGroup ref="jsonx:nameable"/>
         <xs:attributeGroup ref="jsonx:requirable"/>
       </xs:extension>
@@ -235,7 +255,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:objectMember">
-                  <xs:attribute name="class" type="dt:javaQualifiedIdentifier" use="required">
+                  <xs:attribute name="class" type="jsonx:qualifiedIdentifier" use="required">
                     <xs:annotation>
                       <xs:documentation>Name of class. Required.</xs:documentation>
                     </xs:annotation>
@@ -245,10 +265,10 @@
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="reference">
+          <xs:element name="template">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jsonx:abstractReference">
+                <xs:extension base="jsonx:abstractTemplate">
                   <xs:attributeGroup ref="jsonx:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
@@ -319,11 +339,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:booleanMember">
-                  <xs:attribute name="template" type="dt:javaIdentifier" use="required">
-                    <xs:annotation>
-                      <xs:documentation>Name of template. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
+                  <xs:attributeGroup ref="jsonx:templatable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -332,11 +348,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:abstractNumber">
-                  <xs:attribute name="template" type="dt:javaIdentifier" use="required">
-                    <xs:annotation>
-                      <xs:documentation>Name of template. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
+                  <xs:attributeGroup ref="jsonx:templatable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -345,11 +357,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:stringMember">
-                  <xs:attribute name="template" type="dt:javaIdentifier" use="required">
-                    <xs:annotation>
-                      <xs:documentation>Name of template. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
+                  <xs:attributeGroup ref="jsonx:templatable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -358,11 +366,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:arrayMember">
-                  <xs:attribute name="template" type="dt:javaIdentifier" use="required">
-                    <xs:annotation>
-                      <xs:documentation>Name of template. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
+                  <xs:attributeGroup ref="jsonx:templatable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -371,7 +375,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:objectMember">
-                  <xs:attribute name="class" type="dt:javaQualifiedIdentifier" use="required">
+                  <xs:attribute name="class" type="jsonx:qualifiedIdentifier" use="required">
                     <xs:annotation>
                       <xs:documentation>Name of class. Required.</xs:documentation>
                     </xs:annotation>
@@ -391,19 +395,10 @@
           </xs:element>
         </xs:choice>
       </xs:sequence>
-      <xs:attribute name="package" use="required">
+      <xs:attribute name="package" type="jsonx:qualifiedIdentifier">
         <xs:annotation>
           <xs:documentation>Name of package. Optional.</xs:documentation>
         </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="dt:javaQualifiedIdentifier">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:length value="0"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
     <xs:key name="referenceKey">
@@ -414,13 +409,13 @@
       <xs:selector xpath="./jsonx:object"/>
       <xs:field xpath="@class"/>
     </xs:key>
-    <xs:keyref name="templateKeyRef" refer="jsonx:referenceKey">
+    <xs:keyref name="propertyKeyRef" refer="jsonx:referenceKey">
       <xs:selector xpath=".//jsonx:property"/>
-      <xs:field xpath="@template"/>
+      <xs:field xpath="@reference"/>
     </xs:keyref>
-    <xs:keyref name="referenceKeyRef" refer="jsonx:referenceKey">
-      <xs:selector xpath=".//jsonx:reference"/>
-      <xs:field xpath="@template"/>
+    <xs:keyref name="templateKeyRef" refer="jsonx:referenceKey">
+      <xs:selector xpath=".//jsonx:template"/>
+      <xs:field xpath="@reference"/>
     </xs:keyref>
     <xs:keyref name="objectKeyRef" refer="jsonx:objectKey">
       <xs:selector xpath=".//jsonx:object"/>
@@ -428,6 +423,10 @@
     </xs:keyref>
     <xs:keyref name="arrayObjectKeyRef" refer="jsonx:objectKey">
       <xs:selector xpath=".//jsonx:array/jsonx:object"/>
+      <xs:field xpath="@class"/>
+    </xs:keyref>
+    <xs:keyref name="arrayObjectKeyRef2" refer="jsonx:objectKey">
+      <xs:selector xpath=".//jsonx:property/jsonx:object"/>
       <xs:field xpath="@class"/>
     </xs:keyref>
     <xs:unique name="innerObjectUnique">

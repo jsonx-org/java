@@ -129,7 +129,7 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected NumberModel merge(final Reference reference) {
+  protected NumberModel merge(final Template reference) {
     return new NumberModel(reference, this);
   }
 

@@ -19,27 +19,27 @@ package org.libx4j.jsonx.generator;
 import java.lang.annotation.Annotation;
 
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
 
-class Reference extends Element {
+class Template extends Element {
   private final Model model;
 
-  public Reference(final Member owner, final $ArrayMember.Reference binding, final Model model) {
+  public Template(final Member owner, final $ArrayMember.Template binding, final Model model) {
     super(owner, binding, null, null, binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
   }
 
-  public Reference(final Member owner, final $Reference binding, final Model model) {
+  public Template(final Member owner, final $Template binding, final Model model) {
     super(owner, binding.getName$().text(), null, binding.getRequired$().text(), binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.model = model;
   }
 
-  public Reference(final Member owner, final String name, final boolean required, final Model model, final String doc) {
+  public Template(final Member owner, final String name, final boolean required, final Model model, final String doc) {
     super(owner, name, null, required, doc);
     this.model = model;
   }
 
-  public Reference(final Member owner, final Integer minOccurs, final Integer maxOccurs, final Model model, final String doc) {
+  public Template(final Member owner, final Integer minOccurs, final Integer maxOccurs, final Model model, final String doc) {
     super(owner, null, null, minOccurs, maxOccurs, doc);
     this.model = model;
   }
@@ -49,7 +49,7 @@ class Reference extends Element {
     return model.nullable();
   }
 
-  public final Model template() {
+  public final Model reference() {
     return this.model;
   }
 
@@ -70,7 +70,7 @@ class Reference extends Element {
 
   @Override
   protected final Element normalize(final Registry registry) {
-    return registry.getNumReferrers(template()) != 1 || template() instanceof ObjectModel && ((ObjectModel)template()).isAbstract() ? this : template().merge(this);
+    return registry.getNumReferrers(reference()) != 1 || reference() instanceof ObjectModel && ((ObjectModel)reference()).isAbstract() ? this : reference().merge(this);
   }
 
   @Override
@@ -80,16 +80,16 @@ class Reference extends Element {
       builder.insert(0, ",\n");
 
     if (model != null)
-      builder.append(",\n  template: \"").append(getShortName(model.reference(), pacakgeName)).append('"');
+      builder.append(",\n  reference: \"").append(Type.getSubName(model.reference(), pacakgeName)).append('"');
 
     return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
   protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"reference\"" : "<reference");
+    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
-      builder.append(" template=\"").append(getShortName(model.reference(), pacakgeName)).append('"');
+      builder.append(" reference=\"").append(Type.getSubName(model.reference(), pacakgeName)).append('"');
 
     return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
   }

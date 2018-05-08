@@ -49,5 +49,5 @@ abstract class Model extends Element {
     return name();
   }
 
-  protected abstract Model merge(final Reference reference);
+  protected abstract Model merge(final Template reference);
 }
