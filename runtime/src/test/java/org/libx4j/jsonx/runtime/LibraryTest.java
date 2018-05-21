@@ -17,8 +17,12 @@
 package org.libx4j.jsonx.runtime;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LibraryTest {
+  final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
+
   @Test
   public void testLibrary() {
     final Publishing bookPub1 = new Publishing();
@@ -82,6 +86,6 @@ public class LibraryTest {
     library.publications.add(article);
     library.publications.add(journal);
 
-    System.err.println(library);
+    logger.info(library.toString());
   }
 }

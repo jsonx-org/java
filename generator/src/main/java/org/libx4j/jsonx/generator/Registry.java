@@ -65,9 +65,6 @@ class Registry {
   }
 
   public Value declare(final Class<?> clazz) {
-    if (clazz.getName().contains("ObjectExtendsBooleans2")) {
-      System.out.println(clazz.getName());
-    }
     return new Value(clazz.getName());
   }
 
