@@ -22,26 +22,28 @@ class Type {
   private static final HashMap<String,Type> qualifiedNameToType = new HashMap<String,Type>();
   static final Type OBJECT = new Type(Object.class, null);
 
-  static Type get(final String className, final String superTypeName, final Type genericType) {
-    if (className == null)
-      throw new NullPointerException("className == null");
+  public static Type get(final String packageName, final String compoundName, final String superCompoundName, final Type genericType) {
+    if (compoundName == null)
+      throw new NullPointerException("compoundName == null");
 
-    if (superTypeName == null)
-      throw new NullPointerException("superTypeName == null");
-
+    final String className = packageName != null ? packageName + "." + compoundName : compoundName;
     Type type = qualifiedNameToType.get(className);
     if (type == null)
-      qualifiedNameToType.put(className, type = new Type(className, superTypeName, genericType));
+      qualifiedNameToType.put(className, type = new Type(packageName, compoundName, superCompoundName == null ? null : get(packageName, superCompoundName, (Class<?>)null, null), genericType));
 
     return type;
   }
 
   public static Type get(final String className, final Type superType, final Type genericType) {
-    return get(className, superType.name, genericType);
+    return get(null, className, superType.name, genericType);
   }
 
-  public static Type get(final String className, final Class<?> superType, final Type genericType) {
-    return get(className, superType.getName(), genericType);
+  public static Type get(final String className, final String superName, final Type genericType) {
+    return get(null, className, superName, genericType);
+  }
+
+  public static Type get(final String packageName, final String compoundName, final Class<?> superType, final Type genericType) {
+    return get(packageName, compoundName, superType == null ? null : superType.getName(), genericType);
   }
 
   private static Type get(final Class<?> clazz) {
@@ -72,12 +74,8 @@ class Type {
     return index == generics.length - 1 ? get(generics[index]) : get(generics[index], get(index + 1, generics));
   }
 
-  public static Type get(final String className) {
-    return get(className, Object.class, null);
-  }
-
-  public static Type get(final String packageName, final String compoundClassName) {
-    return get(packageName != null ? packageName + "." + compoundClassName : compoundClassName, Object.class, null);
+  public static Type get(final String compoundName, final String superName) {
+    return get(null, compoundName, superName, (Type)null);
   }
 
   public static String getSubName(final String name, final String pacakgeName) {
@@ -85,40 +83,35 @@ class Type {
   }
 
   private final String packageName;
+  private final String strictPackageName;
   private final String simpleName;
-  private final String compoundClassName;
+  private final String compoundName;
   private final String strictCompoundClassName;
   private final String name;
   private final String strictName;
   private final Type superType;
   private final Type genericType;
 
-  private Type(final String className, final Type superType, final Type genericType) {
-    final int lastDot = className.lastIndexOf('.');
-    if (lastDot > -1) {
-      this.packageName = className.substring(0, lastDot);
-      this.compoundClassName = className.substring(lastDot + 1);
-    }
-    else {
-      this.packageName = null;
-      this.compoundClassName = className;
+  private Type(final String packageName, final String compoundName, final Type superType, final Type genericType) {
+    this.packageName = packageName;
+    final int dot = compoundName.lastIndexOf('.');
+    this.strictPackageName = dot == -1 ? packageName : packageName != null ? packageName + "." + compoundName.substring(0, dot) : compoundName.substring(0, dot);
+    this.compoundName = compoundName;
+    this.name = packageName != null ? packageName + "." + compoundName : compoundName;
+    if (name.endsWith("AbstractObject")) {
+      int i = 0;
     }
 
-    this.name = className;
-    this.strictCompoundClassName = compoundClassName.replace('$', '.');
-    this.simpleName = compoundClassName.substring(compoundClassName.lastIndexOf('$') + 1);
+    this.strictCompoundClassName = compoundName.replace('$', '.');
+    this.simpleName = strictCompoundClassName.substring(strictCompoundClassName.lastIndexOf('.') + 1);
     this.strictName = packageName + "." + strictCompoundClassName;
     qualifiedNameToType.put(name, this);
-    this.superType = superType;
+    this.superType = superType != null ? superType : OBJECT;
     this.genericType = genericType;
   }
 
-  private Type(final String className, final String superTypeName, final Type genericType) {
-    this(className, superTypeName == null ? null : get(superTypeName), genericType);
-  }
-
   private Type(final Class<?> clazz, final Type genericType) {
-    this(clazz.getName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? OBJECT : new Type(clazz.getSuperclass(), null), genericType);
+    this(clazz.getPackage().getName(), clazz.getSimpleName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? OBJECT : new Type(clazz.getSuperclass(), null), genericType);
   }
 
   public Type getSuperType() {
@@ -126,8 +119,8 @@ class Type {
   }
 
   public Type getDeclaringType() {
-    final int del = name.lastIndexOf('$');
-    return del < 0 ? null : get(name.substring(0, del));
+    final int del = compoundName.lastIndexOf('$');
+    return del < 0 ? null : get(packageName, compoundName.substring(0, del), (Class<?>)null, null);
   }
 
   public Type getGreatestCommonSuperType(final Type type) {
@@ -135,7 +128,7 @@ class Type {
     do {
       Type b = type;
       do {
-        if (a.getName().equals(b.getName()))
+        if (a.name.equals(b.name))
           return a;
 
         b = b.superType;
@@ -151,20 +144,31 @@ class Type {
     return packageName;
   }
 
+  public String getStrictPackage() {
+    return strictPackageName;
+  }
+
   public String getSimpleName() {
     return simpleName;
   }
 
   public String getCompoundClassName() {
-    return compoundClassName;
+    return compoundName;
   }
 
   public String getStrictCompoundClassName() {
     return strictCompoundClassName;
   }
 
-  public String getName() {
-    return name;
+  public String getName(final String pacakgeName) {
+    final StringBuilder builder = new StringBuilder();
+    if (this.packageName != null)
+      builder.append(this.packageName).append('.');
+    else if (packageName != null)
+      builder.append(pacakgeName).append('.');
+
+    builder.append(compoundName);
+    return builder.toString();
   }
 
   public String getStrictName() {
@@ -185,7 +189,7 @@ class Type {
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder(getName());
+    final StringBuilder builder = new StringBuilder(name);
     if (genericType != null)
       builder.append('<').append(genericType.toString()).append('>');
 

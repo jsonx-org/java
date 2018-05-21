@@ -27,48 +27,46 @@ import org.libx4j.jsonx.runtime.BooleanElement;
 import org.libx4j.jsonx.runtime.BooleanProperty;
 
 class BooleanModel extends SimpleModel {
-  public static BooleanModel declare(final Schema schema, final Registry registry, final Jsonx.Boolean binding) {
-    return registry.declare(binding).value(new BooleanModel(schema, binding), null);
+  public static BooleanModel declare(final Registry registry, final Jsonx.Boolean binding) {
+    return registry.declare(binding).value(new BooleanModel(binding), null);
   }
 
-  public static BooleanModel referenceOrDeclare(final Member owner, final BooleanProperty booleanProperty, final Field field) {
-    return new BooleanModel(owner, booleanProperty, field);
+  public static BooleanModel referenceOrDeclare(final BooleanProperty booleanProperty, final Field field) {
+    return new BooleanModel(booleanProperty, field);
   }
 
-  public static BooleanModel referenceOrDeclare(final Member owner, final BooleanElement booleanElement) {
-    return new BooleanModel(owner, booleanElement);
+  public static BooleanModel referenceOrDeclare(final BooleanElement booleanElement) {
+    return new BooleanModel(booleanElement);
   }
 
-  public static BooleanModel reference(final Member owner, final $Array.Boolean binding) {
-    return new BooleanModel(owner, binding);
+  public static BooleanModel reference(final $Array.Boolean binding) {
+    return new BooleanModel(binding);
   }
 
-  public static BooleanModel reference(final Member owner, final $Boolean binding) {
-    return new BooleanModel(owner, binding);
+  public static BooleanModel reference(final $Boolean binding) {
+    return new BooleanModel(binding);
   }
 
-  private BooleanModel(final Schema schema, final Jsonx.Boolean binding) {
-    super(schema, binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  private BooleanModel(final Jsonx.Boolean binding) {
+    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
   }
 
-  private BooleanModel(final Member owner, final $Boolean binding) {
-    super(owner, binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+  private BooleanModel(final $Boolean binding) {
+    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
   }
 
-  private BooleanModel(final Member owner, final $Array.Boolean binding) {
-    super(owner, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private BooleanModel(final $Array.Boolean binding) {
+    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
   }
 
-  private BooleanModel(final Member owner, final BooleanProperty booleanProperty, final Field field) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, getName(booleanProperty.name(), field), booleanProperty.required(), booleanProperty.nullable(), null, null, null);
+  private BooleanModel(final BooleanProperty booleanProperty, final Field field) {
+    super(getName(booleanProperty.name(), field), booleanProperty.nullable(), booleanProperty.required(), null, null, booleanProperty.doc());
     if (field.getType() != Boolean.class && (field.getType() != boolean.class || booleanProperty.nullable()))
       throw new IllegalAnnotationException(booleanProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
   }
 
-  private BooleanModel(final Member owner, final BooleanElement booleanElement) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, null, null, booleanElement.nullable(), booleanElement.minOccurs(), booleanElement.maxOccurs(), null);
+  private BooleanModel(final BooleanElement booleanElement) {
+    super(null, booleanElement.nullable(), null, booleanElement.minOccurs(), booleanElement.maxOccurs(), booleanElement.doc());
   }
 
   private BooleanModel(final Element element) {
@@ -106,7 +104,7 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final String pacakgeName) {
-    return new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"boolean\"" : "<boolean").append(super.toJSONX(pacakgeName)).append("/>").toString();
+  protected final String toJSONX(final Member owner, final String pacakgeName) {
+    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"boolean\"" : "<boolean").append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
   }
 }

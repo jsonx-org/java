@@ -31,5 +31,4 @@ public @interface ObjectProperty {
   boolean required() default true;
   boolean nullable() default true;
   String doc() default "";
-
 }

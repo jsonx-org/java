@@ -43,24 +43,24 @@ import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.xsb.runtime.Bindings;
 
 class ArrayModel extends ComplexModel {
-  public static ArrayModel declare(final Schema schema, final Registry registry, final Jsonx.Array binding) {
-    return registry.declare(binding).value(new ArrayModel(schema, registry, binding, binding.getDoc$() == null ? null : binding.getDoc$().text()), null);
+  public static ArrayModel declare(final Registry registry, final Jsonx.Array binding) {
+    return registry.declare(binding).value(new ArrayModel(registry, binding, binding.getDoc$() == null ? null : binding.getDoc$().text()), null);
   }
 
-  public static ArrayModel referenceOrDeclare(final Member owner, final Registry registry, final ArrayProperty arrayProperty, final Field field) {
-    return new ArrayModel(owner, registry, arrayProperty, field);
+  public static ArrayModel referenceOrDeclare(final Registry registry, final ArrayProperty arrayProperty, final Field field) {
+    return new ArrayModel(registry, arrayProperty, field);
   }
 
-  private static ArrayModel referenceOrDeclare(final Member owner, final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
-    return new ArrayModel(owner, registry, arrayElement, field, annotations);
+  private static ArrayModel referenceOrDeclare(final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
+    return new ArrayModel(registry, arrayElement, field, annotations);
   }
 
-  public static ArrayModel reference(final Member owner, final Registry registry, final $Array.Array binding) {
-    return new ArrayModel(owner, registry, binding);
+  public static ArrayModel reference(final Registry registry, final $Array.Array binding) {
+    return new ArrayModel(registry, binding);
   }
 
-  public static ArrayModel reference(final Member owner, final Registry registry, final $Array binding) {
-    return new ArrayModel(owner, registry, binding);
+  public static ArrayModel reference(final Registry registry, final $Array binding) {
+    return new ArrayModel(registry, binding);
   }
 
   static Type getGreatestCommonSuperType(final List<Element> elements) {
@@ -94,16 +94,16 @@ class ArrayModel extends ComplexModel {
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Array.Boolean) {
-        members.add(BooleanModel.reference(referrer, ($Array.Boolean)member));
+        members.add(BooleanModel.reference(($Array.Boolean)member));
       }
       else if (member instanceof $Array.Number) {
-        members.add(NumberModel.reference(referrer, ($Array.Number)member));
+        members.add(NumberModel.reference(($Array.Number)member));
       }
       else if (member instanceof $Array.String) {
-        members.add(StringModel.reference(referrer, ($Array.String)member));
+        members.add(StringModel.reference(($Array.String)member));
       }
       else if (member instanceof $Array.Array) {
-        members.add(ArrayModel.reference(referrer, registry, ($Array.Array)member));
+        members.add(ArrayModel.reference(registry, ($Array.Array)member));
       }
       else if (member instanceof $Array.Object) {
         members.add(ObjectModel.reference(registry, referrer, ($Array.Object)member));
@@ -114,7 +114,7 @@ class ArrayModel extends ComplexModel {
         if (element == null)
           throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
 
-        members.add(element instanceof Model ? new Template(referrer, template, (Model)element) : element);
+        members.add(element instanceof Model ? new Template(template, (Model)element) : element);
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -132,15 +132,15 @@ class ArrayModel extends ComplexModel {
         throw new AnnotationParameterException(annotation, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + annotation.annotationType().getName() + " specifies non-existent element with id=" + elementId);
 
       if (elementAnnotation instanceof BooleanElement)
-        elements.add(BooleanModel.referenceOrDeclare(referrer, (BooleanElement)elementAnnotation));
+        elements.add(BooleanModel.referenceOrDeclare((BooleanElement)elementAnnotation));
       else if (elementAnnotation instanceof NumberElement)
-        elements.add(NumberModel.referenceOrDeclare(referrer, (NumberElement)elementAnnotation));
+        elements.add(NumberModel.referenceOrDeclare((NumberElement)elementAnnotation));
       else if (elementAnnotation instanceof StringElement)
-        elements.add(StringModel.referenceOrDeclare(referrer, (StringElement)elementAnnotation));
+        elements.add(StringModel.referenceOrDeclare((StringElement)elementAnnotation));
       else if (elementAnnotation instanceof ObjectElement)
         elements.add(ObjectModel.referenceOrDeclare(registry, referrer, (ObjectElement)elementAnnotation));
       else if (elementAnnotation instanceof ArrayElement)
-        elements.add(ArrayModel.referenceOrDeclare(referrer, registry, (ArrayElement)elementAnnotation, field, annotations));
+        elements.add(ArrayModel.referenceOrDeclare(registry, (ArrayElement)elementAnnotation, field, annotations));
     }
 
     return Collections.unmodifiableList(elements);
@@ -176,27 +176,26 @@ class ArrayModel extends ComplexModel {
     map.put(id, annotation);
   }
 
-  private ArrayModel(final Schema schema, final Registry registry, final Jsonx.Array binding, final String doc) {
-    super(schema, binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, doc);
+  private ArrayModel(final Registry registry, final Jsonx.Array binding, final String doc) {
+    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, doc);
     this.members = parseMembers(registry, this, binding);
   }
 
-  private ArrayModel(final Member owner, final Registry registry, final $Array binding) {
-    super(owner, binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+  private ArrayModel(final Registry registry, final $Array binding) {
+    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
     this.members = parseMembers(registry, this, binding);
   }
 
-  private ArrayModel(final Member owner, final Registry registry, final $Array.Array binding) {
-    super(owner, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private ArrayModel(final Registry registry, final $Array.Array binding) {
+    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     if (this.maxOccurs() != null && this.minOccurs() > this.maxOccurs())
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs() + "\" > maxOccurs=\"" + this.maxOccurs() + "\"");
 
     this.members = parseMembers(registry, this, binding);
   }
 
-  private ArrayModel(final Member owner, final Registry registry, final ArrayProperty arrayProperty, final Field field) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.required(), null, null, null);
+  private ArrayModel(final Registry registry, final ArrayProperty arrayProperty, final Field field) {
+    super(getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.required(), null, null, arrayProperty.doc());
     if (field.getType() != List.class && !field.getType().isArray())
       throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
@@ -244,9 +243,8 @@ class ArrayModel extends ComplexModel {
 
   private final List<Element> members;
 
-  private ArrayModel(final Member owner, final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, null, arrayElement.nullable(), null, arrayElement.minOccurs(), arrayElement.maxOccurs(), null);
+  private ArrayModel(final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
+    super(null, arrayElement.nullable(), null, arrayElement.minOccurs(), arrayElement.maxOccurs(), arrayElement.doc());
     this.members = parseMembers(registry, this, field, arrayElement, arrayElement.elementIds(), annotations);
   }
 
@@ -310,18 +308,18 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"array\"" : "<array");
+  protected final String toJSONX(final Member owner, final String pacakgeName) {
+    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"array\"" : "<array");
     if (members.size() > 0) {
-      builder.append(super.toJSONX(pacakgeName)).append('>');
+      builder.append(super.toJSONX(owner, pacakgeName)).append('>');
       for (final Element member : this.members)
-        builder.append("\n  ").append(member.toJSONX(pacakgeName).replace("\n", "\n  "));
+        builder.append("\n  ").append(member.toJSONX(this, pacakgeName).replace("\n", "\n  "));
 
       builder.append('\n');
-      builder.append(kind() == Kind.PROPERTY ? "</property>" : "</array>");
+      builder.append(owner instanceof ObjectModel ? "</property>" : "</array>");
     }
     else {
-      builder.append(super.toJSONX(pacakgeName)).append("/>");
+      builder.append(super.toJSONX(owner, pacakgeName)).append("/>");
     }
 
     return builder.toString();
@@ -379,12 +377,12 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toField() {
+  protected final String toElementAnnotations() {
     final StringBuilder builder = new StringBuilder();
     int index = 0;
     for (final Element element : members())
       index += writeElementAnnotations(builder, element, index);
 
-    return builder.append(super.toField()).toString();
+    return builder.toString();
   }
 }

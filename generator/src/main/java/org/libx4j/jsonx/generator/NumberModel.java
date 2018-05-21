@@ -30,54 +30,53 @@ import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;
 
 class NumberModel extends SimpleModel {
-  public static NumberModel declare(final Schema schema, final Registry registry, final Jsonx.Number binding) {
-    return registry.declare(binding).value(new NumberModel(schema, binding), null);
+  public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
+    return registry.declare(binding).value(new NumberModel(binding), null);
   }
 
-  public static NumberModel referenceOrDeclare(final Member owner, final NumberProperty numberProperty, final Field field) {
-    return new NumberModel(owner, numberProperty, field);
+  public static NumberModel referenceOrDeclare(final NumberProperty numberProperty, final Field field) {
+    return new NumberModel(numberProperty, field);
   }
 
-  public static NumberModel referenceOrDeclare(final Member owner, final NumberElement numberElement) {
-    return new NumberModel(owner, numberElement);
+  public static NumberModel referenceOrDeclare(final NumberElement numberElement) {
+    return new NumberModel(numberElement);
   }
 
-  public static NumberModel reference(final Member owner, final $Array.Number binding) {
-    return new NumberModel(owner, binding);
+  public static NumberModel reference(final $Array.Number binding) {
+    return new NumberModel(binding);
   }
 
-  public static NumberModel reference(final Member owner, final $Number binding) {
-    return new NumberModel(owner, binding);
+  public static NumberModel reference(final $Number binding) {
+    return new NumberModel(binding);
   }
 
   private final Form form;
   private final BigDecimal min;
   private final BigDecimal max;
 
-  private NumberModel(final Schema schema, final Jsonx.Number binding) {
-    super(schema, binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  private NumberModel(final Jsonx.Number binding) {
+    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
-  private NumberModel(final Member owner, final $Number binding) {
-    super(owner, binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+  private NumberModel(final $Number binding) {
+    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
-  private NumberModel(final Member owner, final $Array.Number binding) {
-    super(owner, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private NumberModel(final $Array.Number binding) {
+    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
   }
 
-  private NumberModel(final Member owner, final NumberProperty numberProperty, final Field field) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, getName(numberProperty.name(), field), numberProperty.required(), numberProperty.nullable(), null, null, null);
+  private NumberModel(final NumberProperty numberProperty, final Field field) {
+    super(getName(numberProperty.name(), field), numberProperty.nullable(), numberProperty.required(), null, null, numberProperty.doc());
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || numberProperty.nullable()))
       throw new IllegalAnnotationException(numberProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
@@ -86,9 +85,8 @@ class NumberModel extends SimpleModel {
     this.max = numberProperty.max().length() == 0 ? null : new BigDecimal(numberProperty.max());
   }
 
-  private NumberModel(final Member owner, final NumberElement numberElement) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, null, null, numberElement.nullable(), numberElement.minOccurs(), numberElement.maxOccurs(), null);
+  private NumberModel(final NumberElement numberElement) {
+    super(null, numberElement.nullable(), null, numberElement.minOccurs(), numberElement.maxOccurs(), numberElement.doc());
     this.form = numberElement.form();
     this.min = numberElement.min().length() == 0 ? null : new BigDecimal(numberElement.min());
     this.max = numberElement.max().length() == 0 ? null : new BigDecimal(numberElement.max());
@@ -157,8 +155,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"number\"" : "<number");
+  protected final String toJSONX(final Member owner, final String pacakgeName) {
+    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"number\"" : "<number");
     if (form != Form.REAL)
       builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
 
@@ -168,7 +166,7 @@ class NumberModel extends SimpleModel {
     if (max != null)
       builder.append(" max=\"").append(max).append('"');
 
-    return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
   }
 
   @Override

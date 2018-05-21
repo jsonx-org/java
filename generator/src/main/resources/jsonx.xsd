@@ -300,7 +300,16 @@
     <xs:complexContent>
       <xs:extension base="jsonx:member">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="property" type="jsonx:member"/>
+          <xs:element name="property" type="jsonx:member">
+            <xs:unique name="propertyNameUnique">
+              <xs:selector xpath="./jsonx:property"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+            <xs:unique name="propertyClassUnique">
+              <xs:selector xpath="./jsonx:property"/>
+              <xs:field xpath="@class"/>
+            </xs:unique>
+          </xs:element>
         </xs:choice>
         <xs:attribute name="extends" type="dt:stringNonEmpty">
           <xs:annotation>
@@ -388,9 +397,13 @@
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
-            <xs:unique name="propertyNameUnique3">
+            <xs:unique name="objectNameUnique">
               <xs:selector xpath="./*"/>
               <xs:field xpath="@name"/>
+            </xs:unique>
+            <xs:unique name="objectPropertyClassUnique">
+              <xs:selector xpath="./jsonx:property"/>
+              <xs:field xpath="@class"/>
             </xs:unique>
           </xs:element>
         </xs:choice>
@@ -429,10 +442,6 @@
       <xs:selector xpath=".//jsonx:property/jsonx:object"/>
       <xs:field xpath="@class"/>
     </xs:keyref>
-    <xs:unique name="innerObjectUnique">
-      <xs:selector xpath=".//jsonx:property"/>
-      <xs:field xpath="@class"/>
-    </xs:unique>
   </xs:element>
 
 </xs:schema>

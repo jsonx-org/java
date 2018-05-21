@@ -65,6 +65,9 @@ class Registry {
   }
 
   public Value declare(final Class<?> clazz) {
+    if (clazz.getName().contains("ObjectExtendsBooleans2")) {
+      System.out.println(clazz.getName());
+    }
     return new Value(clazz.getName());
   }
 
@@ -103,6 +106,10 @@ class Registry {
 
     referrers.add(referrer);
     return model;
+  }
+
+  public Element getElement(final $Object binding) {
+    return getElement(ObjectModel.getFullyQualifiedName(binding));
   }
 
   public Element getElement(final String ref) {

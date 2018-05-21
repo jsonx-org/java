@@ -22,39 +22,57 @@ import java.util.List;
 import org.libx4j.jsonx.runtime.JsonxObject;
 
 public class ClassHolder {
+  private final ObjectModel model;
   private final Type type;
-  private final String annotation;
-  private final String code;
 
-  public ClassHolder(final Type type, final String annotation, final String code) {
-    this.type = type;
-    this.annotation = annotation;
-    this.code = code;
+  public ClassHolder(final ObjectModel model) {
+    this.model = model;
+    this.type = model.type();
   }
 
   public ClassHolder(final Type type) {
+    this.model = null;
     this.type = type;
-    this.annotation = "";
-    this.code = "";
   }
 
   public String getAnnotation() {
+    if (model == null)
+      return null;
+
+    final String annotation = model.toObjectAnnotation();
     return "@" + JsonxObject.class.getName() + (annotation.length() == 0 ? "" : "(" + annotation + ")");
   }
 
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
+    if ("ObjectExtendsAbstract".equals(type.getSimpleName())) {
+      int i = 0;
+    }
     builder.append("class ").append(type.getSimpleName());
     if (type.getSuperType() != Type.OBJECT)
-      builder.append(" extends ").append(type.getSuperType().getName());
+      builder.append(" extends ").append(type.getSuperType().getStrictName());
 
     builder.append(" {");
-    for (final ClassHolder memberClass : memberClasses)
-      builder.append("\n  ").append(memberClass.getAnnotation()).append("\n  public static ").append(memberClass.toString().replace("\n", "\n  ")).append("\n");
+    boolean isFirst = true;
+    for (final ClassHolder memberClass : memberClasses) {
+      if (isFirst)
+        isFirst = false;
+      else
+        builder.append('\n');
 
-    if (code.length() > 0)
-      builder.append("\n  ").append(code.replace("\n", "\n  "));
+      final String annotation = memberClass.getAnnotation();
+      if (annotation != null)
+        builder.append("\n  ").append(annotation);
+
+      builder.append("\n  public static ").append(memberClass.toString().replace("\n", "\n  "));
+    }
+
+    if (model != null) {
+      final String code = model.toJava();
+      if (code.length() > 0)
+        builder.append("\n  ").append(code.replace("\n", "\n  "));
+    }
 
     return builder.append("\n}").toString();
   }

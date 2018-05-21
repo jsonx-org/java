@@ -21,20 +21,20 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class SimpleModel extends Model {
-  public SimpleModel(final Member owner, final $Member binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(owner, binding, null, nullable, minOccurs, maxOccurs);
+  public SimpleModel(final $Member binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(binding, null, nullable, minOccurs, maxOccurs);
   }
 
-  public SimpleModel(final Member owner, final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    super(owner, name, nullable, required, minOccurs, maxOccurs, doc);
+  public SimpleModel(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+    super(name, nullable, required, minOccurs, maxOccurs, doc);
   }
 
-  public SimpleModel(final Member owner, final $Member binding, final String name, final boolean nullable, final boolean required) {
-    super(owner, binding, name, nullable, required);
+  public SimpleModel(final $Member binding, final String name, final boolean nullable, final boolean required) {
+    super(binding, name, nullable, required);
   }
 
-  public SimpleModel(final Member owner, final String doc) {
-    super(owner, doc);
+  public SimpleModel(final String doc) {
+    super(doc);
   }
 
   public SimpleModel(final Element element) {

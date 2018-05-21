@@ -57,10 +57,8 @@ abstract class Member {
   protected void collectClassNames(final List<Type> types) {
   }
 
-  protected abstract Schema getSchema();
-
   protected abstract String toJSON(final String pacakgeName);
-  protected abstract String toJSONX(final String pacakgeName);
+  protected abstract String toJSONX(final Member owner, final String pacakgeName);
 
   public abstract String toJSON();
   public abstract String toJSONX();

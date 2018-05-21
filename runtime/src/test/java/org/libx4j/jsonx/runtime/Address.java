@@ -29,7 +29,7 @@ public class Address {
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, nullable=false)
   public String street;
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, required=false, nullable=false)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, nullable=false, required=false)
   public String premise;
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, nullable=false)

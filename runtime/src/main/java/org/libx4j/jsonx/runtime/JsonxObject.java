@@ -27,4 +27,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JsonxObject {
   Unknown unknown() default Unknown.ERROR;
+  String doc() default "";
 }

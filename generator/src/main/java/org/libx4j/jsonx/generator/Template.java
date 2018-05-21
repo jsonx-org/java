@@ -24,23 +24,23 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
 class Template extends Element {
   private final Model model;
 
-  public Template(final Member owner, final $ArrayMember.Template binding, final Model model) {
-    super(owner, binding, null, null, binding.getMinOccurs$(), binding.getMaxOccurs$());
+  public Template(final $ArrayMember.Template binding, final Model model) {
+    super(binding, null, null, binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
   }
 
-  public Template(final Member owner, final $Template binding, final Model model) {
-    super(owner, binding.getName$().text(), null, binding.getRequired$().text(), binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Template(final $Template binding, final Model model) {
+    super(binding.getName$().text(), null, binding.getRequired$().text(), binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.model = model;
   }
 
-  public Template(final Member owner, final String name, final boolean required, final Model model, final String doc) {
-    super(owner, name, null, required, doc);
+  public Template(final String name, final boolean nullable, final boolean required, final Model model, final String doc) {
+    super(name, nullable, required, doc);
     this.model = model;
   }
 
-  public Template(final Member owner, final Integer minOccurs, final Integer maxOccurs, final Model model, final String doc) {
-    super(owner, null, null, minOccurs, maxOccurs, doc);
+  public Template(final Integer minOccurs, final Integer maxOccurs, final Model model, final String doc) {
+    super(null, null, minOccurs, maxOccurs, doc);
     this.model = model;
   }
 
@@ -86,12 +86,12 @@ class Template extends Element {
   }
 
   @Override
-  protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"template\"" : "<template");
+  protected final String toJSONX(final Member owner, final String pacakgeName) {
+    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
       builder.append(" reference=\"").append(Type.getSubName(model.reference(), pacakgeName)).append('"');
 
-    return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
   }
 
   @Override
@@ -102,5 +102,10 @@ class Template extends Element {
       builder.append(", ");
 
     return builder.append(annotation).toString();
+  }
+
+  @Override
+  protected String toElementAnnotations() {
+    return model.toElementAnnotations();
   }
 }

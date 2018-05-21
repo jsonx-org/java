@@ -28,24 +28,24 @@ import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringProperty;
 
 class StringModel extends SimpleModel {
-  public static StringModel declare(final Schema schema, final Registry registry, final Jsonx.String binding) {
-    return registry.declare(binding).value(new StringModel(schema, binding), null);
+  public static StringModel declare(final Registry registry, final Jsonx.String binding) {
+    return registry.declare(binding).value(new StringModel(binding), null);
   }
 
-  public static StringModel referenceOrDeclare(final Member owner, final StringProperty stringProperty, final Field field) {
-    return new StringModel(owner, stringProperty, field);
+  public static StringModel referenceOrDeclare(final StringProperty stringProperty, final Field field) {
+    return new StringModel(stringProperty, field);
   }
 
-  public static StringModel referenceOrDeclare(final Member owner, final StringElement stringElement) {
-    return new StringModel(owner, stringElement);
+  public static StringModel referenceOrDeclare(final StringElement stringElement) {
+    return new StringModel(stringElement);
   }
 
-  public static StringModel reference(final Member owner, final $Array.String binding) {
-    return new StringModel(owner, binding);
+  public static StringModel reference(final $Array.String binding) {
+    return new StringModel(binding);
   }
 
-  public static StringModel reference(final Member owner, final $String binding) {
-    return new StringModel(owner, binding);
+  public static StringModel reference(final $String binding) {
+    return new StringModel(binding);
   }
 
   private static String parsePattern(final String pattern) {
@@ -56,30 +56,29 @@ class StringModel extends SimpleModel {
   private final boolean urlEncode;
   private final boolean urlDecode;
 
-  private StringModel(final Schema schema, final Jsonx.String binding) {
-    super(schema, binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+  private StringModel(final Jsonx.String binding) {
+    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
     this.pattern = binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  private StringModel(final Member owner, final $String binding) {
-    super(owner, binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+  private StringModel(final $String binding) {
+    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  private StringModel(final Member owner, final $Array.String binding) {
-    super(owner, binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private StringModel(final $Array.String binding) {
+    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
   }
 
-  private StringModel(final Member owner, final StringProperty stringProperty, final Field field) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, getName(stringProperty.name(), field), stringProperty.required(), stringProperty.nullable(), null, null, null);
+  private StringModel(final StringProperty stringProperty, final Field field) {
+    super(getName(stringProperty.name(), field), stringProperty.nullable(), stringProperty.required(), null, null, stringProperty.doc());
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(stringProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -88,9 +87,8 @@ class StringModel extends SimpleModel {
     this.urlDecode = stringProperty.urlDecode();
   }
 
-  private StringModel(final Member owner, final StringElement stringElement) {
-    // FIXME: Can we get doc comments from code?
-    super(owner, null, null, stringElement.nullable(), stringElement.minOccurs(), stringElement.maxOccurs(), null);
+  private StringModel(final StringElement stringElement) {
+    super(null, stringElement.nullable(), null, stringElement.minOccurs(), stringElement.maxOccurs(), stringElement.doc());
     this.pattern = parsePattern(stringElement.pattern());
     this.urlEncode = stringElement.urlEncode();
     this.urlDecode = stringElement.urlDecode();
@@ -155,8 +153,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(kind() == Kind.PROPERTY ? "<property xsi:type=\"string\"" : "<string");
+  protected final String toJSONX(final Member owner, final String pacakgeName) {
+    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"string\"" : "<string");
     if (pattern != null)
       builder.append(" pattern=\"").append(pattern).append('"');
 
@@ -166,7 +164,7 @@ class StringModel extends SimpleModel {
     if (urlDecode)
       builder.append(" urlDecode=\"").append(urlDecode).append('"');
 
-    return builder.append(super.toJSONX(pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
   }
 
   @Override
