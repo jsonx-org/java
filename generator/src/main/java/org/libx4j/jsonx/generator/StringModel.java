@@ -139,8 +139,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSON(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+  protected final String toJSON(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
@@ -153,7 +153,7 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
+  protected final String toJSONX(final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"string\"" : "<string");
     if (pattern != null)
       builder.append(" pattern=\"").append(pattern).append('"');
@@ -164,12 +164,12 @@ class StringModel extends SimpleModel {
     if (urlDecode)
       builder.append(" urlDecode=\"").append(urlDecode).append('"');
 
-    return builder.append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(owner, packageName)).append("/>").toString();
   }
 
   @Override
-  protected final String toAnnotation(final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+  protected final String toAnnotation(final String packageName, final boolean full) {
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
     if (pattern != null)
       builder.append((builder.length() > 0 ? ", " : "") + "pattern=\"").append(Strings.escapeForJava(pattern)).append('"');
 

@@ -113,7 +113,7 @@ class Registry {
     return refToModel.get(ref);
   }
 
-  public Collection<Model> elements() {
+  public Collection<Model> rootElements() {
     return refToModel.values();
   }
 

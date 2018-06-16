@@ -363,9 +363,9 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
+  protected final String toJSONX(final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"object\"" : "<object");
-    builder.append(" class=\"").append(owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName(pacakgeName)) : type.getSubName(pacakgeName)).append('"');
+    builder.append(" class=\"").append(owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName(null)) : type.getSubName(packageName)).append('"');
 
     if (superObject != null)
       builder.append(" extends=\"").append(superObject.type().getCompoundClassName()).append('"');
@@ -379,12 +379,12 @@ class ObjectModel extends ComplexModel {
     if (members != null && members.size() > 0) {
       final StringBuilder members = new StringBuilder();
       for (final Element member : this.members.values())
-        members.append("\n  ").append(member.toJSONX(this, pacakgeName).replace("\n", "\n  "));
+        members.append("\n  ").append(member.toJSONX(this, packageName).replace("\n", "\n  "));
 
-      builder.append(super.toJSONX(owner, pacakgeName)).append('>').append(members).append('\n').append(owner instanceof ObjectModel ? "</property>" : "</object>");
+      builder.append(super.toJSONX(owner, packageName)).append('>').append(members).append('\n').append(owner instanceof ObjectModel ? "</property>" : "</object>");
     }
     else {
-      builder.append(super.toJSONX(owner, pacakgeName)).append("/>");
+      builder.append(super.toJSONX(owner, packageName)).append("/>");
     }
 
     return builder.toString();
@@ -406,20 +406,20 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final String toAnnotation(final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+  protected final String toAnnotation(final String packageName, final boolean full) {
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
     if (builder.length() > 0)
       builder.append(", ");
 
-    builder.append("type=").append(type.getStrictName()).append(".class");
+    builder.append("type=").append(type.getCanonicalName(packageName)).append(".class");
     return builder.toString();
   }
 
-  protected final String toJava() {
+  protected final String toJava(final String packageName) {
     final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0)
       for (final Element member : members.values())
-        builder.append("\n\n").append(member.toField());
+        builder.append("\n\n").append(member.toField(packageName));
 
     return builder.length() > 1 ? builder.substring(2).toString() : builder.toString();
   }

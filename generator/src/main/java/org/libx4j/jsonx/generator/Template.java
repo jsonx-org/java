@@ -74,30 +74,30 @@ class Template extends Element {
   }
 
   @Override
-  protected final String toJSON(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+  protected final String toJSON(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
     if (model != null)
-      builder.append(",\n  reference: \"").append(Type.getSubName(model.reference(), pacakgeName)).append('"');
+      builder.append(",\n  reference: \"").append(Type.getSubName(model.reference(), packageName)).append('"');
 
     return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
+  protected final String toJSONX(final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
-      builder.append(" reference=\"").append(Type.getSubName(model.reference(), pacakgeName)).append('"');
+      builder.append(" reference=\"").append(Type.getSubName(model.reference(), packageName)).append('"');
 
-    return builder.append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(owner, packageName)).append("/>").toString();
   }
 
   @Override
-  protected final String toAnnotation(final boolean full) {
-    final StringBuilder builder = new StringBuilder(super.toAnnotation(true));
-    final String annotation = model.toAnnotation(false);
+  protected final String toAnnotation(final String packageName, final boolean full) {
+    final StringBuilder builder = new StringBuilder(super.toAnnotation(packageName, true));
+    final String annotation = model.toAnnotation(packageName, false);
     if (builder.length() > 0 && annotation.length() > 0)
       builder.append(", ");
 
@@ -105,7 +105,7 @@ class Template extends Element {
   }
 
   @Override
-  protected String toElementAnnotations() {
-    return model.toElementAnnotations();
+  protected String toElementAnnotations(final String packageName) {
+    return model.toElementAnnotations(packageName);
   }
 }

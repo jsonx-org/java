@@ -99,12 +99,12 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSON(final String pacakgeName) {
-    return "{\n" + super.toJSON(pacakgeName) + "\n}";
+  protected final String toJSON(final String packageName) {
+    return "{\n" + super.toJSON(packageName) + "\n}";
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
-    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"boolean\"" : "<boolean").append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
+  protected final String toJSONX(final Member owner, final String packageName) {
+    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"boolean\"" : "<boolean").append(super.toJSONX(owner, packageName)).append("/>").toString();
   }
 }

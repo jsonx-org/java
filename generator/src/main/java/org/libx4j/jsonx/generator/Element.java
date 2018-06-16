@@ -124,9 +124,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
 
   // Templates
   public Element(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    if (name != null && name.endsWith("ObjectExtendsBooleans2")) {
-      int i = 0;
-    }
     this.name = name;
     this.nullable = nullable;
     this.required = required;
@@ -201,7 +198,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   }
 
   @Override
-  protected String toJSON(final String pacakgeName) {
+  protected String toJSON(final String packageName) {
     final StringBuilder builder = new StringBuilder("  type: \"").append(getClass().getSimpleName().toLowerCase()).append('"');
     if (name != null)
       builder.append(",\n  name: \"").append(name).append('"');
@@ -225,11 +222,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   }
 
   @Override
-  protected String toJSONX(final Member owner, final String pacakgeName) {
-    if ("Boolean array".equals(doc)) {
-      int i = 0;
-    }
-
+  protected String toJSONX(final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder();
     if (name != null)
       builder.append(owner instanceof Schema ? " template=\"" : " name=\"").append(name).append('"');
@@ -262,7 +255,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     return toJSONX(this, null);
   }
 
-  protected String toAnnotation(final boolean full) {
+  protected String toAnnotation(final String packageName, final boolean full) {
     final StringBuilder builder = new StringBuilder();
 //    if (name != null)
 //      string.append(", name=\"").append(name).append('"');
@@ -285,22 +278,22 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     return builder.length() == 0 ? "" : builder.substring(2);
   }
 
-  protected final String toField() {
+  protected final String toField(final String packageName) {
     final StringBuilder builder = new StringBuilder();
-    final String elementAnnotations = toElementAnnotations();
+    final String elementAnnotations = toElementAnnotations(packageName);
     if (elementAnnotations != null)
       builder.append(elementAnnotations);
 
     builder.append('@').append(propertyAnnotation().getName());
-    final String annotation = toAnnotation(true);
+    final String annotation = toAnnotation(packageName, true);
     if (annotation.length() > 0)
       builder.append('(').append(annotation).append(')');
 
-    builder.append('\n').append("public ").append(type().toStrictString()).append(' ').append(name()).append(';');
+    builder.append('\n').append("public ").append(type().toCanonicalString(packageName)).append(' ').append(name()).append(';');
     return builder.toString();
   }
 
-  protected String toElementAnnotations() {
+  protected String toElementAnnotations(final String packageName) {
     return null;
   }
 

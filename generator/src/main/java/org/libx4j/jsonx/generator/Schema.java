@@ -103,8 +103,19 @@ public class Schema extends Member {
     return this.packageName;
   }
 
+  public final Collection<Model> rootMembers() {
+    final List<Model> members = new ArrayList<Model>();
+    for (final Model model : this.registry.rootElements()) {
+      final int numReferrers = registry.getNumReferrers(model);
+      if (!(model instanceof ObjectModel) || numReferrers == 0 || numReferrers > 1)
+        members.add(model);
+    }
+
+    return members;
+  }
+
   public final Collection<Model> members() {
-    return this.registry.elements();
+    return this.registry.rootElements();
   }
 
   @Override
@@ -115,25 +126,25 @@ public class Schema extends Member {
   }
 
   @Override
-  protected final String toJSON(final String pacakgeName) {
+  protected final String toJSON(final String packageName) {
     final StringBuilder builder = new StringBuilder();
     builder.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
-    for (final Model member : members())
+    for (final Model member : rootMembers())
       if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        builder.append(",\n  \"").append(member.reference()).append("\": ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
+        builder.append(",\n  \"").append(member.reference()).append("\": ").append(member.toJSON(packageName).replace("\n", "\n  "));
 
     builder.append("\n}");
     return builder.toString();
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (pacakgeName == null ? "" : pacakgeName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/SevaSafris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
-    if (this.registry.size() > 0) {
+  protected final String toJSONX(final Member owner, final String packageName) {
+    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (packageName == null ? "" : packageName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/SevaSafris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
+    final Collection<Model> rootMembers = rootMembers();
+    if (rootMembers.size() > 0) {
       builder.append('>');
-      for (final Model member : members()) {
-        builder.append("\n  ").append(member.toJSONX(this, pacakgeName).replace("\n", "\n  "));
-      }
+      for (final Model member : rootMembers)
+        builder.append("\n  ").append(member.toJSONX(this, packageName).replace("\n", "\n  "));
 
       builder.append("\n</jsonx>");
     }
@@ -174,12 +185,12 @@ public class Schema extends Member {
     for (final Model member : members()) {
       if (member instanceof ObjectModel) {
         final ObjectModel model = (ObjectModel)member;
-        final ClassHolder classHolder = new ClassHolder(model);
+        final ClassHolder classHolder = new ClassHolder(packageName, model);
         if (model.type().getDeclaringType() != null) {
           final Type declaringType = model.type().getDeclaringType();
           ClassHolder parent = all.get(declaringType);
           if (parent == null) {
-            parent = new ClassHolder(declaringType);
+            parent = new ClassHolder(packageName, declaringType);
             typeToClassHolder.put(declaringType, parent);
             all.put(declaringType, parent);
           }
@@ -199,8 +210,9 @@ public class Schema extends Member {
       final Type type = entry.getKey();
       final ClassHolder holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
-      if (type.getStrictPackage() != null)
-        builder.append("package ").append(type.getStrictPackage()).append(";\n");
+      final String canonicalPackageName = type.getCanonicalPackage(packageName);
+      if (canonicalPackageName != null)
+        builder.append("package ").append(canonicalPackageName).append(";\n");
 
       final String annotation = holder.getAnnotation();
       if (annotation != null)

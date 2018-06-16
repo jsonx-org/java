@@ -304,7 +304,7 @@
       <property xsi:type="object" name="objectExtendsBooleans" class="ObjectExtendsBooleans" extends="sub1.simple$Booleans" doc="Object property, extending booleans"/>
       <property xsi:type="object" name="objectExtendsBooleans2" class="ObjectExtendsBooleans2" extends="sub1.simple$Booleans" doc="Object property, extending booleans 2"/>
       <property xsi:type="object" name="objectExtendsBooleans3" class="ObjectExtendsBooleans3" extends="sub1.simple$Booleans" doc="Object property, extending booleans 2"/>
-      <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract" extends="sub2.pkg.cls$AbstractObject" doc="Object with properties, extending abstractObject">
+      <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" doc="Object with properties, extending abstractObject">
         <property xsi:type="template" name="objectString" reference="rootString" required="false" doc="Property ref to topString, not required"/>
         <property xsi:type="number" name="objectNumber" doc="Number property"/>
       </property>

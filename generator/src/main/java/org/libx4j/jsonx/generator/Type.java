@@ -78,33 +78,29 @@ class Type {
     return get(null, compoundName, superName, (Type)null);
   }
 
-  public static String getSubName(final String name, final String pacakgeName) {
-    return pacakgeName != null && name.startsWith(pacakgeName) ? name.substring(pacakgeName.length() + 1) : name;
+  public static String getSubName(final String name, final String packageName) {
+    return packageName != null && name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name;
   }
 
   private final String packageName;
-  private final String strictPackageName;
+  private final String canonicalPackageName;
   private final String simpleName;
   private final String compoundName;
-  private final String strictCompoundClassName;
+  private final String canonicalCompoundClassName;
   private final String name;
-  private final String strictName;
+  private final String canonicalName;
   private final Type superType;
   private final Type genericType;
 
   private Type(final String packageName, final String compoundName, final Type superType, final Type genericType) {
     this.packageName = packageName;
     final int dot = compoundName.lastIndexOf('.');
-    this.strictPackageName = dot == -1 ? packageName : packageName != null ? packageName + "." + compoundName.substring(0, dot) : compoundName.substring(0, dot);
+    this.canonicalPackageName = dot == -1 ? packageName : packageName != null ? packageName + "." + compoundName.substring(0, dot) : compoundName.substring(0, dot);
     this.compoundName = compoundName;
     this.name = packageName != null ? packageName + "." + compoundName : compoundName;
-    if (name.endsWith("AbstractObject")) {
-      int i = 0;
-    }
-
-    this.strictCompoundClassName = compoundName.replace('$', '.');
-    this.simpleName = strictCompoundClassName.substring(strictCompoundClassName.lastIndexOf('.') + 1);
-    this.strictName = packageName + "." + strictCompoundClassName;
+    this.canonicalCompoundClassName = compoundName.replace('$', '.');
+    this.simpleName = canonicalCompoundClassName.substring(canonicalCompoundClassName.lastIndexOf('.') + 1);
+    this.canonicalName = packageName != null ? packageName + "." + canonicalCompoundClassName : canonicalCompoundClassName;
     qualifiedNameToType.put(name, this);
     this.superType = superType != null ? superType : OBJECT;
     this.genericType = genericType;
@@ -144,8 +140,8 @@ class Type {
     return packageName;
   }
 
-  public String getStrictPackage() {
-    return strictPackageName;
+  public String getCanonicalPackage(final String packageName) {
+    return this.packageName == null && packageName != null ? packageName + "." + canonicalPackageName : canonicalPackageName;
   }
 
   public String getSimpleName() {
@@ -156,33 +152,33 @@ class Type {
     return compoundName;
   }
 
-  public String getStrictCompoundClassName() {
-    return strictCompoundClassName;
+  public String getCanonicalCompoundClassName() {
+    return canonicalCompoundClassName;
   }
 
-  public String getName(final String pacakgeName) {
+  public String getName(final String packageName) {
     final StringBuilder builder = new StringBuilder();
     if (this.packageName != null)
       builder.append(this.packageName).append('.');
     else if (packageName != null)
-      builder.append(pacakgeName).append('.');
+      builder.append(packageName).append('.');
 
     builder.append(compoundName);
     return builder.toString();
   }
 
-  public String getStrictName() {
-    return strictName;
+  public String getCanonicalName(final String packageName) {
+    return this.packageName == null && packageName != null ? packageName + "." + canonicalName : canonicalName;
   }
 
-  public String getSubName(final String pacakgeName) {
-    return getSubName(name, pacakgeName);
+  public String getSubName(final String packageName) {
+    return getSubName(name, packageName);
   }
 
-  public String toStrictString() {
-    final StringBuilder builder = new StringBuilder(getStrictName());
+  public String toCanonicalString(final String packageName) {
+    final StringBuilder builder = new StringBuilder(this.packageName == null && packageName != null ? packageName + "." + canonicalName : canonicalName);
     if (genericType != null)
-      builder.append('<').append(genericType.toStrictString()).append('>');
+      builder.append('<').append(genericType.toCanonicalString(packageName)).append('>');
 
     return builder.toString();
   }

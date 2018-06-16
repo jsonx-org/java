@@ -137,8 +137,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected String toJSON(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+  protected String toJSON(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
@@ -155,7 +155,7 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
+  protected final String toJSONX(final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"number\"" : "<number");
     if (form != Form.REAL)
       builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
@@ -166,12 +166,12 @@ class NumberModel extends SimpleModel {
     if (max != null)
       builder.append(" max=\"").append(max).append('"');
 
-    return builder.append(super.toJSONX(owner, pacakgeName)).append("/>").toString();
+    return builder.append(super.toJSONX(owner, packageName)).append("/>").toString();
   }
 
   @Override
-  protected String toAnnotation(final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+  protected String toAnnotation(final String packageName, final boolean full) {
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
     if (form != Form.REAL)
       builder.append((builder.length() > 0 ? ", " : "") + "form=").append(Form.class.getName()).append('.').append(form);
 

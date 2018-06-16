@@ -22,15 +22,18 @@ import java.util.List;
 import org.libx4j.jsonx.runtime.JsonxObject;
 
 public class ClassHolder {
+  private final String packageName;
   private final ObjectModel model;
   private final Type type;
 
-  public ClassHolder(final ObjectModel model) {
+  public ClassHolder(final String packageName, final ObjectModel model) {
+    this.packageName = packageName;
     this.model = model;
     this.type = model.type();
   }
 
-  public ClassHolder(final Type type) {
+  public ClassHolder(final String packageName, final Type type) {
+    this.packageName = packageName;
     this.model = null;
     this.type = type;
   }
@@ -46,12 +49,9 @@ public class ClassHolder {
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
-    if ("ObjectExtendsAbstract".equals(type.getSimpleName())) {
-      int i = 0;
-    }
     builder.append("class ").append(type.getSimpleName());
     if (type.getSuperType() != Type.OBJECT)
-      builder.append(" extends ").append(type.getSuperType().getStrictName());
+      builder.append(" extends ").append(type.getSuperType().getCanonicalName(packageName));
 
     builder.append(" {");
     boolean isFirst = true;
@@ -69,7 +69,7 @@ public class ClassHolder {
     }
 
     if (model != null) {
-      final String code = model.toJava();
+      final String code = model.toJava(packageName);
       if (code.length() > 0)
         builder.append("\n  ").append(code.replace("\n", "\n  "));
     }

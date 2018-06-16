@@ -290,8 +290,8 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSON(final String pacakgeName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(pacakgeName));
+  protected final String toJSON(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
@@ -299,7 +299,7 @@ class ArrayModel extends ComplexModel {
       builder.append(",\n  members: ");
       final StringBuilder members = new StringBuilder();
       for (final Element member : this.members)
-        members.append(", ").append(member.toJSON(pacakgeName).replace("\n", "\n  "));
+        members.append(", ").append(member.toJSON(packageName).replace("\n", "\n  "));
 
       builder.append('[').append(members.length() > 0 ? members.substring(2) : members.toString()).append(']');
     }
@@ -308,49 +308,49 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String pacakgeName) {
+  protected final String toJSONX(final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"array\"" : "<array");
     if (members.size() > 0) {
-      builder.append(super.toJSONX(owner, pacakgeName)).append('>');
+      builder.append(super.toJSONX(owner, packageName)).append('>');
       for (final Element member : this.members)
-        builder.append("\n  ").append(member.toJSONX(this, pacakgeName).replace("\n", "\n  "));
+        builder.append("\n  ").append(member.toJSONX(this, packageName).replace("\n", "\n  "));
 
       builder.append('\n');
       builder.append(owner instanceof ObjectModel ? "</property>" : "</array>");
     }
     else {
-      builder.append(super.toJSONX(owner, pacakgeName)).append("/>");
+      builder.append(super.toJSONX(owner, packageName)).append("/>");
     }
 
     return builder.toString();
   }
 
   @Override
-  protected final String toAnnotation(final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(full)) : new StringBuilder();
+  protected final String toAnnotation(final String packageName, final boolean full) {
+    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
     if (builder.length() > 0)
       builder.append(", ");
 
     final int[] indices = new int[members().size()];
-    final StringBuilder foo = new StringBuilder();
+    final StringBuilder temp = new StringBuilder();
     int index = 0;
     for (int i = 0; i < members().size(); i++) {
       indices[i] = index;
-      index += writeElementAnnotations(foo, members().get(i), index);
+      index += writeElementAnnotations(packageName, temp, members().get(i), index);
     }
 
     return writeElementIdsClause(builder, indices).toString();
   }
 
-  protected final StringBuilder toAnnotation(final StringBuilder builder, final int ... indices) {
-    builder.append(super.toAnnotation(true));
+  protected final StringBuilder toAnnotation(final String packageName, final StringBuilder builder, final int ... indices) {
+    builder.append(super.toAnnotation(packageName, true));
     if (builder.length() > 0)
       builder.append(", ");
 
     return writeElementIdsClause(builder, indices);
   }
 
-  private static int writeElementAnnotations(final StringBuilder builder, final Element element, final int index) {
+  private static int writeElementAnnotations(final String packageName, final StringBuilder builder, final Element element, final int index) {
     final StringBuilder outer = new StringBuilder("@").append(element.elementAnnotation().getName()).append("(id=").append(index).append(", ");
     if (element instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)element;
@@ -359,15 +359,15 @@ class ArrayModel extends ComplexModel {
       final int[] indices = new int[arrayModel.members().size()];
       for (int i = 0; i < arrayModel.members().size(); i++) {
         indices[i] = index + offset;
-        offset += writeElementAnnotations(inner, arrayModel.members().get(i), index + offset);
+        offset += writeElementAnnotations(packageName, inner, arrayModel.members().get(i), index + offset);
       }
 
-      builder.insert(0, arrayModel.toAnnotation(outer, indices).append(")\n"));
+      builder.insert(0, arrayModel.toAnnotation(packageName, outer, indices).append(")\n"));
       builder.insert(0, inner);
       return offset;
     }
 
-    final String annotation = element.toAnnotation(true);
+    final String annotation = element.toAnnotation(packageName, true);
     if (annotation.length() > 0)
       builder.insert(0, outer.append(annotation).append(")\n"));
     else
@@ -377,11 +377,11 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toElementAnnotations() {
+  protected final String toElementAnnotations(final String packageName) {
     final StringBuilder builder = new StringBuilder();
     int index = 0;
     for (final Element element : members())
-      index += writeElementAnnotations(builder, element, index);
+      index += writeElementAnnotations(packageName, builder, element, index);
 
     return builder.toString();
   }
