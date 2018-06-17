@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,10 +36,22 @@ import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.JsonxObject;
 
 public class Schema extends Member {
+  private static void findInnerRelations(final StrictRefDigraph<Jsonx.Object,String> digraph, final Registry registry, final Jsonx.Object object, final $ObjectMember member) {
+    final Iterator<? super $ObjectMember> iterator = Iterators.filter(member.elementIterator(), m -> $ObjectMember.class.isInstance(m));
+    while (iterator.hasNext()) {
+      final $ObjectMember innerObject = ($ObjectMember)iterator.next();
+      if (innerObject.getExtends$() != null)
+        digraph.addEdgeRef(object, innerObject.getExtends$().text());
+
+      findInnerRelations(digraph, registry, object, innerObject);
+    }
+  }
+
   private final Registry registry;
   private final String packageName;
 
@@ -63,6 +76,8 @@ public class Schema extends Member {
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
           digraph.addVertex(object);
+
+        findInnerRelations(digraph, registry, object, object);
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + jsonx.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -111,6 +126,12 @@ public class Schema extends Member {
         members.add(model);
     }
 
+    members.sort(new Comparator<Model>() {
+      @Override
+      public int compare(final Model o1, final Model o2) {
+        return o1 instanceof ObjectModel && o2 instanceof ObjectModel ? o1.type().getCompoundClassName().compareTo(o2.type().getCompoundClassName()) : 0;
+      }
+    });
     return members;
   }
 

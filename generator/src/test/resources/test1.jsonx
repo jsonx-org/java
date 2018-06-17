@@ -19,14 +19,12 @@
   xmlns="http://jsonx.libx4j.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  <array template="rootArrayEmpty" doc="Empty array"/>
   <boolean template="rootBoolean" nullable="false"/>
-  <number template="rootNumber" form="integer" min="2" max="9"/>
-  <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true" nullable="false"/>
-  <array template="emptyArray" doc="Empty array"/>
-  <array template="booleanArray" doc="Boolean array" nullable="false">
+  <array template="rootBooleanArray" doc="Boolean array" nullable="false">
     <template reference="rootBoolean" maxOccurs="3" doc="Property ref to rootBoolean"/>
   </array>
-  <array template="arrayArray" doc="Array array">
+  <array template="rootMultiArray" doc="Array array">
     <array minOccurs="1" maxOccurs="1">
       <array maxOccurs="2">
         <boolean/>
@@ -37,6 +35,8 @@
       </array>
     </array>
   </array>
+  <number template="rootNumber" form="integer" min="2" max="9"/>
+  <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true" nullable="false"/>
   <object class="sub1.simple$Booleans" doc="Booleans test1">
     <property xsi:type="template" name="booleanRefDefault" reference="rootBoolean" doc="Boolean ref"/>
     <property xsi:type="template" name="booleanRefNotRequired" reference="rootBoolean" required="false" doc="Boolean ref not required"/>
@@ -45,9 +45,9 @@
     <property xsi:type="boolean" name="booleanNotNull" nullable="false" doc="Boolean not null"/>
     <property xsi:type="boolean" name="booleanNotRequiredNotNull" required="false" doc="Boolean not required not null"/>
   </object>
-  <object class="sub1.simple$BooleanArrays" doc="Boolean array test1">
-    <property xsi:type="template" name="booleanRefArrayDefault" reference="booleanArray" doc="Boolean ref array"/>
-    <property xsi:type="template" name="booleanRefArrayNotRequired" reference="booleanArray" required="false" doc="Boolean ref array not required"/>
+  <object class="sub1.simple$BooleansArray" doc="Boolean array test1">
+    <property xsi:type="template" name="booleanRefArrayDefault" reference="rootBooleanArray" doc="Boolean ref array"/>
+    <property xsi:type="template" name="booleanRefArrayNotRequired" reference="rootBooleanArray" required="false" doc="Boolean ref array not required"/>
     <property xsi:type="array" name="booleanArrayDefault" doc="Boolean array default">
       <template reference="rootBoolean" minOccurs="1" maxOccurs="3" doc="Property ref to rootBoolean"/>
     </property>
@@ -61,47 +61,6 @@
       <boolean nullable="false"/>
     </property>
   </object>
-  <object class="sub1.simple$Strings" doc="String test1">
-    <property xsi:type="template" name="stringRefDefault" reference="rootString" doc="Property ref"/>
-    <property xsi:type="template" name="stringRefNotRequired" reference="rootString" required="false" doc="Property ref not required"/>
-    <property xsi:type="string" name="stringDefault" doc="String"/>
-    <property xsi:type="string" name="stringNotRequired" required="false" doc="String not required"/>
-    <property xsi:type="string" name="stringNotNull" nullable="false" doc="String not null"/>
-    <property xsi:type="string" name="stringNotRequiredNotNull" required="false" doc="String not required not null"/>
-    <property xsi:type="string" name="stringPattern" pattern="[valid]+" doc="String pattern"/>
-    <property xsi:type="string" name="stringUrlDecode" urlDecode="true" doc="String url-decode"/>
-    <property xsi:type="string" name="stringUrlEncode" urlEncode="true" doc="String url-encode"/>
-  </object>
-  <object class="sub1.simple$StringArrays" doc="String array test1">
-    <property xsi:type="array" name="stringArrayRefDefault" doc="String array ref">
-      <template reference="rootString" doc="Property ref"/>
-    </property>
-    <property xsi:type="array" name="stringArrayRefNotRequired" required="false" doc="String array ref not required">
-      <template reference="rootString" doc="Property ref"/>
-    </property>
-    <property xsi:type="array" name="stringArrayDefault" doc="String array">
-      <string nullable="false" minOccurs="1" maxOccurs="1"/>
-      <string minOccurs="1" maxOccurs="1"/>
-    </property>
-    <property xsi:type="array" name="stringArrayNotNull" nullable="false" doc="String array not null">
-      <string nullable="false" minOccurs="1" maxOccurs="1"/>
-      <string minOccurs="1" maxOccurs="1"/>
-    </property>
-    <property xsi:type="array" name="stringArrayNotRequired" required="false" doc="String array not required">
-      <string minOccurs="3" maxOccurs="5"/>
-    </property>
-    <property xsi:type="array" name="stringArrayNotRequiredNotNull" required="false" nullable="false" doc="String array not required not null">
-      <string minOccurs="3" maxOccurs="5"/>
-    </property>
-    <property xsi:type="array" name="stringArrayPattern" doc="String array pattern">
-      <string pattern="[valid]+"/>
-    </property>
-    <property xsi:type="array" name="stringArrayUrl" doc="String array url-decode &amp; -encode">
-      <string urlEncode="true" maxOccurs="1" doc="String array member url-encode"/>
-      <string urlDecode="true" maxOccurs="1" doc="String array member url-decode"/>
-      <string urlEncode="true" urlDecode="true" maxOccurs="1" doc="String array member url-encode decode"/>
-    </property>
-  </object>
   <object class="sub1.simple$Numbers" doc="Number test1" unknown="ignore">
     <property xsi:type="template" name="numberRefDefault" reference="rootNumber" doc="Property ref"/>
     <property xsi:type="template" name="numberRefNotRequired" reference="rootNumber" required="false" doc="Property ref not required"/>
@@ -113,7 +72,7 @@
     <property xsi:type="number" name="numberMax" max="0" doc="Number max"/>
     <property xsi:type="number" name="numberInteger" form="integer" doc="Number integer"/>
   </object>
-  <object class="sub1.simple$NumberArrays" doc="Number array test1">
+  <object class="sub1.simple$NumbersArray" doc="Number array test1">
     <property xsi:type="array" name="numberArrayRefDefault" doc="Number array ref">
       <template reference="rootNumber" maxOccurs="3" doc="Property ref to topNumber, not null"/>
     </property>
@@ -289,10 +248,51 @@
       <boolean doc="13"/>
     </property>
   </object>
+  <object class="sub1.simple$Strings" doc="String test1">
+    <property xsi:type="template" name="stringRefDefault" reference="rootString" doc="Property ref"/>
+    <property xsi:type="template" name="stringRefNotRequired" reference="rootString" required="false" doc="Property ref not required"/>
+    <property xsi:type="string" name="stringDefault" doc="String"/>
+    <property xsi:type="string" name="stringNotRequired" required="false" doc="String not required"/>
+    <property xsi:type="string" name="stringNotNull" nullable="false" doc="String not null"/>
+    <property xsi:type="string" name="stringNotRequiredNotNull" required="false" doc="String not required not null"/>
+    <property xsi:type="string" name="stringPattern" pattern="[valid]+" doc="String pattern"/>
+    <property xsi:type="string" name="stringUrlDecode" urlDecode="true" doc="String url-decode"/>
+    <property xsi:type="string" name="stringUrlEncode" urlEncode="true" doc="String url-encode"/>
+  </object>
+  <object class="sub1.simple$StringsArray" doc="String array test1">
+    <property xsi:type="array" name="stringArrayRefDefault" doc="String array ref">
+      <template reference="rootString" doc="Property ref"/>
+    </property>
+    <property xsi:type="array" name="stringArrayRefNotRequired" required="false" doc="String array ref not required">
+      <template reference="rootString" doc="Property ref"/>
+    </property>
+    <property xsi:type="array" name="stringArrayDefault" doc="String array">
+      <string nullable="false" minOccurs="1" maxOccurs="1"/>
+      <string minOccurs="1" maxOccurs="1"/>
+    </property>
+    <property xsi:type="array" name="stringArrayNotNull" nullable="false" doc="String array not null">
+      <string nullable="false" minOccurs="1" maxOccurs="1"/>
+      <string minOccurs="1" maxOccurs="1"/>
+    </property>
+    <property xsi:type="array" name="stringArrayNotRequired" required="false" doc="String array not required">
+      <string minOccurs="3" maxOccurs="5"/>
+    </property>
+    <property xsi:type="array" name="stringArrayNotRequiredNotNull" required="false" nullable="false" doc="String array not required not null">
+      <string minOccurs="3" maxOccurs="5"/>
+    </property>
+    <property xsi:type="array" name="stringArrayPattern" doc="String array pattern">
+      <string pattern="[valid]+"/>
+    </property>
+    <property xsi:type="array" name="stringArrayUrl" doc="String array url-decode &amp; -encode">
+      <string urlEncode="true" maxOccurs="1" doc="String array member url-encode"/>
+      <string urlDecode="true" maxOccurs="1" doc="String array member url-decode"/>
+      <string urlEncode="true" urlDecode="true" maxOccurs="1" doc="String array member url-encode decode"/>
+    </property>
+  </object>
   <object class="sub2.pkg.cls$AbstractObject" abstract="true" doc="Abstract object test1">
     <property xsi:type="template" name="booleanProperty" reference="rootBoolean" doc="Property ref to rootBoolean"/>
   </object>
-  <object class="sub2.Objects" doc="Object test1" nullable="false">
+  <object class="sub2.xyz.Objects" doc="Object test1" nullable="false">
     <property xsi:type="object" name="objectDefault" class="ObjectDefault" doc="Object default"/>
     <property xsi:type="object" name="objectNotNull" class="ObjectNotNull" nullable="false" doc="Object not null"/>
     <property xsi:type="object" name="objectNotRequired" class="ObjectNotRequired" required="false" doc="Object not required"/>
@@ -313,7 +313,7 @@
       <property xsi:type="string" name="additionalString" doc="Additional string property"/>
     </property>
   </object>
-  <object class="sub1.pkg.ObjectArrays" extends="sub2.pkg.cls$AbstractObject" doc="Object array test1">
+  <object class="sub2.xyz.ObjectsArray" extends="sub2.pkg.cls$AbstractObject" doc="Object array test1">
     <property xsi:type="array" name="objectArrayDefault" doc="Object array default">
       <object class="sub1.simple$Booleans" minOccurs="1" maxOccurs="1"/>
     </property>
