@@ -17,27 +17,23 @@
 package org.libx4j.jsonx.generator;
 
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
+import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class SimpleModel extends Model {
-  public SimpleModel(final $Member binding, final boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(binding, null, nullable, minOccurs, maxOccurs);
+  public SimpleModel(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(null, nullable, minOccurs, maxOccurs);
   }
 
-  public SimpleModel(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    super(name, nullable, required, minOccurs, maxOccurs, doc);
+  public SimpleModel(final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
+    super(null, nullable, required, minOccurs, maxOccurs);
   }
 
-  public SimpleModel(final $Member binding, final String name, final boolean nullable, final boolean required) {
-    super(binding, name, nullable, required);
+  public SimpleModel(final String name, final boolean nullable, final boolean required) {
+    super(name, nullable, required);
   }
 
-  public SimpleModel(final String doc) {
-    super(doc);
-  }
-
-  public SimpleModel(final Element element) {
-    super(element);
+  public SimpleModel() {
+    super();
   }
 }

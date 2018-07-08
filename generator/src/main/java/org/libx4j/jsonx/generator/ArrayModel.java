@@ -44,28 +44,40 @@ import org.libx4j.xsb.runtime.Bindings;
 
 class ArrayModel extends ComplexModel {
   public static ArrayModel declare(final Registry registry, final Jsonx.Array binding) {
-    return registry.declare(binding).value(new ArrayModel(registry, binding, binding.getDoc$() == null ? null : binding.getDoc$().text()), null);
+    return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
-  public static ArrayModel referenceOrDeclare(final Registry registry, final ArrayProperty arrayProperty, final Field field) {
-    return new ArrayModel(registry, arrayProperty, field);
+  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ArrayProperty property, final Field field) {
+    final ArrayModel model = new ArrayModel(registry, property, field);
+    final Id id = model.id();
+
+    final ArrayModel registered = (ArrayModel)registry.getElement(id);
+    return new Template(getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  private static ArrayModel referenceOrDeclare(final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
-    return new ArrayModel(registry, arrayElement, field, annotations);
+  private static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
+    final ArrayModel model = new ArrayModel(registry, element, field, annotations);
+    final Id id = model.id();
+
+    if (id.toString().contains("af1e0f831")) {
+      System.out.println();
+    }
+
+    final ArrayModel registered = (ArrayModel)registry.getElement(id);
+    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static ArrayModel reference(final Registry registry, final $Array.Array binding) {
-    return new ArrayModel(registry, binding);
+  public static ArrayModel reference(final Registry registry, final ComplexModel referrer, final $Array.Array binding) {
+    return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
-  public static ArrayModel reference(final Registry registry, final $Array binding) {
-    return new ArrayModel(registry, binding);
+  public static ArrayModel reference(final Registry registry, final ComplexModel referrer, final $Array binding) {
+    return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
   static Type getGreatestCommonSuperType(final List<Element> elements) {
     if (elements.size() == 0)
-      throw new IllegalArgumentException("elements.size() == 0");
+      return Type.VOID;
 
     if (elements.size() == 1)
       return Type.get(List.class, elements.get(0).type());
@@ -77,15 +89,19 @@ class ArrayModel extends ComplexModel {
     return Type.get(List.class, gcc);
   }
 
-  private static StringBuilder writeElementIdsClause(final StringBuilder builder, final int[] indices) {
-    builder.append("elementIds={");
-    if (indices.length == 0)
-      return builder.append("}");
+  private static void writeElementIdsClause(final Attributes attributes, final int[] indices) {
+    final StringBuilder builder = new StringBuilder("{");
+    if (indices.length == 0) {
+      builder.append("}");
+    }
+    else {
+      for (int i = 0; i < indices.length - 1; i++)
+        builder.append(indices[i]).append(", ");
 
-    for (int i = 0; i < indices.length - 1; i++)
-      builder.append(indices[i]).append(", ");
+      builder.append(indices[indices.length - 1]).append('}');
+    }
 
-    return builder.append(indices[indices.length - 1]).append('}');
+    attributes.put("elementIds", builder);
   }
 
   private static List<Element> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember binding) {
@@ -94,27 +110,27 @@ class ArrayModel extends ComplexModel {
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Array.Boolean) {
-        members.add(BooleanModel.reference(($Array.Boolean)member));
+        members.add(BooleanModel.reference(registry, referrer, ($Array.Boolean)member));
       }
       else if (member instanceof $Array.Number) {
-        members.add(NumberModel.reference(($Array.Number)member));
+        members.add(NumberModel.reference(registry, referrer, ($Array.Number)member));
       }
       else if (member instanceof $Array.String) {
-        members.add(StringModel.reference(($Array.String)member));
+        members.add(StringModel.reference(registry, referrer, ($Array.String)member));
       }
       else if (member instanceof $Array.Array) {
-        members.add(ArrayModel.reference(registry, ($Array.Array)member));
+        members.add(ArrayModel.reference(registry, referrer, ($Array.Array)member));
       }
       else if (member instanceof $Array.Object) {
         members.add(ObjectModel.reference(registry, referrer, ($Array.Object)member));
       }
       else if (member instanceof $ArrayMember.Template) {
         final $ArrayMember.Template template = ($ArrayMember.Template)member;
-        final Element element = registry.getElement(template.getReference$().text());
-        if (element == null)
+        final Element reference = registry.getElement(template.getReference$().text());
+        if (reference == null)
           throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
 
-        members.add(element instanceof Model ? new Template(template, (Model)element) : element);
+        members.add(new Template(template, registry.reference(reference, referrer)));
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -132,15 +148,15 @@ class ArrayModel extends ComplexModel {
         throw new AnnotationParameterException(annotation, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + annotation.annotationType().getName() + " specifies non-existent element with id=" + elementId);
 
       if (elementAnnotation instanceof BooleanElement)
-        elements.add(BooleanModel.referenceOrDeclare((BooleanElement)elementAnnotation));
+        elements.add(BooleanModel.referenceOrDeclare(registry, referrer, (BooleanElement)elementAnnotation));
       else if (elementAnnotation instanceof NumberElement)
-        elements.add(NumberModel.referenceOrDeclare((NumberElement)elementAnnotation));
+        elements.add(NumberModel.referenceOrDeclare(registry, referrer, (NumberElement)elementAnnotation));
       else if (elementAnnotation instanceof StringElement)
-        elements.add(StringModel.referenceOrDeclare((StringElement)elementAnnotation));
+        elements.add(StringModel.referenceOrDeclare(registry, referrer, (StringElement)elementAnnotation));
       else if (elementAnnotation instanceof ObjectElement)
         elements.add(ObjectModel.referenceOrDeclare(registry, referrer, (ObjectElement)elementAnnotation));
       else if (elementAnnotation instanceof ArrayElement)
-        elements.add(ArrayModel.referenceOrDeclare(registry, (ArrayElement)elementAnnotation, field, annotations));
+        elements.add(ArrayModel.referenceOrDeclare(registry, referrer, (ArrayElement)elementAnnotation, field, annotations));
     }
 
     return Collections.unmodifiableList(elements);
@@ -164,7 +180,7 @@ class ArrayModel extends ComplexModel {
       if (t instanceof ObjectElement)
         return ((ObjectElement)t).id();
 
-      throw new UnsupportedOperationException("Unsupported Annotation type: " + t.getClass());
+      throw new UnsupportedOperationException("Unsupported Annotation type: " + t.getClass().getName());
     }
   };
 
@@ -176,28 +192,34 @@ class ArrayModel extends ComplexModel {
     map.put(id, annotation);
   }
 
-  private ArrayModel(final Registry registry, final Jsonx.Array binding, final String doc) {
-    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, doc);
+  private final Id id;
+  private final List<Element> members;
+
+  private ArrayModel(final Registry registry, final Jsonx.Array binding) {
+    super(null, binding.getNullable$().text(), null, null, null);
     this.members = parseMembers(registry, this, binding);
+    this.id = new Id(binding.getTemplate$().text());
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
-    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
     this.members = parseMembers(registry, this, binding);
+    this.id = new Id(this);
   }
 
   private ArrayModel(final Registry registry, final $Array.Array binding) {
-    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    if (this.maxOccurs() != null && this.minOccurs() > this.maxOccurs())
+    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    if (this.maxOccurs() != null && this.minOccurs() != null && this.minOccurs() > this.maxOccurs())
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs() + "\" > maxOccurs=\"" + this.maxOccurs() + "\"");
 
     this.members = parseMembers(registry, this, binding);
+    this.id = new Id(this);
   }
 
-  private ArrayModel(final Registry registry, final ArrayProperty arrayProperty, final Field field) {
-    super(getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.required(), null, null, arrayProperty.doc());
-    if (field.getType() != List.class && !field.getType().isArray())
-      throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
+  private ArrayModel(final Registry registry, final ArrayProperty property, final Field field) {
+    super(null, property.nullable(), null, null, null);
+    if (field.getType() != List.class && !field.getType().isArray() && !Void.class.equals(field.getType()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
     final Map<Integer,Annotation> map = new HashMap<Integer,Annotation>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<Integer>("Element cannot include itself as a member");
@@ -238,19 +260,19 @@ class ArrayModel extends ComplexModel {
     for (final Integer elementId : digraph.getTopologicalOrder())
       topologicalOrder.put(elementId, map.get(elementId));
 
-    this.members = parseMembers(registry, this, field, arrayProperty, arrayProperty.elementIds(), topologicalOrder);
+    this.members = parseMembers(registry, this, field, property, property.elementIds(), topologicalOrder);
+    this.id = new Id(this);
   }
 
-  private final List<Element> members;
-
-  private ArrayModel(final Registry registry, final ArrayElement arrayElement, final Field field, final Map<Integer,Annotation> annotations) {
-    super(null, arrayElement.nullable(), null, arrayElement.minOccurs(), arrayElement.maxOccurs(), arrayElement.doc());
-    this.members = parseMembers(registry, this, field, arrayElement, arrayElement.elementIds(), annotations);
+  private ArrayModel(final Registry registry, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
+    super(null, element.nullable(), null, null, null);
+    this.members = parseMembers(registry, this, field, element, element.elementIds(), annotations);
+    this.id = new Id(this);
   }
 
-  private ArrayModel(final Element element, final List<Element> members) {
-    super(element);
-    this.members = Collections.unmodifiableList(members);
+  @Override
+  public final Id id() {
+    return id;
   }
 
   public final List<Element> members() {
@@ -270,16 +292,6 @@ class ArrayModel extends ComplexModel {
   @Override
   protected final Class<? extends Annotation> elementAnnotation() {
     return ArrayElement.class;
-  }
-
-  @Override
-  protected final ArrayModel normalize(final Registry registry) {
-    return new ArrayModel(this, normalize(registry, members));
-  }
-
-  @Override
-  protected ArrayModel merge(final Template reference) {
-    return new ArrayModel(reference, members);
   }
 
   @Override
@@ -308,29 +320,39 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"array\"" : "<array");
-    if (members.size() > 0) {
-      builder.append(super.toJSONX(owner, packageName)).append('>');
+  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    final boolean skipMembers;
+    final StringBuilder builder;
+    if (owner instanceof ObjectModel) {
+      builder = new StringBuilder("<property xsi:type=\"");
+      if (skipMembers = registry.hasRegistry(id()))
+        builder.append("template\" reference=\"").append(id()).append("\"");
+      else
+        builder.append("array\"");
+    }
+    else {
+      builder = new StringBuilder("<array");
+      skipMembers = false;
+    }
+
+    if (!skipMembers && members.size() > 0) {
+      builder.append(super.toJSONX(registry, owner, packageName)).append('>');
       for (final Element member : this.members)
-        builder.append("\n  ").append(member.toJSONX(this, packageName).replace("\n", "\n  "));
+        builder.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
 
       builder.append('\n');
       builder.append(owner instanceof ObjectModel ? "</property>" : "</array>");
     }
     else {
-      builder.append(super.toJSONX(owner, packageName)).append("/>");
+      builder.append(super.toJSONX(registry, owner, packageName)).append("/>");
     }
 
     return builder.toString();
   }
 
   @Override
-  protected final String toAnnotation(final String packageName, final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
-    if (builder.length() > 0)
-      builder.append(", ");
-
+  protected void toAnnotation(final Attributes attributes, final String packageName) {
+    super.toAnnotation(attributes, packageName);
     final int[] indices = new int[members().size()];
     final StringBuilder temp = new StringBuilder();
     int index = 0;
@@ -339,21 +361,21 @@ class ArrayModel extends ComplexModel {
       index += writeElementAnnotations(packageName, temp, members().get(i), index);
     }
 
-    return writeElementIdsClause(builder, indices).toString();
+    writeElementIdsClause(attributes, indices);
   }
 
-  protected final StringBuilder toAnnotation(final String packageName, final StringBuilder builder, final int ... indices) {
-    builder.append(super.toAnnotation(packageName, true));
-    if (builder.length() > 0)
-      builder.append(", ");
-
-    return writeElementIdsClause(builder, indices);
+  protected final void toAnnotation(final String packageName, final Attributes attributes, final int ... indices) {
+    super.toAnnotation(attributes, packageName);
+    writeElementIdsClause(attributes, indices);
   }
 
   private static int writeElementAnnotations(final String packageName, final StringBuilder builder, final Element element, final int index) {
-    final StringBuilder outer = new StringBuilder("@").append(element.elementAnnotation().getName()).append("(id=").append(index).append(", ");
-    if (element instanceof ArrayModel) {
-      final ArrayModel arrayModel = (ArrayModel)element;
+    final Attributes outer = new Attributes();
+    outer.put("id", index);
+
+    final Element reference = element instanceof Template ? ((Template)element).reference() : element;
+    if (reference instanceof ArrayModel) {
+      final ArrayModel arrayModel = (ArrayModel)reference;
       int offset = 1;
       final StringBuilder inner = new StringBuilder();
       final int[] indices = new int[arrayModel.members().size()];
@@ -362,17 +384,21 @@ class ArrayModel extends ComplexModel {
         offset += writeElementAnnotations(packageName, inner, arrayModel.members().get(i), index + offset);
       }
 
-      builder.insert(0, arrayModel.toAnnotation(packageName, outer, indices).append(")\n"));
+      // FIXME: Can this be abstracted better? minOccurs and maxOccurs are rendered here and in Element.toAnnotation()
+      arrayModel.toAnnotation(packageName, outer, indices);
+      if (element.minOccurs() != null)
+        outer.put("minOccurs", element.minOccurs());
+
+      if (element.maxOccurs() != null)
+        outer.put("maxOccurs", element.maxOccurs());
+
+      builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + outer.toAnnotation() + ")\n");
       builder.insert(0, inner);
       return offset;
     }
 
-    final String annotation = element.toAnnotation(packageName, true);
-    if (annotation.length() > 0)
-      builder.insert(0, outer.append(annotation).append(")\n"));
-    else
-      builder.append(outer.replace(outer.length() - 2, outer.length(), ")\n"));
-
+    element.toAnnotation(outer, packageName);
+    builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + outer.toAnnotation() + ")\n");
     return 1;
   }
 

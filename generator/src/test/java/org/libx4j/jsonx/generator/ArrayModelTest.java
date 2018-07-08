@@ -46,19 +46,20 @@ public class ArrayModelTest {
 
   @Test
   public void testGreatestCommonSuperObject() {
+    final Registry registry = new Registry();
     final xL2gluGCXYYJc.Jsonx jsonx = new xL2gluGCXYYJc.Jsonx();
     jsonx.setPackage$(new xL2gluGCXYYJc.Jsonx.Package$("org.libx4j.jsonx.generator"));
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));
     number1.setForm$(new $Number.Form$($Number.Form$.integer));
-    final NumberModel model1 = NumberModel.reference(number1);
+    final NumberModel model1 = NumberModel.reference(registry, null, number1);
 
     final $Number number2 = new Number();
     number2.setName$(new $Number.Name$("integer2"));
     number2.setForm$(new $Number.Form$($Number.Form$.integer));
-    final NumberModel model2 = NumberModel.reference(number2);
+    final NumberModel model2 = NumberModel.reference(registry, null, number2);
 
-    Assert.assertEquals(Type.get(List.class, BigInteger.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(new Element[] {model1, model2})));
+    Assert.assertEquals(Type.get(List.class, BigInteger.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));
   }
 }

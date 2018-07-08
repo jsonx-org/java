@@ -21,6 +21,7 @@ import java.util.HashMap;
 class Type {
   private static final HashMap<String,Type> qualifiedNameToType = new HashMap<String,Type>();
   static final Type OBJECT = new Type(Object.class, null);
+  static final Type VOID = new Type(Void.class, null);
 
   public static Type get(final String packageName, final String compoundName, final String superCompoundName, final Type genericType) {
     if (compoundName == null)
@@ -141,7 +142,7 @@ class Type {
   }
 
   public String getCanonicalPackage(final String packageName) {
-    return this.packageName == null && packageName != null ? packageName + "." + canonicalPackageName : canonicalPackageName;
+    return this.packageName != null || packageName == null ? canonicalPackageName : canonicalPackageName != null ? packageName + "." + canonicalPackageName : packageName;
   }
 
   public String getSimpleName() {

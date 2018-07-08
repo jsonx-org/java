@@ -21,8 +21,8 @@ import java.lang.reflect.Field;
 import java.util.function.Function;
 
 import org.lib4j.util.JavaIdentifiers;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
@@ -37,6 +37,7 @@ import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.StringProperty;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
+import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Element extends Member implements Annullable, Nameable, Recurrable, Requirable {
@@ -49,15 +50,15 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   protected static Element toElement(final Registry registry, final ComplexModel declarer, final Field field, final Object object) {
     final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
     if (booleanProperty != null)
-      return BooleanModel.referenceOrDeclare(booleanProperty, field);
+      return BooleanModel.referenceOrDeclare(registry, declarer, booleanProperty, field);
 
     final NumberProperty numberProperty = field.getDeclaredAnnotation(NumberProperty.class);
     if (numberProperty != null)
-      return NumberModel.referenceOrDeclare(numberProperty, field);
+      return NumberModel.referenceOrDeclare(registry, declarer, numberProperty, field);
 
     final StringProperty stringProperty = field.getDeclaredAnnotation(StringProperty.class);
     if (stringProperty != null)
-      return StringModel.referenceOrDeclare(stringProperty, field);
+      return StringModel.referenceOrDeclare(registry, declarer, stringProperty, field);
 
     final ObjectProperty objectProperty = field.getDeclaredAnnotation(ObjectProperty.class);
     if (objectProperty != null)
@@ -65,7 +66,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
 
     final ArrayProperty arrayProperty = field.getDeclaredAnnotation(ArrayProperty.class);
     if (arrayProperty != null)
-      return ArrayModel.referenceOrDeclare(registry, arrayProperty, field);
+      return ArrayModel.referenceOrDeclare(registry, declarer, arrayProperty, field);
 
     return null;
   }
@@ -78,8 +79,8 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     @Override
     public String apply(final Binding t) {
       final String name;
-      if (t instanceof $Boolean)
-        name = (($Boolean)t).getName$().text();
+      if (t instanceof xL2gluGCXYYJc.$Boolean)
+        name = ((xL2gluGCXYYJc.$Boolean)t).getName$().text();
       else if (t instanceof $Number)
         name = (($Number)t).getName$().text();
       else if (t instanceof $String)
@@ -88,8 +89,8 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
         name = (($Array)t).getName$().text();
       else if (t instanceof Jsonx.Object)
         name = ((Jsonx.Object)t).getClass$().text();
-      else if (t instanceof $Boolean)
-        name = (($Boolean)t).getName$().text();
+      else if (t instanceof xL2gluGCXYYJc.$Boolean)
+        name = ((xL2gluGCXYYJc.$Boolean)t).getName$().text();
       else if (t instanceof $Number)
         name = (($Number)t).getName$().text();
       else if (t instanceof $String)
@@ -120,49 +121,44 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   private final Boolean required;
   private final Integer minOccurs;
   private final Integer maxOccurs;
-  private final String doc;
 
   // Templates
-  public Element(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
+  public Element(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
     this.name = name;
-    this.nullable = nullable;
-    this.required = required;
-    this.minOccurs = minOccurs;
+    this.nullable = nullable != null && nullable ? null : nullable;
+    this.required = required != null && required ? null : required;
+    this.minOccurs = minOccurs == null || minOccurs == 0 ? null : minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
-    this.doc = doc == null || doc.length() == 0 ? null : doc;
   }
 
   // Members
-  public Element(final $Member binding, final String name, final Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(name, nullable, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs), binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Element(final String name, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    this(name, nullable == null ? null : nullable.text(), minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
   // Members
-  public Element(final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    this(name, nullable, null, minOccurs, maxOccurs, doc);
+  public Element(final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
+    this(name, nullable, null, minOccurs, maxOccurs);
   }
 
   // Properties
-  public Element(final String name, final Boolean nullable, final Boolean required, final String doc) {
-    this(name, nullable, required, null, null, doc);
+  public Element(final String name, final Boolean nullable, final Boolean required) {
+    this(name, nullable, required, null, null);
   }
 
-  public Element(final String name, final String doc) {
-    this(name, null, null, null, doc);
+  public Element(final String name) {
+    this(name, null, null, (Integer)null);
   }
 
   public Element(final $Member binding, final String name) {
-    this(name, binding.getDoc$() == null ? null : binding.getDoc$().text());
+    this(name);
   }
 
-  public Element(final Element copy) {
-    this.name = copy.name;
-    this.nullable = copy.nullable;
-    this.required = copy.required;
-    this.minOccurs = copy.minOccurs;
-    this.maxOccurs = copy.maxOccurs;
-    this.doc = copy.doc;
+  protected String key() {
+    return id().toString();
   }
+
+  public abstract Id id();
 
   @Override
   public final String name() {
@@ -174,7 +170,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   }
 
   @Override
-  public Boolean nullable() {
+  public final Boolean nullable() {
     return nullable;
   }
 
@@ -191,10 +187,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   @Override
   public final Integer maxOccurs() {
     return maxOccurs;
-  }
-
-  public final String doc() {
-    return doc;
   }
 
   @Override
@@ -215,19 +207,19 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     if (maxOccurs != null)
       builder.append(",\n  maxOccurs: ").append(maxOccurs);
 
-    if (doc != null)
-      builder.append(",\n  doc: \"").append(doc.replace("\\", "\\\\").replace("\"", "\\\"")).append('"');
-
     return builder.toString();
   }
 
   @Override
-  protected String toJSONX(final Member owner, final String packageName) {
+  protected String toJSONX(final Registry registry, final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder();
     if (name != null)
-      builder.append(owner instanceof Schema ? " template=\"" : " name=\"").append(name).append('"');
+      builder.append(" name=\"").append(name).append('"');
+    else if (id() != null && !(this instanceof Template))
+      builder.append(" template=\"").append(id()).append('"');
 
-    if (nullable != null && !nullable)
+    final boolean shouldWriteNullable = owner instanceof Schema || !(this instanceof Template) && id() != null && !registry.hasRegistry(id());
+    if (shouldWriteNullable && nullable != null && !nullable)
       builder.append(" nullable=\"").append(nullable).append('"');
 
     if (required != null && !required)
@@ -239,43 +231,34 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     if (maxOccurs != null)
       builder.append(" maxOccurs=\"").append(maxOccurs).append('"');
 
-    if (doc != null)
-      builder.append(" doc=\"").append(doc.replace("&", "&amp;").replace("\"", "&quot;")).append('"');
-
     return builder.toString();
   }
 
   @Override
-  public final String toJSON() {
-    return toJSON(null);
+  protected final String toJSON() {
+    throw new UnsupportedOperationException();
   }
 
   @Override
-  public final String toJSONX() {
-    return toJSONX(this, null);
+  protected final String toJSONX() {
+    throw new UnsupportedOperationException();
   }
 
-  protected String toAnnotation(final String packageName, final boolean full) {
-    final StringBuilder builder = new StringBuilder();
+  protected void toAnnotation(final Attributes attributes, final String packageName) {
 //    if (name != null)
 //      string.append(", name=\"").append(name).append('"');
 
-    if (nullable != null && !nullable)
-      builder.append(", nullable=").append(nullable);
+    if (nullable != null)
+      attributes.put("nullable", nullable);
 
-    if (required != null && !required)
-      builder.append(", required=").append(required);
+    if (required != null)
+      attributes.put("required", required);
 
-    if (minOccurs != null && minOccurs != 0)
-      builder.append(", minOccurs=").append(minOccurs);
+    if (minOccurs != null)
+      attributes.put("minOccurs", minOccurs);
 
     if (maxOccurs != null)
-      builder.append(", maxOccurs=").append(maxOccurs);
-
-    if (doc != null)
-      builder.append(", doc=\"").append(doc).append('"');
-
-    return builder.length() == 0 ? "" : builder.substring(2);
+      attributes.put("maxOccurs", maxOccurs);
   }
 
   protected final String toField(final String packageName) {
@@ -285,9 +268,10 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
       builder.append(elementAnnotations);
 
     builder.append('@').append(propertyAnnotation().getName());
-    final String annotation = toAnnotation(packageName, true);
-    if (annotation.length() > 0)
-      builder.append('(').append(annotation).append(')');
+    final Attributes attributes = new Attributes();
+    toAnnotation(attributes, packageName);
+    if (attributes.size() > 0)
+      builder.append('(').append(attributes.toAnnotation()).append(')');
 
     builder.append('\n').append("public ").append(type().toCanonicalString(packageName)).append(' ').append(name()).append(';');
     return builder.toString();
@@ -297,8 +281,11 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     return null;
   }
 
+  protected boolean shouldWriteNullable(final Registry registry) {
+    return id() != null && !registry.hasRegistry(id());
+  }
+
   protected abstract Type type();
   protected abstract Class<? extends Annotation> propertyAnnotation();
   protected abstract Class<? extends Annotation> elementAnnotation();
-  protected abstract Element normalize(final Registry registry);
 }

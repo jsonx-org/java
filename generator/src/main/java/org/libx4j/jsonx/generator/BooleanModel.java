@@ -31,46 +31,63 @@ class BooleanModel extends SimpleModel {
     return registry.declare(binding).value(new BooleanModel(binding), null);
   }
 
-  public static BooleanModel referenceOrDeclare(final BooleanProperty booleanProperty, final Field field) {
-    return new BooleanModel(booleanProperty, field);
+  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanProperty property, final Field field) {
+    final BooleanModel model = new BooleanModel(property, field);
+    final Id id = model.id();
+
+    final BooleanModel registered = (BooleanModel)registry.getElement(id);
+    return new Template(getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static BooleanModel referenceOrDeclare(final BooleanElement booleanElement) {
-    return new BooleanModel(booleanElement);
+  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanElement element) {
+    final BooleanModel model = new BooleanModel(element);
+    final Id id = model.id();
+
+    final BooleanModel registered = (BooleanModel)registry.getElement(id);
+    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static BooleanModel reference(final $Array.Boolean binding) {
-    return new BooleanModel(binding);
+  public static BooleanModel reference(final Registry registry, final ComplexModel referrer, final $Array.Boolean binding) {
+    return registry.reference(new BooleanModel(binding), referrer);
   }
 
-  public static BooleanModel reference(final $Boolean binding) {
-    return new BooleanModel(binding);
+  public static BooleanModel reference(final Registry registry, final ComplexModel referrer, final $Boolean binding) {
+    return registry.reference(new BooleanModel(binding), referrer);
   }
+
+  private final Id id;
 
   private BooleanModel(final Jsonx.Boolean binding) {
-    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+    super(binding.getNullable$().text(), null, null, null);
+    this.id = new Id(binding.getTemplate$().text());
   }
 
   private BooleanModel(final $Boolean binding) {
-    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    this.id = new Id(this);
   }
 
   private BooleanModel(final $Array.Boolean binding) {
-    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    this.id = new Id(this);
   }
 
-  private BooleanModel(final BooleanProperty booleanProperty, final Field field) {
-    super(getName(booleanProperty.name(), field), booleanProperty.nullable(), booleanProperty.required(), null, null, booleanProperty.doc());
-    if (field.getType() != Boolean.class && (field.getType() != boolean.class || booleanProperty.nullable()))
-      throw new IllegalAnnotationException(booleanProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
+  private BooleanModel(final BooleanProperty property, final Field field) {
+    super(property.nullable(), null, null, null);
+    if (field.getType() != Boolean.class && (field.getType() != boolean.class || property.nullable()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
+
+    this.id = new Id(this);
   }
 
-  private BooleanModel(final BooleanElement booleanElement) {
-    super(null, booleanElement.nullable(), null, booleanElement.minOccurs(), booleanElement.maxOccurs(), booleanElement.doc());
+  private BooleanModel(final BooleanElement element) {
+    super(element.nullable(), null, null, null);
+    this.id = new Id(this);
   }
 
-  private BooleanModel(final Element element) {
-    super(element);
+  @Override
+  public final Id id() {
+    return id;
   }
 
   @Override
@@ -89,22 +106,12 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected BooleanModel merge(final Template reference) {
-    return new BooleanModel(reference);
-  }
-
-  @Override
-  protected BooleanModel normalize(final Registry registry) {
-    return this;
-  }
-
-  @Override
   protected final String toJSON(final String packageName) {
     return "{\n" + super.toJSON(packageName) + "\n}";
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String packageName) {
-    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"boolean\"" : "<boolean").append(super.toJSONX(owner, packageName)).append("/>").toString();
+  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"" + (registry.hasRegistry(id()) ? "template\" reference=\"" + id() + "\"" : "boolean\"") : "<boolean").append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
   }
 }

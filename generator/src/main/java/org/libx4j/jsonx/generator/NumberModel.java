@@ -34,69 +34,84 @@ class NumberModel extends SimpleModel {
     return registry.declare(binding).value(new NumberModel(binding), null);
   }
 
-  public static NumberModel referenceOrDeclare(final NumberProperty numberProperty, final Field field) {
-    return new NumberModel(numberProperty, field);
+  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty property, final Field field) {
+    final NumberModel model = new NumberModel(property, field);
+    final Id id = model.id();
+
+    final NumberModel registered = (NumberModel)registry.getElement(id);
+    return new Template(getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static NumberModel referenceOrDeclare(final NumberElement numberElement) {
-    return new NumberModel(numberElement);
+  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement element) {
+    final NumberModel model = new NumberModel(element);
+    final Id id = model.id();
+    if (element.min().equals("1")) {
+      System.out.println();
+    }
+
+    final NumberModel registered = (NumberModel)registry.getElement(id);
+    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static NumberModel reference(final $Array.Number binding) {
-    return new NumberModel(binding);
+  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
+    return registry.reference(new NumberModel(binding), referrer);
   }
 
-  public static NumberModel reference(final $Number binding) {
-    return new NumberModel(binding);
+  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Number binding) {
+    return registry.reference(new NumberModel(binding), referrer);
   }
 
+  private final Id id;
   private final Form form;
   private final BigDecimal min;
   private final BigDecimal max;
 
   private NumberModel(final Jsonx.Number binding) {
-    super(binding.getTemplate$().text(), binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+    super(binding.getNullable$().text(), null, null, null);
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
+    this.id = new Id(binding.getTemplate$().text());
   }
 
   private NumberModel(final $Number binding) {
-    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
+    this.id = new Id(this);
   }
 
   private NumberModel(final $Array.Number binding) {
-    super(binding, binding.getNullable$().text(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
+    this.id = new Id(this);
   }
 
-  private NumberModel(final NumberProperty numberProperty, final Field field) {
-    super(getName(numberProperty.name(), field), numberProperty.nullable(), numberProperty.required(), null, null, numberProperty.doc());
-    if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || numberProperty.nullable()))
-      throw new IllegalAnnotationException(numberProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
+  private NumberModel(final NumberProperty property, final Field field) {
+    super(property.nullable(), null, null, null);
+    if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.nullable()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
-    this.form = numberProperty.form();
-    this.min = numberProperty.min().length() == 0 ? null : new BigDecimal(numberProperty.min());
-    this.max = numberProperty.max().length() == 0 ? null : new BigDecimal(numberProperty.max());
+    this.form = property.form();
+    this.min = property.min().length() == 0 ? null : new BigDecimal(property.min());
+    this.max = property.max().length() == 0 ? null : new BigDecimal(property.max());
+    this.id = new Id(this);
   }
 
-  private NumberModel(final NumberElement numberElement) {
-    super(null, numberElement.nullable(), null, numberElement.minOccurs(), numberElement.maxOccurs(), numberElement.doc());
-    this.form = numberElement.form();
-    this.min = numberElement.min().length() == 0 ? null : new BigDecimal(numberElement.min());
-    this.max = numberElement.max().length() == 0 ? null : new BigDecimal(numberElement.max());
+  private NumberModel(final NumberElement element) {
+    super(element.nullable(), null, null, null);
+    this.form = element.form();
+    this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
+    this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
+    this.id = new Id(this);
   }
 
-  private NumberModel(final Element element, final NumberModel copy) {
-    super(element);
-    this.form = copy.form;
-    this.min = copy.min;
-    this.max = copy.max;
+  @Override
+  public final Id id() {
+    return id;
   }
 
   public final Form form() {
@@ -127,16 +142,6 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected NumberModel merge(final Template reference) {
-    return new NumberModel(reference, this);
-  }
-
-  @Override
-  protected NumberModel normalize(final Registry registry) {
-    return this;
-  }
-
-  @Override
   protected String toJSON(final String packageName) {
     final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
     if (builder.length() > 0)
@@ -155,32 +160,40 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"number\"" : "<number");
-    if (form != Form.REAL)
-      builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
+  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    final StringBuilder builder;
+    if (owner instanceof ObjectModel) {
+      builder = new StringBuilder("<property xsi:type=\"");
+      if (registry.hasRegistry(id()))
+        builder.append("template\" reference=\"").append(id()).append("\"");
+      else
+        builder.append("number\"");
+    }
+    else {
+      builder = new StringBuilder("<number");
+      if (form != Form.REAL)
+        builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
 
-    if (min != null)
-      builder.append(" min=\"").append(min).append('"');
+      if (min != null)
+        builder.append(" min=\"").append(min).append('"');
 
-    if (max != null)
-      builder.append(" max=\"").append(max).append('"');
+      if (max != null)
+        builder.append(" max=\"").append(max).append('"');
+    }
 
-    return builder.append(super.toJSONX(owner, packageName)).append("/>").toString();
+    return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
   }
 
   @Override
-  protected String toAnnotation(final String packageName, final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
+  protected void toAnnotation(final Attributes attributes, final String packageName) {
+    super.toAnnotation(attributes, packageName);
     if (form != Form.REAL)
-      builder.append((builder.length() > 0 ? ", " : "") + "form=").append(Form.class.getName()).append('.').append(form);
+      attributes.put("form", Form.class.getName() + "." + form);
 
     if (min != null)
-      builder.append((builder.length() > 0 ? ", " : "") + "min=\"").append(min).append('"');
+      attributes.put("min", "\"" + min + "\"");
 
     if (max != null)
-      builder.append((builder.length() > 0 ? ", " : "") + "max=\"").append(max).append('"');
-
-    return builder.toString();
+      attributes.put("max", "\"" + max + "\"");
   }
 }

@@ -31,5 +31,4 @@ public @interface NumberProperty {
   String min() default "";
   String max() default "";
   String doc() default "";
-
 }

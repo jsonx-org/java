@@ -27,6 +27,4 @@ public @interface BooleanProperty {
   String name() default "";
   boolean required() default true;
   boolean nullable() default true;
-  String doc() default "";
-
 }

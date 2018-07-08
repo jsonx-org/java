@@ -28,6 +28,4 @@ public @interface ArrayProperty {
   boolean required() default true;
   boolean nullable() default true;
   int[] elementIds();
-  String doc() default "";
-
 }

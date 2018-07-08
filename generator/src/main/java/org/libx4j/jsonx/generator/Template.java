@@ -19,37 +19,51 @@ package org.libx4j.jsonx.generator;
 import java.lang.annotation.Annotation;
 
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
+import org.w3.www._2001.XMLSchema.yAA.$Boolean;
+import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 class Template extends Element {
-  private final Model model;
+  private final Element model;
+  private final Id id;
 
-  public Template(final $ArrayMember.Template binding, final Model model) {
-    super(binding, null, null, binding.getMinOccurs$(), binding.getMaxOccurs$());
+  public Template(final $ArrayMember.Template binding, final Element model) {
+    super(null, null, binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
+    this.id = new Id(this);
   }
 
-  public Template(final $Template binding, final Model model) {
-    super(binding.getName$().text(), null, binding.getRequired$().text(), binding.getDoc$() == null ? null : binding.getDoc$().text());
+  public Template(final $Template binding, final Element model) {
+    super(binding.getName$().text(), null, binding.getRequired$().text());
     this.model = model;
+    this.id = new Id(this);
   }
 
-  public Template(final String name, final boolean nullable, final boolean required, final Model model, final String doc) {
-    super(name, nullable, required, doc);
+  public Template(final String name, final boolean nullable, final boolean required, final Model model) {
+    super(name, nullable, required);
     this.model = model;
+    this.id = new Id(this);
   }
 
-  public Template(final Integer minOccurs, final Integer maxOccurs, final Model model, final String doc) {
-    super(null, null, minOccurs, maxOccurs, doc);
+  public Template(final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
+    super(null, nullable, minOccurs, maxOccurs);
     this.model = model;
+    this.id = new Id(this);
+  }
+
+  public Template(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs, final Model model) {
+    super(null, nullable, minOccurs, maxOccurs);
+    this.model = model;
+    this.id = new Id(this);
   }
 
   @Override
-  public final Boolean nullable() {
-    return model.nullable();
+  public final Id id() {
+    return id;
   }
 
-  public final Model reference() {
+  public final Element reference() {
     return this.model;
   }
 
@@ -69,39 +83,30 @@ class Template extends Element {
   }
 
   @Override
-  protected final Element normalize(final Registry registry) {
-    return registry.getNumReferrers(reference()) != 1 || reference() instanceof ObjectModel && ((ObjectModel)reference()).isAbstract() ? this : reference().merge(this);
-  }
-
-  @Override
   protected final String toJSON(final String packageName) {
     final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
     if (model != null)
-      builder.append(",\n  reference: \"").append(Type.getSubName(model.reference(), packageName)).append('"');
+      builder.append(",\n  reference: \"").append(Type.getSubName(model.key(), packageName)).append('"');
 
     return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String packageName) {
+  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
-      builder.append(" reference=\"").append(Type.getSubName(model.reference(), packageName)).append('"');
+      builder.append(" reference=\"").append(Type.getSubName(model.key(), packageName)).append('"');
 
-    return builder.append(super.toJSONX(owner, packageName)).append("/>").toString();
+    return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
   }
 
   @Override
-  protected final String toAnnotation(final String packageName, final boolean full) {
-    final StringBuilder builder = new StringBuilder(super.toAnnotation(packageName, true));
-    final String annotation = model.toAnnotation(packageName, false);
-    if (builder.length() > 0 && annotation.length() > 0)
-      builder.append(", ");
-
-    return builder.append(annotation).toString();
+  protected final void toAnnotation(final Attributes attributes, final String packageName) {
+    super.toAnnotation(attributes, packageName);
+    model.toAnnotation(attributes, packageName);
   }
 
   @Override

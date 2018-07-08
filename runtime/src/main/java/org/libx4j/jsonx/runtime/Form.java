@@ -23,9 +23,9 @@ public enum Form {
   INTEGER(BigInteger.class),
   REAL(BigDecimal.class);
 
-  public Class<?> type;
+  public Class<? extends Number> type;
 
-  Form(final Class<?> type) {
+  Form(final Class<? extends Number> type) {
     this.type = type;
   }
 }

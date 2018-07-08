@@ -33,6 +33,4 @@ public @interface StringElement {
   boolean urlDecode() default false;
   int minOccurs() default 0;
   int maxOccurs() default Integer.MAX_VALUE;
-  String doc() default "";
-
 }

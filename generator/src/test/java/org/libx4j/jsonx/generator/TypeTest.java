@@ -25,7 +25,12 @@ import org.junit.Test;
 
 public class TypeTest {
   private static Element toElement(final Type type) {
-    return new Element(null, null, null, null, null, (String)null) {
+    return new Element(null, null, null, null, null) {
+      @Override
+      public Id id() {
+        return null;
+      }
+
       @Override
       protected Type type() {
         return type;
@@ -38,11 +43,6 @@ public class TypeTest {
 
       @Override
       protected Class<? extends Annotation> elementAnnotation() {
-        return null;
-      }
-
-      @Override
-      protected Element normalize(Registry registry) {
         return null;
       }
     };

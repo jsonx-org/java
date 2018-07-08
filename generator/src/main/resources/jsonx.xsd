@@ -35,13 +35,7 @@
     </xs:restriction>
   </xs:simpleType>
   
-  <xs:complexType name="member" abstract="true">
-    <xs:attribute name="doc" type="dt:stringNonEmpty">
-      <xs:annotation>
-        <xs:documentation>Documentation. Optional.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+  <xs:complexType name="member" abstract="true"/>
   
   <xs:complexType name="element" abstract="true">
     <xs:complexContent>
@@ -51,18 +45,18 @@
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:attributeGroup name="nameable">
-    <xs:attribute name="name" type="dt:javaIdentifier" use="required">
-      <xs:annotation>
-        <xs:documentation>Name of element. Required.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:attributeGroup>
-  
   <xs:attributeGroup name="annullable">
     <xs:attribute name="nullable" type="xs:boolean" default="true">
       <xs:annotation>
         <xs:documentation>Can property or member be set to null. Default: true.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  
+  <xs:attributeGroup name="nameable">
+    <xs:attribute name="name" type="dt:javaIdentifier" use="required">
+      <xs:annotation>
+        <xs:documentation>Name of element. Required.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -83,7 +77,7 @@
     </xs:attribute>
   </xs:attributeGroup>
   
-  <xs:complexType name="abstractTemplate" abstract="true">
+  <xs:complexType name="templateMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
         <xs:attribute name="reference" type="jsonx:qualifiedIdentifier" use="required">
@@ -97,7 +91,7 @@
   
   <xs:complexType name="template">
     <xs:complexContent>
-      <xs:extension base="jsonx:abstractTemplate">
+      <xs:extension base="jsonx:templateMember">
         <xs:attributeGroup ref="jsonx:nameable"/>
         <xs:attributeGroup ref="jsonx:requirable"/>
       </xs:extension>
@@ -128,7 +122,7 @@
     </xs:restriction>
   </xs:simpleType>
   
-  <xs:complexType name="abstractNumber" abstract="true">
+  <xs:complexType name="numberMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
         <xs:attributeGroup ref="jsonx:annullable"/>
@@ -153,7 +147,7 @@
   
   <xs:complexType name="number">
     <xs:complexContent>
-      <xs:extension base="jsonx:abstractNumber">
+      <xs:extension base="jsonx:numberMember">
         <xs:attributeGroup ref="jsonx:nameable"/>
         <xs:attributeGroup ref="jsonx:requirable"/>
       </xs:extension>
@@ -206,7 +200,7 @@
     </xs:attribute>
     <xs:attribute name="maxOccurs" type="jsonx:maxCardinality" default="unbounded">
       <xs:annotation>
-        <xs:documentation>Maximum inclusive occurrence of element in array. Default: 1.</xs:documentation>
+        <xs:documentation>Maximum inclusive occurrence of element in array. Default: unbounded.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -227,7 +221,7 @@
           <xs:element name="number">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jsonx:abstractNumber">
+                <xs:extension base="jsonx:numberMember">
                   <xs:attributeGroup ref="jsonx:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
@@ -268,7 +262,7 @@
           <xs:element name="template">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jsonx:abstractTemplate">
+                <xs:extension base="jsonx:templateMember">
                   <xs:attributeGroup ref="jsonx:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
@@ -311,6 +305,7 @@
             </xs:unique>
           </xs:element>
         </xs:sequence>
+        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attribute name="extends" type="dt:stringNonEmpty">
           <xs:annotation>
             <xs:documentation>Parent type of object. Optional.</xs:documentation>
@@ -321,7 +316,6 @@
             <xs:documentation>Policy when unknown property is encountered (ignore or error). Default: error.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attributeGroup ref="jsonx:annullable"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -356,7 +350,7 @@
           <xs:element name="number">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jsonx:abstractNumber">
+                <xs:extension base="jsonx:numberMember">
                   <xs:attributeGroup ref="jsonx:templatable"/>
                 </xs:extension>
               </xs:complexContent>

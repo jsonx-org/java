@@ -33,6 +33,4 @@ public @interface NumberElement {
   String max() default "";
   int minOccurs() default 0;
   int maxOccurs() default Integer.MAX_VALUE;
-  String doc() default "";
-
 }

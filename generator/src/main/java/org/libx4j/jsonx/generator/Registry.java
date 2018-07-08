@@ -28,24 +28,24 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 
 class Registry {
   class Value {
-    private final String ref;
+    private final String name;
 
-    public Value(final String ref) {
-      if (refToModel.containsKey(ref))
-        throw new IllegalArgumentException("ObjectModel class=\"" + ref + "\" already registered");
+    public Value(final String name) {
+      if (refToModel.containsKey(name))
+        throw new IllegalArgumentException("Value name=\"" + name + "\" already registered");
 
-      refToModel.put(ref, null);
-      this.ref = ref;
+      refToModel.put(name, null);
+      this.name = name;
     }
 
     public <T extends Model>T value(final T model, final ComplexModel referrer) {
-      refToModel.put(ref, model);
+      refToModel.put(name, model);
       return reference(model, referrer);
     }
   }
 
-  private static String getKey(final Model model) {
-    final String key = model.reference();
+  private static String getKey(final Element element) {
+    final String key = element.key();
     if (key == null)
       throw new NullPointerException("key == null");
 
@@ -88,11 +88,15 @@ class Registry {
     return new Value(binding.getClass$().text());
   }
 
+  public Value declare(final Id id) {
+    return new Value(id.toString());
+  }
+
   public Value declare(final $Object binding) {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 
-  public <T extends Model>T reference(final T model, final ComplexModel referrer) {
+  public <T extends Element>T reference(final T model, final ComplexModel referrer) {
     if (referrer == null)
       return model;
 
@@ -109,8 +113,16 @@ class Registry {
     return getElement(ObjectModel.getFullyQualifiedName(binding));
   }
 
+  public Element getElement(final Id id) {
+    return getElement(id.toString());
+  }
+
   public Element getElement(final String ref) {
     return refToModel.get(ref);
+  }
+
+  public boolean hasRegistry(final Id id) {
+    return id != null && getElement(id) != null;
   }
 
   public Collection<Model> rootElements() {
@@ -122,19 +134,7 @@ class Registry {
   }
 
   public int getNumReferrers(final Model model) {
-    final List<ComplexModel> referrers = references.get(model.reference());
+    final List<ComplexModel> referrers = references.get(model.key());
     return referrers == null ? 0 : referrers.size();
-  }
-
-  @SuppressWarnings("unchecked")
-  public Registry normalize() {
-    final LinkedHashMap<String,Model> clone = (LinkedHashMap<String,Model>)refToModel.clone();
-    for (final Iterator<? extends Map.Entry<String,Model>> iterator = clone.entrySet().iterator(); iterator.hasNext();) {
-      final Map.Entry<String,Model> entry = iterator.next();
-      final Member normalized = entry.getValue().normalize(this);
-      entry.setValue(normalized instanceof Template ? ((Template)normalized).reference() : (Model)normalized);
-    }
-
-    return new Registry(clone, references);
   }
 }

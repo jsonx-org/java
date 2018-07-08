@@ -50,14 +50,14 @@ class ObjectModel extends ComplexModel {
     return registry.declare(binding).value(new ObjectModel(registry, binding, getParent(superClassName, registry)), referrer);
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectProperty objectProperty, final Field field) {
-    final ObjectModel objectModel = (ObjectModel)registry.getElement(objectProperty.type().getName());
-    return new Template(getName(objectProperty.name(), field), objectProperty.nullable(), objectProperty.required(), objectModel == null ? registry.declare(objectProperty.type()).value(new ObjectModel(registry, objectProperty, field), referrer) : registry.reference(objectModel, referrer), objectProperty.doc());
+  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectProperty property, final Field field) {
+    final ObjectModel model = (ObjectModel)registry.getElement(property.type().getName());
+    return new Template(getName(property.name(), field), property.nullable(), property.required(), model == null ? registry.declare(property.type()).value(new ObjectModel(registry, property, field), referrer) : registry.reference(model, referrer));
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final Member referrer, final ObjectElement objectElement) {
-    final ObjectModel objectModel = (ObjectModel)registry.getElement(objectElement.type().getName());
-    return new Template(objectElement.minOccurs(), objectElement.maxOccurs(), objectModel == null ? registry.declare(objectElement.type()).value(new ObjectModel(registry, objectElement), referrer instanceof ComplexModel ? (ComplexModel)referrer : null) : registry.reference(objectModel, referrer instanceof ComplexModel ? (ComplexModel)referrer : null), objectElement.doc());
+  public static Element referenceOrDeclare(final Registry registry, final Member referrer, final ObjectElement element) {
+    final ObjectModel model = (ObjectModel)registry.getElement(element.type().getName());
+    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(element.type()).value(new ObjectModel(registry, element), referrer instanceof ComplexModel ? (ComplexModel)referrer : null) : registry.reference(model, referrer instanceof ComplexModel ? (ComplexModel)referrer : null));
   }
 
   public static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz) {
@@ -65,8 +65,8 @@ class ObjectModel extends ComplexModel {
   }
 
   private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz, final JsonxObject jsObject) {
-    final ObjectModel objectModel = (ObjectModel)registry.getElement(clazz.getName());
-    return objectModel != null ? registry.reference(objectModel, null) : registry.declare(clazz).value(new ObjectModel(registry, null, clazz, jsObject, null, null, null, null, jsObject.doc()), null);
+    final ObjectModel model = (ObjectModel)registry.getElement(clazz.getName());
+    return model != null ? registry.reference(model, null) : registry.declare(clazz).value(new ObjectModel(registry, null, clazz, jsObject, null, null, null, null), null);
   }
 
   public static ObjectModel reference(final Registry registry, final ComplexModel referrer, final $Array.Object binding) {
@@ -125,28 +125,28 @@ class ObjectModel extends ComplexModel {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Boolean) {
         final $Boolean bool = ($Boolean)member;
-        members.put(bool.getName$().text(), BooleanModel.reference(bool));
+        members.put(bool.getName$().text(), BooleanModel.reference(registry, model, bool));
       }
       else if (member instanceof $Number) {
         final $Number number = ($Number)member;
-        members.put(number.getName$().text(), NumberModel.reference(number));
+        members.put(number.getName$().text(), NumberModel.reference(registry, model, number));
       }
       else if (member instanceof $String) {
         final $String string = ($String)member;
-        members.put(string.getName$().text(), StringModel.reference(string));
+        members.put(string.getName$().text(), StringModel.reference(registry, model, string));
       }
       else if (member instanceof $Array) {
         final $Array array = ($Array)member;
-        final ArrayModel child = ArrayModel.reference(registry, array);
+        final ArrayModel child = ArrayModel.reference(registry, model, array);
         members.put(array.getName$().text(), child);
       }
       else if (member instanceof $Template) {
         final $Template template = ($Template)member;
-        final Element ref = registry.getElement(template.getReference$().text());
-        if (ref == null)
+        final Element element = registry.getElement(template.getReference$().text());
+        if (element == null)
           throw new IllegalStateException("Template \"" + template.getName$().text() + "\" -> reference=\"" + template.getReference$().text() + "\" not found");
 
-        members.put(template.getName$().text(), ref instanceof Model ? new Template(template, (Model)ref) : ref);
+        members.put(template.getName$().text(), element instanceof Model ? new Template(template, registry.reference((Model)element, model)) : element);
       }
       else if (member instanceof $Object) {
         final $Object object = ($Object)member;
@@ -168,7 +168,7 @@ class ObjectModel extends ComplexModel {
   private final Unknown unknown;
 
   private ObjectModel(final Registry registry, final Jsonx.Object binding) {
-    super(null, binding.getNullable$().text(), null, null, null, binding.getDoc$() == null ? null : binding.getDoc$().text());
+    super(null, binding.getNullable$().text(), null, null, null);
     this.type = Type.get(binding.getClass$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.isAbstract = binding.getAbstract$().text();
     this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
@@ -177,15 +177,15 @@ class ObjectModel extends ComplexModel {
   }
 
   private ObjectModel(final Registry registry, final ObjectProperty objectProperty, final Field field) {
-    this(registry, getName(objectProperty.name(), field), objectProperty.type(), checkJSObject(objectProperty.type()), objectProperty.nullable(), objectProperty.required(), null, null, objectProperty.doc());
+    this(registry, getName(objectProperty.name(), field), objectProperty.type(), checkJSObject(objectProperty.type()), objectProperty.nullable(), objectProperty.required(), null, null);
   }
 
   private ObjectModel(final Registry registry, final ObjectElement objectElement) {
-    this(registry, null, objectElement.type(), checkJSObject(objectElement.type()), objectElement.nullable(), null, objectElement.minOccurs(), objectElement.maxOccurs(), objectElement.doc());
+    this(registry, null, objectElement.type(), checkJSObject(objectElement.type()), objectElement.nullable(), null, objectElement.minOccurs(), objectElement.maxOccurs());
   }
 
   private ObjectModel(final Registry registry, final $Object binding, final ObjectModel superObject) {
-    super(binding, binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
     this.type = Type.get(getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.superObject = superObject;
     this.isAbstract = null;
@@ -194,7 +194,7 @@ class ObjectModel extends ComplexModel {
   }
 
   private ObjectModel(final Registry registry, final $Array.Object binding) {
-    super(binding, null, binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.type = Type.get(binding.getClass$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.superObject = null;
     this.isAbstract = null;
@@ -202,8 +202,8 @@ class ObjectModel extends ComplexModel {
     this.members = Collections.unmodifiableMap(parseMembers(registry, binding, this));
   }
 
-  private ObjectModel(final Registry registry, final String name, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs, final String doc) {
-    super(name, nullable, required, minOccurs, maxOccurs, doc);
+  private ObjectModel(final Registry registry, final String name, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
+    super(name, nullable, required, minOccurs, maxOccurs);
     this.type = Type.get(clazz.getName(), clazz.getName());
     this.isAbstract = Modifier.isAbstract(clazz.getModifiers());
     this.unknown = jsObject.unknown();
@@ -235,22 +235,9 @@ class ObjectModel extends ComplexModel {
     recurseInnerClasses(registry, clazz);
   }
 
-  private ObjectModel(final Element element, final ObjectModel model) {
-    super(element);
-    this.type = model.type;
-    this.superObject = model.superObject;
-    this.isAbstract = model.isAbstract;
-    this.unknown = model.unknown;
-    this.members = Collections.unmodifiableMap(model.members);
-  }
-
-  private ObjectModel(final ObjectModel copy, final ObjectModel superObject, final Map<String,Element> members) {
-    super(copy);
-    this.type = copy.type;
-    this.superObject = superObject;
-    this.isAbstract = copy.isAbstract;
-    this.unknown = copy.unknown;
-    this.members = Collections.unmodifiableMap(members);
+  @Override
+  public final Id id() {
+    return null;
   }
 
   public final Map<String,Element> members() {
@@ -285,35 +272,6 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected ObjectModel merge(final Template reference) {
-    return new ObjectModel(reference, this);
-  }
-
-  @Override
-  protected final Element normalize(final Registry registry) {
-    final Element element = registry.getElement(reference());
-    if (element instanceof Template)
-      return element.normalize(registry);
-
-    final Map<String,Element> members = normalize(registry, this.members);
-    final ObjectModel superObject;
-    if (superObject() == null) {
-      superObject = null;
-    }
-    else {
-      final Element superElement = superObject().normalize(registry);
-      superObject = (ObjectModel)(superElement instanceof Template ? ((Template)superElement).reference() : superElement);
-    }
-
-    final ObjectModel clone = new ObjectModel(this, superObject, members);
-    final ObjectModel objectModel = (ObjectModel)element;
-    if (registry.getNumReferrers(this) != 1 || objectModel.isAbstract())
-      return clone;
-
-    return objectModel == this ? clone : new ObjectModel(objectModel, clone);
-  }
-
-  @Override
   protected final void collectClassNames(final List<Type> types) {
     types.add(type());
     if (superObject != null)
@@ -325,7 +283,7 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected String reference() {
+  protected String key() {
     return type().toString();
   }
 
@@ -363,8 +321,8 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"object\"" : "<object");
+  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"" + (registry.hasRegistry(id()) ? "template\" reference=\"" + id() + "\"" : "object\"") : "<object");
     builder.append(" class=\"").append(owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName(null)) : type.getSubName(packageName)).append('"');
 
     if (superObject != null)
@@ -379,12 +337,12 @@ class ObjectModel extends ComplexModel {
     if (members != null && members.size() > 0) {
       final StringBuilder members = new StringBuilder();
       for (final Element member : this.members.values())
-        members.append("\n  ").append(member.toJSONX(this, packageName).replace("\n", "\n  "));
+        members.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
 
-      builder.append(super.toJSONX(owner, packageName)).append('>').append(members).append('\n').append(owner instanceof ObjectModel ? "</property>" : "</object>");
+      builder.append(super.toJSONX(registry, owner, packageName)).append('>').append(members).append('\n').append(owner instanceof ObjectModel ? "</property>" : "</object>");
     }
     else {
-      builder.append(super.toJSONX(owner, packageName)).append("/>");
+      builder.append(super.toJSONX(registry, owner, packageName)).append("/>");
     }
 
     return builder.toString();
@@ -395,24 +353,13 @@ class ObjectModel extends ComplexModel {
     if (unknown() != Unknown.ERROR)
       builder.append("unknown=").append(Unknown.class.getName()).append('.').append(unknown());
 
-    if (doc() != null) {
-      if (builder.length() > 0)
-        builder.append(", ");
-
-      builder.append("doc=\"").append(doc()).append('"');
-    }
-
     return builder.toString();
   }
 
   @Override
-  protected final String toAnnotation(final String packageName, final boolean full) {
-    final StringBuilder builder = full ? new StringBuilder(super.toAnnotation(packageName, full)) : new StringBuilder();
-    if (builder.length() > 0)
-      builder.append(", ");
-
-    builder.append("type=").append(type.getCanonicalName(packageName)).append(".class");
-    return builder.toString();
+  protected final void toAnnotation(final Attributes attributes, final String packageName) {
+    super.toAnnotation(attributes, packageName);
+    attributes.put("type", type.getCanonicalName(packageName) + ".class");
   }
 
   protected final String toJava(final String packageName) {

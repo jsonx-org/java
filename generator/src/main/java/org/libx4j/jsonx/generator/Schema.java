@@ -35,20 +35,29 @@ import org.lib4j.lang.PackageNotFoundException;
 import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.Iterators;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$TemplateMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.JsonxObject;
+import org.libx4j.xsb.runtime.Binding;
 
 public class Schema extends Member {
-  private static void findInnerRelations(final StrictRefDigraph<Jsonx.Object,String> digraph, final Registry registry, final Jsonx.Object object, final $ObjectMember member) {
-    final Iterator<? super $ObjectMember> iterator = Iterators.filter(member.elementIterator(), m -> $ObjectMember.class.isInstance(m));
+  private static void findInnerRelations(final StrictRefDigraph<$Member,String> digraph, final Registry registry, final $Member object, final $Member member) {
+    final Iterator<? super Binding> iterator = Iterators.filter(member.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
-      final $ObjectMember innerObject = ($ObjectMember)iterator.next();
-      if (innerObject.getExtends$() != null)
-        digraph.addEdgeRef(object, innerObject.getExtends$().text());
+      final $Member next = ($Member)iterator.next();
+      if (next instanceof $ObjectMember) {
+        final $ObjectMember model = ($ObjectMember)next;
+        if (model.getExtends$() != null)
+          digraph.addEdgeRef(object, model.getExtends$().text());
+      }
+      else if (next instanceof $TemplateMember) {
+        final $TemplateMember model = ($TemplateMember)next;
+        digraph.addEdgeRef(object, model.getReference$().text());
+      }
 
-      findInnerRelations(digraph, registry, object, innerObject);
+      findInnerRelations(digraph, registry, object, next);
     }
   }
 
@@ -58,39 +67,66 @@ public class Schema extends Member {
   public Schema(final Jsonx jsonx) {
     this.packageName = jsonx.getPackage$().text() == null || jsonx.getPackage$().text().length() == 0 ? null : jsonx.getPackage$().text();
     final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
-    final StrictRefDigraph<Jsonx.Object,String> digraph = new StrictRefDigraph<Jsonx.Object,String>("Object cannot inherit from itself", obj -> obj.getClass$().text());
+    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<$Member,String>("Object cannot inherit from itself", obj -> {
+      if (obj instanceof Jsonx.Array)
+        return ((Jsonx.Array)obj).getTemplate$().text();
+
+      if (obj instanceof Jsonx.Boolean)
+        return ((Jsonx.Boolean)obj).getTemplate$().text();
+
+      if (obj instanceof Jsonx.Number)
+        return ((Jsonx.Number)obj).getTemplate$().text();
+
+      if (obj instanceof Jsonx.String)
+        return ((Jsonx.String)obj).getTemplate$().text();
+
+      if (obj instanceof Jsonx.Object)
+        return ((Jsonx.Object)obj).getClass$().text();
+
+      throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
+    });
+
     this.registry = new Registry();
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
-      if (member instanceof Jsonx.Boolean)
-        BooleanModel.declare(registry, (Jsonx.Boolean)member);
-      else if (member instanceof Jsonx.Number)
-        NumberModel.declare(registry, (Jsonx.Number)member);
-      else if (member instanceof Jsonx.String)
-        StringModel.declare(registry, (Jsonx.String)member);
-      else if (member instanceof Jsonx.Array)
-        ArrayModel.declare(registry, (Jsonx.Array)member);
-      else if (member instanceof Jsonx.Object) {
+      if (member instanceof Jsonx.Object) {
         final Jsonx.Object object = (Jsonx.Object)member;
         if (object.getExtends$() != null)
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
           digraph.addVertex(object);
 
-        findInnerRelations(digraph, registry, object, object);
+        findInnerRelations(digraph, registry, member, member);
+      }
+      else if (member instanceof Jsonx.Array) {
+        digraph.addVertex(member);
+        findInnerRelations(digraph, registry, member, member);
       }
       else {
-        throw new UnsupportedOperationException("Unsupported " + jsonx.getClass().getSimpleName() + " member type: " + member.getClass().getName());
+        digraph.addVertex(member);
       }
     }
 
-    final List<Jsonx.Object> cycle = digraph.getCycle();
+    final List<$Member> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Inheritance cycle detected in object hierarchy: " + Collections.toString(digraph.getCycle(), " -> "));
 
-    final ListIterator<Jsonx.Object> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
-    while (topologicalOrder.hasPrevious())
-      ObjectModel.declare(registry, topologicalOrder.previous());
+    final ListIterator<$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
+    while (topologicalOrder.hasPrevious()) {
+      final $Member member = topologicalOrder.previous();
+      if (member instanceof Jsonx.Array)
+        ArrayModel.declare(registry, (Jsonx.Array)member);
+      else if (member instanceof Jsonx.Boolean)
+        BooleanModel.declare(registry, (Jsonx.Boolean)member);
+      else if (member instanceof Jsonx.Number)
+        NumberModel.declare(registry, (Jsonx.Number)member);
+      else if (member instanceof Jsonx.String)
+        StringModel.declare(registry, (Jsonx.String)member);
+      else if (member instanceof Jsonx.Object)
+        ObjectModel.declare(registry, (Jsonx.Object)member);
+      else
+        throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
+    }
   }
 
   public Schema(final Package pkg, final ClassLoader classLoader) throws PackageNotFoundException {
@@ -110,7 +146,7 @@ public class Schema extends Member {
     for (final Class<?> clazz : classes)
       ObjectModel.referenceOrDeclare(registry, clazz);
 
-    this.registry = registry.normalize();
+    this.registry = registry;
     this.packageName = getClassPrefix();
   }
 
@@ -120,23 +156,29 @@ public class Schema extends Member {
 
   public final Collection<Model> rootMembers() {
     final List<Model> members = new ArrayList<Model>();
-    for (final Model model : this.registry.rootElements()) {
+    for (final Model model : registry.rootElements()) {
       final int numReferrers = registry.getNumReferrers(model);
-      if (!(model instanceof ObjectModel) || numReferrers == 0 || numReferrers > 1)
+      if (model instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers > 0)
         members.add(model);
     }
 
     members.sort(new Comparator<Model>() {
       @Override
       public int compare(final Model o1, final Model o2) {
-        return o1 instanceof ObjectModel && o2 instanceof ObjectModel ? o1.type().getCompoundClassName().compareTo(o2.type().getCompoundClassName()) : 0;
+        if (o1 instanceof ObjectModel)
+          return o2 instanceof ObjectModel ? o1.type().getCompoundClassName().compareTo(o2.type().getCompoundClassName()) : 1;
+
+        if (o2 instanceof ObjectModel)
+          return -1;
+
+        return (o1.getClass().getSimpleName() + o1.id() + o1.name()).compareTo(o2.getClass().getSimpleName() + o2.id() + o2.name());
       }
     });
     return members;
   }
 
   public final Collection<Model> members() {
-    return this.registry.rootElements();
+    return registry.rootElements();
   }
 
   @Override
@@ -152,20 +194,20 @@ public class Schema extends Member {
     builder.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
     for (final Model member : rootMembers())
       if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        builder.append(",\n  \"").append(member.reference()).append("\": ").append(member.toJSON(packageName).replace("\n", "\n  "));
+        builder.append(",\n  \"").append(member.key()).append("\": ").append(member.toJSON(packageName).replace("\n", "\n  "));
 
     builder.append("\n}");
     return builder.toString();
   }
 
   @Override
-  protected final String toJSONX(final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (packageName == null ? "" : packageName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/SevaSafris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
-    final Collection<Model> rootMembers = rootMembers();
-    if (rootMembers.size() > 0) {
+  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (packageName == null ? "" : packageName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/safris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
+    final Collection<Model> members = rootMembers();
+    if (members.size() > 0) {
       builder.append('>');
-      for (final Model member : rootMembers)
-        builder.append("\n  ").append(member.toJSONX(this, packageName).replace("\n", "\n  "));
+      for (final Model member : members)
+        builder.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
 
       builder.append("\n</jsonx>");
     }
@@ -197,10 +239,10 @@ public class Schema extends Member {
 
   @Override
   public final String toJSONX() {
-    return toJSONX(this, packageName);
+    return toJSONX(registry, this, packageName);
   }
 
-  public Map<Type,String> toJava() {
+  public Map<String,String> toJava() {
     final Map<Type,ClassHolder> all = new HashMap<Type,ClassHolder>();
     final Map<Type,ClassHolder> typeToClassHolder = new HashMap<Type,ClassHolder>();
     for (final Model member : members()) {
@@ -226,12 +268,16 @@ public class Schema extends Member {
       }
     }
 
-    final HashMap<Type,String> sources = new HashMap<Type,String>();
+    final HashMap<String,String> sources = new HashMap<String,String>();
     for (final Map.Entry<Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
       final Type type = entry.getKey();
       final ClassHolder holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage(packageName);
+      if (canonicalPackageName.contains(".null")) {
+        System.out.println();
+      }
+
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
 
@@ -240,17 +286,16 @@ public class Schema extends Member {
         builder.append('\n').append(annotation);
 
       builder.append("\npublic ").append(holder.toString());
-      sources.put(type, builder.toString());
+      sources.put(type.getName(packageName), builder.toString());
     }
 
     return sources;
   }
 
-  public Map<Type,String> toJava(final File dir) throws IOException {
-    final Map<Type,String> sources = toJava();
-    for (final Map.Entry<Type,String> entry : sources.entrySet()) {
-      final Type type = entry.getKey();
-      final File file = new File(dir, type.getName(packageName).replace('.', '/') + ".java");
+  public Map<String,String> toJava(final File dir) throws IOException {
+    final Map<String,String> sources = toJava();
+    for (final Map.Entry<String,String> entry : sources.entrySet()) {
+      final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
       file.getParentFile().mkdirs();
       try (final FileOutputStream out = new FileOutputStream(file)) {
         out.write(entry.getValue().getBytes());
