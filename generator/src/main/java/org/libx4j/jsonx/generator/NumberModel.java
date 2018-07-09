@@ -34,6 +34,14 @@ class NumberModel extends SimpleModel {
     return registry.declare(binding).value(new NumberModel(binding), null);
   }
 
+  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Number binding) {
+    return registry.reference(new NumberModel(binding), referrer);
+  }
+
+  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
+    return registry.reference(new NumberModel(binding), referrer);
+  }
+
   public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty property, final Field field) {
     final NumberModel model = new NumberModel(property, field);
     final Id id = model.id();
@@ -53,30 +61,22 @@ class NumberModel extends SimpleModel {
     return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
-    return registry.reference(new NumberModel(binding), referrer);
-  }
-
-  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Number binding) {
-    return registry.reference(new NumberModel(binding), referrer);
-  }
-
   private final Id id;
   private final Form form;
   private final BigDecimal min;
   private final BigDecimal max;
 
   private NumberModel(final Jsonx.Number binding) {
-    super(binding.getNullable$().text(), null, null, null);
-    this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
+    super(null, null, null, null);
+    this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
-    this.id = new Id(binding.getTemplate$().text());
+    this.id = new Id(binding.getTemplate$());
   }
 
   private NumberModel(final $Number binding) {
     super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
-    this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
+    this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
     this.id = new Id(this);
@@ -84,7 +84,7 @@ class NumberModel extends SimpleModel {
 
   private NumberModel(final $Array.Number binding) {
     super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.form = Form.valueOf(binding.getForm$().text().toUpperCase());
+    this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
     this.id = new Id(this);
@@ -95,7 +95,7 @@ class NumberModel extends SimpleModel {
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.nullable()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
-    this.form = property.form();
+    this.form = property.form() == Form.REAL ? null : property.form();
     this.min = property.min().length() == 0 ? null : new BigDecimal(property.min());
     this.max = property.max().length() == 0 ? null : new BigDecimal(property.max());
     this.id = new Id(this);
@@ -103,7 +103,7 @@ class NumberModel extends SimpleModel {
 
   private NumberModel(final NumberElement element) {
     super(element.nullable(), null, null, null);
-    this.form = element.form();
+    this.form = element.form() == Form.REAL ? null : element.form();
     this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
     this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
     this.id = new Id(this);
@@ -161,17 +161,22 @@ class NumberModel extends SimpleModel {
 
   @Override
   protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    final boolean skipMembers;
     final StringBuilder builder;
     if (owner instanceof ObjectModel) {
       builder = new StringBuilder("<property xsi:type=\"");
-      if (registry.hasRegistry(id()))
+      if (skipMembers = registry.hasRegistry(id()))
         builder.append("template\" reference=\"").append(id()).append("\"");
       else
         builder.append("number\"");
     }
     else {
       builder = new StringBuilder("<number");
-      if (form != Form.REAL)
+      skipMembers = false;
+    }
+
+    if (!skipMembers) {
+      if (form != null)
         builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
 
       if (min != null)
@@ -187,7 +192,7 @@ class NumberModel extends SimpleModel {
   @Override
   protected void toAnnotation(final Attributes attributes, final String packageName) {
     super.toAnnotation(attributes, packageName);
-    if (form != Form.REAL)
+    if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);
 
     if (min != null)

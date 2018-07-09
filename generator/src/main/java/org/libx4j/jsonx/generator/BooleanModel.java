@@ -58,8 +58,8 @@ class BooleanModel extends SimpleModel {
   private final Id id;
 
   private BooleanModel(final Jsonx.Boolean binding) {
-    super(binding.getNullable$().text(), null, null, null);
-    this.id = new Id(binding.getTemplate$().text());
+    super(null, null, null, null);
+    this.id = new Id(binding.getTemplate$());
   }
 
   private BooleanModel(final $Boolean binding) {

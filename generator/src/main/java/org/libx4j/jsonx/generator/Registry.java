@@ -45,7 +45,7 @@ class Registry {
   }
 
   private static String getKey(final Element element) {
-    final String key = element.key();
+    final String key = element.id().toString();
     if (key == null)
       throw new NullPointerException("key == null");
 
@@ -110,15 +110,11 @@ class Registry {
   }
 
   public Element getElement(final $Object binding) {
-    return getElement(ObjectModel.getFullyQualifiedName(binding));
+    return refToModel.get(ObjectModel.getFullyQualifiedName(binding));
   }
 
   public Element getElement(final Id id) {
-    return getElement(id.toString());
-  }
-
-  public Element getElement(final String ref) {
-    return refToModel.get(ref);
+    return refToModel.get(id.toString());
   }
 
   public boolean hasRegistry(final Id id) {
@@ -133,8 +129,8 @@ class Registry {
     return refToModel.size();
   }
 
-  public int getNumReferrers(final Model model) {
-    final List<ComplexModel> referrers = references.get(model.key());
+  public int getNumReferrers(final Element element) {
+    final List<ComplexModel> referrers = references.get(element.id().toString());
     return referrers == null ? 0 : referrers.size();
   }
 }

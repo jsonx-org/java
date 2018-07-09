@@ -19,24 +19,23 @@
   xmlns="http://jsonx.libx4j.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
-  <array template="rootArrayEmptyNotNull" nullable="false"/>
-  <array template="rootArrayEmptyNull"/>
+  <array template="rootArrayEmpty"/>
   <array template="rootBooleanArray">
     <template reference="rootBooleanNotNull" maxOccurs="3"/>
   </array>
   <array template="rootMultiArray">
     <array minOccurs="1" maxOccurs="1">
-      <array maxOccurs="2">
+      <array maxOccurs="14">
         <boolean nullable="false"/>
         <number form="integer" min="1" max="2" maxOccurs="3"/>
       </array>
-      <array minOccurs="2" maxOccurs="2">
-        <template reference="rootArrayEmptyNull" minOccurs="2"/>
-        <template reference="rootBooleanNull" maxOccurs="2"/>
+      <array minOccurs="2" maxOccurs="13">
+        <template reference="rootArrayEmpty" minOccurs="2" nullable="false"/>
+        <template reference="rootBooleanNull" maxOccurs="15"/>
       </array>
     </array>
   </array>
-  <boolean template="rootBooleanNotNull" nullable="false"/>
+  <boolean template="rootBooleanNotNull"/>
   <boolean template="rootBooleanNull"/>
   <number template="rootNumber" form="integer" min="2" max="9"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
@@ -54,19 +53,19 @@
     <property xsi:type="array" name="booleanArrayDefault">
       <template reference="rootBooleanNotNull" minOccurs="1" maxOccurs="3"/>
     </property>
-    <property xsi:type="array" name="booleanArrayNotRequired" required="false">
+    <property xsi:type="array" name="booleanArrayNotRequired" nullable="false" required="false">
       <boolean/>
     </property>
     <property xsi:type="array" name="booleanArrayNotNull" nullable="false">
       <boolean nullable="false"/>
     </property>
-    <property xsi:type="array" name="booleanArrayNotRequiredNotNull" required="false" nullable="false">
+    <property xsi:type="array" name="booleanArrayNotRequiredNotNull" nullable="false" required="false">
       <boolean nullable="false"/>
     </property>
   </object>
   <object class="sub1.simple$Numbers">
-    <property xsi:type="template" name="numberRefDefault" reference="rootNumber"/>
-    <property xsi:type="template" name="numberRefNotRequired" reference="rootNumber" required="false"/>
+    <property xsi:type="template" name="numberRefDefault" reference="rootNumber" nullable="false"/>
+    <property xsi:type="template" name="numberRefNotRequired" reference="rootNumber" nullable="false" required="false"/>
     <property xsi:type="number" name="numberDefault"/>
     <property xsi:type="number" name="numberNotRequired" required="false"/>
     <property xsi:type="number" name="numberNotNull" nullable="false"/>
@@ -89,10 +88,10 @@
       <template reference="rootNumber" maxOccurs="3"/>
     </property>
     <property xsi:type="array" name="numberArrayDefault">
-      <number minOccurs="2" maxOccurs="2"/>
+      <number minOccurs="2" maxOccurs="10"/>
     </property>
     <property xsi:type="array" name="numberArrayNotRequired" required="false">
-      <number minOccurs="2" maxOccurs="2"/>
+      <number minOccurs="2" maxOccurs="12"/>
     </property>
     <property xsi:type="array" name="numberArrayNotNull" nullable="false">
       <number nullable="false" minOccurs="3" maxOccurs="5"/>
@@ -233,22 +232,22 @@
     <property xsi:type="array" name="arrayArray">
       <array nullable="false">
         <string/>
-        <boolean/>
+        <boolean nullable="false"/>
         <array>
-          <string/>
+          <string nullable="false"/>
           <array>
             <number/>
             <array>
-              <array/>
+              <array nullable="false"/>
             </array>
             <boolean/>
           </array>
           <number/>
         </array>
-        <number/>
+        <number nullable="false"/>
       </array>
       <string/>
-      <boolean/>
+      <boolean nullable="false"/>
     </property>
   </object>
   <object class="sub1.simple$Strings">
@@ -287,14 +286,14 @@
       <string pattern="[valid]+"/>
     </property>
     <property xsi:type="array" name="stringArrayUrl">
-      <string urlEncode="true" maxOccurs="1"/>
+      <string urlEncode="true" maxOccurs="1" nullable="false"/>
       <string urlDecode="true" maxOccurs="1"/>
-      <string urlEncode="true" urlDecode="true" maxOccurs="1"/>
+      <string urlEncode="true" urlDecode="true" maxOccurs="1" nullable="false"/>
     </property>
   </object>
   <object class="sub2.pkg.cls$AbstractObject" abstract="true">
     <property xsi:type="template" name="booleanProperty" reference="rootBooleanNull"/>
-    <property xsi:type="template" name="emptyArray" reference="rootArrayEmptyNotNull"/>
+    <property xsi:type="template" name="emptyArray" reference="rootArrayEmpty" nullable="false"/>
   </object>
   <object class="sub2.xyz.Objects">
     <property xsi:type="object" name="objectDefault" class="ObjectDefault"/>
@@ -304,11 +303,11 @@
     <property xsi:type="object" name="objectNotNullNotRequired2" class="ObjectNotNullNotRequired2" nullable="false" required="false"/>
     <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract" extends="sub2.pkg.cls$AbstractObject">
       <property xsi:type="template" name="objectString" reference="rootString" required="false"/>
-      <property xsi:type="number" name="objectNumber"/>
+      <property xsi:type="number" name="objectNumber" nullable="false"/>
       <property xsi:type="object" name="objectExtendsBooleans" class="ObjectExtendsBooleans" extends="sub1.simple$Booleans"/>
-      <property xsi:type="object" name="objectExtendsBooleans2" class="ObjectExtendsBooleans2" extends="sub1.simple$Booleans"/>
+      <property xsi:type="object" name="objectExtendsBooleans2" class="ObjectExtendsBooleans2" extends="sub1.simple$Booleans" nullable="false"/>
       <property xsi:type="object" name="objectExtendsBooleans3" class="ObjectExtendsBooleans3" extends="sub1.simple$Booleans"/>
-      <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject">
+      <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" nullable="false">
         <property xsi:type="template" name="objectString" reference="rootString" required="false"/>
         <property xsi:type="number" name="objectNumber"/>
       </property>

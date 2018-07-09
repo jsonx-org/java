@@ -99,6 +99,10 @@ class Type {
     this.canonicalPackageName = dot == -1 ? packageName : packageName != null ? packageName + "." + compoundName.substring(0, dot) : compoundName.substring(0, dot);
     this.compoundName = compoundName;
     this.name = packageName != null ? packageName + "." + compoundName : compoundName;
+    if (this.name.endsWith("AbstractObject")) {
+      System.err.println();
+    }
+
     this.canonicalCompoundClassName = compoundName.replace('$', '.');
     this.simpleName = canonicalCompoundClassName.substring(canonicalCompoundClassName.lastIndexOf('.') + 1);
     this.canonicalName = packageName != null ? packageName + "." + canonicalCompoundClassName : canonicalCompoundClassName;
@@ -149,8 +153,8 @@ class Type {
     return simpleName;
   }
 
-  public String getCompoundClassName() {
-    return compoundName;
+  public String getCompoundClassName(final String packageName) {
+    return this.packageName == null && compoundName.startsWith(packageName) ? compoundName.substring(packageName.length() + 1) : compoundName;
   }
 
   public String getCanonicalCompoundClassName() {

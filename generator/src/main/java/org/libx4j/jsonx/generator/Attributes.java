@@ -23,10 +23,12 @@ public class Attributes {
   private final TreeMap<String,String> nameToValue = new TreeMap<String,String>();
 
   public void put(final String name, final Object value) {
-    if (nameToValue.containsKey(name))
+    final String encoded = String.valueOf(value);
+    final Object existing = nameToValue.get(name);
+    if (existing != null && !existing.equals(encoded))
       throw new IllegalStateException("Attempted overwrite of attribute: " + name);
 
-    nameToValue.put(name, String.valueOf(value));
+    nameToValue.put(name, encoded);
   }
 
   public int size() {

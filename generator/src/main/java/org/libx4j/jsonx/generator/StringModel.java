@@ -66,11 +66,11 @@ class StringModel extends SimpleModel {
   private final boolean urlDecode;
 
   private StringModel(final Jsonx.String binding) {
-    super(binding.getNullable$().text(), null, null, null);
+    super(null, null, null, null);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
-    this.id = new Id(binding.getTemplate$().text());
+    this.id = new Id(binding.getTemplate$());
   }
 
   private StringModel(final $String binding) {
@@ -156,16 +156,21 @@ class StringModel extends SimpleModel {
 
   @Override
   protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+    final boolean skipMembers;
     final StringBuilder builder;
     if (owner instanceof ObjectModel) {
       builder = new StringBuilder("<property xsi:type=\"");
-      if (registry.hasRegistry(id()))
+      if (skipMembers = registry.hasRegistry(id()))
         builder.append("template\" reference=\"").append(id()).append("\"");
       else
         builder.append("string\"");
     }
     else {
       builder = new StringBuilder("<string");
+      skipMembers = false;
+    }
+
+    if (!skipMembers) {
       if (pattern != null)
         builder.append(" pattern=\"").append(pattern).append('"');
 

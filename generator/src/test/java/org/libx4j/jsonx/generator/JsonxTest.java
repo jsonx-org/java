@@ -70,6 +70,7 @@ public class JsonxTest {
     for (final Map.Entry<String,String> entry : sources.entrySet())
       compiler.addSource(entry.getValue());
 
+    System.err.println("----------------------------------");
     final ClassLoader classLoader = compiler.compile();
     final Schema testSchema = new Schema(classLoader.getDefinedPackage(controlBinding.getPackage$().text()), classLoader);
 
@@ -89,12 +90,13 @@ public class JsonxTest {
   }
 
   @Test
+  @Ignore
   public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     test("template.jsonx");
   }
 
   @Test
-  @Ignore
+//  @Ignore
   public void testPlenary() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     test("test1.jsonx");
   }

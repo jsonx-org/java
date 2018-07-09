@@ -16,12 +16,13 @@
 
 package org.libx4j.jsonx.generator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.TreeMap;
 
 import org.libx4j.jsonx.runtime.JsonxObject;
 
 public class ClassHolder {
+  private final TreeMap<String,ClassHolder> memberClasses = new TreeMap<String,ClassHolder>();
+
   private final String packageName;
   private final ObjectModel model;
   private final Type type;
@@ -55,7 +56,7 @@ public class ClassHolder {
 
     builder.append(" {");
     boolean isFirst = true;
-    for (final ClassHolder memberClass : memberClasses) {
+    for (final ClassHolder memberClass : memberClasses.values()) {
       if (isFirst)
         isFirst = false;
       else
@@ -77,5 +78,7 @@ public class ClassHolder {
     return builder.append("\n}").toString();
   }
 
-  public final List<ClassHolder> memberClasses = new ArrayList<ClassHolder>();
+  public void add(final ClassHolder classHolder) {
+    memberClasses.put(classHolder.type.toString(), classHolder);
+  }
 }

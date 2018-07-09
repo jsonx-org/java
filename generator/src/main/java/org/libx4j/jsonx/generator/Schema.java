@@ -157,6 +157,8 @@ public class Schema extends Member {
   public final Collection<Model> rootMembers() {
     final List<Model> members = new ArrayList<Model>();
     for (final Model model : registry.rootElements()) {
+      if (model instanceof ObjectModel && ((ObjectModel)model).type().toString().endsWith("sub1.simple$Booleans"))
+        System.out.println();
       final int numReferrers = registry.getNumReferrers(model);
       if (model instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers > 0)
         members.add(model);
@@ -166,7 +168,7 @@ public class Schema extends Member {
       @Override
       public int compare(final Model o1, final Model o2) {
         if (o1 instanceof ObjectModel)
-          return o2 instanceof ObjectModel ? o1.type().getCompoundClassName().compareTo(o2.type().getCompoundClassName()) : 1;
+          return o2 instanceof ObjectModel ? o1.type().getCompoundClassName(packageName).compareTo(o2.type().getCompoundClassName(packageName)) : 1;
 
         if (o2 instanceof ObjectModel)
           return -1;
@@ -194,7 +196,7 @@ public class Schema extends Member {
     builder.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
     for (final Model member : rootMembers())
       if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        builder.append(",\n  \"").append(member.key()).append("\": ").append(member.toJSON(packageName).replace("\n", "\n  "));
+        builder.append(",\n  \"").append(member.id()).append("\": ").append(member.toJSON(packageName).replace("\n", "\n  "));
 
     builder.append("\n}");
     return builder.toString();
@@ -206,8 +208,11 @@ public class Schema extends Member {
     final Collection<Model> members = rootMembers();
     if (members.size() > 0) {
       builder.append('>');
-      for (final Model member : members)
+      for (final Model member : members) {
+        if (member instanceof ObjectModel && ((ObjectModel)member).type().toString().endsWith("sub1.simple$Booleans"))
+          System.out.println();
         builder.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
+      }
 
       builder.append("\n</jsonx>");
     }
@@ -258,7 +263,7 @@ public class Schema extends Member {
             all.put(declaringType, parent);
           }
 
-          parent.memberClasses.add(classHolder);
+          parent.add(classHolder);
         }
         else {
           typeToClassHolder.put(model.type(), classHolder);
@@ -274,9 +279,6 @@ public class Schema extends Member {
       final ClassHolder holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage(packageName);
-      if (canonicalPackageName.contains(".null")) {
-        System.out.println();
-      }
 
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");

@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.function.Function;
 
+import org.lib4j.lang.Objects;
 import org.lib4j.util.JavaIdentifiers;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -154,10 +155,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     this(name);
   }
 
-  protected String key() {
-    return id().toString();
-  }
-
   public abstract Id id();
 
   @Override
@@ -215,10 +212,14 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     final StringBuilder builder = new StringBuilder();
     if (name != null)
       builder.append(" name=\"").append(name).append('"');
-    else if (id() != null && !(this instanceof Template))
+    else if (id() != null && !(this instanceof Template) && !(this instanceof ObjectModel))
       builder.append(" template=\"").append(id()).append('"');
 
-    final boolean shouldWriteNullable = owner instanceof Schema || !(this instanceof Template) && id() != null && !registry.hasRegistry(id());
+    if ("objectArrayDefault".equals(name))
+      System.out.println("y: " + builder);
+
+//  final boolean shouldWriteNullable = owner instanceof Schema || owner instanceof ArrayModel || !(this instanceof Template);
+    final boolean shouldWriteNullable = !(owner instanceof Schema);
     if (shouldWriteNullable && nullable != null && !nullable)
       builder.append(" nullable=\"").append(nullable).append('"');
 
@@ -262,6 +263,8 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   }
 
   protected final String toField(final String packageName) {
+    if ("tb015648c".equals(id().toString()))
+      System.out.println();
     final StringBuilder builder = new StringBuilder();
     final String elementAnnotations = toElementAnnotations(packageName);
     if (elementAnnotations != null)

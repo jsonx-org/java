@@ -50,7 +50,7 @@
     <property xsi:type="boolean" name="booleanDirectNotNull" nullable="false" required="false"/>
     <property xsi:type="template" name="booleanNullTemp" reference="rootBooleanNull"/>
     <property xsi:type="template" name="booleanNotNullTemp" reference="rootBooleanNotNull" required="false"/>
-    <property xsi:type="number" name="numberDirectNotNull" nullable="false" required="false"/>
+    <property xsi:type="number" name="numberDirectNotNull" min="5" max="8" nullable="false" required="false"/>
     <property xsi:type="template" name="numberTemp" reference="rootNumber" required="false"/>
     <property xsi:type="string" name="stringDirectNotNull" nullable="false" required="false"/>
     <property xsi:type="template" name="stringTemp" reference="rootString" required="false"/>

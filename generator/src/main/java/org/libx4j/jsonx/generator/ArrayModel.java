@@ -124,9 +124,9 @@ class ArrayModel extends ComplexModel {
       else if (member instanceof $Array.Object) {
         members.add(ObjectModel.reference(registry, referrer, ($Array.Object)member));
       }
-      else if (member instanceof $ArrayMember.Template) {
-        final $ArrayMember.Template template = ($ArrayMember.Template)member;
-        final Element reference = registry.getElement(template.getReference$().text());
+      else if (member instanceof $Array.Template) {
+        final $Array.Template template = ($Array.Template)member;
+        final Element reference = registry.getElement(new Id(template.getReference$()));
         if (reference == null)
           throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
 
@@ -196,9 +196,11 @@ class ArrayModel extends ComplexModel {
   private final List<Element> members;
 
   private ArrayModel(final Registry registry, final Jsonx.Array binding) {
-    super(null, binding.getNullable$().text(), null, null, null);
+    super(null, null, null, null, null);
     this.members = parseMembers(registry, this, binding);
-    this.id = new Id(binding.getTemplate$().text());
+    this.id = new Id(binding.getTemplate$());
+    if ("adabc5edc".equals(id().toString()))
+      System.out.println();
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
@@ -352,6 +354,8 @@ class ArrayModel extends ComplexModel {
 
   @Override
   protected void toAnnotation(final Attributes attributes, final String packageName) {
+    if ("adabc5edc".equals(id().toString()))
+      System.out.println();
     super.toAnnotation(attributes, packageName);
     final int[] indices = new int[members().size()];
     final StringBuilder temp = new StringBuilder();
@@ -384,13 +388,16 @@ class ArrayModel extends ComplexModel {
         offset += writeElementAnnotations(packageName, inner, arrayModel.members().get(i), index + offset);
       }
 
-      // FIXME: Can this be abstracted better? minOccurs and maxOccurs are rendered here and in Element.toAnnotation()
+      // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
       arrayModel.toAnnotation(packageName, outer, indices);
       if (element.minOccurs() != null)
         outer.put("minOccurs", element.minOccurs());
 
       if (element.maxOccurs() != null)
         outer.put("maxOccurs", element.maxOccurs());
+
+      if (element.nullable() != null)
+        outer.put("nullable", element.nullable());
 
       builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + outer.toAnnotation() + ")\n");
       builder.insert(0, inner);
