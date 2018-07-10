@@ -90,14 +90,14 @@ public class JsonxTest {
   }
 
   @Test
-  @Ignore
+//  @Ignore
   public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     test("template.jsonx");
   }
 
   @Test
 //  @Ignore
-  public void testPlenary() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
-    test("test1.jsonx");
+  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
+    test("complete.jsonx");
   }
 }
