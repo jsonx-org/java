@@ -29,7 +29,6 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.lib4j.jci.CompilationException;
 import org.lib4j.jci.InMemoryCompiler;
@@ -90,13 +89,11 @@ public class JsonxTest {
   }
 
   @Test
-//  @Ignore
   public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     test("template.jsonx");
   }
 
   @Test
-//  @Ignore
   public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     test("complete.jsonx");
   }
