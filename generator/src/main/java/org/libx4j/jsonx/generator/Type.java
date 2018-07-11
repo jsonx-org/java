@@ -18,6 +18,8 @@ package org.libx4j.jsonx.generator;
 
 import java.util.HashMap;
 
+import org.lib4j.lang.Classes;
+
 class Type {
   private static final HashMap<String,Type> qualifiedNameToType = new HashMap<String,Type>();
   static final Type OBJECT = new Type(Object.class, null);
@@ -99,11 +101,7 @@ class Type {
     this.canonicalPackageName = dot == -1 ? packageName : packageName != null ? packageName + "." + compoundName.substring(0, dot) : compoundName.substring(0, dot);
     this.compoundName = compoundName;
     this.name = packageName != null ? packageName + "." + compoundName : compoundName;
-    if (this.name.endsWith("AbstractObject")) {
-      System.err.println();
-    }
-
-    this.canonicalCompoundClassName = compoundName.replace('$', '.');
+    this.canonicalCompoundClassName = Classes.toCanonicalClassName(compoundName);
     this.simpleName = canonicalCompoundClassName.substring(canonicalCompoundClassName.lastIndexOf('.') + 1);
     this.canonicalName = packageName != null ? packageName + "." + canonicalCompoundClassName : canonicalCompoundClassName;
     qualifiedNameToType.put(name, this);
@@ -120,8 +118,8 @@ class Type {
   }
 
   public Type getDeclaringType() {
-    final int del = compoundName.lastIndexOf('$');
-    return del < 0 ? null : get(packageName, compoundName.substring(0, del), (Class<?>)null, null);
+    final String declaringClassName = Classes.getDeclaringClassName(compoundName);
+    return compoundName.length() == declaringClassName.length() ? null : get(packageName, declaringClassName, (Class<?>)null, null);
   }
 
   public Type getGreatestCommonSuperType(final Type type) {

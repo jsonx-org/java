@@ -20,8 +20,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.function.Function;
 
+import org.lib4j.lang.JavaIdentifiers;
 import org.lib4j.lang.Objects;
-import org.lib4j.util.JavaIdentifiers;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
