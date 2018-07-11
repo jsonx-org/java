@@ -35,19 +35,19 @@ class Template extends Element {
   }
 
   public Template(final $Template binding, final Element model) {
-    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.model = model;
     this.id = new Id(this);
   }
 
   public Template(final String name, final boolean nullable, final boolean required, final Model model) {
-    super(name, nullable, required);
+    super(name, nullable, required, null, null);
     this.model = model;
     this.id = new Id(this);
   }
 
   public Template(final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
-    super(null, nullable, minOccurs, maxOccurs);
+    super(nullable, minOccurs, maxOccurs);
     this.model = model;
     this.id = new Id(this);
   }
@@ -96,8 +96,6 @@ class Template extends Element {
 
   @Override
   protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    if ("o24370fee".equals(String.valueOf(model.id())))
-      System.out.println();
     if (model instanceof ObjectModel && registry.getNumReferrers(model) == 1) {
       final String templateJsonx = super.toJSONX(registry, owner, packageName);
       String objectJsonx = model.toJSONX(registry, owner, packageName);
@@ -117,9 +115,6 @@ class Template extends Element {
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
       builder.append(" reference=\"").append(Type.getSubName(model.id().toString(), packageName)).append('"');
-    if (builder.toString().contains("sub1.simple$Booleans") && owner instanceof Element && "a43cdfd71".equals(String.valueOf(((Element)owner).id()))) {
-      System.out.println();
-    }
 
     return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
   }

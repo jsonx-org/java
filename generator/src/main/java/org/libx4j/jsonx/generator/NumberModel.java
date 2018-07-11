@@ -53,9 +53,6 @@ class NumberModel extends SimpleModel {
   public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement element) {
     final NumberModel model = new NumberModel(element);
     final Id id = model.id();
-    if (element.min().equals("1")) {
-      System.out.println();
-    }
 
     final NumberModel registered = (NumberModel)registry.getElement(id);
     return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
@@ -67,7 +64,7 @@ class NumberModel extends SimpleModel {
   private final BigDecimal max;
 
   private NumberModel(final Jsonx.Number binding) {
-    super(null, null, null, null);
+    super(null);
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
@@ -75,7 +72,7 @@ class NumberModel extends SimpleModel {
   }
 
   private NumberModel(final $Number binding) {
-    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
@@ -91,7 +88,7 @@ class NumberModel extends SimpleModel {
   }
 
   private NumberModel(final NumberProperty property, final Field field) {
-    super(property.nullable(), null, null, null);
+    super(property.nullable());
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.nullable()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
@@ -102,7 +99,7 @@ class NumberModel extends SimpleModel {
   }
 
   private NumberModel(final NumberElement element) {
-    super(element.nullable(), null, null, null);
+    super(element.nullable());
     this.form = element.form() == Form.REAL ? null : element.form();
     this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
     this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
@@ -165,7 +162,7 @@ class NumberModel extends SimpleModel {
     final StringBuilder builder;
     if (owner instanceof ObjectModel) {
       builder = new StringBuilder("<property xsi:type=\"");
-      if (skipMembers = registry.hasRegistry(id()))
+      if (skipMembers = registry.isRegistered(id()))
         builder.append("template\" reference=\"").append(id()).append("\"");
       else
         builder.append("number\"");

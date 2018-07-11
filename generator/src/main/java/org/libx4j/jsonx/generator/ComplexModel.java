@@ -16,23 +16,21 @@
 
 package org.libx4j.jsonx.generator;
 
+import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class ComplexModel extends Model {
-  // Templates
-  public ComplexModel(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
-    super(name, nullable, required, minOccurs, maxOccurs);
-  }
-
-  // Properties
-  public ComplexModel(final String name, final boolean nullable, final boolean required) {
+  public ComplexModel(final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
     super(name, nullable, required);
   }
 
-  // Members
   public ComplexModel(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(null, nullable, minOccurs, maxOccurs);
+    super(nullable, minOccurs, maxOccurs);
+  }
+
+  public ComplexModel(final Boolean nullable) {
+    super(nullable);
   }
 }

@@ -64,10 +64,7 @@ public class Id {
   }
 
   public Id(final Template model) {
-    if (model.reference().id() == null)
-      throw new NullPointerException();
-
-    this.id = "t" + hash(model.reference().id(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.required());
+    this.id = "t" + hash(model.reference().id().toString(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.required());
   }
 
   @Override

@@ -59,10 +59,6 @@ class ArrayModel extends ComplexModel {
     final ArrayModel model = new ArrayModel(registry, element, field, annotations);
     final Id id = model.id();
 
-    if (id.toString().contains("af1e0f831")) {
-      System.out.println();
-    }
-
     final ArrayModel registered = (ArrayModel)registry.getElement(id);
     return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -196,15 +192,13 @@ class ArrayModel extends ComplexModel {
   private final List<Element> members;
 
   private ArrayModel(final Registry registry, final Jsonx.Array binding) {
-    super(null, null, null, null, null);
+    super(null);
     this.members = parseMembers(registry, this, binding);
     this.id = new Id(binding.getTemplate$());
-    if ("adabc5edc".equals(id().toString()))
-      System.out.println();
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
-    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.members = parseMembers(registry, this, binding);
     this.id = new Id(this);
   }
@@ -219,7 +213,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private ArrayModel(final Registry registry, final ArrayProperty property, final Field field) {
-    super(null, property.nullable(), null, null, null);
+    super(property.nullable());
     if (field.getType() != List.class && !field.getType().isArray() && !Void.class.equals(field.getType()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
@@ -267,7 +261,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private ArrayModel(final Registry registry, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
-    super(null, element.nullable(), null, null, null);
+    super(element.nullable());
     this.members = parseMembers(registry, this, field, element, element.elementIds(), annotations);
     this.id = new Id(this);
   }
@@ -327,7 +321,7 @@ class ArrayModel extends ComplexModel {
     final StringBuilder builder;
     if (owner instanceof ObjectModel) {
       builder = new StringBuilder("<property xsi:type=\"");
-      if (skipMembers = registry.hasRegistry(id()))
+      if (skipMembers = registry.isRegistered(id()))
         builder.append("template\" reference=\"").append(id()).append("\"");
       else
         builder.append("array\"");
@@ -354,8 +348,6 @@ class ArrayModel extends ComplexModel {
 
   @Override
   protected void toAnnotation(final Attributes attributes, final String packageName) {
-    if ("adabc5edc".equals(id().toString()))
-      System.out.println();
     super.toAnnotation(attributes, packageName);
     final int[] indices = new int[members().size()];
     final StringBuilder temp = new StringBuilder();
@@ -374,8 +366,8 @@ class ArrayModel extends ComplexModel {
   }
 
   private static int writeElementAnnotations(final String packageName, final StringBuilder builder, final Element element, final int index) {
-    final Attributes outer = new Attributes();
-    outer.put("id", index);
+    final Attributes attributes = new Attributes();
+    attributes.put("id", index);
 
     final Element reference = element instanceof Template ? ((Template)element).reference() : element;
     if (reference instanceof ArrayModel) {
@@ -389,23 +381,23 @@ class ArrayModel extends ComplexModel {
       }
 
       // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
-      arrayModel.toAnnotation(packageName, outer, indices);
+      arrayModel.toAnnotation(packageName, attributes, indices);
       if (element.minOccurs() != null)
-        outer.put("minOccurs", element.minOccurs());
+        attributes.put("minOccurs", element.minOccurs());
 
       if (element.maxOccurs() != null)
-        outer.put("maxOccurs", element.maxOccurs());
+        attributes.put("maxOccurs", element.maxOccurs());
 
       if (element.nullable() != null)
-        outer.put("nullable", element.nullable());
+        attributes.put("nullable", element.nullable());
 
-      builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + outer.toAnnotation() + ")\n");
+      builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + attributes.toAnnotation() + ")\n");
       builder.insert(0, inner);
       return offset;
     }
 
-    element.toAnnotation(outer, packageName);
-    builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + outer.toAnnotation() + ")\n");
+    element.toAnnotation(attributes, packageName);
+    builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + attributes.toAnnotation() + ")\n");
     return 1;
   }
 

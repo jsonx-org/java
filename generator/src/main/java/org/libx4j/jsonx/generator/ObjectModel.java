@@ -18,7 +18,6 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Iterator;
@@ -70,7 +69,7 @@ class ObjectModel extends ComplexModel {
   private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz, final JsonxObject jsObject) {
     final Id id = new Id(clazz);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
-    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, null, clazz, jsObject, null, null, null, null), null);
+    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, clazz, jsObject, null), null);
   }
 
   public static ObjectModel reference(final Registry registry, final ComplexModel referrer, final $Array.Object binding) {
@@ -173,7 +172,7 @@ class ObjectModel extends ComplexModel {
   private final Unknown unknown;
 
   private ObjectModel(final Registry registry, final Jsonx.Object binding) {
-    super(null, null, null, null, null);
+    super(null);
     this.type = Type.get(binding.getClass$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.isAbstract = binding.getAbstract$().text();
     this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
@@ -183,15 +182,15 @@ class ObjectModel extends ComplexModel {
   }
 
   private ObjectModel(final Registry registry, final ObjectProperty property) {
-    this(registry, null, property.type(), checkJSObject(property.type()), property.nullable(), null, null, null);
+    this(registry, property.type(), checkJSObject(property.type()), property.nullable());
   }
 
   private ObjectModel(final Registry registry, final ObjectElement element) {
-    this(registry, null, element.type(), checkJSObject(element.type()), element.nullable(), null, null, null);
+    this(registry, element.type(), checkJSObject(element.type()), element.nullable());
   }
 
   private ObjectModel(final Registry registry, final $Object binding, final ObjectModel superObject) {
-    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.type = Type.get(getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.superObject = superObject;
     this.isAbstract = null;
@@ -210,8 +209,8 @@ class ObjectModel extends ComplexModel {
     this.id = new Id(this);
   }
 
-  private ObjectModel(final Registry registry, final String name, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
-    super(name, nullable, required, minOccurs, maxOccurs);
+  private ObjectModel(final Registry registry, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable) {
+    super(nullable);
     final Class<?> superClass = clazz.getSuperclass();
     this.type = Type.get(clazz.getName(), superClass == null ? null : superClass.getName());
     this.isAbstract = Modifier.isAbstract(clazz.getModifiers());
@@ -224,17 +223,9 @@ class ObjectModel extends ComplexModel {
       this.superObject = null;
     }
 
-    Object object;
-    try {
-      object = clazz.getDeclaredConstructor().newInstance();
-    }
-    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-      object = null;
-    }
-
     final LinkedHashMap<String,Element> members = new LinkedHashMap<String,Element>();
     for (final Field field : clazz.getDeclaredFields()) {
-      final Element member = Element.toElement(registry, this, field, object);
+      final Element member = Element.toElement(registry, this, field);
       if (member != null)
         members.put(member.name(), member);
     }

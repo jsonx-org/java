@@ -21,11 +21,10 @@ import java.lang.reflect.Field;
 import java.util.function.Function;
 
 import org.lib4j.lang.JavaIdentifiers;
-import org.lib4j.lang.Objects;
+import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
@@ -48,7 +47,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     MEMBER
   }
 
-  protected static Element toElement(final Registry registry, final ComplexModel declarer, final Field field, final Object object) {
+  protected static Element toElement(final Registry registry, final ComplexModel declarer, final Field field) {
     final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
     if (booleanProperty != null)
       return BooleanModel.referenceOrDeclare(registry, declarer, booleanProperty, field);
@@ -123,7 +122,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   private final Integer minOccurs;
   private final Integer maxOccurs;
 
-  // Templates
   public Element(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
     this.name = name;
     this.nullable = nullable != null && nullable ? null : nullable;
@@ -132,30 +130,17 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
   }
 
-  // Members
+  public Element(final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
+    this(null, nullable, null, minOccurs, maxOccurs);
+  }
+
   public Element(final String name, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(name, nullable == null ? null : nullable.text(), minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
+    this(name, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
-  // Members
-  public Element(final String name, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    this(name, nullable, null, minOccurs, maxOccurs);
+  public Element(final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
+    this(name.text(), nullable.text(), required.text(), null, null);
   }
-
-  // Properties
-  public Element(final String name, final Boolean nullable, final Boolean required) {
-    this(name, nullable, required, null, null);
-  }
-
-  public Element(final String name) {
-    this(name, null, null, (Integer)null);
-  }
-
-  public Element(final $Member binding, final String name) {
-    this(name);
-  }
-
-  public abstract Id id();
 
   @Override
   public final String name() {
@@ -212,13 +197,9 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     final StringBuilder builder = new StringBuilder();
     if (name != null)
       builder.append(" name=\"").append(name).append('"');
-    else if (id() != null && !(this instanceof Template) && !(this instanceof ObjectModel))
+    else if (!(this instanceof Template) && !(this instanceof ObjectModel))
       builder.append(" template=\"").append(id()).append('"');
 
-    if ("objectArrayDefault".equals(name))
-      System.out.println("y: " + builder);
-
-//  final boolean shouldWriteNullable = owner instanceof Schema || owner instanceof ArrayModel || !(this instanceof Template);
     final boolean shouldWriteNullable = !(owner instanceof Schema);
     if (shouldWriteNullable && nullable != null && !nullable)
       builder.append(" nullable=\"").append(nullable).append('"');
@@ -246,9 +227,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   }
 
   protected void toAnnotation(final Attributes attributes, final String packageName) {
-//    if (name != null)
-//      string.append(", name=\"").append(name).append('"');
-
     if (nullable != null)
       attributes.put("nullable", nullable);
 
@@ -263,8 +241,6 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
   }
 
   protected final String toField(final String packageName) {
-    if ("tb015648c".equals(id().toString()))
-      System.out.println();
     final StringBuilder builder = new StringBuilder();
     final String elementAnnotations = toElementAnnotations(packageName);
     if (elementAnnotations != null)
@@ -284,10 +260,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     return null;
   }
 
-  protected boolean shouldWriteNullable(final Registry registry) {
-    return id() != null && !registry.hasRegistry(id());
-  }
-
+  public abstract Id id();
   protected abstract Type type();
   protected abstract Class<? extends Annotation> propertyAnnotation();
   protected abstract Class<? extends Annotation> elementAnnotation();

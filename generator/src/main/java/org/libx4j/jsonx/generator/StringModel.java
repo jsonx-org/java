@@ -66,7 +66,7 @@ class StringModel extends SimpleModel {
   private final boolean urlDecode;
 
   private StringModel(final Jsonx.String binding) {
-    super(null, null, null, null);
+    super(null);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
@@ -74,7 +74,7 @@ class StringModel extends SimpleModel {
   }
 
   private StringModel(final $String binding) {
-    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
@@ -90,7 +90,7 @@ class StringModel extends SimpleModel {
   }
 
   private StringModel(final StringProperty property, final Field field) {
-    super(property.nullable(), null, null, null);
+    super(property.nullable());
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -101,7 +101,7 @@ class StringModel extends SimpleModel {
   }
 
   private StringModel(final StringElement element) {
-    super(element.nullable(), null, null, null);
+    super(element.nullable());
     this.pattern = parsePattern(element.pattern());
     this.urlEncode = element.urlEncode();
     this.urlDecode = element.urlDecode();
@@ -160,7 +160,7 @@ class StringModel extends SimpleModel {
     final StringBuilder builder;
     if (owner instanceof ObjectModel) {
       builder = new StringBuilder("<property xsi:type=\"");
-      if (skipMembers = registry.hasRegistry(id()))
+      if (skipMembers = registry.isRegistered(id()))
         builder.append("template\" reference=\"").append(id()).append("\"");
       else
         builder.append("string\"");

@@ -18,10 +18,8 @@ package org.libx4j.jsonx.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
@@ -64,10 +62,6 @@ class Registry {
     this(new LinkedHashMap<String,Model>(), new LinkedHashMap<String,List<ComplexModel>>());
   }
 
-  public Value declare(final Class<?> clazz) {
-    return new Value(clazz.getName());
-  }
-
   public Value declare(final Jsonx.Boolean binding) {
     return new Value(binding.getTemplate$().text());
   }
@@ -86,6 +80,10 @@ class Registry {
 
   public Value declare(final Jsonx.Object binding) {
     return new Value(binding.getClass$().text());
+  }
+
+  public Value declare(final Class<?> clazz) {
+    return new Value(clazz.getName());
   }
 
   public Value declare(final Id id) {
@@ -117,8 +115,8 @@ class Registry {
     return refToModel.get(id.toString());
   }
 
-  public boolean hasRegistry(final Id id) {
-    return id != null && getElement(id) != null;
+  public boolean isRegistered(final Id id) {
+    return getElement(id) != null;
   }
 
   public Collection<Model> rootElements() {

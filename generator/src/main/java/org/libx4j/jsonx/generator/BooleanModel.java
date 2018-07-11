@@ -58,12 +58,12 @@ class BooleanModel extends SimpleModel {
   private final Id id;
 
   private BooleanModel(final Jsonx.Boolean binding) {
-    super(null, null, null, null);
+    super(null);
     this.id = new Id(binding.getTemplate$());
   }
 
   private BooleanModel(final $Boolean binding) {
-    super(binding.getName$().text(), binding.getNullable$().text(), binding.getRequired$().text());
+    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.id = new Id(this);
   }
 
@@ -73,7 +73,7 @@ class BooleanModel extends SimpleModel {
   }
 
   private BooleanModel(final BooleanProperty property, final Field field) {
-    super(property.nullable(), null, null, null);
+    super(property.nullable());
     if (field.getType() != Boolean.class && (field.getType() != boolean.class || property.nullable()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
 
@@ -81,7 +81,7 @@ class BooleanModel extends SimpleModel {
   }
 
   private BooleanModel(final BooleanElement element) {
-    super(element.nullable(), null, null, null);
+    super(element.nullable());
     this.id = new Id(this);
   }
 
@@ -112,6 +112,6 @@ class BooleanModel extends SimpleModel {
 
   @Override
   protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"" + (registry.hasRegistry(id()) ? "template\" reference=\"" + id() + "\"" : "boolean\"") : "<boolean").append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
+    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"" + (registry.isRegistered(id()) ? "template\" reference=\"" + id() + "\"" : "boolean\"") : "<boolean").append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
   }
 }
