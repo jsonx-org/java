@@ -19,7 +19,7 @@ package org.libx4j.jsonx.generator;
 import java.util.List;
 
 abstract class Member {
-  protected void collectClassNames(final List<Type> types) {
+  protected void collectClassNames(final List<Registry.Type> types) {
   }
 
   protected abstract String toJSON(final String packageName);

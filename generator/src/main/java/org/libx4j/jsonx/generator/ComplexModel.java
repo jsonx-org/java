@@ -22,15 +22,15 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class ComplexModel extends Model {
-  public ComplexModel(final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
-    super(name, nullable, required);
+  public ComplexModel(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
+    super(registry, name, nullable, required);
   }
 
-  public ComplexModel(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(nullable, minOccurs, maxOccurs);
+  public ComplexModel(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(registry, nullable, minOccurs, maxOccurs);
   }
 
-  public ComplexModel(final Boolean nullable) {
-    super(nullable);
+  public ComplexModel(final Registry registry, final Boolean nullable) {
+    super(registry, nullable);
   }
 }

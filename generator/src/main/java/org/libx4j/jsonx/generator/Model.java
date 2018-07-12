@@ -22,15 +22,15 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Model extends Element {
-  public Model(final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
-    super(name, nullable, required);
+  public Model(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
+    super(registry, name, nullable, required);
   }
 
-  public Model(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(null, nullable, minOccurs, maxOccurs);
+  public Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(registry, null, nullable, minOccurs, maxOccurs);
   }
 
-  public Model(final Boolean nullable) {
-    super(nullable, null, null);
+  public Model(final Registry registry, final Boolean nullable) {
+    super(registry, nullable, null, null);
   }
 }

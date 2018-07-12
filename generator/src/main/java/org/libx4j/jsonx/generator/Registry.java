@@ -18,9 +18,11 @@ package org.libx4j.jsonx.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.lib4j.lang.Classes;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 
@@ -50,6 +52,166 @@ class Registry {
     return key;
   }
 
+  class Type {
+    private final String packageName;
+    private final String canonicalPackageName;
+    private final String simpleName;
+    private final String compoundName;
+    private final String canonicalCompoundClassName;
+    private final String name;
+    private final String canonicalName;
+    private final Type superType;
+    private final Type genericType;
+
+    private Type(final String packageName, final String compoundName, final Type superType, final Type genericType) {
+      final boolean defaultPackage = packageName.length() == 0;
+      final int dot = compoundName.lastIndexOf('.');
+      this.packageName = packageName;
+      this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compoundName.substring(0, dot) : packageName + "." + compoundName.substring(0, dot);
+      this.compoundName = compoundName;
+      this.name = defaultPackage ? compoundName : packageName + "." + compoundName;
+      this.canonicalCompoundClassName = Classes.toCanonicalClassName(compoundName);
+      this.simpleName = canonicalCompoundClassName.substring(canonicalCompoundClassName.lastIndexOf('.') + 1);
+      this.canonicalName = defaultPackage ? canonicalCompoundClassName : packageName + "." + canonicalCompoundClassName;
+      this.superType = superType == null ? null : superType;
+      this.genericType = genericType;
+      qualifiedNameToType.put(toCanonicalString(), this);
+    }
+
+    private Type(final Class<?> clazz, final Type genericType) {
+      this(clazz.getPackage().getName(), clazz.getSimpleName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? null : new Type(clazz.getSuperclass(), null), genericType);
+    }
+
+    public Type getSuperType() {
+      return superType;
+    }
+
+    public Type getDeclaringType() {
+      final String declaringClassName = Classes.getDeclaringClassName(compoundName);
+      return compoundName.length() == declaringClassName.length() ? null : getType(packageName, declaringClassName, null, null, null);
+    }
+
+    public Type getGreatestCommonSuperType(final Type type) {
+      Type a = this;
+      do {
+        Type b = type;
+        do {
+          if (a.name.equals(b.name))
+            return a;
+
+          b = b.superType;
+        }
+        while (b != null);
+        a = a.superType;
+      }
+      while (a != null);
+      return null;
+    }
+
+    public String getPackage() {
+      return packageName;
+    }
+
+    public String getCanonicalPackage() {
+      return canonicalPackageName;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String getSimpleName() {
+      return simpleName;
+    }
+
+    public String getCanonicalName() {
+      return canonicalName;
+    }
+
+    public String getCompoundName() {
+      return compoundName;
+    }
+
+    public String getCanonicalCompoundName() {
+      return canonicalCompoundClassName;
+    }
+
+    public String getSubName(final String superName) {
+      final String x = Registry.getSubName(name, superName);
+      System.out.println(compoundName + " " + name + " " + packageName + " " + superName + " " + x);
+      return x;
+    }
+
+    public String toCanonicalString() {
+      final StringBuilder builder = new StringBuilder(canonicalName);
+      if (genericType != null)
+        builder.append('<').append(genericType.toCanonicalString()).append('>');
+
+      return builder.toString();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+      if (obj == this)
+        return true;
+
+      if (!(obj instanceof Type))
+        return false;
+
+      return toString().equals(obj.toString());
+    }
+
+    @Override
+    public int hashCode() {
+      return toString().hashCode();
+    }
+
+    @Override
+    public String toString() {
+      final StringBuilder builder = new StringBuilder(name);
+      if (genericType != null)
+        builder.append('<').append(genericType.toString()).append('>');
+
+      return builder.toString();
+    }
+  }
+
+  public static String getSubName(final String name, final String superName) {
+    return superName != null && name.startsWith(superName) ? name.substring(superName.length() + 1) : name;
+  }
+
+  protected Type getType(final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
+    final StringBuilder className = new StringBuilder(packageName.length() > 0 ? packageName + "." + compoundName : compoundName);
+    if (genericType != null)
+      className.append('<').append(genericType.toCanonicalString()).append('>');
+
+    final Type type = qualifiedNameToType.get(className.toString());
+    return type != null ? type : new Type(packageName, compoundName, superCompoundName == null ? null : getType(superPackageName, superCompoundName, null, null, null), genericType);
+  }
+
+  public Type getType(final Class<?> clazz, final Type generic) {
+    final String name = clazz.getName() + "<" + (generic != null ? generic.toCanonicalString() : Object.class.getName()) + ">";
+    final Type type = qualifiedNameToType.get(name);
+    return type != null ? type : new Type(clazz, generic);
+  }
+
+  public Type getType(final Class<?> cls) {
+    return getType(cls.getPackageName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackageName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
+  }
+
+  public Type getType(final Class<?> ... generics) {
+    return getType(0, generics);
+  }
+
+  private Type getType(final int index, final Class<?> ... generics) {
+    return index == generics.length - 1 ? getType(generics[index]) : getType(generics[index], getType(index + 1, generics));
+  }
+
+  public Type getType(final String packageName, final String compoundName, final String superCompoundName) {
+    return getType(packageName, compoundName, packageName, superCompoundName, (Type)null);
+  }
+
+  private final HashMap<String,Type> qualifiedNameToType = new HashMap<String,Type>();
   private final LinkedHashMap<String,Model> refToModel;
   private final LinkedHashMap<String,List<ComplexModel>> references;
 

@@ -71,7 +71,7 @@ public class JsonxTest {
 
     System.err.println("----------------------------------");
     final ClassLoader classLoader = compiler.compile();
-    final Schema testSchema = new Schema(classLoader.getDefinedPackage(controlBinding.getPackage$().text()), classLoader);
+    final Schema testSchema = new Schema(classLoader.getDefinedPackage((String)controlBinding.getPackage$().text()), classLoader);
 
     final File generatedResourcesDir = new File("target/generated-test-resources");
     generatedResourcesDir.mkdirs();

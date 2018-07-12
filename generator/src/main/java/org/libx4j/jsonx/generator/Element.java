@@ -116,13 +116,15 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     return max;
   }
 
+  protected final Registry registry;
   private final String name;
   private final Boolean nullable;
   private final Boolean required;
   private final Integer minOccurs;
   private final Integer maxOccurs;
 
-  public Element(final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
+  public Element(final Registry registry, final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
+    this.registry = registry;
     this.name = name;
     this.nullable = nullable != null && nullable ? null : nullable;
     this.required = required != null && required ? null : required;
@@ -130,16 +132,16 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
   }
 
-  public Element(final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    this(null, nullable, null, minOccurs, maxOccurs);
+  public Element(final Registry registry, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
+    this(registry, null, nullable, null, minOccurs, maxOccurs);
   }
 
-  public Element(final String name, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(name, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
+  public Element(final Registry registry, final String name, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    this(registry, name, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
-  public Element(final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
-    this(name.text(), nullable.text(), required.text(), null, null);
+  public Element(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
+    this(registry, name.text(), nullable.text(), required.text(), null, null);
   }
 
   @Override
@@ -226,7 +228,7 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
     throw new UnsupportedOperationException();
   }
 
-  protected void toAnnotation(final Attributes attributes, final String packageName) {
+  protected void toAnnotation(final Attributes attributes) {
     if (nullable != null)
       attributes.put("nullable", nullable);
 
@@ -240,28 +242,28 @@ abstract class Element extends Member implements Annullable, Nameable, Recurrabl
       attributes.put("maxOccurs", maxOccurs);
   }
 
-  protected final String toField(final String packageName) {
+  protected final String toField() {
     final StringBuilder builder = new StringBuilder();
-    final String elementAnnotations = toElementAnnotations(packageName);
+    final String elementAnnotations = toElementAnnotations();
     if (elementAnnotations != null)
       builder.append(elementAnnotations);
 
     builder.append('@').append(propertyAnnotation().getName());
     final Attributes attributes = new Attributes();
-    toAnnotation(attributes, packageName);
+    toAnnotation(attributes);
     if (attributes.size() > 0)
       builder.append('(').append(attributes.toAnnotation()).append(')');
 
-    builder.append('\n').append("public ").append(type().toCanonicalString(packageName)).append(' ').append(name()).append(';');
+    builder.append('\n').append("public ").append(type().toCanonicalString()).append(' ').append(name()).append(';');
     return builder.toString();
   }
 
-  protected String toElementAnnotations(final String packageName) {
+  protected String toElementAnnotations() {
     return null;
   }
 
   public abstract Id id();
-  protected abstract Type type();
+  protected abstract Registry.Type type();
   protected abstract Class<? extends Annotation> propertyAnnotation();
   protected abstract Class<? extends Annotation> elementAnnotation();
 }

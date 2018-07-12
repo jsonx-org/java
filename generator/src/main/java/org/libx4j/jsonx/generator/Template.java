@@ -28,32 +28,32 @@ class Template extends Element {
   private final Element model;
   private final Id id;
 
-  public Template(final $Array.Template binding, final Element model) {
-    super(null, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  public Template(final Registry registry, final $Array.Template binding, final Element model) {
+    super(registry, null, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
     this.id = new Id(this);
   }
 
-  public Template(final $Template binding, final Element model) {
-    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
+  public Template(final Registry registry, final $Template binding, final Element model) {
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.model = model;
     this.id = new Id(this);
   }
 
-  public Template(final String name, final boolean nullable, final boolean required, final Model model) {
-    super(name, nullable, required, null, null);
+  public Template(final Registry registry, final String name, final boolean nullable, final boolean required, final Model model) {
+    super(registry, name, nullable, required, null, null);
     this.model = model;
     this.id = new Id(this);
   }
 
-  public Template(final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
-    super(nullable, minOccurs, maxOccurs);
+  public Template(final Registry registry, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
+    super(registry, nullable, minOccurs, maxOccurs);
     this.model = model;
     this.id = new Id(this);
   }
 
-  public Template(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs, final Model model) {
-    super(null, nullable, minOccurs, maxOccurs);
+  public Template(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs, final Model model) {
+    super(registry, null, nullable, minOccurs, maxOccurs);
     this.model = model;
     this.id = new Id(this);
   }
@@ -68,7 +68,7 @@ class Template extends Element {
   }
 
   @Override
-  protected final Type type() {
+  protected final Registry.Type type() {
     return model.type();
   }
 
@@ -89,7 +89,7 @@ class Template extends Element {
       builder.insert(0, ",\n");
 
     if (model != null)
-      builder.append(",\n  reference: \"").append(Type.getSubName(model.id().toString(), packageName)).append('"');
+      builder.append(",\n  reference: \"").append(Registry.getSubName(model.id().toString(), packageName)).append('"');
 
     return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
@@ -114,19 +114,19 @@ class Template extends Element {
 
     final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
-      builder.append(" reference=\"").append(Type.getSubName(model.id().toString(), packageName)).append('"');
+      builder.append(" reference=\"").append(Registry.getSubName(model.id().toString(), packageName)).append('"');
 
     return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
   }
 
   @Override
-  protected final void toAnnotation(final Attributes attributes, final String packageName) {
-    super.toAnnotation(attributes, packageName);
-    model.toAnnotation(attributes, packageName);
+  protected final void toAnnotation(final Attributes attributes) {
+    super.toAnnotation(attributes);
+    model.toAnnotation(attributes);
   }
 
   @Override
-  protected String toElementAnnotations(final String packageName) {
-    return model.toElementAnnotations(packageName);
+  protected String toElementAnnotations() {
+    return model.toElementAnnotations();
   }
 }

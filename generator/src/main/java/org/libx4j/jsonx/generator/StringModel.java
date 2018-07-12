@@ -29,31 +29,31 @@ import org.libx4j.jsonx.runtime.StringProperty;
 
 class StringModel extends SimpleModel {
   public static StringModel declare(final Registry registry, final Jsonx.String binding) {
-    return registry.declare(binding).value(new StringModel(binding), null);
+    return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
   public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringProperty property, final Field field) {
-    final StringModel model = new StringModel(property, field);
+    final StringModel model = new StringModel(registry, property, field);
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getElement(id);
-    return new Template(getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringElement element) {
-    final StringModel model = new StringModel(element);
+    final StringModel model = new StringModel(registry, element);
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getElement(id);
-    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static StringModel reference(final Registry registry, final ComplexModel referrer, final $Array.String binding) {
-    return registry.reference(new StringModel(binding), referrer);
+    return registry.reference(new StringModel(registry, binding), referrer);
   }
 
   public static StringModel reference(final Registry registry, final ComplexModel referrer, final $String binding) {
-    return registry.reference(new StringModel(binding), referrer);
+    return registry.reference(new StringModel(registry, binding), referrer);
   }
 
   private static String parsePattern(final String pattern) {
@@ -65,32 +65,32 @@ class StringModel extends SimpleModel {
   private final boolean urlEncode;
   private final boolean urlDecode;
 
-  private StringModel(final Jsonx.String binding) {
-    super(null);
+  private StringModel(final Registry registry, final Jsonx.String binding) {
+    super(registry, null);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
     this.id = new Id(binding.getTemplate$());
   }
 
-  private StringModel(final $String binding) {
-    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
+  private StringModel(final Registry registry, final $String binding) {
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
     this.id = new Id(this);
   }
 
-  private StringModel(final $Array.String binding) {
-    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private StringModel(final Registry registry, final $Array.String binding) {
+    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
     this.id = new Id(this);
   }
 
-  private StringModel(final StringProperty property, final Field field) {
-    super(property.nullable());
+  private StringModel(final Registry registry, final StringProperty property, final Field field) {
+    super(registry, property.nullable());
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -100,8 +100,8 @@ class StringModel extends SimpleModel {
     this.id = new Id(this);
   }
 
-  private StringModel(final StringElement element) {
-    super(element.nullable());
+  private StringModel(final Registry registry, final StringElement element) {
+    super(registry, element.nullable());
     this.pattern = parsePattern(element.pattern());
     this.urlEncode = element.urlEncode();
     this.urlDecode = element.urlDecode();
@@ -126,8 +126,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final Type type() {
-    return Type.get(String.class);
+  protected final Registry.Type type() {
+    return registry.getType(String.class);
   }
 
   @Override
@@ -185,8 +185,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final void toAnnotation(final Attributes attributes, final String packageName) {
-    super.toAnnotation(attributes, packageName);
+  protected final void toAnnotation(final Attributes attributes) {
+    super.toAnnotation(attributes);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");
 

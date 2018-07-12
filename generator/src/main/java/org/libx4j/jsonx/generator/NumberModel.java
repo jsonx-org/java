@@ -31,31 +31,31 @@ import org.libx4j.jsonx.runtime.NumberProperty;
 
 class NumberModel extends SimpleModel {
   public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
-    return registry.declare(binding).value(new NumberModel(binding), null);
+    return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
   public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Number binding) {
-    return registry.reference(new NumberModel(binding), referrer);
+    return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
   public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
-    return registry.reference(new NumberModel(binding), referrer);
+    return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
   public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty property, final Field field) {
-    final NumberModel model = new NumberModel(property, field);
+    final NumberModel model = new NumberModel(registry, property, field);
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getElement(id);
-    return new Template(getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement element) {
-    final NumberModel model = new NumberModel(element);
+    final NumberModel model = new NumberModel(registry, element);
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getElement(id);
-    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   private final Id id;
@@ -63,32 +63,32 @@ class NumberModel extends SimpleModel {
   private final BigDecimal min;
   private final BigDecimal max;
 
-  private NumberModel(final Jsonx.Number binding) {
-    super(null);
+  private NumberModel(final Registry registry, final Jsonx.Number binding) {
+    super(registry, null);
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
     this.id = new Id(binding.getTemplate$());
   }
 
-  private NumberModel(final $Number binding) {
-    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
+  private NumberModel(final Registry registry, final $Number binding) {
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
     this.id = new Id(this);
   }
 
-  private NumberModel(final $Array.Number binding) {
-    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private NumberModel(final Registry registry, final $Array.Number binding) {
+    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
     this.id = new Id(this);
   }
 
-  private NumberModel(final NumberProperty property, final Field field) {
-    super(property.nullable());
+  private NumberModel(final Registry registry, final NumberProperty property, final Field field) {
+    super(registry, property.nullable());
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.nullable()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
@@ -98,8 +98,8 @@ class NumberModel extends SimpleModel {
     this.id = new Id(this);
   }
 
-  private NumberModel(final NumberElement element) {
-    super(element.nullable());
+  private NumberModel(final Registry registry, final NumberElement element) {
+    super(registry, element.nullable());
     this.form = element.form() == Form.REAL ? null : element.form();
     this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
     this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
@@ -124,8 +124,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected Type type() {
-    return Type.get(form == Form.INTEGER ? BigInteger.class : BigDecimal.class);
+  protected Registry.Type type() {
+    return registry.getType(form == Form.INTEGER ? BigInteger.class : BigDecimal.class);
   }
 
   @Override
@@ -187,8 +187,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected void toAnnotation(final Attributes attributes, final String packageName) {
-    super.toAnnotation(attributes, packageName);
+  protected void toAnnotation(final Attributes attributes) {
+    super.toAnnotation(attributes);
     if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);
 

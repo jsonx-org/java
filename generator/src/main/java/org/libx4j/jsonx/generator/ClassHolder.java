@@ -25,7 +25,7 @@ public class ClassHolder {
 
   private final String packageName;
   private final ObjectModel model;
-  private final Type type;
+  private final Registry.Type type;
 
   public ClassHolder(final String packageName, final ObjectModel model) {
     this.packageName = packageName;
@@ -33,7 +33,7 @@ public class ClassHolder {
     this.type = model.type();
   }
 
-  public ClassHolder(final String packageName, final Type type) {
+  public ClassHolder(final String packageName, final Registry.Type type) {
     this.packageName = packageName;
     this.model = null;
     this.type = type;
@@ -51,8 +51,8 @@ public class ClassHolder {
   public String toString() {
     final StringBuilder builder = new StringBuilder();
     builder.append("class ").append(type.getSimpleName());
-    if (type.getSuperType() != Type.OBJECT)
-      builder.append(" extends ").append(type.getSuperType().getCanonicalName(packageName));
+    if (type.getSuperType() != null)
+      builder.append(" extends ").append(type.getSuperType().getCanonicalName());
 
     builder.append(" {");
     boolean isFirst = true;
@@ -70,7 +70,7 @@ public class ClassHolder {
     }
 
     if (model != null) {
-      final String code = model.toJava(packageName);
+      final String code = model.toJava();
       if (code.length() > 0)
         builder.append("\n  ").append(code.replace("\n", "\n  "));
     }

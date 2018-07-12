@@ -65,7 +65,7 @@ public class Schema extends Member {
   private final String packageName;
 
   public Schema(final Jsonx jsonx) {
-    this.packageName = jsonx.getPackage$().text() == null || jsonx.getPackage$().text().length() == 0 ? null : jsonx.getPackage$().text();
+    this.packageName = (String)jsonx.getPackage$().text();
     final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<$Member,String>("Object cannot inherit from itself", obj -> {
       if (obj instanceof Jsonx.Array)
@@ -168,7 +168,7 @@ public class Schema extends Member {
       @Override
       public int compare(final Model o1, final Model o2) {
         if (o1 instanceof ObjectModel)
-          return o2 instanceof ObjectModel ? o1.type().getCompoundClassName(packageName).compareTo(o2.type().getCompoundClassName(packageName)) : 1;
+          return o2 instanceof ObjectModel ? o1.type().getName().compareTo(o2.type().getName()) : 1;
 
         if (o2 instanceof ObjectModel)
           return -1;
@@ -184,7 +184,7 @@ public class Schema extends Member {
   }
 
   @Override
-  protected final void collectClassNames(final List<Type> types) {
+  protected final void collectClassNames(final List<Registry.Type> types) {
     if (members() != null)
       for (final Model member : members())
         member.collectClassNames(types);
@@ -224,7 +224,7 @@ public class Schema extends Member {
   }
 
   private String getClassPrefix() {
-    final List<Type> types = new ArrayList<Type>();
+    final List<Registry.Type> types = new ArrayList<Registry.Type>();
     collectClassNames(types);
     final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.toString()).toArray(String[]::new));
     if (classPrefix == null)
@@ -248,14 +248,14 @@ public class Schema extends Member {
   }
 
   public Map<String,String> toJava() {
-    final Map<Type,ClassHolder> all = new HashMap<Type,ClassHolder>();
-    final Map<Type,ClassHolder> typeToClassHolder = new HashMap<Type,ClassHolder>();
+    final Map<Registry.Type,ClassHolder> all = new HashMap<Registry.Type,ClassHolder>();
+    final Map<Registry.Type,ClassHolder> typeToClassHolder = new HashMap<Registry.Type,ClassHolder>();
     for (final Model member : members()) {
       if (member instanceof ObjectModel) {
         final ObjectModel model = (ObjectModel)member;
         final ClassHolder classHolder = new ClassHolder(packageName, model);
         if (model.type().getDeclaringType() != null) {
-          final Type declaringType = model.type().getDeclaringType();
+          final Registry.Type declaringType = model.type().getDeclaringType();
           ClassHolder parent = all.get(declaringType);
           if (parent == null) {
             parent = new ClassHolder(packageName, declaringType);
@@ -274,11 +274,11 @@ public class Schema extends Member {
     }
 
     final HashMap<String,String> sources = new HashMap<String,String>();
-    for (final Map.Entry<Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
-      final Type type = entry.getKey();
+    for (final Map.Entry<Registry.Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
+      final Registry.Type type = entry.getKey();
       final ClassHolder holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
-      final String canonicalPackageName = type.getCanonicalPackage(packageName);
+      final String canonicalPackageName = type.getCanonicalPackage();
 
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
@@ -288,7 +288,7 @@ public class Schema extends Member {
         builder.append('\n').append(annotation);
 
       builder.append("\npublic ").append(holder.toString());
-      sources.put(type.getName(packageName), builder.toString());
+      sources.put(type.getName(), builder.toString());
     }
 
     return sources;

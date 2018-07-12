@@ -408,10 +408,20 @@
           </xs:element>
         </xs:choice>
       </xs:sequence>
-      <xs:attribute name="package" type="jsonx:qualifiedIdentifier">
+      <!-- FIXME: XSB fails to recognize this as a String -->
+      <xs:attribute name="package" default="">
         <xs:annotation>
           <xs:documentation>Name of package. Optional.</xs:documentation>
         </xs:annotation>
+        <xs:simpleType>
+          <xs:union memberTypes="jsonx:qualifiedIdentifier">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:length value="0"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:union>
+        </xs:simpleType>
       </xs:attribute>
     </xs:complexType>
     <xs:key name="referenceKey">

@@ -52,7 +52,7 @@ class ArrayModel extends ComplexModel {
     final Id id = model.id();
 
     final ArrayModel registered = (ArrayModel)registry.getElement(id);
-    return new Template(getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   private static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
@@ -60,7 +60,7 @@ class ArrayModel extends ComplexModel {
     final Id id = model.id();
 
     final ArrayModel registered = (ArrayModel)registry.getElement(id);
-    return new Template(element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static ArrayModel reference(final Registry registry, final ComplexModel referrer, final $Array.Array binding) {
@@ -71,18 +71,18 @@ class ArrayModel extends ComplexModel {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
-  static Type getGreatestCommonSuperType(final List<Element> elements) {
+  protected static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Element> elements) {
     if (elements.size() == 0)
-      return Type.VOID;
+      return registry.getType(Void.class);
 
     if (elements.size() == 1)
-      return Type.get(List.class, elements.get(0).type());
+      return registry.getType(List.class, elements.get(0).type());
 
-    Type gcc = elements.get(0).type().getGreatestCommonSuperType(elements.get(1).type());
-    for (int i = 2; i < elements.size() && gcc != Type.OBJECT; i++)
+    Registry.Type gcc = elements.get(0).type().getGreatestCommonSuperType(elements.get(1).type());
+    for (int i = 2; i < elements.size() && gcc != null; i++)
       gcc = gcc.getGreatestCommonSuperType(elements.get(i).type());
 
-    return Type.get(List.class, gcc);
+    return registry.getType(List.class, gcc);
   }
 
   private static void writeElementIdsClause(final Attributes attributes, final int[] indices) {
@@ -126,7 +126,7 @@ class ArrayModel extends ComplexModel {
         if (reference == null)
           throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
 
-        members.add(new Template(template, registry.reference(reference, referrer)));
+        members.add(new Template(registry, template, registry.reference(reference, referrer)));
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -192,19 +192,19 @@ class ArrayModel extends ComplexModel {
   private final List<Element> members;
 
   private ArrayModel(final Registry registry, final Jsonx.Array binding) {
-    super(null);
+    super(registry, null);
     this.members = parseMembers(registry, this, binding);
     this.id = new Id(binding.getTemplate$());
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
-    super(binding.getName$(), binding.getNullable$(), binding.getRequired$());
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.members = parseMembers(registry, this, binding);
     this.id = new Id(this);
   }
 
   private ArrayModel(final Registry registry, final $Array.Array binding) {
-    super(binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     if (this.maxOccurs() != null && this.minOccurs() != null && this.minOccurs() > this.maxOccurs())
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs() + "\" > maxOccurs=\"" + this.maxOccurs() + "\"");
 
@@ -213,7 +213,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private ArrayModel(final Registry registry, final ArrayProperty property, final Field field) {
-    super(property.nullable());
+    super(registry, property.nullable());
     if (field.getType() != List.class && !field.getType().isArray() && !Void.class.equals(field.getType()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
@@ -261,7 +261,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private ArrayModel(final Registry registry, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
-    super(element.nullable());
+    super(registry, element.nullable());
     this.members = parseMembers(registry, this, field, element, element.elementIds(), annotations);
     this.id = new Id(this);
   }
@@ -276,8 +276,8 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final Type type() {
-    return getGreatestCommonSuperType(members);
+  protected final Registry.Type type() {
+    return getGreatestCommonSuperType(registry, members);
   }
 
   @Override
@@ -291,7 +291,7 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final void collectClassNames(final List<Type> types) {
+  protected final void collectClassNames(final List<Registry.Type> types) {
     if (members != null)
       for (final Element member : members)
         member.collectClassNames(types);
@@ -347,25 +347,25 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected void toAnnotation(final Attributes attributes, final String packageName) {
-    super.toAnnotation(attributes, packageName);
+  protected void toAnnotation(final Attributes attributes) {
+    super.toAnnotation(attributes);
     final int[] indices = new int[members().size()];
     final StringBuilder temp = new StringBuilder();
     int index = 0;
     for (int i = 0; i < members().size(); i++) {
       indices[i] = index;
-      index += writeElementAnnotations(packageName, temp, members().get(i), index);
+      index += writeElementAnnotations(temp, members().get(i), index);
     }
 
     writeElementIdsClause(attributes, indices);
   }
 
-  protected final void toAnnotation(final String packageName, final Attributes attributes, final int ... indices) {
-    super.toAnnotation(attributes, packageName);
+  protected final void toAnnotation(final Attributes attributes, final int ... indices) {
+    super.toAnnotation(attributes);
     writeElementIdsClause(attributes, indices);
   }
 
-  private static int writeElementAnnotations(final String packageName, final StringBuilder builder, final Element element, final int index) {
+  private static int writeElementAnnotations(final StringBuilder builder, final Element element, final int index) {
     final Attributes attributes = new Attributes();
     attributes.put("id", index);
 
@@ -377,11 +377,11 @@ class ArrayModel extends ComplexModel {
       final int[] indices = new int[arrayModel.members().size()];
       for (int i = 0; i < arrayModel.members().size(); i++) {
         indices[i] = index + offset;
-        offset += writeElementAnnotations(packageName, inner, arrayModel.members().get(i), index + offset);
+        offset += writeElementAnnotations(inner, arrayModel.members().get(i), index + offset);
       }
 
       // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
-      arrayModel.toAnnotation(packageName, attributes, indices);
+      arrayModel.toAnnotation(attributes, indices);
       if (element.minOccurs() != null)
         attributes.put("minOccurs", element.minOccurs());
 
@@ -396,17 +396,17 @@ class ArrayModel extends ComplexModel {
       return offset;
     }
 
-    element.toAnnotation(attributes, packageName);
+    element.toAnnotation(attributes);
     builder.insert(0, "@" + element.elementAnnotation().getName() + "(" + attributes.toAnnotation() + ")\n");
     return 1;
   }
 
   @Override
-  protected final String toElementAnnotations(final String packageName) {
+  protected final String toElementAnnotations() {
     final StringBuilder builder = new StringBuilder();
     int index = 0;
     for (final Element element : members())
-      index += writeElementAnnotations(packageName, builder, element, index);
+      index += writeElementAnnotations(builder, element, index);
 
     return builder.toString();
   }

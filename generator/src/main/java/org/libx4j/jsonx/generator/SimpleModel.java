@@ -22,15 +22,15 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class SimpleModel extends Model {
-  public SimpleModel(final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
-    super(name, nullable, required);
+  public SimpleModel(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
+    super(registry, name, nullable, required);
   }
 
-  public SimpleModel(final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(nullable, minOccurs, maxOccurs);
+  public SimpleModel(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    super(registry, nullable, minOccurs, maxOccurs);
   }
 
-  public SimpleModel(final Boolean nullable) {
-    super(nullable);
+  public SimpleModel(final Registry registry, final Boolean nullable) {
+    super(registry, nullable);
   }
 }
