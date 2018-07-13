@@ -52,12 +52,12 @@ class Registry {
     return key;
   }
 
-  class Type {
+  final class Type {
     private final String packageName;
     private final String canonicalPackageName;
     private final String simpleName;
     private final String compoundName;
-    private final String canonicalCompoundClassName;
+    private final String canonicalCompoundName;
     private final String name;
     private final String canonicalName;
     private final Type superType;
@@ -70,10 +70,10 @@ class Registry {
       this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compoundName.substring(0, dot) : packageName + "." + compoundName.substring(0, dot);
       this.compoundName = compoundName;
       this.name = defaultPackage ? compoundName : packageName + "." + compoundName;
-      this.canonicalCompoundClassName = Classes.toCanonicalClassName(compoundName);
-      this.simpleName = canonicalCompoundClassName.substring(canonicalCompoundClassName.lastIndexOf('.') + 1);
-      this.canonicalName = defaultPackage ? canonicalCompoundClassName : packageName + "." + canonicalCompoundClassName;
-      this.superType = superType == null ? null : superType;
+      this.canonicalCompoundName = Classes.toCanonicalClassName(compoundName);
+      this.simpleName = canonicalCompoundName.substring(canonicalCompoundName.lastIndexOf('.') + 1);
+      this.canonicalName = defaultPackage ? canonicalCompoundName : packageName + "." + canonicalCompoundName;
+      this.superType = superType;
       this.genericType = genericType;
       qualifiedNameToType.put(toCanonicalString(), this);
     }
@@ -133,13 +133,15 @@ class Registry {
     }
 
     public String getCanonicalCompoundName() {
-      return canonicalCompoundClassName;
+      return canonicalCompoundName;
+    }
+
+    public String getRelativeName(final String packageName) {
+      return packageName.length() == 0 ? name : name.substring(packageName.length() + 1);
     }
 
     public String getSubName(final String superName) {
-      final String x = Registry.getSubName(name, superName);
-      System.out.println(compoundName + " " + name + " " + packageName + " " + superName + " " + x);
-      return x;
+      return Registry.getSubName(name, superName);
     }
 
     public String toCanonicalString() {

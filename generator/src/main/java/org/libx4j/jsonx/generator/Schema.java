@@ -204,15 +204,12 @@ public class Schema extends Member {
 
   @Override
   protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + (packageName == null ? "" : packageName) + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/safris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
+    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + packageName + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/safris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
     final Collection<Model> members = rootMembers();
     if (members.size() > 0) {
       builder.append('>');
-      for (final Model member : members) {
-        if (member instanceof ObjectModel && ((ObjectModel)member).type().toString().endsWith("sub1.simple$Booleans"))
-          System.out.println();
+      for (final Model member : members)
         builder.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
-      }
 
       builder.append("\n</jsonx>");
     }
@@ -226,7 +223,7 @@ public class Schema extends Member {
   private String getClassPrefix() {
     final List<Registry.Type> types = new ArrayList<Registry.Type>();
     collectClassNames(types);
-    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.toString()).toArray(String[]::new));
+    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
     if (classPrefix == null)
       return null;
 

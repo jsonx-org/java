@@ -25,7 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lib4j.lang.Classes;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
@@ -330,7 +329,7 @@ class ObjectModel extends ComplexModel {
     builder.append(" class=\"").append(owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName)).append('"');
 
     if (superObject != null)
-      builder.append(" extends=\"").append(packageName.length() > 0 ? superObject.type().getName().substring(packageName.length() + 1) : superObject.type().getName()).append('"');
+      builder.append(" extends=\"").append(superObject.type().getRelativeName(packageName)).append('"');
 
     if (isAbstract != null && isAbstract)
       builder.append(" abstract=\"").append(isAbstract).append('"');
