@@ -24,8 +24,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class TypeTest {
-  private static Element toElement(final Registry.Type type) {
-    return new Element(null, null, null, (Integer)null) {
+  private static Member toElement(final Registry.Type type) {
+    return new Member(null, null, null, (Integer)null) {
       @Override
       public Id id() {
         return null;
@@ -43,6 +43,11 @@ public class TypeTest {
 
       @Override
       protected Class<? extends Annotation> elementAnnotation() {
+        return null;
+      }
+
+      @Override
+      protected org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
         return null;
       }
     };

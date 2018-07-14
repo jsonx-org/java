@@ -21,7 +21,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
-abstract class Model extends Element {
+abstract class Model extends Member {
   public Model(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
     super(registry, name, nullable, required);
   }

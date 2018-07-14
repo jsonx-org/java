@@ -19,13 +19,16 @@ package org.libx4j.jsonx.generator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.lib4j.util.Iterators;
+import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
@@ -50,13 +53,13 @@ class ObjectModel extends ComplexModel {
     return registry.declare(binding).value(new ObjectModel(registry, binding, getParent(superClassName, registry)), referrer);
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectProperty property, final Field field) {
     final Id id = new Id(property);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final Member referrer, final ObjectElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
     final Id id = new Id(element);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof ComplexModel ? (ComplexModel)referrer : null) : registry.reference(model, referrer instanceof ComplexModel ? (ComplexModel)referrer : null));
@@ -121,8 +124,8 @@ class ObjectModel extends ComplexModel {
     }
   }
 
-  private static Map<String,Element> parseMembers(final Registry registry, final $ObjectMember binding, final ObjectModel model) {
-    final LinkedHashMap<String,Element> members = new LinkedHashMap<String,Element>();
+  private static Map<String,Member> parseMembers(final Registry registry, final $ObjectMember binding, final ObjectModel model) {
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<String,Member>();
     final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
@@ -145,11 +148,11 @@ class ObjectModel extends ComplexModel {
       }
       else if (member instanceof $Template) {
         final $Template template = ($Template)member;
-        final Element element = registry.getElement(new Id(template.getReference$()));
-        if (element == null)
+        final Member reference = registry.getElement(new Id(template.getReference$()));
+        if (reference == null)
           throw new IllegalStateException("Template \"" + template.getName$().text() + "\" -> reference=\"" + template.getReference$().text() + "\" not found");
 
-        members.put(template.getName$().text(), element instanceof Model ? new Template(registry, template, registry.reference((Model)element, model)) : element);
+        members.put(template.getName$().text(), reference instanceof Model ? new Template(registry, template, registry.reference((Model)reference, model)) : reference);
       }
       else if (member instanceof $Object) {
         final $Object object = ($Object)member;
@@ -165,7 +168,7 @@ class ObjectModel extends ComplexModel {
   }
 
   private final Id id;
-  private final Map<String,Element> members;
+  private final Map<String,Member> members;
   private final Registry.Type type;
   private final ObjectModel superObject;
   private final Boolean isAbstract;
@@ -231,9 +234,9 @@ class ObjectModel extends ComplexModel {
       this.superObject = null;
     }
 
-    final LinkedHashMap<String,Element> members = new LinkedHashMap<String,Element>();
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<String,Member>();
     for (final Field field : clazz.getDeclaredFields()) {
-      final Element member = Element.toElement(registry, this, field);
+      final Member member = Member.toMember(registry, this, field);
       if (member != null)
         members.put(member.name(), member);
     }
@@ -248,7 +251,7 @@ class ObjectModel extends ComplexModel {
     return id;
   }
 
-  public final Map<String,Element> members() {
+  public final Map<String,Member> members() {
     return this.members;
   }
 
@@ -280,14 +283,14 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final void collectClassNames(final List<Registry.Type> types) {
+  protected final void getDeclaredTypes(final Set<Registry.Type> types) {
     types.add(type());
     if (superObject != null)
-      superObject.collectClassNames(types);
+      superObject.getDeclaredTypes(types);
 
     if (members != null)
-      for (final Element member : members.values())
-        member.collectClassNames(types);
+      for (final Member member : members.values())
+        member.getDeclaredTypes(types);
   }
 
   @Override
@@ -310,7 +313,7 @@ class ObjectModel extends ComplexModel {
     if (members != null && members.size() > 0) {
       builder.append(",\n  members: ");
       final StringBuilder members = new StringBuilder();
-      for (final Map.Entry<String,Element> entry : this.members.entrySet())
+      for (final Map.Entry<String,Member> entry : this.members.entrySet())
         members.append(",\n    \"").append(entry.getKey()).append("\": ").append(entry.getValue().toJSON(packageName).replace("\n", "\n    "));
 
       builder.append('{');
@@ -324,31 +327,51 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"" + (registry.getNumReferrers(this) > 1 ? "template\" reference=\"" + id() + "\"" : "object\"") : "<object");
-    builder.append(" class=\"").append(owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName)).append('"');
+  protected final Set<Attribute> toAttributes(final Element owner, final String packageName) {
+    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    attributes.add(new Attribute("class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName)));
 
     if (superObject != null)
-      builder.append(" extends=\"").append(superObject.type().getRelativeName(packageName)).append('"');
+      attributes.add(new Attribute("extends", superObject.type().getRelativeName(packageName)));
 
     if (isAbstract != null && isAbstract)
-      builder.append(" abstract=\"").append(isAbstract).append('"');
+      attributes.add(new Attribute("abstract", String.valueOf(isAbstract)));
 
     if (unknown != Unknown.ERROR)
-      builder.append(" unknown=\"").append(unknown.toString().toLowerCase()).append('"');
+      attributes.add(new Attribute("unknown", unknown.toString().toLowerCase()));
 
+    return attributes;
+  }
+
+  @Override
+  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+    final List<org.lib4j.xml.Element> elements;
     if (members != null && members.size() > 0) {
-      final StringBuilder members = new StringBuilder();
-      for (final Element member : this.members.values())
-        members.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
-
-      builder.append(super.toJSONX(registry, owner, packageName)).append('>').append(members).append('\n').append(owner instanceof ObjectModel ? "</property>" : "</object>");
+      elements = new ArrayList<org.lib4j.xml.Element>();
+      for (final Member member : this.members.values())
+        elements.add(member.toJSONX(this, packageName));
     }
     else {
-      builder.append(super.toJSONX(registry, owner, packageName)).append("/>");
+      elements = null;
     }
 
-    return builder.toString();
+    final Set<Attribute> attributes;
+    if (!(owner instanceof ObjectModel)) {
+      attributes = toAttributes(owner, packageName);
+      return new org.lib4j.xml.Element("object", attributes, elements);
+    }
+
+    if (registry.getNumReferrers(this) > 1) {
+      attributes = super.toAttributes(owner, packageName);
+      attributes.add(new Attribute("xsi:type", "template"));
+      attributes.add(new Attribute("reference", id().toString()));
+    }
+    else {
+      attributes = toAttributes(owner, packageName);
+      attributes.add(new Attribute("xsi:type", "object"));
+    }
+
+    return new org.lib4j.xml.Element("property", attributes, elements);
   }
 
   protected final String toObjectAnnotation() {
@@ -368,7 +391,7 @@ class ObjectModel extends ComplexModel {
   protected final String toJava() {
     final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0)
-      for (final Element member : members.values())
+      for (final Member member : members.values())
         builder.append("\n\n").append(member.toField());
 
     return builder.length() > 1 ? builder.substring(2).toString() : builder.toString();

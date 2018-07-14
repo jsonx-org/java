@@ -18,8 +18,10 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Set;
 
 import org.lib4j.lang.IllegalAnnotationException;
+import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
@@ -31,7 +33,7 @@ class BooleanModel extends SimpleModel {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanProperty property, final Field field) {
     final BooleanModel model = new BooleanModel(registry, property, field);
     final Id id = model.id();
 
@@ -39,7 +41,7 @@ class BooleanModel extends SimpleModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanElement element) {
     final BooleanModel model = new BooleanModel(registry, element);
     final Id id = model.id();
 
@@ -111,7 +113,19 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    return new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"" + (registry.isRegistered(id()) ? "template\" reference=\"" + id() + "\"" : "boolean\"") : "<boolean").append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
+  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    if (!(owner instanceof ObjectModel))
+      return new org.lib4j.xml.Element("boolean", attributes, null);
+
+    if (registry.isRegistered(id())) {
+      attributes.add(new Attribute("xsi:type", "template"));
+      attributes.add(new Attribute("reference", id().toString()));
+    }
+    else {
+      attributes.add(new Attribute("xsi:type", "boolean"));
+    }
+
+    return new org.lib4j.xml.Element("property", attributes, null);
   }
 }

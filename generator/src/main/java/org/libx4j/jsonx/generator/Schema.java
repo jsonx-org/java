@@ -35,6 +35,7 @@ import org.lib4j.lang.PackageNotFoundException;
 import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.Iterators;
+import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$TemplateMember;
@@ -42,7 +43,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.JsonxObject;
 import org.libx4j.xsb.runtime.Binding;
 
-public class Schema extends Member {
+public class Schema extends Element {
   private static void findInnerRelations(final StrictRefDigraph<$Member,String> digraph, final Registry registry, final $Member object, final $Member member) {
     final Iterator<? super Binding> iterator = Iterators.filter(member.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
@@ -170,12 +171,10 @@ public class Schema extends Member {
         if (o1 instanceof ObjectModel)
           return o2 instanceof ObjectModel ? o1.type().getName().compareTo(o2.type().getName()) : 1;
 
-        if (o2 instanceof ObjectModel)
-          return -1;
-
-        return (o1.getClass().getSimpleName() + o1.id() + o1.name()).compareTo(o2.getClass().getSimpleName() + o2.id() + o2.name());
+        return o2 instanceof ObjectModel ? -1 : (o1.getClass().getSimpleName() + o1.id() + o1.name()).compareTo(o2.getClass().getSimpleName() + o2.id() + o2.name());
       }
     });
+
     return members;
   }
 
@@ -184,10 +183,10 @@ public class Schema extends Member {
   }
 
   @Override
-  protected final void collectClassNames(final List<Registry.Type> types) {
+  protected final void getDeclaredTypes(final Set<Registry.Type> types) {
     if (members() != null)
       for (final Model member : members())
-        member.collectClassNames(types);
+        member.getDeclaredTypes(types);
   }
 
   @Override
@@ -203,35 +202,37 @@ public class Schema extends Member {
   }
 
   @Override
-  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    final StringBuilder builder = new StringBuilder("<jsonx\n  package=\"" + packageName + "\"\n  xmlns=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/safris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd\"");
+  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+    final List<org.lib4j.xml.Element> elements;
     final Collection<Model> members = rootMembers();
     if (members.size() > 0) {
-      builder.append('>');
+      elements = new ArrayList<org.lib4j.xml.Element>();
       for (final Model member : members)
-        builder.append("\n  ").append(member.toJSONX(registry, this, packageName).replace("\n", "\n  "));
-
-      builder.append("\n</jsonx>");
+        elements.add(member.toJSONX(this, packageName));
     }
     else {
-      builder.append("/>");
+      elements = null;
     }
 
-    return builder.toString();
+    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    if (packageName.length() > 0)
+      attributes.add(new Attribute("package", packageName));
+
+    attributes.add(new Attribute("xmlns", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd"));
+    attributes.add(new Attribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance"));
+    attributes.add(new Attribute("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/safris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd"));
+    return new org.lib4j.xml.Element("jsonx", attributes, elements);
   }
 
   private String getClassPrefix() {
-    final List<Registry.Type> types = new ArrayList<Registry.Type>();
-    collectClassNames(types);
+    final Set<Registry.Type> types = new HashSet<Registry.Type>();
+    getDeclaredTypes(types);
     final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
     if (classPrefix == null)
       return null;
 
     final int index = classPrefix.lastIndexOf('.');
-    if (index < 0)
-      return null;
-
-    return classPrefix.substring(0, index);
+    return index < 0 ? null : classPrefix.substring(0, index);
   }
 
   @Override
@@ -240,8 +241,8 @@ public class Schema extends Member {
   }
 
   @Override
-  public final String toJSONX() {
-    return toJSONX(registry, this, packageName);
+  public final org.lib4j.xml.Element toJSONX() {
+    return toJSONX(this, packageName);
   }
 
   public Map<String,String> toJava() {

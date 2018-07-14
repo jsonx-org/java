@@ -18,9 +18,11 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Set;
 
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.lang.Strings;
+import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
@@ -32,7 +34,7 @@ class StringModel extends SimpleModel {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringProperty property, final Field field) {
     final StringModel model = new StringModel(registry, property, field);
     final Id id = model.id();
 
@@ -40,7 +42,7 @@ class StringModel extends SimpleModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, element);
     final Id id = model.id();
 
@@ -155,33 +157,39 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    final boolean skipMembers;
-    final StringBuilder builder;
-    if (owner instanceof ObjectModel) {
-      builder = new StringBuilder("<property xsi:type=\"");
-      if (skipMembers = registry.isRegistered(id()))
-        builder.append("template\" reference=\"").append(id()).append("\"");
-      else
-        builder.append("string\"");
+  protected final Set<Attribute> toAttributes(final Element owner, final String packageName) {
+    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    if (pattern != null)
+      attributes.add(new Attribute("pattern", pattern));
+
+    if (urlEncode)
+      attributes.add(new Attribute("urlEncode", String.valueOf(urlEncode)));
+
+    if (urlDecode)
+      attributes.add(new Attribute("urlDecode", String.valueOf(urlDecode)));
+
+    return attributes;
+  }
+
+  @Override
+  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+    final Set<Attribute> attributes;
+    if (!(owner instanceof ObjectModel)) {
+      attributes = toAttributes(owner, packageName);
+      return new org.lib4j.xml.Element("string", attributes, null);
+    }
+
+    if (registry.isRegistered(id())) {
+      attributes = super.toAttributes(owner, packageName);
+      attributes.add(new Attribute("xsi:type", "template"));
+      attributes.add(new Attribute("reference", id().toString()));
     }
     else {
-      builder = new StringBuilder("<string");
-      skipMembers = false;
+      attributes = toAttributes(owner, packageName);
+      attributes.add(new Attribute("xsi:type", "string"));
     }
 
-    if (!skipMembers) {
-      if (pattern != null)
-        builder.append(" pattern=\"").append(pattern).append('"');
-
-      if (urlEncode)
-        builder.append(" urlEncode=\"").append(urlEncode).append('"');
-
-      if (urlDecode)
-        builder.append(" urlDecode=\"").append(urlDecode).append('"');
-    }
-
-    return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
+    return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override

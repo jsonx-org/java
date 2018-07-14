@@ -17,24 +17,26 @@
 package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
 
+import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
-class Template extends Element {
-  private final Element model;
+class Template extends Member {
+  private final Member model;
   private final Id id;
 
-  public Template(final Registry registry, final $Array.Template binding, final Element model) {
+  public Template(final Registry registry, final $Array.Template binding, final Member model) {
     super(registry, null, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
     this.id = new Id(this);
   }
 
-  public Template(final Registry registry, final $Template binding, final Element model) {
+  public Template(final Registry registry, final $Template binding, final Member model) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
     this.model = model;
     this.id = new Id(this);
@@ -63,7 +65,7 @@ class Template extends Element {
     return id;
   }
 
-  public final Element reference() {
+  public final Member reference() {
     return this.model;
   }
 
@@ -95,28 +97,23 @@ class Template extends Element {
   }
 
   @Override
-  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
+  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
     if (model instanceof ObjectModel && registry.getNumReferrers(model) == 1) {
-      final String templateJsonx = super.toJSONX(registry, owner, packageName);
-      String objectJsonx = model.toJSONX(registry, owner, packageName);
-      final int n = model.nullable() != null ? templateJsonx.indexOf("nullable") : -1;
-      if (n != -1) {
-        final String nullable = templateJsonx.substring(n, templateJsonx.indexOf('"', n + 10) + 1);
-        if (objectJsonx.contains(nullable))
-          objectJsonx = objectJsonx.replace(nullable, "");
-        else
-          throw new IllegalStateException("Attempted to overwrite nullable");
-      }
-
-      final int index = objectJsonx.indexOf(' ');
-      return objectJsonx.substring(0, index) + templateJsonx + objectJsonx.substring(index);
+      // FIXME: This is where the nullable attribute collision _may happen_
+      final org.lib4j.xml.Element element = model.toJSONX(owner, packageName);
+      element.getAttributes().addAll(attributes);
+      return element;
     }
 
-    final StringBuilder builder = new StringBuilder(owner instanceof ObjectModel ? "<property xsi:type=\"template\"" : "<template");
     if (model != null)
-      builder.append(" reference=\"").append(Registry.getSubName(model.id().toString(), packageName)).append('"');
+      attributes.add(new Attribute("reference", Registry.getSubName(model.id().toString(), packageName)));
 
-    return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
+    if (!(owner instanceof ObjectModel))
+      return new org.lib4j.xml.Element("template", attributes, null);
+
+    attributes.add(new Attribute("xsi:type", "template"));
+    return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override

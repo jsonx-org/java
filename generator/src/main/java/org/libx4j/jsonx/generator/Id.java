@@ -24,7 +24,7 @@ public class Id {
   public Id(final ArrayModel model) {
     final Object[] variables = new Object[model.members().size()];
     for (int i = 0; i < variables.length; i++) {
-      final Element member = model.members().get(i);
+      final Member member = model.members().get(i);
       variables[i] = member.id().toString() + member.nullable();
     }
 
@@ -60,11 +60,24 @@ public class Id {
   }
 
   public Id(final String className) {
+    if (className == null)
+      throw new NullPointerException("className == null");
+
     this.id = className;
   }
 
   public Id(final Template model) {
     this.id = "t" + hash(model.reference().id().toString(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.required());
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    return obj == this || obj instanceof Id && toString().equals(obj.toString());
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
   }
 
   @Override

@@ -20,8 +20,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Set;
 
 import org.lib4j.lang.IllegalAnnotationException;
+import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
@@ -42,7 +44,7 @@ class NumberModel extends SimpleModel {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty property, final Field field) {
     final NumberModel model = new NumberModel(registry, property, field);
     final Id id = model.id();
 
@@ -50,7 +52,7 @@ class NumberModel extends SimpleModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Element referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement element) {
     final NumberModel model = new NumberModel(registry, element);
     final Id id = model.id();
 
@@ -157,33 +159,39 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSONX(final Registry registry, final Member owner, final String packageName) {
-    final boolean skipMembers;
-    final StringBuilder builder;
-    if (owner instanceof ObjectModel) {
-      builder = new StringBuilder("<property xsi:type=\"");
-      if (skipMembers = registry.isRegistered(id()))
-        builder.append("template\" reference=\"").append(id()).append("\"");
-      else
-        builder.append("number\"");
+  protected final Set<Attribute> toAttributes(final Element owner, final String packageName) {
+    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    if (form != null)
+      attributes.add(new Attribute("form", form.toString().toLowerCase()));
+
+    if (min != null)
+      attributes.add(new Attribute("min", String.valueOf(min)));
+
+    if (max != null)
+      attributes.add(new Attribute("max", String.valueOf(max)));
+
+    return attributes;
+  }
+
+  @Override
+  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+    final Set<Attribute> attributes;
+    if (!(owner instanceof ObjectModel)) {
+      attributes = toAttributes(owner, packageName);
+      return new org.lib4j.xml.Element("number", attributes, null);
+    }
+
+    if (registry.isRegistered(id())) {
+      attributes = super.toAttributes(owner, packageName);
+      attributes.add(new Attribute("xsi:type", "template"));
+      attributes.add(new Attribute("reference", id().toString()));
     }
     else {
-      builder = new StringBuilder("<number");
-      skipMembers = false;
+      attributes = toAttributes(owner, packageName);
+      attributes.add(new Attribute("xsi:type", "number"));
     }
 
-    if (!skipMembers) {
-      if (form != null)
-        builder.append(" form=\"").append(form.toString().toLowerCase()).append('"');
-
-      if (min != null)
-        builder.append(" min=\"").append(min).append('"');
-
-      if (max != null)
-        builder.append(" max=\"").append(max).append('"');
-    }
-
-    return builder.append(super.toJSONX(registry, owner, packageName)).append("/>").toString();
+    return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override

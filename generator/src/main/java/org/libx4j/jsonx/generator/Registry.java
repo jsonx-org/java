@@ -30,7 +30,7 @@ class Registry {
   class Value {
     private final String name;
 
-    public Value(final String name) {
+    private Value(final String name) {
       if (refToModel.containsKey(name))
         throw new IllegalArgumentException("Value name=\"" + name + "\" already registered");
 
@@ -42,14 +42,6 @@ class Registry {
       refToModel.put(name, model);
       return reference(model, referrer);
     }
-  }
-
-  private static String getKey(final Element element) {
-    final String key = element.id().toString();
-    if (key == null)
-      throw new NullPointerException("key == null");
-
-    return key;
   }
 
   final class Type {
@@ -215,11 +207,11 @@ class Registry {
 
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<String,Type>();
   private final LinkedHashMap<String,Model> refToModel;
-  private final LinkedHashMap<String,List<ComplexModel>> references;
+  private final LinkedHashMap<String,List<ComplexModel>> refToReferrers;
 
   private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<ComplexModel>> references) {
     this.refToModel = refToModel;
-    this.references = references;
+    this.refToReferrers = references;
   }
 
   public Registry() {
@@ -258,24 +250,24 @@ class Registry {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 
-  public <T extends Element>T reference(final T model, final ComplexModel referrer) {
+  public <T extends Member>T reference(final T model, final ComplexModel referrer) {
     if (referrer == null)
       return model;
 
-    final String key = getKey(model);
-    List<ComplexModel> referrers = references.get(key);
+    final String key = model.id().toString();
+    List<ComplexModel> referrers = refToReferrers.get(key);
     if (referrers == null)
-      references.put(key, referrers = new ArrayList<ComplexModel>());
+      refToReferrers.put(key, referrers = new ArrayList<ComplexModel>());
 
     referrers.add(referrer);
     return model;
   }
 
-  public Element getElement(final $Object binding) {
+  public Member getElement(final $Object binding) {
     return refToModel.get(ObjectModel.getFullyQualifiedName(binding));
   }
 
-  public Element getElement(final Id id) {
+  public Member getElement(final Id id) {
     return refToModel.get(id.toString());
   }
 
@@ -291,8 +283,8 @@ class Registry {
     return refToModel.size();
   }
 
-  public int getNumReferrers(final Element element) {
-    final List<ComplexModel> referrers = references.get(element.id().toString());
+  public int getNumReferrers(final Member member) {
+    final List<ComplexModel> referrers = refToReferrers.get(member.id().toString());
     return referrers == null ? 0 : referrers.size();
   }
 }
