@@ -61,7 +61,7 @@ public class Id {
 
   public Id(final String className) {
     if (className == null)
-      throw new NullPointerException("className == null");
+      throw new IllegalArgumentException("className == null");
 
     this.id = className;
   }
