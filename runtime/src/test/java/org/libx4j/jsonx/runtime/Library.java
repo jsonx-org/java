@@ -56,9 +56,9 @@ public class Library {
 
   @ObjectElement(id=1, type=Publication.class, nullable=false)
   @ArrayProperty(nullable=false, elementIds=1)
-  public final List<Publication> publications = new ArrayList<Publication>();
+  public final List<Publication> publications = new ArrayList<>();
 
   @ObjectElement(id=1, type=StreetSheet.class, nullable=false)
   @ArrayProperty(nullable=false, elementIds=1)
-  public final List<StreetSheet> streetSheets = new ArrayList<StreetSheet>();
+  public final List<StreetSheet> streetSheets = new ArrayList<>();
 }

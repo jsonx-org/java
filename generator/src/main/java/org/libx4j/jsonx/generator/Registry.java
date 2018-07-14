@@ -205,7 +205,7 @@ class Registry {
     return getType(packageName, compoundName, packageName, superCompoundName, (Type)null);
   }
 
-  private final HashMap<String,Type> qualifiedNameToType = new HashMap<String,Type>();
+  private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   private final LinkedHashMap<String,Model> refToModel;
   private final LinkedHashMap<String,List<ComplexModel>> refToReferrers;
 
@@ -257,7 +257,7 @@ class Registry {
     final String key = model.id().toString();
     List<ComplexModel> referrers = refToReferrers.get(key);
     if (referrers == null)
-      refToReferrers.put(key, referrers = new ArrayList<ComplexModel>());
+      refToReferrers.put(key, referrers = new ArrayList<>());
 
     referrers.add(referrer);
     return model;

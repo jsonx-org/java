@@ -125,7 +125,7 @@ class ObjectModel extends ComplexModel {
   }
 
   private static Map<String,Member> parseMembers(final Registry registry, final $ObjectMember binding, final ObjectModel model) {
-    final LinkedHashMap<String,Member> members = new LinkedHashMap<String,Member>();
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
@@ -234,7 +234,7 @@ class ObjectModel extends ComplexModel {
       this.superObject = null;
     }
 
-    final LinkedHashMap<String,Member> members = new LinkedHashMap<String,Member>();
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     for (final Field field : clazz.getDeclaredFields()) {
       final Member member = Member.toMember(registry, this, field);
       if (member != null)
@@ -294,8 +294,8 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSON(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
+  protected final String toJson(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
@@ -314,7 +314,7 @@ class ObjectModel extends ComplexModel {
       builder.append(",\n  members: ");
       final StringBuilder members = new StringBuilder();
       for (final Map.Entry<String,Member> entry : this.members.entrySet())
-        members.append(",\n    \"").append(entry.getKey()).append("\": ").append(entry.getValue().toJSON(packageName).replace("\n", "\n    "));
+        members.append(",\n    \"").append(entry.getKey()).append("\": ").append(entry.getValue().toJson(packageName).replace("\n", "\n    "));
 
       builder.append('{');
       if (members.length() > 0)
@@ -344,12 +344,12 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final List<org.lib4j.xml.Element> elements;
     if (members != null && members.size() > 0) {
-      elements = new ArrayList<org.lib4j.xml.Element>();
+      elements = new ArrayList<>();
       for (final Member member : this.members.values())
-        elements.add(member.toJSONX(this, packageName));
+        elements.add(member.toXml(this, packageName));
     }
     else {
       elements = null;

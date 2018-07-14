@@ -18,7 +18,6 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -78,7 +77,7 @@ abstract class Member extends Element {
     return name.length() > 0 ? name : field.getName();
   }
 
-  protected static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
+  protected static final Function<Binding,String> elementXPath = new Function<>() {
     @Override
     public String apply(final Binding t) {
       final String name;
@@ -172,7 +171,7 @@ abstract class Member extends Element {
   }
 
   @Override
-  protected String toJSON(final String packageName) {
+  protected String toJson(final String packageName) {
     final StringBuilder builder = new StringBuilder("  type: \"").append(getClass().getSimpleName().toLowerCase()).append('"');
     if (name != null)
       builder.append(",\n  name: \"").append(name).append('"');
@@ -217,12 +216,12 @@ abstract class Member extends Element {
   }
 
   @Override
-  protected final String toJSON() {
+  protected final String toJson() {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  protected final org.lib4j.xml.Element toJSONX() {
+  protected final org.lib4j.xml.Element toSchema() {
     throw new UnsupportedOperationException();
   }
 

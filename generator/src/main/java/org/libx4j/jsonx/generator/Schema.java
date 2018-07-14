@@ -68,7 +68,7 @@ public class Schema extends Element {
   public Schema(final Jsonx jsonx) {
     this.packageName = (String)jsonx.getPackage$().text();
     final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
-    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<$Member,String>("Object cannot inherit from itself", obj -> {
+    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
       if (obj instanceof Jsonx.Array)
         return ((Jsonx.Array)obj).getTemplate$().text();
 
@@ -151,15 +151,20 @@ public class Schema extends Element {
     this.packageName = getClassPrefix();
   }
 
-  public final String packageName() {
-    return this.packageName;
+  private String getClassPrefix() {
+    final Set<Registry.Type> types = new HashSet<>();
+    getDeclaredTypes(types);
+    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
+    if (classPrefix == null)
+      return null;
+
+    final int index = classPrefix.lastIndexOf('.');
+    return index < 0 ? null : classPrefix.substring(0, index);
   }
 
-  public final Collection<Model> rootMembers() {
-    final List<Model> members = new ArrayList<Model>();
+  private final Collection<Model> rootMembers() {
+    final List<Model> members = new ArrayList<>();
     for (final Model model : registry.rootElements()) {
-      if (model instanceof ObjectModel && ((ObjectModel)model).type().toString().endsWith("sub1.simple$Booleans"))
-        System.out.println();
       final int numReferrers = registry.getNumReferrers(model);
       if (model instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers > 0)
         members.add(model);
@@ -178,7 +183,7 @@ public class Schema extends Element {
     return members;
   }
 
-  public final Collection<Model> members() {
+  private final Collection<Model> members() {
     return registry.rootElements();
   }
 
@@ -190,25 +195,25 @@ public class Schema extends Element {
   }
 
   @Override
-  protected final String toJSON(final String packageName) {
+  protected final String toJson(final String packageName) {
     final StringBuilder builder = new StringBuilder();
-    builder.append("{\n").append("  package: \"").append(packageName() == null ? "" : packageName()).append('"');
+    builder.append("{\n").append("  package: \"").append(packageName == null ? "" : packageName).append('"');
     for (final Model member : rootMembers())
       if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        builder.append(",\n  \"").append(member.id()).append("\": ").append(member.toJSON(packageName).replace("\n", "\n  "));
+        builder.append(",\n  \"").append(member.id()).append("\": ").append(member.toJson(packageName).replace("\n", "\n  "));
 
     builder.append("\n}");
     return builder.toString();
   }
 
   @Override
-  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final List<org.lib4j.xml.Element> elements;
     final Collection<Model> members = rootMembers();
     if (members.size() > 0) {
-      elements = new ArrayList<org.lib4j.xml.Element>();
+      elements = new ArrayList<>();
       for (final Model member : members)
-        elements.add(member.toJSONX(this, packageName));
+        elements.add(member.toXml(this, packageName));
     }
     else {
       elements = null;
@@ -224,39 +229,28 @@ public class Schema extends Element {
     return new org.lib4j.xml.Element("jsonx", attributes, elements);
   }
 
-  private String getClassPrefix() {
-    final Set<Registry.Type> types = new HashSet<Registry.Type>();
-    getDeclaredTypes(types);
-    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
-    if (classPrefix == null)
-      return null;
-
-    final int index = classPrefix.lastIndexOf('.');
-    return index < 0 ? null : classPrefix.substring(0, index);
+  @Override
+  public final String toJson() {
+    return toJson(packageName);
   }
 
   @Override
-  public final String toJSON() {
-    return toJSON(packageName);
-  }
-
-  @Override
-  public final org.lib4j.xml.Element toJSONX() {
-    return toJSONX(this, packageName);
+  public final org.lib4j.xml.Element toSchema() {
+    return toXml(this, packageName);
   }
 
   public Map<String,String> toJava() {
-    final Map<Registry.Type,ClassHolder> all = new HashMap<Registry.Type,ClassHolder>();
-    final Map<Registry.Type,ClassHolder> typeToClassHolder = new HashMap<Registry.Type,ClassHolder>();
+    final Map<Registry.Type,ClassHolder> all = new HashMap<>();
+    final Map<Registry.Type,ClassHolder> typeToClassHolder = new HashMap<>();
     for (final Model member : members()) {
       if (member instanceof ObjectModel) {
         final ObjectModel model = (ObjectModel)member;
-        final ClassHolder classHolder = new ClassHolder(packageName, model);
+        final ClassHolder classHolder = new ClassHolder(model);
         if (model.type().getDeclaringType() != null) {
           final Registry.Type declaringType = model.type().getDeclaringType();
           ClassHolder parent = all.get(declaringType);
           if (parent == null) {
-            parent = new ClassHolder(packageName, declaringType);
+            parent = new ClassHolder(declaringType);
             typeToClassHolder.put(declaringType, parent);
             all.put(declaringType, parent);
           }
@@ -271,7 +265,7 @@ public class Schema extends Element {
       }
     }
 
-    final HashMap<String,String> sources = new HashMap<String,String>();
+    final HashMap<String,String> sources = new HashMap<>();
     for (final Map.Entry<Registry.Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
       final Registry.Type type = entry.getKey();
       final ClassHolder holder = entry.getValue();

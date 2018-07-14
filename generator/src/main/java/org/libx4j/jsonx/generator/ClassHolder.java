@@ -21,20 +21,17 @@ import java.util.TreeMap;
 import org.libx4j.jsonx.runtime.JsonxObject;
 
 public class ClassHolder {
-  private final TreeMap<String,ClassHolder> memberClasses = new TreeMap<String,ClassHolder>();
+  private final TreeMap<String,ClassHolder> memberClasses = new TreeMap<>();
 
-  private final String packageName;
   private final ObjectModel model;
   private final Registry.Type type;
 
-  public ClassHolder(final String packageName, final ObjectModel model) {
-    this.packageName = packageName;
+  public ClassHolder(final ObjectModel model) {
     this.model = model;
     this.type = model.type();
   }
 
-  public ClassHolder(final String packageName, final Registry.Type type) {
-    this.packageName = packageName;
+  public ClassHolder(final Registry.Type type) {
     this.model = null;
     this.type = type;
   }

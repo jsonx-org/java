@@ -103,7 +103,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember binding) {
-    final List<Member> members = new ArrayList<Member>();
+    final List<Member> members = new ArrayList<>();
     final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
@@ -139,7 +139,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final Field field, final Annotation annotation, final int[] elementIds, final Map<Integer,Annotation> annotations) {
-    final List<Member> elements = new ArrayList<Member>();
+    final List<Member> elements = new ArrayList<>();
     for (final Integer elementId : elementIds) {
       final Annotation elementAnnotation = annotations.get(elementId);
       if (elementAnnotation == null)
@@ -160,7 +160,7 @@ class ArrayModel extends ComplexModel {
     return Collections.unmodifiableList(elements);
   }
 
-  private static final Function<Annotation,Integer> reference = new Function<Annotation,Integer>() {
+  private static final Function<Annotation,Integer> reference = new Function<>() {
     @Override
     public Integer apply(final Annotation t) {
       if (t instanceof BooleanElement)
@@ -219,8 +219,8 @@ class ArrayModel extends ComplexModel {
     if (field.getType() != List.class && !field.getType().isArray() && !Void.class.equals(field.getType()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
-    final Map<Integer,Annotation> map = new HashMap<Integer,Annotation>();
-    final StrictDigraph<Integer> digraph = new StrictDigraph<Integer>("Element cannot include itself as a member");
+    final Map<Integer,Annotation> map = new HashMap<>();
+    final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
     final BooleanElement[] booleanElements = field.getAnnotationsByType(BooleanElement.class);
     if (booleanElements != null)
       for (final BooleanElement booleanElement : booleanElements)
@@ -254,7 +254,7 @@ class ArrayModel extends ComplexModel {
     if (cycle != null)
       throw new ValidationException("Cycle detected in element index dependency graph: " + org.lib4j.util.Collections.toString(digraph.getCycle(), " -> "));
 
-    final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<Integer,Annotation>(map.size());
+    final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<>(map.size());
     for (final Integer elementId : digraph.getTopologicalOrder())
       topologicalOrder.put(elementId, map.get(elementId));
 
@@ -300,8 +300,8 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJSON(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
+  protected final String toJson(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
@@ -309,7 +309,7 @@ class ArrayModel extends ComplexModel {
       builder.append(",\n  members: ");
       final StringBuilder members = new StringBuilder();
       for (final Member member : this.members)
-        members.append(", ").append(member.toJSON(packageName).replace("\n", "\n  "));
+        members.append(", ").append(member.toJson(packageName).replace("\n", "\n  "));
 
       builder.append('[').append(members.length() > 0 ? members.substring(2) : members.toString()).append(']');
     }
@@ -317,22 +317,22 @@ class ArrayModel extends ComplexModel {
     return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
   }
 
-  private List<org.lib4j.xml.Element> membersToJSONX(final String packageName) {
+  private List<org.lib4j.xml.Element> membersToXml(final String packageName) {
     if (members.size() == -1)
       return null;
 
-    final List<org.lib4j.xml.Element> elements = new ArrayList<org.lib4j.xml.Element>();
+    final List<org.lib4j.xml.Element> elements = new ArrayList<>();
     for (final Member member : this.members)
-      elements.add(member.toJSONX(this, packageName));
+      elements.add(member.toXml(this, packageName));
 
     return elements;
   }
 
   @Override
-  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final Set<Attribute> attributes = super.toAttributes(owner, packageName);
     if (!(owner instanceof ObjectModel))
-      return new org.lib4j.xml.Element("array", attributes, membersToJSONX(packageName));
+      return new org.lib4j.xml.Element("array", attributes, membersToXml(packageName));
 
     final List<org.lib4j.xml.Element> elements;
     if (registry.isRegistered(id())) {
@@ -342,7 +342,7 @@ class ArrayModel extends ComplexModel {
     }
     else {
       attributes.add(new Attribute("xsi:type", "array"));
-      elements = membersToJSONX(packageName);
+      elements = membersToXml(packageName);
     }
 
     return new org.lib4j.xml.Element("property", attributes, elements);

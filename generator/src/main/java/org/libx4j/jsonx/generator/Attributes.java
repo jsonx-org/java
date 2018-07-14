@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Attributes {
-  private final TreeMap<String,String> nameToValue = new TreeMap<String,String>();
+  private final TreeMap<String,String> nameToValue = new TreeMap<>();
 
   public void put(final String name, final Object value) {
     final String encoded = String.valueOf(value);

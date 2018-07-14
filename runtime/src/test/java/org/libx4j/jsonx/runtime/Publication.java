@@ -40,5 +40,5 @@ public abstract class Publication {
 
   @ObjectElement(id=1, type=Publishing.class, nullable=false, minOccurs=1)
   @ArrayProperty(nullable=false, elementIds=1)
-  public final List<Publishing> publishings = new ArrayList<Publishing>();
+  public final List<Publishing> publishings = new ArrayList<>();
 }

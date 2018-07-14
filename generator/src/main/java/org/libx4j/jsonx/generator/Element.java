@@ -25,14 +25,13 @@ abstract class Element {
   protected void getDeclaredTypes(final Set<Registry.Type> types) {
   }
 
-  protected abstract String toJSON(final String packageName);
-
   protected Set<Attribute> toAttributes(final Element owner, final String packageName) {
-    return new HashSet<Attribute>();
+    return new HashSet<>();
   }
 
-  protected abstract org.lib4j.xml.Element toJSONX(final Element owner, final String packageName);
+  protected abstract org.lib4j.xml.Element toXml(final Element owner, final String packageName);
+  protected abstract org.lib4j.xml.Element toSchema();
 
-  protected abstract String toJSON();
-  protected abstract org.lib4j.xml.Element toJSONX();
+  protected abstract String toJson(final String packageName);
+  protected abstract String toJson();
 }

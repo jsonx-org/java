@@ -18,7 +18,6 @@ package org.libx4j.jsonx.generator;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,8 +40,8 @@ import org.libx4j.xsb.runtime.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JsonxTest {
-  private static final Logger logger = LoggerFactory.getLogger(JsonxTest.class);
+public class SchemaTest {
+  private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
 
   private static xL2gluGCXYYJc.Jsonx newControlBinding(final String fileName) throws IOException, MalformedURLException, ValidationException {
     try (final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
@@ -52,9 +51,8 @@ public class JsonxTest {
 
   private static Schema testParseJsonx(final xL2gluGCXYYJc.Jsonx controlBinding) throws IOException, ParseException, ValidationException {
     final Schema controlSchema = new Schema(controlBinding);
-    final String jsonx = controlSchema.toJSONX().toString();
-    logger.info(jsonx);
-    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(new ByteArrayInputStream(jsonx.getBytes()));
+    final String xml = controlSchema.toSchema().toString();
+    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(xml);
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual();
     return controlSchema;
   }
@@ -77,13 +75,13 @@ public class JsonxTest {
 
     final File generatedResourcesDir = new File("target/generated-test-resources");
     generatedResourcesDir.mkdirs();
-    final org.lib4j.xml.Element jsonx = testSchema.toJSONX();
+    final org.lib4j.xml.Element schema = testSchema.toSchema();
     try (final FileOutputStream out = new FileOutputStream(new File(generatedResourcesDir, "out-" + fileName))) {
       out.write("<!--\n  Copyright (c) 2017 lib4j\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in\n  all copies or substantial portions of the Software.\n\n  You should have received a copy of The MIT License (MIT) along with this\n  program. If not, see <http://opensource.org/licenses/MIT/>.\n-->\n".getBytes());
-      out.write(jsonx.toString().getBytes());
+      out.write(schema.toString().getBytes());
     }
 
-    final xL2gluGCXYYJc.Jsonx reParsedBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(jsonx.toString());
+    final xL2gluGCXYYJc.Jsonx reParsedBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(schema.toString());
     final Schema reParsedSchema = testParseJsonx(reParsedBinding);
     final Map<String,String> reParsedSources = reParsedSchema.toJava();
     assertEquals(sources.size(), reParsedSources.size());

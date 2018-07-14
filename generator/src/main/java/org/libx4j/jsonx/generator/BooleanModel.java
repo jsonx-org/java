@@ -108,12 +108,12 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJSON(final String packageName) {
-    return "{\n" + super.toJSON(packageName) + "\n}";
+  protected final String toJson(final String packageName) {
+    return "{\n" + super.toJson(packageName) + "\n}";
   }
 
   @Override
-  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final Set<Attribute> attributes = super.toAttributes(owner, packageName);
     if (!(owner instanceof ObjectModel))
       return new org.lib4j.xml.Element("boolean", attributes, null);

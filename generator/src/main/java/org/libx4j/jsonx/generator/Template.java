@@ -85,8 +85,8 @@ class Template extends Member {
   }
 
   @Override
-  protected final String toJSON(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJSON(packageName));
+  protected final String toJson(final String packageName) {
+    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
     if (builder.length() > 0)
       builder.insert(0, ",\n");
 
@@ -97,11 +97,11 @@ class Template extends Member {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toJSONX(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final Set<Attribute> attributes = super.toAttributes(owner, packageName);
     if (model instanceof ObjectModel && registry.getNumReferrers(model) == 1) {
       // FIXME: This is where the nullable attribute collision _may happen_
-      final org.lib4j.xml.Element element = model.toJSONX(owner, packageName);
+      final org.lib4j.xml.Element element = model.toXml(owner, packageName);
       element.getAttributes().addAll(attributes);
       return element;
     }
