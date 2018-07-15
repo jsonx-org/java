@@ -20,10 +20,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Set;
+import java.util.Map;
 
 import org.lib4j.lang.IllegalAnnotationException;
-import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
@@ -141,41 +140,23 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
-    if (builder.length() > 0)
-      builder.insert(0, ",\n");
-
+  protected final Map<String,String> toAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
     if (form != null)
-      builder.append(",\n  form: \"").append(form.toString().toLowerCase()).append('"');
+      attributes.put("form", form.toString().toLowerCase());
 
     if (min != null)
-      builder.append(",\n  min: ").append(min);
+      attributes.put("min", String.valueOf(min));
 
     if (max != null)
-      builder.append(",\n  max: ").append(max);
-
-    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
-  }
-
-  @Override
-  protected final Set<Attribute> toAttributes(final Element owner, final String packageName) {
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
-    if (form != null)
-      attributes.add(new Attribute("form", form.toString().toLowerCase()));
-
-    if (min != null)
-      attributes.add(new Attribute("min", String.valueOf(min)));
-
-    if (max != null)
-      attributes.add(new Attribute("max", String.valueOf(max)));
+      attributes.put("max", String.valueOf(max));
 
     return attributes;
   }
 
   @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
-    final Set<Attribute> attributes;
+    final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toAttributes(owner, packageName);
       return new org.lib4j.xml.Element("number", attributes, null);
@@ -183,19 +164,19 @@ class NumberModel extends SimpleModel {
 
     if (registry.isRegistered(id())) {
       attributes = super.toAttributes(owner, packageName);
-      attributes.add(new Attribute("xsi:type", "template"));
-      attributes.add(new Attribute("reference", id().toString()));
+      attributes.put("xsi:type", "template");
+      attributes.put("reference", id().toString());
     }
     else {
       attributes = toAttributes(owner, packageName);
-      attributes.add(new Attribute("xsi:type", "number"));
+      attributes.put("xsi:type", "number");
     }
 
     return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override
-  protected void toAnnotation(final Attributes attributes) {
+  protected void toAnnotation(final AttributeMap attributes) {
     super.toAnnotation(attributes);
     if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);

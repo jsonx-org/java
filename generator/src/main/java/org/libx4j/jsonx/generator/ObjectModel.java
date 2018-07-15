@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.lib4j.util.Iterators;
-import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
@@ -294,51 +293,18 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
-    if (builder.length() > 0)
-      builder.insert(0, ",\n");
-
-    builder.append(",\n  class: \"").append(type().getCompoundName()).append('"');
+  protected final Map<String,String> toAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+    attributes.put("class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
 
     if (superObject != null)
-      builder.append(",\n  extends: \"").append(superObject.type().getCompoundName()).append('"');
-
-    if (isAbstract != null)
-      builder.append(",\n  abstract: ").append(isAbstract);
-
-    if (unknown != null)
-      builder.append(",\n  unknown: \"").append(unknown.toString().toLowerCase()).append('"');
-
-    if (members != null && members.size() > 0) {
-      builder.append(",\n  members: ");
-      final StringBuilder members = new StringBuilder();
-      for (final Map.Entry<String,Member> entry : this.members.entrySet())
-        members.append(",\n    \"").append(entry.getKey()).append("\": ").append(entry.getValue().toJson(packageName).replace("\n", "\n    "));
-
-      builder.append('{');
-      if (members.length() > 0)
-        builder.append("\n").append(members.substring(2)).append("\n  ");
-
-      builder.append('}');
-    }
-
-    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
-  }
-
-  @Override
-  protected final Set<Attribute> toAttributes(final Element owner, final String packageName) {
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
-    attributes.add(new Attribute("class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName)));
-
-    if (superObject != null)
-      attributes.add(new Attribute("extends", superObject.type().getRelativeName(packageName)));
+      attributes.put("extends", superObject.type().getRelativeName(packageName));
 
     if (isAbstract != null && isAbstract)
-      attributes.add(new Attribute("abstract", String.valueOf(isAbstract)));
+      attributes.put("abstract", String.valueOf(isAbstract));
 
     if (unknown != Unknown.ERROR)
-      attributes.add(new Attribute("unknown", unknown.toString().toLowerCase()));
+      attributes.put("unknown", unknown.toString().toLowerCase());
 
     return attributes;
   }
@@ -355,7 +321,7 @@ class ObjectModel extends ComplexModel {
       elements = null;
     }
 
-    final Set<Attribute> attributes;
+    final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toAttributes(owner, packageName);
       return new org.lib4j.xml.Element("object", attributes, elements);
@@ -363,12 +329,12 @@ class ObjectModel extends ComplexModel {
 
     if (registry.getNumReferrers(this) > 1) {
       attributes = super.toAttributes(owner, packageName);
-      attributes.add(new Attribute("xsi:type", "template"));
-      attributes.add(new Attribute("reference", id().toString()));
+      attributes.put("xsi:type", "template");
+      attributes.put("reference", id().toString());
     }
     else {
       attributes = toAttributes(owner, packageName);
-      attributes.add(new Attribute("xsi:type", "object"));
+      attributes.put("xsi:type", "object");
     }
 
     return new org.lib4j.xml.Element("property", attributes, elements);
@@ -383,7 +349,7 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final void toAnnotation(final Attributes attributes) {
+  protected final void toAnnotation(final AttributeMap attributes) {
     super.toAnnotation(attributes);
     attributes.put("type", type.getCanonicalName() + ".class");
   }

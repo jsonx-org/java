@@ -18,11 +18,11 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
 import org.lib4j.lang.JavaIdentifiers;
-import org.lib4j.xml.Attribute;
 import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -171,61 +171,30 @@ abstract class Member extends Element {
   }
 
   @Override
-  protected String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder("  type: \"").append(getClass().getSimpleName().toLowerCase()).append('"');
+  protected Map<String,String> toAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
     if (name != null)
-      builder.append(",\n  name: \"").append(name).append('"');
-
-    if (nullable != null)
-      builder.append(",\n  nullable: ").append(nullable);
-
-    if (required != null)
-      builder.append(",\n  required: ").append(required);
-
-    if (minOccurs != null)
-      builder.append(",\n  minOccurs: ").append(minOccurs);
-
-    if (maxOccurs != null)
-      builder.append(",\n  maxOccurs: ").append(maxOccurs);
-
-    return builder.toString();
-  }
-
-  @Override
-  protected Set<Attribute> toAttributes(final Element owner, final String packageName) {
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
-    if (name != null)
-      attributes.add(new Attribute("name", name));
+      attributes.put("name", name);
     else if (!(this instanceof Template) && !(this instanceof ObjectModel))
-      attributes.add(new Attribute("template", id().toString()));
+      attributes.put("template", id().toString());
 
     final boolean shouldWriteNullable = !(owner instanceof Schema);
     if (shouldWriteNullable && nullable != null && !nullable)
-      attributes.add(new Attribute("nullable", String.valueOf(nullable)));
+      attributes.put("nullable", String.valueOf(nullable));
 
     if (required != null && !required)
-      attributes.add(new Attribute("required", String.valueOf(required)));
+      attributes.put("required", String.valueOf(required));
 
     if (minOccurs != null && minOccurs != 0)
-      attributes.add(new Attribute("minOccurs", String.valueOf(minOccurs)));
+      attributes.put("minOccurs", String.valueOf(minOccurs));
 
     if (maxOccurs != null)
-      attributes.add(new Attribute("maxOccurs", String.valueOf(maxOccurs)));
+      attributes.put("maxOccurs", String.valueOf(maxOccurs));
 
     return attributes;
   }
 
-  @Override
-  protected final String toJson() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  protected final org.lib4j.xml.Element toSchema() {
-    throw new UnsupportedOperationException();
-  }
-
-  protected void toAnnotation(final Attributes attributes) {
+  protected void toAnnotation(final AttributeMap attributes) {
     if (nullable != null)
       attributes.put("nullable", nullable);
 
@@ -246,7 +215,7 @@ abstract class Member extends Element {
       builder.append(elementAnnotations);
 
     builder.append('@').append(propertyAnnotation().getName());
-    final Attributes attributes = new Attributes();
+    final AttributeMap attributes = new AttributeMap();
     toAnnotation(attributes);
     if (attributes.size() > 0)
       builder.append('(').append(attributes.toAnnotation()).append(')');

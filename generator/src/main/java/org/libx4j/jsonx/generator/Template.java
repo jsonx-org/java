@@ -17,9 +17,8 @@
 package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
+import java.util.Map;
 
-import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
@@ -85,39 +84,26 @@ class Template extends Member {
   }
 
   @Override
-  protected final String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
-    if (builder.length() > 0)
-      builder.insert(0, ",\n");
-
-    if (model != null)
-      builder.append(",\n  reference: \"").append(Registry.getSubName(model.id().toString(), packageName)).append('"');
-
-    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
-  }
-
-  @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
     if (model instanceof ObjectModel && registry.getNumReferrers(model) == 1) {
-      // FIXME: This is where the nullable attribute collision _may happen_
       final org.lib4j.xml.Element element = model.toXml(owner, packageName);
-      element.getAttributes().addAll(attributes);
+      element.getAttributes().putAll(attributes);
       return element;
     }
 
     if (model != null)
-      attributes.add(new Attribute("reference", Registry.getSubName(model.id().toString(), packageName)));
+      attributes.put("reference", Registry.getSubName(model.id().toString(), packageName));
 
     if (!(owner instanceof ObjectModel))
       return new org.lib4j.xml.Element("template", attributes, null);
 
-    attributes.add(new Attribute("xsi:type", "template"));
+    attributes.put("xsi:type", "template");
     return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override
-  protected final void toAnnotation(final Attributes attributes) {
+  protected final void toAnnotation(final AttributeMap attributes) {
     super.toAnnotation(attributes);
     model.toAnnotation(attributes);
   }

@@ -31,7 +31,6 @@ import java.util.function.Function;
 import org.lib4j.lang.AnnotationParameterException;
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.util.Iterators;
-import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
@@ -87,7 +86,7 @@ class ArrayModel extends ComplexModel {
     return registry.getType(List.class, gcc);
   }
 
-  private static void writeElementIdsClause(final Attributes attributes, final int[] indices) {
+  private static void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
     final StringBuilder builder = new StringBuilder("{");
     if (indices.length == 0) {
       builder.append("}");
@@ -299,24 +298,6 @@ class ArrayModel extends ComplexModel {
         member.getDeclaredTypes(types);
   }
 
-  @Override
-  protected final String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
-    if (builder.length() > 0)
-      builder.insert(0, ",\n");
-
-    if (members != null) {
-      builder.append(",\n  members: ");
-      final StringBuilder members = new StringBuilder();
-      for (final Member member : this.members)
-        members.append(", ").append(member.toJson(packageName).replace("\n", "\n  "));
-
-      builder.append('[').append(members.length() > 0 ? members.substring(2) : members.toString()).append(']');
-    }
-
-    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
-  }
-
   private List<org.lib4j.xml.Element> membersToXml(final String packageName) {
     if (members.size() == -1)
       return null;
@@ -330,18 +311,18 @@ class ArrayModel extends ComplexModel {
 
   @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
     if (!(owner instanceof ObjectModel))
       return new org.lib4j.xml.Element("array", attributes, membersToXml(packageName));
 
     final List<org.lib4j.xml.Element> elements;
     if (registry.isRegistered(id())) {
-      attributes.add(new Attribute("xsi:type", "template"));
-      attributes.add(new Attribute("reference", id().toString()));
+      attributes.put("xsi:type", "template");
+      attributes.put("reference", id().toString());
       elements = null;
     }
     else {
-      attributes.add(new Attribute("xsi:type", "array"));
+      attributes.put("xsi:type", "array");
       elements = membersToXml(packageName);
     }
 
@@ -349,7 +330,7 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected void toAnnotation(final Attributes attributes) {
+  protected void toAnnotation(final AttributeMap attributes) {
     super.toAnnotation(attributes);
     final int[] indices = new int[members().size()];
     final StringBuilder temp = new StringBuilder();
@@ -362,13 +343,13 @@ class ArrayModel extends ComplexModel {
     writeElementIdsClause(attributes, indices);
   }
 
-  protected final void toAnnotation(final Attributes attributes, final int ... indices) {
+  protected final void toAnnotation(final AttributeMap attributes, final int ... indices) {
     super.toAnnotation(attributes);
     writeElementIdsClause(attributes, indices);
   }
 
   private static int writeElementAnnotations(final StringBuilder builder, final Member member, final int index) {
-    final Attributes attributes = new Attributes();
+    final AttributeMap attributes = new AttributeMap();
     attributes.put("id", index);
 
     final Member reference = member instanceof Template ? ((Template)member).reference() : member;

@@ -30,13 +30,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.lib4j.lang.PackageLoader;
 import org.lib4j.lang.PackageNotFoundException;
 import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
+import org.lib4j.util.IdentityHashSet;
 import org.lib4j.util.Iterators;
-import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$TemplateMember;
@@ -131,8 +132,16 @@ public class Schema extends Element {
     }
   }
 
+  public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class) && filter.test(c)));
+  }
+
   public Schema(final Package pkg, final ClassLoader classLoader) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class) && c.getClassLoader() == classLoader));
+    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class)));
+  }
+
+  public Schema(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+    this(pkg, Thread.currentThread().getContextClassLoader(), filter);
   }
 
   public Schema(final Package pkg) throws PackageNotFoundException {
@@ -140,13 +149,13 @@ public class Schema extends Element {
   }
 
   public Schema(final Class<?> ... classes) {
-    this(Collections.asCollection(new HashSet<Class<?>>(classes.length), classes));
+    this(Collections.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
   }
 
   public Schema(final Set<Class<?>> classes) {
     final Registry registry = new Registry();
-    for (final Class<?> clazz : classes)
-      ObjectModel.referenceOrDeclare(registry, clazz);
+    for (final Class<?> cls : classes)
+      ObjectModel.referenceOrDeclare(registry, cls);
 
     this.registry = registry;
     this.packageName = getClassPrefix();
@@ -160,7 +169,7 @@ public class Schema extends Element {
       return null;
 
     final int index = classPrefix.lastIndexOf('.');
-    return index < 0 ? null : classPrefix.substring(0, index);
+    return index == -1 ? "" : classPrefix.substring(0, index);
   }
 
   private final Collection<Model> rootMembers() {
@@ -196,18 +205,6 @@ public class Schema extends Element {
   }
 
   @Override
-  protected final String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder();
-    builder.append("{\n").append("  package: \"").append(packageName == null ? "" : packageName).append('"');
-    for (final Model member : rootMembers())
-      if (!(member instanceof ObjectModel) || registry.getNumReferrers(member) != 1 || ((ObjectModel)member).isAbstract())
-        builder.append(",\n  \"").append(member.id()).append("\": ").append(member.toJson(packageName).replace("\n", "\n  "));
-
-    builder.append("\n}");
-    return builder.toString();
-  }
-
-  @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final List<org.lib4j.xml.Element> elements;
     final Collection<Model> members = rootMembers();
@@ -220,23 +217,17 @@ public class Schema extends Element {
       elements = null;
     }
 
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
     if (packageName.length() > 0)
-      attributes.add(new Attribute("package", packageName));
+      attributes.put("package", packageName);
 
-    attributes.add(new Attribute("xmlns", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd"));
-    attributes.add(new Attribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance"));
-    attributes.add(new Attribute("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd /Users/seva/Work/safris/java/libx4j/jsonx/generator/src/main/resources/jsonx.xsd"));
+    attributes.put("xmlns", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd");
+    attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    attributes.put("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd http://jsonx.libx4j.org/jsonx-0.9.8.xsd");
     return new org.lib4j.xml.Element("jsonx", attributes, elements);
   }
 
-  @Override
-  public final String toJson() {
-    return toJson(packageName);
-  }
-
-  @Override
-  public final org.lib4j.xml.Element toSchema() {
+  public final org.lib4j.xml.Element toXml() {
     return toXml(this, packageName);
   }
 
@@ -266,13 +257,12 @@ public class Schema extends Element {
       }
     }
 
-    final HashMap<String,String> sources = new HashMap<>();
+    final Map<String,String> sources = new HashMap<>();
     for (final Map.Entry<Registry.Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
       final Registry.Type type = entry.getKey();
       final ClassHolder holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage();
-
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
 
@@ -280,7 +270,7 @@ public class Schema extends Element {
       if (annotation != null)
         builder.append('\n').append(annotation);
 
-      builder.append("\npublic ").append(holder.toString());
+      builder.append("\npublic ").append(holder);
       sources.put(type.getName(), builder.toString());
     }
 

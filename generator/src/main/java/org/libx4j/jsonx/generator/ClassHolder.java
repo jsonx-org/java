@@ -16,6 +16,7 @@
 
 package org.libx4j.jsonx.generator;
 
+import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.libx4j.jsonx.runtime.JsonxObject;
@@ -52,11 +53,10 @@ public class ClassHolder {
       builder.append(" extends ").append(type.getSuperType().getCanonicalName());
 
     builder.append(" {");
-    boolean isFirst = true;
-    for (final ClassHolder memberClass : memberClasses.values()) {
-      if (isFirst)
-        isFirst = false;
-      else
+    final Iterator<ClassHolder> iterator = memberClasses.values().iterator();
+    for (int i = 0; iterator.hasNext(); i++) {
+      final ClassHolder memberClass = iterator.next();
+      if (i > 0)
         builder.append('\n');
 
       final String annotation = memberClass.getAnnotation();

@@ -16,30 +16,40 @@
 
 package org.libx4j.jsonx.generator;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Attributes {
-  private final TreeMap<String,String> nameToValue = new TreeMap<>();
+import org.lib4j.util.ObservableMap;
 
-  public void put(final String name, final Object value) {
-    final String encoded = String.valueOf(value);
-    final Object existing = nameToValue.get(name);
-    if (existing != null && !existing.equals(encoded))
-      throw new IllegalStateException("Attempted overwrite of attribute: " + name);
-
-    nameToValue.put(name, encoded);
+public class AttributeMap extends ObservableMap<String,String> {
+  public AttributeMap() {
+    super(new TreeMap<String,String>());
   }
 
-  public int size() {
-    return nameToValue.size();
+  @Override
+  protected boolean beforePut(final String key, final String oldValue, final String newValue) {
+    if (oldValue == null || oldValue.equals(newValue) || "xsi:schemaLocation".equals(key))
+      return true;
+
+    throw new IllegalStateException("Attempted overwrite of attribute: " + key + " from " + oldValue + " to " + newValue);
+  }
+
+  public String put(final String key, final Object value) {
+    return super.put(key, value == null ? null : String.valueOf(value));
   }
 
   public String toAnnotation() {
     final StringBuilder builder = new StringBuilder();
-    for (final Map.Entry<String,String> entry : nameToValue.entrySet())
-      builder.append(", ").append(entry.getKey()).append('=').append(entry.getValue());
+    final Iterator<Map.Entry<String,String>> iterator = entrySet().iterator();
+    for (int i = 0; iterator.hasNext(); i++) {
+      final Map.Entry<String,String> entry = iterator.next();
+      if (i > 0)
+        builder.append(", ");
 
-    return builder.length() > 2 ? builder.substring(2) : builder.toString();
+      builder.append(entry.getKey()).append('=').append(entry.getValue());
+    }
+
+    return builder.toString();
   }
 }

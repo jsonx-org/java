@@ -18,11 +18,10 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Set;
+import java.util.Map;
 
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.lang.Strings;
-import org.lib4j.xml.Attribute;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
@@ -143,37 +142,23 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final String toJson(final String packageName) {
-    final StringBuilder builder = new StringBuilder(super.toJson(packageName));
-    if (builder.length() > 0)
-      builder.insert(0, ",\n");
-
+  protected final Map<String,String> toAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAttributes(owner, packageName);
     if (pattern != null)
-      builder.append(",\n  pattern: \"").append(pattern).append('"');
-
-    builder.append(",\n  urlEncode: ").append(urlEncode);
-    builder.append(",\n  urlDecode: ").append(urlDecode);
-    return "{\n" + (builder.length() > 0 ? builder.substring(2) : builder.toString()) + "\n}";
-  }
-
-  @Override
-  protected final Set<Attribute> toAttributes(final Element owner, final String packageName) {
-    final Set<Attribute> attributes = super.toAttributes(owner, packageName);
-    if (pattern != null)
-      attributes.add(new Attribute("pattern", pattern));
+      attributes.put("pattern", pattern);
 
     if (urlEncode)
-      attributes.add(new Attribute("urlEncode", String.valueOf(urlEncode)));
+      attributes.put("urlEncode", String.valueOf(urlEncode));
 
     if (urlDecode)
-      attributes.add(new Attribute("urlDecode", String.valueOf(urlDecode)));
+      attributes.put("urlDecode", String.valueOf(urlDecode));
 
     return attributes;
   }
 
   @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
-    final Set<Attribute> attributes;
+    final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toAttributes(owner, packageName);
       return new org.lib4j.xml.Element("string", attributes, null);
@@ -181,19 +166,19 @@ class StringModel extends SimpleModel {
 
     if (registry.isRegistered(id())) {
       attributes = super.toAttributes(owner, packageName);
-      attributes.add(new Attribute("xsi:type", "template"));
-      attributes.add(new Attribute("reference", id().toString()));
+      attributes.put("xsi:type", "template");
+      attributes.put("reference", id().toString());
     }
     else {
       attributes = toAttributes(owner, packageName);
-      attributes.add(new Attribute("xsi:type", "string"));
+      attributes.put("xsi:type", "string");
     }
 
     return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override
-  protected final void toAnnotation(final Attributes attributes) {
+  protected final void toAnnotation(final AttributeMap attributes) {
     super.toAnnotation(attributes);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");

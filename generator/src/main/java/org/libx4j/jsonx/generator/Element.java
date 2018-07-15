@@ -16,22 +16,16 @@
 
 package org.libx4j.jsonx.generator;
 
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-
-import org.lib4j.xml.Attribute;
 
 abstract class Element {
   protected void getDeclaredTypes(final Set<Registry.Type> types) {
   }
 
-  protected Set<Attribute> toAttributes(final Element owner, final String packageName) {
-    return new HashSet<>();
+  protected Map<String,String> toAttributes(final Element owner, final String packageName) {
+    return new AttributeMap();
   }
 
   protected abstract org.lib4j.xml.Element toXml(final Element owner, final String packageName);
-  protected abstract org.lib4j.xml.Element toSchema();
-
-  protected abstract String toJson(final String packageName);
-  protected abstract String toJson();
 }
