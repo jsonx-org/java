@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.lib4j.lang.AnnotationParameterException;
+import org.lib4j.lang.Arrays;
 import org.lib4j.lang.IllegalAnnotationException;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -87,18 +88,7 @@ class ArrayModel extends ComplexModel {
   }
 
   private static void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
-    final StringBuilder builder = new StringBuilder("{");
-    if (indices.length == 0) {
-      builder.append("}");
-    }
-    else {
-      for (int i = 0; i < indices.length - 1; i++)
-        builder.append(indices[i]).append(", ");
-
-      builder.append(indices[indices.length - 1]).append('}');
-    }
-
-    attributes.put("elementIds", builder);
+    attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + Arrays.toString(indices, ", ") + "}");
   }
 
   private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember binding) {
@@ -311,7 +301,7 @@ class ArrayModel extends ComplexModel {
 
   @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (!(owner instanceof ObjectModel))
       return new org.lib4j.xml.Element("array", attributes, membersToXml(packageName));
 
@@ -330,33 +320,34 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  protected void toAnnotation(final AttributeMap attributes) {
-    super.toAnnotation(attributes);
+  protected void toAnnotationAttributes(final AttributeMap attributes) {
+    super.toAnnotationAttributes(attributes);
     final int[] indices = new int[members().size()];
-    final StringBuilder temp = new StringBuilder();
+    final List<AnnotationSpec> annotations = new ArrayList<>();
     int index = 0;
     for (int i = 0; i < members().size(); i++) {
       indices[i] = index;
-      index += writeElementAnnotations(temp, members().get(i), index);
+      index += writeElementAnnotations(annotations, members().get(i), index);
     }
 
     writeElementIdsClause(attributes, indices);
   }
 
   protected final void toAnnotation(final AttributeMap attributes, final int ... indices) {
-    super.toAnnotation(attributes);
+    super.toAnnotationAttributes(attributes);
     writeElementIdsClause(attributes, indices);
   }
 
-  private static int writeElementAnnotations(final StringBuilder builder, final Member member, final int index) {
+  private static int writeElementAnnotations(final List<AnnotationSpec> annotations, final Member member, final int index) {
     final AttributeMap attributes = new AttributeMap();
     attributes.put("id", index);
 
+    final AnnotationSpec annotationSpec = new AnnotationSpec(member.elementAnnotation(), attributes);
     final Member reference = member instanceof Template ? ((Template)member).reference() : member;
     if (reference instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)reference;
       int offset = 1;
-      final StringBuilder inner = new StringBuilder();
+      final List<AnnotationSpec> inner = new ArrayList<>();
       final int[] indices = new int[arrayModel.members().size()];
       for (int i = 0; i < arrayModel.members().size(); i++) {
         indices[i] = index + offset;
@@ -374,23 +365,23 @@ class ArrayModel extends ComplexModel {
       if (member.nullable() != null)
         attributes.put("nullable", member.nullable());
 
-      builder.insert(0, "@" + member.elementAnnotation().getName() + "(" + attributes.toAnnotation() + ")\n");
-      builder.insert(0, inner);
+      inner.add(annotationSpec);
+      annotations.addAll(0, inner);
       return offset;
     }
 
-    member.toAnnotation(attributes);
-    builder.insert(0, "@" + member.elementAnnotation().getName() + "(" + attributes.toAnnotation() + ")\n");
+    member.toAnnotationAttributes(attributes);
+    annotations.add(0, annotationSpec);
     return 1;
   }
 
   @Override
-  protected final String toElementAnnotations() {
-    final StringBuilder builder = new StringBuilder();
+  protected final List<AnnotationSpec> toElementAnnotations() {
+    final List<AnnotationSpec> annotations = new ArrayList<>();
     int index = 0;
     for (final Member member : members())
-      index += writeElementAnnotations(builder, member, index);
+      index += writeElementAnnotations(annotations, member, index);
 
-    return builder.toString();
+    return annotations;
   }
 }

@@ -142,8 +142,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final Map<String,String> toAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+  protected final Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (pattern != null)
       attributes.put("pattern", pattern);
 
@@ -160,17 +160,17 @@ class StringModel extends SimpleModel {
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
-      attributes = toAttributes(owner, packageName);
+      attributes = toAnnotationAttributes(owner, packageName);
       return new org.lib4j.xml.Element("string", attributes, null);
     }
 
     if (registry.isRegistered(id())) {
-      attributes = super.toAttributes(owner, packageName);
+      attributes = super.toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
     }
     else {
-      attributes = toAttributes(owner, packageName);
+      attributes = toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "string");
     }
 
@@ -178,8 +178,8 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final void toAnnotation(final AttributeMap attributes) {
-    super.toAnnotation(attributes);
+  protected final void toAnnotationAttributes(final AttributeMap attributes) {
+    super.toAnnotationAttributes(attributes);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");
 

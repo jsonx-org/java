@@ -23,7 +23,7 @@ abstract class Element {
   protected void getDeclaredTypes(final Set<Registry.Type> types) {
   }
 
-  protected Map<String,String> toAttributes(final Element owner, final String packageName) {
+  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
     return new AttributeMap();
   }
 

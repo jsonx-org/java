@@ -16,8 +16,6 @@
 
 package org.libx4j.jsonx.generator;
 
-import java.util.Iterator;
-import java.util.Map;
 import java.util.TreeMap;
 
 import org.lib4j.util.ObservableMap;
@@ -37,19 +35,5 @@ public class AttributeMap extends ObservableMap<String,String> {
 
   public String put(final String key, final Object value) {
     return super.put(key, value == null ? null : String.valueOf(value));
-  }
-
-  public String toAnnotation() {
-    final StringBuilder builder = new StringBuilder();
-    final Iterator<Map.Entry<String,String>> iterator = entrySet().iterator();
-    for (int i = 0; iterator.hasNext(); i++) {
-      final Map.Entry<String,String> entry = iterator.next();
-      if (i > 0)
-        builder.append(", ");
-
-      builder.append(entry.getKey()).append('=').append(entry.getValue());
-    }
-
-    return builder.toString();
   }
 }

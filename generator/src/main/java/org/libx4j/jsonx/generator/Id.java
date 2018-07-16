@@ -31,6 +31,11 @@ public class Id {
     this.id = "a" + hash(variables);
   }
 
+  /**
+   * Construct <code>Id</code> for a <code>BooleanModel</code>.
+   *
+   * @param model The <code>BooleanModel</code>.
+   */
   public Id(final BooleanModel model) {
     this.id = "b";
   }

@@ -217,7 +217,7 @@ public class Schema extends Element {
       elements = null;
     }
 
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (packageName.length() > 0)
       attributes.put("package", packageName);
 
@@ -266,7 +266,7 @@ public class Schema extends Element {
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
 
-      final String annotation = holder.getAnnotation();
+      final AnnotationSpec annotation = holder.getAnnotation();
       if (annotation != null)
         builder.append('\n').append(annotation);
 

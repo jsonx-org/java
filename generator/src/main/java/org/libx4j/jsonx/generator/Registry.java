@@ -175,7 +175,11 @@ class Registry {
   }
 
   protected Type getType(final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
-    final StringBuilder className = new StringBuilder(packageName.length() > 0 ? packageName + "." + compoundName : compoundName);
+    final StringBuilder className = new StringBuilder();
+    if (packageName.length() > 0)
+      className.append(packageName).append(".");
+
+    className.append(compoundName);
     if (genericType != null)
       className.append('<').append(genericType.toCanonicalString()).append('>');
 

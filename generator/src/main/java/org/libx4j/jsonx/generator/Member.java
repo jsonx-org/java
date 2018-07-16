@@ -18,11 +18,12 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
 import org.lib4j.lang.JavaIdentifiers;
+import org.lib4j.util.Collections;
 import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -43,12 +44,6 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Member extends Element {
-  static enum Kind {
-    TEMPLATE,
-    PROPERTY,
-    MEMBER
-  }
-
   protected static Member toMember(final Registry registry, final ComplexModel declarer, final Field field) {
     final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
     if (booleanProperty != null)
@@ -151,7 +146,7 @@ abstract class Member extends Element {
   }
 
   public final String instanceName() {
-    return JavaIdentifiers.toInstanceCase(name());
+    return JavaIdentifiers.toInstanceCase(name);
   }
 
   public final Boolean nullable() {
@@ -171,8 +166,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  protected Map<String,String> toAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
     else if (!(this instanceof Template) && !(this instanceof ObjectModel))
@@ -194,7 +189,7 @@ abstract class Member extends Element {
     return attributes;
   }
 
-  protected void toAnnotation(final AttributeMap attributes) {
+  protected void toAnnotationAttributes(final AttributeMap attributes) {
     if (nullable != null)
       attributes.put("nullable", nullable);
 
@@ -210,21 +205,18 @@ abstract class Member extends Element {
 
   protected final String toField() {
     final StringBuilder builder = new StringBuilder();
-    final String elementAnnotations = toElementAnnotations();
-    if (elementAnnotations != null)
-      builder.append(elementAnnotations);
+    final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
+    if (elementAnnotations != null && elementAnnotations.size() > 0)
+      builder.append(Collections.toString(elementAnnotations, '\n')).append('\n');
 
-    builder.append('@').append(propertyAnnotation().getName());
     final AttributeMap attributes = new AttributeMap();
-    toAnnotation(attributes);
-    if (attributes.size() > 0)
-      builder.append('(').append(attributes.toAnnotation()).append(')');
-
-    builder.append('\n').append("public ").append(type().toCanonicalString()).append(' ').append(name()).append(';');
+    toAnnotationAttributes(attributes);
+    builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
+    builder.append("\npublic ").append(type().toCanonicalString()).append(' ').append(name).append(';');
     return builder.toString();
   }
 
-  protected String toElementAnnotations() {
+  protected List<AnnotationSpec> toElementAnnotations() {
     return null;
   }
 

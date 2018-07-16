@@ -17,6 +17,7 @@
 package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Map;
 
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -85,7 +86,7 @@ class Template extends Member {
 
   @Override
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (model instanceof ObjectModel && registry.getNumReferrers(model) == 1) {
       final org.lib4j.xml.Element element = model.toXml(owner, packageName);
       element.getAttributes().putAll(attributes);
@@ -103,13 +104,13 @@ class Template extends Member {
   }
 
   @Override
-  protected final void toAnnotation(final AttributeMap attributes) {
-    super.toAnnotation(attributes);
-    model.toAnnotation(attributes);
+  protected final void toAnnotationAttributes(final AttributeMap attributes) {
+    super.toAnnotationAttributes(attributes);
+    model.toAnnotationAttributes(attributes);
   }
 
   @Override
-  protected String toElementAnnotations() {
+  protected List<AnnotationSpec> toElementAnnotations() {
     return model.toElementAnnotations();
   }
 }

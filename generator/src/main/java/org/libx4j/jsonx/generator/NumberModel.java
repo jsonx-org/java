@@ -140,8 +140,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected final Map<String,String> toAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+  protected final Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (form != null)
       attributes.put("form", form.toString().toLowerCase());
 
@@ -158,17 +158,17 @@ class NumberModel extends SimpleModel {
   protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
-      attributes = toAttributes(owner, packageName);
+      attributes = toAnnotationAttributes(owner, packageName);
       return new org.lib4j.xml.Element("number", attributes, null);
     }
 
     if (registry.isRegistered(id())) {
-      attributes = super.toAttributes(owner, packageName);
+      attributes = super.toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
     }
     else {
-      attributes = toAttributes(owner, packageName);
+      attributes = toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "number");
     }
 
@@ -176,8 +176,8 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected void toAnnotation(final AttributeMap attributes) {
-    super.toAnnotation(attributes);
+  protected void toAnnotationAttributes(final AttributeMap attributes) {
+    super.toAnnotationAttributes(attributes);
     if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);
 

@@ -293,8 +293,8 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final Map<String,String> toAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAttributes(owner, packageName);
+  protected final Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     attributes.put("class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
 
     if (superObject != null)
@@ -323,43 +323,50 @@ class ObjectModel extends ComplexModel {
 
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
-      attributes = toAttributes(owner, packageName);
+      attributes = toAnnotationAttributes(owner, packageName);
       return new org.lib4j.xml.Element("object", attributes, elements);
     }
 
     if (registry.getNumReferrers(this) > 1) {
-      attributes = super.toAttributes(owner, packageName);
+      attributes = super.toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
     }
     else {
-      attributes = toAttributes(owner, packageName);
+      attributes = toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "object");
     }
 
     return new org.lib4j.xml.Element("property", attributes, elements);
   }
 
-  protected final String toObjectAnnotation() {
-    final StringBuilder builder = new StringBuilder();
+  protected final AttributeMap toObjectAnnotation() {
+    final AttributeMap attributes = new AttributeMap();
     if (unknown() != Unknown.ERROR)
-      builder.append("unknown=").append(Unknown.class.getName()).append('.').append(unknown());
+      attributes.put("unknown", Unknown.class.getName() + '.' + unknown());
 
-    return builder.toString();
+    return attributes;
   }
 
   @Override
-  protected final void toAnnotation(final AttributeMap attributes) {
-    super.toAnnotation(attributes);
+  protected final void toAnnotationAttributes(final AttributeMap attributes) {
+    super.toAnnotationAttributes(attributes);
     attributes.put("type", type.getCanonicalName() + ".class");
   }
 
   protected final String toJava() {
     final StringBuilder builder = new StringBuilder();
-    if (members != null && members.size() > 0)
-      for (final Member member : members.values())
-        builder.append("\n\n").append(member.toField());
+    if (members != null && members.size() > 0) {
+      final Iterator<Member> iterator = members.values().iterator();
+      for (int i = 0; iterator.hasNext(); i++) {
+        final Member member = iterator.next();
+        if (i > 0)
+          builder.append("\n\n");
 
-    return builder.length() > 1 ? builder.substring(2).toString() : builder.toString();
+        builder.append(member.toField());
+      }
+    }
+
+    return builder.toString();
   }
 }

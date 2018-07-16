@@ -37,12 +37,8 @@ public class ClassHolder {
     this.type = type;
   }
 
-  public String getAnnotation() {
-    if (model == null)
-      return null;
-
-    final String annotation = model.toObjectAnnotation();
-    return "@" + JsonxObject.class.getName() + (annotation.length() == 0 ? "" : "(" + annotation + ")");
+  public AnnotationSpec getAnnotation() {
+    return model == null ? null : new AnnotationSpec(JsonxObject.class, model.toObjectAnnotation());
   }
 
   @Override
@@ -59,7 +55,7 @@ public class ClassHolder {
       if (i > 0)
         builder.append('\n');
 
-      final String annotation = memberClass.getAnnotation();
+      final AnnotationSpec annotation = memberClass.getAnnotation();
       if (annotation != null)
         builder.append("\n  ").append(annotation);
 
