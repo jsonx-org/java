@@ -43,7 +43,7 @@ import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.Unknown;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
-class ObjectModel extends ComplexModel {
+final class ObjectModel extends Model implements Referrer {
   public static ObjectModel declare(final Registry registry, final Jsonx.Object binding) {
     return registry.declare(binding).value(new ObjectModel(registry, binding), null);
   }
@@ -52,7 +52,7 @@ class ObjectModel extends ComplexModel {
     return registry.declare(binding).value(new ObjectModel(registry, binding, getParent(superClassName, registry)), referrer);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ObjectProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ObjectProperty property, final Field field) {
     final Id id = new Id(property);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
@@ -61,7 +61,7 @@ class ObjectModel extends ComplexModel {
   public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
     final Id id = new Id(element);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
-    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof ComplexModel ? (ComplexModel)referrer : null) : registry.reference(model, referrer instanceof ComplexModel ? (ComplexModel)referrer : null));
+    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof Referrer ? (Referrer)referrer : null) : registry.reference(model, referrer instanceof Referrer ? (Referrer)referrer : null));
   }
 
   public static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz) {
@@ -74,7 +74,7 @@ class ObjectModel extends ComplexModel {
     return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, clazz, jsObject, null), null);
   }
 
-  public static ObjectModel reference(final Registry registry, final ComplexModel referrer, final $Array.Object binding) {
+  public static ObjectModel reference(final Registry registry, final Referrer referrer, final $Array.Object binding) {
     return registry.reference(new ObjectModel(registry, binding), referrer);
   }
 
@@ -246,43 +246,48 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  public final Id id() {
+  protected Id id() {
     return id;
   }
 
-  public final Map<String,Member> members() {
+  public Map<String,Member> members() {
     return this.members;
   }
 
   @Override
-  public final Registry.Type type() {
+  public Registry.Type type() {
     return type;
   }
 
-  public final ObjectModel superObject() {
+  public ObjectModel superObject() {
     return this.superObject;
   }
 
-  public final boolean isAbstract() {
+  public boolean isAbstract() {
     return this.isAbstract != null && this.isAbstract;
   }
 
-  public final Unknown unknown() {
+  public Unknown unknown() {
     return this.unknown;
   }
 
   @Override
-  protected final Class<? extends Annotation> propertyAnnotation() {
+  protected String elementName() {
+    return "object";
+  }
+
+  @Override
+  protected Class<? extends Annotation> propertyAnnotation() {
     return ObjectProperty.class;
   }
 
   @Override
-  protected final Class<? extends Annotation> elementAnnotation() {
+  protected Class<? extends Annotation> elementAnnotation() {
     return ObjectElement.class;
   }
 
   @Override
-  protected final void getDeclaredTypes(final Set<Registry.Type> types) {
+  protected void getDeclaredTypes(final Set<Registry.Type> types) {
     types.add(type());
     if (superObject != null)
       superObject.getDeclaredTypes(types);
@@ -293,7 +298,7 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     attributes.put("class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
 
@@ -310,37 +315,20 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final List<org.lib4j.xml.Element> elements;
-    if (members != null && members.size() > 0) {
-      elements = new ArrayList<>();
-      for (final Member member : this.members.values())
-        elements.add(member.toXml(settings, this, packageName));
-    }
-    else {
-      elements = null;
-    }
+  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final org.lib4j.xml.Element element = super.toXml(settings, owner, packageName);
+    if (members == null || members.size() == 0)
+      return element;
 
-    final Map<String,String> attributes;
-    if (!(owner instanceof ObjectModel)) {
-      attributes = toAnnotationAttributes(owner, packageName);
-      return new org.lib4j.xml.Element("object", attributes, elements);
-    }
+    final List<org.lib4j.xml.Element> elements = new ArrayList<>();
+    for (final Member member : this.members.values())
+      elements.add(member.toXml(settings, this, packageName));
 
-    if (registry.writeAsTemplate(this, settings)) {
-      attributes = super.toAnnotationAttributes(owner, packageName);
-      attributes.put("xsi:type", "template");
-      attributes.put("reference", id().toString());
-    }
-    else {
-      attributes = toAnnotationAttributes(owner, packageName);
-      attributes.put("xsi:type", "object");
-    }
-
-    return new org.lib4j.xml.Element("property", attributes, elements);
+    element.setElements(elements);
+    return element;
   }
 
-  protected final AttributeMap toObjectAnnotation() {
+  protected AttributeMap toObjectAnnotation() {
     final AttributeMap attributes = new AttributeMap();
     if (unknown() != Unknown.ERROR)
       attributes.put("unknown", Unknown.class.getName() + '.' + unknown());
@@ -349,12 +337,12 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final void toAnnotationAttributes(final AttributeMap attributes) {
+  protected void toAnnotationAttributes(final AttributeMap attributes) {
     super.toAnnotationAttributes(attributes);
     attributes.put("type", type.getCanonicalName() + ".class");
   }
 
-  protected final String toJava() {
+  protected String toJava() {
     final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0) {
       final Iterator<Member> iterator = members.values().iterator();

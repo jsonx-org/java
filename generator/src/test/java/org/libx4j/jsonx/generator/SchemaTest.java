@@ -80,11 +80,11 @@ public class SchemaTest {
   }
 
   private static Schema testParseJsonx(final xL2gluGCXYYJc.Jsonx controlBinding) throws IOException, ParseException, ValidationException {
-    logger.info("  a) XML(1) -> JSONX");
+    logger.info("    a) XML(1) -> JSONX");
     final Schema controlSchema = new Schema(controlBinding);
-    logger.info("  b) JSONX -> XML(2)");
+    logger.info("    b) JSONX -> XML(2)");
     final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(toXml(controlSchema, Settings.DEFAULT).toString());
-    logger.info("  c) XML(1) == XML(2)");
+    logger.info("    c) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual();
     return controlSchema;
   }
@@ -114,25 +114,25 @@ public class SchemaTest {
     final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseJsonx(controlBinding);
 
-    logger.info("4) JSONX -> Java(1)");
+    logger.info("  4) JSONX -> Java(1)");
     final Map<String,String> sources = controlSchema.toJava(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
     for (final Map.Entry<String,String> entry : sources.entrySet())
       compiler.addSource(entry.getValue());
 
-    logger.info("5) -- Java(1) Compile --");
+    logger.info("  5) -- Java(1) Compile --");
     final ClassLoader classLoader = compiler.compile();
 
-    logger.info("6) Java(1) -> JSONX");
+    logger.info("  6) Java(1) -> JSONX");
     final Schema testSchema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
     final String schema = toXml(testSchema, Settings.DEFAULT).toString();
     writeFile("out-" + fileName, schema);
 
     final xL2gluGCXYYJc.Jsonx reParsedBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(schema);
     final Schema reParsedSchema = testParseJsonx(reParsedBinding);
-    logger.info("7) JSONX -> Java(2)");
+    logger.info("  7) JSONX -> Java(2)");
     final Map<String,String> reParsedSources = reParsedSchema.toJava();
-    logger.info("8) Java(1) == Java(2)");
+    logger.info("  8) Java(1) == Java(2)");
     assertEquals(sources.size(), reParsedSources.size());
     for (final Map.Entry<String,String> entry : sources.entrySet())
       assertEquals(entry.getValue(), reParsedSources.get(entry.getKey()));

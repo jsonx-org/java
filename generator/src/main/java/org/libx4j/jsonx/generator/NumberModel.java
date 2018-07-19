@@ -30,20 +30,20 @@ import org.libx4j.jsonx.runtime.Form;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;
 
-class NumberModel extends SimpleModel {
+final class NumberModel extends Model {
   public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
-  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Number binding) {
+  public static NumberModel reference(final Registry registry, final Referrer referrer, final $Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static NumberModel reference(final Registry registry, final ComplexModel referrer, final $Array.Number binding) {
+  public static NumberModel reference(final Registry registry, final Referrer referrer, final $Array.Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final NumberProperty property, final Field field) {
     final NumberModel model = new NumberModel(registry, property, field);
     final Id id = model.id();
 
@@ -51,7 +51,7 @@ class NumberModel extends SimpleModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final NumberElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final NumberElement element) {
     final NumberModel model = new NumberModel(registry, element);
     final Id id = model.id();
 
@@ -108,19 +108,19 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  public final Id id() {
+  protected Id id() {
     return id;
   }
 
-  public final Form form() {
+  public Form form() {
     return this.form;
   }
 
-  public final BigDecimal min() {
+  public BigDecimal min() {
     return this.min;
   }
 
-  public final BigDecimal max() {
+  public BigDecimal max() {
     return this.max;
   }
 
@@ -130,17 +130,22 @@ class NumberModel extends SimpleModel {
   }
 
   @Override
-  protected final Class<? extends Annotation> propertyAnnotation() {
+  protected String elementName() {
+    return "number";
+  }
+
+  @Override
+  protected Class<? extends Annotation> propertyAnnotation() {
     return NumberProperty.class;
   }
 
   @Override
-  protected final Class<? extends Annotation> elementAnnotation() {
+  protected Class<? extends Annotation> elementAnnotation() {
     return NumberElement.class;
   }
 
   @Override
-  protected final Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (form != null)
       attributes.put("form", form.toString().toLowerCase());
@@ -152,27 +157,6 @@ class NumberModel extends SimpleModel {
       attributes.put("max", String.valueOf(max));
 
     return attributes;
-  }
-
-  @Override
-  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,String> attributes;
-    if (!(owner instanceof ObjectModel)) {
-      attributes = toAnnotationAttributes(owner, packageName);
-      return new org.lib4j.xml.Element("number", attributes, null);
-    }
-
-    if (registry.writeAsTemplate(this, settings)) {
-      attributes = super.toAnnotationAttributes(owner, packageName);
-      attributes.put("xsi:type", "template");
-      attributes.put("reference", id().toString());
-    }
-    else {
-      attributes = toAnnotationAttributes(owner, packageName);
-      attributes.put("xsi:type", "number");
-    }
-
-    return new org.lib4j.xml.Element("property", attributes, null);
   }
 
   @Override

@@ -27,13 +27,18 @@ public class TypeTest {
   private static Member toElement(final Registry.Type type) {
     return new Member(null, null, null, (Integer)null) {
       @Override
-      public Id id() {
+      protected Id id() {
         return null;
       }
 
       @Override
       protected Registry.Type type() {
         return type;
+      }
+
+      @Override
+      protected String elementName() {
+        return null;
       }
 
       @Override

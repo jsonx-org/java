@@ -16,22 +16,5 @@
 
 package org.libx4j.jsonx.generator;
 
-public class Settings {
-  public static Settings DEFAULT = new Settings(1);
-
-  private final int templateThreshold;
-
-  public Settings(final int templateThreshold) {
-    this.templateThreshold = templateThreshold;
-    if (templateThreshold < 0)
-      throw new IllegalArgumentException("templateThreshold < 0: " + templateThreshold);
-  }
-
-  /**
-   * @return The non-negative number of referrers needed for a <code>Model</code>
-   *         to be declared as a template root member of the jsonx element.
-   */
-  public int getTemplateThreshold() {
-    return this.templateThreshold;
-  }
+public interface Referrer {
 }

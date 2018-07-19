@@ -45,7 +45,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.JsonxObject;
 import org.libx4j.xsb.runtime.Binding;
 
-public class Schema extends Element {
+public final class Schema extends Element {
   private static void findInnerRelations(final StrictRefDigraph<$Member,String> digraph, final Registry registry, final $Member object, final $Member member) {
     final Iterator<? super Binding> iterator = Iterators.filter(member.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
@@ -56,8 +56,7 @@ public class Schema extends Element {
           digraph.addEdgeRef(object, model.getExtends$().text());
       }
       else if (next instanceof $TemplateMember) {
-        final $TemplateMember model = ($TemplateMember)next;
-        digraph.addEdgeRef(object, model.getReference$().text());
+        digraph.addEdgeRef(object, (($TemplateMember)next).getReference$().text());
       }
 
       findInnerRelations(digraph, registry, object, next);
@@ -172,7 +171,7 @@ public class Schema extends Element {
     return index == -1 ? "" : classPrefix.substring(0, index);
   }
 
-  private final Collection<Model> rootMembers(final Settings settings) {
+  private Collection<Model> rootMembers(final Settings settings) {
     final List<Model> members = new ArrayList<>();
     for (final Model model : registry.rootElements())
       if (registry.writeRootMember(model, settings))
@@ -191,19 +190,19 @@ public class Schema extends Element {
     return members;
   }
 
-  private final Collection<Model> members() {
+  private Collection<Model> members() {
     return registry.rootElements();
   }
 
   @Override
-  protected final void getDeclaredTypes(final Set<Registry.Type> types) {
+  protected void getDeclaredTypes(final Set<Registry.Type> types) {
     if (members() != null)
       for (final Model member : members())
         member.getDeclaredTypes(types);
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final List<org.lib4j.xml.Element> elements;
     final Collection<Model> members = rootMembers(settings);
     if (members.size() > 0) {
@@ -225,44 +224,44 @@ public class Schema extends Element {
     return new org.lib4j.xml.Element("jsonx", attributes, elements);
   }
 
-  public final org.lib4j.xml.Element toXml() {
+  public org.lib4j.xml.Element toXml() {
     return toXml(null);
   }
 
-  public final org.lib4j.xml.Element toXml(final Settings settings) {
+  public org.lib4j.xml.Element toXml(final Settings settings) {
     return toXml(settings == null ? Settings.DEFAULT : settings, this, packageName);
   }
 
   public Map<String,String> toJava() {
-    final Map<Registry.Type,ClassHolder> all = new HashMap<>();
-    final Map<Registry.Type,ClassHolder> typeToClassHolder = new HashMap<>();
+    final Map<Registry.Type,JavaClass> all = new HashMap<>();
+    final Map<Registry.Type,JavaClass> typeToJavaClass = new HashMap<>();
     for (final Model member : members()) {
       if (member instanceof ObjectModel) {
         final ObjectModel model = (ObjectModel)member;
-        final ClassHolder classHolder = new ClassHolder(model);
+        final JavaClass javaClass = new JavaClass(model);
         if (model.type().getDeclaringType() != null) {
           final Registry.Type declaringType = model.type().getDeclaringType();
-          ClassHolder parent = all.get(declaringType);
+          JavaClass parent = all.get(declaringType);
           if (parent == null) {
-            parent = new ClassHolder(declaringType);
-            typeToClassHolder.put(declaringType, parent);
+            parent = new JavaClass(declaringType);
+            typeToJavaClass.put(declaringType, parent);
             all.put(declaringType, parent);
           }
 
-          parent.add(classHolder);
+          parent.add(javaClass);
         }
         else {
-          typeToClassHolder.put(model.type(), classHolder);
+          typeToJavaClass.put(model.type(), javaClass);
         }
 
-        all.put(model.type(), classHolder);
+        all.put(model.type(), javaClass);
       }
     }
 
     final Map<String,String> sources = new HashMap<>();
-    for (final Map.Entry<Registry.Type,ClassHolder> entry : typeToClassHolder.entrySet()) {
+    for (final Map.Entry<Registry.Type,JavaClass> entry : typeToJavaClass.entrySet()) {
       final Registry.Type type = entry.getKey();
-      final ClassHolder holder = entry.getValue();
+      final JavaClass holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage();
       if (canonicalPackageName != null)

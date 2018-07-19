@@ -18,7 +18,6 @@ package org.libx4j.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Map;
 
 import org.lib4j.lang.IllegalAnnotationException;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
@@ -27,12 +26,12 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.BooleanElement;
 import org.libx4j.jsonx.runtime.BooleanProperty;
 
-class BooleanModel extends SimpleModel {
+final class BooleanModel extends Model {
   public static BooleanModel declare(final Registry registry, final Jsonx.Boolean binding) {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final BooleanProperty property, final Field field) {
     final BooleanModel model = new BooleanModel(registry, property, field);
     final Id id = model.id();
 
@@ -40,7 +39,7 @@ class BooleanModel extends SimpleModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final BooleanElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final BooleanElement element) {
     final BooleanModel model = new BooleanModel(registry, element);
     final Id id = model.id();
 
@@ -48,11 +47,11 @@ class BooleanModel extends SimpleModel {
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static BooleanModel reference(final Registry registry, final ComplexModel referrer, final $Array.Boolean binding) {
+  public static BooleanModel reference(final Registry registry, final Referrer referrer, final $Array.Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
-  public static BooleanModel reference(final Registry registry, final ComplexModel referrer, final $Boolean binding) {
+  public static BooleanModel reference(final Registry registry, final Referrer referrer, final $Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
@@ -87,7 +86,7 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  public final Id id() {
+  protected Id id() {
     return id;
   }
 
@@ -97,29 +96,17 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected final Class<? extends Annotation> propertyAnnotation() {
+  protected String elementName() {
+    return "boolean";
+  }
+
+  @Override
+  protected Class<? extends Annotation> propertyAnnotation() {
     return BooleanProperty.class;
   }
 
   @Override
-  protected final Class<? extends Annotation> elementAnnotation() {
+  protected Class<? extends Annotation> elementAnnotation() {
     return BooleanElement.class;
-  }
-
-  @Override
-  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
-    if (!(owner instanceof ObjectModel))
-      return new org.lib4j.xml.Element("boolean", attributes, null);
-
-    if (registry.writeAsTemplate(this, settings)) {
-      attributes.put("xsi:type", "template");
-      attributes.put("reference", id().toString());
-    }
-    else {
-      attributes.put("xsi:type", "boolean");
-    }
-
-    return new org.lib4j.xml.Element("property", attributes, null);
   }
 }

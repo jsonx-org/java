@@ -16,6 +16,8 @@
 
 package org.libx4j.jsonx.generator;
 
+import java.util.Map;
+
 import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
@@ -32,5 +34,26 @@ abstract class Model extends Member {
 
   public Model(final Registry registry, final Boolean nullable) {
     super(registry, nullable, null, null);
+  }
+
+  @Override
+  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,String> attributes;
+    if (!(owner instanceof ObjectModel)) {
+      attributes = toAnnotationAttributes(owner, packageName);
+      return new org.lib4j.xml.Element(elementName(), attributes, null);
+    }
+
+    if (registry.writeAsTemplate(this, settings)) {
+      attributes = super.toAnnotationAttributes(owner, packageName);
+      attributes.put("xsi:type", "template");
+      attributes.put("reference", id().toString());
+    }
+    else {
+      attributes = toAnnotationAttributes(owner, packageName);
+      attributes.put("xsi:type", elementName());
+    }
+
+    return new org.lib4j.xml.Element("property", attributes, null);
   }
 }

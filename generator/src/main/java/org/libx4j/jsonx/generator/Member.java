@@ -44,26 +44,26 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Member extends Element {
-  protected static Member toMember(final Registry registry, final ComplexModel declarer, final Field field) {
+  protected static Member toMember(final Registry registry, final Referrer referrer, final Field field) {
     final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
     if (booleanProperty != null)
-      return BooleanModel.referenceOrDeclare(registry, declarer, booleanProperty, field);
+      return BooleanModel.referenceOrDeclare(registry, referrer, booleanProperty, field);
 
     final NumberProperty numberProperty = field.getDeclaredAnnotation(NumberProperty.class);
     if (numberProperty != null)
-      return NumberModel.referenceOrDeclare(registry, declarer, numberProperty, field);
+      return NumberModel.referenceOrDeclare(registry, referrer, numberProperty, field);
 
     final StringProperty stringProperty = field.getDeclaredAnnotation(StringProperty.class);
     if (stringProperty != null)
-      return StringModel.referenceOrDeclare(registry, declarer, stringProperty, field);
+      return StringModel.referenceOrDeclare(registry, referrer, stringProperty, field);
 
     final ObjectProperty objectProperty = field.getDeclaredAnnotation(ObjectProperty.class);
     if (objectProperty != null)
-      return ObjectModel.referenceOrDeclare(registry, declarer, objectProperty, field);
+      return ObjectModel.referenceOrDeclare(registry, referrer, objectProperty, field);
 
     final ArrayProperty arrayProperty = field.getDeclaredAnnotation(ArrayProperty.class);
     if (arrayProperty != null)
-      return ArrayModel.referenceOrDeclare(registry, declarer, arrayProperty, field);
+      return ArrayModel.referenceOrDeclare(registry, referrer, arrayProperty, field);
 
     return null;
   }
@@ -170,7 +170,6 @@ abstract class Member extends Element {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
-//    else if (!(this instanceof Template) && !(this instanceof ObjectModel))
     else if (owner instanceof Schema && !(this instanceof ObjectModel))
       attributes.put("template", id().toString());
 
@@ -221,8 +220,9 @@ abstract class Member extends Element {
     return null;
   }
 
-  public abstract Id id();
+  protected abstract Id id();
   protected abstract Registry.Type type();
+  protected abstract String elementName();
   protected abstract Class<? extends Annotation> propertyAnnotation();
   protected abstract Class<? extends Annotation> elementAnnotation();
 }

@@ -21,24 +21,28 @@ import java.util.TreeMap;
 
 import org.libx4j.jsonx.runtime.JsonxObject;
 
-public class ClassHolder {
-  private final TreeMap<String,ClassHolder> memberClasses = new TreeMap<>();
+public class JavaClass {
+  private final TreeMap<String,JavaClass> memberClasses = new TreeMap<>();
 
   private final ObjectModel model;
   private final Registry.Type type;
 
-  public ClassHolder(final ObjectModel model) {
+  public JavaClass(final ObjectModel model) {
     this.model = model;
     this.type = model.type();
   }
 
-  public ClassHolder(final Registry.Type type) {
+  public JavaClass(final Registry.Type type) {
     this.model = null;
     this.type = type;
   }
 
   public AnnotationSpec getAnnotation() {
     return model == null ? null : new AnnotationSpec(JsonxObject.class, model.toObjectAnnotation());
+  }
+
+  public void add(final JavaClass javaClass) {
+    memberClasses.put(javaClass.type.toString(), javaClass);
   }
 
   @Override
@@ -52,9 +56,9 @@ public class ClassHolder {
       builder.append(" extends ").append(type.getSuperType().getCanonicalName());
 
     builder.append(" {");
-    final Iterator<ClassHolder> iterator = memberClasses.values().iterator();
+    final Iterator<JavaClass> iterator = memberClasses.values().iterator();
     for (int i = 0; iterator.hasNext(); i++) {
-      final ClassHolder memberClass = iterator.next();
+      final JavaClass memberClass = iterator.next();
       if (i > 0)
         builder.append('\n');
 
@@ -72,9 +76,5 @@ public class ClassHolder {
     }
 
     return builder.append("\n}").toString();
-  }
-
-  public void add(final ClassHolder classHolder) {
-    memberClasses.put(classHolder.type.toString(), classHolder);
   }
 }

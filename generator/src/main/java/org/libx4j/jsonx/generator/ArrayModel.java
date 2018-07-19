@@ -44,12 +44,12 @@ import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.xsb.runtime.Bindings;
 
-class ArrayModel extends ComplexModel {
+final class ArrayModel extends Model implements Referrer {
   public static ArrayModel declare(final Registry registry, final Jsonx.Array binding) {
     return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ArrayProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ArrayProperty property, final Field field) {
     final ArrayModel model = new ArrayModel(registry, property, field);
     final Id id = model.id();
 
@@ -57,7 +57,7 @@ class ArrayModel extends ComplexModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  private static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
+  private static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
     final ArrayModel model = new ArrayModel(registry, element, field, annotations);
     final Id id = model.id();
 
@@ -65,11 +65,11 @@ class ArrayModel extends ComplexModel {
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static ArrayModel reference(final Registry registry, final ComplexModel referrer, final $Array.Array binding) {
+  public static ArrayModel reference(final Registry registry, final Referrer referrer, final $Array.Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
-  public static ArrayModel reference(final Registry registry, final ComplexModel referrer, final $Array binding) {
+  public static ArrayModel reference(final Registry registry, final Referrer referrer, final $Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
@@ -258,65 +258,53 @@ class ArrayModel extends ComplexModel {
   }
 
   @Override
-  public final Id id() {
+  protected Id id() {
     return id;
   }
 
-  public final List<Member> members() {
+  public List<Member> members() {
     return this.members;
   }
 
   @Override
-  protected final Registry.Type type() {
+  protected Registry.Type type() {
     return getGreatestCommonSuperType(registry, members);
   }
 
   @Override
-  protected final Class<? extends Annotation> propertyAnnotation() {
+  protected String elementName() {
+    return "array";
+  }
+
+  @Override
+  protected Class<? extends Annotation> propertyAnnotation() {
     return ArrayProperty.class;
   }
 
   @Override
-  protected final Class<? extends Annotation> elementAnnotation() {
+  protected Class<? extends Annotation> elementAnnotation() {
     return ArrayElement.class;
   }
 
   @Override
-  protected final void getDeclaredTypes(final Set<Registry.Type> types) {
+  protected void getDeclaredTypes(final Set<Registry.Type> types) {
     if (members != null)
       for (final Member member : members)
         member.getDeclaredTypes(types);
   }
 
-  private List<org.lib4j.xml.Element> membersToXml(final Settings settings, final String packageName) {
-    if (members.size() == -1)
-      return null;
+  @Override
+  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final org.lib4j.xml.Element element = super.toXml(settings, owner, packageName);
+    if (owner instanceof ObjectModel && registry.writeAsTemplate(this, settings) || members.size() == 0)
+      return element;
 
     final List<org.lib4j.xml.Element> elements = new ArrayList<>();
     for (final Member member : this.members)
       elements.add(member.toXml(settings, this, packageName));
 
-    return elements;
-  }
-
-  @Override
-  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
-    if (!(owner instanceof ObjectModel))
-      return new org.lib4j.xml.Element("array", attributes, membersToXml(settings, packageName));
-
-    final List<org.lib4j.xml.Element> elements;
-    if (registry.writeAsTemplate(this, settings)) {
-      attributes.put("xsi:type", "template");
-      attributes.put("reference", id().toString());
-      elements = null;
-    }
-    else {
-      attributes.put("xsi:type", "array");
-      elements = membersToXml(settings, packageName);
-    }
-
-    return new org.lib4j.xml.Element("property", attributes, elements);
+    element.setElements(elements);
+    return element;
   }
 
   @Override

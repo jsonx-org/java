@@ -38,7 +38,7 @@ class Registry {
       this.name = name;
     }
 
-    public <T extends Model>T value(final T model, final ComplexModel referrer) {
+    public <T extends Model>T value(final T model, final Referrer referrer) {
       refToModel.put(name, model);
       return reference(model, referrer);
     }
@@ -211,15 +211,15 @@ class Registry {
 
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   private final LinkedHashMap<String,Model> refToModel;
-  private final LinkedHashMap<String,List<ComplexModel>> refToReferrers;
+  private final LinkedHashMap<String,List<Referrer>> refToReferrers;
 
-  private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<ComplexModel>> references) {
+  private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<Referrer>> references) {
     this.refToModel = refToModel;
     this.refToReferrers = references;
   }
 
   public Registry() {
-    this(new LinkedHashMap<String,Model>(), new LinkedHashMap<String,List<ComplexModel>>());
+    this(new LinkedHashMap<String,Model>(), new LinkedHashMap<String,List<Referrer>>());
   }
 
   public Value declare(final Jsonx.Boolean binding) {
@@ -254,12 +254,12 @@ class Registry {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 
-  public <T extends Member>T reference(final T model, final ComplexModel referrer) {
+  public <T extends Member>T reference(final T model, final Referrer referrer) {
     if (referrer == null)
       return model;
 
     final String key = model.id().toString();
-    List<ComplexModel> referrers = refToReferrers.get(key);
+    List<Referrer> referrers = refToReferrers.get(key);
     if (referrers == null)
       refToReferrers.put(key, referrers = new ArrayList<>());
 
@@ -305,7 +305,7 @@ class Registry {
   }
 
   public int getNumReferrers(final Member member) {
-    final List<ComplexModel> referrers = refToReferrers.get(member.id().toString());
+    final List<Referrer> referrers = refToReferrers.get(member.id().toString());
     return referrers == null ? 0 : referrers.size();
   }
 }

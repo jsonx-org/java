@@ -28,12 +28,12 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringProperty;
 
-class StringModel extends SimpleModel {
+final class StringModel extends Model {
   public static StringModel declare(final Registry registry, final Jsonx.String binding) {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final StringProperty property, final Field field) {
     final StringModel model = new StringModel(registry, property, field);
     final Id id = model.id();
 
@@ -41,7 +41,7 @@ class StringModel extends SimpleModel {
     return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final ComplexModel referrer, final StringElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, element);
     final Id id = model.id();
 
@@ -49,11 +49,11 @@ class StringModel extends SimpleModel {
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static StringModel reference(final Registry registry, final ComplexModel referrer, final $Array.String binding) {
+  public static StringModel reference(final Registry registry, final Referrer referrer, final $Array.String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
-  public static StringModel reference(final Registry registry, final ComplexModel referrer, final $String binding) {
+  public static StringModel reference(final Registry registry, final Referrer referrer, final $String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
@@ -110,39 +110,44 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  public final Id id() {
+  protected Id id() {
     return id;
   }
 
-  public final String pattern() {
+  public String pattern() {
     return this.pattern;
   }
 
-  public final boolean urlEncode() {
+  public boolean urlEncode() {
     return this.urlEncode;
   }
 
-  public final boolean urlDecode() {
+  public boolean urlDecode() {
     return this.urlDecode;
   }
 
   @Override
-  protected final Registry.Type type() {
+  protected Registry.Type type() {
     return registry.getType(String.class);
   }
 
   @Override
-  protected final Class<? extends Annotation> propertyAnnotation() {
+  protected String elementName() {
+    return "string";
+  }
+
+  @Override
+  protected Class<? extends Annotation> propertyAnnotation() {
     return StringProperty.class;
   }
 
   @Override
-  protected final Class<? extends Annotation> elementAnnotation() {
+  protected Class<? extends Annotation> elementAnnotation() {
     return StringElement.class;
   }
 
   @Override
-  protected final Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (pattern != null)
       attributes.put("pattern", pattern);
@@ -157,28 +162,7 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,String> attributes;
-    if (!(owner instanceof ObjectModel)) {
-      attributes = toAnnotationAttributes(owner, packageName);
-      return new org.lib4j.xml.Element("string", attributes, null);
-    }
-
-    if (registry.writeAsTemplate(this, settings)) {
-      attributes = super.toAnnotationAttributes(owner, packageName);
-      attributes.put("xsi:type", "template");
-      attributes.put("reference", id().toString());
-    }
-    else {
-      attributes = toAnnotationAttributes(owner, packageName);
-      attributes.put("xsi:type", "string");
-    }
-
-    return new org.lib4j.xml.Element("property", attributes, null);
-  }
-
-  @Override
-  protected final void toAnnotationAttributes(final AttributeMap attributes) {
+  protected void toAnnotationAttributes(final AttributeMap attributes) {
     super.toAnnotationAttributes(attributes);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");
