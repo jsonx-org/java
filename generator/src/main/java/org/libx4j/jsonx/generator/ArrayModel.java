@@ -288,32 +288,32 @@ class ArrayModel extends ComplexModel {
         member.getDeclaredTypes(types);
   }
 
-  private List<org.lib4j.xml.Element> membersToXml(final String packageName) {
+  private List<org.lib4j.xml.Element> membersToXml(final Settings settings, final String packageName) {
     if (members.size() == -1)
       return null;
 
     final List<org.lib4j.xml.Element> elements = new ArrayList<>();
     for (final Member member : this.members)
-      elements.add(member.toXml(this, packageName));
+      elements.add(member.toXml(settings, this, packageName));
 
     return elements;
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (!(owner instanceof ObjectModel))
-      return new org.lib4j.xml.Element("array", attributes, membersToXml(packageName));
+      return new org.lib4j.xml.Element("array", attributes, membersToXml(settings, packageName));
 
     final List<org.lib4j.xml.Element> elements;
-    if (registry.isRegistered(id())) {
+    if (registry.writeAsTemplate(this, settings)) {
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
       elements = null;
     }
     else {
       attributes.put("xsi:type", "array");
-      elements = membersToXml(packageName);
+      elements = membersToXml(settings, packageName);
     }
 
     return new org.lib4j.xml.Element("property", attributes, elements);
@@ -333,7 +333,7 @@ class ArrayModel extends ComplexModel {
     writeElementIdsClause(attributes, indices);
   }
 
-  protected final void toAnnotation(final AttributeMap attributes, final int ... indices) {
+  private void toAnnotationAttributes(final AttributeMap attributes, final int[] indices) {
     super.toAnnotationAttributes(attributes);
     writeElementIdsClause(attributes, indices);
   }
@@ -355,7 +355,7 @@ class ArrayModel extends ComplexModel {
       }
 
       // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
-      arrayModel.toAnnotation(attributes, indices);
+      arrayModel.toAnnotationAttributes(attributes, indices);
       if (member.minOccurs() != null)
         attributes.put("minOccurs", member.minOccurs());
 

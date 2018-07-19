@@ -107,12 +107,12 @@ class BooleanModel extends SimpleModel {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (!(owner instanceof ObjectModel))
       return new org.lib4j.xml.Element("boolean", attributes, null);
 
-    if (registry.isRegistered(id())) {
+    if (registry.writeAsTemplate(this, settings)) {
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
     }

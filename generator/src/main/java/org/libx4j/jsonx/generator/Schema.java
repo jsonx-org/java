@@ -172,13 +172,11 @@ public class Schema extends Element {
     return index == -1 ? "" : classPrefix.substring(0, index);
   }
 
-  private final Collection<Model> rootMembers() {
+  private final Collection<Model> rootMembers(final Settings settings) {
     final List<Model> members = new ArrayList<>();
-    for (final Model model : registry.rootElements()) {
-      final int numReferrers = registry.getNumReferrers(model);
-      if (model instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers > 0)
+    for (final Model model : registry.rootElements())
+      if (registry.writeRootMember(model, settings))
         members.add(model);
-    }
 
     members.sort(new Comparator<Model>() {
       @Override
@@ -205,13 +203,13 @@ public class Schema extends Element {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final List<org.lib4j.xml.Element> elements;
-    final Collection<Model> members = rootMembers();
+    final Collection<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
       for (final Model member : members)
-        elements.add(member.toXml(this, packageName));
+        elements.add(member.toXml(settings, this, packageName));
     }
     else {
       elements = null;
@@ -228,7 +226,11 @@ public class Schema extends Element {
   }
 
   public final org.lib4j.xml.Element toXml() {
-    return toXml(this, packageName);
+    return toXml(null);
+  }
+
+  public final org.lib4j.xml.Element toXml(final Settings settings) {
+    return toXml(settings == null ? Settings.DEFAULT : settings, this, packageName);
   }
 
   public Map<String,String> toJava() {

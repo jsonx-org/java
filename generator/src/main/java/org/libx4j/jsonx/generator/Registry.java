@@ -275,8 +275,25 @@ class Registry {
     return refToModel.get(id.toString());
   }
 
-  public boolean isRegistered(final Id id) {
-    return getElement(id) != null;
+  public boolean writeRootMember(final Member member, final Settings settings) {
+    final int numReferrers = getNumReferrers(member);
+    return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers >= settings.getTemplateThreshold();
+  }
+
+  public boolean writeDirect(final Member member, final Settings settings) {
+    final int numReferrers = getNumReferrers(member);
+    return member instanceof ObjectModel ? numReferrers == 1 : numReferrers < settings.getTemplateThreshold();
+  }
+
+  public boolean writeAsTemplate(final Member member, final Settings settings) {
+    if (getElement(member.id()) == null)
+      return false;
+
+    final int numReferrers = getNumReferrers(member);
+    if (member instanceof ObjectModel)
+      return numReferrers > 1;
+
+    return numReferrers >= settings.getTemplateThreshold();
   }
 
   public Collection<Model> rootElements() {

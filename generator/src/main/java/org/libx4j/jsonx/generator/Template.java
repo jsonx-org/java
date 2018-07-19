@@ -85,10 +85,18 @@ class Template extends Member {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
-    if (model instanceof ObjectModel && registry.getNumReferrers(model) == 1) {
-      final org.lib4j.xml.Element element = model.toXml(owner, packageName);
+    if (registry.writeDirect(model, settings)) {
+      final org.lib4j.xml.Element element = model.toXml(settings, owner, packageName);
+      // It is necessary to remove the nullable, required, minOccurs and maxOccurs attributes,
+      // because the template object is responsible for these attributes, and it may have happened
+      // that when the reflection mechanism constructed the model, it used a declaration that had
+      // these attributes set as well
+      element.getAttributes().remove("nullable");
+      element.getAttributes().remove("required");
+      element.getAttributes().remove("minOccurs");
+      element.getAttributes().remove("maxOccurs");
       element.getAttributes().putAll(attributes);
       return element;
     }

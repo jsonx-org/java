@@ -170,7 +170,8 @@ abstract class Member extends Element {
     final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
-    else if (!(this instanceof Template) && !(this instanceof ObjectModel))
+//    else if (!(this instanceof Template) && !(this instanceof ObjectModel))
+    else if (owner instanceof Schema && !(this instanceof ObjectModel))
       attributes.put("template", id().toString());
 
     final boolean shouldWriteNullable = !(owner instanceof Schema);

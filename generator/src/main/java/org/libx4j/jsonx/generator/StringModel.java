@@ -157,14 +157,14 @@ class StringModel extends SimpleModel {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toAnnotationAttributes(owner, packageName);
       return new org.lib4j.xml.Element("string", attributes, null);
     }
 
-    if (registry.isRegistered(id())) {
+    if (registry.writeAsTemplate(this, settings)) {
       attributes = super.toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());

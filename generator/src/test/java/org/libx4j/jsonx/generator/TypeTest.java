@@ -47,7 +47,7 @@ public class TypeTest {
       }
 
       @Override
-      protected org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+      protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
         return null;
       }
     };

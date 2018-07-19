@@ -44,6 +44,9 @@ public class ClassHolder {
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
+    if (model != null && model.isAbstract())
+      builder.append("abstract ");
+
     builder.append("class ").append(type.getSimpleName());
     if (type.getSuperType() != null)
       builder.append(" extends ").append(type.getSuperType().getCanonicalName());

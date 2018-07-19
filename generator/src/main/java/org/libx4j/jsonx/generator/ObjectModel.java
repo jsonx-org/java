@@ -310,12 +310,12 @@ class ObjectModel extends ComplexModel {
   }
 
   @Override
-  protected final org.lib4j.xml.Element toXml(final Element owner, final String packageName) {
+  protected final org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final List<org.lib4j.xml.Element> elements;
     if (members != null && members.size() > 0) {
       elements = new ArrayList<>();
       for (final Member member : this.members.values())
-        elements.add(member.toXml(this, packageName));
+        elements.add(member.toXml(settings, this, packageName));
     }
     else {
       elements = null;
@@ -327,7 +327,7 @@ class ObjectModel extends ComplexModel {
       return new org.lib4j.xml.Element("object", attributes, elements);
     }
 
-    if (registry.getNumReferrers(this) > 1) {
+    if (registry.writeAsTemplate(this, settings)) {
       attributes = super.toAnnotationAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
