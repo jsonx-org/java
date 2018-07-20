@@ -38,7 +38,7 @@ final class StringModel extends Model {
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getElement(id);
-    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final StringElement element) {
@@ -67,7 +67,7 @@ final class StringModel extends Model {
   private final boolean urlDecode;
 
   private StringModel(final Registry registry, final Jsonx.String binding) {
-    super(registry, null);
+    super(registry);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
@@ -75,7 +75,7 @@ final class StringModel extends Model {
   }
 
   private StringModel(final Registry registry, final $String binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
+    super(registry, binding.getName$(), binding.getUse$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
@@ -91,7 +91,7 @@ final class StringModel extends Model {
   }
 
   private StringModel(final Registry registry, final StringProperty property, final Field field) {
-    super(registry, property.nullable());
+    super(registry, null, property.use());
     if (field.getType() != String.class)
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
 
@@ -102,7 +102,7 @@ final class StringModel extends Model {
   }
 
   private StringModel(final Registry registry, final StringElement element) {
-    super(registry, element.nullable());
+    super(registry, element.nullable(), null);
     this.pattern = parsePattern(element.pattern());
     this.urlEncode = element.urlEncode();
     this.urlDecode = element.urlDecode();
@@ -147,8 +147,8 @@ final class StringModel extends Model {
   }
 
   @Override
-  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
+  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (pattern != null)
       attributes.put("pattern", pattern);
 

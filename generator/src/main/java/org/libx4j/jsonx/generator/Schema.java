@@ -214,7 +214,7 @@ public final class Schema extends Element {
       elements = null;
     }
 
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
+    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (packageName.length() > 0)
       attributes.put("package", packageName);
 

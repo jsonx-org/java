@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
-    return new Member(null, null, null, (Integer)null) {
+    return new Member(null, null, null, null, null, null) {
       @Override
       protected Id id() {
         return null;

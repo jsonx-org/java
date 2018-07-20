@@ -27,18 +27,18 @@ import org.libx4j.jsonx.runtime.StringProperty;
 
 @JsonxObject
 public abstract class Publication {
-  @StringProperty(nullable=false)
+  @StringProperty(use=Use.REQUIRED)
   public String title;
 
   @StringElement(id=1, pattern="\\S+ \\S+", nullable=false, minOccurs=1)
-  @ArrayProperty(nullable=false, elementIds=1)
+  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   public String[] authors;
 
   @StringElement(id=1, pattern="\\S+ \\S+", nullable=false, minOccurs=1)
-  @ArrayProperty(nullable=false, elementIds=1)
+  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   public String[] editors;
 
   @ObjectElement(id=1, type=Publishing.class, nullable=false, minOccurs=1)
-  @ArrayProperty(nullable=false, elementIds=1)
+  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   public final List<Publishing> publishings = new ArrayList<>();
 }

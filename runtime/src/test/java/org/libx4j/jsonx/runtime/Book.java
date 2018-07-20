@@ -27,7 +27,7 @@ import org.libx4j.jsonx.runtime.Unknown;
 
 @JsonxObject(unknown=Unknown.IGNORE)
 public class Book extends Publication {
-  @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d", nullable=false)
+  @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d", use=Use.REQUIRED)
   public String isbn;
 
   /**
@@ -38,6 +38,6 @@ public class Book extends Publication {
   @NumberElement(id=3, min="1", nullable=false, minOccurs=1, maxOccurs=1)
   @ArrayElement(id=2, nullable=false, elementIds={3,4})
   @NumberElement(id=1, form=Form.INTEGER, min="1", nullable=false)
-  @ArrayProperty(nullable=false, elementIds={1,2})
+  @ArrayProperty(use=Use.REQUIRED, elementIds={1,2})
   public Object[] index;
 }

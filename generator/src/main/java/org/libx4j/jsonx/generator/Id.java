@@ -72,7 +72,7 @@ public class Id {
   }
 
   public Id(final Template model) {
-    this.id = "t" + hash(model.reference().id().toString(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.required());
+    this.id = "t" + hash(model.reference().id().toString(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.use());
   }
 
   @Override

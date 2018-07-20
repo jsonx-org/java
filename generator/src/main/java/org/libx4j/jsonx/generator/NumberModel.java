@@ -29,6 +29,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.Form;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;
+import org.libx4j.jsonx.runtime.Use;
 
 final class NumberModel extends Model {
   public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
@@ -48,7 +49,7 @@ final class NumberModel extends Model {
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getElement(id);
-    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final NumberElement element) {
@@ -65,7 +66,7 @@ final class NumberModel extends Model {
   private final BigDecimal max;
 
   private NumberModel(final Registry registry, final Jsonx.Number binding) {
-    super(registry, null);
+    super(registry);
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
@@ -73,7 +74,7 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final $Number binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
+    super(registry, binding.getName$(), binding.getUse$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
@@ -89,8 +90,8 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final NumberProperty property, final Field field) {
-    super(registry, property.nullable());
-    if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.nullable()))
+    super(registry, null, property.use());
+    if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
     this.form = property.form() == Form.REAL ? null : property.form();
@@ -100,7 +101,7 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final NumberElement element) {
-    super(registry, element.nullable());
+    super(registry, element.nullable(), null);
     this.form = element.form() == Form.REAL ? null : element.form();
     this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
     this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
@@ -145,8 +146,8 @@ final class NumberModel extends Model {
   }
 
   @Override
-  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
+  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (form != null)
       attributes.put("form", form.toString().toLowerCase());
 

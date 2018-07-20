@@ -61,11 +61,17 @@
     </xs:attribute>
   </xs:attributeGroup>
   
-  <xs:attributeGroup name="requirable">
-    <xs:attribute name="required" type="xs:boolean" default="true">
-      <xs:annotation>
-        <xs:documentation>Is property or member required to appear in object or array. Default: true.</xs:documentation>
-      </xs:annotation>
+  <xs:attributeGroup name="use">
+    <xs:annotation>
+      <xs:documentation>Is property or member required or optional. Default: required.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="use" default="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="required"/>
+          <xs:enumeration value="optional"/>
+        </xs:restriction>
+      </xs:simpleType>
     </xs:attribute>
   </xs:attributeGroup>
   
@@ -92,9 +98,8 @@
   <xs:complexType name="template">
     <xs:complexContent>
       <xs:extension base="jsonx:templateMember">
-        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:nameable"/>
-        <xs:attributeGroup ref="jsonx:requirable"/>
+        <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -108,9 +113,8 @@
   <xs:complexType name="boolean">
     <xs:complexContent>
       <xs:extension base="jsonx:booleanMember">
-        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:nameable"/>
-        <xs:attributeGroup ref="jsonx:requirable"/>
+        <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -147,9 +151,8 @@
   <xs:complexType name="number">
     <xs:complexContent>
       <xs:extension base="jsonx:numberMember">
-        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:nameable"/>
-        <xs:attributeGroup ref="jsonx:requirable"/>
+        <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -179,9 +182,8 @@
   <xs:complexType name="string">
     <xs:complexContent>
       <xs:extension base="jsonx:stringMember">
-        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:nameable"/>
-        <xs:attributeGroup ref="jsonx:requirable"/>
+        <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -282,9 +284,8 @@
   <xs:complexType name="array">
     <xs:complexContent>
       <xs:extension base="jsonx:arrayMember">
-        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:nameable"/>
-        <xs:attributeGroup ref="jsonx:requirable"/>
+        <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -333,9 +334,8 @@
             <xs:documentation>Name of class. Required.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:nameable"/>
-        <xs:attributeGroup ref="jsonx:requirable"/>
+        <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -428,27 +428,31 @@
       <xs:selector xpath="./jsonx:boolean | ./jsonx:number | ./jsonx:string | ./jsonx:array | ./jsonx:object"/>
       <xs:field xpath="@template | @class"/>
     </xs:key>
-    <xs:key name="objectKey">
+    <xs:key name="classKey">
       <xs:selector xpath="./jsonx:object"/>
       <xs:field xpath="@class"/>
     </xs:key>
-    <xs:keyref name="propertyKeyRef" refer="jsonx:referenceKey">
+    <xs:keyref name="propertyReferenceKeyRef" refer="jsonx:referenceKey">
       <xs:selector xpath=".//jsonx:property"/>
       <xs:field xpath="@reference"/>
     </xs:keyref>
-    <xs:keyref name="templateKeyRef" refer="jsonx:referenceKey">
+    <xs:keyref name="templateReferenceKeyRef" refer="jsonx:referenceKey">
       <xs:selector xpath=".//jsonx:template"/>
       <xs:field xpath="@reference"/>
     </xs:keyref>
-    <xs:keyref name="objectKeyRef" refer="jsonx:objectKey">
+    <xs:keyref name="objectExtendsKeyRef" refer="jsonx:classKey">
       <xs:selector xpath=".//jsonx:object"/>
       <xs:field xpath="@extends"/>
     </xs:keyref>
-    <xs:keyref name="arrayObjectKeyRef" refer="jsonx:objectKey">
+    <xs:keyref name="propertyExtendsKeyRef" refer="jsonx:classKey">
+      <xs:selector xpath=".//jsonx:property"/>
+      <xs:field xpath="@extends"/>
+    </xs:keyref>
+    <xs:keyref name="arrayObjectClassKeyRef" refer="jsonx:classKey">
       <xs:selector xpath=".//jsonx:array/jsonx:object"/>
       <xs:field xpath="@class"/>
     </xs:keyref>
-    <xs:keyref name="arrayObjectKeyRef2" refer="jsonx:objectKey">
+    <xs:keyref name="propertyObjectClassKeyRef" refer="jsonx:classKey">
       <xs:selector xpath=".//jsonx:property/jsonx:object"/>
       <xs:field xpath="@class"/>
     </xs:keyref>

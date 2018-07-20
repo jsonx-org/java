@@ -20,37 +20,43 @@ import java.util.Map;
 
 import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
+import org.libx4j.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
+import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Model extends Member {
-  public Model(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
-    super(registry, name, nullable, required);
+  public Model(final Registry registry, final $JavaIdentifier name, final $String use) {
+    super(registry, name, use);
   }
 
   public Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    super(registry, null, nullable, minOccurs, maxOccurs);
+    super(registry, nullable, minOccurs, maxOccurs);
   }
 
-  public Model(final Registry registry, final Boolean nullable) {
-    super(registry, nullable, null, null);
+  public Model(final Registry registry) {
+    super(registry, null, null, null, null, null);
+  }
+
+  public Model(final Registry registry, final Boolean nullable, final Use use) {
+    super(registry, null, nullable, use, null, null);
   }
 
   @Override
   protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
-      attributes = toAnnotationAttributes(owner, packageName);
+      attributes = toXmlAttributes(owner, packageName);
       return new org.lib4j.xml.Element(elementName(), attributes, null);
     }
 
     if (registry.writeAsTemplate(this, settings)) {
-      attributes = super.toAnnotationAttributes(owner, packageName);
+      attributes = super.toXmlAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());
     }
     else {
-      attributes = toAnnotationAttributes(owner, packageName);
+      attributes = toXmlAttributes(owner, packageName);
       attributes.put("xsi:type", elementName());
     }
 

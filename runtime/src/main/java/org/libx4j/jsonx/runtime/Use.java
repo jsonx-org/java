@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 lib4j
+/* Copyright (c) 2018 lib4j
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,17 +16,11 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public enum Use {
+  OPTIONAL,
+  REQUIRED;
 
-@Inherited
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ObjectProperty {
-  Class<?> type();
-  String name() default "";
-  Use use() default Use.REQUIRED;
+  public static Use fromString(final String value) {
+    return "optional".equals(value) ? OPTIONAL : "required".equals(value) ? REQUIRED : null;
+  }
 }

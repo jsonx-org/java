@@ -23,9 +23,9 @@ import org.libx4j.jsonx.runtime.StringProperty;
 
 @JsonxObject
 public class Publishing {
-  @NumberProperty(form=Form.INTEGER, nullable=false)
+  @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
   public Integer year;
 
-  @StringProperty(pattern="\\S+ \\S+", nullable=false)
+  @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
   public String publisher;
 }

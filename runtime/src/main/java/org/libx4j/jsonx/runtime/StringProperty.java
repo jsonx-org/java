@@ -25,8 +25,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StringProperty {
   String name() default "";
-  boolean required() default true;
-  boolean nullable() default true;
+  Use use() default Use.REQUIRED;
   String pattern() default "";
   boolean urlEncode() default false;
   boolean urlDecode() default false;

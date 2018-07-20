@@ -22,6 +22,6 @@ import org.libx4j.jsonx.runtime.StringProperty;
 @JsonxObject
 public class OnlineArticle extends Publication {
   // FIXME: Put a URL regex here...
-  @StringProperty(nullable=false)
+  @StringProperty(use=Use.REQUIRED)
   public String url;
 }

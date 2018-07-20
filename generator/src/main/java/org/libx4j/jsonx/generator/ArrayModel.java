@@ -54,7 +54,7 @@ final class ArrayModel extends Model implements Referrer {
     final Id id = model.id();
 
     final ArrayModel registered = (ArrayModel)registry.getElement(id);
-    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   private static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
@@ -183,13 +183,13 @@ final class ArrayModel extends Model implements Referrer {
   private final List<Member> members;
 
   private ArrayModel(final Registry registry, final Jsonx.Array binding) {
-    super(registry, null);
+    super(registry);
     this.members = parseMembers(registry, this, binding);
     this.id = new Id(binding.getTemplate$());
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
+    super(registry, binding.getName$(), binding.getUse$());
     this.members = parseMembers(registry, this, binding);
     this.id = new Id(this);
   }
@@ -204,7 +204,7 @@ final class ArrayModel extends Model implements Referrer {
   }
 
   private ArrayModel(final Registry registry, final ArrayProperty property, final Field field) {
-    super(registry, property.nullable());
+    super(registry, null, property.use());
     if (field.getType() != List.class && !field.getType().isArray() && !Void.class.equals(field.getType()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
 
@@ -252,7 +252,7 @@ final class ArrayModel extends Model implements Referrer {
   }
 
   private ArrayModel(final Registry registry, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
-    super(registry, element.nullable());
+    super(registry, element.nullable(), null);
     this.members = parseMembers(registry, this, field, element, element.elementIds(), annotations);
     this.id = new Id(this);
   }

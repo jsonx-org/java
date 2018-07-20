@@ -41,7 +41,7 @@ abstract class Element {
    * @param packageName
    * @return The non-null <code>Map<String,String></code> of name/value attributes.
    */
-  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
+  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     return new AttributeMap();
   }
 

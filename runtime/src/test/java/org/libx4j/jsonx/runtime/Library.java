@@ -32,10 +32,10 @@ import org.libx4j.jsonx.runtime.StringProperty;
 public class Library {
   @JsonxObject
   public static class Journal extends Publication {
-    @StringProperty(nullable=false)
+    @StringProperty(use=Use.REQUIRED)
     public String subject;
 
-    @BooleanProperty(nullable=false)
+    @BooleanProperty(use=Use.REQUIRED)
     public Boolean openAccess;
   }
 
@@ -43,22 +43,22 @@ public class Library {
   public static class StreetSheet extends Publication {
   }
 
-  @ObjectProperty(nullable=false, type=Address.class)
+  @ObjectProperty(use=Use.REQUIRED, type=Address.class)
   public Address address;
 
-  @BooleanProperty(name="handicap", nullable=false)
+  @BooleanProperty(name="handicap", use=Use.REQUIRED)
   public Boolean handicapEquipped;
 
   @StringElement(id=2, pattern="\\d{2}:\\d{2}", nullable=false, minOccurs=2, maxOccurs=2)
   @ArrayElement(id=1, nullable=false, elementIds=2, minOccurs=7, maxOccurs=7)
-  @ArrayProperty(nullable=false, elementIds=1)
+  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   public String[][] schedule;
 
   @ObjectElement(id=1, type=Publication.class, nullable=false)
-  @ArrayProperty(nullable=false, elementIds=1)
+  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   public final List<Publication> publications = new ArrayList<>();
 
   @ObjectElement(id=1, type=StreetSheet.class, nullable=false)
-  @ArrayProperty(nullable=false, elementIds=1)
+  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   public final List<StreetSheet> streetSheets = new ArrayList<>();
 }

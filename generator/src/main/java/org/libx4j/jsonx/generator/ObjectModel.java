@@ -41,6 +41,7 @@ import org.libx4j.jsonx.runtime.JsonxObject;
 import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.Unknown;
+import org.libx4j.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 final class ObjectModel extends Model implements Referrer {
@@ -55,7 +56,7 @@ final class ObjectModel extends Model implements Referrer {
   public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ObjectProperty property, final Field field) {
     final Id id = new Id(property);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
-    return new Template(registry, getName(property.name(), field), property.nullable(), property.required(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
+    return new Template(registry, getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
@@ -71,7 +72,7 @@ final class ObjectModel extends Model implements Referrer {
   private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz, final JsonxObject jsObject) {
     final Id id = new Id(clazz);
     final ObjectModel model = (ObjectModel)registry.getElement(id);
-    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, clazz, jsObject, null), null);
+    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, clazz, jsObject, null, null), null);
   }
 
   public static ObjectModel reference(final Registry registry, final Referrer referrer, final $Array.Object binding) {
@@ -174,7 +175,7 @@ final class ObjectModel extends Model implements Referrer {
   private final Unknown unknown;
 
   private ObjectModel(final Registry registry, final Jsonx.Object binding) {
-    super(registry, null);
+    super(registry);
     this.type = registry.getType((String)binding.owner().getPackage$().text(), binding.getClass$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.isAbstract = binding.getAbstract$().text();
     this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
@@ -184,11 +185,11 @@ final class ObjectModel extends Model implements Referrer {
   }
 
   private ObjectModel(final Registry registry, final ObjectProperty property) {
-    this(registry, property.type(), checkJSObject(property.type()), property.nullable());
+    this(registry, property.type(), checkJSObject(property.type()), null, property.use());
   }
 
   private ObjectModel(final Registry registry, final ObjectElement element) {
-    this(registry, element.type(), checkJSObject(element.type()), element.nullable());
+    this(registry, element.type(), checkJSObject(element.type()), element.nullable(), null);
   }
 
   private static Jsonx getJsonx($AnySimpleType member) {
@@ -200,7 +201,7 @@ final class ObjectModel extends Model implements Referrer {
   }
 
   private ObjectModel(final Registry registry, final $Object binding, final ObjectModel superObject) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getRequired$());
+    super(registry, binding.getName$(), binding.getUse$());
     this.type = registry.getType((String)getJsonx(binding).getPackage$().text(), getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.superObject = superObject;
     this.isAbstract = null;
@@ -219,8 +220,8 @@ final class ObjectModel extends Model implements Referrer {
     this.id = new Id(this);
   }
 
-  private ObjectModel(final Registry registry, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable) {
-    super(registry, nullable);
+  private ObjectModel(final Registry registry, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable, final Use use) {
+    super(registry, nullable, use);
     final Class<?> superClass = clazz.getSuperclass();
     this.type = registry.getType(clazz);
     this.isAbstract = Modifier.isAbstract(clazz.getModifiers());
@@ -298,8 +299,8 @@ final class ObjectModel extends Model implements Referrer {
   }
 
   @Override
-  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
+  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     attributes.put("class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
 
     if (superObject != null)

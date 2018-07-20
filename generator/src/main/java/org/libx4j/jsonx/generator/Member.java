@@ -38,8 +38,10 @@ import org.libx4j.jsonx.runtime.BooleanProperty;
 import org.libx4j.jsonx.runtime.NumberProperty;
 import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.StringProperty;
+import org.libx4j.jsonx.runtime.Use;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
+import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
@@ -116,29 +118,25 @@ abstract class Member extends Element {
   protected final Registry registry;
   private final String name;
   private final Boolean nullable;
-  private final Boolean required;
+  private final Use use;
   private final Integer minOccurs;
   private final Integer maxOccurs;
 
-  public Member(final Registry registry, final String name, final Boolean nullable, final Boolean required, final Integer minOccurs, final Integer maxOccurs) {
+  public Member(final Registry registry, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
     this.registry = registry;
     this.name = name;
     this.nullable = nullable != null && nullable ? null : nullable;
-    this.required = required != null && required ? null : required;
+    this.use = use == Use.REQUIRED ? null : use;
     this.minOccurs = minOccurs == null || minOccurs == 0 ? null : minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
   }
 
-  public Member(final Registry registry, final Boolean nullable, final Integer minOccurs, final Integer maxOccurs) {
-    this(registry, null, nullable, null, minOccurs, maxOccurs);
+  public Member(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+    this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
-  public Member(final Registry registry, final String name, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(registry, name, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
-  }
-
-  public Member(final Registry registry, final $JavaIdentifier name, final $Boolean nullable, final $Boolean required) {
-    this(registry, name.text(), nullable.text(), required.text(), null, null);
+  public Member(final Registry registry, final $JavaIdentifier name, final yAA.$String use) {
+    this(registry, name.text(), null, use == null ? null : Use.fromString(use.text()), null, null);
   }
 
   public final String name() {
@@ -153,8 +151,8 @@ abstract class Member extends Element {
     return nullable;
   }
 
-  public final Boolean required() {
-    return required;
+  public final Use use() {
+    return use;
   }
 
   public final Integer minOccurs() {
@@ -166,8 +164,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  protected Map<String,String> toAnnotationAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toAnnotationAttributes(owner, packageName);
+  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
     else if (owner instanceof Schema && !(this instanceof ObjectModel))
@@ -177,10 +175,10 @@ abstract class Member extends Element {
     if (shouldWriteNullable && nullable != null && !nullable)
       attributes.put("nullable", String.valueOf(nullable));
 
-    if (required != null && !required)
-      attributes.put("required", String.valueOf(required));
+    if (use != null)
+      attributes.put("use", use.toString().toLowerCase());
 
-    if (minOccurs != null && minOccurs != 0)
+    if (minOccurs != null)
       attributes.put("minOccurs", String.valueOf(minOccurs));
 
     if (maxOccurs != null)
@@ -193,8 +191,8 @@ abstract class Member extends Element {
     if (nullable != null)
       attributes.put("nullable", nullable);
 
-    if (required != null)
-      attributes.put("required", required);
+    if (use != null)
+      attributes.put("use", Use.class.getName() + "." + use);
 
     if (minOccurs != null)
       attributes.put("minOccurs", minOccurs);
