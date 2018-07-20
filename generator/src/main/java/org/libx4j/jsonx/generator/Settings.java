@@ -17,7 +17,7 @@
 package org.libx4j.jsonx.generator;
 
 public class Settings {
-  public static Settings DEFAULT = new Settings(1);
+  public static final Settings DEFAULT = new Settings(1);
 
   private final int templateThreshold;
 

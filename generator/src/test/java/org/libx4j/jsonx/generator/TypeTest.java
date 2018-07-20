@@ -127,14 +127,14 @@ public class TypeTest {
     final String name3 = "Three";
     final Registry.Type type3 = registry.getType(packageName3, name3, type1.getPackage(), type1.getCompoundName(), null);
 
-    Assert.assertNull(type0.getGreatestCommonSuperType(type1));
+    Assert.assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type1));
     Assert.assertEquals(type0, type0.getGreatestCommonSuperType(type2));
-    Assert.assertNull(type0.getGreatestCommonSuperType(type3));
+    Assert.assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type3));
 
-    Assert.assertNull(type1.getGreatestCommonSuperType(type2));
+    Assert.assertEquals(registry.OBJECT, type1.getGreatestCommonSuperType(type2));
     Assert.assertEquals(type1, type1.getGreatestCommonSuperType(type3));
 
-    Assert.assertNull(type2.getGreatestCommonSuperType(type3));
+    Assert.assertEquals(registry.OBJECT, type2.getGreatestCommonSuperType(type3));
 
     Assert.assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0))));
 

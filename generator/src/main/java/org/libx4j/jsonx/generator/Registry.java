@@ -97,7 +97,7 @@ class Registry {
         a = a.superType;
       }
       while (a != null);
-      return null;
+      return OBJECT;
     }
 
     public String getPackage() {
@@ -212,6 +212,7 @@ class Registry {
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   private final LinkedHashMap<String,Model> refToModel;
   private final LinkedHashMap<String,List<Referrer>> refToReferrers;
+  protected final Type OBJECT = getType(Object.class);
 
   private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<Referrer>> references) {
     this.refToModel = refToModel;
