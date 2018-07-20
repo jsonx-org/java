@@ -22,11 +22,11 @@
   <array template="arrayDepthFour">
     <template reference="arrayDepthThree" minOccurs="9" maxOccurs="10"/>
     <template reference="arrayDepthTwo" minOccurs="7" maxOccurs="8"/>
-    <template reference="rootBooleanNull"/>
-    <template reference="rootBooleanNull" nullable="false"/>
+    <template reference="rootBooleanRequired"/>
+    <template reference="rootBooleanRequired" nullable="false"/>
   </array>
   <array template="arrayDepthOne">
-    <template reference="rootBooleanNull" minOccurs="5" maxOccurs="6"/>
+    <template reference="rootBooleanRequired" minOccurs="5" maxOccurs="6"/>
   </array>
   <array template="arrayDepthThree">
     <template reference="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4"/>
@@ -35,23 +35,23 @@
   </array>
   <array template="arrayDepthTwo">
     <template reference="arrayDepthOne" minOccurs="1" maxOccurs="2"/>
-    <template reference="rootBooleanNull" nullable="false"/>
+    <template reference="rootBooleanRequired" nullable="false"/>
   </array>
-  <boolean template="rootBooleanNull"/>
+  <boolean template="rootBooleanRequired"/>
   <number template="rootNumber" form="integer" min="2" max="9"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Template">
-    <property xsi:type="array" name="arrayDirectNotNull" nullable="false" required="false"/>
-    <property xsi:type="template" name="arrayOne" reference="arrayDepthOne" required="false"/>
+    <property xsi:type="array" name="arrayDirectOptional" use="optional"/>
+    <property xsi:type="template" name="arrayOne" reference="arrayDepthOne" use="optional"/>
     <property xsi:type="template" name="arrayTwo" reference="arrayDepthTwo"/>
-    <property xsi:type="template" name="arrayThree" reference="arrayDepthThree" required="false"/>
-    <property xsi:type="template" name="arrayFour" reference="arrayDepthFour" required="false"/>
-    <property xsi:type="boolean" name="booleanDirectNotNull" nullable="false" required="false"/>
-    <property xsi:type="template" name="booleanNullTemp" reference="rootBooleanNull"/>
-    <property xsi:type="template" name="booleanNotNullTemp" reference="rootBooleanNull" nullable="false" required="false"/>
-    <property xsi:type="number" name="numberDirectNotNull" min="5" max="8" nullable="false" required="false"/>
-    <property xsi:type="template" name="numberTemp" reference="rootNumber" nullable="false" required="false"/>
-    <property xsi:type="string" name="stringDirectNotNull" nullable="false" required="false"/>
-    <property xsi:type="template" name="stringTemp" reference="rootString" required="false"/>
+    <property xsi:type="template" name="arrayThree" reference="arrayDepthThree" use="optional"/>
+    <property xsi:type="template" name="arrayFour" reference="arrayDepthFour" use="optional"/>
+    <property xsi:type="boolean" name="booleanDirectOptional" use="optional"/>
+    <property xsi:type="template" name="booleanRequiredTemp" reference="rootBooleanRequired"/>
+    <property xsi:type="template" name="booleanOptionalTemp" reference="rootBooleanRequired" use="optional"/>
+    <property xsi:type="number" name="numberDirectOptional" min="5" max="8" use="optional"/>
+    <property xsi:type="template" name="numberOptionalTemp" reference="rootNumber" use="optional"/>
+    <property xsi:type="string" name="stringDirectOptional" use="optional"/>
+    <property xsi:type="template" name="stringTemp" reference="rootString" use="optional"/>
   </object>
 </jsonx>
