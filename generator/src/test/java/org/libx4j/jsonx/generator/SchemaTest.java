@@ -38,11 +38,13 @@ import org.lib4j.jci.InMemoryCompiler;
 import org.lib4j.lang.PackageNotFoundException;
 import org.lib4j.test.AssertXml;
 import org.lib4j.xml.ValidationException;
+import org.lib4j.xml.sax.Validator;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.xsb.runtime.Bindings;
 import org.libx4j.xsb.runtime.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
@@ -79,11 +81,13 @@ public class SchemaTest {
     return xml;
   }
 
-  private static Schema testParseJsonx(final xL2gluGCXYYJc.Jsonx controlBinding) throws IOException, ParseException, ValidationException {
+  private static Schema testParseJsonx(final xL2gluGCXYYJc.Jsonx controlBinding) throws IOException, ParseException, SAXException {
+    logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> JSONX");
     final Schema controlSchema = new Schema(controlBinding);
     logger.info("    b) JSONX -> XML(2)");
-    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(toXml(controlSchema, Settings.DEFAULT).toString());
+    final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
+    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual();
     return controlSchema;
@@ -109,7 +113,7 @@ public class SchemaTest {
     return new Schema(classLoader.getDefinedPackage(packageName), classLoader, c -> c.getClassLoader() == classLoader);
   }
 
-  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
+  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     logger.info(fileName + "...");
     final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseJsonx(controlBinding);
@@ -125,14 +129,16 @@ public class SchemaTest {
 
     logger.info("  6) Java(1) -> JSONX");
     final Schema testSchema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
-    final String schema = toXml(testSchema, Settings.DEFAULT).toString();
-    writeFile("out-" + fileName, schema);
+    final String xml = toXml(testSchema, Settings.DEFAULT).toString();
+    logger.info("  7) Validate JSONX");
+    Validator.validate(xml, false);
+    writeFile("out-" + fileName, xml);
 
-    final xL2gluGCXYYJc.Jsonx reParsedBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(schema);
+    final xL2gluGCXYYJc.Jsonx reParsedBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(xml);
     final Schema reParsedSchema = testParseJsonx(reParsedBinding);
-    logger.info("  7) JSONX -> Java(2)");
+    logger.info("  8) JSONX -> Java(2)");
     final Map<String,String> reParsedSources = reParsedSchema.toJava();
-    logger.info("  8) Java(1) == Java(2)");
+    logger.info("  9) Java(1) == Java(2)");
     assertEquals(sources.size(), reParsedSources.size());
     for (final Map.Entry<String,String> entry : sources.entrySet())
       assertEquals(entry.getValue(), reParsedSources.get(entry.getKey()));
@@ -164,12 +170,12 @@ public class SchemaTest {
   }
 
   @Test
-  public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
+  public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     test("template.jsonx");
   }
 
   @Test
-  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
+  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     test("complete.jsonx");
   }
 }

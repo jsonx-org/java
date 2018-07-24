@@ -41,17 +41,17 @@
   <number template="rootNumber" form="integer" min="2" max="9"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Template">
-    <property xsi:type="array" name="arrayDirectOptional" use="optional"/>
-    <property xsi:type="template" name="arrayOne" reference="arrayDepthOne" use="optional"/>
-    <property xsi:type="template" name="arrayTwo" reference="arrayDepthTwo"/>
-    <property xsi:type="template" name="arrayThree" reference="arrayDepthThree" use="optional"/>
-    <property xsi:type="template" name="arrayFour" reference="arrayDepthFour" use="optional"/>
-    <property xsi:type="boolean" name="booleanDirectOptional" use="optional"/>
-    <property xsi:type="template" name="booleanRequiredTemp" reference="rootBooleanRequired"/>
-    <property xsi:type="template" name="booleanOptionalTemp" reference="rootBooleanRequired" use="optional"/>
-    <property xsi:type="number" name="numberDirectOptional" min="5" max="8" use="optional"/>
-    <property xsi:type="template" name="numberOptionalTemp" reference="rootNumber" use="optional"/>
-    <property xsi:type="string" name="stringDirectOptional" use="optional"/>
-    <property xsi:type="template" name="stringTemp" reference="rootString" use="optional"/>
+    <property name="arrayDirectOptional" xsi:type="array" use="optional"/>
+    <property name="arrayOne" xsi:type="template" reference="arrayDepthOne" use="optional"/>
+    <property name="arrayTwo" xsi:type="template" reference="arrayDepthTwo"/>
+    <property name="arrayThree" xsi:type="template" reference="arrayDepthThree" use="optional"/>
+    <property name="arrayFour" xsi:type="template" reference="arrayDepthFour" use="optional"/>
+    <property name="booleanDirectOptional" xsi:type="boolean" use="optional"/>
+    <property name="booleanRequiredTemp" xsi:type="template" reference="rootBooleanRequired"/>
+    <property name="booleanOptionalTemp" xsi:type="template" reference="rootBooleanRequired" use="optional"/>
+    <property name="numberDirectOptional" xsi:type="number" min="5" max="8" use="optional"/>
+    <property name="numberOptionalTemp" xsi:type="template" reference="rootNumber" use="optional"/>
+    <property name="stringDirectOptional" xsi:type="string" use="optional"/>
+    <property name="stringTemp" xsi:type="template" reference="rootString" use="optional"/>
   </object>
 </jsonx>

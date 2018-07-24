@@ -40,177 +40,177 @@
   <number template="rootNumber" form="integer" min="2" max="9"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="sub1.simple$Booleans">
-    <property xsi:type="template" name="booleanRefDefault" reference="rootBooleanNull"/>
-    <property xsi:type="template" name="booleanRefOptional" reference="rootBooleanNotNull" use="optional"/>
-    <property xsi:type="boolean" name="booleanDefault"/>
-    <property xsi:type="boolean" name="booleanOptional" use="optional"/>
+    <property name="booleanRefDefault" xsi:type="template" reference="rootBooleanNull"/>
+    <property name="booleanRefOptional" xsi:type="template" reference="rootBooleanNotNull" use="optional"/>
+    <property name="booleanDefault" xsi:type="boolean"/>
+    <property name="booleanOptional" xsi:type="boolean" use="optional"/>
   </object>
   <object class="sub1.simple$BooleansArray">
-    <property xsi:type="template" name="booleanRefArrayDefault" reference="rootBooleanArray"/>
-    <property xsi:type="template" name="booleanRefArrayOptional" reference="rootBooleanArray" use="optional"/>
-    <property xsi:type="array" name="booleanArrayDefault">
+    <property name="booleanRefArrayDefault" xsi:type="template" reference="rootBooleanArray"/>
+    <property name="booleanRefArrayOptional" xsi:type="template" reference="rootBooleanArray" use="optional"/>
+    <property name="booleanArrayDefault" xsi:type="array">
       <template reference="rootBooleanNotNull" minOccurs="1" maxOccurs="3"/>
     </property>
-    <property xsi:type="array" name="booleanArrayRequired">
+    <property name="booleanArrayRequired" xsi:type="array">
       <boolean nullable="false"/>
     </property>
-    <property xsi:type="array" name="booleanArrayOptional" use="optional">
+    <property name="booleanArrayOptional" xsi:type="array" use="optional">
       <boolean/>
     </property>
   </object>
   <object class="sub1.simple$Numbers">
-    <property xsi:type="template" name="numberRefDefault" reference="rootNumber"/>
-    <property xsi:type="template" name="numberRefOptional" reference="rootNumber" use="optional"/>
-    <property xsi:type="number" name="numberDefault"/>
-    <property xsi:type="number" name="numberOptional" use="optional"/>
-    <property xsi:type="number" name="numberMin" min="0"/>
-    <property xsi:type="number" name="numberMax" max="0"/>
-    <property xsi:type="number" name="numberInteger" form="integer"/>
+    <property name="numberRefDefault" xsi:type="template" reference="rootNumber"/>
+    <property name="numberRefOptional" xsi:type="template" reference="rootNumber" use="optional"/>
+    <property name="numberDefault" xsi:type="number"/>
+    <property name="numberOptional" xsi:type="number" use="optional"/>
+    <property name="numberMin" xsi:type="number" min="0"/>
+    <property name="numberMax" xsi:type="number" max="0"/>
+    <property name="numberInteger" xsi:type="number" form="integer"/>
   </object>
   <object class="sub1.simple$NumbersArray">
-    <property xsi:type="array" name="numberArrayRefDefault">
+    <property name="numberArrayRefDefault" xsi:type="array">
       <template reference="rootNumber" maxOccurs="3"/>
     </property>
-    <property xsi:type="array" name="numberArrayRefOptional" use="optional">
+    <property name="numberArrayRefOptional" xsi:type="array" use="optional">
       <template reference="rootNumber" maxOccurs="3"/>
     </property>
-    <property xsi:type="array" name="numberArrayDefault">
+    <property name="numberArrayDefault" xsi:type="array">
       <number minOccurs="2" maxOccurs="10"/>
     </property>
-    <property xsi:type="array" name="numberArrayOptional" use="optional">
+    <property name="numberArrayOptional" xsi:type="array" use="optional">
       <number minOccurs="2" maxOccurs="12"/>
     </property>
-    <property xsi:type="array" name="booleanArray1">
+    <property name="booleanArray1" xsi:type="array">
       <boolean minOccurs="1"/>
     </property>
-    <property xsi:type="array" name="booleanArray2">
+    <property name="booleanArray2" xsi:type="array">
       <boolean minOccurs="1"/>
       <boolean minOccurs="2"/>
     </property>
-    <property xsi:type="array" name="booleanArray3">
+    <property name="booleanArray3" xsi:type="array">
       <boolean minOccurs="1"/>
       <boolean minOccurs="2"/>
       <boolean minOccurs="3"/>
     </property>
-    <property xsi:type="array" name="booleanArray4">
+    <property name="booleanArray4" xsi:type="array">
       <boolean minOccurs="1"/>
       <boolean minOccurs="2"/>
       <boolean minOccurs="3"/>
       <boolean minOccurs="4"/>
     </property>
-    <property xsi:type="array" name="stringArray1">
+    <property name="stringArray1" xsi:type="array">
       <string minOccurs="1"/>
     </property>
-    <property xsi:type="array" name="stringArray2">
+    <property name="stringArray2" xsi:type="array">
       <string minOccurs="1"/>
       <string minOccurs="2"/>
     </property>
-    <property xsi:type="array" name="stringArray3">
+    <property name="stringArray3" xsi:type="array">
       <string minOccurs="1"/>
       <string minOccurs="2"/>
       <string minOccurs="3"/>
     </property>
-    <property xsi:type="array" name="stringArray4">
+    <property name="stringArray4" xsi:type="array">
       <string minOccurs="1"/>
       <string minOccurs="2"/>
       <string minOccurs="3"/>
       <string minOccurs="4"/>
     </property>
-    <property xsi:type="array" name="numberArray1">
+    <property name="numberArray1" xsi:type="array">
       <number minOccurs="1"/>
     </property>
-    <property xsi:type="array" name="numberArray2">
+    <property name="numberArray2" xsi:type="array">
       <number minOccurs="1"/>
       <number minOccurs="2"/>
     </property>
-    <property xsi:type="array" name="numberArray3">
+    <property name="numberArray3" xsi:type="array">
       <number minOccurs="1"/>
       <number minOccurs="2"/>
       <number minOccurs="3"/>
     </property>
-    <property xsi:type="array" name="numberArray4">
+    <property name="numberArray4" xsi:type="array">
       <number minOccurs="1"/>
       <number minOccurs="2"/>
       <number minOccurs="3"/>
       <number minOccurs="4"/>
     </property>
-    <property xsi:type="array" name="objectArray1">
+    <property name="objectArray1" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="3"/>
     </property>
-    <property xsi:type="array" name="objectArraySame2">
+    <property name="objectArraySame2" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="4"/>
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="5"/>
     </property>
-    <property xsi:type="array" name="objectArraySame3">
+    <property name="objectArraySame3" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="6"/>
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="7"/>
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="8"/>
     </property>
-    <property xsi:type="array" name="objectArraySame4">
+    <property name="objectArraySame4" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="9"/>
       <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="3"/>
       <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="4"/>
       <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="5"/>
     </property>
-    <property xsi:type="array" name="objectArrayDiff2">
+    <property name="objectArrayDiff2" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="6"/>
       <object class="sub1.simple$Strings" minOccurs="3" maxOccurs="7"/>
     </property>
-    <property xsi:type="array" name="objectArrayDiff3">
+    <property name="objectArrayDiff3" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="8"/>
       <object class="sub1.simple$Strings" minOccurs="3" maxOccurs="9"/>
       <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="4"/>
     </property>
-    <property xsi:type="array" name="objectArrayDiff4">
+    <property name="objectArrayDiff4" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="5"/>
       <object class="sub1.simple$Strings" minOccurs="4" maxOccurs="6"/>
       <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="7"/>
       <object class="sub1.simple$Strings" minOccurs="4" maxOccurs="8"/>
     </property>
-    <property xsi:type="array" name="objectArrayDiff5">
+    <property name="objectArrayDiff5" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="9"/>
       <object class="sub1.simple$Strings" minOccurs="5" maxOccurs="5"/>
       <object class="sub1.simple$Numbers" minOccurs="5" maxOccurs="6"/>
       <object class="sub1.simple$Booleans" minOccurs="5" maxOccurs="7"/>
       <object class="sub1.simple$Numbers" minOccurs="5" maxOccurs="8"/>
     </property>
-    <property xsi:type="array" name="numberArrayMin">
+    <property name="numberArrayMin" xsi:type="array">
       <number min="0" minOccurs="2"/>
       <number max="0" minOccurs="2"/>
     </property>
-    <property xsi:type="array" name="numberArrayForm">
+    <property name="numberArrayForm" xsi:type="array">
       <number form="integer"/>
       <number/> <!-- form="real" -->
     </property>
-    <property xsi:type="array" name="numberArrayForm2">
+    <property name="numberArrayForm2" xsi:type="array">
       <number form="integer"/>
       <number form="integer"/>
     </property>
-    <property xsi:type="array" name="arrayNumberString">
+    <property name="arrayNumberString" xsi:type="array">
       <number form="integer"/>
       <string/>
     </property>
-    <property xsi:type="array" name="arrayStringNumber">
+    <property name="arrayStringNumber" xsi:type="array">
       <string/>
       <number form="integer"/>
     </property>
-    <property xsi:type="array" name="arrayBooleanNumebr">
+    <property name="arrayBooleanNumebr" xsi:type="array">
       <boolean/>
       <number form="integer"/>
     </property>
-    <property xsi:type="array" name="arrayNumberBoolean">
+    <property name="arrayNumberBoolean" xsi:type="array">
       <number form="integer"/>
       <boolean/>
     </property>
-    <property xsi:type="array" name="arrayBooleanString">
+    <property name="arrayBooleanString" xsi:type="array">
       <boolean/>
       <string/>
     </property>
-    <property xsi:type="array" name="arrayStringBoolean">
+    <property name="arrayStringBoolean" xsi:type="array">
       <string/>
       <boolean/>
     </property>
-    <property xsi:type="array" name="arrayArray">
+    <property name="arrayArray" xsi:type="array">
       <array nullable="false">
         <string/>
         <boolean nullable="false"/>
@@ -232,68 +232,68 @@
     </property>
   </object>
   <object class="sub1.simple$Strings">
-    <property xsi:type="template" name="stringRefDefault" reference="rootString"/>
-    <property xsi:type="template" name="stringRefOptional" reference="rootString" use="optional"/>
-    <property xsi:type="string" name="stringDefault"/>
-    <property xsi:type="string" name="stringOptional" use="optional"/>
-    <property xsi:type="string" name="stringPattern" pattern="[valid]+"/>
-    <property xsi:type="string" name="stringUrlDecode" urlDecode="true"/>
-    <property xsi:type="string" name="stringUrlEncode" urlEncode="true"/>
+    <property name="stringRefDefault" xsi:type="template" reference="rootString"/>
+    <property name="stringRefOptional" xsi:type="template" reference="rootString" use="optional"/>
+    <property name="stringDefault" xsi:type="string"/>
+    <property name="stringOptional" xsi:type="string" use="optional"/>
+    <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
+    <property name="stringUrlDecode" xsi:type="string" urlDecode="true"/>
+    <property name="stringUrlEncode" xsi:type="string" urlEncode="true"/>
   </object>
   <object class="sub1.simple$StringsArray">
-    <property xsi:type="array" name="stringArrayRefDefault">
+    <property name="stringArrayRefDefault" xsi:type="array">
       <template reference="rootMultiArray"/>
     </property>
-    <property xsi:type="array" name="stringArrayRefNotRequired" use="optional">
+    <property name="stringArrayRefNotRequired" xsi:type="array" use="optional">
       <template reference="rootString"/>
     </property>
-    <property xsi:type="array" name="stringArrayDefault">
+    <property name="stringArrayDefault" xsi:type="array">
       <string nullable="false" minOccurs="5" maxOccurs="9"/>
       <string minOccurs="1" maxOccurs="3"/>
     </property>
-    <property xsi:type="array" name="stringArrayOptional" use="optional">
+    <property name="stringArrayOptional" xsi:type="array" use="optional">
       <string minOccurs="3" maxOccurs="5"/>
     </property>
-    <property xsi:type="array" name="stringArrayPattern">
+    <property name="stringArrayPattern" xsi:type="array">
       <string pattern="[valid]+"/>
     </property>
-    <property xsi:type="array" name="stringArrayUrl">
+    <property name="stringArrayUrl" xsi:type="array">
       <string urlEncode="true" maxOccurs="1" nullable="false"/>
       <string urlDecode="true" maxOccurs="1"/>
       <string urlEncode="true" urlDecode="true" maxOccurs="1" nullable="false"/>
     </property>
   </object>
   <object class="sub2.pkg.cls$AbstractObject" abstract="true">
-    <property xsi:type="template" name="booleanProperty" reference="rootBooleanNull" use="optional"/>
-    <property xsi:type="template" name="emptyArray" reference="rootArrayEmpty"/>
+    <property name="booleanProperty" xsi:type="template" reference="rootBooleanNull" use="optional"/>
+    <property name="emptyArray" xsi:type="template" reference="rootArrayEmpty"/>
   </object>
   <object class="sub2.xyz.Objects">
-    <property xsi:type="object" name="objectDefault" class="ObjectDefault"/>
-    <property xsi:type="object" name="objectOptional" class="ObjectOptional" use="optional"/>
-    <property xsi:type="object" name="objectOptional2" class="ObjectOptional2" use="optional"/>
-    <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract" extends="sub2.pkg.cls$AbstractObject">
-      <property xsi:type="template" name="objectString" reference="rootString" use="optional"/>
-      <property xsi:type="number" name="objectNumberOptional" use="optional"/>
-      <property xsi:type="object" name="objectExtendsBooleans" class="ObjectExtendsBooleans" extends="sub1.simple$Booleans"/>
-      <property xsi:type="object" name="objectExtendsBooleans2" class="ObjectExtendsBooleans2" extends="sub1.simple$Booleans" use="optional"/>
-      <property xsi:type="object" name="objectExtendsBooleans3" class="ObjectExtendsBooleans3" extends="sub1.simple$Booleans"/>
-      <property xsi:type="object" name="objectExtendsAbstract" class="ObjectExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" use="optional">
-        <property xsi:type="template" name="objectString" reference="rootString" use="optional"/>
-        <property xsi:type="number" name="objectNumber"/>
+    <property name="objectDefault" xsi:type="object" class="ObjectDefault"/>
+    <property name="objectOptional" xsi:type="object" class="ObjectOptional" use="optional"/>
+    <property name="objectOptional2" xsi:type="object" class="ObjectOptional2" use="optional"/>
+    <property name="objectExtendsAbstract" xsi:type="object" class="ObjectExtendsAbstract" extends="sub2.pkg.cls$AbstractObject">
+      <property name="objectString" xsi:type="template" reference="rootString" use="optional"/>
+      <property name="objectNumberOptional" xsi:type="number" use="optional"/>
+      <property name="objectExtendsBooleans" xsi:type="object" class="ObjectExtendsBooleans" extends="sub1.simple$Booleans"/>
+      <property name="objectExtendsBooleans2" xsi:type="object" class="ObjectExtendsBooleans2" extends="sub1.simple$Booleans" use="optional"/>
+      <property name="objectExtendsBooleans3" xsi:type="object" class="ObjectExtendsBooleans3" extends="sub1.simple$Booleans"/>
+      <property name="objectExtendsAbstract" xsi:type="object" class="ObjectExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" use="optional">
+        <property name="objectString" xsi:type="template" reference="rootString" use="optional"/>
+        <property name="objectNumber" xsi:type="number"/>
       </property>
     </property>
-    <property xsi:type="object" name="objectExtendsStrings" class="ObjectExtendsBooleans2" extends="sub1.simple$Strings">
-      <property xsi:type="string" name="additionalString"/>
+    <property name="objectExtendsStrings" xsi:type="object" class="ObjectExtendsBooleans2" extends="sub1.simple$Strings">
+      <property name="additionalString" xsi:type="string"/>
     </property>
   </object>
   <object class="sub2.xyz.ObjectsArray" extends="sub2.pkg.cls$AbstractObject">
-    <property xsi:type="array" name="objectArrayDefault">
+    <property name="objectArrayDefault" xsi:type="array">
       <object class="sub1.simple$Booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
     </property>
-    <property xsi:type="array" name="objectArrayNotRequired" use="optional">
+    <property name="objectArrayNotRequired" xsi:type="array" use="optional">
       <object class="sub1.simple$Strings" minOccurs="1" maxOccurs="7"/>
     </property>
-    <property xsi:type="array" name="objectArrayPropertiesSkipUnknown">
+    <property name="objectArrayPropertiesSkipUnknown" xsi:type="array">
       <object class="sub1.simple$Numbers"/>
     </property>
   </object>

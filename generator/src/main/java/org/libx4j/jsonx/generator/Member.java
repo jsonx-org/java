@@ -171,12 +171,13 @@ abstract class Member extends Element {
     else if (owner instanceof Schema && !(this instanceof ObjectModel))
       attributes.put("template", id().toString());
 
-    final boolean shouldWriteNullable = !(owner instanceof Schema);
-    if (shouldWriteNullable && nullable != null && !nullable)
-      attributes.put("nullable", String.valueOf(nullable));
+    if (!(owner instanceof Schema)) {
+      if (nullable != null && !nullable)
+        attributes.put("nullable", String.valueOf(nullable));
 
-    if (use != null)
-      attributes.put("use", use.toString().toLowerCase());
+      if (use != null)
+        attributes.put("use", use.toString().toLowerCase());
+    }
 
     if (minOccurs != null)
       attributes.put("minOccurs", String.valueOf(minOccurs));
