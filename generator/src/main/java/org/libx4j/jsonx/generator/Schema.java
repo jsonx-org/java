@@ -17,9 +17,8 @@
 package org.libx4j.jsonx.generator;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -283,9 +282,7 @@ public final class Schema extends Element {
     for (final Map.Entry<String,String> entry : sources.entrySet()) {
       final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
       file.getParentFile().mkdirs();
-      try (final OutputStreamWriter out = new FileWriter(file)) {
-        out.write(entry.getValue());
-      }
+      Files.write(file.toPath(), entry.getValue().getBytes());
     }
 
     return sources;
