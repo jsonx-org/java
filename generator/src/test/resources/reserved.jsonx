@@ -1,0 +1,57 @@
+<!--
+  Copyright (c) 2017 lib4j
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<jsonx
+  package="org.libx4j.jsonx.generator.reserved"
+  xmlns="http://jsonx.libx4j.org/jsonx-0.9.8.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  <array template="break">
+    <template reference="extends" minOccurs="9" maxOccurs="10"/>
+    <template reference="import" minOccurs="7" maxOccurs="8"/>
+    <template reference="public"/>
+    <template reference="public" nullable="false"/>
+  </array>
+  <array template="extends">
+    <template reference="import" nullable="false" minOccurs="3" maxOccurs="4"/>
+    <template reference="byte" nullable="false"/>
+    <template reference="abstract"/>
+  </array>
+  <array template="import">
+    <template reference="package" minOccurs="1" maxOccurs="2"/>
+    <template reference="public" nullable="false"/>
+  </array>
+  <array template="package">
+    <template reference="public" minOccurs="5" maxOccurs="6"/>
+  </array>
+  <boolean template="public"/>
+  <number template="byte" form="integer" min="2" max="9"/>
+  <string template="abstract" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
+  <object class="test.Reserved">
+    <property name="enum" xsi:type="array" use="optional"/>
+    <property name="package" xsi:type="template" reference="package" use="optional"/>
+    <property name="int" xsi:type="template" reference="import"/>
+    <property name="long" xsi:type="template" reference="extends" use="optional"/>
+    <property name="class" xsi:type="template" reference="break" use="optional"/>
+    <property name="continue" xsi:type="boolean" use="optional"/>
+    <property name="protected" xsi:type="template" reference="public"/>
+    <property name="private" xsi:type="template" reference="public" use="optional"/>
+    <property name="default" xsi:type="number" min="5" max="8" use="optional"/>
+    <property name="do" xsi:type="template" reference="byte" use="optional"/>
+    <property name="final" xsi:type="string" use="optional"/>
+    <property name="finally" xsi:type="template" reference="abstract" use="optional"/>
+  </object>
+</jsonx>

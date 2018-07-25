@@ -95,8 +95,9 @@ public class SchemaTest {
 
   private static void writeFile(final String fileName, final String data) throws IOException {
     try (final OutputStreamWriter out = new FileWriter(new File(generatedResourcesDir, fileName))) {
-      out.write("<!--\n  Copyright (c) 2017 lib4j\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n");
-      out.write("of this software and associated documentation files (the \"Software\"), to deal\n");
+      out.write("<!--\n");
+      out.write("  Copyright (c) 2017 lib4j\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n");
+      out.write("  of this software and associated documentation files (the \"Software\"), to deal\n");
       out.write("  in the Software without restriction, including without limitation the rights\n");
       out.write("  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n");
       out.write("  copies of the Software, and to permit persons to whom the Software is\n");
@@ -104,7 +105,8 @@ public class SchemaTest {
       out.write("  The above copyright notice and this permission notice shall be included in\n");
       out.write("  all copies or substantial portions of the Software.\n\n");
       out.write("  You should have received a copy of The MIT License (MIT) along with this\n");
-      out.write("  program. If not, see <http://opensource.org/licenses/MIT/>.\n-->\n");
+      out.write("  program. If not, see <http://opensource.org/licenses/MIT/>.\n");
+      out.write("-->\n");
       out.write(data);
     }
   }
@@ -177,5 +179,10 @@ public class SchemaTest {
   @Test
   public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     test("complete.jsonx");
+  }
+
+  @Test
+  public void testReserved() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+    test("reserved.jsonx");
   }
 }
