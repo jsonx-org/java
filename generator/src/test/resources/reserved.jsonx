@@ -41,7 +41,7 @@
   <number template="byte" form="integer" min="2" max="9"/>
   <string template="abstract" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Reserved">
-    <property name="enum" xsi:type="array" use="optional"/>
+    <property name="void" xsi:type="array" use="optional"/>
     <property name="package" xsi:type="template" reference="package" use="optional"/>
     <property name="int" xsi:type="template" reference="import"/>
     <property name="long" xsi:type="template" reference="extends" use="optional"/>

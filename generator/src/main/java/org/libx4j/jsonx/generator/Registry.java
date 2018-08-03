@@ -27,7 +27,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 
 class Registry {
-  class Value {
+  final class Value {
     private final String name;
 
     private Value(final String name) {
@@ -38,13 +38,30 @@ class Registry {
       this.name = name;
     }
 
-    public <T extends Model>T value(final T model, final Referrer referrer) {
+    public <T extends Model>T value(final T model, final Referrer<?> referrer) {
       refToModel.put(name, model);
       return reference(model, referrer);
     }
   }
 
+  static enum Kind {
+    CLASS("class"),
+    ANNOTATION("@interface");
+
+    private final String value;
+
+    Kind(final String value) {
+      this.value = value;
+    }
+
+    @Override
+    public String toString() {
+      return value;
+    }
+  }
+
   final class Type {
+    private final Kind kind;
     private final String packageName;
     private final String canonicalPackageName;
     private final String simpleName;
@@ -55,7 +72,8 @@ class Registry {
     private final Type superType;
     private final Type genericType;
 
-    private Type(final String packageName, final String compoundName, final Type superType, final Type genericType) {
+    private Type(final Kind kind, final String packageName, final String compoundName, final Type superType, final Type genericType) {
+      this.kind = kind;
       final boolean defaultPackage = packageName.length() == 0;
       final int dot = compoundName.lastIndexOf('.');
       this.packageName = packageName;
@@ -71,7 +89,7 @@ class Registry {
     }
 
     private Type(final Class<?> clazz, final Type genericType) {
-      this(clazz.getPackage().getName(), clazz.getSimpleName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? null : new Type(clazz.getSuperclass(), null), genericType);
+      this(clazz.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, clazz.getPackage().getName(), clazz.getSimpleName(), clazz.getSuperclass() == null ? null : clazz.getSuperclass() == Object.class ? null : new Type(clazz.getSuperclass(), null), genericType);
     }
 
     public Type getSuperType() {
@@ -80,7 +98,7 @@ class Registry {
 
     public Type getDeclaringType() {
       final String declaringClassName = Classes.getDeclaringClassName(compoundName);
-      return compoundName.length() == declaringClassName.length() ? null : getType(packageName, declaringClassName, null, null, null);
+      return compoundName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, null);
     }
 
     public Type getGreatestCommonSuperType(final Type type) {
@@ -98,6 +116,10 @@ class Registry {
       }
       while (a != null);
       return OBJECT;
+    }
+
+    public Kind getKind() {
+      return this.kind;
     }
 
     public String getPackage() {
@@ -174,7 +196,11 @@ class Registry {
     return superName != null && name.startsWith(superName) ? name.substring(superName.length() + 1) : name;
   }
 
-  protected Type getType(final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
+  protected Type getAnnotation(final String packageName, final String compoundName) {
+    return getType(Kind.ANNOTATION, packageName, compoundName, null, null, null);
+  }
+
+  protected Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
     final StringBuilder className = new StringBuilder();
     if (packageName.length() > 0)
       className.append(packageName).append(".");
@@ -184,7 +210,7 @@ class Registry {
       className.append('<').append(genericType.toCanonicalString()).append('>');
 
     final Type type = qualifiedNameToType.get(className.toString());
-    return type != null ? type : new Type(packageName, compoundName, superCompoundName == null ? null : getType(superPackageName, superCompoundName, null, null, null), genericType);
+    return type != null ? type : new Type(kind, packageName, compoundName, superCompoundName == null ? null : getType(Kind.CLASS, superPackageName, superCompoundName, null, null, null), genericType);
   }
 
   public Type getType(final Class<?> clazz, final Type generic) {
@@ -194,7 +220,7 @@ class Registry {
   }
 
   public Type getType(final Class<?> cls) {
-    return getType(cls.getPackageName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackageName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
+    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackageName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackageName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
   }
 
   public Type getType(final Class<?> ... generics) {
@@ -206,21 +232,21 @@ class Registry {
   }
 
   public Type getType(final String packageName, final String compoundName, final String superCompoundName) {
-    return getType(packageName, compoundName, packageName, superCompoundName, (Type)null);
+    return getType(Kind.CLASS, packageName, compoundName, packageName, superCompoundName, (Type)null);
   }
 
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   private final LinkedHashMap<String,Model> refToModel;
-  private final LinkedHashMap<String,List<Referrer>> refToReferrers;
+  private final LinkedHashMap<String,List<Referrer<?>>> refToReferrers;
   protected final Type OBJECT = getType(Object.class);
 
-  private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<Referrer>> references) {
+  private Registry(final LinkedHashMap<String,Model> refToModel, final LinkedHashMap<String,List<Referrer<?>>> references) {
     this.refToModel = refToModel;
     this.refToReferrers = references;
   }
 
   public Registry() {
-    this(new LinkedHashMap<String,Model>(), new LinkedHashMap<String,List<Referrer>>());
+    this(new LinkedHashMap<String,Model>(), new LinkedHashMap<String,List<Referrer<?>>>());
   }
 
   public Value declare(final Jsonx.Boolean binding) {
@@ -236,7 +262,7 @@ class Registry {
   }
 
   public Value declare(final Jsonx.Array binding) {
-    return new Value(binding.getTemplate$().text());
+    return new Value(binding.getTemplate$() != null ? binding.getTemplate$().text() : binding.getClass$().text());
   }
 
   public Value declare(final Jsonx.Object binding) {
@@ -255,12 +281,12 @@ class Registry {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 
-  public <T extends Member>T reference(final T model, final Referrer referrer) {
+  public <T extends Member>T reference(final T model, final Referrer<?> referrer) {
     if (referrer == null)
       return model;
 
     final String key = model.id().toString();
-    List<Referrer> referrers = refToReferrers.get(key);
+    List<Referrer<?>> referrers = refToReferrers.get(key);
     if (referrers == null)
       refToReferrers.put(key, referrers = new ArrayList<>());
 
@@ -276,23 +302,29 @@ class Registry {
     return refToModel.get(id.toString());
   }
 
-  public boolean writeRootMember(final Member member, final Settings settings) {
+  public boolean shouldWriteRootMember(final Member member, final Settings settings) {
     final int numReferrers = getNumReferrers(member);
-    return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers >= settings.getTemplateThreshold();
+    return member instanceof ArrayModel && ((ArrayModel)member).classType() != null || (member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers >= settings.getTemplateThreshold());
   }
 
-  public boolean writeDirect(final Member member, final Settings settings) {
+  public boolean shouldWriteDirect(final Member member, final Settings settings) {
     final int numReferrers = getNumReferrers(member);
+    if (member instanceof ArrayModel && ((ArrayModel)member).classType() != null)
+      return false;
+
     return member instanceof ObjectModel ? numReferrers == 1 : numReferrers < settings.getTemplateThreshold();
   }
 
-  public boolean writeAsTemplate(final Member member, final Settings settings) {
+  public boolean shouldWriteAsTemplate(final Member member, final Settings settings) {
     if (getElement(member.id()) == null)
+      return false;
+
+    if (member instanceof ArrayModel && ((ArrayModel)member).classType() != null)
       return false;
 
     final int numReferrers = getNumReferrers(member);
     if (member instanceof ObjectModel)
-      return numReferrers > 1;
+      return numReferrers == 0 || numReferrers > 1;
 
     return numReferrers >= settings.getTemplateThreshold();
   }
@@ -306,7 +338,7 @@ class Registry {
   }
 
   public int getNumReferrers(final Member member) {
-    final List<Referrer> referrers = refToReferrers.get(member.id().toString());
+    final List<Referrer<?>> referrers = refToReferrers.get(member.id().toString());
     return referrers == null ? 0 : referrers.size();
   }
 }

@@ -26,7 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import org.lib4j.lang.AnnotationParameterException;
 import org.lib4j.lang.Arrays;
@@ -37,39 +36,71 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayElement;
+import org.libx4j.jsonx.runtime.ArrayElements;
 import org.libx4j.jsonx.runtime.ArrayProperty;
+import org.libx4j.jsonx.runtime.ArrayType;
 import org.libx4j.jsonx.runtime.BooleanElement;
+import org.libx4j.jsonx.runtime.BooleanElements;
 import org.libx4j.jsonx.runtime.NumberElement;
+import org.libx4j.jsonx.runtime.NumberElements;
 import org.libx4j.jsonx.runtime.ObjectElement;
+import org.libx4j.jsonx.runtime.ObjectElements;
 import org.libx4j.jsonx.runtime.StringElement;
+import org.libx4j.jsonx.runtime.StringElements;
 import org.libx4j.xsb.runtime.Bindings;
 
-final class ArrayModel extends Model implements Referrer {
+final class ArrayModel extends Referrer<ArrayModel> {
   public static ArrayModel declare(final Registry registry, final Jsonx.Array binding) {
     return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ArrayProperty property, final Field field) {
-    final ArrayModel model = new ArrayModel(registry, property, field);
-    final Id id = model.id();
-
+  private static ArrayModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Annotation annotation, final Class<? extends Annotation> annotationType, final Id id, final Registry.Type type) {
     final ArrayModel registered = (ArrayModel)registry.getElement(id);
-    return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    if (registered != null)
+      return registry.reference(registered, referrer);
+
+    final ArrayType arrayType = annotationType.getAnnotation(ArrayType.class);
+    if (arrayType == null)
+      throw new IllegalAnnotationException(annotation, annotationType.getName() + " does not specify the required @" + ArrayType.class.getSimpleName() + " annotation");
+
+    return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.elementIds(), annotationType.getAnnotations(), type, annotationType.getName()), referrer);
   }
 
-  private static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
-    final ArrayModel model = new ArrayModel(registry, element, field, annotations);
-    final Id id = model.id();
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final Field field) {
+    if (ArrayType.class.equals(property.type())) {
+      final ArrayModel model = new ArrayModel(registry, property, property.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
+      final Id id = model.id();
 
-    final ArrayModel registered = (ArrayModel)registry.getElement(id);
-    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      final ArrayModel registered = (ArrayModel)registry.getElement(id);
+      return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    }
+
+    final Registry.Type type = registry.getType(property.type());
+    final Id id = new Id(type);
+
+    return new Template(registry, getName(property.name(), field), property.use(), referenceOrDeclare(registry, referrer, property, property.type(), id, type));
   }
 
-  public static ArrayModel reference(final Registry registry, final Referrer referrer, final $Array.Array binding) {
+  private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayElement element, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+    if (ArrayType.class.equals(element.type())) {
+      final ArrayModel model = new ArrayModel(registry, element, idToElement, declaringTypeName);
+      final Id id = model.id();
+
+      final ArrayModel registered = (ArrayModel)registry.getElement(id);
+      return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    }
+
+    final Registry.Type type = registry.getType(element.type());
+    final Id id = new Id(type);
+
+    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), referenceOrDeclare(registry, referrer, element, element.type(), id, type));
+  }
+
+  public static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
-  public static ArrayModel reference(final Registry registry, final Referrer referrer, final $Array binding) {
+  public static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final $Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
@@ -127,12 +158,12 @@ final class ArrayModel extends Model implements Referrer {
     return Collections.unmodifiableList(members);
   }
 
-  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final Field field, final Annotation annotation, final int[] elementIds, final Map<Integer,Annotation> annotations) {
+  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final Annotation annotation, final int[] elementIds, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
     final List<Member> elements = new ArrayList<>();
     for (final Integer elementId : elementIds) {
-      final Annotation elementAnnotation = annotations.get(elementId);
+      final Annotation elementAnnotation = idToElement.get(elementId);
       if (elementAnnotation == null)
-        throw new AnnotationParameterException(annotation, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + annotation.annotationType().getName() + " specifies non-existent element with id=" + elementId);
+        throw new AnnotationParameterException(annotation, declaringTypeName + ": @" + annotation.annotationType().getName() + " specifies non-existent element with id=" + elementId);
 
       if (elementAnnotation instanceof BooleanElement)
         elements.add(BooleanModel.referenceOrDeclare(registry, referrer, (BooleanElement)elementAnnotation));
@@ -143,54 +174,69 @@ final class ArrayModel extends Model implements Referrer {
       else if (elementAnnotation instanceof ObjectElement)
         elements.add(ObjectModel.referenceOrDeclare(registry, referrer, (ObjectElement)elementAnnotation));
       else if (elementAnnotation instanceof ArrayElement)
-        elements.add(ArrayModel.referenceOrDeclare(registry, referrer, (ArrayElement)elementAnnotation, field, annotations));
+        elements.add(ArrayModel.referenceOrDeclare(registry, referrer, (ArrayElement)elementAnnotation, idToElement, declaringTypeName));
     }
 
     return Collections.unmodifiableList(elements);
   }
 
-  private static final Function<Annotation,Integer> reference = new Function<>() {
-    @Override
-    public Integer apply(final Annotation t) {
-      if (t instanceof BooleanElement)
-        return ((BooleanElement)t).id();
+  private static Annotation[] flatten(final Annotation[] annotations, final int index, final int depth) {
+    if (index == annotations.length)
+      return new Annotation[depth];
 
-      if (t instanceof NumberElement)
-        return ((NumberElement)t).id();
+    final Annotation annotation = annotations[index];
+    if (ArrayProperty.class.equals(annotation.annotationType()) || ArrayType.class.equals(annotation.annotationType()))
+      return flatten(annotations, index + 1, depth);
 
-      if (t instanceof StringElement)
-        return ((StringElement)t).id();
+    final Annotation[] repeatable;
+    if (ArrayElements.class.equals(annotation.annotationType()))
+      repeatable = ((ArrayElements)annotation).value();
+    else if (BooleanElements.class.equals(annotation.annotationType()))
+      repeatable = ((BooleanElements)annotation).value();
+    else if (NumberElements.class.equals(annotation.annotationType()))
+      repeatable = ((NumberElements)annotation).value();
+    else if (ObjectElements.class.equals(annotation.annotationType()))
+      repeatable = ((ObjectElements)annotation).value();
+    else if (StringElements.class.equals(annotation.annotationType()))
+      repeatable = ((StringElements)annotation).value();
+    else
+      repeatable = null;
 
-      if (t instanceof ArrayElement)
-        return ((ArrayElement)t).id();
-
-      if (t instanceof ObjectElement)
-        return ((ObjectElement)t).id();
-
-      throw new UnsupportedOperationException("Unsupported Annotation type: " + t.getClass().getName());
+    if (repeatable == null) {
+      final Annotation[] flattened = flatten(annotations, index + 1, depth + 1);
+      flattened[depth] = annotation;
+      return flattened;
     }
-  };
 
-  private static void addElementAnnotation(final Map<Integer,Annotation> map, final StrictDigraph<Integer> digraph, final Annotation annotation, final int id, final Field field) {
-    if (map.containsKey(id))
-      throw new AnnotationParameterException(annotation, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanElement.class.getName() + "(id=" + id + ") cannot share the same id value with another @*Element(id=?) annotation on the same field.");
+    final Annotation[] flattened = flatten(annotations, index + 1, depth + repeatable.length);
+    for (int i = 0; i < repeatable.length; i++)
+      flattened[depth + i] = repeatable[i];
 
-    digraph.addVertex(reference.apply(annotation));
-    map.put(id, annotation);
+    return flattened;
   }
 
   private final Id id;
+  private final Registry.Type type;
   private final List<Member> members;
 
   private ArrayModel(final Registry registry, final Jsonx.Array binding) {
     super(registry);
     this.members = parseMembers(registry, this, binding);
-    this.id = new Id(binding.getTemplate$());
+    if (binding.getClass$() != null) {
+      this.type = registry.getAnnotation((String)binding.owner().getPackage$().text(), binding.getClass$().text());
+      this.id = new Id(binding.getClass$());
+    }
+    else {
+      this.type = null;
+      this.id = new Id(binding.getTemplate$());
+    }
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
     super(registry, binding.getName$(), binding.getUse$());
+    this.type = null;
     this.members = parseMembers(registry, this, binding);
+
     this.id = new Id(this);
   }
 
@@ -199,61 +245,76 @@ final class ArrayModel extends Model implements Referrer {
     if (this.maxOccurs() != null && this.minOccurs() != null && this.minOccurs() > this.maxOccurs())
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs() + "\" > maxOccurs=\"" + this.maxOccurs() + "\"");
 
+    this.type = null;
     this.members = parseMembers(registry, this, binding);
+
     this.id = new Id(this);
   }
 
-  private ArrayModel(final Registry registry, final ArrayProperty property, final Field field) {
-    super(registry, null, property.use());
-    if (field.getType() != List.class && !field.getType().isArray() && !Void.class.equals(field.getType()))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of array or List types.");
-
-    final Map<Integer,Annotation> map = new HashMap<>();
+  private ArrayModel(final Registry registry, final Annotation annotation, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {
+    super(registry);
+    final Map<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
-    final BooleanElement[] booleanElements = field.getAnnotationsByType(BooleanElement.class);
-    if (booleanElements != null)
-      for (final BooleanElement booleanElement : booleanElements)
-        addElementAnnotation(map, digraph, booleanElement, booleanElement.id(), field);
-
-    final NumberElement[] numberElements = field.getAnnotationsByType(NumberElement.class);
-    if (numberElements != null)
-      for (final NumberElement numberElement : numberElements)
-        addElementAnnotation(map, digraph, numberElement, numberElement.id(), field);
-
-    final StringElement[] stringElements = field.getAnnotationsByType(StringElement.class);
-    if (stringElements != null)
-      for (final StringElement stringElement : stringElements)
-        addElementAnnotation(map, digraph, stringElement, stringElement.id(), field);
-
-    final ObjectElement[] objectElements = field.getAnnotationsByType(ObjectElement.class);
-    if (objectElements != null)
-      for (final ObjectElement objectElement : objectElements)
-        addElementAnnotation(map, digraph, objectElement, objectElement.id(), field);
-
-    final ArrayElement[] arrayElements = field.getAnnotationsByType(ArrayElement.class);
-    if (arrayElements != null) {
-      for (final ArrayElement arrayElement : arrayElements) {
-        addElementAnnotation(map, digraph, arrayElement, arrayElement.id(), field);
-        for (final Integer arrayElementId : arrayElement.elementIds())
-          digraph.addEdge(arrayElement.id(), arrayElementId);
+    for (final Annotation elementAnnotation : flatten(annotations, 0, 0)) {
+      final int id;
+      if (elementAnnotation instanceof ArrayElement) {
+        id = ((ArrayElement)elementAnnotation).id();
+        for (final Integer elementId : ((ArrayElement)elementAnnotation).elementIds())
+          digraph.addEdge(id, elementId);
       }
+      else if (elementAnnotation instanceof BooleanElement) {
+        id = ((BooleanElement)elementAnnotation).id();
+      }
+      else if (elementAnnotation instanceof NumberElement) {
+        id = ((NumberElement)elementAnnotation).id();
+      }
+      else if (elementAnnotation instanceof ObjectElement) {
+        id = ((ObjectElement)elementAnnotation).id();
+      }
+      else if (elementAnnotation instanceof StringElement) {
+        id = ((StringElement)elementAnnotation).id();
+      }
+      else {
+        throw new UnsupportedOperationException("Unsupported Annotation type: " + elementAnnotation.getClass().getName());
+      }
+
+      if (idToElement.containsKey(id))
+        throw new AnnotationParameterException(elementAnnotation, declaringTypeName + ": @" + elementAnnotation.annotationType().getName() + "(id=" + id + ") cannot share the same id value with another @*Element(id=?) annotation on the same field");
+
+      digraph.addVertex(id);
+      idToElement.put(id, elementAnnotation);
     }
 
     final List<Integer> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Cycle detected in element index dependency graph: " + org.lib4j.util.Collections.toString(digraph.getCycle(), " -> "));
 
-    final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<>(map.size());
+    final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<>(idToElement.size());
     for (final Integer elementId : digraph.getTopologicalOrder())
-      topologicalOrder.put(elementId, map.get(elementId));
+      topologicalOrder.put(elementId, idToElement.get(elementId));
 
-    this.members = parseMembers(registry, this, field, property, property.elementIds(), topologicalOrder);
+    this.type = type;
+    this.members = parseMembers(registry, this, annotation, elementIds, topologicalOrder, declaringTypeName);
+    this.id = type != null ? new Id(type) : new Id(this);
+  }
+
+  private ArrayModel(final Registry registry, final ArrayElement element, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+    super(registry, element.nullable(), null);
+    if (element.type() != ArrayType.class)
+      throw new IllegalArgumentException("This constructor is only for elementIds");
+
+    this.type = null;
+    this.members = parseMembers(registry, this, element, element.elementIds(), idToElement, declaringTypeName);
     this.id = new Id(this);
   }
 
-  private ArrayModel(final Registry registry, final ArrayElement element, final Field field, final Map<Integer,Annotation> annotations) {
-    super(registry, element.nullable(), null);
-    this.members = parseMembers(registry, this, field, element, element.elementIds(), annotations);
+  private ArrayModel(final Registry registry, final ArrayProperty property, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+    super(registry, null, property.use());
+    if (property.type() != ArrayType.class)
+      throw new IllegalArgumentException("This constructor is only for elementIds");
+
+    this.type = null;
+    this.members = parseMembers(registry, this, property, property.elementIds(), idToElement, declaringTypeName);
     this.id = new Id(this);
   }
 
@@ -269,6 +330,11 @@ final class ArrayModel extends Model implements Referrer {
   @Override
   protected Registry.Type type() {
     return getGreatestCommonSuperType(registry, members);
+  }
+
+  @Override
+  protected Registry.Type classType() {
+    return type;
   }
 
   @Override
@@ -288,37 +354,59 @@ final class ArrayModel extends Model implements Referrer {
 
   @Override
   protected void getDeclaredTypes(final Set<Registry.Type> types) {
+    if (type != null)
+      types.add(type);
+
     if (members != null)
       for (final Member member : members)
         member.getDeclaredTypes(types);
   }
 
   @Override
+  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
+    if (owner instanceof Schema) {
+      if (type != null)
+        attributes.put("class", type.getSubName(packageName));
+      else
+        attributes.put("template", id().toString());
+    }
+
+    return attributes;
+  }
+
+  @Override
   protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final org.lib4j.xml.Element element = super.toXml(settings, owner, packageName);
-    if (owner instanceof ObjectModel && registry.writeAsTemplate(this, settings) || members.size() == 0)
+    if (owner instanceof ObjectModel && registry.shouldWriteAsTemplate(this, settings) || members.size() == 0)
       return element;
 
     final List<org.lib4j.xml.Element> elements = new ArrayList<>();
-    for (final Member member : this.members)
+    for (final Member member : members)
       elements.add(member.toXml(settings, this, packageName));
 
     element.setElements(elements);
     return element;
   }
 
-  @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
-    super.toAnnotationAttributes(attributes);
-    final int[] indices = new int[members().size()];
-    final List<AnnotationSpec> annotations = new ArrayList<>();
+  private void renderAnnotations(final AttributeMap attributes, final List<AnnotationSpec> annotations) {
+    final int[] indices = new int[members.size()];
     int index = 0;
-    for (int i = 0; i < members().size(); i++) {
+    for (int i = 0; i < members.size(); i++) {
       indices[i] = index;
-      index += writeElementAnnotations(annotations, members().get(i), index);
+      index += writeElementAnnotations(annotations, members.get(i), index);
     }
 
     writeElementIdsClause(attributes, indices);
+  }
+
+  @Override
+  protected void toAnnotationAttributes(final AttributeMap attributes) {
+    super.toAnnotationAttributes(attributes);
+    if (type != null)
+      attributes.put("type", type.getCanonicalName() + ".class");
+    else
+      renderAnnotations(attributes, new ArrayList<>());
   }
 
   private void toAnnotationAttributes(final AttributeMap attributes, final int[] indices) {
@@ -364,12 +452,29 @@ final class ArrayModel extends Model implements Referrer {
   }
 
   @Override
-  protected final List<AnnotationSpec> toElementAnnotations() {
+  protected List<AnnotationSpec> toElementAnnotations() {
+    if (type != null)
+      return null;
+
     final List<AnnotationSpec> annotations = new ArrayList<>();
     int index = 0;
-    for (final Member member : members())
+    for (final Member member : members)
       index += writeElementAnnotations(annotations, member, index);
 
     return annotations;
+  }
+
+  @Override
+  protected List<AnnotationSpec> annotationSpec() {
+    final AttributeMap attributes = new AttributeMap();
+    final List<AnnotationSpec> annotations = new ArrayList<>();
+    renderAnnotations(attributes, annotations);
+    annotations.add(new AnnotationSpec(ArrayType.class, attributes));
+    return annotations;
+  }
+
+  @Override
+  protected String toJava() {
+    return null;
   }
 }

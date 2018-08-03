@@ -16,7 +16,11 @@
 
 package org.libx4j.jsonx.generator;
 
-public class Settings {
+import java.io.Serializable;
+
+public class Settings implements Serializable {
+  private static final long serialVersionUID = -9151836587381478204L;
+
   public static final Settings DEFAULT = new Settings(1);
 
   private final int templateThreshold;

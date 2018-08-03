@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Repeatable(BooleanElements.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BooleanElement {
@@ -31,3 +31,4 @@ public @interface BooleanElement {
   int minOccurs() default 0;
   int maxOccurs() default Integer.MAX_VALUE;
 }
+

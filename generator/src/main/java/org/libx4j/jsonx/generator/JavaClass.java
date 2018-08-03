@@ -19,17 +19,15 @@ package org.libx4j.jsonx.generator;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import org.libx4j.jsonx.runtime.JsonxObject;
-
 public class JavaClass {
   private final TreeMap<String,JavaClass> memberClasses = new TreeMap<>();
 
-  private final ObjectModel model;
+  private final Referrer<?> model;
   private final Registry.Type type;
 
-  public JavaClass(final ObjectModel model) {
+  public JavaClass(final Referrer<?> model) {
     this.model = model;
-    this.type = model.type();
+    this.type = model.classType();
   }
 
   public JavaClass(final Registry.Type type) {
@@ -37,8 +35,20 @@ public class JavaClass {
     this.type = type;
   }
 
-  public AnnotationSpec getAnnotation() {
-    return model == null ? null : new AnnotationSpec(JsonxObject.class, model.toObjectAnnotation());
+  public String getAnnotation() {
+    if (model == null)
+      return null;
+
+    final StringBuilder builder = new StringBuilder();
+    final Iterator<AnnotationSpec> iterator = model.annotationSpec().iterator();
+    for (int i = 0; iterator.hasNext(); i++) {
+      if (i > 0)
+        builder.append('\n');
+
+      builder.append(iterator.next());
+    }
+
+    return builder.toString();
   }
 
   public void add(final JavaClass javaClass) {
@@ -48,10 +58,10 @@ public class JavaClass {
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
-    if (model != null && model.isAbstract())
+    if (model != null && model instanceof ObjectModel && ((ObjectModel)model).isAbstract())
       builder.append("abstract ");
 
-    builder.append("class ").append(type.getSimpleName());
+    builder.append(type.getKind()).append(' ').append(type.getSimpleName());
     if (type.getSuperType() != null)
       builder.append(" extends ").append(type.getSuperType().getCanonicalName());
 
@@ -62,16 +72,16 @@ public class JavaClass {
       if (i > 0)
         builder.append('\n');
 
-      final AnnotationSpec annotation = memberClass.getAnnotation();
+      final String annotation = memberClass.getAnnotation();
       if (annotation != null)
-        builder.append("\n  ").append(annotation);
+        builder.append("\n  ").append(annotation.replace("\n", "\n  "));
 
       builder.append("\n  public static ").append(memberClass.toString().replace("\n", "\n  "));
     }
 
     if (model != null) {
       final String code = model.toJava();
-      if (code.length() > 0)
+      if (code != null && code.length() > 0)
         builder.append("\n  ").append(code.replace("\n", "\n  "));
     }
 

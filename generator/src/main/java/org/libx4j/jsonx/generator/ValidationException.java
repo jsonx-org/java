@@ -19,10 +19,6 @@ package org.libx4j.jsonx.generator;
 public class ValidationException extends RuntimeException {
   private static final long serialVersionUID = 2984407300739435993L;
 
-  public ValidationException() {
-    super();
-  }
-
   public ValidationException(final String message) {
     super(message);
   }

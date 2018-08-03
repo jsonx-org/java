@@ -25,8 +25,8 @@ import java.util.function.Function;
 import org.lib4j.lang.JavaIdentifiers;
 import org.lib4j.util.Collections;
 import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
@@ -42,32 +42,30 @@ import org.libx4j.jsonx.runtime.Use;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
 import org.w3.www._2001.XMLSchema.yAA;
-import org.w3.www._2001.XMLSchema.yAA.$Boolean;
-import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 abstract class Member extends Element {
-  protected static Member toMember(final Registry registry, final Referrer referrer, final Field field) {
-    final BooleanProperty booleanProperty = field.getDeclaredAnnotation(BooleanProperty.class);
-    if (booleanProperty != null)
-      return BooleanModel.referenceOrDeclare(registry, referrer, booleanProperty, field);
+  protected static Member toMember(final Registry registry, final Referrer<?> referrer, final Field field) {
+    Member declaredMember = null;
+    for (final Annotation annotation : field.getAnnotations()) {
+      Member member = null;
+      if (ArrayProperty.class.equals(annotation.annotationType()))
+        member = ArrayModel.referenceOrDeclare(registry, referrer, (ArrayProperty)annotation, field);
+      else if (BooleanProperty.class.equals(annotation.annotationType()))
+        member = BooleanModel.referenceOrDeclare(registry, referrer, (BooleanProperty)annotation, field);
+      else if (NumberProperty.class.equals(annotation.annotationType()))
+        member = NumberModel.referenceOrDeclare(registry, referrer, (NumberProperty)annotation, field);
+      else if (ObjectProperty.class.equals(annotation.annotationType()))
+        member = ObjectModel.referenceOrDeclare(registry, referrer, (ObjectProperty)annotation, field);
+      else if (StringProperty.class.equals(annotation.annotationType()))
+        member = StringModel.referenceOrDeclare(registry, referrer, (StringProperty)annotation, field);
 
-    final NumberProperty numberProperty = field.getDeclaredAnnotation(NumberProperty.class);
-    if (numberProperty != null)
-      return NumberModel.referenceOrDeclare(registry, referrer, numberProperty, field);
+      if (declaredMember == null)
+        declaredMember = member;
+      else if (member != null)
+        throw new ValidationException(field.getDeclaringClass().getName() + "." + field.getName() + " specifies multiple parameter annotations: [" + declaredMember.elementName() + ", " + member.elementName() + "]");
+    }
 
-    final StringProperty stringProperty = field.getDeclaredAnnotation(StringProperty.class);
-    if (stringProperty != null)
-      return StringModel.referenceOrDeclare(registry, referrer, stringProperty, field);
-
-    final ObjectProperty objectProperty = field.getDeclaredAnnotation(ObjectProperty.class);
-    if (objectProperty != null)
-      return ObjectModel.referenceOrDeclare(registry, referrer, objectProperty, field);
-
-    final ArrayProperty arrayProperty = field.getDeclaredAnnotation(ArrayProperty.class);
-    if (arrayProperty != null)
-      return ArrayModel.referenceOrDeclare(registry, referrer, arrayProperty, field);
-
-    return null;
+    return declaredMember;
   }
 
   protected static String getName(final String name, final Field field) {
@@ -78,8 +76,8 @@ abstract class Member extends Element {
     @Override
     public String apply(final Binding t) {
       final String name;
-      if (t instanceof xL2gluGCXYYJc.$Boolean)
-        name = ((xL2gluGCXYYJc.$Boolean)t).getName$().text();
+      if (t instanceof $Boolean)
+        name = (($Boolean)t).getName$().text();
       else if (t instanceof $Number)
         name = (($Number)t).getName$().text();
       else if (t instanceof $String)
@@ -88,8 +86,8 @@ abstract class Member extends Element {
         name = (($Array)t).getName$().text();
       else if (t instanceof Jsonx.Object)
         name = ((Jsonx.Object)t).getClass$().text();
-      else if (t instanceof xL2gluGCXYYJc.$Boolean)
-        name = ((xL2gluGCXYYJc.$Boolean)t).getName$().text();
+      else if (t instanceof $Boolean)
+        name = (($Boolean)t).getName$().text();
       else if (t instanceof $Number)
         name = (($Number)t).getName$().text();
       else if (t instanceof $String)
@@ -131,7 +129,7 @@ abstract class Member extends Element {
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
   }
 
-  public Member(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+  public Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
     this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
@@ -168,7 +166,7 @@ abstract class Member extends Element {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
-    else if (owner instanceof Schema && !(this instanceof ObjectModel))
+    else if (owner instanceof Schema && !(this instanceof Referrer))
       attributes.put("template", id().toString());
 
     if (!(owner instanceof Schema)) {

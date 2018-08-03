@@ -70,7 +70,7 @@ public final class Schema extends Element {
     final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
       if (obj instanceof Jsonx.Array)
-        return ((Jsonx.Array)obj).getTemplate$().text();
+        return ((Jsonx.Array)obj).getTemplate$() != null ? ((Jsonx.Array)obj).getTemplate$().text() : ((Jsonx.Array)obj).getClass$().text();
 
       if (obj instanceof Jsonx.Boolean)
         return ((Jsonx.Boolean)obj).getTemplate$().text();
@@ -173,7 +173,7 @@ public final class Schema extends Element {
   private Collection<Model> rootMembers(final Settings settings) {
     final List<Model> members = new ArrayList<>();
     for (final Model model : registry.rootElements())
-      if (registry.writeRootMember(model, settings))
+      if (registry.shouldWriteRootMember(model, settings))
         members.add(model);
 
     members.sort(new Comparator<Model>() {
@@ -235,11 +235,11 @@ public final class Schema extends Element {
     final Map<Registry.Type,JavaClass> all = new HashMap<>();
     final Map<Registry.Type,JavaClass> typeToJavaClass = new HashMap<>();
     for (final Model member : members()) {
-      if (member instanceof ObjectModel) {
-        final ObjectModel model = (ObjectModel)member;
+      if (member instanceof Referrer && ((Referrer<?>)member).classType() != null) {
+        final Referrer<?> model = (Referrer<?>)member;
         final JavaClass javaClass = new JavaClass(model);
-        if (model.type().getDeclaringType() != null) {
-          final Registry.Type declaringType = model.type().getDeclaringType();
+        if (model.classType().getDeclaringType() != null) {
+          final Registry.Type declaringType = model.classType().getDeclaringType();
           JavaClass parent = all.get(declaringType);
           if (parent == null) {
             parent = new JavaClass(declaringType);
@@ -250,10 +250,10 @@ public final class Schema extends Element {
           parent.add(javaClass);
         }
         else {
-          typeToJavaClass.put(model.type(), javaClass);
+          typeToJavaClass.put(model.classType(), javaClass);
         }
 
-        all.put(model.type(), javaClass);
+        all.put(model.classType(), javaClass);
       }
     }
 
@@ -266,7 +266,7 @@ public final class Schema extends Element {
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
 
-      final AnnotationSpec annotation = holder.getAnnotation();
+      final String annotation = holder.getAnnotation();
       if (annotation != null)
         builder.append('\n').append(annotation);
 

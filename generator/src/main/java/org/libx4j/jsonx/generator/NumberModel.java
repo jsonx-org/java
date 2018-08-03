@@ -36,15 +36,15 @@ final class NumberModel extends Model {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
-  public static NumberModel reference(final Registry registry, final Referrer referrer, final $Number binding) {
+  public static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static NumberModel reference(final Registry registry, final Referrer referrer, final $Array.Number binding) {
+  public static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final NumberProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Field field) {
     final NumberModel model = new NumberModel(registry, property, field);
     final Id id = model.id();
 
@@ -52,7 +52,7 @@ final class NumberModel extends Model {
     return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final NumberElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
     final NumberModel model = new NumberModel(registry, element);
     final Id id = model.id();
 

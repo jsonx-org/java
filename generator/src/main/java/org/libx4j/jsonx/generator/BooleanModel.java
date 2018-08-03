@@ -32,7 +32,7 @@ final class BooleanModel extends Model {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final BooleanProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Field field) {
     final BooleanModel model = new BooleanModel(registry, property, field);
     final Id id = model.id();
 
@@ -40,7 +40,7 @@ final class BooleanModel extends Model {
     return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final BooleanElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
     final BooleanModel model = new BooleanModel(registry, element);
     final Id id = model.id();
 
@@ -48,11 +48,11 @@ final class BooleanModel extends Model {
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static BooleanModel reference(final Registry registry, final Referrer referrer, final $Array.Boolean binding) {
+  public static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
-  public static BooleanModel reference(final Registry registry, final Referrer referrer, final $Boolean binding) {
+  public static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 

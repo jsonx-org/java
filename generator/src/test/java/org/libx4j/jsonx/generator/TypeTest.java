@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.libx4j.jsonx.generator.Registry.Kind;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
@@ -87,7 +88,7 @@ public class TypeTest {
 
     final String superPackageName = "two";
     final String superName = "Foo$Bar";
-    final Registry.Type type = registry.getType(packageName, name, superPackageName, superName, null);
+    final Registry.Type type = registry.getType(Kind.CLASS, packageName, name, superPackageName, superName, null);
 
     Assert.assertEquals(packageName + ".One$Two", type.getDeclaringType().toString());
     Assert.assertEquals(packageName + ".One", type.getDeclaringType().getDeclaringType().toString());
@@ -110,22 +111,22 @@ public class TypeTest {
 
     final String superPackageName0 = "org.libx4j.jsonx.superzero";
     final String superName0 = "SuperZero";
-    final Registry.Type type0 = registry.getType(packageName0, name0, superPackageName0, superName0, null);
+    final Registry.Type type0 = registry.getType(Kind.CLASS, packageName0, name0, superPackageName0, superName0, null);
 
     final String packageName1 = "org.libx4j.jsonx.one";
     final String name1 = "One";
 
     final String superPackageName1 = "org.libx4j.jsonx.superone";
     final String superName1 = "SuperOne";
-    final Registry.Type type1 = registry.getType(packageName1, name1, superPackageName1, superName1, null);
+    final Registry.Type type1 = registry.getType(Kind.CLASS, packageName1, name1, superPackageName1, superName1, null);
 
     final String packageName2 = "org.libx4j.jsonx.two";
     final String name2 = "Two";
-    final Registry.Type type2 = registry.getType(packageName2, name2, type0.getPackage(), type0.getCompoundName(), null);
+    final Registry.Type type2 = registry.getType(Kind.CLASS, packageName2, name2, type0.getPackage(), type0.getCompoundName(), null);
 
     final String packageName3 = "org.libx4j.jsonx.three";
     final String name3 = "Three";
-    final Registry.Type type3 = registry.getType(packageName3, name3, type1.getPackage(), type1.getCompoundName(), null);
+    final Registry.Type type3 = registry.getType(Kind.CLASS, packageName3, name3, type1.getPackage(), type1.getCompoundName(), null);
 
     Assert.assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type1));
     Assert.assertEquals(type0, type0.getGreatestCommonSuperType(type2));

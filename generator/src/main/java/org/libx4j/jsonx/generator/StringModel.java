@@ -33,7 +33,7 @@ final class StringModel extends Model {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final StringProperty property, final Field field) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Field field) {
     final StringModel model = new StringModel(registry, property, field);
     final Id id = model.id();
 
@@ -41,7 +41,7 @@ final class StringModel extends Model {
     return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer referrer, final StringElement element) {
+  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, element);
     final Id id = model.id();
 
@@ -49,11 +49,11 @@ final class StringModel extends Model {
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static StringModel reference(final Registry registry, final Referrer referrer, final $Array.String binding) {
+  public static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
-  public static StringModel reference(final Registry registry, final Referrer referrer, final $String binding) {
+  public static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 

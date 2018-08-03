@@ -48,7 +48,7 @@ public class ArrayModelTest {
   public void testGreatestCommonSuperObject() {
     final Registry registry = new Registry();
     final xL2gluGCXYYJc.Jsonx jsonx = new xL2gluGCXYYJc.Jsonx();
-    jsonx.setPackage$(new xL2gluGCXYYJc.Jsonx.Package$("org.libx4j.jsonx.generator"));
+    jsonx.setPackage$(new xL2gluGCXYYJc.Jsonx.Package$(getClass().getPackageName()));
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));

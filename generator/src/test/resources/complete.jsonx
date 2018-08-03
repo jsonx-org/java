@@ -20,9 +20,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
   <array template="rootArrayEmpty"/>
-  <array template="rootBooleanArray">
-    <template reference="rootBooleanNotNull" maxOccurs="3"/>
-  </array>
   <array template="rootMultiArray">
     <array minOccurs="1" maxOccurs="1">
       <array maxOccurs="14">
@@ -35,6 +32,9 @@
       </array>
     </array>
   </array>
+  <array class="sub1.simple$RootBooleanArray">
+    <template reference="rootBooleanNotNull" maxOccurs="3"/>
+  </array>
   <boolean template="rootBooleanNotNull"/>
   <boolean template="rootBooleanNull"/>
   <number template="rootNumber" form="integer" min="2" max="9"/>
@@ -46,8 +46,8 @@
     <property name="booleanOptional" xsi:type="boolean" use="optional"/>
   </object>
   <object class="sub1.simple$BooleansArray">
-    <property name="booleanRefArrayDefault" xsi:type="template" reference="rootBooleanArray"/>
-    <property name="booleanRefArrayOptional" xsi:type="template" reference="rootBooleanArray" use="optional"/>
+    <property name="booleanRefArrayDefault" xsi:type="template" reference="sub1.simple$RootBooleanArray"/>
+    <property name="booleanRefArrayOptional" xsi:type="template" reference="sub1.simple$RootBooleanArray" use="optional"/>
     <property name="booleanArrayDefault" xsi:type="array">
       <template reference="rootBooleanNotNull" minOccurs="1" maxOccurs="3"/>
     </property>
@@ -135,44 +135,44 @@
       <number minOccurs="4"/>
     </property>
     <property name="objectArray1" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="3"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="3"/>
     </property>
     <property name="objectArraySame2" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="4"/>
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="5"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="4"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="5"/>
     </property>
     <property name="objectArraySame3" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="6"/>
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="7"/>
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="8"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="6"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="7"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="8"/>
     </property>
     <property name="objectArraySame4" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="2" maxOccurs="9"/>
-      <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="3"/>
-      <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="4"/>
-      <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="5"/>
+      <object type="sub1.simple$Booleans" minOccurs="2" maxOccurs="9"/>
+      <object type="sub1.simple$Booleans" minOccurs="3" maxOccurs="3"/>
+      <object type="sub1.simple$Booleans" minOccurs="3" maxOccurs="4"/>
+      <object type="sub1.simple$Booleans" minOccurs="3" maxOccurs="5"/>
     </property>
     <property name="objectArrayDiff2" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="6"/>
-      <object class="sub1.simple$Strings" minOccurs="3" maxOccurs="7"/>
+      <object type="sub1.simple$Booleans" minOccurs="3" maxOccurs="6"/>
+      <object type="sub1.simple$Strings" minOccurs="3" maxOccurs="7"/>
     </property>
     <property name="objectArrayDiff3" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="3" maxOccurs="8"/>
-      <object class="sub1.simple$Strings" minOccurs="3" maxOccurs="9"/>
-      <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="4"/>
+      <object type="sub1.simple$Booleans" minOccurs="3" maxOccurs="8"/>
+      <object type="sub1.simple$Strings" minOccurs="3" maxOccurs="9"/>
+      <object type="sub1.simple$Booleans" minOccurs="4" maxOccurs="4"/>
     </property>
     <property name="objectArrayDiff4" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="5"/>
-      <object class="sub1.simple$Strings" minOccurs="4" maxOccurs="6"/>
-      <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="7"/>
-      <object class="sub1.simple$Strings" minOccurs="4" maxOccurs="8"/>
+      <object type="sub1.simple$Booleans" minOccurs="4" maxOccurs="5"/>
+      <object type="sub1.simple$Strings" minOccurs="4" maxOccurs="6"/>
+      <object type="sub1.simple$Booleans" minOccurs="4" maxOccurs="7"/>
+      <object type="sub1.simple$Strings" minOccurs="4" maxOccurs="8"/>
     </property>
     <property name="objectArrayDiff5" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="4" maxOccurs="9"/>
-      <object class="sub1.simple$Strings" minOccurs="5" maxOccurs="5"/>
-      <object class="sub1.simple$Numbers" minOccurs="5" maxOccurs="6"/>
-      <object class="sub1.simple$Booleans" minOccurs="5" maxOccurs="7"/>
-      <object class="sub1.simple$Numbers" minOccurs="5" maxOccurs="8"/>
+      <object type="sub1.simple$Booleans" minOccurs="4" maxOccurs="9"/>
+      <object type="sub1.simple$Strings" minOccurs="5" maxOccurs="5"/>
+      <object type="sub1.simple$Numbers" minOccurs="5" maxOccurs="6"/>
+      <object type="sub1.simple$Booleans" minOccurs="5" maxOccurs="7"/>
+      <object type="sub1.simple$Numbers" minOccurs="5" maxOccurs="8"/>
     </property>
     <property name="numberArrayMin" xsi:type="array">
       <number min="0" minOccurs="2"/>
@@ -288,13 +288,13 @@
   </object>
   <object class="sub2.xyz.ObjectsArray" extends="sub2.pkg.cls$AbstractObject">
     <property name="objectArrayDefault" xsi:type="array">
-      <object class="sub1.simple$Booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
+      <object type="sub1.simple$Booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
     </property>
     <property name="objectArrayNotRequired" xsi:type="array" use="optional">
-      <object class="sub1.simple$Strings" minOccurs="1" maxOccurs="7"/>
+      <object type="sub1.simple$Strings" minOccurs="1" maxOccurs="7"/>
     </property>
     <property name="objectArrayPropertiesSkipUnknown" xsi:type="array">
-      <object class="sub1.simple$Numbers"/>
+      <object type="sub1.simple$Numbers"/>
     </property>
   </object>
 </jsonx>

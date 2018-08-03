@@ -96,7 +96,8 @@ public class SchemaTest {
   private static void writeFile(final String fileName, final String data) throws IOException {
     try (final OutputStreamWriter out = new FileWriter(new File(generatedResourcesDir, fileName))) {
       out.write("<!--\n");
-      out.write("  Copyright (c) 2017 lib4j\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n");
+      out.write("  Copyright (c) 2017 lib4j\n\n");
+      out.write("  Permission is hereby granted, free of charge, to any person obtaining a copy\n");
       out.write("  of this software and associated documentation files (the \"Software\"), to deal\n");
       out.write("  in the Software without restriction, including without limitation the rights\n");
       out.write("  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n");
@@ -115,60 +116,68 @@ public class SchemaTest {
     return new Schema(classLoader.getDefinedPackage(packageName), classLoader, c -> c.getClassLoader() == classLoader);
   }
 
+  private static void assertSources(final Map<String,String> expected, final Map<String,String> actual) {
+    assertEquals(expected.size(), actual.size());
+    for (final Map.Entry<String,String> entry : expected.entrySet())
+      assertEquals(entry.getValue(), actual.get(entry.getKey()));
+  }
+
   public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     logger.info(fileName + "...");
     final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseJsonx(controlBinding);
 
     logger.info("  4) JSONX -> Java(1)");
-    final Map<String,String> sources = controlSchema.toJava(generatedSourcesDir);
+    final Map<String,String> test1Sources = controlSchema.toJava(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final Map.Entry<String,String> entry : sources.entrySet())
+    for (final Map.Entry<String,String> entry : test1Sources.entrySet())
       compiler.addSource(entry.getValue());
 
     logger.info("  5) -- Java(1) Compile --");
     final ClassLoader classLoader = compiler.compile();
 
     logger.info("  6) Java(1) -> JSONX");
-    final Schema testSchema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
-    final String xml = toXml(testSchema, Settings.DEFAULT).toString();
+    final Schema test1Schema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
+    final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
     logger.info("  7) Validate JSONX");
-    Validator.validate(xml, false);
     writeFile("out-" + fileName, xml);
+    Validator.validate(xml, false);
 
-    final xL2gluGCXYYJc.Jsonx reParsedBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(xml);
-    final Schema reParsedSchema = testParseJsonx(reParsedBinding);
+    final Schema test2Schema = testParseJsonx((xL2gluGCXYYJc.Jsonx)Bindings.parse(xml));
     logger.info("  8) JSONX -> Java(2)");
-    final Map<String,String> reParsedSources = reParsedSchema.toJava();
+    final Map<String,String> test2Sources = test2Schema.toJava();
     logger.info("  9) Java(1) == Java(2)");
-    assertEquals(sources.size(), reParsedSources.size());
-    for (final Map.Entry<String,String> entry : sources.entrySet())
-      assertEquals(entry.getValue(), reParsedSources.get(entry.getKey()));
+    assertSources(test1Sources, test2Sources);
 
-    testSettings(fileName);
+    testSettings(fileName, test1Sources);
   }
 
-  private static void testSettings(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
+  private static void testSettings(final String fileName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
       final Schema controlSchema = new Schema(controlBinding);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
-      final Map<String,String> sources = controlSchema.toJava(generatedSourcesDir);
+      final Map<String,String> test1Sources = controlSchema.toJava(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
-      for (final Map.Entry<String,String> entry : sources.entrySet())
+      for (final Map.Entry<String,String> entry : test1Sources.entrySet())
         compiler.addSource(entry.getValue());
 
+      assertSources(originalSources, test1Sources);
+
       final ClassLoader classLoader = compiler.compile();
-      final Schema testSchema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
-      final String schema = toXml(testSchema, settings).toString();
+      final Schema test1Schema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
+      final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema reParsedSchema = new Schema((xL2gluGCXYYJc.Jsonx)Bindings.parse(schema));
-      final Map<String,String> reParsedSources = reParsedSchema.toJava();
-      assertEquals(sources.size(), reParsedSources.size());
-      for (final Map.Entry<String,String> entry : sources.entrySet())
-        assertEquals(entry.getValue(), reParsedSources.get(entry.getKey()));
+      final Schema test2Schema = new Schema((xL2gluGCXYYJc.Jsonx)Bindings.parse(schema));
+      final Map<String,String> test2Sources = test2Schema.toJava();
+      assertSources(test1Sources, test2Sources);
     }
+  }
+
+  @Test
+  public void testArray() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+    test("array.jsonx");
   }
 
   @Test

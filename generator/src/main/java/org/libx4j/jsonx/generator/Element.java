@@ -37,8 +37,8 @@ abstract class Element {
    * spec of <code>this</code> element's <code>*Property</code> or <code>*Element</code>
    * declaration.
    *
-   * @param owner
-   * @param packageName
+   * @param owner The <code>Element</code> that owns (contains) <code>this</code> element.
+   * @param packageName The package name declared in the schema element.
    * @return The non-null <code>Map<String,String></code> of name/value attributes.
    */
   protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
