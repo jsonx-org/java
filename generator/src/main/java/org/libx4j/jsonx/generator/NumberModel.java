@@ -30,6 +30,8 @@ import org.libx4j.jsonx.runtime.Form;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;
 import org.libx4j.jsonx.runtime.Use;
+import org.libx4j.xsb.runtime.Binding;
+import org.libx4j.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
   public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
@@ -48,7 +50,7 @@ final class NumberModel extends Model {
     final NumberModel model = new NumberModel(registry, property, field);
     final Id id = model.id();
 
-    final NumberModel registered = (NumberModel)registry.getElement(id);
+    final NumberModel registered = (NumberModel)registry.getModel(id);
     return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
@@ -56,8 +58,18 @@ final class NumberModel extends Model {
     final NumberModel model = new NumberModel(registry, element);
     final Id id = model.id();
 
-    final NumberModel registered = (NumberModel)registry.getElement(id);
+    final NumberModel registered = (NumberModel)registry.getModel(id);
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+  }
+
+  private static void checkMinMax(final Binding binding, final BigDecimal min, final BigDecimal max) {
+    if (max != null && min != null && min.compareTo(max) > 0)
+      throw new ValidationException("min=\"" + min + "\" > max=\"" + max + "\"\n" + Bindings.getXPath(binding, elementXPath) + "[@min=" + min + " and @max=" + max + "]");
+  }
+
+  private static void checkMinMax(final Class<?> cls, final BigDecimal min, final BigDecimal max) {
+    if (max != null && min != null && min.compareTo(max) > 0)
+      throw new ValidationException("min=\"" + min + "\" > max=\"" + max + "\"\n" + cls.getName());
   }
 
   private final Id id;
@@ -70,6 +82,8 @@ final class NumberModel extends Model {
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
+    checkMinMax(binding, min, max);
+
     this.id = new Id(binding.getTemplate$());
   }
 
@@ -78,6 +92,8 @@ final class NumberModel extends Model {
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
+    checkMinMax(binding, min, max);
+
     this.id = new Id(this);
   }
 
@@ -86,6 +102,8 @@ final class NumberModel extends Model {
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     this.min = binding.getMin$() == null ? null : binding.getMin$().text();
     this.max = binding.getMax$() == null ? null : binding.getMax$().text();
+    checkMinMax(binding, min, max);
+
     this.id = new Id(this);
   }
 
@@ -97,6 +115,8 @@ final class NumberModel extends Model {
     this.form = property.form() == Form.REAL ? null : property.form();
     this.min = property.min().length() == 0 ? null : new BigDecimal(property.min());
     this.max = property.max().length() == 0 ? null : new BigDecimal(property.max());
+    checkMinMax(property.annotationType(), min, max);
+
     this.id = new Id(this);
   }
 
@@ -105,6 +125,8 @@ final class NumberModel extends Model {
     this.form = element.form() == Form.REAL ? null : element.form();
     this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
     this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
+    checkMinMax(element.annotationType(), min, max);
+
     this.id = new Id(this);
   }
 

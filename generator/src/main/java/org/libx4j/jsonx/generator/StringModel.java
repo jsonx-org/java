@@ -37,7 +37,7 @@ final class StringModel extends Model {
     final StringModel model = new StringModel(registry, property, field);
     final Id id = model.id();
 
-    final StringModel registered = (StringModel)registry.getElement(id);
+    final StringModel registered = (StringModel)registry.getModel(id);
     return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
@@ -45,7 +45,7 @@ final class StringModel extends Model {
     final StringModel model = new StringModel(registry, element);
     final Id id = model.id();
 
-    final StringModel registered = (StringModel)registry.getElement(id);
+    final StringModel registered = (StringModel)registry.getModel(id);
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 

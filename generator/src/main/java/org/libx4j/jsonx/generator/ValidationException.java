@@ -16,6 +16,10 @@
 
 package org.libx4j.jsonx.generator;
 
+/**
+ * This exception indicates that an error has occurred while evaluating a JSONX
+ * model.
+ */
 public class ValidationException extends RuntimeException {
   private static final long serialVersionUID = 2984407300739435993L;
 
@@ -24,8 +28,7 @@ public class ValidationException extends RuntimeException {
   }
 
   public ValidationException(final Throwable cause) {
-    super(cause.getMessage(), cause.getCause());
-    setStackTrace(cause.getStackTrace());
+    super(cause);
   }
 
   public ValidationException(final String message, final Throwable cause) {

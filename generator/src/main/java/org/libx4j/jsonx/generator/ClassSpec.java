@@ -19,28 +19,28 @@ package org.libx4j.jsonx.generator;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-public class JavaClass {
-  private final TreeMap<String,JavaClass> memberClasses = new TreeMap<>();
+public class ClassSpec {
+  private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
 
-  private final Referrer<?> model;
+  private final Referrer<?> referrer;
   private final Registry.Type type;
 
-  public JavaClass(final Referrer<?> model) {
-    this.model = model;
-    this.type = model.classType();
+  public ClassSpec(final Referrer<?> referrer) {
+    this.referrer = referrer;
+    this.type = referrer.classType();
   }
 
-  public JavaClass(final Registry.Type type) {
-    this.model = null;
+  public ClassSpec(final Registry.Type type) {
+    this.referrer = null;
     this.type = type;
   }
 
   public String getAnnotation() {
-    if (model == null)
+    if (referrer == null)
       return null;
 
     final StringBuilder builder = new StringBuilder();
-    final Iterator<AnnotationSpec> iterator = model.annotationSpec().iterator();
+    final Iterator<AnnotationSpec> iterator = referrer.getClassAnnotation().iterator();
     for (int i = 0; iterator.hasNext(); i++) {
       if (i > 0)
         builder.append('\n');
@@ -51,14 +51,14 @@ public class JavaClass {
     return builder.toString();
   }
 
-  public void add(final JavaClass javaClass) {
-    memberClasses.put(javaClass.type.toString(), javaClass);
+  public void add(final ClassSpec classSpec) {
+    nameToClassSpec.put(classSpec.type.getName(), classSpec);
   }
 
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
-    if (model != null && model instanceof ObjectModel && ((ObjectModel)model).isAbstract())
+    if (referrer != null && referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract())
       builder.append("abstract ");
 
     builder.append(type.getKind()).append(' ').append(type.getSimpleName());
@@ -66,9 +66,9 @@ public class JavaClass {
       builder.append(" extends ").append(type.getSuperType().getCanonicalName());
 
     builder.append(" {");
-    final Iterator<JavaClass> iterator = memberClasses.values().iterator();
+    final Iterator<ClassSpec> iterator = nameToClassSpec.values().iterator();
     for (int i = 0; iterator.hasNext(); i++) {
-      final JavaClass memberClass = iterator.next();
+      final ClassSpec memberClass = iterator.next();
       if (i > 0)
         builder.append('\n');
 
@@ -79,8 +79,8 @@ public class JavaClass {
       builder.append("\n  public static ").append(memberClass.toString().replace("\n", "\n  "));
     }
 
-    if (model != null) {
-      final String code = model.toJava();
+    if (referrer != null) {
+      final String code = referrer.toSource();
       if (code != null && code.length() > 0)
         builder.append("\n  ").append(code.replace("\n", "\n  "));
     }

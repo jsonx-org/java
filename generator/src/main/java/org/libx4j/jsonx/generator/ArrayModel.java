@@ -55,7 +55,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private static ArrayModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Annotation annotation, final Class<? extends Annotation> annotationType, final Id id, final Registry.Type type) {
-    final ArrayModel registered = (ArrayModel)registry.getElement(id);
+    final ArrayModel registered = (ArrayModel)registry.getModel(id);
     if (registered != null)
       return registry.reference(registered, referrer);
 
@@ -71,7 +71,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final ArrayModel model = new ArrayModel(registry, property, property.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
       final Id id = model.id();
 
-      final ArrayModel registered = (ArrayModel)registry.getElement(id);
+      final ArrayModel registered = (ArrayModel)registry.getModel(id);
       return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
@@ -86,7 +86,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final ArrayModel model = new ArrayModel(registry, element, idToElement, declaringTypeName);
       final Id id = model.id();
 
-      final ArrayModel registered = (ArrayModel)registry.getElement(id);
+      final ArrayModel registered = (ArrayModel)registry.getModel(id);
       return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
@@ -104,18 +104,18 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
-  protected static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Member> elements) {
-    if (elements.size() == 0)
+  protected static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Member> members) {
+    if (members.size() == 0)
       return registry.getType(Void.class);
 
-    if (elements.size() == 1)
-      return registry.getType(List.class, elements.get(0).type());
+    if (members.size() == 1)
+      return registry.getType(List.class, members.get(0).type());
 
-    Registry.Type gcc = elements.get(0).type().getGreatestCommonSuperType(elements.get(1).type());
-    for (int i = 2; i < elements.size() && gcc != null; i++)
-      gcc = gcc.getGreatestCommonSuperType(elements.get(i).type());
+    Registry.Type gct = members.get(0).type().getGreatestCommonSuperType(members.get(1).type());
+    for (int i = 2; i < members.size() && gct != null; i++)
+      gct = gct.getGreatestCommonSuperType(members.get(i).type());
 
-    return registry.getType(List.class, gcc);
+    return registry.getType(List.class, gct);
   }
 
   private static void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
@@ -127,24 +127,24 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
-      if (member instanceof $Array.Boolean) {
+      if (member instanceof $Array.Array) {
+        members.add(ArrayModel.reference(registry, referrer, ($Array.Array)member));
+      }
+      else if (member instanceof $Array.Boolean) {
         members.add(BooleanModel.reference(registry, referrer, ($Array.Boolean)member));
       }
       else if (member instanceof $Array.Number) {
         members.add(NumberModel.reference(registry, referrer, ($Array.Number)member));
       }
-      else if (member instanceof $Array.String) {
-        members.add(StringModel.reference(registry, referrer, ($Array.String)member));
-      }
-      else if (member instanceof $Array.Array) {
-        members.add(ArrayModel.reference(registry, referrer, ($Array.Array)member));
-      }
       else if (member instanceof $Array.Object) {
         members.add(ObjectModel.reference(registry, referrer, ($Array.Object)member));
       }
+      else if (member instanceof $Array.String) {
+        members.add(StringModel.reference(registry, referrer, ($Array.String)member));
+      }
       else if (member instanceof $Array.Template) {
         final $Array.Template template = ($Array.Template)member;
-        final Member reference = registry.getElement(new Id(template.getReference$()));
+        final Member reference = registry.getModel(new Id(template.getReference$()));
         if (reference == null)
           throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
 
@@ -223,7 +223,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     super(registry);
     this.members = parseMembers(registry, this, binding);
     if (binding.getClass$() != null) {
-      this.type = registry.getAnnotation((String)binding.owner().getPackage$().text(), binding.getClass$().text());
+      this.type = registry.getType(Registry.Kind.ANNOTATION, (String)binding.owner().getPackage$().text(), binding.getClass$().text());
       this.id = new Id(binding.getClass$());
     }
     else {
@@ -378,7 +378,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final org.lib4j.xml.Element element = super.toXml(settings, owner, packageName);
-    if (owner instanceof ObjectModel && registry.shouldWriteAsTemplate(this, settings) || members.size() == 0)
+    if (owner instanceof ObjectModel && registry.isTemplateReference(this, settings) || members.size() == 0)
       return element;
 
     final List<org.lib4j.xml.Element> elements = new ArrayList<>();
@@ -465,7 +465,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  protected List<AnnotationSpec> annotationSpec() {
+  protected List<AnnotationSpec> getClassAnnotation() {
     final AttributeMap attributes = new AttributeMap();
     final List<AnnotationSpec> annotations = new ArrayList<>();
     renderAnnotations(attributes, annotations);
@@ -474,7 +474,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  protected String toJava() {
+  protected String toSource() {
     return null;
   }
 }

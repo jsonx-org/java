@@ -39,6 +39,7 @@ import org.libx4j.jsonx.runtime.NumberProperty;
 import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.StringProperty;
 import org.libx4j.jsonx.runtime.Use;
+import org.libx4j.xsb.runtime.Attribute;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
 import org.w3.www._2001.XMLSchema.yAA;
@@ -76,41 +77,52 @@ abstract class Member extends Element {
     @Override
     public String apply(final Binding t) {
       final String name;
-      if (t instanceof $Boolean)
-        name = (($Boolean)t).getName$().text();
-      else if (t instanceof $Number)
-        name = (($Number)t).getName$().text();
-      else if (t instanceof $String)
-        name = (($String)t).getName$().text();
-      else if (t instanceof $Array)
-        name = (($Array)t).getName$().text();
-      else if (t instanceof Jsonx.Object)
-        name = ((Jsonx.Object)t).getClass$().text();
+      if (t instanceof $Array)
+        name = "name=\"" + (($Array)t).getName$().text();
       else if (t instanceof $Boolean)
-        name = (($Boolean)t).getName$().text();
+        name = "name=\"" + (($Boolean)t).getName$().text();
       else if (t instanceof $Number)
-        name = (($Number)t).getName$().text();
-      else if (t instanceof $String)
-        name = (($String)t).getName$().text();
-      else if (t instanceof $Array)
-        name = (($Array)t).getName$().text();
-      else if (t instanceof $Template)
-        name = (($Template)t).getName$().text();
+        name = "name=\"" + (($Number)t).getName$().text();
       else if (t instanceof $Object)
-        name = (($Object)t).getName$().text();
+        name = "name=\"" + (($Object)t).getName$().text();
+      else if (t instanceof $String)
+        name = "name=\"" + (($String)t).getName$().text();
+      else if (t instanceof $Template)
+        name = "name=\"" + (($Template)t).getName$().text();
+      else if (t instanceof Jsonx.Array)
+        name = ((Jsonx.Array)t).getClass$() != null ? "class=\"" + ((Jsonx.Array)t).getClass$().text() : "template=\"" + ((Jsonx.Array)t).getTemplate$().text();
+      else if (t instanceof Jsonx.Boolean)
+        name = "template=\"" + ((Jsonx.Boolean)t).getTemplate$().text();
+      else if (t instanceof Jsonx.Number)
+        name = "template=\"" + ((Jsonx.Number)t).getTemplate$().text();
+      else if (t instanceof Jsonx.Object)
+        name = "class=\"" + ((Jsonx.Object)t).getClass$().text();
+      else if (t instanceof Jsonx.String)
+        name = "template=\"" + ((Jsonx.String)t).getTemplate$().text();
       else
         name = null;
 
-      return name != null ? t.name().getLocalPart() + "[@" + (t instanceof $Object ? "class=" : "name=") + name + "]" : t.name().getLocalPart();
+      if (name == null)
+        return t.name().getLocalPart();
+
+      final StringBuilder builder = new StringBuilder();
+      builder.append(t.name().getLocalPart());
+      builder.append("[@").append(name).append("\"]");
+      return builder.toString();
     }
   };
 
   private static Integer parseMaxCardinality(final int minCardinality, final $MaxCardinality maxCardinality) {
     final Integer max = "unbounded".equals(maxCardinality.text()) ? null : Integer.parseInt(maxCardinality.text());
     if (max != null && minCardinality > max)
-      throw new ValidationException(Bindings.getXPath(((org.libx4j.xsb.runtime.Attribute)maxCardinality).owner(), elementXPath) + ": minOccurs=\"" + minCardinality + "\" > maxOccurs=\"" + max + "\"");
+      throw new ValidationException("minOccurs=\"" + minCardinality + "\" > maxOccurs=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@minOccurs=" + minCardinality + " and @maxOccurs=" + maxCardinality.text() + "]");
 
     return max;
+  }
+
+  private static void checkMinMaxOccurs(final String source, final Integer minOccurs, final Integer maxOccurs) {
+    if (minOccurs != null && maxOccurs != null && minOccurs > maxOccurs)
+      throw new ValidationException(source + ": minOccurs=\"" + minOccurs + "\" > maxOccurs=\"" + maxOccurs + "\"");
   }
 
   protected final Registry registry;
@@ -127,10 +139,11 @@ abstract class Member extends Element {
     this.use = use == Use.REQUIRED ? null : use;
     this.minOccurs = minOccurs == null || minOccurs == 0 ? null : minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
+    checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
   public Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
-    this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.isDefault() ? null : minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
+    this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
   public Member(final Registry registry, final $JavaIdentifier name, final yAA.$String use) {

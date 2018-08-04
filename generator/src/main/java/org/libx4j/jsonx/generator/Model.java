@@ -50,7 +50,7 @@ abstract class Model extends Member {
       return new org.lib4j.xml.Element(elementName(), attributes, null);
     }
 
-    if (registry.shouldWriteAsTemplate(this, settings)) {
+    if (registry.isTemplateReference(this, settings)) {
       attributes = super.toXmlAttributes(owner, packageName);
       attributes.put("xsi:type", "template");
       attributes.put("reference", id().toString());

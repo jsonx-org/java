@@ -36,7 +36,7 @@ final class BooleanModel extends Model {
     final BooleanModel model = new BooleanModel(registry, property, field);
     final Id id = model.id();
 
-    final BooleanModel registered = (BooleanModel)registry.getElement(id);
+    final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
@@ -44,7 +44,7 @@ final class BooleanModel extends Model {
     final BooleanModel model = new BooleanModel(registry, element);
     final Id id = model.id();
 
-    final BooleanModel registered = (BooleanModel)registry.getElement(id);
+    final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 

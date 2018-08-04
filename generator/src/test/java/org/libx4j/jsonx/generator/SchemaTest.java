@@ -128,7 +128,7 @@ public class SchemaTest {
     final Schema controlSchema = testParseJsonx(controlBinding);
 
     logger.info("  4) JSONX -> Java(1)");
-    final Map<String,String> test1Sources = controlSchema.toJava(generatedSourcesDir);
+    final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
     for (final Map.Entry<String,String> entry : test1Sources.entrySet())
       compiler.addSource(entry.getValue());
@@ -145,7 +145,7 @@ public class SchemaTest {
 
     final Schema test2Schema = testParseJsonx((xL2gluGCXYYJc.Jsonx)Bindings.parse(xml));
     logger.info("  8) JSONX -> Java(2)");
-    final Map<String,String> test2Sources = test2Schema.toJava();
+    final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
     assertSources(test1Sources, test2Sources);
 
@@ -158,7 +158,7 @@ public class SchemaTest {
       final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
       final Schema controlSchema = new Schema(controlBinding);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
-      final Map<String,String> test1Sources = controlSchema.toJava(generatedSourcesDir);
+      final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
       for (final Map.Entry<String,String> entry : test1Sources.entrySet())
         compiler.addSource(entry.getValue());
@@ -170,7 +170,7 @@ public class SchemaTest {
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
       final Schema test2Schema = new Schema((xL2gluGCXYYJc.Jsonx)Bindings.parse(schema));
-      final Map<String,String> test2Sources = test2Schema.toJava();
+      final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
     }
   }

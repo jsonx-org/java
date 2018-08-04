@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-import org.libx4j.jsonx.runtime.ObjectElement;
-import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 class Id {
@@ -35,6 +33,14 @@ class Id {
 
   public Id(final $String id) {
     this.id = id.text();
+  }
+
+  public Id(final Registry.Type type) {
+    this.id = type.getName();
+  }
+
+  public Id(final Class<?> type) {
+    this.id = type.getName();
   }
 
   public Id(final ArrayModel model) {
@@ -65,23 +71,7 @@ class Id {
   }
 
   public Id(final ObjectModel model) {
-    this.id = model.type().toString();
-  }
-
-  public Id(final ObjectProperty property) {
-    this.id = property.type().getName();
-  }
-
-  public Id(final ObjectElement element) {
-    this.id = element.type().getName();
-  }
-
-  public Id(final Class<?> type) {
-    this.id = type.getName();
-  }
-
-  public Id(final Registry.Type type) {
-    this.id = type.getName();
+    this(model.type());
   }
 
   public Id(final Template model) {

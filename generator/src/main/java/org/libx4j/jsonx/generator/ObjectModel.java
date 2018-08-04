@@ -54,14 +54,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
-    final Id id = new Id(property);
-    final ObjectModel model = (ObjectModel)registry.getElement(id);
+    final Id id = new Id(property.type());
+    final ObjectModel model = (ObjectModel)registry.getModel(id);
     return new Template(registry, getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
-    final Id id = new Id(element);
-    final ObjectModel model = (ObjectModel)registry.getElement(id);
+    final Id id = new Id(element.type());
+    final ObjectModel model = (ObjectModel)registry.getModel(id);
     return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof Referrer ? (Referrer<?>)referrer : null) : registry.reference(model, referrer instanceof Referrer ? (Referrer<?>)referrer : null));
   }
 
@@ -71,7 +71,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz, final JsonxObject jsObject) {
     final Id id = new Id(clazz);
-    final ObjectModel model = (ObjectModel)registry.getElement(id);
+    final ObjectModel model = (ObjectModel)registry.getModel(id);
     return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, clazz, jsObject, null, null), null);
   }
 
@@ -130,7 +130,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
       else if (member instanceof $Template) {
         final $Template template = ($Template)member;
-        final Member reference = registry.getElement(new Id(template.getReference$()));
+        final Member reference = registry.getModel(new Id(template.getReference$()));
         if (reference == null)
           throw new IllegalStateException("Template \"" + template.getName$().text() + "\" -> reference=\"" + template.getReference$().text() + "\" not found");
 
@@ -323,7 +323,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected List<AnnotationSpec> annotationSpec() {
+  protected List<AnnotationSpec> getClassAnnotation() {
     final AttributeMap attributes = new AttributeMap();
     if (unknown() != Unknown.ERROR)
       attributes.put("unknown", Unknown.class.getName() + '.' + unknown());
@@ -332,7 +332,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected String toJava() {
+  protected String toSource() {
     final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0) {
       final Iterator<Member> iterator = members.values().iterator();

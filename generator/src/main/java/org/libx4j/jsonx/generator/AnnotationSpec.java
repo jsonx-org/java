@@ -35,18 +35,18 @@ public class AnnotationSpec {
     return builder.toString();
   }
 
-  private final Class<? extends Annotation> annotation;
+  private final Class<? extends Annotation> annotationType;
   private final AttributeMap attributes;
 
-  public AnnotationSpec(final Class<? extends Annotation> annotation, final AttributeMap attributes) {
-    this.annotation = annotation;
+  public AnnotationSpec(final Class<? extends Annotation> annotationType, final AttributeMap attributes) {
+    this.annotationType = annotationType;
     this.attributes = attributes;
   }
 
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
-    builder.append('@').append(annotation.getName());
+    builder.append('@').append(annotationType.getName());
     if (attributes.size() > 0)
       builder.append('(').append(toAnnotation(attributes)).append(')');
 

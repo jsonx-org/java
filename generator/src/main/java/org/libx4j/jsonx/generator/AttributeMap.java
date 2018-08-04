@@ -46,7 +46,7 @@ public class AttributeMap extends ObservableMap<String,String> {
     if (oldValue == null || oldValue.equals(newValue) || "xsi:schemaLocation".equals(key))
       return true;
 
-    throw new IllegalStateException("Attribute overwrite: " + key + " from " + oldValue + " to " + newValue);
+    throw new IllegalStateException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
   }
 
   public String put(final String key, final Object value) {

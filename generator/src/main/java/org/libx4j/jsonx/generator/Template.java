@@ -93,7 +93,7 @@ final class Template extends Member {
   @Override
   protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
-    if (registry.shouldWriteDirect(model, settings)) {
+    if (!registry.isRootMember(model, settings)) {
       final org.lib4j.xml.Element element = model.toXml(settings, owner, packageName);
       // It is necessary to remove the nullable, required, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened

@@ -25,7 +25,7 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
-public abstract class Referrer<T extends Referrer<?>> extends Model {
+abstract class Referrer<T extends Referrer<?>> extends Model {
   public Referrer(final Registry registry, final $JavaIdentifier name, final $String use) {
     super(registry, name, use);
   }
@@ -49,7 +49,7 @@ public abstract class Referrer<T extends Referrer<?>> extends Model {
 
     final T parent;
     try {
-      parent = (T)registry.getElement(new Id(className));
+      parent = (T)registry.getModel(new Id(className));
     }
     catch (final ClassCastException e) {
       throw new IllegalStateException("Top-level " + elementName() + " \"" + className + "\" incorrect type");
@@ -62,6 +62,6 @@ public abstract class Referrer<T extends Referrer<?>> extends Model {
   }
 
   protected abstract Registry.Type classType();
-  protected abstract List<AnnotationSpec> annotationSpec();
-  protected abstract String toJava();
+  protected abstract List<AnnotationSpec> getClassAnnotation();
+  protected abstract String toSource();
 }

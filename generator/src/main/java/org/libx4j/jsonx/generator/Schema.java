@@ -66,8 +66,9 @@ public final class Schema extends Element {
   private final String packageName;
 
   public Schema(final Jsonx jsonx) {
+    this.registry = new Registry();
     this.packageName = (String)jsonx.getPackage$().text();
-    final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
+
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
       if (obj instanceof Jsonx.Array)
         return ((Jsonx.Array)obj).getTemplate$() != null ? ((Jsonx.Array)obj).getTemplate$().text() : ((Jsonx.Array)obj).getClass$().text();
@@ -87,20 +88,20 @@ public final class Schema extends Element {
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
     });
 
-    this.registry = new Registry();
+    final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
-      if (member instanceof Jsonx.Object) {
+      if (member instanceof Jsonx.Array) {
+        digraph.addVertex(member);
+        findInnerRelations(digraph, registry, member, member);
+      }
+      else if (member instanceof Jsonx.Object) {
         final Jsonx.Object object = (Jsonx.Object)member;
         if (object.getExtends$() != null)
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
           digraph.addVertex(object);
 
-        findInnerRelations(digraph, registry, member, member);
-      }
-      else if (member instanceof Jsonx.Array) {
-        digraph.addVertex(member);
         findInnerRelations(digraph, registry, member, member);
       }
       else {
@@ -172,8 +173,8 @@ public final class Schema extends Element {
 
   private Collection<Model> rootMembers(final Settings settings) {
     final List<Model> members = new ArrayList<>();
-    for (final Model model : registry.rootElements())
-      if (registry.shouldWriteRootMember(model, settings))
+    for (final Model model : registry.getModels())
+      if (registry.isRootMember(model, settings))
         members.add(model);
 
     members.sort(new Comparator<Model>() {
@@ -190,7 +191,7 @@ public final class Schema extends Element {
   }
 
   private Collection<Model> members() {
-    return registry.rootElements();
+    return registry.getModels();
   }
 
   @Override
@@ -231,36 +232,36 @@ public final class Schema extends Element {
     return toXml(settings == null ? Settings.DEFAULT : settings, this, packageName);
   }
 
-  public Map<String,String> toJava() {
-    final Map<Registry.Type,JavaClass> all = new HashMap<>();
-    final Map<Registry.Type,JavaClass> typeToJavaClass = new HashMap<>();
+  public Map<String,String> toSource() {
+    final Map<Registry.Type,ClassSpec> all = new HashMap<>();
+    final Map<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
     for (final Model member : members()) {
       if (member instanceof Referrer && ((Referrer<?>)member).classType() != null) {
         final Referrer<?> model = (Referrer<?>)member;
-        final JavaClass javaClass = new JavaClass(model);
+        final ClassSpec classSpec = new ClassSpec(model);
         if (model.classType().getDeclaringType() != null) {
           final Registry.Type declaringType = model.classType().getDeclaringType();
-          JavaClass parent = all.get(declaringType);
+          ClassSpec parent = all.get(declaringType);
           if (parent == null) {
-            parent = new JavaClass(declaringType);
+            parent = new ClassSpec(declaringType);
             typeToJavaClass.put(declaringType, parent);
             all.put(declaringType, parent);
           }
 
-          parent.add(javaClass);
+          parent.add(classSpec);
         }
         else {
-          typeToJavaClass.put(model.classType(), javaClass);
+          typeToJavaClass.put(model.classType(), classSpec);
         }
 
-        all.put(model.classType(), javaClass);
+        all.put(model.classType(), classSpec);
       }
     }
 
     final Map<String,String> sources = new HashMap<>();
-    for (final Map.Entry<Registry.Type,JavaClass> entry : typeToJavaClass.entrySet()) {
+    for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) {
       final Registry.Type type = entry.getKey();
-      final JavaClass holder = entry.getValue();
+      final ClassSpec holder = entry.getValue();
       final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage();
       if (canonicalPackageName != null)
@@ -277,8 +278,8 @@ public final class Schema extends Element {
     return sources;
   }
 
-  public Map<String,String> toJava(final File dir) throws IOException {
-    final Map<String,String> sources = toJava();
+  public Map<String,String> toSource(final File dir) throws IOException {
+    final Map<String,String> sources = toSource();
     for (final Map.Entry<String,String> entry : sources.entrySet()) {
       final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
       file.getParentFile().mkdirs();
