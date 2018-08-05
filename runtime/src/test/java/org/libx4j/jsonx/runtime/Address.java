@@ -23,7 +23,7 @@ import org.libx4j.jsonx.runtime.StringProperty;
 
 @JsonxObject
 public class Address {
-  @NumberProperty(form=Form.INTEGER, min="0", use=Use.REQUIRED)
+  @NumberProperty(form=Form.INTEGER, range="[0,]", use=Use.REQUIRED)
   public Integer number;
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)

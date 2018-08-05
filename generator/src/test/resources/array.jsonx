@@ -20,56 +20,56 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
   <array class="RootArray3">
-    <template reference="foo.bar$RootArray2" nullable="false" minOccurs="3" maxOccurs="4"/>
-    <template reference="rootNumber" nullable="false"/>
-    <template reference="rootString"/>
+    <reference type="foo.bar$RootArray2" nullable="false" minOccurs="3" maxOccurs="4"/>
+    <reference type="rootNumber" nullable="false"/>
+    <reference type="rootString"/>
   </array>
   <array class="foo.bar$RootArray1">
-    <template reference="rootBooleanRequired" minOccurs="5" maxOccurs="6"/>
+    <reference type="rootBooleanRequired" minOccurs="5" maxOccurs="6"/>
   </array>
   <array class="foo.bar$RootArray2">
-    <template reference="foo.bar$RootArray1" minOccurs="1" maxOccurs="2"/>
-    <template reference="rootBooleanRequired" nullable="false"/>
+    <reference type="foo.bar$RootArray1" minOccurs="1" maxOccurs="2"/>
+    <reference type="rootBooleanRequired" nullable="false"/>
   </array>
   <array template="templateArray">
-    <template reference="RootArray3" minOccurs="9" maxOccurs="10"/>
-    <template reference="foo.bar$RootArray2" minOccurs="7" maxOccurs="8"/>
-    <template reference="rootBooleanRequired"/>
-    <template reference="rootBooleanRequired" nullable="false"/>
+    <reference type="RootArray3" minOccurs="9" maxOccurs="10"/>
+    <reference type="foo.bar$RootArray2" minOccurs="7" maxOccurs="8"/>
+    <reference type="rootBooleanRequired"/>
+    <reference type="rootBooleanRequired" nullable="false"/>
   </array>
   <boolean template="rootBooleanRequired"/>
-  <number template="rootNumber" form="integer" min="2" max="9"/>
+  <number template="rootNumber" form="integer" range="[2,9]"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Array">
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">
         <string/>
-        <template reference="rootString"/>
+        <reference type="rootString"/>
         <boolean nullable="false"/>
         <array>
           <string nullable="false"/>
-          <template reference="rootNumber"/>
+          <reference type="rootNumber"/>
           <array>
-            <template reference="foo.bar$RootArray2"/>
+            <reference type="foo.bar$RootArray2"/>
             <array>
               <array nullable="false"/>
             </array>
             <boolean/>
           </array>
-          <template reference="rootBooleanRequired"/>
+          <reference type="rootBooleanRequired"/>
           <number/>
         </array>
-        <template reference="templateArray"/>
+        <reference type="templateArray"/>
         <number nullable="false"/>
       </array>
       <string/>
-      <template reference="RootArray3"/>
+      <reference type="RootArray3"/>
       <boolean nullable="false"/>
     </property>
     <property name="arrayDirectOptional" xsi:type="array" use="optional"/>
-    <property name="arrayOne" xsi:type="template" reference="foo.bar$RootArray1" use="optional"/>
-    <property name="arrayTwo" xsi:type="template" reference="foo.bar$RootArray2"/>
-    <property name="arrayThree" xsi:type="template" reference="RootArray3" use="optional"/>
-    <property name="arrayFour" xsi:type="template" reference="templateArray" use="optional"/>
+    <property name="arrayOne" xsi:type="reference" type="foo.bar$RootArray1" use="optional"/>
+    <property name="arrayTwo" xsi:type="reference" type="foo.bar$RootArray2"/>
+    <property name="arrayThree" xsi:type="reference" type="RootArray3" use="optional"/>
+    <property name="arrayFour" xsi:type="reference" type="templateArray" use="optional"/>
   </object>
 </jsonx>

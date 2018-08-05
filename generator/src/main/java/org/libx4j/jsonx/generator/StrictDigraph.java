@@ -17,6 +17,7 @@
 package org.libx4j.jsonx.generator;
 
 import org.lib4j.util.Digraph;
+import org.libx4j.jsonx.runtime.ValidationException;
 
 class StrictDigraph<T> extends Digraph<T> {
   private static final long serialVersionUID = 4143833580153219718L;

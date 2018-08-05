@@ -41,12 +41,14 @@ import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.ArrayType;
 import org.libx4j.jsonx.runtime.BooleanElement;
 import org.libx4j.jsonx.runtime.BooleanElements;
+import org.libx4j.jsonx.runtime.Foo;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberElements;
 import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.ObjectElements;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringElements;
+import org.libx4j.jsonx.runtime.ValidationException;
 import org.libx4j.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
@@ -66,19 +68,32 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.elementIds(), annotationType.getAnnotations(), type, annotationType.getName()), referrer);
   }
 
+  public static ArrayModel referenceOrDeclare(final Registry registry, final Class<?> cls) {
+    final Id id = new Id(cls);
+    final ArrayModel model = (ArrayModel)registry.getModel(id);
+    if (model != null)
+      return registry.reference(model, null);
+
+    final ArrayType arrayType = cls.getAnnotation(ArrayType.class);
+    if (arrayType == null)
+      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ArrayType.class.getSimpleName() + " annotation.");
+
+    return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.elementIds(), cls.getAnnotations(), registry.getType(cls), cls.getName()), null);
+  }
+
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final Field field) {
     if (ArrayType.class.equals(property.type())) {
       final ArrayModel model = new ArrayModel(registry, property, property.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
       final Id id = model.id();
 
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
-      return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, Foo.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
     final Registry.Type type = registry.getType(property.type());
     final Id id = new Id(type);
 
-    return new Template(registry, getName(property.name(), field), property.use(), referenceOrDeclare(registry, referrer, property, property.type(), id, type));
+    return new Reference(registry, Foo.getName(property.name(), field), property.use(), referenceOrDeclare(registry, referrer, property, property.type(), id, type));
   }
 
   private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayElement element, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
@@ -87,13 +102,13 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final Id id = model.id();
 
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
-      return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
     final Registry.Type type = registry.getType(element.type());
     final Id id = new Id(type);
 
-    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), referenceOrDeclare(registry, referrer, element, element.type(), id, type));
+    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), referenceOrDeclare(registry, referrer, element, element.type(), id, type));
   }
 
   public static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Array binding) {
@@ -136,19 +151,16 @@ final class ArrayModel extends Referrer<ArrayModel> {
       else if (member instanceof $Array.Number) {
         members.add(NumberModel.reference(registry, referrer, ($Array.Number)member));
       }
-      else if (member instanceof $Array.Object) {
-        members.add(ObjectModel.reference(registry, referrer, ($Array.Object)member));
-      }
       else if (member instanceof $Array.String) {
         members.add(StringModel.reference(registry, referrer, ($Array.String)member));
       }
-      else if (member instanceof $Array.Template) {
-        final $Array.Template template = ($Array.Template)member;
-        final Member reference = registry.getModel(new Id(template.getReference$()));
-        if (reference == null)
-          throw new IllegalStateException("Template reference=\"" + template.getReference$().text() + "\" in array not found");
+      else if (member instanceof $Array.Reference) {
+        final $Array.Reference reference = ($Array.Reference)member;
+        final Member model = registry.getModel(new Id(reference.getType$()));
+        if (model == null)
+          throw new IllegalStateException("Template type=\"" + reference.getType$().text() + "\" in array not found");
 
-        members.add(new Template(registry, template, registry.reference(reference, referrer)));
+        members.add(new Reference(registry, reference, registry.reference(model, referrer)));
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
@@ -419,7 +431,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     attributes.put("id", index);
 
     final AnnotationSpec annotationSpec = new AnnotationSpec(member.elementAnnotation(), attributes);
-    final Member reference = member instanceof Template ? ((Template)member).reference() : member;
+    final Member reference = member instanceof Reference ? ((Reference)member).reference() : member;
     if (reference instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)reference;
       int offset = 1;

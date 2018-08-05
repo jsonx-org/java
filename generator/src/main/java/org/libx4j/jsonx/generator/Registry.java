@@ -19,8 +19,10 @@ package org.libx4j.jsonx.generator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.lib4j.lang.Classes;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
@@ -236,7 +238,25 @@ class Registry {
   }
 
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
-  private final LinkedHashMap<String,List<Referrer<?>>> refToReferrers = new LinkedHashMap<>();
+  private final LinkedHashMap<String,X> refToReferrers = new LinkedHashMap<>();
+
+  private static class X {
+    final List<Referrer<?>> referrers = new ArrayList<>();
+    final Set<Class<?>> referrerTypes = new HashSet<>();
+
+    public void add(final Referrer<?> referrer) {
+      referrers.add(referrer);
+      referrerTypes.add(referrer.getClass());
+    }
+
+    public int getNumReferrers() {
+      return referrers.size();
+    }
+
+    public boolean hasReferrerType(final Class<?> type) {
+      return referrerTypes.contains(type);
+    }
+  }
 
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   public final Type OBJECT = getType(Object.class);
@@ -274,9 +294,9 @@ class Registry {
       return model;
 
     final String key = model.id().toString();
-    List<Referrer<?>> referrers = refToReferrers.get(key);
+    X referrers = refToReferrers.get(key);
     if (referrers == null)
-      refToReferrers.put(key, referrers = new ArrayList<>());
+      refToReferrers.put(key, referrers = new X());
 
     referrers.add(referrer);
     return model;
@@ -291,9 +311,9 @@ class Registry {
   }
 
   private boolean isRootReferable(final Member member, final Settings settings) {
-    final List<Referrer<?>> referrers = refToReferrers.get(member.id().toString());
-    final int numReferrers = referrers == null ? 0 : referrers.size();
-    return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 : numReferrers >= settings.getTemplateThreshold();
+    final X referrers = refToReferrers.get(member.id().toString());
+    final int numReferrers = referrers == null ? 0 : referrers.getNumReferrers();
+    return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(ArrayModel.class) : numReferrers >= settings.getTemplateThreshold();
   }
 
   public boolean isRootMember(final Member member, final Settings settings) {

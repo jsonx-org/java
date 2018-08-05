@@ -19,8 +19,4 @@ package org.libx4j.jsonx.runtime;
 public enum Use {
   OPTIONAL,
   REQUIRED;
-
-  public static Use fromString(final String value) {
-    return "optional".equals(value) ? OPTIONAL : "required".equals(value) ? REQUIRED : null;
-  }
 }

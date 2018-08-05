@@ -20,38 +20,38 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
   <array template="arrayDepthFour">
-    <template reference="arrayDepthThree" minOccurs="9" maxOccurs="10"/>
-    <template reference="arrayDepthTwo" minOccurs="7" maxOccurs="8"/>
-    <template reference="rootBooleanRequired"/>
-    <template reference="rootBooleanRequired" nullable="false"/>
+    <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10"/>
+    <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8"/>
+    <reference type="rootBooleanRequired"/>
+    <reference type="rootBooleanRequired" nullable="false"/>
   </array>
   <array template="arrayDepthOne">
-    <template reference="rootBooleanRequired" minOccurs="5" maxOccurs="6"/>
+    <reference type="rootBooleanRequired" minOccurs="5" maxOccurs="6"/>
   </array>
   <array template="arrayDepthThree">
-    <template reference="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4"/>
-    <template reference="rootNumber" nullable="false"/>
-    <template reference="rootString"/>
+    <reference type="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4"/>
+    <reference type="rootNumber" nullable="false"/>
+    <reference type="rootString"/>
   </array>
   <array template="arrayDepthTwo">
-    <template reference="arrayDepthOne" minOccurs="1" maxOccurs="2"/>
-    <template reference="rootBooleanRequired" nullable="false"/>
+    <reference type="arrayDepthOne" minOccurs="1" maxOccurs="2"/>
+    <reference type="rootBooleanRequired" nullable="false"/>
   </array>
   <boolean template="rootBooleanRequired"/>
-  <number template="rootNumber" form="integer" min="2" max="9"/>
+  <number template="rootNumber" form="integer" range="[2,9]"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Template">
     <property name="arrayDirectOptional" xsi:type="array" use="optional"/>
-    <property name="arrayOne" xsi:type="template" reference="arrayDepthOne" use="optional"/>
-    <property name="arrayTwo" xsi:type="template" reference="arrayDepthTwo"/>
-    <property name="arrayThree" xsi:type="template" reference="arrayDepthThree" use="optional"/>
-    <property name="arrayFour" xsi:type="template" reference="arrayDepthFour" use="optional"/>
+    <property name="arrayOne" xsi:type="reference" type="arrayDepthOne" use="optional"/>
+    <property name="arrayTwo" xsi:type="reference" type="arrayDepthTwo"/>
+    <property name="arrayThree" xsi:type="reference" type="arrayDepthThree" use="optional"/>
+    <property name="arrayFour" xsi:type="reference" type="arrayDepthFour" use="optional"/>
     <property name="booleanDirectOptional" xsi:type="boolean" use="optional"/>
-    <property name="booleanRequiredTemp" xsi:type="template" reference="rootBooleanRequired"/>
-    <property name="booleanOptionalTemp" xsi:type="template" reference="rootBooleanRequired" use="optional"/>
-    <property name="numberDirectOptional" xsi:type="number" min="5" max="8" use="optional"/>
-    <property name="numberOptionalTemp" xsi:type="template" reference="rootNumber" use="optional"/>
+    <property name="booleanRequiredTemp" xsi:type="reference" type="rootBooleanRequired"/>
+    <property name="booleanOptionalTemp" xsi:type="reference" type="rootBooleanRequired" use="optional"/>
+    <property name="numberDirectOptional" xsi:type="number" range="[5,8]" use="optional"/>
+    <property name="numberOptionalTemp" xsi:type="reference" type="rootNumber" use="optional"/>
     <property name="stringDirectOptional" xsi:type="string" use="optional"/>
-    <property name="stringTemp" xsi:type="template" reference="rootString" use="optional"/>
+    <property name="stringTemp" xsi:type="reference" type="rootString" use="optional"/>
   </object>
 </jsonx>

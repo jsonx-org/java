@@ -39,9 +39,11 @@ import org.lib4j.util.IdentityHashSet;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$TemplateMember;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ReferenceMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.runtime.ArrayType;
 import org.libx4j.jsonx.runtime.JsonxObject;
+import org.libx4j.jsonx.runtime.ValidationException;
 import org.libx4j.xsb.runtime.Binding;
 
 public final class Schema extends Element {
@@ -54,8 +56,8 @@ public final class Schema extends Element {
         if (model.getExtends$() != null)
           digraph.addEdgeRef(object, model.getExtends$().text());
       }
-      else if (next instanceof $TemplateMember) {
-        digraph.addEdgeRef(object, (($TemplateMember)next).getReference$().text());
+      else if (next instanceof $ReferenceMember) {
+        digraph.addEdgeRef(object, (($ReferenceMember)next).getType$().text());
       }
 
       findInnerRelations(digraph, registry, object, next);
@@ -109,9 +111,9 @@ public final class Schema extends Element {
       }
     }
 
-    final List<$Member> cycle = digraph.getCycle();
+    final List<String> cycle = digraph.getCycleRef();
     if (cycle != null)
-      throw new ValidationException("Inheritance cycle detected in object hierarchy: " + Collections.toString(digraph.getCycle(), " -> "));
+      throw new ValidationException("Cycle detected in object hierarchy: " + Collections.toString(cycle, " -> "));
 
     final ListIterator<$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious()) {
@@ -132,11 +134,11 @@ public final class Schema extends Element {
   }
 
   public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class) && filter.test(c)));
+    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> (c.isAnnotationPresent(JsonxObject.class) || c.isAnnotationPresent(ArrayType.class)) && filter.test(c)));
   }
 
   public Schema(final Package pkg, final ClassLoader classLoader) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class)));
+    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class) || c.isAnnotationPresent(ArrayType.class)));
   }
 
   public Schema(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {
@@ -153,8 +155,12 @@ public final class Schema extends Element {
 
   public Schema(final Set<Class<?>> classes) {
     final Registry registry = new Registry();
-    for (final Class<?> cls : classes)
-      ObjectModel.referenceOrDeclare(registry, cls);
+    for (final Class<?> cls : classes) {
+      if (cls.isAnnotation())
+        ArrayModel.referenceOrDeclare(registry, cls);
+      else
+        ObjectModel.referenceOrDeclare(registry, cls);
+    }
 
     this.registry = registry;
     this.packageName = getClassPrefix();
@@ -183,7 +189,7 @@ public final class Schema extends Element {
         if (o1 instanceof ObjectModel)
           return o2 instanceof ObjectModel ? o1.type().getName().compareTo(o2.type().getName()) : 1;
 
-        return o2 instanceof ObjectModel ? -1 : (o1.getClass().getSimpleName() + o1.id() + o1.name()).compareTo(o2.getClass().getSimpleName() + o2.id() + o2.name());
+        return o2 instanceof ObjectModel ? -1 : (o1.getClass().getSimpleName() + o1.name() + o1.id()).compareTo(o2.getClass().getSimpleName() + o2.name() + o2.id());
       }
     });
 
@@ -261,17 +267,17 @@ public final class Schema extends Element {
     final Map<String,String> sources = new HashMap<>();
     for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) {
       final Registry.Type type = entry.getKey();
-      final ClassSpec holder = entry.getValue();
+      final ClassSpec classSpec = entry.getValue();
       final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage();
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
 
-      final String annotation = holder.getAnnotation();
+      final String annotation = classSpec.getAnnotation();
       if (annotation != null)
         builder.append('\n').append(annotation);
 
-      builder.append("\npublic ").append(holder);
+      builder.append("\npublic ").append(classSpec);
       sources.put(type.getName(), builder.toString());
     }
 

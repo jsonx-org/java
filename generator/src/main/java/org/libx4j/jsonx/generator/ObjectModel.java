@@ -35,8 +35,9 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.runtime.Foo;
 import org.libx4j.jsonx.runtime.JsonxObject;
 import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.ObjectProperty;
@@ -56,27 +57,23 @@ final class ObjectModel extends Referrer<ObjectModel> {
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
     final Id id = new Id(property.type());
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Template(registry, getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
+    return new Reference(registry, Foo.getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
     final Id id = new Id(element.type());
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof Referrer ? (Referrer<?>)referrer : null) : registry.reference(model, referrer instanceof Referrer ? (Referrer<?>)referrer : null));
+    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof Referrer ? (Referrer<?>)referrer : null) : registry.reference(model, referrer instanceof Referrer ? (Referrer<?>)referrer : null));
   }
 
-  public static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz) {
-    return referenceOrDeclare(registry, clazz, checkJSObject(clazz));
+  public static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls) {
+    return referenceOrDeclare(registry, cls, checkJSObject(cls));
   }
 
-  private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> clazz, final JsonxObject jsObject) {
-    final Id id = new Id(clazz);
+  private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls, final JsonxObject jsObject) {
+    final Id id = new Id(cls);
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, clazz, jsObject, null, null), null);
-  }
-
-  public static ObjectModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Object binding) {
-    return registry.reference(new ObjectModel(registry, binding), referrer);
+    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, cls, jsObject, null, null), null);
   }
 
   public static String getFullyQualifiedName(final $Object binding) {
@@ -88,16 +85,16 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return builder.insert(0, ((Jsonx.Object)owner.owner()).getClass$().text()).toString();
   }
 
-  private static JsonxObject checkJSObject(final Class<?> clazz) {
-    final JsonxObject jsObject = clazz.getDeclaredAnnotation(JsonxObject.class);
+  private static JsonxObject checkJSObject(final Class<?> cls) {
+    final JsonxObject jsObject = cls.getDeclaredAnnotation(JsonxObject.class);
     if (jsObject == null)
-      throw new IllegalArgumentException("Class " + clazz.getName() + " does not specify the @" + JsonxObject.class.getSimpleName() + " annotation.");
+      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + JsonxObject.class.getSimpleName() + " annotation.");
 
     return jsObject;
   }
 
-  private static void recurseInnerClasses(final Registry registry, final Class<?> clazz) {
-    for (final Class<?> innerClass : clazz.getClasses()) {
+  private static void recurseInnerClasses(final Registry registry, final Class<?> cls) {
+    for (final Class<?> innerClass : cls.getClasses()) {
       final JsonxObject innerJSObject = innerClass.getDeclaredAnnotation(JsonxObject.class);
       if (innerJSObject == null)
         recurseInnerClasses(registry, innerClass);
@@ -106,39 +103,39 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  private Map<String,Member> parseMembers(final $ObjectMember binding, final ObjectModel model) {
+  private Map<String,Member> parseMembers(final $ObjectMember binding, final ObjectModel objectModel) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Boolean) {
         final $Boolean bool = ($Boolean)member;
-        members.put(bool.getName$().text(), BooleanModel.reference(registry, model, bool));
+        members.put(bool.getName$().text(), BooleanModel.reference(registry, objectModel, bool));
       }
       else if (member instanceof $Number) {
         final $Number number = ($Number)member;
-        members.put(number.getName$().text(), NumberModel.reference(registry, model, number));
+        members.put(number.getName$().text(), NumberModel.reference(registry, objectModel, number));
       }
       else if (member instanceof $String) {
         final $String string = ($String)member;
-        members.put(string.getName$().text(), StringModel.reference(registry, model, string));
+        members.put(string.getName$().text(), StringModel.reference(registry, objectModel, string));
       }
       else if (member instanceof $Array) {
         final $Array array = ($Array)member;
-        final ArrayModel child = ArrayModel.reference(registry, model, array);
+        final ArrayModel child = ArrayModel.reference(registry, objectModel, array);
         members.put(array.getName$().text(), child);
       }
-      else if (member instanceof $Template) {
-        final $Template template = ($Template)member;
-        final Member reference = registry.getModel(new Id(template.getReference$()));
-        if (reference == null)
-          throw new IllegalStateException("Template \"" + template.getName$().text() + "\" -> reference=\"" + template.getReference$().text() + "\" not found");
+      else if (member instanceof $Reference) {
+        final $Reference reference = ($Reference)member;
+        final Member model = registry.getModel(new Id(reference.getType$()));
+        if (model == null)
+          throw new IllegalStateException("Template \"" + reference.getName$().text() + "\" -> reference=\"" + reference.getType$().text() + "\" not found");
 
-        members.put(template.getName$().text(), reference instanceof Model ? new Template(registry, template, registry.reference((Model)reference, model)) : reference);
+        members.put(reference.getName$().text(), model instanceof Model ? new Reference(registry, reference, registry.reference((Model)model, objectModel)) : model);
       }
       else if (member instanceof $Object) {
         final $Object object = ($Object)member;
-        final ObjectModel child = declare(registry, model, object);
+        final ObjectModel child = declare(registry, objectModel, object);
         members.put(object.getName$().text(), child);
       }
       else {
@@ -192,21 +189,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.id = new Id(this);
   }
 
-  private ObjectModel(final Registry registry, final $Array.Object binding) {
-    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.type = registry.getType((String)getJsonx(binding).getPackage$().text(), binding.getType$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
-    this.superObject = null;
-    this.isAbstract = null;
-    this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
-    this.members = Collections.unmodifiableMap(parseMembers(binding, this));
-    this.id = new Id(this);
-  }
-
-  private ObjectModel(final Registry registry, final Class<?> clazz, final JsonxObject jsObject, final Boolean nullable, final Use use) {
+  private ObjectModel(final Registry registry, final Class<?> cls, final JsonxObject jsObject, final Boolean nullable, final Use use) {
     super(registry, nullable, use);
-    final Class<?> superClass = clazz.getSuperclass();
-    this.type = registry.getType(clazz);
-    this.isAbstract = Modifier.isAbstract(clazz.getModifiers());
+    final Class<?> superClass = cls.getSuperclass();
+    this.type = registry.getType(cls);
+    this.isAbstract = Modifier.isAbstract(cls.getModifiers());
     this.unknown = jsObject.unknown();
     if (superClass != null) {
       final JsonxObject superObject = superClass.getDeclaredAnnotation(JsonxObject.class);
@@ -217,14 +204,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
-    for (final Field field : clazz.getDeclaredFields()) {
+    for (final Field field : cls.getDeclaredFields()) {
       final Member member = Member.toMember(registry, this, field);
       if (member != null)
         members.put(member.name(), member);
     }
 
     this.members = Collections.unmodifiableMap(members);
-    recurseInnerClasses(registry, clazz);
+    recurseInnerClasses(registry, cls);
     this.id = new Id(this);
   }
 

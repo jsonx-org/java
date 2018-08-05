@@ -26,10 +26,14 @@ import org.lib4j.lang.IllegalAnnotationException;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.runtime.Foo;
 import org.libx4j.jsonx.runtime.Form;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;
+import org.libx4j.jsonx.runtime.ParseException;
+import org.libx4j.jsonx.runtime.Range;
 import org.libx4j.jsonx.runtime.Use;
+import org.libx4j.jsonx.runtime.ValidationException;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
 
@@ -51,7 +55,7 @@ final class NumberModel extends Model {
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, Foo.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
@@ -59,30 +63,30 @@ final class NumberModel extends Model {
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  private static void checkMinMax(final Binding binding, final BigDecimal min, final BigDecimal max) {
-    if (max != null && min != null && min.compareTo(max) > 0)
-      throw new ValidationException("min=\"" + min + "\" > max=\"" + max + "\"\n" + Bindings.getXPath(binding, elementXPath) + "[@min=" + min + " and @max=" + max + "]");
+  private static ValidationException createValidationException(final Binding binding, final String range, final ParseException e) {
+    return new ValidationException(Bindings.getXPath(binding, elementXPath) + "/@range=" + range, e);
   }
 
-  private static void checkMinMax(final Class<?> cls, final BigDecimal min, final BigDecimal max) {
-    if (max != null && min != null && min.compareTo(max) > 0)
-      throw new ValidationException("min=\"" + min + "\" > max=\"" + max + "\"\n" + cls.getName());
+  private static ValidationException createValidationException(final Class<?> cls, final String range, final ParseException e) {
+    throw new ValidationException(cls.getName() + " Invalid range=\"" + range + "\"", e);
   }
 
   private final Id id;
   private final Form form;
-  private final BigDecimal min;
-  private final BigDecimal max;
+  private final Range range;
 
   private NumberModel(final Registry registry, final Jsonx.Number binding) {
     super(registry);
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
-    this.min = binding.getMin$() == null ? null : binding.getMin$().text();
-    this.max = binding.getMax$() == null ? null : binding.getMax$().text();
-    checkMinMax(binding, min, max);
+    try {
+      this.range = binding.getRange$() == null ? null : new Range(binding.getRange$().text());
+    }
+    catch (final ParseException e) {
+      throw createValidationException(binding, binding.getRange$().text(), e);
+    }
 
     this.id = new Id(binding.getTemplate$());
   }
@@ -90,9 +94,12 @@ final class NumberModel extends Model {
   private NumberModel(final Registry registry, final $Number binding) {
     super(registry, binding.getName$(), binding.getUse$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
-    this.min = binding.getMin$() == null ? null : binding.getMin$().text();
-    this.max = binding.getMax$() == null ? null : binding.getMax$().text();
-    checkMinMax(binding, min, max);
+    try {
+      this.range = binding.getRange$() == null ? null : new Range(binding.getRange$().text());
+    }
+    catch (final ParseException e) {
+      throw createValidationException(binding, binding.getRange$().text(), e);
+    }
 
     this.id = new Id(this);
   }
@@ -100,9 +107,12 @@ final class NumberModel extends Model {
   private NumberModel(final Registry registry, final $Array.Number binding) {
     super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
-    this.min = binding.getMin$() == null ? null : binding.getMin$().text();
-    this.max = binding.getMax$() == null ? null : binding.getMax$().text();
-    checkMinMax(binding, min, max);
+    try {
+      this.range = binding.getRange$() == null ? null : new Range(binding.getRange$().text());
+    }
+    catch (final ParseException e) {
+      throw createValidationException(binding, binding.getRange$().text(), e);
+    }
 
     this.id = new Id(this);
   }
@@ -113,9 +123,12 @@ final class NumberModel extends Model {
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
 
     this.form = property.form() == Form.REAL ? null : property.form();
-    this.min = property.min().length() == 0 ? null : new BigDecimal(property.min());
-    this.max = property.max().length() == 0 ? null : new BigDecimal(property.max());
-    checkMinMax(property.annotationType(), min, max);
+    try {
+      this.range = property.range().length() == 0 ? null : new Range(property.range());
+    }
+    catch (final ParseException e) {
+      throw createValidationException(property.annotationType(), property.range(), e);
+    }
 
     this.id = new Id(this);
   }
@@ -123,9 +136,12 @@ final class NumberModel extends Model {
   private NumberModel(final Registry registry, final NumberElement element) {
     super(registry, element.nullable(), null);
     this.form = element.form() == Form.REAL ? null : element.form();
-    this.min = element.min().length() == 0 ? null : new BigDecimal(element.min());
-    this.max = element.max().length() == 0 ? null : new BigDecimal(element.max());
-    checkMinMax(element.annotationType(), min, max);
+    try {
+      this.range = element.range().length() == 0 ? null : new Range(element.range());
+    }
+    catch (final ParseException e) {
+      throw createValidationException(element.annotationType(), element.range(), e);
+    }
 
     this.id = new Id(this);
   }
@@ -139,12 +155,8 @@ final class NumberModel extends Model {
     return this.form;
   }
 
-  public BigDecimal min() {
-    return this.min;
-  }
-
-  public BigDecimal max() {
-    return this.max;
+  public Range range() {
+    return this.range;
   }
 
   @Override
@@ -173,11 +185,8 @@ final class NumberModel extends Model {
     if (form != null)
       attributes.put("form", form.toString().toLowerCase());
 
-    if (min != null)
-      attributes.put("min", String.valueOf(min));
-
-    if (max != null)
-      attributes.put("max", String.valueOf(max));
+    if (range != null)
+      attributes.put("range", range.toString());
 
     return attributes;
   }
@@ -188,10 +197,7 @@ final class NumberModel extends Model {
     if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);
 
-    if (min != null)
-      attributes.put("min", "\"" + min + "\"");
-
-    if (max != null)
-      attributes.put("max", "\"" + max + "\"");
+    if (range != null)
+      attributes.put("range", "\"" + range.toString() + "\"");
   }
 }

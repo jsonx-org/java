@@ -63,7 +63,7 @@ class Id {
   }
 
   public Id(final NumberModel model) {
-    this.id = "n" + hash(model.form(), model.min(), model.max());
+    this.id = "n" + hash(model.form(), model.range());
   }
 
   public Id(final StringModel model) {
@@ -74,7 +74,7 @@ class Id {
     this(model.type());
   }
 
-  public Id(final Template model) {
+  public Id(final Reference model) {
     this.id = "t" + hash(model.reference().id().toString(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.use());
   }
 

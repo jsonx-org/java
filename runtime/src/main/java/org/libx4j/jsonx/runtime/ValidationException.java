@@ -16,26 +16,22 @@
 
 package org.libx4j.jsonx.runtime;
 
-public class Cardinality {
-  private final Integer[] nullMinMax;
+/**
+ * This exception indicates that an error has occurred while evaluating a JSONX
+ * model.
+ */
+public class ValidationException extends RuntimeException {
+  private static final long serialVersionUID = 2984407300739435993L;
 
-  public Cardinality(final Integer ... nullMinMax) {
-    this.nullMinMax = nullMinMax;
+  public ValidationException(final String message) {
+    super(message);
   }
 
-  public int getDepth() {
-    return nullMinMax.length / 3;
+  public ValidationException(final Throwable cause) {
+    super(cause);
   }
 
-  public boolean getNull(final int depth) {
-    return nullMinMax[depth * 3] != 0;
-  }
-
-  public Integer getMinOccurs(final int depth) {
-    return nullMinMax[depth * 3 + 1];
-  }
-
-  public Integer getMaxOccurs(final int depth) {
-    return nullMinMax[depth * 3 + 2];
+  public ValidationException(final String message, final Throwable cause) {
+    super(message, cause);
   }
 }

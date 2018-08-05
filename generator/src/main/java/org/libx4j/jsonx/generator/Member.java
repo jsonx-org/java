@@ -31,7 +31,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Template;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.BooleanProperty;
@@ -39,6 +39,7 @@ import org.libx4j.jsonx.runtime.NumberProperty;
 import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.StringProperty;
 import org.libx4j.jsonx.runtime.Use;
+import org.libx4j.jsonx.runtime.ValidationException;
 import org.libx4j.xsb.runtime.Attribute;
 import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
@@ -69,10 +70,6 @@ abstract class Member extends Element {
     return declaredMember;
   }
 
-  protected static String getName(final String name, final Field field) {
-    return name.length() > 0 ? name : field.getName();
-  }
-
   protected static final Function<Binding,String> elementXPath = new Function<>() {
     @Override
     public String apply(final Binding t) {
@@ -87,8 +84,8 @@ abstract class Member extends Element {
         name = "name=\"" + (($Object)t).getName$().text();
       else if (t instanceof $String)
         name = "name=\"" + (($String)t).getName$().text();
-      else if (t instanceof $Template)
-        name = "name=\"" + (($Template)t).getName$().text();
+      else if (t instanceof $Reference)
+        name = "name=\"" + (($Reference)t).getName$().text();
       else if (t instanceof Jsonx.Array)
         name = ((Jsonx.Array)t).getClass$() != null ? "class=\"" + ((Jsonx.Array)t).getClass$().text() : "template=\"" + ((Jsonx.Array)t).getTemplate$().text();
       else if (t instanceof Jsonx.Boolean)
@@ -147,7 +144,7 @@ abstract class Member extends Element {
   }
 
   public Member(final Registry registry, final $JavaIdentifier name, final yAA.$String use) {
-    this(registry, name.text(), null, use == null ? null : Use.fromString(use.text()), null, null);
+    this(registry, name.text(), null, use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
   }
 
   public final String name() {

@@ -1,0 +1,72 @@
+<!--
+  Copyright (c) 2018 lib4j
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<jsonx
+  package="org.libx4j.jsonx.generator.datatype"
+  xmlns="http://jsonx.libx4j.org/jsonx-0.9.8.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  <array class="ArrayObj">
+    <reference type="ObjArr" maxOccurs="1"/>
+  </array>
+  <boolean template="bool"/>
+  <number template="num"/>
+  <number template="numInt" form="integer"/>
+  <number template="numIntRange1" form="integer" range="[1,]"/>
+  <number template="numIntRange2" form="integer" range="[,2]"/>
+  <number template="numRange1" range="[1,]"/>
+  <number template="numRange2" range="[,2]"/>
+  <string template="str"/>
+  <string template="strDec" urlDecode="true"/>
+  <string template="strDecEnc" urlDecode="true" urlEncode="true"/>
+  <string template="strEnc" urlEncode="true"/>
+  <string template="strPattern" pattern="[a-z]+"/>
+  <string template="strPatternDec" pattern="[a-z]+" urlDecode="true"/>
+  <string template="strPatternDecEnc" pattern="[a-z]+" urlDecode="true" urlEncode="true"/>
+  <string template="strPatternEnc" pattern="[a-z]+" urlEncode="true"/>
+  <object class="ObjArr">
+    <property name="bool" xsi:type="reference" type="bool"/>
+    <property name="boolOptional" xsi:type="reference" type="bool" use="optional"/>
+    <property name="numRequired" xsi:type="reference" type="num"/>
+    <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
+    <property name="numIntRequired" xsi:type="reference" type="numInt"/>
+    <property name="numIntOptional" xsi:type="reference" type="numInt" use="optional"/>
+    <property name="numIntRange1Required" xsi:type="reference" type="numIntRange1"/>
+    <property name="numIntRange1Optional" xsi:type="reference" type="numIntRange1" use="optional"/>
+    <property name="numIntRange2Required" xsi:type="reference" type="numIntRange2"/>
+    <property name="numIntRange2Optional" xsi:type="reference" type="numIntRange2" use="optional"/>
+    <property name="numRange1Required" xsi:type="reference" type="numRange1"/>
+    <property name="numRange1Optional" xsi:type="reference" type="numRange1" use="optional"/>
+    <property name="numRange2Required" xsi:type="reference" type="numRange2"/>
+    <property name="numRange2Optional" xsi:type="reference" type="numRange2" use="optional"/>
+    <property name="strRequired" xsi:type="reference" type="str"/>
+    <property name="strOptional" xsi:type="reference" type="str" use="optional"/>
+    <property name="strDecRequired" xsi:type="reference" type="strDec"/>
+    <property name="strDecOptional" xsi:type="reference" type="strDec" use="optional"/>
+    <property name="strDecEncRequired" xsi:type="reference" type="strDecEnc"/>
+    <property name="strDecEncOptional" xsi:type="reference" type="strDecEnc" use="optional"/>
+    <property name="strEncRequired" xsi:type="reference" type="strEnc"/>
+    <property name="strEncOptional" xsi:type="reference" type="strEnc" use="optional"/>
+    <property name="strPatternRequired" xsi:type="reference" type="strPattern"/>
+    <property name="strPatternOptional" xsi:type="reference" type="strPattern" use="optional"/>
+    <property name="strPatternDecRequired" xsi:type="reference" type="strPatternDec"/>
+    <property name="strPatternDecOptional" xsi:type="reference" type="strPatternDec" use="optional"/>
+    <property name="strPatternDecEncRequired" xsi:type="reference" type="strPatternDecEnc"/>
+    <property name="strPatternDecEncOptional" xsi:type="reference" type="strPatternDecEnc" use="optional"/>
+    <property name="strPatternEncRequired" xsi:type="reference" type="strPatternEnc"/>
+    <property name="strPatternEncOptional" xsi:type="reference" type="strPatternEnc" use="optional"/>
+  </object>
+</jsonx>

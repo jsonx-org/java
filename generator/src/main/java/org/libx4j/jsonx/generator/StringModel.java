@@ -25,6 +25,7 @@ import org.lib4j.lang.Strings;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.libx4j.jsonx.runtime.Foo;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringProperty;
 
@@ -38,7 +39,7 @@ final class StringModel extends Model {
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Template(registry, getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, Foo.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
@@ -46,7 +47,7 @@ final class StringModel extends Model {
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Template(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String binding) {

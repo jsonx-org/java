@@ -35,9 +35,9 @@ public class Book extends Publication {
    *  2, [1, "Part 2, Chapter 1"], [2, "Part 2, Chapter 2"], [3, "Part 2, Chapter 3"]...]
    */
   @StringElement(id=4, pattern="(\\S)|(\\S.*\\S)", nullable=false, minOccurs=1, maxOccurs=1)
-  @NumberElement(id=3, min="1", nullable=false, minOccurs=1, maxOccurs=1)
+  @NumberElement(id=3, range="[1,]", nullable=false, minOccurs=1, maxOccurs=1)
   @ArrayElement(id=2, nullable=false, elementIds={3,4})
-  @NumberElement(id=1, form=Form.INTEGER, min="1", nullable=false)
+  @NumberElement(id=1, form=Form.INTEGER, range="[1,]", nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds={1,2})
   public Object[] index;
 }

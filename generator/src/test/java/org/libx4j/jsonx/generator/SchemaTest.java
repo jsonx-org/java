@@ -181,17 +181,27 @@ public class SchemaTest {
   }
 
   @Test
+  public void testDataType() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+    test("datatype.jsonx");
+  }
+
+  @Test
   public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     test("template.jsonx");
   }
 
   @Test
-  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
-    test("complete.jsonx");
+  public void testReference() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+    test("reference.jsonx");
   }
 
   @Test
   public void testReserved() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     test("reserved.jsonx");
+  }
+
+  @Test
+  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+    test("complete.jsonx");
   }
 }

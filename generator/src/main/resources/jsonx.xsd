@@ -72,10 +72,10 @@
     </xs:attribute>
   </xs:attributeGroup>
   
-  <xs:complexType name="templateMember" abstract="true">
+  <xs:complexType name="referenceMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
-        <xs:attribute name="reference" type="dt:javaQualifiedIdentifier" use="required">
+        <xs:attribute name="type" type="dt:javaQualifiedIdentifier" use="required">
           <xs:annotation>
             <xs:documentation>Name of referenced template or class. Required.</xs:documentation>
           </xs:annotation>
@@ -84,9 +84,9 @@
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:complexType name="template">
+  <xs:complexType name="reference">
     <xs:complexContent>
-      <xs:extension base="jsonx:templateMember">
+      <xs:extension base="jsonx:referenceMember">
         <xs:attributeGroup ref="jsonx:nameable"/>
         <xs:attributeGroup ref="jsonx:use"/>
       </xs:extension>
@@ -115,6 +115,13 @@
     </xs:restriction>
   </xs:simpleType>
   
+  <xs:simpleType name="range">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\(\[](-?\d+(\.\d+)?)?,(-?\d+(\.\d+)?)?[\)\]]"/>
+      <xs:minLength value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
   <xs:complexType name="numberMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
@@ -123,14 +130,15 @@
             <xs:documentation>Numeric form of number (integer or real). Default: real.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="min" type="xs:decimal">
+        <xs:attribute name="range" type="jsonx:range">
           <xs:annotation>
-            <xs:documentation>Minimum inclusive allowed value. Optional.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="max" type="xs:decimal">
-          <xs:annotation>
-            <xs:documentation>Maximum inclusive allowed value. Optional.</xs:documentation>
+            <xs:documentation>
+              Value range expressed in interval notation:
+              Open (exclusive) interval: (min,max)
+              Closed (inclusive) interal: [min,max]
+              Half-open or half-closed interval: [min,max)
+              Degenerate interval: [val]
+            </xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -200,6 +208,16 @@
     <xs:complexContent>
       <xs:extension base="jsonx:member">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="array">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="jsonx:arrayMember">
+                  <xs:attributeGroup ref="jsonx:annullable"/>
+                  <xs:attributeGroup ref="jsonx:recurrable"/>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
           <xs:element name="boolean">
             <xs:complexType>
               <xs:complexContent>
@@ -230,35 +248,10 @@
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="array">
+          <xs:element name="reference">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jsonx:arrayMember">
-                  <xs:attributeGroup ref="jsonx:annullable"/>
-                  <xs:attributeGroup ref="jsonx:recurrable"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="object">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="jsonx:objectMember">
-                  <xs:attribute name="type" type="dt:javaQualifiedIdentifier" use="required">
-                    <xs:annotation>
-                      <xs:documentation>Name of class. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
-                  <xs:attributeGroup ref="jsonx:annullable"/>
-                  <xs:attributeGroup ref="jsonx:recurrable"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="template">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="jsonx:templateMember">
+                <xs:extension base="jsonx:referenceMember">
                   <xs:attributeGroup ref="jsonx:annullable"/>
                   <xs:attributeGroup ref="jsonx:recurrable"/>
                 </xs:extension>
@@ -436,11 +429,11 @@
     </xs:key>
     <xs:keyref name="propertyReferenceKeyRef" refer="jsonx:templateKey">
       <xs:selector xpath=".//jsonx:property"/>
-      <xs:field xpath="@reference"/>
+      <xs:field xpath="@type"/>
     </xs:keyref>
     <xs:keyref name="templateReferenceKeyRef" refer="jsonx:templateKey">
-      <xs:selector xpath=".//jsonx:template"/>
-      <xs:field xpath="@reference"/>
+      <xs:selector xpath=".//jsonx:reference"/>
+      <xs:field xpath="@type"/>
     </xs:keyref>
     <xs:keyref name="objectExtendsKeyRef" refer="jsonx:objectClassKey">
       <xs:selector xpath=".//jsonx:object"/>
@@ -450,17 +443,13 @@
       <xs:selector xpath=".//jsonx:property"/>
       <xs:field xpath="@extends"/>
     </xs:keyref>
-    <xs:keyref name="propertyTypeKeyRef" refer="jsonx:arrayClassKey">
-      <xs:selector xpath=".//jsonx:property"/>
-      <xs:field xpath="@type"/>
-    </xs:keyref>
     <xs:keyref name="arrayObjectClassKeyRef" refer="jsonx:objectClassKey">
       <xs:selector xpath=".//jsonx:array/jsonx:object"/>
-      <xs:field xpath="@class"/>
+      <xs:field xpath="@type"/>
     </xs:keyref>
     <xs:keyref name="propertyObjectClassKeyRef" refer="jsonx:objectClassKey">
       <xs:selector xpath=".//jsonx:property/jsonx:object"/>
-      <xs:field xpath="@class"/>
+      <xs:field xpath="@type"/>
     </xs:keyref>
   </xs:element>
 
