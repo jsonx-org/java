@@ -25,7 +25,7 @@ import org.lib4j.lang.Strings;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
-import org.libx4j.jsonx.runtime.Foo;
+import org.libx4j.jsonx.runtime.JsonxUtil;
 import org.libx4j.jsonx.runtime.StringElement;
 import org.libx4j.jsonx.runtime.StringProperty;
 
@@ -39,7 +39,7 @@ final class StringModel extends Model {
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Reference(registry, Foo.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
@@ -163,8 +163,8 @@ final class StringModel extends Model {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
-    super.toAnnotationAttributes(attributes);
+  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+    super.toAnnotationAttributes(attributes, owner);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");
 

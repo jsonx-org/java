@@ -72,9 +72,9 @@
   <number template="num"/>
   <number template="numInt" form="integer"/>
   <number template="numIntRange1" form="integer" range="[1,]"/>
-  <number template="numIntRange2" form="integer" range="[,2]"/>
+  <number template="numIntRange2" form="integer" range="[,4]"/>
   <number template="numRange1" range="[1,]"/>
-  <number template="numRange2" range="[,2]"/>
+  <number template="numRange2" range="[,4]"/>
   <string template="str"/>
   <string template="strDec" urlDecode="true"/>
   <string template="strDecEnc" urlDecode="true" urlEncode="true"/>

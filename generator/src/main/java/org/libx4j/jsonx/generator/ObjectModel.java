@@ -34,11 +34,11 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
+import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
-import org.libx4j.jsonx.runtime.Foo;
 import org.libx4j.jsonx.runtime.JsonxObject;
+import org.libx4j.jsonx.runtime.JsonxUtil;
 import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.ObjectProperty;
 import org.libx4j.jsonx.runtime.Unknown;
@@ -55,9 +55,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
-    final Id id = new Id(property.type());
+    final Id id = new Id(field.getType());
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Reference(registry, Foo.getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, property), referrer) : registry.reference(model, referrer));
+    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, field, property), referrer) : registry.reference(model, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
@@ -163,8 +163,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.id = new Id(this);
   }
 
-  private ObjectModel(final Registry registry, final ObjectProperty property) {
-    this(registry, property.type(), checkJSObject(property.type()), null, property.use());
+  private ObjectModel(final Registry registry, final Field field, final ObjectProperty property) {
+    this(registry, field.getType(), checkJSObject(field.getType()), null, property.use());
   }
 
   private ObjectModel(final Registry registry, final ObjectElement element) {
@@ -304,9 +304,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
-    super.toAnnotationAttributes(attributes);
-    attributes.put("type", type.getCanonicalName() + ".class");
+  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+    super.toAnnotationAttributes(attributes, owner);
+    if (owner instanceof ArrayModel)
+      attributes.put("type", type.getCanonicalName() + ".class");
   }
 
   @Override

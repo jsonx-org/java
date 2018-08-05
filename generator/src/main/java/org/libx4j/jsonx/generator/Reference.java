@@ -118,9 +118,9 @@ final class Reference extends Member {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
-    super.toAnnotationAttributes(attributes);
-    model.toAnnotationAttributes(attributes);
+  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+    super.toAnnotationAttributes(attributes, owner);
+    model.toAnnotationAttributes(attributes, owner);
   }
 
   @Override

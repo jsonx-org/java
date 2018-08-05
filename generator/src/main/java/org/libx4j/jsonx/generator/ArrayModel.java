@@ -41,7 +41,7 @@ import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.ArrayType;
 import org.libx4j.jsonx.runtime.BooleanElement;
 import org.libx4j.jsonx.runtime.BooleanElements;
-import org.libx4j.jsonx.runtime.Foo;
+import org.libx4j.jsonx.runtime.JsonxUtil;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberElements;
 import org.libx4j.jsonx.runtime.ObjectElement;
@@ -87,13 +87,13 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final Id id = model.id();
 
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
-      return new Reference(registry, Foo.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
     final Registry.Type type = registry.getType(property.type());
     final Id id = new Id(type);
 
-    return new Reference(registry, Foo.getName(property.name(), field), property.use(), referenceOrDeclare(registry, referrer, property, property.type(), id, type));
+    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), referenceOrDeclare(registry, referrer, property, property.type(), id, type));
   }
 
   private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayElement element, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
@@ -192,7 +192,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return Collections.unmodifiableList(elements);
   }
 
-  private static Annotation[] flatten(final Annotation[] annotations, final int index, final int depth) {
+  static Annotation[] flatten(final Annotation[] annotations, final int index, final int depth) {
     if (index == annotations.length)
       return new Annotation[depth];
 
@@ -406,27 +406,27 @@ final class ArrayModel extends Referrer<ArrayModel> {
     int index = 0;
     for (int i = 0; i < members.size(); i++) {
       indices[i] = index;
-      index += writeElementAnnotations(annotations, members.get(i), index);
+      index += writeElementAnnotations(annotations, members.get(i), index, this);
     }
 
     writeElementIdsClause(attributes, indices);
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
-    super.toAnnotationAttributes(attributes);
+  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+    super.toAnnotationAttributes(attributes, owner);
     if (type != null)
       attributes.put("type", type.getCanonicalName() + ".class");
     else
       renderAnnotations(attributes, new ArrayList<>());
   }
 
-  private void toAnnotationAttributes(final AttributeMap attributes, final int[] indices) {
-    super.toAnnotationAttributes(attributes);
+  private void toAnnotationAttributes(final AttributeMap attributes, final int[] indices, final Member owner) {
+    super.toAnnotationAttributes(attributes, owner);
     writeElementIdsClause(attributes, indices);
   }
 
-  private static int writeElementAnnotations(final List<AnnotationSpec> annotations, final Member member, final int index) {
+  private static int writeElementAnnotations(final List<AnnotationSpec> annotations, final Member member, final int index, final Member owner) {
     final AttributeMap attributes = new AttributeMap();
     attributes.put("id", index);
 
@@ -439,11 +439,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final int[] indices = new int[arrayModel.members().size()];
       for (int i = 0; i < arrayModel.members().size(); i++) {
         indices[i] = index + offset;
-        offset += writeElementAnnotations(inner, arrayModel.members().get(i), index + offset);
+        offset += writeElementAnnotations(inner, arrayModel.members().get(i), index + offset, owner);
       }
 
       // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
-      arrayModel.toAnnotationAttributes(attributes, indices);
+      arrayModel.toAnnotationAttributes(attributes, indices, owner);
       if (member.minOccurs() != null)
         attributes.put("minOccurs", member.minOccurs());
 
@@ -458,7 +458,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       return offset;
     }
 
-    member.toAnnotationAttributes(attributes);
+    member.toAnnotationAttributes(attributes, owner);
     annotations.add(0, annotationSpec);
     return 1;
   }
@@ -471,7 +471,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final List<AnnotationSpec> annotations = new ArrayList<>();
     int index = 0;
     for (final Member member : members)
-      index += writeElementAnnotations(annotations, member, index);
+      index += writeElementAnnotations(annotations, member, index, this);
 
     return annotations;
   }

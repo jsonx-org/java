@@ -196,7 +196,7 @@ abstract class Member extends Element {
     return attributes;
   }
 
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
+  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     if (nullable != null)
       attributes.put("nullable", nullable);
 
@@ -217,7 +217,7 @@ abstract class Member extends Element {
       builder.append(Collections.toString(elementAnnotations, '\n')).append('\n');
 
     final AttributeMap attributes = new AttributeMap();
-    toAnnotationAttributes(attributes);
+    toAnnotationAttributes(attributes, this);
     final String instanceCase = JavaIdentifiers.toInstanceCase(name);
     if (!name.equals(instanceCase) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + name + "\"");

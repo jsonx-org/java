@@ -26,8 +26,8 @@ import org.lib4j.lang.IllegalAnnotationException;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Number;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
-import org.libx4j.jsonx.runtime.Foo;
 import org.libx4j.jsonx.runtime.Form;
+import org.libx4j.jsonx.runtime.JsonxUtil;
 import org.libx4j.jsonx.runtime.NumberElement;
 import org.libx4j.jsonx.runtime.NumberProperty;
 import org.libx4j.jsonx.runtime.ParseException;
@@ -55,7 +55,7 @@ final class NumberModel extends Model {
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, Foo.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
@@ -192,8 +192,8 @@ final class NumberModel extends Model {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes) {
-    super.toAnnotationAttributes(attributes);
+  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+    super.toAnnotationAttributes(attributes, owner);
     if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);
 

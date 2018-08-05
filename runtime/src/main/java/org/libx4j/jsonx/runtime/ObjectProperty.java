@@ -26,7 +26,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectProperty {
-  Class<?> type();
   String name() default "";
   Use use() default Use.REQUIRED;
 }
