@@ -16,29 +16,54 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.libx4j.jsonx.runtime.ArrayProperty;
-import org.libx4j.jsonx.runtime.JsonxObject;
-import org.libx4j.jsonx.runtime.ObjectElement;
-import org.libx4j.jsonx.runtime.StringElement;
-import org.libx4j.jsonx.runtime.StringProperty;
 
 @JsonxObject
 public abstract class Publication {
   @StringProperty(use=Use.REQUIRED)
-  public String title;
+  private String title;
+
+  public String getTitle() {
+    return this.title;
+  }
+
+  public void setTitle(final String title) {
+    this.title = title;
+  }
 
   @StringElement(id=1, pattern="\\S+ \\S+", nullable=false, minOccurs=1)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  public String[] authors;
+  private List<String> authors;
+
+  public List<String> getAuthors() {
+    return this.authors;
+  }
+
+  public void setAuthors(final List<String> authors) {
+    this.authors = authors;
+  }
 
   @StringElement(id=1, pattern="\\S+ \\S+", nullable=false, minOccurs=1)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  public String[] editors;
+  private List<String> editors;
+
+  public List<String> getEditors() {
+    return this.editors;
+  }
+
+  public void setEditors(final List<String> editors) {
+    this.editors = editors;
+  }
 
   @ObjectElement(id=1, type=Publishing.class, nullable=false, minOccurs=1)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  public final List<Publishing> publishings = new ArrayList<>();
+  private List<Publishing> publishings;
+
+  public List<Publishing> getPublishings() {
+    return this.publishings;
+  }
+
+  public void setPublishings(final List<Publishing> publishings) {
+    this.publishings = publishings;
+  }
 }

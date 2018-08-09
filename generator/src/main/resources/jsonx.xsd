@@ -35,9 +35,9 @@
   </xs:complexType>
   
   <xs:attributeGroup name="annullable">
-    <xs:attribute name="nullable" type="xs:boolean" default="true">
+    <xs:attribute name="nullable" type="xs:boolean" default="false">
       <xs:annotation>
-        <xs:documentation>Can property or member be set to null. Default: true.</xs:documentation>
+        <xs:documentation>Can an array member be null. Default: false.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -192,9 +192,9 @@
   </xs:simpleType>
   
   <xs:attributeGroup name="recurrable">
-    <xs:attribute name="minOccurs" type="xs:nonNegativeInteger" default="0">
+    <xs:attribute name="minOccurs" type="xs:nonNegativeInteger" default="1">
       <xs:annotation>
-        <xs:documentation>Minimum inclusive occurrence of element in array. Default: 0.</xs:documentation>
+        <xs:documentation>Minimum inclusive occurrence of element in array. Default: 1.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="maxOccurs" type="jsonx:maxCardinality" default="unbounded">
@@ -207,7 +207,7 @@
   <xs:complexType name="arrayMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
           <xs:element name="array">
             <xs:complexType>
               <xs:complexContent>

@@ -41,7 +41,9 @@
   <number template="rootNumber" form="integer" range="[2,9]"/>
   <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Template">
-    <property name="arrayDirectOptional" xsi:type="array" use="optional"/>
+    <property name="arrayDirectOptional" xsi:type="array" use="optional">
+      <boolean/>
+    </property>
     <property name="arrayOne" xsi:type="reference" type="arrayDepthOne" use="optional"/>
     <property name="arrayTwo" xsi:type="reference" type="arrayDepthTwo"/>
     <property name="arrayThree" xsi:type="reference" type="arrayDepthThree" use="optional"/>

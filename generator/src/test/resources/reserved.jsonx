@@ -41,7 +41,9 @@
   <number template="byte" form="integer" range="[2,9]"/>
   <string template="abstract" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Reserved">
-    <property name="void" xsi:type="array" use="optional"/>
+    <property name="boolean" xsi:type="array" use="optional">
+      <boolean/>
+    </property>
     <property name="package" xsi:type="reference" type="package" use="optional"/>
     <property name="int" xsi:type="reference" type="import"/>
     <property name="long" xsi:type="reference" type="extends" use="optional"/>

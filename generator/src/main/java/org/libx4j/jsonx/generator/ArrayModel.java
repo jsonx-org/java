@@ -36,18 +36,13 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayElement;
-import org.libx4j.jsonx.runtime.ArrayElements;
 import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.ArrayType;
 import org.libx4j.jsonx.runtime.BooleanElement;
-import org.libx4j.jsonx.runtime.BooleanElements;
 import org.libx4j.jsonx.runtime.JsonxUtil;
 import org.libx4j.jsonx.runtime.NumberElement;
-import org.libx4j.jsonx.runtime.NumberElements;
 import org.libx4j.jsonx.runtime.ObjectElement;
-import org.libx4j.jsonx.runtime.ObjectElements;
 import org.libx4j.jsonx.runtime.StringElement;
-import org.libx4j.jsonx.runtime.StringElements;
 import org.libx4j.jsonx.runtime.ValidationException;
 import org.libx4j.xsb.runtime.Bindings;
 
@@ -121,7 +116,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   protected static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Member> members) {
     if (members.size() == 0)
-      return registry.getType(Void.class);
+      throw new IllegalArgumentException("members.size() == 0");
 
     if (members.size() == 1)
       return registry.getType(List.class, members.get(0).type());
@@ -192,41 +187,6 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return Collections.unmodifiableList(elements);
   }
 
-  static Annotation[] flatten(final Annotation[] annotations, final int index, final int depth) {
-    if (index == annotations.length)
-      return new Annotation[depth];
-
-    final Annotation annotation = annotations[index];
-    if (ArrayProperty.class.equals(annotation.annotationType()) || ArrayType.class.equals(annotation.annotationType()))
-      return flatten(annotations, index + 1, depth);
-
-    final Annotation[] repeatable;
-    if (ArrayElements.class.equals(annotation.annotationType()))
-      repeatable = ((ArrayElements)annotation).value();
-    else if (BooleanElements.class.equals(annotation.annotationType()))
-      repeatable = ((BooleanElements)annotation).value();
-    else if (NumberElements.class.equals(annotation.annotationType()))
-      repeatable = ((NumberElements)annotation).value();
-    else if (ObjectElements.class.equals(annotation.annotationType()))
-      repeatable = ((ObjectElements)annotation).value();
-    else if (StringElements.class.equals(annotation.annotationType()))
-      repeatable = ((StringElements)annotation).value();
-    else
-      repeatable = null;
-
-    if (repeatable == null) {
-      final Annotation[] flattened = flatten(annotations, index + 1, depth + 1);
-      flattened[depth] = annotation;
-      return flattened;
-    }
-
-    final Annotation[] flattened = flatten(annotations, index + 1, depth + repeatable.length);
-    for (int i = 0; i < repeatable.length; i++)
-      flattened[depth + i] = repeatable[i];
-
-    return flattened;
-  }
-
   private final Id id;
   private final Registry.Type type;
   private final List<Member> members;
@@ -267,7 +227,10 @@ final class ArrayModel extends Referrer<ArrayModel> {
     super(registry);
     final Map<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
-    for (final Annotation elementAnnotation : flatten(annotations, 0, 0)) {
+    for (final Annotation elementAnnotation : JsonxUtil.flatten(annotations)) {
+      if (elementAnnotation instanceof ArrayProperty || elementAnnotation instanceof ArrayType)
+        continue;
+
       final int id;
       if (elementAnnotation instanceof ArrayElement) {
         id = ((ArrayElement)elementAnnotation).id();
@@ -287,7 +250,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
         id = ((StringElement)elementAnnotation).id();
       }
       else {
-        throw new UnsupportedOperationException("Unsupported Annotation type: " + elementAnnotation.getClass().getName());
+        throw new UnsupportedOperationException("Unsupported annotation type: " + elementAnnotation.getClass().getName());
       }
 
       if (idToElement.containsKey(id))

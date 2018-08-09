@@ -16,49 +16,95 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.libx4j.jsonx.runtime.ArrayElement;
-import org.libx4j.jsonx.runtime.ArrayProperty;
-import org.libx4j.jsonx.runtime.BooleanProperty;
-import org.libx4j.jsonx.runtime.JsonxObject;
-import org.libx4j.jsonx.runtime.ObjectElement;
-import org.libx4j.jsonx.runtime.ObjectProperty;
-import org.libx4j.jsonx.runtime.StringElement;
-import org.libx4j.jsonx.runtime.StringProperty;
 
 @JsonxObject
 public class Library {
   @JsonxObject
   public static class Journal extends Publication {
     @StringProperty(use=Use.REQUIRED)
-    public String subject;
+    private String subject;
+
+    public String getSubject() {
+      return this.subject;
+    }
+
+    public void setSubject(final String subject) {
+      this.subject = subject;
+    }
 
     @BooleanProperty(use=Use.REQUIRED)
-    public Boolean openAccess;
+    private Boolean openAccess;
+
+    public Boolean getOpenAccess() {
+      return this.openAccess;
+    }
+
+    public void setOpenAccess(final Boolean openAccess) {
+      this.openAccess = openAccess;
+    }
   }
 
   @JsonxObject
   public static class StreetSheet extends Publication {
   }
 
-  @ObjectProperty(use=Use.REQUIRED, type=Address.class)
-  public Address address;
+  @ObjectProperty(use=Use.REQUIRED)
+  private Address address;
+
+  public Address getAddress() {
+    return this.address;
+  }
+
+  public void setAddress(final Address address) {
+    this.address = address;
+  }
 
   @BooleanProperty(name="handicap", use=Use.REQUIRED)
-  public Boolean handicapEquipped;
+  private Boolean _handicap;
+
+  public Boolean getHandicap() {
+    return this._handicap;
+  }
+
+  public void setHandicap(final Boolean handicap) {
+    this._handicap = handicap;
+  }
 
   @StringElement(id=2, pattern="\\d{2}:\\d{2}", nullable=false, minOccurs=2, maxOccurs=2)
   @ArrayElement(id=1, nullable=false, elementIds=2, minOccurs=7, maxOccurs=7)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  public String[][] schedule;
+  private List<List<String>> schedule;
+
+  public List<List<String>> getSchedule() {
+    return this.schedule;
+  }
+
+  public void setSchedule(final List<List<String>> schedule) {
+    this.schedule = schedule;
+  }
 
   @ObjectElement(id=1, type=Publication.class, nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  public final List<Publication> publications = new ArrayList<>();
+  private List<Publication> publications;
+
+  public List<Publication> getPublications() {
+    return this.publications;
+  }
+
+  public void setPublications(final List<Publication> publications) {
+    this.publications = publications;
+  }
 
   @ObjectElement(id=1, type=StreetSheet.class, nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  public final List<StreetSheet> streetSheets = new ArrayList<>();
+  private List<StreetSheet> streetSheets;
+
+  public List<StreetSheet> getStreetSheets() {
+    return this.streetSheets;
+  }
+
+  public void setStreetSheets(final List<StreetSheet> streetSheets) {
+    this.streetSheets = streetSheets;
+  }
 }

@@ -16,19 +16,20 @@
 
 package org.libx4j.jsonx.runtime;
 
-import org.libx4j.jsonx.runtime.ArrayElement;
-import org.libx4j.jsonx.runtime.ArrayProperty;
-import org.libx4j.jsonx.runtime.Form;
-import org.libx4j.jsonx.runtime.JsonxObject;
-import org.libx4j.jsonx.runtime.NumberElement;
-import org.libx4j.jsonx.runtime.StringElement;
-import org.libx4j.jsonx.runtime.StringProperty;
-import org.libx4j.jsonx.runtime.Unknown;
+import java.util.List;
 
 @JsonxObject(unknown=Unknown.IGNORE)
 public class Book extends Publication {
   @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d", use=Use.REQUIRED)
-  public String isbn;
+  private String isbn;
+
+  public String getIsbn() {
+    return this.isbn;
+  }
+
+  public void setIsbn(final String isbn) {
+    this.isbn = isbn;
+  }
 
   /**
    * [1, [1, "Part 1, Chapter 1"], [2, "Part 1, Chapter 2"], [3, "Part 1, Chapter 3"],
@@ -39,5 +40,13 @@ public class Book extends Publication {
   @ArrayElement(id=2, nullable=false, elementIds={3,4})
   @NumberElement(id=1, form=Form.INTEGER, range="[1,]", nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds={1,2})
-  public Object[] index;
+  private List<Object> index;
+
+  public List<Object> getIndex() {
+    return this.index;
+  }
+
+  public void setIndex(final List<Object> index) {
+    this.index = index;
+  }
 }

@@ -132,9 +132,9 @@ abstract class Member extends Element {
   public Member(final Registry registry, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
     this.registry = registry;
     this.name = name;
-    this.nullable = nullable != null && nullable ? null : nullable;
+    this.nullable = nullable != null && !nullable ? null : nullable;
     this.use = use == Use.REQUIRED ? null : use;
-    this.minOccurs = minOccurs == null || minOccurs == 0 ? null : minOccurs;
+    this.minOccurs = minOccurs == null || minOccurs == 1 ? null : minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
@@ -196,6 +196,14 @@ abstract class Member extends Element {
     return attributes;
   }
 
+  /**
+   * Intended to be overridden by each concrete subclass, this method populates
+   * the target <code>attributes</code> parameter with annotation attributes
+   * pertaining to this <code>Member</code>.
+   *
+   * @param attributes The target <code>attributes</code> parameter.
+   * @param owner The <code>Member</code> that owns <code>this</code>.
+   */
   protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     if (nullable != null)
       attributes.put("nullable", nullable);

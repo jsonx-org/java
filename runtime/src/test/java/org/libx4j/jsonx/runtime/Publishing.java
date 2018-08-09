@@ -24,8 +24,24 @@ import org.libx4j.jsonx.runtime.StringProperty;
 @JsonxObject
 public class Publishing {
   @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
-  public Integer year;
+  private Integer year;
+
+  public Integer getYear() {
+    return this.year;
+  }
+
+  public void setYear(final Integer year) {
+    this.year = year;
+  }
 
   @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
-  public String publisher;
+  private String publisher;
+
+  public String getPublisher() {
+    return this.publisher;
+  }
+
+  public void setPublisher(final String publisher) {
+    this.publisher = publisher;
+  }
 }

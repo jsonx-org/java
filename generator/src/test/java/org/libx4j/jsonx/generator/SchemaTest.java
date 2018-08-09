@@ -29,7 +29,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +39,7 @@ import org.lib4j.lang.PackageNotFoundException;
 import org.lib4j.test.AssertXml;
 import org.lib4j.xml.ValidationException;
 import org.lib4j.xml.sax.Validator;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
-import org.libx4j.xsb.runtime.Binding;
 import org.libx4j.xsb.runtime.Bindings;
 import org.libx4j.xsb.runtime.ParseException;
 import org.slf4j.Logger;
@@ -72,9 +69,9 @@ public class SchemaTest {
     settings.add(new Settings(Integer.MAX_VALUE));
   }
 
-  private static xL2gluGCXYYJc.Jsonx newControlBinding(final String fileName) throws IOException, MalformedURLException, ValidationException {
+  private static Jsonx newControlBinding(final String fileName) throws IOException, MalformedURLException, ValidationException {
     try (final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
-      return (xL2gluGCXYYJc.Jsonx)Bindings.parse(in);
+      return (Jsonx)Bindings.parse(in);
     }
   }
 
@@ -84,13 +81,13 @@ public class SchemaTest {
     return xml;
   }
 
-  private static Schema testParseJsonx(final xL2gluGCXYYJc.Jsonx controlBinding) throws IOException, ParseException, SAXException {
+  private static Schema testParseJsonx(final Jsonx controlBinding) throws IOException, ParseException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> JSONX");
     final Schema controlSchema = new Schema(controlBinding);
     logger.info("    b) JSONX -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
-    final xL2gluGCXYYJc.Jsonx testBinding = (xL2gluGCXYYJc.Jsonx)Bindings.parse(xml);
+    final Jsonx testBinding = (Jsonx)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual();
     return controlSchema;
@@ -127,7 +124,7 @@ public class SchemaTest {
 
   public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
     logger.info(fileName + "...");
-    final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
+    final Jsonx controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseJsonx(controlBinding);
 
     logger.info("  4) JSONX -> Java(1)");
@@ -146,7 +143,7 @@ public class SchemaTest {
     writeFile("out-" + fileName, xml);
     Validator.validate(xml, false);
 
-    final Schema test2Schema = testParseJsonx((xL2gluGCXYYJc.Jsonx)Bindings.parse(xml));
+    final Schema test2Schema = testParseJsonx((Jsonx)Bindings.parse(xml));
     logger.info("  8) JSONX -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
@@ -158,7 +155,7 @@ public class SchemaTest {
   private static void testSettings(final String fileName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
-      final xL2gluGCXYYJc.Jsonx controlBinding = newControlBinding(fileName);
+      final Jsonx controlBinding = newControlBinding(fileName);
       final Schema controlSchema = new Schema(controlBinding);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -172,7 +169,7 @@ public class SchemaTest {
       final Schema test1Schema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema test2Schema = new Schema((xL2gluGCXYYJc.Jsonx)Bindings.parse(schema));
+      final Schema test2Schema = new Schema((Jsonx)Bindings.parse(schema));
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
     }

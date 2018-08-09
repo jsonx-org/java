@@ -43,21 +43,23 @@
   <object class="test.Array">
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">
-        <string/>
-        <reference type="rootString"/>
+        <string maxOccurs="3"/>
+        <reference type="rootString" minOccurs="2"/>
         <boolean nullable="false"/>
-        <array>
-          <string nullable="false"/>
+        <array minOccurs="3" maxOccurs="5">
+          <string nullable="false" minOccurs="2" maxOccurs="7"/>
           <reference type="rootNumber"/>
-          <array>
+          <array maxOccurs="1">
             <reference type="foo.bar$RootArray2"/>
-            <array>
-              <array nullable="false"/>
+            <array maxOccurs="2">
+              <array nullable="false">
+                <string/>
+              </array>
             </array>
-            <boolean/>
+            <boolean minOccurs="5"/>
           </array>
           <reference type="rootBooleanRequired"/>
-          <number/>
+          <number maxOccurs="7"/>
         </array>
         <reference type="templateArray"/>
         <number nullable="false"/>
@@ -66,7 +68,9 @@
       <reference type="RootArray3"/>
       <boolean nullable="false"/>
     </property>
-    <property name="arrayDirectOptional" xsi:type="array" use="optional"/>
+    <property name="arrayDirectOptional" xsi:type="array" use="optional">
+      <string/>
+    </property>
     <property name="arrayOne" xsi:type="reference" type="foo.bar$RootArray1" use="optional"/>
     <property name="arrayTwo" xsi:type="reference" type="foo.bar$RootArray2"/>
     <property name="arrayThree" xsi:type="reference" type="RootArray3" use="optional"/>

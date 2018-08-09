@@ -19,7 +19,9 @@
   xmlns="http://jsonx.libx4j.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
-  <array template="rootArrayEmpty"/>
+  <array template="rootArrayBool">
+    <boolean/>
+  </array>
   <array template="rootMultiArray">
     <array minOccurs="1" maxOccurs="1">
       <array maxOccurs="14">
@@ -27,7 +29,7 @@
         <number form="integer" range="(1,2)" maxOccurs="3"/>
       </array>
       <array minOccurs="2" maxOccurs="13">
-        <reference type="rootArrayEmpty" minOccurs="2" nullable="false"/>
+        <reference type="rootArrayBool" minOccurs="2" nullable="false"/>
         <reference type="rootBooleanNull" maxOccurs="15"/>
       </array>
     </array>
@@ -219,7 +221,9 @@
           <array>
             <number/>
             <array>
-              <array nullable="false"/>
+              <array nullable="false">
+                <number/>
+              </array>
             </array>
             <boolean/>
           </array>
@@ -265,7 +269,7 @@
   </object>
   <object class="sub2.pkg.cls$AbstractObject" abstract="true">
     <property name="booleanProperty" xsi:type="reference" type="rootBooleanNull" use="optional"/>
-    <property name="emptyArray" xsi:type="reference" type="rootArrayEmpty"/>
+    <property name="emptyArray" xsi:type="reference" type="rootArrayBool"/>
   </object>
   <object class="sub2.xyz.Objects">
     <property name="objectDefault" xsi:type="object" class="ObjectDefault"/>

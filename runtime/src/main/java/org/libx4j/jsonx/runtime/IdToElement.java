@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 lib4j
+/* Copyright (c) 2018 lib4j
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,20 +16,24 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
 
-@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
-@Repeatable(NumberElements.class)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface NumberElement {
-  int id();
-  boolean nullable() default false;
-  Form form() default Form.REAL;
-  String range() default "";
-  int minOccurs() default 1;
-  int maxOccurs() default Integer.MAX_VALUE;
+import org.lib4j.util.WrappedMap;
+
+public class IdToElement extends WrappedMap<Integer,Annotation> {
+  public IdToElement() {
+    super(new HashMap<>());
+  }
+
+  public Annotation[] get(final int[] ids) {
+    final Annotation[] annotations = new Annotation[ids.length];
+    for (int i = 0; i < ids.length; i++) {
+      annotations[i] = get(ids[i]);
+      if (annotations[i] == null)
+        throw new IllegalStateException("@?Element(id=" + ids[i] + ") was not found in annotation spec");
+    }
+
+    return annotations;
+  }
 }

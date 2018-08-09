@@ -24,23 +24,68 @@ import org.libx4j.jsonx.runtime.StringProperty;
 @JsonxObject
 public class Address {
   @NumberProperty(form=Form.INTEGER, range="[0,]", use=Use.REQUIRED)
-  public Integer number;
+  private Integer number;
+
+  public Integer getNumber() {
+    return this.number;
+  }
+
+  public void setNumber(Integer number) {
+    this.number = number;
+  }
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
-  public String street;
+  private String street;
+
+  public String getStreet() {
+    return this.street;
+  }
+
+  public void setStreet(String street) {
+    this.street = street;
+  }
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
-  public String premise;
+  private String city;
+
+  public String getCity() {
+    return this.city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
-  public String city;
+  private String postalCode;
+
+  public String getPostalCode() {
+    return this.postalCode;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
-  public String postalCode;
+  private String locality;
+
+  public String getLocality() {
+    return this.locality;
+  }
+
+  public void setLocality(String locality) {
+    this.locality = locality;
+  }
 
   @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
-  public String locality;
+  private String country;
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
-  public String country;
+  public String getCountry() {
+    return this.country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
 }

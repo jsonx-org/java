@@ -23,5 +23,13 @@ import org.libx4j.jsonx.runtime.StringProperty;
 public class OnlineArticle extends Publication {
   // FIXME: Put a URL regex here...
   @StringProperty(use=Use.REQUIRED)
-  public String url;
+  private String url;
+
+  public String getUrl() {
+    return this.url;
+  }
+
+  public void setUrl(final String url) {
+    this.url = url;
+  }
 }
