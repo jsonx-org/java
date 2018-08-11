@@ -20,25 +20,13 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import org.lib4j.util.ObservableMap;
+import org.libx4j.jsonx.runtime.AttributeComparator;
 
 public class AttributeMap extends ObservableMap<String,String> {
-  private static final String[] order = {"id", "name", "xsi:type", "template", "reference", "min", "max", "minOccurs", "maxOccurs", "urlEncode", "urlDecode"};
+  private static final Comparator<String> comparator = new AttributeComparator();
 
   public AttributeMap() {
-    super(new TreeMap<String,String>(new Comparator<String>() {
-      @Override
-      public int compare(final String o1, final String o2) {
-        for (final String term : order) {
-          if (term.equals(o1))
-            return term.equals(o2) ? 0 : -1;
-
-          if (term.equals(o2))
-            return term.equals(o1) ? 0 : 1;
-        }
-
-        return o1.compareTo(o2);
-      }
-    }));
+    super(new TreeMap<String,String>(comparator));
   }
 
   @Override

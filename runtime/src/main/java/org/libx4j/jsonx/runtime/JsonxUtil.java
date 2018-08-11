@@ -1,3 +1,19 @@
+/* Copyright (c) 2018 lib4j
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * You should have received a copy of The MIT License (MIT) along with this
+ * program. If not, see <http://opensource.org/licenses/MIT/>.
+ */
+
 package org.libx4j.jsonx.runtime;
 
 import java.lang.annotation.Annotation;
@@ -8,35 +24,20 @@ public class JsonxUtil {
     return name.length() > 0 ? name : field.getName();
   }
 
-  public static int[] getElementIds(final Annotation[] annotations) {
-    for (final Annotation annotation : annotations) {
-      if (annotation instanceof ArrayType)
-        return ((ArrayType)annotation).elementIds();
-
-      if (annotation instanceof ArrayProperty)
-        return ((ArrayProperty)annotation).elementIds();
-    }
-
-    return null;
-  }
-
-  public static IdToElement idToAnnotation(Annotation[] annotations) {
+  public static void idToAnnotation(final IdToElement idToElement, Annotation[] annotations) {
     annotations = JsonxUtil.flatten(annotations);
-    final IdToElement idToAnnotation = new IdToElement();
     for (final Annotation annotation : annotations) {
       if (annotation instanceof ArrayElement)
-        idToAnnotation.put(((ArrayElement)annotation).id(), annotation);
+        idToElement.put(((ArrayElement)annotation).id(), annotation);
       else if (annotation instanceof BooleanElement)
-        idToAnnotation.put(((BooleanElement)annotation).id(), annotation);
+        idToElement.put(((BooleanElement)annotation).id(), annotation);
       else if (annotation instanceof NumberElement)
-        idToAnnotation.put(((NumberElement)annotation).id(), annotation);
+        idToElement.put(((NumberElement)annotation).id(), annotation);
       else if (annotation instanceof ObjectElement)
-        idToAnnotation.put(((ObjectElement)annotation).id(), annotation);
+        idToElement.put(((ObjectElement)annotation).id(), annotation);
       else if (annotation instanceof StringElement)
-        idToAnnotation.put(((StringElement)annotation).id(), annotation);
+        idToElement.put(((StringElement)annotation).id(), annotation);
     }
-
-    return idToAnnotation;
   }
 
   public static Annotation[] flatten(final Annotation[] annotations) {
