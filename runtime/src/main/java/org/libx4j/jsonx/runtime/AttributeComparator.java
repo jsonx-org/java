@@ -19,7 +19,7 @@ package org.libx4j.jsonx.runtime;
 import java.util.Comparator;
 
 public class AttributeComparator implements Comparator<String> {
-  private static final String[] order = {"id", "name", "xsi:type", "template", "reference", "min", "max", "minOccurs", "maxOccurs", "urlEncode", "urlDecode"};
+  private static final String[] order = {"id", "name", "xsi:type", "type", "template", "reference", "min", "max", "minOccurs", "maxOccurs", "urlEncode", "urlDecode"};
 
   @Override
   public int compare(final String o1, final String o2) {

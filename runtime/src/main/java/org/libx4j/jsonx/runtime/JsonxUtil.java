@@ -24,7 +24,7 @@ public class JsonxUtil {
     return name.length() > 0 ? name : field.getName();
   }
 
-  public static void idToAnnotation(final IdToElement idToElement, Annotation[] annotations) {
+  public static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
     annotations = JsonxUtil.flatten(annotations);
     for (final Annotation annotation : annotations) {
       if (annotation instanceof ArrayElement)
