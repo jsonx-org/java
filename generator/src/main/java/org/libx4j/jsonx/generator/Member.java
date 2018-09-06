@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.lib4j.lang.JavaIdentifiers;
 import org.lib4j.util.Collections;
+import org.lib4j.util.JavaIdentifiers;
 import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;

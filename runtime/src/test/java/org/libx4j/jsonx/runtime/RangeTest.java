@@ -28,10 +28,9 @@ public class RangeTest {
   public void test() throws ParseException {
     try {
       new Range(null);
-      fail("Expected IllegalArgumentException");
+      fail("Expected NullPointerException");
     }
-    catch (final IllegalArgumentException e) {
-      assertEquals("string == null", e.getMessage());
+    catch (final NullPointerException e) {
     }
 
     try {

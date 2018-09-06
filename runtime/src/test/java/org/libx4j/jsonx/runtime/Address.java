@@ -16,25 +16,22 @@
 
 package org.libx4j.jsonx.runtime;
 
-import org.libx4j.jsonx.runtime.Form;
-import org.libx4j.jsonx.runtime.JsonxObject;
-import org.libx4j.jsonx.runtime.NumberProperty;
-import org.libx4j.jsonx.runtime.StringProperty;
+import java.math.BigInteger;
 
-@JsonxObject
+@ObjectType
 public class Address {
-  @NumberProperty(form=Form.INTEGER, range="[0,]", use=Use.REQUIRED)
-  private Integer number;
+  @NumberProperty(form=Form.INTEGER, range="[0,]")
+  private BigInteger number;
 
-  public Integer getNumber() {
+  public BigInteger getNumber() {
     return this.number;
   }
 
-  public void setNumber(Integer number) {
+  public void setNumber(BigInteger number) {
     this.number = number;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
   private String street;
 
   public String getStreet() {
@@ -45,7 +42,7 @@ public class Address {
     this.street = street;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
   private String city;
 
   public String getCity() {
@@ -56,7 +53,7 @@ public class Address {
     this.city = city;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
   private String postalCode;
 
   public String getPostalCode() {
@@ -67,7 +64,7 @@ public class Address {
     this.postalCode = postalCode;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
   private String locality;
 
   public String getLocality() {
@@ -78,7 +75,7 @@ public class Address {
     this.locality = locality;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true, use=Use.REQUIRED)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
   private String country;
 
   public String getCountry() {
@@ -87,5 +84,64 @@ public class Address {
 
   public void setCountry(String country) {
     this.country = country;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this)
+      return true;
+
+    if (!(obj instanceof Address))
+      return false;
+
+    final Address that = (Address)obj;
+    if (number != null ? !number.equals(that.number) : that.number != null)
+      return false;
+
+    if (street != null ? !street.equals(that.street) : that.street != null)
+      return false;
+
+    if (city != null ? !city.equals(that.city) : that.city != null)
+      return false;
+
+    if (postalCode != null ? !postalCode.equals(that.postalCode) : that.postalCode != null)
+      return false;
+
+    if (locality != null ? !locality.equals(that.locality) : that.locality != null)
+      return false;
+
+    if (country != null ? !country.equals(that.country) : that.country != null)
+      return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int hashCode = 0;
+    if (number != null)
+      hashCode = hashCode * 31 + number.hashCode();
+
+    if (street != null)
+      hashCode = hashCode * 31 + street.hashCode();
+
+    if (city != null)
+      hashCode = hashCode * 31 + city.hashCode();
+
+    if (postalCode != null)
+      hashCode = hashCode * 31 + postalCode.hashCode();
+
+    if (locality != null)
+      hashCode = hashCode * 31 + locality.hashCode();
+
+    if (country != null)
+      hashCode = hashCode * 31 + country.hashCode();
+
+    return hashCode;
+  }
+
+  @Override
+  public String toString() {
+    return new JxEncoder(2).toString(this);
   }
 }

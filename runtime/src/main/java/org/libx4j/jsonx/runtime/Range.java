@@ -18,7 +18,7 @@ package org.libx4j.jsonx.runtime;
 
 import java.math.BigDecimal;
 
-import org.lib4j.lang.Numbers;
+import org.lib4j.util.Numbers;
 
 public class Range {
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int index, final boolean commaOk) throws ParseException {
@@ -70,9 +70,6 @@ public class Range {
   }
 
   public Range(final String string) throws ParseException {
-    if (string == null)
-      throw new IllegalArgumentException("string == null");
-
     if (string.length() < 4)
       throw new IllegalArgumentException("string.length() < 4");
 

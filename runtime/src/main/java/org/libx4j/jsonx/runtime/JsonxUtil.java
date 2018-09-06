@@ -18,8 +18,111 @@ package org.libx4j.jsonx.runtime;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lib4j.util.Annotations;
+import org.lib4j.util.JavaIdentifiers;
 
 public class JsonxUtil {
+  public static Method getGetMethod(final Class<?> cls, final String propertyName) {
+    return getMethod(cls, propertyName, null);
+  }
+
+  public static Method getSetMethod(final Field field, final String propertyName) {
+    return getMethod(field.getDeclaringClass(), propertyName, field.getType());
+  }
+
+  private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
+    try {
+      return cls.getMethod((parameterType == null ? "get" : "set") + JavaIdentifiers.toClassCase(propertyName), parameterType == null ? null : new Class<?> [] {parameterType});
+    }
+    catch (final NoSuchMethodException e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public static List<Class<?>> getDeclaredObjectTypes(final Field field) {
+    final IdToElement idToElement = new IdToElement();
+    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    final Annotation[] annotations = idToElement.get(elementIds);
+    final List<Class<?>> types = new ArrayList<>();
+    getDeclaredObjectTypes(annotations, types);
+    return types;
+  }
+
+  private static void getDeclaredObjectTypes(final Annotation[] annotations, final List<Class<?>> types) {
+    for (final Annotation annotation : annotations) {
+      if (annotation instanceof ArrayElement) {
+        final ArrayElement element = (ArrayElement)annotation;
+        if (element.type() != ArrayType.class)
+          getDeclaredObjectTypes(element.type().getAnnotations(), types);
+      }
+      else if (annotation instanceof ObjectElement) {
+        types.add(((ObjectElement)annotation).type());
+      }
+    }
+  }
+
+  public static int[] digest(final Field field, final IdToElement idToElement) {
+    final ArrayProperty property = field.getAnnotation(ArrayProperty.class);
+    if (property == null)
+      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + field.getDeclaringClass().getName() + "." + field.getName());
+
+    if (property.type() != ArrayType.class)
+      return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
+
+    return digest(field.getAnnotations(), field.getDeclaringClass().getName() + "." + field.getName(), idToElement);
+  }
+
+  public static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
+    annotations = JsonxUtil.flatten(annotations);
+    JsonxUtil.fillIdToElement(idToElement, annotations);
+    Annotation arrayAnnotation = null;
+    int[] elementIds = null;
+    for (final Annotation annotation : annotations) {
+      if (annotation instanceof ArrayType) {
+        arrayAnnotation = annotation;
+        elementIds = ((ArrayType)annotation).elementIds();
+        break;
+      }
+
+      if (annotation instanceof ArrayProperty) {
+        arrayAnnotation = annotation;
+        elementIds = ((ArrayProperty)annotation).elementIds();
+        break;
+      }
+    }
+
+    if (arrayAnnotation == null)
+      throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
+
+    if (elementIds.length == 0)
+      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(arrayAnnotation, AttributeComparator.instance));
+
+    return elementIds;
+  }
+
+  public static boolean isNullable(final Annotation annotation) {
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).nullable();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).nullable();
+
+    if (annotation instanceof NumberElement)
+      return ((NumberElement)annotation).nullable();
+
+    if (annotation instanceof ObjectElement)
+      return ((ObjectElement)annotation).nullable();
+
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).nullable();
+
+    throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
+  }
+
   public static String getName(final String name, final Field field) {
     return name.length() > 0 ? name : field.getName();
   }

@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.lib4j.lang.IllegalAnnotationException;
-import org.lib4j.lang.Strings;
+import org.lib4j.util.Strings;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;

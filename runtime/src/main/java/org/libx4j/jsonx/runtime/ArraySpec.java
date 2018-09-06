@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 lib4j
+/* Copyright (c) 2018 lib4j
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,29 +16,29 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.math.BigInteger;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 
-@ObjectType
-public class Publishing {
-  @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
-  private BigInteger year;
+public class ArraySpec extends Spec {
+  private final Annotation[] annotations;
+  private final IdToElement idToElement = new IdToElement();
 
-  public BigInteger getYear() {
-    return this.year;
+  public ArraySpec(final Field field, final ArrayProperty property) {
+    super(field, property.name(), property.use());
+    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    this.annotations = idToElement.get(elementIds);
   }
 
-  public void setYear(final BigInteger year) {
-    this.year = year;
+  public Annotation[] getAnnotations() {
+    return annotations;
   }
 
-  @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
-  private String publisher;
-
-  public String getPublisher() {
-    return this.publisher;
+  public IdToElement getIdToElement() {
+    return this.idToElement;
   }
 
-  public void setPublisher(final String publisher) {
-    this.publisher = publisher;
+  @Override
+  public String elementName() {
+    return "array";
   }
 }

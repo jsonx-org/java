@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 lib4j
+/* Copyright (c) 2018 lib4j
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,29 +16,21 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.math.BigInteger;
+import java.lang.reflect.Field;
 
-@ObjectType
-public class Publishing {
-  @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
-  private BigInteger year;
-
-  public BigInteger getYear() {
-    return this.year;
+public abstract class PrimitiveSpec<T> extends Spec {
+  public PrimitiveSpec(final Field field, final String name, final Use use) {
+    super(field, name, use);
   }
 
-  public void setYear(final BigInteger year) {
-    this.year = year;
+  public final String matches(final String json) {
+    if (!test(json.charAt(0)))
+      return "Expected \"" + getName() + "\" to be " + elementName() + ", but got: " + json;
+
+    return validate(json);
   }
 
-  @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
-  private String publisher;
-
-  public String getPublisher() {
-    return this.publisher;
-  }
-
-  public void setPublisher(final String publisher) {
-    this.publisher = publisher;
-  }
+  public abstract boolean test(final char firstChar);
+  public abstract String validate(final String json);
+  public abstract T decode(final String json);
 }

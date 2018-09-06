@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 lib4j
+/* Copyright (c) 2018 lib4j
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,29 +16,30 @@
 
 package org.libx4j.jsonx.runtime;
 
-import java.math.BigInteger;
+import java.lang.reflect.Field;
 
-@ObjectType
-public class Publishing {
-  @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
-  private BigInteger year;
-
-  public BigInteger getYear() {
-    return this.year;
+public class BooleanSpec extends PrimitiveSpec<Boolean> {
+  public BooleanSpec(final Field field, final BooleanProperty property) {
+    super(field, property.name(), property.use());
   }
 
-  public void setYear(final BigInteger year) {
-    this.year = year;
+  @Override
+  public boolean test(final char firstChar) {
+    return firstChar == 't' || firstChar == 'f';
   }
 
-  @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
-  private String publisher;
-
-  public String getPublisher() {
-    return this.publisher;
+  @Override
+  public String validate(final String json) {
+    return "true".equals(json) || "false".equals(json) ? null : "Not a valid boolean token: " + json;
   }
 
-  public void setPublisher(final String publisher) {
-    this.publisher = publisher;
+  @Override
+  public Boolean decode(final String json) {
+    return Boolean.valueOf(json);
+  }
+
+  @Override
+  public String elementName() {
+    return "boolean";
   }
 }

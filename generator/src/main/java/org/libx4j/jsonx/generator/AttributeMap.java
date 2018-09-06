@@ -16,17 +16,14 @@
 
 package org.libx4j.jsonx.generator;
 
-import java.util.Comparator;
 import java.util.TreeMap;
 
 import org.lib4j.util.ObservableMap;
 import org.libx4j.jsonx.runtime.AttributeComparator;
 
 public class AttributeMap extends ObservableMap<String,String> {
-  private static final Comparator<String> comparator = new AttributeComparator();
-
   public AttributeMap() {
-    super(new TreeMap<String,String>(comparator));
+    super(new TreeMap<String,String>(AttributeComparator.instance));
   }
 
   @Override

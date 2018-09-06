@@ -16,33 +16,110 @@
 
 package org.libx4j.jsonx.runtime;
 
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.annotation.Annotation;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
+import org.lib4j.json.jas.JasReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Ignore
 public class LibraryTest {
-  final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
+  private static final JxEncoder encoder = new JxEncoder(2);
+
+  private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
+    final String json = annotationType != null ? encoder.toString((List<?>)obj, annotationType) : encoder.toString(obj);
+    System.out.println(json);
+    final JasReader reader = new JasReader(new StringReader(json));
+    final Object decoded;
+    if (annotationType != null)
+      decoded = JxDecoder.parseArray(annotationType, reader);
+    else
+      decoded = JxDecoder.parseObject(obj.getClass(), reader);
+
+    assertEquals(obj, decoded);
+  }
+
+  private static void test(final Object obj) throws DecodeException, IOException {
+    test(obj, null);
+  }
+
+  private static String r(final String ... items) {
+    return items[(int)(Math.random() * items.length)];
+  }
+
+  private static Address createAddress() {
+    final Address address = new Address();
+    address.setNumber(BigInteger.valueOf((int)(Math.random() * 1000)));
+    address.setStreet(r("Welcome Cir.", "Sukhumvit Soi 13", "Fillmore St.", "Lake Ave.", "12th St."));
+    address.setCity(r("Salt Lake City", "San Franciso", "Minneapolis", "New York", "Wattana"));
+    address.setPostalCode(String.valueOf((int)(Math.random() * 100000)));
+    address.setLocality(r("Utah", "California", "Minnesota", "New York", "Bangkok"));
+    address.setCountry(r("USA", "Thailand", "France", "Germany", "Mexico"));
+    return address;
+  }
+
+  private static Employee createEmployee() {
+    final Individual emergencyContact = new Individual();
+    emergencyContact.setName(r("John Doe", "Mark Taylor", "Stan Kolev", "Jeremy Olander", "Laird Smith"));
+    emergencyContact.setGender("M");
+    emergencyContact.setAddress(createAddress());
+
+    final Employee employee = new Employee();
+    employee.setName(r("Joanne Mazzella", "Aura Dantin", "Candis Kivi", "Era Gilmer", "Hisako Hunt"));
+    employee.setGender("F");
+    employee.setAddress(createAddress());
+    employee.setEmergencyContact(emergencyContact);
+
+    return employee;
+  }
 
   @Test
-  public void testLibrary() {
+  public void testAddress() throws DecodeException, IOException {
+    test(createAddress());
+  }
+
+  @Test
+  public void testStaff() throws DecodeException, IOException {
+    final List<Employee> staff = new ArrayList<>();
+    for (int i = 0; i < 12; ++i)
+      staff.add(createEmployee());
+
+    test(staff, Library.Staff.class);
+  }
+
+  @Test
+  public void testEmployee() throws DecodeException, IOException {
+    test(createEmployee());
+  }
+
+  @Test
+  public void testLibrary() throws DecodeException, IOException {
     final Publishing bookPub1 = new Publishing();
     bookPub1.setPublisher("Pubby Wubby");
-    bookPub1.setYear(2000);
+    bookPub1.setYear(BigInteger.valueOf(2000));
 
     final Publishing bookPub2 = new Publishing();
     bookPub2.setPublisher("Inter Minter");
-    bookPub2.setYear(2010);
+    bookPub2.setYear(BigInteger.valueOf(2010));
 
     final Book book = new Book();
     book.setTitle("Magical Book");
     book.setAuthors(Arrays.asList("Billy Bob", "Jimmy James", "Wendy Woo"));
     book.setEditors(Arrays.asList("Silly Willy", "Johnie John", "Randy Dandy"));
-    book.setIndex(Arrays.asList(1, new Object[] {1, "Part 1, Chapter 1"}, new Object[] {2, "Part 1, Chapter 2"}, new Object[] {3, "Part 1, Chapter 3"},
-                                2, new Object[] {1, "Part 2, Chapter 1"}, new Object[] {2, "Part 2, Chapter 2"}, new Object[] {3, "Part 2, Chapter 3"}));
+    book.setIndex(Arrays.asList(Arrays.asList(1, "Part 1, Chapter 1"), Arrays.asList(2, "Part 1, Chapter 2"), Arrays.asList(3, "Part 1, Chapter 3"),
+                                Arrays.asList(1, "Part 2, Chapter 1"), Arrays.asList(2, "Part 2, Chapter 2"), Arrays.asList(3, "Part 2, Chapter 3")));
     book.setIsbn("978-3-16-148410-0");
     book.setPublishings(new ArrayList<>());
     book.getPublishings().add(bookPub1);
@@ -50,11 +127,11 @@ public class LibraryTest {
 
     final Publishing onlinePub1 = new Publishing();
     onlinePub1.setPublisher("Online Pub");
-    onlinePub1.setYear(2001);
+    onlinePub1.setYear(BigInteger.valueOf(2001));
 
     final Publishing onlinePub2 = new Publishing();
     onlinePub2.setPublisher("Super Online Pub");
-    onlinePub2.setYear(2007);
+    onlinePub2.setYear(BigInteger.valueOf(2007));
 
     final OnlineArticle article = new OnlineArticle();
     article.setAuthors(Arrays.asList("Mr. Online", "Mrs. Online"));
@@ -62,10 +139,11 @@ public class LibraryTest {
     article.setPublishings(new ArrayList<>());
     article.getPublishings().add(onlinePub1);
     article.getPublishings().add(onlinePub2);
+    article.setUrl("http://www.jbc.org/content/274/19/13434.full");
 
     final Publishing journalPub = new Publishing();
     journalPub.setPublisher("Science Publisher");
-    journalPub.setYear(2003);
+    journalPub.setYear(BigInteger.valueOf(2003));
 
     final Library.Journal journal = new Library.Journal();
     journal.setTitle("Zoology Redefined");
@@ -76,16 +154,8 @@ public class LibraryTest {
     journal.setPublishings(new ArrayList<>());
     journal.getPublishings().add(journalPub);
 
-    final Address address = new Address();
-    address.setNumber(372);
-    address.setStreet("Welcome St.");
-    address.setCity("Salt Lake City");
-    address.setPostalCode("73923");
-    address.setLocality("Utah");
-    address.setCountry("USA");
-
     final Library library = new Library();
-    library.setAddress(address);
+    library.setAddress(createAddress());
     library.setHandicap(true);
     final List<List<String>> schedule = new ArrayList<>();
     for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"07:00", "17:00"}, {"07:00", "17:00"}, {"07:00", "17:00"}, {"07:00", "17:00"}, {"09:00", "15:00"}, {"09:00", "15:00"}})
@@ -93,12 +163,12 @@ public class LibraryTest {
 
     library.setSchedule(schedule);
 
-    final List<Publication> publications = new ArrayList<>();
-    publications.add(book);
-    publications.add(article);
-    publications.add(journal);
-    library.setPublications(publications);
+    library.setBooks(Collections.singletonList(book));
+    library.setArticles(Collections.singletonList(article));
+    library.setJournals(Collections.singletonList(journal));
 
-    logger.info(JSObject.toString(library));
+    final String json = encoder.toString(library);
+    logger.info(json);
+    JxDecoder.parseObject(Library.class, new JasReader(new StringReader(json)));
   }
 }

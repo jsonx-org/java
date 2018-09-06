@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.lib4j.lang.AnnotationParameterException;
-import org.lib4j.lang.Arrays;
 import org.lib4j.lang.IllegalAnnotationException;
+import org.lib4j.util.Arrays;
 import org.lib4j.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;

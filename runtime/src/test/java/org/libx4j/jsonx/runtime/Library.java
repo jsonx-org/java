@@ -18,9 +18,9 @@ package org.libx4j.jsonx.runtime;
 
 import java.util.List;
 
-@JsonxObject
+@ObjectType
 public class Library {
-  @JsonxObject
+  @ObjectType
   public static class Journal extends Publication {
     @StringProperty(use=Use.REQUIRED)
     private String subject;
@@ -43,10 +43,6 @@ public class Library {
     public void setOpenAccess(final Boolean openAccess) {
       this.openAccess = openAccess;
     }
-  }
-
-  @JsonxObject
-  public static class StreetSheet extends Publication {
   }
 
   @ObjectProperty(use=Use.REQUIRED)
@@ -73,7 +69,7 @@ public class Library {
 
   @StringElement(id=2, pattern="\\d{2}:\\d{2}", nullable=false, minOccurs=2, maxOccurs=2)
   @ArrayElement(id=1, nullable=false, elementIds=2, minOccurs=7, maxOccurs=7)
-  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
+  @ArrayProperty(elementIds=1)
   private List<List<String>> schedule;
 
   public List<List<String>> getSchedule() {
@@ -84,27 +80,55 @@ public class Library {
     this.schedule = schedule;
   }
 
-  @ObjectElement(id=1, type=Publication.class, nullable=false)
-  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  private List<Publication> publications;
+  @ObjectElement(id=1, type=Book.class, nullable=false)
+  @ArrayProperty(elementIds=1)
+  private List<Book> books;
 
-  public List<Publication> getPublications() {
-    return this.publications;
+  public List<Book> getBooks() {
+    return this.books;
   }
 
-  public void setPublications(final List<Publication> publications) {
-    this.publications = publications;
+  public void setBooks(final List<Book> books) {
+    this.books = books;
   }
 
-  @ObjectElement(id=1, type=StreetSheet.class, nullable=false)
-  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  private List<StreetSheet> streetSheets;
+  @ObjectElement(id=1, type=OnlineArticle.class, nullable=false)
+  @ArrayProperty(elementIds=1)
+  private List<OnlineArticle> articles;
 
-  public List<StreetSheet> getStreetSheets() {
-    return this.streetSheets;
+  public List<OnlineArticle> getArticles() {
+    return this.articles;
   }
 
-  public void setStreetSheets(final List<StreetSheet> streetSheets) {
-    this.streetSheets = streetSheets;
+  public void setArticles(final List<OnlineArticle> articles) {
+    this.articles = articles;
+  }
+
+  @ObjectElement(id=1, type=Journal.class, nullable=false)
+  @ArrayProperty(elementIds=1)
+  private List<Journal> journals;
+
+  public List<Journal> getJournals() {
+    return this.journals;
+  }
+
+  public void setJournals(final List<Journal> journals) {
+    this.journals = journals;
+  }
+
+  @ObjectElement(id=0, type=Employee.class)
+  @ArrayType(elementIds={0})
+  public static @interface Staff {
+  }
+
+  @ArrayProperty(type=Staff.class)
+  private List<Employee> staff;
+
+  public List<Employee> getStaff() {
+    return this.staff;
+  }
+
+  public void setStaff(final List<Employee> staff) {
+    this.staff = staff;
   }
 }

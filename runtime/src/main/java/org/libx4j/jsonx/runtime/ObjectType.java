@@ -25,6 +25,6 @@ import java.lang.annotation.Target;
 @Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JsonxObject {
+public @interface ObjectType {
   Unknown unknown() default Unknown.ERROR;
 }

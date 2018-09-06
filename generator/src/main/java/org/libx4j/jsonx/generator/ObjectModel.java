@@ -37,7 +37,7 @@ import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$String;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
-import org.libx4j.jsonx.runtime.JsonxObject;
+import org.libx4j.jsonx.runtime.ObjectType;
 import org.libx4j.jsonx.runtime.JsonxUtil;
 import org.libx4j.jsonx.runtime.ObjectElement;
 import org.libx4j.jsonx.runtime.ObjectProperty;
@@ -70,7 +70,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return referenceOrDeclare(registry, cls, checkJSObject(cls));
   }
 
-  private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls, final JsonxObject jsObject) {
+  private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls, final ObjectType jsObject) {
     final Id id = new Id(cls);
     final ObjectModel model = (ObjectModel)registry.getModel(id);
     return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, cls, jsObject, null, null), null);
@@ -85,17 +85,17 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return builder.insert(0, ((Jsonx.Object)owner.owner()).getClass$().text()).toString();
   }
 
-  private static JsonxObject checkJSObject(final Class<?> cls) {
-    final JsonxObject jsObject = cls.getDeclaredAnnotation(JsonxObject.class);
+  private static ObjectType checkJSObject(final Class<?> cls) {
+    final ObjectType jsObject = cls.getDeclaredAnnotation(ObjectType.class);
     if (jsObject == null)
-      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + JsonxObject.class.getSimpleName() + " annotation.");
+      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ObjectType.class.getSimpleName() + " annotation.");
 
     return jsObject;
   }
 
   private static void recurseInnerClasses(final Registry registry, final Class<?> cls) {
     for (final Class<?> innerClass : cls.getClasses()) {
-      final JsonxObject innerJSObject = innerClass.getDeclaredAnnotation(JsonxObject.class);
+      final ObjectType innerJSObject = innerClass.getDeclaredAnnotation(ObjectType.class);
       if (innerJSObject == null)
         recurseInnerClasses(registry, innerClass);
       else
@@ -189,14 +189,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.id = new Id(this);
   }
 
-  private ObjectModel(final Registry registry, final Class<?> cls, final JsonxObject jsObject, final Boolean nullable, final Use use) {
+  private ObjectModel(final Registry registry, final Class<?> cls, final ObjectType jsObject, final Boolean nullable, final Use use) {
     super(registry, nullable, use);
     final Class<?> superClass = cls.getSuperclass();
     this.type = registry.getType(cls);
     this.isAbstract = Modifier.isAbstract(cls.getModifiers());
     this.unknown = jsObject.unknown();
     if (superClass != null) {
-      final JsonxObject superObject = superClass.getDeclaredAnnotation(JsonxObject.class);
+      final ObjectType superObject = superClass.getDeclaredAnnotation(ObjectType.class);
       this.superObject = superObject == null ? null : referenceOrDeclare(registry, superClass);
     }
     else {
@@ -316,7 +316,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (unknown() != Unknown.ERROR)
       attributes.put("unknown", Unknown.class.getName() + '.' + unknown());
 
-    return Collections.singletonList(new AnnotationSpec(JsonxObject.class, attributes));
+    return Collections.singletonList(new AnnotationSpec(ObjectType.class, attributes));
   }
 
   @Override

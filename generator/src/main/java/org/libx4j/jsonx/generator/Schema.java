@@ -33,16 +33,16 @@ import java.util.function.Predicate;
 
 import org.lib4j.lang.PackageLoader;
 import org.lib4j.lang.PackageNotFoundException;
-import org.lib4j.lang.Strings;
 import org.lib4j.util.Collections;
 import org.lib4j.util.IdentityHashSet;
 import org.lib4j.util.Iterators;
+import org.lib4j.util.Strings;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ReferenceMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.jsonx.runtime.ArrayType;
-import org.libx4j.jsonx.runtime.JsonxObject;
+import org.libx4j.jsonx.runtime.ObjectType;
 import org.libx4j.jsonx.runtime.ValidationException;
 import org.libx4j.xsb.runtime.Binding;
 
@@ -134,11 +134,11 @@ public final class Schema extends Element {
   }
 
   public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> (c.isAnnotationPresent(JsonxObject.class) || c.isAnnotationPresent(ArrayType.class)) && filter.test(c)));
+    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> (c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)) && filter.test(c)));
   }
 
   public Schema(final Package pkg, final ClassLoader classLoader) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(JsonxObject.class) || c.isAnnotationPresent(ArrayType.class)));
+    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)));
   }
 
   public Schema(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {

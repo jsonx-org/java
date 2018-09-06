@@ -18,7 +18,7 @@ package org.libx4j.jsonx.runtime;
 
 import java.util.List;
 
-@JsonxObject(unknown=Unknown.IGNORE)
+@ObjectType(unknown=Unknown.IGNORE)
 public class Book extends Publication {
   @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d", use=Use.REQUIRED)
   private String isbn;
@@ -32,14 +32,13 @@ public class Book extends Publication {
   }
 
   /**
-   * [1, [1, "Part 1, Chapter 1"], [2, "Part 1, Chapter 2"], [3, "Part 1, Chapter 3"],
-   *  2, [1, "Part 2, Chapter 1"], [2, "Part 2, Chapter 2"], [3, "Part 2, Chapter 3"]...]
+   * [[1, "Part 1, Chapter 1"], [2, "Part 1, Chapter 2"], [3, "Part 1, Chapter 3"],
+   *  [1, "Part 2, Chapter 1"], [2, "Part 2, Chapter 2"], [3, "Part 2, Chapter 3"]...]
    */
-  @StringElement(id=4, pattern="(\\S)|(\\S.*\\S)", nullable=false, minOccurs=1, maxOccurs=1)
-  @NumberElement(id=3, range="[1,]", nullable=false, minOccurs=1, maxOccurs=1)
-  @ArrayElement(id=2, nullable=false, elementIds={3,4})
-  @NumberElement(id=1, form=Form.INTEGER, range="[1,]", nullable=false)
-  @ArrayProperty(use=Use.REQUIRED, elementIds={1,2})
+  @StringElement(id=3, pattern="(\\S)|(\\S.*\\S)", nullable=false, maxOccurs=1)
+  @NumberElement(id=2, range="[1,]", nullable=false, maxOccurs=1)
+  @ArrayElement(id=1, nullable=false, elementIds={2, 3})
+  @ArrayProperty(use=Use.REQUIRED, elementIds={1})
   private List<Object> index;
 
   public List<Object> getIndex() {

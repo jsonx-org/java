@@ -18,7 +18,7 @@ package org.libx4j.jsonx.runtime;
 
 import java.util.List;
 
-@JsonxObject
+@ObjectType
 public abstract class Publication {
   @StringProperty(use=Use.REQUIRED)
   private String title;
@@ -31,7 +31,7 @@ public abstract class Publication {
     this.title = title;
   }
 
-  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false, minOccurs=1)
+  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   private List<String> authors;
 
@@ -43,7 +43,7 @@ public abstract class Publication {
     this.authors = authors;
   }
 
-  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false, minOccurs=1)
+  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   private List<String> editors;
 
@@ -55,7 +55,7 @@ public abstract class Publication {
     this.editors = editors;
   }
 
-  @ObjectElement(id=1, type=Publishing.class, nullable=false, minOccurs=1)
+  @ObjectElement(id=1, type=Publishing.class, nullable=false)
   @ArrayProperty(use=Use.REQUIRED, elementIds=1)
   private List<Publishing> publishings;
 

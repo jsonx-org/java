@@ -41,7 +41,6 @@ import org.lib4j.xml.ValidationException;
 import org.lib4j.xml.sax.Validator;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.xsb.runtime.Bindings;
-import org.libx4j.xsb.runtime.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -81,7 +80,7 @@ public class SchemaTest {
     return xml;
   }
 
-  private static Schema testParseJsonx(final Jsonx controlBinding) throws IOException, ParseException, SAXException {
+  private static Schema testParseJsonx(final Jsonx controlBinding) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> JSONX");
     final Schema controlSchema = new Schema(controlBinding);
@@ -122,7 +121,7 @@ public class SchemaTest {
       assertEquals(entry.getValue(), actual.get(entry.getKey()));
   }
 
-  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     logger.info(fileName + "...");
     final Jsonx controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseJsonx(controlBinding);
@@ -176,32 +175,32 @@ public class SchemaTest {
   }
 
   @Test
-  public void testArray() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public void testArray() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("array.jsonx");
   }
 
   @Test
-  public void testDataType() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public void testDataType() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("datatype.jsonx");
   }
 
   @Test
-  public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("template.jsonx");
   }
 
   @Test
-  public void testReference() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public void testReference() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("reference.jsonx");
   }
 
   @Test
-  public void testReserved() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public void testReserved() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("reserved.jsonx");
   }
 
   @Test
-  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ParseException, SAXException {
+  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("complete.jsonx");
   }
 }

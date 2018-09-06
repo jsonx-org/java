@@ -18,8 +18,10 @@ package org.libx4j.jsonx.runtime;
 
 import java.util.Comparator;
 
-public class AttributeComparator implements Comparator<String> {
-  private static final String[] order = {"id", "name", "xsi:type", "type", "template", "reference", "min", "max", "minOccurs", "maxOccurs", "urlEncode", "urlDecode"};
+public final class AttributeComparator implements Comparator<String> {
+  private static final String[] order = {"id", "name", "xsi:type", "type", "elementIds", "template", "reference", "form", "range", "pattern", "urlEncode", "urlDecode", "use", "minOccurs", "maxOccurs", "nullable"};
+
+  public static final AttributeComparator instance = new AttributeComparator();
 
   @Override
   public int compare(final String o1, final String o2) {
@@ -32,5 +34,8 @@ public class AttributeComparator implements Comparator<String> {
     }
 
     return o1.compareTo(o2);
+  }
+
+  private AttributeComparator() {
   }
 }

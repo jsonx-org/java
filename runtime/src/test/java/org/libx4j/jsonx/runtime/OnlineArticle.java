@@ -16,13 +16,11 @@
 
 package org.libx4j.jsonx.runtime;
 
-import org.libx4j.jsonx.runtime.JsonxObject;
-import org.libx4j.jsonx.runtime.StringProperty;
+import org.lib4j.net.URLs;
 
-@JsonxObject
+@ObjectType
 public class OnlineArticle extends Publication {
-  // FIXME: Put a URL regex here...
-  @StringProperty(use=Use.REQUIRED)
+  @StringProperty(use=Use.REQUIRED, pattern=URLs.REGEX, urlDecode=true, urlEncode=true)
   private String url;
 
   public String getUrl() {

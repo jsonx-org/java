@@ -37,5 +37,9 @@
       <groupId>org.lib4j</groupId>
       <artifactId>lib4j-net</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.lib4j.json</groupId>
+      <artifactId>json-jas</artifactId>
+    </dependency>
   </dependencies>
 </project>

@@ -26,7 +26,7 @@
     <array minOccurs="1" maxOccurs="1">
       <array maxOccurs="14">
         <boolean nullable="false"/>
-        <number form="integer" range="(1,2)" maxOccurs="3"/>
+        <number form="integer" range="(1.2,2.4)" maxOccurs="3"/>
       </array>
       <array minOccurs="2" maxOccurs="13">
         <reference type="rootArrayBool" minOccurs="2" nullable="false"/>

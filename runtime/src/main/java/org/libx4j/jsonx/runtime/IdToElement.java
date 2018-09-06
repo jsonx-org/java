@@ -29,7 +29,7 @@ public class IdToElement extends ObservableMap<Integer,Annotation> {
   @Override
   protected boolean beforePut(final Integer key, final Annotation oldValue, final Annotation newValue) {
     if (oldValue != null)
-      throw new IllegalStateException("Duplicate id=" + key + " found in {" + oldValue + ", " + newValue + "}");
+      throw new ValidationException("Duplicate id=" + key + " found in {" + oldValue + ", " + newValue + "}");
 
     return true;
   }
@@ -39,7 +39,7 @@ public class IdToElement extends ObservableMap<Integer,Annotation> {
     for (int i = 0; i < ids.length; i++) {
       annotations[i] = get(ids[i]);
       if (annotations[i] == null)
-        throw new IllegalStateException("@?Element(id=" + ids[i] + ") not found in annotations array");
+        throw new ValidationException("@<Annotation>(id=" + ids[i] + ") not found in annotations array");
     }
 
     return annotations;

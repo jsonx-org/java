@@ -16,54 +16,49 @@
 
 package org.libx4j.jsonx.runtime;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 
-import org.lib4j.lang.Annotations;
-import org.lib4j.lang.Strings;
+import org.lib4j.util.Annotations;
+import org.lib4j.util.WrappedList;
 
 public class ArrayValidator {
   static class Relation {
     final Object member;
     final Annotation annotation;
 
-    private Relation(final Object member, final Annotation annotation) {
+    Relation(final Object member, final Annotation annotation) {
       this.member = member;
       this.annotation = annotation;
     }
   }
 
-  private static final Comparator<String> comparator = new AttributeComparator();
-
-  private static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
-    annotations = JsonxUtil.flatten(annotations);
-    JsonxUtil.fillIdToElement(idToElement, annotations);
-    Annotation arrayAnnotation = null;
-    int[] elementIds = null;
-    for (final Annotation annotation : annotations) {
-      if (annotation instanceof ArrayType) {
-        arrayAnnotation = annotation;
-        elementIds = ((ArrayType)annotation).elementIds();
-        break;
-      }
-
-      if (annotation instanceof ArrayProperty) {
-        arrayAnnotation = annotation;
-        elementIds = ((ArrayProperty)annotation).elementIds();
-        break;
-      }
+  static class Relations extends WrappedList<Relation> {
+    public Relations() {
+      super(new ArrayList<Relation>());
     }
 
-    if (arrayAnnotation == null)
-      throw new IllegalStateException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
+    @Override
+    public Relation set(final int index, final Relation element) {
+      if (index == size())
+        super.add(element);
+      else
+        super.set(index, element);
 
-    if (elementIds.length == 0)
-      throw new IllegalStateException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(arrayAnnotation, comparator));
+      return element;
+    }
 
-    return elementIds;
+    public List<Object> toList() {
+      final List<Object> list = new ArrayList<>();
+      for (final Relation relation : this)
+        list.add(relation.member);
+
+      return list;
+    }
   }
 
   private static int getNextRequiredElement(final Annotation[] annotations, final int fromIndex, int count) {
@@ -104,100 +99,28 @@ public class ArrayValidator {
     return -1;
   }
 
-  private static boolean matchesType(final Class<?> cls, final Class<?> type) {
-    return type != Object.class ? type.isAssignableFrom(cls) : !cls.isArray() && !Boolean.class.isAssignableFrom(cls) && !List.class.isAssignableFrom(cls) && !Number.class.isAssignableFrom(cls) && !String.class.isAssignableFrom(cls);
-  }
-
-  private static String validate(final ArrayElement element, final Object member, IdToElement idToElement, final List<Relation> relations) {
-    final int[] elementIds;
-    if (element.type() != ArrayType.class)
-      elementIds = digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
-    else
-      elementIds = element.elementIds();
-
-    final List<Relation> subRelations = new ArrayList<>();
-    final String subError = validate(idToElement, elementIds, ((List<?>)member).toArray(), subRelations);
-    if (subError != null)
-      return subError;
-
-    relations.add(new Relation(member, element));
-    relations.addAll(subRelations);
-    return null;
-  }
-
-  private static String validate(final BooleanElement element, final Object member, final List<Relation> relations) {
-    relations.add(new Relation(member, element));
-    return null;
-  }
-
-  private static String validate(final NumberElement element, final Object member, final List<Relation> relations) {
-    final Number number = (Number)member;
-    if (element.form() == Form.INTEGER && number.longValue() != number.doubleValue())
-      return "Illegal non-INTEGER value: " + Strings.toTruncatedString(member, 16);
-
-    try {
-      if (element.range().length() > 0 && !new Range(element.range()).isValid(number))
-        return "Range is not matched: " + Strings.toTruncatedString(member, 16);
-    }
-    catch (final ParseException e) {
-      throw new IllegalStateException("Invalid range attribute: " + Annotations.toSortedString(element, comparator));
+  static String validate(final ArrayIterator<? extends Object> iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations) throws DecodeException, IOException {
+    final int i = iterator.nextIndex();
+    if (!iterator.hasNext()) {
+      final int nextRequiredIndex = getNextRequiredElement(annotations, a, count);
+      return nextRequiredIndex == -1 ? null : "Invalid content was found " + (i == 0 ? "in empty array" : "starting with member index=" + (i - 1)) + ": " + Annotations.toSortedString(annotations[nextRequiredIndex], AttributeComparator.instance) + ": Content is not complete";
     }
 
-    relations.add(new Relation(member, element));
-    return null;
-  }
+    if (a == annotations.length) {
+      if (!iterator.hasNext())
+        return null;
 
-  private static String validate(final ObjectElement element, final Object member, final List<Relation> relations) {
-    if (!member.getClass().isAnnotationPresent(JsonxObject.class))
-      return "@" + JsonxObject.class.getSimpleName() + " not found on: " + member.getClass().getName();
-
-    relations.add(new Relation(member, element));
-    return null;
-  }
-
-  private static String validate(final StringElement element, final Object member, final List<Relation> relations) {
-    final String string = (String)member;
-    if (element.pattern().length() != 0 && !string.matches(element.pattern()))
-      return "Pattern is not matched: \"" + Strings.toTruncatedString(string, 16) + "\"";
-
-    relations.add(new Relation(member, element));
-    return null;
-  }
-
-  private static String validate(final Annotation annotation, final Object member, IdToElement idToElement, final List<Relation> relations) {
-    if (annotation instanceof ArrayElement)
-      return validate((ArrayElement)annotation, member, idToElement, relations);
-
-    if (annotation instanceof BooleanElement)
-      return validate((BooleanElement)annotation, member, relations);
-
-    if (annotation instanceof NumberElement)
-      return validate((NumberElement)annotation, member, relations);
-
-    if (annotation instanceof ObjectElement)
-      return validate((ObjectElement)annotation, member, relations);
-
-    if (annotation instanceof StringElement)
-      return validate((StringElement)annotation, member, relations);
-
-    throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
-  }
-
-  private static String validate(final Annotation[] annotations, int i, int count, final Object[] members, final int j, final IdToElement idToElement, final List<Relation> relations) {
-    if (j == members.length) {
-      final int nextRequiredIndex = getNextRequiredElement(annotations, i, count);
-      return nextRequiredIndex == -1 ? null : "Invalid content was found starting with member index=" + j + ": " + Annotations.toSortedString(annotations[nextRequiredIndex], comparator) + ": Content is not complete";
+      iterator.next();
+      final String preview = iterator.currentPreview();
+      iterator.previous();
+      return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], AttributeComparator.instance) + ": No members are expected at this point: " + preview;
     }
-
-    final Object member = members[j];
-    if (i == annotations.length)
-      return j == members.length ? null : "Invalid content was found starting with member index=" + j + ": " + Annotations.toSortedString(annotations[i - 1], comparator) + ": No members are expected at this point: " + Strings.toTruncatedString(member, 16);
 
     final int minOccurs;
     final int maxOccurs;
     final boolean nullable;
     final Class<?> type;
-    final Annotation annotation = annotations[i];
+    final Annotation annotation = annotations[a];
     if (annotation instanceof ArrayElement) {
       final ArrayElement element = (ArrayElement)annotation;
       minOccurs = element.minOccurs();
@@ -238,66 +161,73 @@ public class ArrayValidator {
     }
 
     if (minOccurs < 0)
-      throw new IllegalStateException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, comparator));
+      throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
 
     if (maxOccurs < minOccurs)
-      throw new IllegalStateException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, comparator));
+      throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
 
+//    System.err.println("Matching " + j + ", count " + count + " against " + i);
     final String error;
-    if (member == null) {
+    if (iterator.nextIsNull()) {
       if (nullable) {
         error = null;
-        relations.add(new Relation(member, annotation));
+        relations.set(i, iterator.currentRelate(annotation));
       }
       else {
         error = "Illegal value: null";
       }
     }
-    else if (matchesType(member.getClass(), type)) {
-      error = validate(annotation, member, idToElement, relations);
-    }
-    else if (count < minOccurs || maxOccurs < count) {
-      error = "Content is not complete";
-    }
     else {
-      return validate(annotations, i + 1, 0, members, j, idToElement, relations);
+      if (iterator.currentMatchesType(type, annotation, idToElement)) {
+        error = iterator.currentIsValid(i, annotation, idToElement, relations);
+      }
+      else if (count < minOccurs) {
+        error = "Content is not expected: " + iterator.currentPreview();
+      }
+      else {
+        iterator.previous();
+        return validate(iterator, 0, annotations, a + 1, idToElement, relations);
+      }
     }
 
-    if (error != null)
-      return count < minOccurs || maxOccurs < count || validate(annotations, i + 1, 0, members, j, idToElement, relations) != null ? "Invalid content was found starting with member index=" + j + ": " + Annotations.toSortedString(annotation, comparator) + ": " + error : null;
+    String result = error == null ? null : "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotation, AttributeComparator.instance) + ": " + error;
 
-    if (++count == maxOccurs) {
-      ++i;
-      count = 0;
+    do {
+      if (result != null) {
+        iterator.previous();
+        return count >= minOccurs && maxOccurs >= count && validate(iterator, 0, annotations, a + 1, idToElement, relations) == null ? null : result;
+      }
+
+      if (count < maxOccurs - 1)
+        result = validate(iterator, count + 1, annotations, a, idToElement, relations);
+      else
+        result = validate(iterator, 0, annotations, a + 1, idToElement, relations);
     }
+    while (result != null);
 
-    return validate(annotations, i, count, members, j + 1, idToElement, relations);
+    return null;
   }
 
-  private static String validate(final IdToElement idToElement, final int[] elementIds, final Object[] members, final List<Relation> relations) {
+  static String validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations) {
     final Annotation[] annotations = idToElement.get(elementIds);
-    return validate(annotations, 0, 0, members, 0, idToElement, relations);
+    try {
+      return validate(new ValidatingIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations);
+    }
+    catch (final DecodeException | IOException e) {
+      throw new RuntimeException("Should not happen, as this method is only called for encode", e);
+    }
   }
 
-  static String validate(final Field field, final Object[] members, final List<Relation> relations) {
-    final ArrayProperty property = field.getAnnotation(ArrayProperty.class);
-    if (property == null)
-      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + field.getDeclaringClass().getName() + "." + field.getName());
-
+  static String validate(final Field field, final List<Object> members, final Relations relations) {
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds;
-    if (property.type() != ArrayType.class)
-      elementIds = digest(property.type().getAnnotations(), property.type().getName(), idToElement);
-    else
-      elementIds = digest(field.getAnnotations(), field.getDeclaringClass().getName() + "." + field.getName(), idToElement);
-
-    return validate(idToElement, elementIds, members, relations);
+    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    return validate(members, idToElement, elementIds, relations);
   }
 
-  static String validate(final Class<? extends Annotation> annotationType, final Object[] members, final List<Relation> relations) {
+  static String validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations) {
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
-    return validate(idToElement, elementIds, members, relations);
+    final int[] elementIds = JsonxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
+    return validate(members, idToElement, elementIds, relations);
   }
 
   private ArrayValidator() {
