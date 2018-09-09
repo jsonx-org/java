@@ -21,16 +21,16 @@ import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.lib4j.json.jas.JasReader;
+import org.lib4j.json.JsonReader;
 import org.lib4j.util.ArrayIntList;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 
 public class ParsingIterator extends ArrayIterator<Object> {
-  private final JasReader reader;
+  private final JsonReader reader;
   private final ArrayIntList positions = new ArrayIntList();
   private int index = -1;
 
-  public ParsingIterator(final JasReader reader) {
+  public ParsingIterator(final JsonReader reader) {
     this.reader = reader;
   }
 

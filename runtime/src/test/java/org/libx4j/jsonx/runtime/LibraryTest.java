@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.lib4j.json.jas.JasReader;
+import org.lib4j.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +41,7 @@ public class LibraryTest {
   private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
     final String json = annotationType != null ? encoder.toString((List<?>)obj, annotationType) : encoder.toString(obj);
     System.out.println(json);
-    final JasReader reader = new JasReader(new StringReader(json));
+    final JsonReader reader = new JsonReader(new StringReader(json));
     final Object decoded;
     if (annotationType != null)
       decoded = JxDecoder.parseArray(annotationType, reader);
@@ -169,6 +169,6 @@ public class LibraryTest {
 
     final String json = encoder.toString(library);
     logger.info(json);
-    JxDecoder.parseObject(Library.class, new JasReader(new StringReader(json)));
+    JxDecoder.parseObject(Library.class, new JsonReader(new StringReader(json)));
   }
 }

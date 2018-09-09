@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lib4j.json.jas.JasReader;
+import org.lib4j.json.JsonReader;
 import org.lib4j.util.Classes;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 
@@ -68,7 +68,7 @@ public abstract class JxDecoder implements Cloneable {
     return propertyToSpec.get(propertyName);
   }
 
-  public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JasReader reader) throws DecodeException, IOException {
+  public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, IOException {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsonxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final Object array = parse0(idToElement.get(elementIds), idToElement, reader);
@@ -78,7 +78,7 @@ public abstract class JxDecoder implements Cloneable {
     return (List<?>)array;
   }
 
-  public static Object parse0(final Annotation[] annotations, final IdToElement idToElement, final JasReader reader) throws DecodeException, IOException {
+  public static Object parse0(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"[".equals(token))
       throw new DecodeException("Expected '[', but got '" + token + "'", reader);
@@ -89,7 +89,7 @@ public abstract class JxDecoder implements Cloneable {
     return relations.toList();
   }
 
-  public static <T>T parseObject(final Class<T> type, final JasReader reader) throws DecodeException, IOException {
+  public static <T>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"{".equals(token))
       throw new DecodeException("Expected '{', but got '" + token + "'", reader);
@@ -101,7 +101,7 @@ public abstract class JxDecoder implements Cloneable {
     return (T)object;
   }
 
-  public static Object parse0(final Class<?> type, final JasReader reader) throws DecodeException, IOException {
+  public static Object parse0(final Class<?> type, final JsonReader reader) throws DecodeException, IOException {
     final Object object;
     try {
       object = type.getConstructor().newInstance();

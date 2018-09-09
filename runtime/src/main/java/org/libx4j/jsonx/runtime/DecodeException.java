@@ -16,24 +16,24 @@
 
 package org.libx4j.jsonx.runtime;
 
-import org.lib4j.json.jas.JasReader;
+import org.lib4j.json.JsonReader;
 
 public class DecodeException extends Exception {
   private static final long serialVersionUID = 7087309932016830988L;
 
-  public DecodeException(final JasReader json) {
+  public DecodeException(final JsonReader json) {
     this(null, json, null);
   }
 
-  public DecodeException(final String message, final JasReader json) {
+  public DecodeException(final String message, final JsonReader json) {
     this(message, json, null);
   }
 
-  public DecodeException(final JasReader json, final Throwable cause) {
+  public DecodeException(final JsonReader json, final Throwable cause) {
     this(null, json, cause);
   }
 
-  public DecodeException(final String message, final JasReader json, final Throwable cause) {
+  public DecodeException(final String message, final JsonReader json, final Throwable cause) {
     super(message != null ? message + " [errorOffset: " + json.getIndex() + "]" : "[errorOffset: " + json.getIndex() + "]", cause);
   }
 }

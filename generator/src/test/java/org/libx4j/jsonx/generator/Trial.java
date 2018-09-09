@@ -22,7 +22,7 @@ import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.lib4j.json.jas.JasReader;
+import org.lib4j.json.JsonReader;
 import org.libx4j.jsonx.runtime.DecodeException;
 import org.libx4j.jsonx.runtime.EncodeException;
 import org.libx4j.jsonx.runtime.JxDecoder;
@@ -171,7 +171,7 @@ public abstract class Trial<T> {
     exception = null;
     try {
       // Need to focus only on the decoded field
-      binding = (T)JxDecoder.parseObject(root.getClass(), new JasReader(new StringReader(json)));
+      binding = (T)JxDecoder.parseObject(root.getClass(), new JsonReader(new StringReader(json)));
     }
     catch (final Exception e) {
       exception = e;
