@@ -19,7 +19,7 @@ package org.libx4j.jsonx.runtime;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 
-import org.lib4j.util.ObservableMap;
+import org.fastjax.util.ObservableMap;
 
 public class IdToElement extends ObservableMap<Integer,Annotation> {
   public IdToElement() {

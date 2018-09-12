@@ -18,7 +18,7 @@ package org.libx4j.jsonx.generator;
 
 import java.util.function.Function;
 
-import org.lib4j.util.RefDigraph;
+import org.fastjax.util.RefDigraph;
 import org.libx4j.jsonx.runtime.ValidationException;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {

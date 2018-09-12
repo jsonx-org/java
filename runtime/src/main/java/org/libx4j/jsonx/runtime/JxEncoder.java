@@ -23,10 +23,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.lib4j.net.URIComponent;
-import org.lib4j.util.Annotations;
-import org.lib4j.util.Arrays;
-import org.lib4j.util.Classes;
-import org.lib4j.util.Strings;
+import org.fastjax.util.Annotations;
+import org.fastjax.util.Arrays;
+import org.fastjax.util.Classes;
+import org.fastjax.util.Strings;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relation;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 

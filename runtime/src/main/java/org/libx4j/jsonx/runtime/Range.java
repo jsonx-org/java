@@ -18,7 +18,7 @@ package org.libx4j.jsonx.runtime;
 
 import java.math.BigDecimal;
 
-import org.lib4j.util.Numbers;
+import org.fastjax.util.Numbers;
 
 public class Range {
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int index, final boolean commaOk) throws ParseException {

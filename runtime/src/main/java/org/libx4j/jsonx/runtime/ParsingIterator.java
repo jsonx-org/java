@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.lib4j.json.JsonReader;
-import org.lib4j.util.ArrayIntList;
+import org.fastjax.util.ArrayIntList;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 
 public class ParsingIterator extends ArrayIterator<Object> {

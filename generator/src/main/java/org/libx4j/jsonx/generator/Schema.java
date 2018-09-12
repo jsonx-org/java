@@ -33,10 +33,10 @@ import java.util.function.Predicate;
 
 import org.fastjax.lang.PackageLoader;
 import org.fastjax.lang.PackageNotFoundException;
-import org.lib4j.util.Collections;
-import org.lib4j.util.IdentityHashSet;
-import org.lib4j.util.Iterators;
-import org.lib4j.util.Strings;
+import org.fastjax.util.Collections;
+import org.fastjax.util.IdentityHashSet;
+import org.fastjax.util.Iterators;
+import org.fastjax.util.Strings;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ReferenceMember;

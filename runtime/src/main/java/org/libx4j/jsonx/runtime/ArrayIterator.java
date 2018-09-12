@@ -19,8 +19,8 @@ package org.libx4j.jsonx.runtime;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.lib4j.util.Annotations;
-import org.lib4j.util.Strings;
+import org.fastjax.util.Annotations;
+import org.fastjax.util.Strings;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relation;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 

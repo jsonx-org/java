@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lib4j.util.Annotations;
-import org.lib4j.util.JavaIdentifiers;
+import org.fastjax.util.Annotations;
+import org.fastjax.util.JavaIdentifiers;
 
 public class JsonxUtil {
   public static Method getGetMethod(final Class<?> cls, final String propertyName) {

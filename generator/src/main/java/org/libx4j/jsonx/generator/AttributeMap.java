@@ -18,7 +18,7 @@ package org.libx4j.jsonx.generator;
 
 import java.util.TreeMap;
 
-import org.lib4j.util.ObservableMap;
+import org.fastjax.util.ObservableMap;
 import org.libx4j.jsonx.runtime.AttributeComparator;
 
 public class AttributeMap extends ObservableMap<String,String> {

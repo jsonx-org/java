@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.lib4j.json.JsonReader;
-import org.lib4j.util.Classes;
+import org.fastjax.util.Classes;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 
 public abstract class JxDecoder implements Cloneable {

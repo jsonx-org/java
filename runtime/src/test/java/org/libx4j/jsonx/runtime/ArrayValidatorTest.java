@@ -29,8 +29,8 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.lib4j.math.BigDecimals;
-import org.lib4j.util.Collections;
-import org.lib4j.util.Strings;
+import org.fastjax.util.Collections;
+import org.fastjax.util.Strings;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relation;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 

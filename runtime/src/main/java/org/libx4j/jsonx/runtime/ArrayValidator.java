@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.lib4j.util.Annotations;
-import org.lib4j.util.WrappedList;
+import org.fastjax.util.Annotations;
+import org.fastjax.util.WrappedList;
 
 public class ArrayValidator {
   static class Relation {

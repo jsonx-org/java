@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.lib4j.util.Annotations;
+import org.fastjax.util.Annotations;
 
 public class NumberSpec extends PrimitiveSpec<Number> {
   private final Form form;

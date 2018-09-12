@@ -16,7 +16,7 @@
 
 package org.libx4j.jsonx.generator;
 
-import org.lib4j.util.Digraph;
+import org.fastjax.util.Digraph;
 import org.libx4j.jsonx.runtime.ValidationException;
 
 class StrictDigraph<T> extends Digraph<T> {

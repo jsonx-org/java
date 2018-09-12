@@ -29,8 +29,8 @@ import java.util.Set;
 
 import org.fastjax.lang.AnnotationParameterException;
 import org.fastjax.lang.IllegalAnnotationException;
-import org.lib4j.util.Arrays;
-import org.lib4j.util.Iterators;
+import org.fastjax.util.Arrays;
+import org.fastjax.util.Iterators;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ArrayMember;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
@@ -262,7 +262,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
     final List<Integer> cycle = digraph.getCycle();
     if (cycle != null)
-      throw new ValidationException("Cycle detected in element index dependency graph: " + org.lib4j.util.Collections.toString(digraph.getCycle(), " -> "));
+      throw new ValidationException("Cycle detected in element index dependency graph: " + org.fastjax.util.Collections.toString(digraph.getCycle(), " -> "));
 
     final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<>(idToElement.size());
     for (final Integer elementId : digraph.getTopologicalOrder())
