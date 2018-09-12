@@ -351,12 +351,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final org.lib4j.xml.Element element = super.toXml(settings, owner, packageName);
+  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final org.fastjax.xml.Element element = super.toXml(settings, owner, packageName);
     if (owner instanceof ObjectModel && registry.isTemplateReference(this, settings) || members.size() == 0)
       return element;
 
-    final List<org.lib4j.xml.Element> elements = new ArrayList<>();
+    final List<org.fastjax.xml.Element> elements = new ArrayList<>();
     for (final Member member : members)
       elements.add(member.toXml(settings, this, packageName));
 

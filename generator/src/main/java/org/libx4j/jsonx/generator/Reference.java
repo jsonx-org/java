@@ -91,10 +91,10 @@ final class Reference extends Member {
   }
 
   @Override
-  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (!registry.isRootMember(model, settings)) {
-      final org.lib4j.xml.Element element = model.toXml(settings, owner, packageName);
+      final org.fastjax.xml.Element element = model.toXml(settings, owner, packageName);
       // It is necessary to remove the nullable, required, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
@@ -111,10 +111,10 @@ final class Reference extends Member {
       attributes.put("type", Registry.getSubName(model.id().toString(), packageName));
 
     if (!(owner instanceof ObjectModel))
-      return new org.lib4j.xml.Element(elementName(), attributes, null);
+      return new org.fastjax.xml.Element(elementName(), attributes, null);
 
     attributes.put("xsi:type", elementName());
-    return new org.lib4j.xml.Element("property", attributes, null);
+    return new org.fastjax.xml.Element("property", attributes, null);
   }
 
   @Override

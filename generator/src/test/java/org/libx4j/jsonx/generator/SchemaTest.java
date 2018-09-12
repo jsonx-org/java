@@ -37,8 +37,8 @@ import org.fastjax.test.AssertXml;
 import org.junit.Test;
 import org.fastjax.jci.CompilationException;
 import org.fastjax.jci.InMemoryCompiler;
-import org.lib4j.xml.ValidationException;
-import org.lib4j.xml.sax.Validator;
+import org.fastjax.xml.ValidationException;
+import org.fastjax.xml.sax.Validator;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
 import org.libx4j.xsb.runtime.Bindings;
 import org.slf4j.Logger;
@@ -74,8 +74,8 @@ public class SchemaTest {
     }
   }
 
-  private static org.lib4j.xml.Element toXml(final Schema schema, final Settings settings) {
-    final org.lib4j.xml.Element xml = schema.toXml(settings);
+  private static org.fastjax.xml.Element toXml(final Schema schema, final Settings settings) {
+    final org.fastjax.xml.Element xml = schema.toXml(settings);
     xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd " + jsonxXsd);
     return xml;
   }

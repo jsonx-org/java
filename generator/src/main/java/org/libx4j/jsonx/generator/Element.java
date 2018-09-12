@@ -45,5 +45,5 @@ abstract class Element {
     return new AttributeMap();
   }
 
-  protected abstract org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName);
+  protected abstract org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName);
 }

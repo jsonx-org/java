@@ -18,7 +18,7 @@ package org.libx4j.jsonx.generator;
 
 import java.util.Map;
 
-import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
+import org.fastjax.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
@@ -43,11 +43,11 @@ abstract class Model extends Member {
   }
 
   @Override
-  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toXmlAttributes(owner, packageName);
-      return new org.lib4j.xml.Element(elementName(), attributes, null);
+      return new org.fastjax.xml.Element(elementName(), attributes, null);
     }
 
     if (registry.isTemplateReference(this, settings)) {
@@ -60,6 +60,6 @@ abstract class Model extends Member {
       attributes.put("xsi:type", elementName());
     }
 
-    return new org.lib4j.xml.Element("property", attributes, null);
+    return new org.fastjax.xml.Element("property", attributes, null);
   }
 }

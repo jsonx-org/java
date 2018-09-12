@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 import org.fastjax.util.Collections;
 import org.fastjax.util.JavaIdentifiers;
-import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
+import org.fastjax.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;

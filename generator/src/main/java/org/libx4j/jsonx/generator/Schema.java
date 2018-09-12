@@ -208,8 +208,8 @@ public final class Schema extends Element {
   }
 
   @Override
-  protected org.lib4j.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final List<org.lib4j.xml.Element> elements;
+  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final List<org.fastjax.xml.Element> elements;
     final Collection<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
@@ -227,14 +227,14 @@ public final class Schema extends Element {
     attributes.put("xmlns", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd http://jsonx.libx4j.org/jsonx-0.9.8.xsd");
-    return new org.lib4j.xml.Element("jsonx", attributes, elements);
+    return new org.fastjax.xml.Element("jsonx", attributes, elements);
   }
 
-  public org.lib4j.xml.Element toXml() {
+  public org.fastjax.xml.Element toXml() {
     return toXml(null);
   }
 
-  public org.lib4j.xml.Element toXml(final Settings settings) {
+  public org.fastjax.xml.Element toXml(final Settings settings) {
     return toXml(settings == null ? Settings.DEFAULT : settings, this, packageName);
   }
 
