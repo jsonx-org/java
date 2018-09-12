@@ -35,8 +35,9 @@
       <version>1.4.4-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.lib4j</groupId>
-      <artifactId>lib4j-net</artifactId>
+      <groupId>org.fastjax</groupId>
+      <artifactId>fastjax-net</artifactId>
+      <version>1.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.lib4j</groupId>
