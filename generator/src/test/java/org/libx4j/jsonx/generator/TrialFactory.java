@@ -26,7 +26,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lib4j.math.BigDecimals;
+import org.fastjax.math.BigDecimals;
 import org.libx4j.jsonx.runtime.ArrayElement;
 import org.libx4j.jsonx.runtime.ArrayProperty;
 import org.libx4j.jsonx.runtime.ArrayType;
