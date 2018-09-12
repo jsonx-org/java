@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lib4j.json.JsonReader;
+import org.fastjax.json.JsonReader;
 import org.fastjax.util.Classes;
 import org.libx4j.jsonx.runtime.ArrayValidator.Relations;
 

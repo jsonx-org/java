@@ -16,7 +16,7 @@
 
 package org.libx4j.jsonx.runtime;
 
-import org.lib4j.json.JsonReader;
+import org.fastjax.json.JsonReader;
 
 public class DecodeException extends Exception {
   private static final long serialVersionUID = 7087309932016830988L;

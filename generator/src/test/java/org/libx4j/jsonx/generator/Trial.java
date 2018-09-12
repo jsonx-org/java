@@ -22,7 +22,7 @@ import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.lib4j.json.JsonReader;
+import org.fastjax.json.JsonReader;
 import org.libx4j.jsonx.runtime.DecodeException;
 import org.libx4j.jsonx.runtime.EncodeException;
 import org.libx4j.jsonx.runtime.JxDecoder;

@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.lib4j.json.JsonReader;
+import org.fastjax.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
