@@ -33,10 +33,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.fastjax.lang.PackageNotFoundException;
+import org.fastjax.test.AssertXml;
 import org.junit.Test;
 import org.lib4j.jci.CompilationException;
 import org.lib4j.jci.InMemoryCompiler;
-import org.lib4j.test.AssertXml;
 import org.lib4j.xml.ValidationException;
 import org.lib4j.xml.sax.Validator;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
