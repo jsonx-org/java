@@ -16,7 +16,7 @@
 
 package org.libx4j.jsonx.runtime;
 
-import org.lib4j.net.URLs;
+import org.fastjax.net.URLs;
 
 @ObjectType
 public class OnlineArticle extends Publication {

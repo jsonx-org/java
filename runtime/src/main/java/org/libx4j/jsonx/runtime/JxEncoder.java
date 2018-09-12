@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.lib4j.net.URIComponent;
+import org.fastjax.net.URIComponent;
 import org.fastjax.util.Annotations;
 import org.fastjax.util.Arrays;
 import org.fastjax.util.Classes;
