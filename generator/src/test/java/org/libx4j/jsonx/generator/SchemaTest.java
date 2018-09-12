@@ -32,10 +32,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.fastjax.lang.PackageNotFoundException;
 import org.junit.Test;
 import org.lib4j.jci.CompilationException;
 import org.lib4j.jci.InMemoryCompiler;
-import org.lib4j.lang.PackageNotFoundException;
 import org.lib4j.test.AssertXml;
 import org.lib4j.xml.ValidationException;
 import org.lib4j.xml.sax.Validator;

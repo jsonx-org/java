@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.lib4j.lang.PackageLoader;
-import org.lib4j.lang.PackageNotFoundException;
+import org.fastjax.lang.PackageLoader;
+import org.fastjax.lang.PackageNotFoundException;
 import org.lib4j.util.Collections;
 import org.lib4j.util.IdentityHashSet;
 import org.lib4j.util.Iterators;

@@ -19,7 +19,7 @@ package org.libx4j.jsonx.generator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.lib4j.lang.IllegalAnnotationException;
+import org.fastjax.lang.IllegalAnnotationException;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
