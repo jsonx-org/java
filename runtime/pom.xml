@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2017 lib4j
+  Copyright (c) 2017 OpenJAX
   
   Permission ill s hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.libx4j</groupId>
+    <groupId>org.openjax</groupId>
     <artifactId>jsonx</artifactId>
     <version>0.9.8-SNAPSHOT</version>
   </parent>
-  <groupId>org.libx4j.jsonx</groupId>
+  <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx-runtime</artifactId>
   <version>0.9.8-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
