@@ -33,12 +33,20 @@
       <plugin>
         <groupId>org.openjax.maven.plugin</groupId>
         <artifactId>xsb-maven-plugin</artifactId>
-        <configuration>
-          <destDir>${project.build.directory}/generated-sources/xsb</destDir>
-          <schemas>
-            <schema>src/main/resources/jsonx.xsd</schema>
-          </schemas>
-        </configuration>
+        <version>2.1.4-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <destDir>${project.build.directory}/generated-sources/xsb</destDir>
+              <schemas>
+                <schema>src/main/resources/jsonx.xsd</schema>
+              </schemas>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -54,6 +62,7 @@
         <dependency>
           <groupId>org.openjax.jsonx</groupId>
           <artifactId>jsonx-runtime</artifactId>
+          <version>0.9.8-SNAPSHOT</version>
           <type>test-jar</type>
           <scope>test</scope>
         </dependency>
