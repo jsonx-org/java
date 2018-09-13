@@ -18,7 +18,7 @@ package org.libx4j.jsonx.generator;
 
 import java.util.Map;
 
-import org.fastjax.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
+import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
 import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
 import org.libx4j.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
