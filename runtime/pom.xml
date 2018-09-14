@@ -26,7 +26,6 @@
   </parent>
   <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx-runtime</artifactId>
-  <version>0.9.8-SNAPSHOT</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <dependencies>
     <dependency>
