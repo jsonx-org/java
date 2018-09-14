@@ -32,14 +32,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.fastjax.lang.PackageNotFoundException;
-import org.fastjax.test.AssertXml;
-import org.junit.Test;
 import org.fastjax.jci.CompilationException;
 import org.fastjax.jci.InMemoryCompiler;
+import org.fastjax.lang.PackageNotFoundException;
+import org.fastjax.test.AssertXml;
 import org.fastjax.xml.ValidationException;
 import org.fastjax.xml.sax.Validator;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.junit.Test;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.xsb.runtime.Bindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +76,7 @@ public class SchemaTest {
 
   private static org.fastjax.xml.Element toXml(final Schema schema, final Settings settings) {
     final org.fastjax.xml.Element xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd " + jsonxXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/jsonx-0.9.8.xsd " + jsonxXsd);
     return xml;
   }
 

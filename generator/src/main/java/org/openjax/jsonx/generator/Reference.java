@@ -20,9 +20,9 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Reference;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;

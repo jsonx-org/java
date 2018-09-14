@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2017 lib4j
+  Copyright (c) 2017 OpenJAX
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -15,10 +15,10 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <jsonx
-  package="org.libx4j.jsonx.generator"
-  xmlns="http://jsonx.libx4j.org/jsonx-0.9.8.xsd"
+  package="org.openjax.jsonx.generator"
+  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.libx4j.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
   <array class="RootArray3">
     <reference type="foo.bar$RootArray2" nullable="false" minOccurs="3" maxOccurs="4"/>
     <reference type="rootNumber" nullable="false"/>

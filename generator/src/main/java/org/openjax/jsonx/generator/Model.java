@@ -18,8 +18,8 @@ package org.openjax.jsonx.generator;
 
 import java.util.Map;
 
-import org.lib4j.xml.datatypes_1_0_4.xL3gluGCXYYJc.$JavaIdentifier;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$MaxCardinality;
+import org.fastjax.xml.datatypes_1_0_4.xL5gluGCXYYJc.$JavaIdentifier;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;

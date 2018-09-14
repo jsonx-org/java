@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.fastjax.util.Classes;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Object;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 
 class Registry {
   final class Value {

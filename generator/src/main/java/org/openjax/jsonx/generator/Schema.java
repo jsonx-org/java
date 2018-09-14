@@ -37,10 +37,10 @@ import org.fastjax.util.Collections;
 import org.fastjax.util.IdentityHashSet;
 import org.fastjax.util.Iterators;
 import org.fastjax.util.Strings;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Member;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ObjectMember;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$ReferenceMember;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ObjectMember;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ReferenceMember;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.ArrayType;
 import org.openjax.jsonx.runtime.ObjectType;
 import org.openjax.jsonx.runtime.ValidationException;
@@ -224,9 +224,9 @@ public final class Schema extends Element {
     if (packageName.length() > 0)
       attributes.put("package", packageName);
 
-    attributes.put("xmlns", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd");
+    attributes.put("xmlns", "http://jsonx.openjax.org/jsonx-0.9.8.xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    attributes.put("xsi:schemaLocation", "http://jsonx.libx4j.org/jsonx-0.9.8.xsd http://jsonx.libx4j.org/jsonx-0.9.8.xsd");
+    attributes.put("xsi:schemaLocation", "http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx-0.9.8.xsd");
     return new org.fastjax.xml.Element("jsonx", attributes, elements);
   }
 

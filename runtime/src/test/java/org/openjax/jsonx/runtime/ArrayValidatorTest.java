@@ -92,7 +92,7 @@ public class ArrayValidatorTest {
       String msg = "\"" + Strings.escapeForJava(error) + "\"";
       msg = msg.replace('$', '.');
       msg = msg.replace(".class", "%class");
-      msg = msg.replaceAll("org\\.libx4j\\.[\\.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
+      msg = msg.replaceAll("org\\.openjax\\.[\\.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
       msg = msg.replace("%class", ".class");
       System.err.println(msg);
     }

@@ -20,9 +20,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import org.fastjax.lang.IllegalAnnotationException;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Array;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.$Boolean;
-import org.libx4j.jsonx.jsonx_0_9_8.xL2gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.BooleanProperty;
 import org.openjax.jsonx.runtime.JsonxUtil;
