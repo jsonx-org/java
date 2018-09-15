@@ -1,6 +1,6 @@
-<img src="https://www.cohesionfirst.org/logo.png" align="right">
+<img src="https://images.cooltext.com/5195722.png" align="right">
 
-## JSONX<br>![java-enterprise][java-enterprise] <a href="https://www.cohesionfirst.org/"><img src="https://img.shields.io/badge/CohesionFirst%E2%84%A2--blue.svg"></a>
+## JSONX<br><a href="https://www.openjax.org/"><img src="https://img.shields.io/badge/OpenJAX--blue.svg"></a>
 > Java <-> JSON Binding
 
 ### Introduction
@@ -9,9 +9,9 @@
 
 ### Why **JSONX**?
 
-#### CohesionFirst™
+#### CohesionFirst
 
-Developed with the CohesionFirst™ approach, **JSONX** is the cohesive alternative to the creation of JSON classes that offers validation and fail-fast execution. Made possible by the rigorous conformance to design patterns and best practices in every line of its implementation, **JSONX** is a complete solution for the creation and management of a JSON interface model, both for consumers and producers.
+Developed with the CohesionFirst approach, **JSONX** is the cohesive alternative to the creation of JSON classes that offers validation and fail-fast execution. Made possible by the rigorous conformance to design patterns and best practices in every line of its implementation, **JSONX** is a complete solution for the creation and management of a JSON interface model, both for consumers and producers.
 
 #### Cohesive Binding Between JSON and Java Classes
 
@@ -148,18 +148,19 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
 
 #### Integration with XRS
 
-**JSONX** can be used as the `MessageBodyReader` and `MessageBodyWriter` to marshal and parse JSON objects in a JAX-RS 2.0 server. Please [see here][xrs-getting-started] for an example of how to initiate **JSONX** as a Provider for your JAX-RS 2.0 application. The [XRS implementation][xrs] offers a CohesionFirst™ alternative to JAX-RS 2.0.
+**JSONX** can be used as the `MessageBodyReader` and `MessageBodyWriter` to marshal and parse JSON objects in a JAX-RS 2.0 server. Please [see here][xrs-getting-started] for an example of how to initiate **JSONX** as a Provider for your JAX-RS 2.0 application. The [XRS implementation][xrs] offers a CohesionFirst alternative to JAX-RS 2.0.
 
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[java-enterprise]: https://img.shields.io/badge/java-enterprise-blue.svg
+<a href="http://cooltext.com" target="_top"><img src="https://cooltext.com/images/ct_pixel.gif" width="80" height="15" alt="Cool Text: Logo and Graphics Generator" border="0" /></a>
+
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[jsonx-maven-plugin]: https://github.com/openjax/jsonx-maven-plugin
+[jsonx-maven-plugin]: /openjax/jsonx-maven-plugin
 [json]: http://www.json.org/
-[jsonx-xsd]: https://github.com/openjax/jsonx/blob/master/generator/src/main/resources/jsonx.xsd
+[jsonx-xsd]: /openjax/jsonx/blob/master/generator/src/main/resources/jsonx.xsd
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
-[xrs-getting-started]: https://github.com/openjax/xrs#getting-started
-[xrs]: https://github.com/openjax/xrs
+[xrs-getting-started]: /openjax/xrs#getting-started
+[xrs]: /openjax/xrs
