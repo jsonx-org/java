@@ -176,7 +176,7 @@ public class TrialFactory {
 
   private static void createString(final List<Trial<?>> trials, final Object root, final Field field, final Object target, final String pattern, final boolean urlDecode, final boolean urlEncode, final Use use, final int minOccurs, final int maxOccurs, final boolean nullable) {
     if (pattern != null) {
-      Trial.addTrial(trials, root, field, target, "%25", new Trial<>(root, field, target, "~~~") {
+      Trial.addTrial(trials, root, field, target, "%25", new Trial<String>(root, field, target, "~~~") {
         @Override
         public void onEncode(final String json, final Exception e) {
           assertNotNull(e);
@@ -194,7 +194,7 @@ public class TrialFactory {
     }
 
     if (urlDecode) {
-      Trial.<String>addTrial(trials, root, field, target, new Trial<>(root, field, target, "%25") {
+      Trial.<String>addTrial(trials, root, field, target, new Trial<String>(root, field, target, "%25") {
         @Override
         public void onEncode(final String json, final Exception e) {
           assertNull(e);
@@ -210,7 +210,7 @@ public class TrialFactory {
     }
 
     if (urlEncode) {
-      Trial.<String>addTrial(trials, root, field, target, new Trial<>(root, field, target, "%") {
+      Trial.<String>addTrial(trials, root, field, target, new Trial<String>(root, field, target, "%") {
         @Override
         public void onEncode(final String json, final Exception e) {
           assertNotNull(e);

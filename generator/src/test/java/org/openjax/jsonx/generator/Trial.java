@@ -31,7 +31,7 @@ import org.openjax.jsonx.runtime.Use;
 
 public abstract class Trial<T> {
   public static <T>void addTrial(final List<Trial<?>> trials, final Object root, final Field field, final Object target, final T valid, final Trial<T> invalid, final Use use, final int minOccurs, final int maxOccurs, final boolean nullable) {
-    addTrial(trials, root, field, target, new Trial<>(root, field, target, valid) {
+    addTrial(trials, root, field, target, new Trial<T>(root, field, target, valid) {
       @Override
       public void onEncode(final String json, final Exception e) {
         assertNull(e);
@@ -107,7 +107,7 @@ public abstract class Trial<T> {
     }
 
     if (maxOccurs == 1) {
-      trials.add(new Trial<>(root, field, target, new Object[] {valid, valid}) {
+      trials.add(new Trial<Object[]>(root, field, target, new Object[] {valid, valid}) {
         @Override
         public void onEncode(final String json, final Exception e) {
           assertNotNull(e);

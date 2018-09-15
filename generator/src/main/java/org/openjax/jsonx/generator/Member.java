@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 import org.fastjax.util.Collections;
 import org.fastjax.util.JavaIdentifiers;
-import org.fastjax.xml.datatypes_1_0_4.xL5gluGCXYYJc.$JavaIdentifier;
+import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
@@ -70,7 +70,7 @@ abstract class Member extends Element {
     return declaredMember;
   }
 
-  protected static final Function<Binding,String> elementXPath = new Function<>() {
+  protected static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
     @Override
     public String apply(final Binding t) {
       final String name;

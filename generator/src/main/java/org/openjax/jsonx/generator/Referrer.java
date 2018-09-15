@@ -18,7 +18,7 @@ package org.openjax.jsonx.generator;
 
 import java.util.List;
 
-import org.fastjax.xml.datatypes_1_0_4.xL5gluGCXYYJc.$JavaIdentifier;
+import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;

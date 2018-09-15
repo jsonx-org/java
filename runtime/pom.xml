@@ -27,16 +27,19 @@
   <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx-runtime</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.fastjax</groupId>
       <artifactId>fastjax-math</artifactId>
-      <version>1.4.4-SNAPSHOT</version>
+      <version>0.6.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.fastjax</groupId>
       <artifactId>fastjax-net</artifactId>
-      <version>1.5.0-SNAPSHOT</version>
+      <version>0.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.fastjax</groupId>
