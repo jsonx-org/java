@@ -137,7 +137,7 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
   To parse JSON to **JSONX**:
 
   ```java
-  final json.Credentials credentials = (json.Credentials)JSObject.parse(rawType, new StringReader("{email: 'john@doe', password: '066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557'}"))`
+  json.Credentials credentials = (json.Credentials)JSObject.parse(rawType, new StringReader("{email: 'john@doe', password: '066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557'}"))`
   ```
   
   To marshal **JSONX** to JSON:
