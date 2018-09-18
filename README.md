@@ -97,11 +97,11 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
   </json>
   ```
 
-4. Add the [`org.openjax.maven.plugin:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
+4. Add the [`org.openjax.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
 
   ```xml
   <plugin>
-    <groupId>org.openjax.maven.plugin</groupId>
+    <groupId>org.openjax.jsonx</groupId>
     <artifactId>jsonx-maven-plugin</artifactId>
     <version>0.9.8-SNAPSHOT</version>
     <executions>
@@ -159,8 +159,8 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 [jsonx-maven-plugin]: /../../../../openjax/jsonx-maven-plugin
 [json]: http://www.json.org/
-[jsonx-xsd]: /../../../../openjax/openjax-jsonx/blob/master/generator/src/main/resources/jsonx.xsd
+[jsonx-xsd]: /../../../../openjax/jsonx/blob/master/generator/src/main/resources/jsonx.xsd
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
-[xrs-getting-started]: /../../../../openjax/openjax-xrs#getting-started
-[xrs]: /../../../../openjax/openjax-xrs
+[xrs-getting-started]: /../../../../openjax/xrs#getting-started
+[xrs]: /../../../../openjax/xrs
