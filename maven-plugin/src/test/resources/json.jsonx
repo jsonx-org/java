@@ -1,0 +1,112 @@
+<!--
+  Copyright (c) 2015 OpenJAX
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<json name="api" mimeType="application/json"
+  xmlns="http://jjb.openjax.org/jsonx-0.9.8.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://jjb.openjax.org/jsonx-0.9.8.xsd http://jjb.openjax.org/jsonx.xsd">
+  
+  <object abstract="true" name="xmldsigType">
+    <property name="xmldsig" xsi:type="string"/>
+  </object>
+  <object abstract="true" name="pubRsaType" extends="xmldsigType">
+    <property name="pub_rsa" xsi:type="string"/>
+  </object>
+  <object name="signature" extends="pubRsaType"/>
+  
+  <object name="dsig" extends="xmldsigType"/>
+  
+  <object abstract="true" name="partialData">
+    <property name="a" xsi:type="string" pattern="[&quot;0-9A-F]*"/>
+    <property name="b" xsi:type="string" pattern="[\\0-9A-F]*"/>
+  </object>
+  
+  <object name="message">
+    <property name="subject" xsi:type="string"/>
+    <property name="url" xsi:type="string" pattern="((https?|ftp)://[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)"/>
+    <property name="important" xsi:type="boolean"/>
+    <property name="requiredArray" xsi:type="boolean" array="true" null="false"/>
+    <property name="notRequired" xsi:type="boolean" required="false"/>
+    <property name="notRequiredArray" xsi:type="boolean" array="true" required="false"/>
+    <property name="recipients" xsi:type="string" array="true" pattern=".+"/>
+    <property name="emptyarray" xsi:type="string" array="true" pattern=".+"/>
+    <property name="attachment" xsi:type="object" array="true">
+      <property name="filename" xsi:type="string" null="false">
+        <description>The filename.</description>
+      </property>
+      <property name="data" xsi:type="object" extends="partialData">
+        <description>The data.</description>
+        <property name="c" xsi:type="string" pattern="[0-9A-F]*"/>
+      </property>
+      <property name="serial" xsi:type="number" null="false">
+        <description>The serial.</description>
+      </property>
+    </property>
+    <property xsi:type="object" name="signature" extends="signature"/>
+  </object>
+  
+  <object name="links">
+    <property xsi:type="string" name="href" pattern="((https?|ftp)://[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)" null="false"/>
+    <property xsi:type="string" name="rel" pattern="(\S)|(\S.*\S)" null="false"/>
+    <property xsi:type="string" name="method" pattern="(\S)|(\S.*\S)" null="false"/>
+    <property xsi:type="string" name="encType" required="false"/>
+  </object>
+  
+  <object name="payPalEvent">
+    <property xsi:type="string" name="id" null="false"/>
+    <property xsi:type="string" name="create_time" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.{1,3})?" null="false"/>
+    <property xsi:type="string" name="event_type" pattern="(\S)|(\S.*\S)" null="false"/>
+    <property xsi:type="string" name="event_version" pattern="(\S)|(\S.*\S)" null="false"/>
+    <property xsi:type="string" name="summary" pattern="(\S)|(\S.*\S)" null="false"/>
+    <property xsi:type="string" name="resource_type" pattern="(\S)|(\S.*\S)" null="false"/>
+    <property xsi:type="object" name="resource" null="true">
+      <property xsi:type="string" name="id" pattern="(\S)|(\S.*\S)" null="false"/>
+      <property xsi:type="string" name="parent_payment" pattern="(\S)|(\S.*\S)" null="false"/>
+      <property xsi:type="string" name="update_time" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.{1,3})?" null="false"/>
+      <property xsi:type="string" name="create_time" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.{1,3})?" null="false"/>
+      <property xsi:type="string" name="state" pattern="(\S)|(\S.*\S)" null="false"/>
+      <property xsi:type="object" name="amount" null="false">
+        <property xsi:type="string" name="total" pattern="(\S)|(\S.*\S)" null="false"/>
+        <property xsi:type="string" name="currency" pattern="(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)" null="false"/>
+        <property xsi:type="object" name="details" required="false" null="false">
+          <property xsi:type="string" name="subtotal" pattern="(\S)|(\S.*\S)" null="false"/>
+        </property>
+      </property>
+      <property xsi:type="object" name="links" extends="links" array="true" null="false"/>
+      <property xsi:type="string" name="sale_id" pattern="(\S)|(\S.*\S)" required="false" null="false"/>
+      <property xsi:type="string" name="payment_mode" pattern="(\S)|(\S.*\S)" required="false" null="false"/>
+      <property xsi:type="string" name="protection_eligibility" pattern="(\S)|(\S.*\S)" required="false" null="false"/>
+      <property xsi:type="string" name="invoice_number" required="false" null="false"/>
+      <property xsi:type="string" name="custom" required="false" null="false"/>
+      <property xsi:type="object" name="refund_to_payer" required="false" null="false">
+        <property xsi:type="string" name="value" pattern="(\S)|(\S.*\S)" null="false"/>
+        <property xsi:type="string" name="currency" pattern="(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)" null="false"/>
+      </property>
+      <property xsi:type="object" name="transaction_fee" required="false" null="false">
+        <property xsi:type="string" name="value" pattern="(\S)|(\S.*\S)" null="false"/>
+        <property xsi:type="string" name="currency" pattern="(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)" null="false"/>
+      </property>
+    </property>
+    <property xsi:type="object" name="links" extends="links" array="true" null="false"/>
+  </object>
+  
+  <object name="giphy" onUnknown="skip">
+    <property xsi:type="object" name="data" array="true" onUnknown="skip">
+      <property xsi:type="string" name="id" required="true" null="false"/>
+      <property xsi:type="string" name="url" required="true" null="false"/>
+    </property>
+  </object>
+</json>

@@ -20,11 +20,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org</groupId>
+    <groupId>org.openjax</groupId>
     <artifactId>openjax</artifactId>
     <version>2.5.3-SNAPSHOT</version>
   </parent>
-  <groupId>org.openjax</groupId>
+  <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx</artifactId>
   <version>0.9.8-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -32,16 +32,17 @@
   <modules>
     <module>generator</module>
     <module>runtime</module>
+    <module>maven-plugin</module>
   </modules>
   <dependencies>
     <dependency>
       <groupId>org.fastjax</groupId>
-      <artifactId>fastjax-logging</artifactId>
+      <artifactId>logging</artifactId>
       <version>0.4.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.fastjax</groupId>
-      <artifactId>fastjax-test</artifactId>
+      <artifactId>test</artifactId>
       <version>0.6.9-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
