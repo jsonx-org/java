@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.maven.plugin.jsonx;
+package org.openjax.jsonx;
 
 import java.util.List;
 
