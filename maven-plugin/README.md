@@ -21,7 +21,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 
 ```xml
 <plugin>
-  <groupId>org.openjax.maven.plugin</groupId>
+  <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
   <version>0.9.8-SNAPSHOT</version>
   <configuration>
@@ -49,4 +49,4 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 <a href="http://cooltext.com" target="_top"><img src="https://cooltext.com/images/ct_pixel.gif" width="80" height="15" alt="Cool Text: Logo and Graphics Generator" border="0" /></a>
 
 [mvn-plugin]: https://img.shields.io/badge/mvn-plugin-lightgrey.svg
-[jsonx]: /../../../../openjax/openjax-jsonx
+[jsonx]: /

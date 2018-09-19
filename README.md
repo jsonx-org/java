@@ -157,9 +157,9 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 <a href="http://cooltext.com" target="_top"><img src="https://cooltext.com/images/ct_pixel.gif" width="80" height="15" alt="Cool Text: Logo and Graphics Generator" border="0" /></a>
 
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[jsonx-maven-plugin]: /../../../../openjax/jsonx-maven-plugin
+[jsonx-maven-plugin]: /maven-plugin
 [json]: http://www.json.org/
-[jsonx-xsd]: /../../../../openjax/jsonx/blob/master/generator/src/main/resources/jsonx.xsd
+[jsonx-xsd]: /generator/src/main/resources/jsonx.xsd
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
 [xrs-getting-started]: /../../../../openjax/xrs#getting-started
