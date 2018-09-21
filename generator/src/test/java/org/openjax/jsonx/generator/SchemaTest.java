@@ -88,7 +88,7 @@ public class SchemaTest {
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
     final Jsonx testBinding = (Jsonx)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
-    AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual();
+    AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual(true);
     return controlSchema;
   }
 
