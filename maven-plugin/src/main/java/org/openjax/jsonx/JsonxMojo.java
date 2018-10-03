@@ -25,20 +25,14 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.fastjax.maven.mojo.GeneratorMojo;
-import org.fastjax.maven.mojo.ResourceLabel;
+import org.fastjax.maven.mojo.SourceInput;
 
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
 @Execute(goal="generate")
 public class JsonxMojo extends GeneratorMojo {
+  @SourceInput
   @Parameter(property="schemas", required=true)
   private List<String> schemas;
-
-  @Override
-  @SuppressWarnings("unchecked")
-  @ResourceLabel(label="schemas", nonEmpty=true)
-  protected List<String>[] getResources() {
-    return new List[] {schemas};
-  }
 
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
