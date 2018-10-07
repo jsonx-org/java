@@ -198,11 +198,11 @@ abstract class Member extends Element {
 
   /**
    * Intended to be overridden by each concrete subclass, this method populates
-   * the target <code>attributes</code> parameter with annotation attributes
-   * pertaining to this <code>Member</code>.
+   * the target {@code attributes} parameter with annotation attributes
+   * pertaining to this {@code Member}.
    *
-   * @param attributes The target <code>attributes</code> parameter.
-   * @param owner The <code>Member</code> that owns <code>this</code>.
+   * @param attributes The target {@code attributes} parameter.
+   * @param owner The {@code Member} that owns {@code this}.
    */
   protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     if (nullable != null)
@@ -250,8 +250,12 @@ abstract class Member extends Element {
   }
 
   protected abstract Id id();
+
   protected abstract Registry.Type type();
+
   protected abstract String elementName();
+
   protected abstract Class<? extends Annotation> propertyAnnotation();
+
   protected abstract Class<? extends Annotation> elementAnnotation();
 }

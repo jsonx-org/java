@@ -54,9 +54,9 @@ class Id {
   }
 
   /**
-   * Construct <code>Id</code> for a <code>BooleanModel</code> instance.
+   * Construct {@code Id} for a {@code BooleanModel} instance.
    *
-   * @param model The <code>BooleanModel</code> instance.
+   * @param model The {@code BooleanModel} instance.
    */
   public Id(final BooleanModel model) {
     this.id = "b";

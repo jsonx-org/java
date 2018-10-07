@@ -22,10 +22,10 @@ import java.util.Set;
 abstract class Element {
   /**
    * Intended to be overridden by each concrete subclass, this method collects
-   * all <code>Registry.Type</code> declarations of elements that are members
-   * of <code>this</code> element.
+   * all {@code Registry.Type} declarations of elements that are members of
+   * {@code this} element.
    *
-   * @param types The <code>Set</code> into which the <code>Registry.Type</code>
+   * @param types The {@code Set} into which the {@code Registry.Type}
    *          declarations must be added.
    */
   protected void getDeclaredTypes(final Set<Registry.Type> types) {
@@ -33,13 +33,12 @@ abstract class Element {
 
   /**
    * Intended to be overridden by each concrete subclass, this method returns a
-   * <code>Map<String,String></code> of name/value attributes that define the
-   * spec of <code>this</code> element's <code>*Property</code> or <code>*Element</code>
-   * declaration.
+   * {@code Map<String,String>} of name/value attributes that define the spec of
+   * {@code this} element's {@code *Property} or {@code *Element} declaration.
    *
-   * @param owner The <code>Element</code> that owns (contains) <code>this</code> element.
+   * @param owner The {@code Element} that owns (contains) {@code this} element.
    * @param packageName The package name declared in the schema element.
-   * @return The non-null <code>Map<String,String></code> of name/value attributes.
+   * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
   protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     return new AttributeMap();
