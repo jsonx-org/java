@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.fastjax.util.Collections;
+import org.fastjax.util.FastCollections;
 import org.fastjax.util.JavaIdentifiers;
 import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
@@ -222,7 +222,7 @@ abstract class Member extends Element {
     final StringBuilder builder = new StringBuilder();
     final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
     if (elementAnnotations != null && elementAnnotations.size() > 0)
-      builder.append(Collections.toString(elementAnnotations, '\n')).append('\n');
+      builder.append(FastCollections.toString(elementAnnotations, '\n')).append('\n');
 
     final AttributeMap attributes = new AttributeMap();
     toAnnotationAttributes(attributes, this);

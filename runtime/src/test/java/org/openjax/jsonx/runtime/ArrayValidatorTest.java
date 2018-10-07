@@ -27,12 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.fastjax.math.BigDecimals;
+import org.fastjax.util.FastCollections;
+import org.fastjax.util.Strings;
 import org.junit.Test;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
-import org.fastjax.math.BigDecimals;
-import org.fastjax.util.Collections;
-import org.fastjax.util.Strings;
 
 public class ArrayValidatorTest {
   private static final Map<Class<? extends Annotation>,IdToElement> classToIdToElement = new HashMap<>();
@@ -87,7 +87,7 @@ public class ArrayValidatorTest {
   private static void test(final String expected, final Annotation[] annotations, final Class<? extends Annotation> annotationType, final Object ... members) {
     final Relations relations = new Relations();
     final String error = ArrayValidator.validate(annotationType, Arrays.asList(members), relations);
-    final Relations flatRelations = Collections.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
+    final Relations flatRelations = FastCollections.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
     if (expected != null && !expected.equals(error)) {
       String msg = "\"" + Strings.escapeForJava(error) + "\"";
       msg = msg.replace('$', '.');
@@ -103,7 +103,7 @@ public class ArrayValidatorTest {
       assertEquals(expected, error);
 
     if (error == null) {
-      final List<Object> flatMembers = Collections.flatten(Arrays.asList(members), new ArrayList<>(), true);
+      final List<Object> flatMembers = FastCollections.flatten(Arrays.asList(members), new ArrayList<>(), true);
       assertEquals(flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
       for (int i = 0; i < annotations.length; i++) {

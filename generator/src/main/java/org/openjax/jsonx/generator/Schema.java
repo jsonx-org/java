@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 
 import org.fastjax.lang.PackageLoader;
 import org.fastjax.lang.PackageNotFoundException;
-import org.fastjax.util.Collections;
+import org.fastjax.util.FastCollections;
 import org.fastjax.util.IdentityHashSet;
 import org.fastjax.util.Iterators;
 import org.fastjax.util.Strings;
@@ -113,7 +113,7 @@ public final class Schema extends Element {
 
     final List<String> cycle = digraph.getCycleRef();
     if (cycle != null)
-      throw new ValidationException("Cycle detected in object hierarchy: " + Collections.toString(cycle, " -> "));
+      throw new ValidationException("Cycle detected in object hierarchy: " + FastCollections.toString(cycle, " -> "));
 
     final ListIterator<$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious()) {
@@ -150,7 +150,7 @@ public final class Schema extends Element {
   }
 
   public Schema(final Class<?> ... classes) {
-    this(Collections.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
+    this(FastCollections.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
   }
 
   public Schema(final Set<Class<?>> classes) {

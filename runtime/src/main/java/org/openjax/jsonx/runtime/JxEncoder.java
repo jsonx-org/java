@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.fastjax.net.URIComponent;
 import org.fastjax.util.Annotations;
-import org.fastjax.util.Arrays;
+import org.fastjax.util.FastArrays;
 import org.fastjax.util.Classes;
 import org.fastjax.util.Strings;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
@@ -221,7 +221,7 @@ public class JxEncoder {
       final Object value = getValue(object, name);
       if (value != null) {
         if (indent > 0)
-          builder.append('\n').append(Arrays.createRepeat(' ', depth * 2));
+          builder.append('\n').append(FastArrays.createRepeat(' ', depth * 2));
 
         builder.append('"').append(name).append('"').append(colon);
         encodeProperty(field, annotation, value, builder, depth);
@@ -232,7 +232,7 @@ public class JxEncoder {
     }
 
     if (indent > 0)
-      builder.append('\n').append(Arrays.createRepeat(' ', (depth - 1) * 2));
+      builder.append('\n').append(FastArrays.createRepeat(' ', (depth - 1) * 2));
 
     builder.append('}');
   }
