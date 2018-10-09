@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.fastjax.util.Annotations;
-import org.fastjax.util.WrappedList;
+import org.fastjax.util.FilterList;
 
 public class ArrayValidator {
   static class Relation {
@@ -37,9 +37,16 @@ public class ArrayValidator {
     }
   }
 
-  static class Relations extends WrappedList<Relation> {
+  static class Relations extends FilterList<Relation> {
     public Relations() {
       super(new ArrayList<Relation>());
+    }
+
+    @Override
+    protected FilterList<Relation> newInstance(final List source) {
+      final Relations relations = new Relations();
+      relations.source = source;
+      return relations;
     }
 
     @Override
