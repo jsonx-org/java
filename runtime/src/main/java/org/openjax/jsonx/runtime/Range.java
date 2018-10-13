@@ -71,7 +71,7 @@ public class Range {
 
   public Range(final String string) throws ParseException {
     if (string.length() < 4)
-      throw new IllegalArgumentException("string.length() < 4");
+      throw new IllegalArgumentException("Min length of string is 4, but was " + string.length());
 
     char ch = string.charAt(0);
     if (!(this.minInclusive = ch == '[') && ch != '(')

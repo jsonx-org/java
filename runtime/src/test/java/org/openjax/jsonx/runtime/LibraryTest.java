@@ -130,10 +130,11 @@ public class LibraryTest {
     onlinePub1.setYear(BigInteger.valueOf(2001));
 
     final Publishing onlinePub2 = new Publishing();
-    onlinePub2.setPublisher("Super Online Pub");
+    onlinePub2.setPublisher("Super Pub");
     onlinePub2.setYear(BigInteger.valueOf(2007));
 
     final OnlineArticle article = new OnlineArticle();
+    article.setTitle("Online Article");
     article.setAuthors(Arrays.asList("Mr. Online", "Mrs. Online"));
     article.setEditors(Arrays.asList("Mr. Editor"));
     article.setPublishings(new ArrayList<>());
