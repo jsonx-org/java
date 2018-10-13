@@ -38,7 +38,7 @@ public class RangeTest {
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
-      assertEquals("string.length() < 4", e.getMessage());
+      assertEquals("Min length of string is 4, but was 0", e.getMessage());
     }
 
     try {
