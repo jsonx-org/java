@@ -16,11 +16,12 @@
 
 package org.openjax.jsonx.generator;
 
+import static org.junit.Assert.*;
+
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.openjax.jsonx.generator.Registry.Kind;
 
@@ -64,9 +65,9 @@ public class TypeTest {
     final Registry registry = new Registry();
 
     final Registry.Type type = registry.getType(Integer.class);
-    Assert.assertEquals(Integer.class.getName(), type.toString());
-    Assert.assertEquals(Number.class.getName(), type.getSuperType().toString());
-    Assert.assertNull(type.getSuperType().getSuperType());
+    assertEquals(Integer.class.getName(), type.toString());
+    assertEquals(Number.class.getName(), type.getSuperType().toString());
+    assertNull(type.getSuperType().getSuperType());
   }
 
   @Test
@@ -74,9 +75,9 @@ public class TypeTest {
     final Registry registry = new Registry();
 
     final Registry.Type type = registry.getType(TypeTest.class);
-    Assert.assertEquals(TypeTest.class.getName(), type.toString());
-    Assert.assertEquals(Object.class.getName(), type.getSuperType().toString());
-    Assert.assertNull(type.getSuperType().getSuperType());
+    assertEquals(TypeTest.class.getName(), type.toString());
+    assertEquals(Object.class.getName(), type.getSuperType().toString());
+    assertNull(type.getSuperType().getSuperType());
   }
 
   @Test
@@ -90,16 +91,16 @@ public class TypeTest {
     final String superName = "Foo$Bar";
     final Registry.Type type = registry.getType(Kind.CLASS, packageName, name, superPackageName, superName, null);
 
-    Assert.assertEquals(packageName + ".One$Two", type.getDeclaringType().toString());
-    Assert.assertEquals(packageName + ".One", type.getDeclaringType().getDeclaringType().toString());
-    Assert.assertNull(type.getDeclaringType().getDeclaringType().getDeclaringType());
+    assertEquals(packageName + ".One$Two", type.getDeclaringType().toString());
+    assertEquals(packageName + ".One", type.getDeclaringType().getDeclaringType().toString());
+    assertNull(type.getDeclaringType().getDeclaringType().getDeclaringType());
 
-    Assert.assertEquals(superPackageName + ".Foo", type.getSuperType().getDeclaringType().toString());
-    Assert.assertNull(type.getSuperType().getDeclaringType().getDeclaringType());
+    assertEquals(superPackageName + ".Foo", type.getSuperType().getDeclaringType().toString());
+    assertNull(type.getSuperType().getDeclaringType().getDeclaringType());
 
-    Assert.assertEquals(packageName + "." + name, type.toString());
-    Assert.assertEquals(superPackageName + "." + superName, type.getSuperType().toString());
-    Assert.assertNull(type.getSuperType().getSuperType());
+    assertEquals(packageName + "." + name, type.toString());
+    assertEquals(superPackageName + "." + superName, type.getSuperType().toString());
+    assertNull(type.getSuperType().getSuperType());
   }
 
   @Test
@@ -128,21 +129,21 @@ public class TypeTest {
     final String name3 = "Three";
     final Registry.Type type3 = registry.getType(Kind.CLASS, packageName3, name3, type1.getPackage(), type1.getCompoundName(), null);
 
-    Assert.assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type1));
-    Assert.assertEquals(type0, type0.getGreatestCommonSuperType(type2));
-    Assert.assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type3));
+    assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type1));
+    assertEquals(type0, type0.getGreatestCommonSuperType(type2));
+    assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type3));
 
-    Assert.assertEquals(registry.OBJECT, type1.getGreatestCommonSuperType(type2));
-    Assert.assertEquals(type1, type1.getGreatestCommonSuperType(type3));
+    assertEquals(registry.OBJECT, type1.getGreatestCommonSuperType(type2));
+    assertEquals(type1, type1.getGreatestCommonSuperType(type3));
 
-    Assert.assertEquals(registry.OBJECT, type2.getGreatestCommonSuperType(type3));
+    assertEquals(registry.OBJECT, type2.getGreatestCommonSuperType(type3));
 
-    Assert.assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0))));
+    assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0))));
 
-    Assert.assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type2))));
-    Assert.assertEquals(registry.getType(List.class, registry.getType(Object.class)), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
+    assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type2))));
+    assertEquals(registry.getType(List.class, registry.getType(Object.class)), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
 
-    Assert.assertEquals(registry.getType(List.class, type1), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type1), toElement(type3))));
-    Assert.assertEquals(registry.getType(List.class, registry.getType(Object.class)), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
+    assertEquals(registry.getType(List.class, type1), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type1), toElement(type3))));
+    assertEquals(registry.getType(List.class, registry.getType(Object.class)), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
   }
 }

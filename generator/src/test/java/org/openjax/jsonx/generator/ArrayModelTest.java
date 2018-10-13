@@ -16,11 +16,12 @@
 
 package org.openjax.jsonx.generator;
 
+import static org.junit.Assert.*;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
@@ -60,6 +61,6 @@ public class ArrayModelTest {
     number2.setForm$(new $Number.Form$($Number.Form$.integer));
     final NumberModel model2 = NumberModel.reference(registry, null, number2);
 
-    Assert.assertEquals(registry.getType(List.class, BigInteger.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(model1, model2)));
+    assertEquals(registry.getType(List.class, BigInteger.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(model1, model2)));
   }
 }
