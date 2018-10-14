@@ -133,12 +133,26 @@ public final class Schema extends Element {
     }
   }
 
+  private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+    final Set<Class<?>> classes = new HashSet<>();
+    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
+      if ((c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
+        classes.add(c);
+        return true;
+      }
+
+      return false;
+    });
+
+    return classes;
+  }
+
   public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> (c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)) && filter.test(c)));
+    this(findClasses(pkg, classLoader, filter));
   }
 
   public Schema(final Package pkg, final ClassLoader classLoader) throws PackageNotFoundException {
-    this(PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)));
+    this(findClasses(pkg, classLoader, null));
   }
 
   public Schema(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {
