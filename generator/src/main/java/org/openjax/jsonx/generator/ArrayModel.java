@@ -72,7 +72,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
     final ArrayType arrayType = cls.getAnnotation(ArrayType.class);
     if (arrayType == null)
-      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ArrayType.class.getSimpleName() + " annotation.");
+      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ArrayType.class.getSimpleName() + " annotation");
 
     return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.elementIds(), cls.getAnnotations(), registry.getType(cls), cls.getName()), null);
   }

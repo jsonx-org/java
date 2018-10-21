@@ -88,7 +88,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private static ObjectType checkJSObject(final Class<?> cls) {
     final ObjectType jsObject = cls.getDeclaredAnnotation(ObjectType.class);
     if (jsObject == null)
-      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ObjectType.class.getSimpleName() + " annotation.");
+      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ObjectType.class.getSimpleName() + " annotation");
 
     return jsObject;
   }

@@ -94,7 +94,7 @@ final class StringModel extends Model {
   private StringModel(final Registry registry, final StringProperty property, final Field field) {
     super(registry, null, property.use());
     if (field.getType() != String.class)
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type.");
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type");
 
     this.pattern = parsePattern(property.pattern());
     this.urlEncode = property.urlEncode();

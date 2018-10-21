@@ -120,7 +120,7 @@ final class NumberModel extends Model {
   private NumberModel(final Registry registry, final NumberProperty property, final Field field) {
     super(registry, null, property.use());
     if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types.");
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types");
 
     this.form = property.form() == Form.REAL ? null : property.form();
     try {

@@ -77,7 +77,7 @@ final class BooleanModel extends Model {
   private BooleanModel(final Registry registry, final BooleanProperty property, final Field field) {
     super(registry, null, property.use());
     if (field.getType() != Boolean.class && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type.");
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type");
 
     this.id = new Id(this);
   }
