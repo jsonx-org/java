@@ -133,7 +133,7 @@ public final class Schema extends Element {
     }
   }
 
-  private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+  private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
     PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
       if ((c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
@@ -147,19 +147,19 @@ public final class Schema extends Element {
     return classes;
   }
 
-  public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+  public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
   }
 
-  public Schema(final Package pkg, final ClassLoader classLoader) throws PackageNotFoundException {
+  public Schema(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, null));
   }
 
-  public Schema(final Package pkg, final Predicate<Class<?>> filter) throws PackageNotFoundException {
+  public Schema(final Package pkg, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     this(pkg, Thread.currentThread().getContextClassLoader(), filter);
   }
 
-  public Schema(final Package pkg) throws PackageNotFoundException {
+  public Schema(final Package pkg) throws IOException, PackageNotFoundException {
     this(pkg, Thread.currentThread().getContextClassLoader());
   }
 

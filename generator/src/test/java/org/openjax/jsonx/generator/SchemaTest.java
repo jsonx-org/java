@@ -111,7 +111,7 @@ public class SchemaTest {
     }
   }
 
-  private static Schema newSchema(final ClassLoader classLoader, final String packageName) throws PackageNotFoundException {
+  private static Schema newSchema(final ClassLoader classLoader, final String packageName) throws IOException, PackageNotFoundException {
     return new Schema(classLoader.getDefinedPackage(packageName), classLoader, c -> c.getClassLoader() == classLoader);
   }
 
