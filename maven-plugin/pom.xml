@@ -59,7 +59,7 @@
   </build>
   <profiles>
     <profile>
-      <id>default</id>
+      <id>maven-invoker-plugin</id>
       <activation>
         <property>
           <name>!maven.test.skip</name>
@@ -75,15 +75,11 @@
             <artifactId>maven-invoker-plugin</artifactId>
             <executions>
               <execution>
-                <phase>install</phase>
                 <configuration>
                   <profiles>
-                    <profile>!default</profile>
+                    <profile>!maven-invoker-plugin</profile>
                     <profile>plugin-test</profile>
                   </profiles>
-                  <goals>
-                    <goal>test</goal>
-                  </goals>
                 </configuration>
               </execution>
             </executions>
@@ -98,6 +94,7 @@
           <plugin>
             <groupId>org.openjax.jsonx</groupId>
             <artifactId>jsonx-maven-plugin</artifactId>
+            <version>0.9.8-SNAPSHOT</version>
             <executions>
               <execution>
                 <goals>
