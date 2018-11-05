@@ -94,7 +94,7 @@
           <plugin>
             <groupId>org.openjax.jsonx</groupId>
             <artifactId>jsonx-maven-plugin</artifactId>
-            <version>0.9.8-SNAPSHOT</version>
+            <version>${project.version}</version>
             <executions>
               <execution>
                 <goals>
