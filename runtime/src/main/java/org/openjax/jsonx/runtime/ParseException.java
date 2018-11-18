@@ -20,17 +20,17 @@ public class ParseException extends Exception {
   private static final long serialVersionUID = -4391452229717188054L;
 
   /**
-   * The zero-based character offset into the string being parsed at which
-   * the error was found during parsing.
+   * The zero-based character offset into the string being parsed at which the
+   * error was found during parsing.
    */
   private final int errorOffset;
 
   /**
-   * Constructs a ParseException with the specified detail message and offset.
-   * A detail message is a String that describes this particular exception.
+   * Constructs a ParseException with the specified detail message and offset. A
+   * detail message is a String that describes this particular exception.
    *
-   * @param string the detail message
-   * @param errorOffset the position where the error is found while parsing.
+   * @param string The detail message.
+   * @param errorOffset The position where the error is found while parsing.
    */
   public ParseException(final String string, final int errorOffset) {
     super(string + " [errorOffset: " + errorOffset + "]");
@@ -40,7 +40,7 @@ public class ParseException extends Exception {
   /**
    * Returns the position where the error was found.
    *
-   * @return the position where the error was found
+   * @return The position where the error was found.
    */
   public int getErrorOffset() {
     return errorOffset;

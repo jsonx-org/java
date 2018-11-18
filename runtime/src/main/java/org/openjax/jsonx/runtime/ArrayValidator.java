@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.fastjax.util.Annotations;
-import org.fastjax.util.FilterList;
+import org.fastjax.util.DelegateList;
 
 public class ArrayValidator {
   static class Relation {
@@ -37,16 +37,13 @@ public class ArrayValidator {
     }
   }
 
-  static class Relations extends FilterList<Relation> {
+  static class Relations extends DelegateList<Relation> {
     public Relations() {
       super(new ArrayList<Relation>());
     }
 
-    @Override
-    protected FilterList<Relation> newInstance(final List source) {
-      final Relations relations = new Relations();
-      relations.source = source;
-      return relations;
+    private Relations(final List<Relation> target) {
+      super(target);
     }
 
     @Override
@@ -65,6 +62,11 @@ public class ArrayValidator {
         list.add(relation.member);
 
       return list;
+    }
+
+    @Override
+    public Relations subList(final int fromIndex, final int toIndex) {
+      return new Relations(target.subList(fromIndex, toIndex));
     }
   }
 
