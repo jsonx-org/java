@@ -19,7 +19,7 @@ package org.openjax.jsonx.runtime;
 import java.lang.reflect.Field;
 
 public class BooleanSpec extends PrimitiveSpec<Boolean> {
-  public BooleanSpec(final Field field, final BooleanProperty property) {
+  public BooleanSpec(final BooleanProperty property, final Field field) {
     super(field, property.name(), property.use());
   }
 
@@ -30,7 +30,7 @@ public class BooleanSpec extends PrimitiveSpec<Boolean> {
 
   @Override
   public String validate(final String json) {
-    return "true".equals(json) || "false".equals(json) ? null : "Not a valid boolean token: " + json;
+    return !"true".equals(json) && !"false".equals(json) ? "Not a valid boolean token: " + json : null;
   }
 
   @Override

@@ -23,7 +23,7 @@ public class ArraySpec extends Spec {
   private final Annotation[] annotations;
   private final IdToElement idToElement = new IdToElement();
 
-  public ArraySpec(final Field field, final ArrayProperty property) {
+  public ArraySpec(final ArrayProperty property, final Field field) {
     super(field, property.name(), property.use());
     final int[] elementIds = JsonxUtil.digest(field, idToElement);
     this.annotations = idToElement.get(elementIds);

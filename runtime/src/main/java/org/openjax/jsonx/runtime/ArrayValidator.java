@@ -68,6 +68,11 @@ public class ArrayValidator {
     public Relations subList(final int fromIndex, final int toIndex) {
       return new Relations(target.subList(fromIndex, toIndex));
     }
+
+    @Override
+    public String toString() {
+      return toList().toString();
+    }
   }
 
   private static int getNextRequiredElement(final Annotation[] annotations, final int fromIndex, int count) {

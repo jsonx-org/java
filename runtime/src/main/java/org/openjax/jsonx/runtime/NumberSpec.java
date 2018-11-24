@@ -26,14 +26,19 @@ public class NumberSpec extends PrimitiveSpec<Number> {
   private final Form form;
   private final Range range;
 
-  public NumberSpec(final Field field, final NumberProperty property) {
+  public NumberSpec(final NumberProperty property, final Field field) {
     super(field, property.name(), property.use());
     this.form = property.form();
-    try {
-      this.range = new Range(property.range());
+    if (property.range().length() == 0) {
+      this.range = null;
     }
-    catch (final ParseException e) {
-      throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, AttributeComparator.instance));
+    else {
+      try {
+        this.range = new Range(property.range());
+      }
+      catch (final ParseException e) {
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, AttributeComparator.instance));
+      }
     }
   }
 
@@ -52,7 +57,7 @@ public class NumberSpec extends PrimitiveSpec<Number> {
       return "Illegal non-INTEGER value";
 
     // FIXME: decode() is done here and in the caller's scope
-    return range.isValid(decode(json)) ? null : "Range is not matched";
+    return range != null && !range.isValid(decode(json)) ? "Range (" + range + ") is not matched: " + json : null;
   }
 
   @Override

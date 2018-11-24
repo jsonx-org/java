@@ -22,10 +22,15 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.fastjax.json.JsonReader;
+import org.fastjax.util.Annotations;
 import org.fastjax.util.ArrayIntList;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ParsingIterator extends ArrayIterator<Object> {
+  private static final Logger logger = LoggerFactory.getLogger(ParsingIterator.class);
+
   private final JsonReader reader;
   private final ArrayIntList positions = new ArrayIntList();
   private int index = -1;
@@ -50,8 +55,12 @@ public class ParsingIterator extends ArrayIterator<Object> {
   protected boolean hasNext() throws IOException {
     final int start = reader.getIndex();
     final String token = reader.readToken();
+    // If the token is ",", then advance and check if there is another token following it
+    if (",".equals(token))
+      return hasNext();
+
     final boolean hasNext = !"]".equals(token);
-//    reader.setPosition(start);
+    reader.setIndex(start);
     return hasNext;
   }
 
@@ -62,14 +71,12 @@ public class ParsingIterator extends ArrayIterator<Object> {
 
   @Override
   protected boolean nextIsNull() throws IOException {
+    next();
     return "null".equals(current);
   }
 
-  private String error;
-
   @Override
   protected boolean currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement) throws DecodeException, IOException {
-    error = null;
     final String token = (String)current;
     final Object value;
     if (Boolean.class.equals(type)) {
@@ -94,7 +101,7 @@ public class ParsingIterator extends ArrayIterator<Object> {
         final Annotation[] annotations = idToElement.get(elementIds);
         final Object array = JxDecoder.parse0(annotations, idToElement, reader);
         if (array instanceof String) {
-          error = (String)array;
+          logger.debug((String)array);
           value = null;
         }
         else {
@@ -107,9 +114,10 @@ public class ParsingIterator extends ArrayIterator<Object> {
     }
     else if (Object.class.equals(type)) {
       if ("{".equals(token)) {
-        final Object object = JxDecoder.parse0(((ObjectElement)annotation).type(), reader);
+        final ObjectElement element = (ObjectElement)annotation;
+        final Object object = JxDecoder.parse0(element.type(), reader);
         if (object instanceof String) {
-          error = (String)object;
+          logger.debug((String)object);
           value = null;
         }
         else {
@@ -133,6 +141,6 @@ public class ParsingIterator extends ArrayIterator<Object> {
 
   @Override
   public String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations) {
-    return error != null ? null : validatePrimitive(annotation, current, i, relations);
+    return ValidatingIterator.validate(annotation, current, i, idToElement, relations);
   }
 }

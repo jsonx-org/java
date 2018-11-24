@@ -27,20 +27,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
 import org.fastjax.json.JsonReader;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Ignore
+//@Ignore
 public class LibraryTest {
   private static final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
   private static final JxEncoder encoder = new JxEncoder(2);
 
   private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
     final String json = annotationType != null ? encoder.toString((List<?>)obj, annotationType) : encoder.toString(obj);
-    System.out.println(json);
     final JsonReader reader = new JsonReader(new StringReader(json));
     final Object decoded;
     if (annotationType != null)
@@ -48,7 +46,7 @@ public class LibraryTest {
     else
       decoded = JxDecoder.parseObject(obj.getClass(), reader);
 
-    assertEquals(obj, decoded);
+    assertEquals(obj.toString(), decoded.toString());
   }
 
   private static void test(final Object obj) throws DecodeException, IOException {
@@ -159,7 +157,7 @@ public class LibraryTest {
     library.setAddress(createAddress());
     library.setHandicap(true);
     final List<List<String>> schedule = new ArrayList<>();
-    for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"07:00", "17:00"}, {"07:00", "17:00"}, {"07:00", "17:00"}, {"07:00", "17:00"}, {"09:00", "15:00"}, {"09:00", "15:00"}})
+    for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"08:00", "18:00"}, {"09:00", "19:00"}, {"10:00", "20:00"}, {"11:00", "21:00"}, {"12:00", "22:00"}, {"13:00", "23:00"}})
       schedule.add(Arrays.asList(slot));
 
     library.setSchedule(schedule);
@@ -167,6 +165,8 @@ public class LibraryTest {
     library.setBooks(Collections.singletonList(book));
     library.setArticles(Collections.singletonList(article));
     library.setJournals(Collections.singletonList(journal));
+
+    library.setStaff(Collections.singletonList(createEmployee()));
 
     final String json = encoder.toString(library);
     logger.info(json);

@@ -24,7 +24,7 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 public class ValidatingIterator extends ArrayIterator<Object> {
-  private static <T>String validate(final Annotation annotation, final T member, final int i, final IdToElement idToElement, final Relations relations) {
+  static <T>String validate(final Annotation annotation, final T member, final int i, final IdToElement idToElement, final Relations relations) {
     if (annotation instanceof ArrayElement)
       return validate((ArrayElement)annotation, (List<T>)member, i, idToElement, relations);
 

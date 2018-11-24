@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 public class ObjectSpec extends Spec {
   private final Class<?> type;
 
-  public ObjectSpec(final Field field, final ObjectProperty property) {
+  public ObjectSpec(final ObjectProperty property, final Field field) {
     super(field, property.name(), property.use());
     this.type = field.getType();
   }

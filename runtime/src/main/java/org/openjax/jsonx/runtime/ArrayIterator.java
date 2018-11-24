@@ -46,11 +46,11 @@ public abstract class ArrayIterator<T> {
   private static String validate(final NumberElement element, final Object member, final int i, final Relations relations) {
     final Number number = (Number)member;
     if (element.form() == Form.INTEGER && number.longValue() != number.doubleValue())
-      return "Illegal non-INTEGER value: " + Strings.toTruncatedString(member, 16);
+      return "Illegal non-INTEGER value: " + Strings.abbreviate(String.valueOf(member), 16);
 
     try {
       if (element.range().length() > 0 && !new Range(element.range()).isValid(number))
-        return "Range is not matched: " + Strings.toTruncatedString(member, 16);
+        return "Range is not matched: " + Strings.abbreviate(String.valueOf(member), 16);
     }
     catch (final ParseException e) {
       throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(element, AttributeComparator.instance));
@@ -63,7 +63,7 @@ public abstract class ArrayIterator<T> {
   private static String validate(final StringElement element, final Object member, final int i, final Relations relations) {
     final String string = (String)member;
     if (element.pattern().length() != 0 && !string.matches(element.pattern()))
-      return "Pattern is not matched: \"" + Strings.toTruncatedString(string, 16) + "\"";
+      return "Pattern is not matched: \"" + Strings.abbreviate(string, 16) + "\"";
 
     relations.set(i, new Relation(member, element));
     return null;
@@ -78,7 +78,7 @@ public abstract class ArrayIterator<T> {
   }
 
   protected final String currentPreview() {
-    return Strings.toTruncatedString(current, 16);
+    return Strings.abbreviate(String.valueOf(current), 16);
   }
 
   protected abstract void next() throws IOException;

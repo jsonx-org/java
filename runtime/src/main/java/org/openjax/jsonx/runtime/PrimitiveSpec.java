@@ -16,6 +16,7 @@
 
 package org.openjax.jsonx.runtime;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public abstract class PrimitiveSpec<T> extends Spec {

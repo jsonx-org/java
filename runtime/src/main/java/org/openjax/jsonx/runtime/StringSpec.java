@@ -24,24 +24,25 @@ public class StringSpec extends PrimitiveSpec<String> {
   private final String pattern;
   private final boolean urlDecode;
 
-  public StringSpec(final Field field, final StringProperty property) {
+  public StringSpec(final StringProperty property, final Field field) {
     super(field, property.name(), property.use());
-    this.pattern = property.pattern();
+    this.pattern = property.pattern().length() == 0 ? null : property.pattern();
     this.urlDecode = property.urlDecode();
   }
 
   @Override
   public boolean test(final char firstChar) {
+    // FIXME: Should '\'' be allowed?
     return firstChar == '"' || firstChar == '\'';
   }
 
   @Override
-  public String validate(String token) {
+  public String validate(final String token) {
     if ((token.charAt(0) != '"' || token.charAt(token.length() - 1) != '"') && (token.charAt(0) != '\'' || token.charAt(token.length() - 1) != '\''))
       return "Is not a string";
 
-    token = token.substring(1, token.length() - 1);
-    return token.matches(pattern) ? null : "Pattern is not matched";
+    // FIXME: decode() is done here and in the caller's scope
+    return pattern != null && !decode(token).matches(pattern) ? "Pattern (" + pattern + ") is not matched: \"" + token + "\"" : null;
   }
 
   @Override

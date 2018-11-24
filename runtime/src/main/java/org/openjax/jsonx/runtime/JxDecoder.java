@@ -42,23 +42,23 @@ public abstract class JxDecoder implements Cloneable {
       for (final Field field : Classes.getDeclaredFieldsDeep(cls)) {
         for (final Annotation annotation : field.getAnnotations()) {
           if (annotation instanceof ArrayProperty) {
-            final Spec spec = new ArraySpec(field, (ArrayProperty)annotation);
+            final Spec spec = new ArraySpec((ArrayProperty)annotation, field);
             propertyToSpec.put(JsonxUtil.getName(spec.getName(), field), spec);
           }
           else if (annotation instanceof BooleanProperty) {
-            final Spec spec = new BooleanSpec(field, (BooleanProperty)annotation);
+            final Spec spec = new BooleanSpec((BooleanProperty)annotation, field);
             propertyToSpec.put(JsonxUtil.getName(spec.getName(), field), spec);
           }
           else if (annotation instanceof NumberProperty) {
-            final Spec spec = new NumberSpec(field, (NumberProperty)annotation);
+            final Spec spec = new NumberSpec((NumberProperty)annotation, field);
             propertyToSpec.put(JsonxUtil.getName(spec.getName(), field), spec);
           }
           else if (annotation instanceof ObjectProperty) {
-            final Spec spec = new ObjectSpec(field, (ObjectProperty)annotation);
+            final Spec spec = new ObjectSpec((ObjectProperty)annotation, field);
             propertyToSpec.put(JsonxUtil.getName(spec.getName(), field), spec);
           }
           else if (annotation instanceof StringProperty) {
-            final Spec spec = new StringSpec(field, (StringProperty)annotation);
+            final Spec spec = new StringSpec((StringProperty)annotation, field);
             propertyToSpec.put(JsonxUtil.getName(spec.getName(), field), spec);
           }
         }
@@ -69,6 +69,10 @@ public abstract class JxDecoder implements Cloneable {
   }
 
   public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, IOException {
+    final String token = reader.readToken();
+    if (!"[".equals(token))
+      throw new DecodeException("Expected '[', but got '" + token + "'", reader);
+
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsonxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final Object array = parse0(idToElement.get(elementIds), idToElement, reader);
@@ -78,14 +82,14 @@ public abstract class JxDecoder implements Cloneable {
     return (List<?>)array;
   }
 
-  public static Object parse0(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader) throws DecodeException, IOException {
-    final String token = reader.readToken();
-    if (!"[".equals(token))
-      throw new DecodeException("Expected '[', but got '" + token + "'", reader);
-
+  static Object parse0(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader) throws DecodeException, IOException {
     final ParsingIterator iterator = new ParsingIterator(reader);
     final Relations relations = new Relations();
     ArrayValidator.validate(iterator, 0, annotations, 0, idToElement, relations);
+    final String token = reader.readToken();
+    if (!"]".equals(token))
+      return "Expected ']', but got '" + token + "'";
+
     return relations.toList();
   }
 
@@ -101,7 +105,7 @@ public abstract class JxDecoder implements Cloneable {
     return (T)object;
   }
 
-  public static Object parse0(final Class<?> type, final JsonReader reader) throws DecodeException, IOException {
+  static Object parse0(final Class<?> type, final JsonReader reader) throws DecodeException, IOException {
     final Object object;
     try {
       object = type.getConstructor().newInstance();
@@ -114,6 +118,10 @@ public abstract class JxDecoder implements Cloneable {
       for (String token; !"}".equals(token = reader.readToken());) {
         if (",".equals(token))
           token = reader.readToken();
+
+        System.err.println(token);
+        if ("\"url\"".equals(token))
+          System.out.println();
 
         final Spec spec = getPropertySpec(type, token);
         if (spec == null)
@@ -158,7 +166,7 @@ public abstract class JxDecoder implements Cloneable {
               return value;
           }
           else {
-            throw new UnsupportedOperationException("Unsupported Spec type: " + spec.getClass().getName());
+            throw new UnsupportedOperationException("Unsupported " + Spec.class.getSimpleName() + " type: " + spec.getClass().getName());
           }
         }
 
