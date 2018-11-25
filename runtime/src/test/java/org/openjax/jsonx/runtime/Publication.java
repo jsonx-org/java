@@ -66,4 +66,9 @@ public abstract class Publication {
   public void setPublishings(final List<Publishing> publishings) {
     this.publishings = publishings;
   }
+
+  @Override
+  public String toString() {
+    return new JxEncoder(2).toString(this);
+  }
 }

@@ -131,4 +131,9 @@ public class Library {
   public void setStaff(final List<Employee> staff) {
     this.staff = staff;
   }
+
+  @Override
+  public String toString() {
+    return new JxEncoder(2).toString(this);
+  }
 }

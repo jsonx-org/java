@@ -153,7 +153,7 @@ public class JxEncoder {
 
   private void encodeArray(final Relations relations, final StringBuilder builder, final int depth) {
     builder.append('[');
-    for (int i = 0; i < relations.size(); i++) {
+    for (int i = 0; i < relations.size(); ++i) {
       if (i > 0)
         builder.append(comma);
 
@@ -170,16 +170,13 @@ public class JxEncoder {
   private void toString(final Object object, final StringBuilder builder, final int depth) {
     builder.append('{');
     final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
-    for (int i = 0; i < fields.length; i++) {
-      if (i > 0)
-        builder.append(',');
-
+    for (int i = 0; i < fields.length; ++i) {
       final Field field = fields[i];
       Annotation annotation = null;
       String name = null;
       Use use = null;
       final Annotation[] annotations = field.getAnnotations();
-      for (int j = 0; j < annotations.length; j++) {
+      for (int j = 0; j < annotations.length; ++j) {
         annotation = annotations[j];
         if (annotation instanceof ArrayProperty) {
           final ArrayProperty property = (ArrayProperty)annotation;
@@ -222,6 +219,9 @@ public class JxEncoder {
 
       final Object value = getValue(object, name);
       if (value != null) {
+        if (i > 0)
+          builder.append(',');
+
         if (indent > 0)
           builder.append('\n').append(FastArrays.createRepeat(' ', depth * 2));
 

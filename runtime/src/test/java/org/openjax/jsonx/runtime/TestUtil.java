@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 OpenJAX
+/* Copyright (c) 2018 OpenJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,34 +16,19 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 
-@ObjectType
-public class Publishing {
-  @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
-  private BigInteger year;
-
-  public BigInteger getYear() {
-    return this.year;
+public final class TestUtil {
+  @SafeVarargs
+  public static <T>List<T> a(final T ... members) {
+    return Arrays.asList(members);
   }
 
-  public void setYear(final BigInteger year) {
-    this.year = year;
+  public static String[] s(final String ... members) {
+    return members;
   }
 
-  @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
-  private String publisher;
-
-  public String getPublisher() {
-    return this.publisher;
-  }
-
-  public void setPublisher(final String publisher) {
-    this.publisher = publisher;
-  }
-
-  @Override
-  public String toString() {
-    return new JxEncoder(2).toString(this);
+  private TestUtil() {
   }
 }

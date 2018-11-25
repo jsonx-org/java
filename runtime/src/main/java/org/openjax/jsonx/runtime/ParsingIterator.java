@@ -32,7 +32,7 @@ public class ParsingIterator extends ArrayIterator<Object> {
   private static final Logger logger = LoggerFactory.getLogger(ParsingIterator.class);
 
   private final JsonReader reader;
-  private final ArrayIntList positions = new ArrayIntList();
+  private final ArrayIntList indexes = new ArrayIntList();
   private int index = -1;
 
   public ParsingIterator(final JsonReader reader) {
@@ -41,14 +41,17 @@ public class ParsingIterator extends ArrayIterator<Object> {
 
   @Override
   protected void next() throws IOException {
-    this.positions.add(reader.getIndex());
+    if (++index == indexes.size())
+      indexes.add(reader.getIndex());
+
     current = reader.readToken();
-    ++index;
+    if ("null".equals(current))
+      current = null;
   }
 
   @Override
   protected void previous() {
-//    this.reader.setPosition(positions.get(index--));
+    reader.setIndex(indexes.get(index--));
   }
 
   @Override
@@ -72,7 +75,7 @@ public class ParsingIterator extends ArrayIterator<Object> {
   @Override
   protected boolean nextIsNull() throws IOException {
     next();
-    return "null".equals(current);
+    return current == null;
   }
 
   @Override
@@ -80,7 +83,7 @@ public class ParsingIterator extends ArrayIterator<Object> {
     final String token = (String)current;
     final Object value;
     if (Boolean.class.equals(type)) {
-      value = "true".equals(token) ? true : "false".equals(token) ? false : null;
+      value = "true".equals(token) ? Boolean.TRUE : "false".equals(token) ? Boolean.FALSE : null;
     }
     else if (Number.class.equals(type)) {
       final char ch = token.charAt(0);
