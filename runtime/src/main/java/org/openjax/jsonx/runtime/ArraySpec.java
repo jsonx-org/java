@@ -19,26 +19,26 @@ package org.openjax.jsonx.runtime;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-public class ArraySpec extends Spec {
+class ArraySpec extends Spec {
   private final Annotation[] annotations;
   private final IdToElement idToElement = new IdToElement();
 
-  public ArraySpec(final ArrayProperty property, final Field field) {
+  ArraySpec(final ArrayProperty property, final Field field) {
     super(field, property.name(), property.use());
     final int[] elementIds = JsonxUtil.digest(field, idToElement);
     this.annotations = idToElement.get(elementIds);
   }
 
-  public Annotation[] getAnnotations() {
+  Annotation[] getAnnotations() {
     return annotations;
   }
 
-  public IdToElement getIdToElement() {
+  IdToElement getIdToElement() {
     return this.idToElement;
   }
 
   @Override
-  public String elementName() {
+  String elementName() {
     return "array";
   }
 }

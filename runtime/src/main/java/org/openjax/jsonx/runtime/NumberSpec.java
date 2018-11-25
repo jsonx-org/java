@@ -22,11 +22,11 @@ import java.math.BigInteger;
 
 import org.fastjax.util.Annotations;
 
-public class NumberSpec extends PrimitiveSpec<Number> {
+class NumberSpec extends PrimitiveSpec<Number> {
   private final Form form;
   private final Range range;
 
-  public NumberSpec(final NumberProperty property, final Field field) {
+  NumberSpec(final NumberProperty property, final Field field) {
     super(field, property.name(), property.use());
     this.form = property.form();
     if (property.range().length() == 0) {
@@ -43,12 +43,12 @@ public class NumberSpec extends PrimitiveSpec<Number> {
   }
 
   @Override
-  public boolean test(final char firstChar) {
+  boolean test(final char firstChar) {
     return firstChar == '-' || '0' <= firstChar && firstChar <= '9';
   }
 
   @Override
-  public String validate(final String json) {
+  String validate(final String json) {
     if (form == Form.REAL)
       return null;
 
@@ -61,12 +61,12 @@ public class NumberSpec extends PrimitiveSpec<Number> {
   }
 
   @Override
-  public Number decode(final String json) {
+  Number decode(final String json) {
     return form == Form.INTEGER ? new BigInteger(json) : new BigDecimal(json);
   }
 
   @Override
-  public String elementName() {
+  String elementName() {
     return "number";
   }
 }

@@ -35,6 +35,10 @@ public class ArrayValidator {
       this.member = member;
       this.annotation = annotation;
     }
+
+    private Object deflate() {
+      return member instanceof Relations ? ((Relations)member).deflate() : member;
+    }
   }
 
   static class Relations extends DelegateList<Relation> {
@@ -56,12 +60,13 @@ public class ArrayValidator {
       return element;
     }
 
-    public List<Object> toList() {
-      final List<Object> list = new ArrayList<>();
-      for (final Relation relation : this)
-        list.add(relation.member);
+    public List<Object> deflate() {
+      for (int i = 0; i < size(); ++i) {
+        final Object member = get(i);
+        target.set(i, member instanceof Relation ? ((Relation)member).deflate() : member);
+      }
 
-      return list;
+      return target;
     }
 
     @Override
@@ -71,41 +76,34 @@ public class ArrayValidator {
 
     @Override
     public String toString() {
-      return toList().toString();
+      final StringBuilder builder = new StringBuilder("[");
+      for (final Object relation : this)
+        builder.append(relation).append(", ");
+
+      builder.setLength(builder.length() - 2);
+      return builder.append("]").toString();
     }
   }
 
   private static int getNextRequiredElement(final Annotation[] annotations, final int fromIndex, int count) {
     for (int i = fromIndex; i < annotations.length; ++i) {
       final Annotation annotation = annotations[i];
-      if (annotation instanceof ArrayElement) {
-        final ArrayElement element = (ArrayElement)annotation;
-        if (count < element.minOccurs())
-          return i;
-      }
-      else if (annotation instanceof BooleanElement) {
-        final BooleanElement element = (BooleanElement)annotation;
-        if (count < element.minOccurs())
-          return i;
-      }
-      else if (annotation instanceof NumberElement) {
-        final NumberElement element = (NumberElement)annotation;
-        if (count < element.minOccurs())
-          return i;
-      }
-      else if (annotation instanceof ObjectElement) {
-        final ObjectElement element = (ObjectElement)annotation;
-        if (count < element.minOccurs())
-          return i;
-      }
-      else if (annotation instanceof StringElement) {
-        final StringElement element = (StringElement)annotation;
-        if (count < element.minOccurs())
-          return i;
-      }
-      else {
+      final int minOccurs;
+      if (annotation instanceof ArrayElement)
+        minOccurs = ((ArrayElement)annotation).minOccurs();
+      else if (annotation instanceof BooleanElement)
+        minOccurs = ((BooleanElement)annotation).minOccurs();
+      else if (annotation instanceof NumberElement)
+        minOccurs = ((NumberElement)annotation).minOccurs();
+      else if (annotation instanceof ObjectElement)
+        minOccurs = ((ObjectElement)annotation).minOccurs();
+      else if (annotation instanceof StringElement)
+        minOccurs = ((StringElement)annotation).minOccurs();
+      else
         throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
-      }
+
+      if (count < minOccurs)
+        return i;
 
       count = 0;
     }
@@ -113,7 +111,7 @@ public class ArrayValidator {
     return -1;
   }
 
-  static String validate(final ArrayIterator<? extends Object> iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations) throws DecodeException, IOException {
+  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations) throws DecodeException, IOException {
     final int i = iterator.nextIndex();
     if (!iterator.hasNext()) {
       final int nextRequiredIndex = getNextRequiredElement(annotations, a, count);
@@ -222,10 +220,11 @@ public class ArrayValidator {
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   static String validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations) {
     final Annotation[] annotations = idToElement.get(elementIds);
     try {
-      return validate(new ValidatingIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations);
+      return validate(new EncodeIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations);
     }
     catch (final DecodeException | IOException e) {
       throw new RuntimeException("Should not happen, as this method is only called for encode", e);

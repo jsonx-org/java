@@ -16,22 +16,21 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-public abstract class PrimitiveSpec<T> extends Spec {
-  public PrimitiveSpec(final Field field, final String name, final Use use) {
+abstract class PrimitiveSpec<T> extends Spec {
+  PrimitiveSpec(final Field field, final String name, final Use use) {
     super(field, name, use);
   }
 
-  public final String matches(final String json) {
+  final String matches(final String json) {
     if (!test(json.charAt(0)))
       return "Expected \"" + getName() + "\" to be " + elementName() + ", but got: " + json;
 
     return validate(json);
   }
 
-  public abstract boolean test(final char firstChar);
-  public abstract String validate(final String json);
-  public abstract T decode(final String json);
+  abstract boolean test(final char firstChar);
+  abstract String validate(final String json);
+  abstract T decode(final String json);
 }

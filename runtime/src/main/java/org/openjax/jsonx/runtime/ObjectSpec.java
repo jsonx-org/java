@@ -18,20 +18,20 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
 
-public class ObjectSpec extends Spec {
+class ObjectSpec extends Spec {
   private final Class<?> type;
 
-  public ObjectSpec(final ObjectProperty property, final Field field) {
+  ObjectSpec(final ObjectProperty property, final Field field) {
     super(field, property.name(), property.use());
     this.type = field.getType();
   }
 
-  public Class<?> getType() {
+  Class<?> getType() {
     return type;
   }
 
   @Override
-  public String elementName() {
+  String elementName() {
     return "object";
   }
 }

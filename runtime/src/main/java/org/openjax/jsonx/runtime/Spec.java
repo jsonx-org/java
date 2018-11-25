@@ -20,28 +20,28 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public abstract class Spec {
+abstract class Spec {
   private final Method setMethod;
   private final String name;
   private final Use use;
 
-  public Spec(final Field field, final String name, final Use use) {
+  Spec(final Field field, final String name, final Use use) {
     this.name = JsonxUtil.getName(name, field);
     this.setMethod = JsonxUtil.getSetMethod(field, this.name);
     this.use = use;
   }
 
-  public String getName() {
+  String getName() {
     return this.name;
   }
 
-  public Use getUse() {
+  Use getUse() {
     return this.use;
   }
 
-  public abstract String elementName();
+  abstract String elementName();
 
-  public void set(final Object object, final Object value) throws InvocationTargetException {
+  void set(final Object object, final Object value) throws InvocationTargetException {
     try {
       setMethod.invoke(object, value);
     }

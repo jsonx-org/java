@@ -18,28 +18,28 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
 
-public class BooleanSpec extends PrimitiveSpec<Boolean> {
-  public BooleanSpec(final BooleanProperty property, final Field field) {
+class BooleanSpec extends PrimitiveSpec<Boolean> {
+  BooleanSpec(final BooleanProperty property, final Field field) {
     super(field, property.name(), property.use());
   }
 
   @Override
-  public boolean test(final char firstChar) {
+  boolean test(final char firstChar) {
     return firstChar == 't' || firstChar == 'f';
   }
 
   @Override
-  public String validate(final String json) {
+  String validate(final String json) {
     return !"true".equals(json) && !"false".equals(json) ? "Not a valid boolean token: " + json : null;
   }
 
   @Override
-  public Boolean decode(final String json) {
+  Boolean decode(final String json) {
     return Boolean.valueOf(json);
   }
 
   @Override
-  public String elementName() {
+  String elementName() {
     return "boolean";
   }
 }

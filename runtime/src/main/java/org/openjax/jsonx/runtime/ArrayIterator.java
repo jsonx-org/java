@@ -18,13 +18,49 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 import org.fastjax.util.Annotations;
 import org.fastjax.util.Strings;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
-public abstract class ArrayIterator<T> {
+public abstract class ArrayIterator {
+  private static <T>String validate(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations) {
+    final int[] elementIds;
+    if (element.type() != ArrayType.class)
+      elementIds = JsonxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
+    else
+      elementIds = element.elementIds();
+
+    final Relations subRelations = new Relations();
+    final String subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations);
+    if (subError != null)
+      return subError;
+
+    relations.set(i, new Relation(subRelations, element));
+    return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T>String validate(final Annotation annotation, final T member, final int i, final IdToElement idToElement, final Relations relations) {
+    if (annotation instanceof ArrayElement)
+      return validate((ArrayElement)annotation, (List<T>)member, i, idToElement, relations);
+
+    if (annotation instanceof ObjectElement)
+      return validate((ObjectElement)annotation, member, i, relations);
+
+    return validatePrimitive(annotation, member, i, relations);
+  }
+
+  private static String validate(final ObjectElement element, final Object member, final int i, final Relations relations) {
+    if (!member.getClass().isAnnotationPresent(ObjectType.class))
+      return "@" + ObjectType.class.getSimpleName() + " not found on: " + member.getClass().getName();
+
+    relations.set(i, new Relation(member, element));
+    return null;
+  }
+
   public static <T>String validatePrimitive(final Annotation annotation, final T member, final int i, final Relations relations) {
     if (annotation instanceof BooleanElement)
       return validate((BooleanElement)annotation, member, i, relations);
@@ -46,11 +82,11 @@ public abstract class ArrayIterator<T> {
   private static String validate(final NumberElement element, final Object member, final int i, final Relations relations) {
     final Number number = (Number)member;
     if (element.form() == Form.INTEGER && number.longValue() != number.doubleValue())
-      return "Illegal non-INTEGER value: " + Strings.abbreviate(String.valueOf(member), 16);
+      return "Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(member), 16);
 
     try {
       if (element.range().length() > 0 && !new Range(element.range()).isValid(number))
-        return "Range is not matched: " + Strings.abbreviate(String.valueOf(member), 16);
+        return "Range is not matched: " + Strings.truncate(String.valueOf(member), 16);
     }
     catch (final ParseException e) {
       throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(element, AttributeComparator.instance));
@@ -63,22 +99,24 @@ public abstract class ArrayIterator<T> {
   private static String validate(final StringElement element, final Object member, final int i, final Relations relations) {
     final String string = (String)member;
     if (element.pattern().length() != 0 && !string.matches(element.pattern()))
-      return "Pattern is not matched: \"" + Strings.abbreviate(string, 16) + "\"";
+      return "Pattern is not matched: \"" + Strings.truncate(string, 16) + "\"";
 
     relations.set(i, new Relation(member, element));
     return null;
   }
 
-  protected T current;
+  protected Object current;
 
-  public abstract String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations);
+  protected final String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations) {
+    return validate(annotation, current, i, idToElement, relations);
+  }
 
   protected final Relation currentRelate(final Annotation annotation) {
     return new Relation(current, annotation);
   }
 
   protected final String currentPreview() {
-    return Strings.abbreviate(String.valueOf(current), 16);
+    return Strings.truncate(String.valueOf(current), 16);
   }
 
   protected abstract void next() throws IOException;

@@ -83,16 +83,17 @@ public abstract class JxDecoder implements Cloneable {
   }
 
   static Object parse0(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader) throws DecodeException, IOException {
-    final ParsingIterator iterator = new ParsingIterator(reader);
+    final DecodeIterator iterator = new DecodeIterator(reader);
     final Relations relations = new Relations();
     ArrayValidator.validate(iterator, 0, annotations, 0, idToElement, relations);
     final String token = reader.readToken();
     if (!"]".equals(token))
       return "Expected ']', but got '" + token + "'";
 
-    return relations.toList();
+    return relations.deflate();
   }
 
+  @SuppressWarnings("unchecked")
   public static <T>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"{".equals(token))

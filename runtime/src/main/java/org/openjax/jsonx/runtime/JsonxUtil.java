@@ -25,7 +25,7 @@ import java.util.List;
 import org.fastjax.util.Annotations;
 import org.fastjax.util.JavaIdentifiers;
 
-public class JsonxUtil {
+public final class JsonxUtil {
   public static Method getGetMethod(final Class<?> cls, final String propertyName) {
     return getMethod(cls, propertyName, null);
   }
@@ -177,5 +177,8 @@ public class JsonxUtil {
       flattened[depth + i] = repeatable[i];
 
     return flattened;
+  }
+
+  private JsonxUtil() {
   }
 }

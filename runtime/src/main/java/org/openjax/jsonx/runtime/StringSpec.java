@@ -20,24 +20,23 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 
-public class StringSpec extends PrimitiveSpec<String> {
+class StringSpec extends PrimitiveSpec<String> {
   private final String pattern;
   private final boolean urlDecode;
 
-  public StringSpec(final StringProperty property, final Field field) {
+  StringSpec(final StringProperty property, final Field field) {
     super(field, property.name(), property.use());
     this.pattern = property.pattern().length() == 0 ? null : property.pattern();
     this.urlDecode = property.urlDecode();
   }
 
   @Override
-  public boolean test(final char firstChar) {
-    // FIXME: Should '\'' be allowed?
-    return firstChar == '"' || firstChar == '\'';
+  boolean test(final char firstChar) {
+    return firstChar == '"';
   }
 
   @Override
-  public String validate(final String token) {
+  String validate(final String token) {
     if ((token.charAt(0) != '"' || token.charAt(token.length() - 1) != '"') && (token.charAt(0) != '\'' || token.charAt(token.length() - 1) != '\''))
       return "Is not a string";
 
@@ -46,7 +45,7 @@ public class StringSpec extends PrimitiveSpec<String> {
   }
 
   @Override
-  public String decode(String json) {
+  String decode(String json) {
     json = json.substring(1, json.length() - 1);
     try {
       return urlDecode ? URLDecoder.decode(json, "UTF-8") : json;
@@ -57,7 +56,7 @@ public class StringSpec extends PrimitiveSpec<String> {
   }
 
   @Override
-  public String elementName() {
+  String elementName() {
     return "string";
   }
 }

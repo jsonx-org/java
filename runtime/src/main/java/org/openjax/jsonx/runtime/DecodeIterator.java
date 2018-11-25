@@ -22,26 +22,24 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.fastjax.json.JsonReader;
-import org.fastjax.util.Annotations;
 import org.fastjax.util.ArrayIntList;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ParsingIterator extends ArrayIterator<Object> {
-  private static final Logger logger = LoggerFactory.getLogger(ParsingIterator.class);
+class DecodeIterator extends ArrayIterator {
+  private static final Logger logger = LoggerFactory.getLogger(DecodeIterator.class);
 
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
-  private int index = -1;
+  private int cursor = -1;
 
-  public ParsingIterator(final JsonReader reader) {
+  public DecodeIterator(final JsonReader reader) {
     this.reader = reader;
   }
 
   @Override
   protected void next() throws IOException {
-    if (++index == indexes.size())
+    if (++cursor == indexes.size())
       indexes.add(reader.getIndex());
 
     current = reader.readToken();
@@ -51,25 +49,25 @@ public class ParsingIterator extends ArrayIterator<Object> {
 
   @Override
   protected void previous() {
-    reader.setIndex(indexes.get(index--));
+    reader.setIndex(indexes.get(cursor--));
   }
 
   @Override
   protected boolean hasNext() throws IOException {
-    final int start = reader.getIndex();
+    final int index = reader.getIndex();
     final String token = reader.readToken();
     // If the token is ",", then advance and check if there is another token following it
     if (",".equals(token))
       return hasNext();
 
     final boolean hasNext = !"]".equals(token);
-    reader.setIndex(start);
+    reader.setIndex(index);
     return hasNext;
   }
 
   @Override
   protected int nextIndex() throws IOException {
-    return hasNext() ? index + 1 : index;
+    return hasNext() ? cursor + 1 : cursor;
   }
 
   @Override
@@ -90,7 +88,7 @@ public class ParsingIterator extends ArrayIterator<Object> {
       value = ch == '-' || '0' <= ch && ch <= '9' ? new BigDecimal(token) : null;
     }
     else if (String.class.equals(type)) {
-      value = token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' || token.charAt(0) == '\'' && token.charAt(token.length() - 1) == '\'' ? token.substring(1, token.length() - 1) : null;
+      value = token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? token.substring(1, token.length() - 1) : null;
     }
     else if (List.class.equals(type)) {
       if ("[".equals(token)) {
@@ -104,7 +102,9 @@ public class ParsingIterator extends ArrayIterator<Object> {
         final Annotation[] annotations = idToElement.get(elementIds);
         final Object array = JxDecoder.parse0(annotations, idToElement, reader);
         if (array instanceof String) {
-          logger.debug((String)array);
+          if (logger.isDebugEnabled())
+            logger.debug((String)array);
+
           value = null;
         }
         else {
@@ -120,7 +120,9 @@ public class ParsingIterator extends ArrayIterator<Object> {
         final ObjectElement element = (ObjectElement)annotation;
         final Object object = JxDecoder.parse0(element.type(), reader);
         if (object instanceof String) {
-          logger.debug((String)object);
+          if (logger.isDebugEnabled())
+            logger.debug((String)object);
+
           value = null;
         }
         else {
@@ -140,10 +142,5 @@ public class ParsingIterator extends ArrayIterator<Object> {
 
     current = value;
     return true;
-  }
-
-  @Override
-  public String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations) {
-    return ValidatingIterator.validate(annotation, current, i, idToElement, relations);
   }
 }

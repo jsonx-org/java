@@ -16,6 +16,9 @@
 
 package org.openjax.jsonx.runtime;
 
+/**
+ * Signals that an error has been reached unexpectedly while parsing.
+ */
 public class ParseException extends Exception {
   private static final long serialVersionUID = -4391452229717188054L;
 

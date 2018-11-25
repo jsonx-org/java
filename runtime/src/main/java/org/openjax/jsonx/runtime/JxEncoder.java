@@ -90,7 +90,7 @@ public class JxEncoder {
 
       final String string = (String)object;
       if (pattern.length() > 0 && !string.matches(pattern))
-        throw new EncodeException(Annotations.toSortedString(annotation, AttributeComparator.instance) + ": pattern is not matched: \"" + Strings.abbreviate(string, 16) + "\"");
+        throw new EncodeException(Annotations.toSortedString(annotation, AttributeComparator.instance) + ": pattern is not matched: \"" + Strings.truncate(string, 16) + "\"");
 
       final String escaped = Strings.escapeForJava(string);
       builder.append('"').append(urlEncode ? URIComponent.encode(escaped) : escaped).append('"');
@@ -117,12 +117,12 @@ public class JxEncoder {
 
       final Number number = (Number)object;
       if (form == Form.INTEGER && number.longValue() != number.doubleValue())
-        throw new EncodeException("Illegal non-INTEGER value: " + Strings.abbreviate(String.valueOf(number), 16));
+        throw new EncodeException("Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(number), 16));
 
       if (range.length() > 0) {
         try {
           if (!new Range(range).isValid(number))
-            throw new EncodeException("Range is not matched: " + Strings.abbreviate(range, 16));
+            throw new EncodeException("Range is not matched: " + Strings.truncate(range, 16));
         }
         catch (final ParseException e) {
           throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
@@ -136,6 +136,7 @@ public class JxEncoder {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void encodeProperty(final Field field, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
     if (object instanceof List) {
       final List<Object> list = (List<Object>)object;

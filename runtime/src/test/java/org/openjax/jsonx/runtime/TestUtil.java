@@ -21,11 +21,12 @@ import java.util.List;
 
 public final class TestUtil {
   @SafeVarargs
-  public static <T>List<T> a(final T ... members) {
+  public static <T>List<T> l(final T ... members) {
     return Arrays.asList(members);
   }
 
-  public static String[] s(final String ... members) {
+  @SafeVarargs
+  public static <T>T[] a(final T ... members) {
     return members;
   }
 
