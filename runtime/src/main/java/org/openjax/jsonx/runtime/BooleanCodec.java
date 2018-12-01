@@ -18,8 +18,8 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
 
-class BooleanSpec extends PrimitiveSpec<Boolean> {
-  BooleanSpec(final BooleanProperty property, final Field field) {
+class BooleanCodec extends PrimitiveCodec<Boolean> {
+  BooleanCodec(final BooleanProperty property, final Field field) {
     super(field, property.name(), property.use());
   }
 

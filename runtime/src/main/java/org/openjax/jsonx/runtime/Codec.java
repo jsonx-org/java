@@ -19,31 +19,32 @@ package org.openjax.jsonx.runtime;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.BiConsumer;
 
-abstract class Spec {
+abstract class Codec {
+  final Field field;
   private final Method setMethod;
-  private final String name;
+  final String name;
   private final Use use;
 
-  Spec(final Field field, final String name, final Use use) {
+  Codec(final Field field, final String name, final Use use) {
+    this.field = field;
     this.name = JsonxUtil.getName(name, field);
     this.setMethod = JsonxUtil.getSetMethod(field, this.name);
     this.use = use;
   }
 
-  String getName() {
-    return this.name;
-  }
-
-  Use getUse() {
-    return this.use;
-  }
-
   abstract String elementName();
 
-  void set(final Object object, final Object value) throws InvocationTargetException {
+  String validateUse(final Object value) {
+    return value == null && use == Use.REQUIRED ? "Property \"" + name + "\" is required: " + value : null;
+  }
+
+  void set(final Object object, final Object value, final BiConsumer<Field,Object> callback) throws InvocationTargetException {
     try {
       setMethod.invoke(object, value);
+      if (callback != null)
+        callback.accept(field, value);
     }
     catch (final IllegalAccessException e) {
       throw new UnsupportedOperationException(e);

@@ -83,6 +83,6 @@ public class Individual {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).toString(this);
+    return new JxEncoder(2).encode(this);
   }
 }

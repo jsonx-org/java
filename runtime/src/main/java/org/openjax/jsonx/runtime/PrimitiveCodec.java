@@ -18,14 +18,14 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
 
-abstract class PrimitiveSpec<T> extends Spec {
-  PrimitiveSpec(final Field field, final String name, final Use use) {
+abstract class PrimitiveCodec<T> extends Codec {
+  PrimitiveCodec(final Field field, final String name, final Use use) {
     super(field, name, use);
   }
 
   final String matches(final String json) {
     if (!test(json.charAt(0)))
-      return "Expected \"" + getName() + "\" to be " + elementName() + ", but got: " + json;
+      return "Expected \"" + name + "\" to be " + elementName() + ", but got: " + json;
 
     return validate(json);
   }

@@ -22,11 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.fastjax.net.URIComponent;
-import org.fastjax.util.Annotations;
-import org.fastjax.util.FastArrays;
 import org.fastjax.util.Classes;
-import org.fastjax.util.Strings;
+import org.fastjax.util.FastArrays;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
@@ -34,12 +31,22 @@ public class JxEncoder {
   private final int indent;
   private final String comma;
   private final String colon;
+  private final boolean validate;
 
   public JxEncoder(final int indent) {
+    this(indent, true);
+  }
+
+  public JxEncoder() {
+    this(0, true);
+  }
+
+  JxEncoder(final int indent, final boolean validate) {
     if (indent < 0)
       throw new IllegalArgumentException("spaces < 0: " + indent);
 
     this.indent = indent;
+    this.validate = validate;
     if (indent == 0) {
       this.comma = ",";
       this.colon = ":";
@@ -48,10 +55,6 @@ public class JxEncoder {
       this.comma = ", ";
       this.colon = ": ";
     }
-  }
-
-  public JxEncoder() {
-    this(0);
   }
 
   private static Object getValue(final Object object, final String propertyName) {
@@ -64,95 +67,36 @@ public class JxEncoder {
     }
   }
 
-  private void encodeProperty(final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
+  private void encodePrimitive(final Annotation annotation, final Object object, final EncodeConsumer<Field> callback, final StringBuilder builder, final int depth) {
     if (object == null) {
-      if (!JsonxUtil.isNullable(annotation))
+      if (validate && !JsonxUtil.isNullable(annotation))
         throw new EncodeException("field is not nullable");
 
       builder.append("null");
     }
     else if (object instanceof String) {
-      final boolean urlEncode;
-      final String pattern;
-      if (annotation instanceof StringProperty) {
-        final StringProperty property = (StringProperty)annotation;
-        pattern = property.pattern();
-        urlEncode = property.urlEncode();
-      }
-      else if (annotation instanceof StringElement) {
-        final StringElement element = (StringElement)annotation;
-        pattern = element.pattern();
-        urlEncode = element.urlEncode();
-      }
-      else {
-        throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
-      }
-
-      final String string = (String)object;
-      if (pattern.length() > 0 && !string.matches(pattern))
-        throw new EncodeException(Annotations.toSortedString(annotation, AttributeComparator.instance) + ": pattern is not matched: \"" + Strings.truncate(string, 16) + "\"");
-
-      final String escaped = Strings.escapeForJava(string);
-      builder.append('"').append(urlEncode ? URIComponent.encode(escaped) : escaped).append('"');
+      builder.append(StringCodec.encode(annotation, (String)object, validate));
     }
     else if (object instanceof Boolean) {
       builder.append(object.toString());
     }
     else if (object instanceof Number) {
-      final Form form;
-      final String range;
-      if (annotation instanceof NumberProperty) {
-        final NumberProperty property = (NumberProperty)annotation;
-        form = property.form();
-        range = property.range();
-      }
-      else if (annotation instanceof NumberElement) {
-        final NumberElement element = (NumberElement)annotation;
-        form = element.form();
-        range = element.range();
-      }
-      else {
-        throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
-      }
-
-      final Number number = (Number)object;
-      if (form == Form.INTEGER && number.longValue() != number.doubleValue())
-        throw new EncodeException("Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(number), 16));
-
-      if (range.length() > 0) {
-        try {
-          if (!new Range(range).isValid(number))
-            throw new EncodeException("Range is not matched: " + Strings.truncate(range, 16));
-        }
-        catch (final ParseException e) {
-          throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
-        }
-      }
-
-      builder.append(number);
+      builder.append(NumberCodec.encode(annotation, (Number)object, validate));
     }
     else {
-      toString(object, builder, depth + 1);
+      encode(object, callback, builder, depth + 1);
     }
   }
 
   @SuppressWarnings("unchecked")
-  private void encodeProperty(final Field field, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
-    if (object instanceof List) {
-      final List<Object> list = (List<Object>)object;
-      final Relations relations = new Relations();
-      final String error = ArrayValidator.validate(field, list, relations);
-      if (error != null)
-        throw new EncodeException(error);
-
-      encodeArray(relations, builder, depth);
-    }
-    else {
-      encodeProperty(annotation, object, builder, depth);
-    }
+  private void encodeProperty(final Field field, final Annotation annotation, final Object object, final EncodeConsumer<Field> callback, final StringBuilder builder, final int depth) {
+    if (object instanceof List)
+      encodeArray(ArrayCodec.encode(field, (List<Object>)object, validate), callback, builder, depth);
+    else
+      encodePrimitive(annotation, object, callback, builder, depth);
   }
 
-  private void encodeArray(final Relations relations, final StringBuilder builder, final int depth) {
+  private void encodeArray(final Relations relations, final EncodeConsumer<Field> callback, final StringBuilder builder, final int depth) {
     builder.append('[');
     for (int i = 0; i < relations.size(); ++i) {
       if (i > 0)
@@ -160,15 +104,15 @@ public class JxEncoder {
 
       final Relation relation = relations.get(i);
       if (relation.annotation instanceof ArrayElement)
-        encodeArray((Relations)relation.member, builder, depth);
+        encodeArray((Relations)relation.member, callback, builder, depth);
       else
-        encodeProperty(relation.annotation, relation.member, builder, depth);
+        encodePrimitive(relation.annotation, relation.member, callback, builder, depth);
     }
 
     builder.append(']');
   }
 
-  private void toString(final Object object, final StringBuilder builder, final int depth) {
+  private void encode(final Object object, final EncodeConsumer<Field> callback, final StringBuilder builder, final int depth) {
     builder.append('{');
     final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
     for (int i = 0; i < fields.length; ++i) {
@@ -227,10 +171,16 @@ public class JxEncoder {
           builder.append('\n').append(FastArrays.createRepeat(' ', depth * 2));
 
         builder.append('"').append(name).append('"').append(colon);
-        encodeProperty(field, annotation, value, builder, depth);
+        final int start = builder.length();
+        encodeProperty(field, annotation, value, callback, builder, depth);
+        if (callback != null)
+          callback.accept(field, start, builder.length());
       }
-      else if (use == Use.REQUIRED) {
-        throw new EncodeException(object.getClass().getName() + "." + name + " is required");
+      else if (validate && use == Use.REQUIRED) {
+        throw new EncodeException(object.getClass().getName() + "#" + name + " is required");
+      }
+      else if (callback != null) {
+        callback.accept(field, -1, -1);
       }
     }
 
@@ -240,20 +190,28 @@ public class JxEncoder {
     builder.append('}');
   }
 
-  public String toString(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
+  public String encode(final List<?> list, final Class<? extends Annotation> arrayAnnotationType, final EncodeConsumer<Field> callback) {
     final StringBuilder builder = new StringBuilder();
     final Relations relations = new Relations();
-    final String error = ArrayValidator.validate(arrayAnnotationType, list, relations);
-    if (error != null)
+    final String error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
+    if (validate && error != null)
       throw new EncodeException(error);
 
-    encodeArray(relations, builder, 0);
+    encodeArray(relations, callback, builder, 0);
     return builder.toString();
   }
 
-  public String toString(final Object object) {
+  public String encode(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
+    return encode(list, arrayAnnotationType, null);
+  }
+
+  public String encode(final Object object, final EncodeConsumer<Field> callback) {
     final StringBuilder builder = new StringBuilder();
-    toString(object, builder, 1);
+    encode(object, callback, builder, 1);
     return builder.toString();
+  }
+
+  public String encode(final Object object) {
+    return encode(object, null);
   }
 }

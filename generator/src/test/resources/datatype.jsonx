@@ -27,21 +27,21 @@
   </array>
   <array class="ArrayBool">
     <reference type="bool" minOccurs="1" maxOccurs="1"/>
-    <reference type="bool" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="bool" minOccurs="0" maxOccurs="1" nullable="true"/>
   </array>
   <array class="ArrayNum">
     <reference type="num" minOccurs="1" maxOccurs="1"/>
-    <reference type="num" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="num" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="numInt" minOccurs="1" maxOccurs="1"/>
-    <reference type="numInt" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="numInt" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="numIntRange1" minOccurs="1" maxOccurs="1"/>
-    <reference type="numIntRange1" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="numIntRange1" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="numIntRange2" minOccurs="1" maxOccurs="1"/>
-    <reference type="numIntRange2" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="numIntRange2" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="numRange1" minOccurs="1" maxOccurs="1"/>
-    <reference type="numRange1" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="numRange1" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="numRange2" minOccurs="1" maxOccurs="1"/>
-    <reference type="numRange2" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="numRange2" minOccurs="0" maxOccurs="1" nullable="true"/>
   </array>
   <array class="ArrayObj">
     <reference type="ObjArr" maxOccurs="1"/>
@@ -52,21 +52,21 @@
   </array>
   <array class="ArrayStr">
     <reference type="str" minOccurs="1" maxOccurs="1"/>
-    <reference type="str" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="str" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strDec" minOccurs="1" maxOccurs="1"/>
-    <reference type="strDec" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strDec" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strDecEnc" minOccurs="1" maxOccurs="1"/>
-    <reference type="strDecEnc" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strDecEnc" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strEnc" minOccurs="1" maxOccurs="1"/>
-    <reference type="strEnc" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strEnc" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strPattern" minOccurs="1" maxOccurs="1"/>
-    <reference type="strPattern" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strPattern" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strPatternDec" minOccurs="1" maxOccurs="1"/>
-    <reference type="strPatternDec" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strPatternDec" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strPatternDecEnc" minOccurs="1" maxOccurs="1"/>
-    <reference type="strPatternDecEnc" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strPatternDecEnc" minOccurs="0" maxOccurs="1" nullable="true"/>
     <reference type="strPatternEnc" minOccurs="1" maxOccurs="1"/>
-    <reference type="strPatternEnc" minOccurs="1" maxOccurs="1" nullable="false"/>
+    <reference type="strPatternEnc" minOccurs="0" maxOccurs="1" nullable="true"/>
   </array>
   <boolean template="bool"/>
   <number template="num"/>
@@ -80,9 +80,9 @@
   <string template="strDecEnc" urlDecode="true" urlEncode="true"/>
   <string template="strEnc" urlEncode="true"/>
   <string template="strPattern" pattern="[a-z]+"/>
-  <string template="strPatternDec" pattern="[a-z]+" urlDecode="true"/>
-  <string template="strPatternDecEnc" pattern="[a-z]+" urlDecode="true" urlEncode="true"/>
-  <string template="strPatternEnc" pattern="[a-z]+" urlEncode="true"/>
+  <string template="strPatternDec" pattern="[%0-9a-z]+" urlDecode="true"/>
+  <string template="strPatternDecEnc" pattern="[%0-9a-z]+" urlDecode="true" urlEncode="true"/>
+  <string template="strPatternEnc" pattern="[%0-9a-z]+" urlEncode="true"/>
   <object class="ObjArr">
     <property name="arrayBool" xsi:type="reference" type="ArrayBool"/>
     <property name="arrayBoolOptional" xsi:type="reference" type="ArrayBool" use="optional"/>

@@ -14,169 +14,178 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx.runtime;
 
 import static org.junit.Assert.*;
 
 import java.io.StringReader;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import org.fastjax.json.JsonReader;
-import org.openjax.jsonx.runtime.DecodeException;
-import org.openjax.jsonx.runtime.EncodeException;
-import org.openjax.jsonx.runtime.JxDecoder;
-import org.openjax.jsonx.runtime.JxEncoder;
-import org.openjax.jsonx.runtime.Use;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public abstract class Trial<T> {
-  public static <T>void addTrial(final List<Trial<?>> trials, final Object root, final Field field, final Object target, final T valid, final Trial<T> invalid, final Use use, final int minOccurs, final int maxOccurs, final boolean nullable) {
-    addTrial(trials, root, field, target, new Trial<T>(root, field, target, valid) {
-      @Override
-      public void onEncode(final String json, final Exception e) {
-        assertNull(e);
-        assertEquals(valid, json);
-      }
+abstract class Trial {
+  private static final Logger logger = LoggerFactory.getLogger(Trial.class);
 
-      @Override
-      public void onDecode(final T value, final Exception e) {
-        assertNull(e);
-        assertEquals(valid, value);
-      }
-    }, invalid, use, minOccurs, maxOccurs, nullable);
+  enum Label {
+    FORM,
+    MAX_OCCURS,
+    MIN_OCCURS,
+    NULLABLE,
+    PATTERN,
+    RANGE,
+    URL_CODEC,
+    USE,
+    VALID
   }
 
-  public static <T>void addTrial(final List<Trial<?>> trials, final Object root, final Field field, final Object target, final Trial<T> valid, final Trial<T> invalid, final Use use, final int minOccurs, final int maxOccurs, final boolean nullable) {
-    trials.add(valid);
+  private static Trial createValidTrial(final Object binding, final Field field, final Object target, final Object valid) {
+    return new Trial(Label.VALID, binding, field, target, valid) {
+      @Override
+      public void onEncode(final String json, final String name, final String value, final Exception e) {
+        assertNull(name + ": " + json, e);
+        assertEquals(json, valid == null ? null : String.valueOf(valid), value);
+      }
+
+      @Override
+      public void onDecode(final String json, final String name, final Object value, final Exception e) {
+        assertNull(name + ": " + json, e);
+        assertEquals(json, valid, value);
+      }
+    };
+  }
+
+  public static void addTrial(final List<Trial> trials, final Object binding, final Field field, final Object target, final Object valid, final Trial invalid, final Use use) {
+    addTrial(trials, binding, field, target, createValidTrial(binding, field, target, valid), invalid, use);
+  }
+
+  public static <T>void addTrial(final List<Trial> trials, final Object binding, final Field field, final Object target, final Trial valid, final Trial invalid, final Use use) {
+    if (use == Use.REQUIRED) {
+      trials.add(new Trial(Label.USE, binding, field, target, null) {
+        @Override
+        public void onEncode(final String json, final String name, final String value, final Exception e) throws Exception {
+          assertNotNull(e);
+          if (!(e instanceof EncodeException))
+            throw e;
+
+          assertEquals(json, field.getDeclaringClass().getName() + "#" + field.getName() + " is required", e.getMessage());
+        }
+
+        @Override
+        public void onDecode(final String json, final String name, final Object value, final Exception e) throws Exception {
+          assertNotNull(e);
+          if (!(e instanceof DecodeException))
+            throw e;
+
+          assertTrue(e.getMessage() + " " + json, e.getMessage().startsWith("Property \"" + name + "\" is required"));
+        }
+      });
+    }
 
     if (invalid != null)
       trials.add(invalid);
 
-    if (use == Use.REQUIRED) {
-      trials.add(new Trial<T>(root, field, null) {
-        @Override
-        public void onEncode(final String json, final Exception e) {
-          assertNotNull(e);
-          assertEquals(EncodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...is required..."));
-        }
-
-        @Override
-        public void onDecode(final T value, final Exception e) {
-          assertNotNull(e);
-          assertEquals(DecodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...is required..."));
-        }
-      });
-    }
-
-    if (!nullable) {
-      trials.add(new Trial<T>(root, field, null) {
-        @Override
-        public void onEncode(final String json, final Exception e) {
-          assertNotNull(e);
-          assertEquals(EncodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...cannot be null..."));
-        }
-
-        @Override
-        public void onDecode(final T value, final Exception e) {
-          assertNotNull(e);
-          assertEquals(DecodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...cannot be null..."));
-        }
-      });
-    }
-
-    if (minOccurs == 1) {
-      trials.add(new Trial<T>(root, field, target) {
-        @Override
-        public void onEncode(final String json, final Exception e) {
-          assertNotNull(e);
-          assertEquals(EncodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...violates minOccurs..."));
-        }
-
-        @Override
-        public void onDecode(final T value, final Exception e) {
-          assertNotNull(e);
-          assertEquals(DecodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...violates minOccurs..."));
-        }
-      });
-    }
-
-    if (maxOccurs == 1) {
-      trials.add(new Trial<Object[]>(root, field, target, new Object[] {valid, valid}) {
-        @Override
-        public void onEncode(final String json, final Exception e) {
-          assertNotNull(e);
-          assertEquals(EncodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...violates maxOccurs..."));
-        }
-
-        @Override
-        public void onDecode(final Object[] value, final Exception e) {
-          assertNotNull(e);
-          assertEquals(DecodeException.class, e.getClass());
-          assertTrue(e.getMessage().contains("...violates maxOccurs..."));
-        }
-      });
-    }
+    if (valid != null)
+      trials.add(valid);
   }
 
-  private final Object root;
+  public static void invoke(final List<Trial> trials) throws Exception {
+    for (final Trial trial : trials)
+      if (trial.label == Label.VALID)
+        trial.setValue(trial.value);
+
+    for (final Trial trial : trials)
+      if (trial.label != Label.VALID)
+        trial.invoke();
+  }
+
+  private final Label label;
+  private final Object binding;
   private final Field field;
+  private final String name;
   private final Object target;
   private final boolean setValue;
-  private final T value;
+  private final Object value;
 
-  public Trial(final Object root, final Field field, final Object target, final T value) {
-    this.root = root;
+  public Trial(final Label label, final Object binding, final Field field, final Object target, final Object value) {
+    this.label = label;
+    this.binding = binding;
     this.field = field;
+    this.name = JsonxUtil.getName(field);
     this.target = target;
     this.setValue = true;
     this.value = value;
     field.setAccessible(true);
   }
 
-  public Trial(final Object root, final Field field, final Object target) {
-    this.root = root;
+  public Trial(final Label label, final Object binding, final Field field, final Object target) {
+    this.label = label;
+    this.binding = binding;
     this.field = field;
+    this.name = JsonxUtil.getName(field);
     this.target = target;
     this.setValue = false;
     this.value = null;
     field.setAccessible(true);
   }
 
-  public abstract void onEncode(final String json, final Exception e);
-  public abstract void onDecode(final T value, final Exception e);
-  private static final JxEncoder encoder = new JxEncoder(2);
+  public abstract void onEncode(final String json, final String name, final String value, final Exception e) throws Exception;
+  public abstract void onDecode(final String json, final String name, final Object value, final Exception e) throws Exception;
+  private static final JxEncoder validEncoder = new JxEncoder(2, true);
+  private static final JxEncoder invalidEncoder = new JxEncoder(2, false);
 
-  public void invoke() throws IllegalAccessException, IllegalArgumentException {
+  private void setValue(final Object value) throws IllegalAccessException {
+    field.set(target, List.class.isAssignableFrom(field.getType()) && value.getClass().isArray() ? Arrays.asList((Object[])value) : value);
+  }
+
+  public void invoke() throws Exception {
+    logger.info("Testing " + label + " on " + field.getDeclaringClass().getSimpleName() + "#" + field.getName());
     final Object before = field.get(target);
-    field.set(target, value);
+    if (setValue)
+      setValue(value);
+
     String json = null;
+    String value = null;
     Exception exception = null;
     try {
-      // Need to focus only on the part of the encoded field
-      json = encoder.toString(root);
-    }
-    catch (final Exception e) {
-      exception = e;
-    }
-    onEncode(json, exception);
+      final int[] bounds = new int[2];
+      json = validEncoder.encode(binding, (f,s,e) -> {
+        if (f.equals(field)) {
+          bounds[0] = s;
+          bounds[1] = e;
+        }
+      });
 
-    T binding = null;
-    exception = null;
-    try {
-      // Need to focus only on the decoded field
-      binding = (T)JxDecoder.parseObject(root.getClass(), new JsonReader(new StringReader(json)));
+      value = json.substring(bounds[0], bounds[1]);
     }
     catch (final Exception e) {
       exception = e;
+      json = invalidEncoder.encode(binding);
     }
-    onDecode(binding, exception);
+
+    try {
+      onEncode(json, name, value, exception);
+
+      final Object[] object = new Object[1];
+      exception = null;
+      try {
+        JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (f,o) -> {
+          if (f.equals(field))
+            object[0] = o;
+        });
+      }
+      catch (final Exception e) {
+        exception = e;
+      }
+      onDecode(json, name, object[0], exception);
+    }
+    catch (final Exception e) {
+      System.err.println(json);
+      throw e;
+    }
 
     field.set(target, before);
   }

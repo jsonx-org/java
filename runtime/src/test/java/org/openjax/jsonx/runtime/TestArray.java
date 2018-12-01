@@ -120,6 +120,6 @@ public class TestArray {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).toString(this);
+    return new JxEncoder(2).encode(this);
   }
 }

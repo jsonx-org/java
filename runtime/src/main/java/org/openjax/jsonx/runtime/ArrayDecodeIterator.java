@@ -18,22 +18,20 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.fastjax.json.JsonReader;
 import org.fastjax.util.ArrayIntList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-class DecodeIterator extends ArrayIterator {
-  private static final Logger logger = LoggerFactory.getLogger(DecodeIterator.class);
-
+class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
   private int cursor = -1;
 
-  public DecodeIterator(final JsonReader reader) {
+  public ArrayDecodeIterator(final JsonReader reader) {
     this.reader = reader;
   }
 
@@ -77,7 +75,7 @@ class DecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected boolean currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement) throws DecodeException, IOException {
+  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final BiConsumer<Field,Object> callback) throws IOException {
     final String token = (String)current;
     final Object value;
     if (Boolean.class.equals(type)) {
@@ -91,56 +89,42 @@ class DecodeIterator extends ArrayIterator {
       value = token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? token.substring(1, token.length() - 1) : null;
     }
     else if (List.class.equals(type)) {
-      if ("[".equals(token)) {
-        final ArrayElement element = (ArrayElement)annotation;
-        final int[] elementIds;
-        if (element.type() != ArrayType.class)
-          elementIds = JsonxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
-        else
-          elementIds = element.elementIds();
+      if (!"[".equals(token))
+        return "Content is not expected: " + token;
 
-        final Annotation[] annotations = idToElement.get(elementIds);
-        final Object array = JxDecoder.parse0(annotations, idToElement, reader);
-        if (array instanceof String) {
-          if (logger.isDebugEnabled())
-            logger.debug((String)array);
+      final ArrayElement element = (ArrayElement)annotation;
+      final int[] elementIds;
+      if (element.type() != ArrayType.class)
+        elementIds = JsonxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
+      else
+        elementIds = element.elementIds();
 
-          value = null;
-        }
-        else {
-          value = array;
-        }
-      }
-      else {
-        value = null;
-      }
+      final Annotation[] annotations = idToElement.get(elementIds);
+      final Object array = ArrayCodec.decode(annotations, idToElement, reader, callback);
+      if (array instanceof String)
+        return (String)array;
+
+      value = array;
     }
     else if (Object.class.equals(type)) {
-      if ("{".equals(token)) {
-        final ObjectElement element = (ObjectElement)annotation;
-        final Object object = JxDecoder.parse0(element.type(), reader);
-        if (object instanceof String) {
-          if (logger.isDebugEnabled())
-            logger.debug((String)object);
+      if (!"{".equals(token))
+        return "Content is not expected: " + token;
 
-          value = null;
-        }
-        else {
-          value = object;
-        }
-      }
-      else {
-        value = null;
-      }
+      final ObjectElement element = (ObjectElement)annotation;
+      final Object object = ObjectCodec.decode(element.type(), reader, callback);
+      if (object instanceof String)
+        return (String)object;
+
+      value = object;
     }
     else {
       throw new UnsupportedOperationException("Unsupported type: " + type.getName());
     }
 
     if (value == null)
-      return false;
+      return "Content is not expected: " + currentPreview();
 
     current = value;
-    return true;
+    return null;
   }
 }

@@ -34,8 +34,12 @@ import org.fastjax.util.Strings;
 import org.junit.Test;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ArrayEncodeTest {
+  private static final Logger logger = LoggerFactory.getLogger(ArrayEncodeTest.class);
+
   private static final Map<Class<? extends Annotation>,IdToElement> classToIdToElement = new HashMap<>();
   private static boolean debug = false;
 
@@ -79,7 +83,7 @@ public class ArrayEncodeTest {
 
   private static void test(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
     final Relations relations = new Relations();
-    final String error = ArrayValidator.validate(annotationType, members, relations);
+    final String error = ArrayValidator.validate(annotationType, members, relations, true, null);
     final Relations flatRelations = FastCollections.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
     if (expected != null && !expected.equals(error)) {
       String msg = "\"" + Strings.escapeForJava(error) + "\"";
@@ -87,7 +91,7 @@ public class ArrayEncodeTest {
       msg = msg.replace(".class", "%class");
       msg = msg.replaceAll("org\\.openjax\\.[\\.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
       msg = msg.replace("%class", ".class");
-      System.err.println(msg);
+      logger.error(msg);
     }
 
     if (debug)

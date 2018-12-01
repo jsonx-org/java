@@ -141,5 +141,18 @@
       <artifactId>jsonx-generator</artifactId>
       <version>0.9.8-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjax.jsonx</groupId>
+      <artifactId>jsonx-generator</artifactId>
+      <version>0.9.8-SNAPSHOT</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>com.github.mifmif</groupId>
+      <artifactId>generex</artifactId>
+      <version>1.0.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

@@ -50,6 +50,7 @@ public class SchemaTest {
   private static final URL jsonxXsd = Thread.currentThread().getContextClassLoader().getResource("jsonx.xsd");
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
+  private static final File compiledClassesDir = new File("target/test-classes");
   private static final List<Settings> settings = new ArrayList<>();
 
   static {
@@ -133,7 +134,7 @@ public class SchemaTest {
       compiler.addSource(entry.getValue());
 
     logger.info("  5) -- Java(1) Compile --");
-    final ClassLoader classLoader = compiler.compile();
+    final ClassLoader classLoader = compiler.compile(compiledClassesDir);
 
     logger.info("  6) Java(1) -> JSONX");
     final Schema test1Schema = newSchema(classLoader, (String)controlBinding.getPackage$().text());

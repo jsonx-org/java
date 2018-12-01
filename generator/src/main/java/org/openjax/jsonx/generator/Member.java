@@ -132,7 +132,7 @@ abstract class Member extends Element {
   public Member(final Registry registry, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
     this.registry = registry;
     this.name = name;
-    this.nullable = nullable != null && !nullable ? null : nullable;
+    this.nullable = nullable == null || !nullable ? null : nullable;
     this.use = use == Use.REQUIRED ? null : use;
     this.minOccurs = minOccurs == null || minOccurs == 1 ? null : minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
@@ -180,7 +180,7 @@ abstract class Member extends Element {
       attributes.put("template", id().toString());
 
     if (!(owner instanceof Schema)) {
-      if (nullable != null && !nullable)
+      if (nullable != null && nullable)
         attributes.put("nullable", String.valueOf(nullable));
 
       if (use != null)
@@ -250,12 +250,8 @@ abstract class Member extends Element {
   }
 
   protected abstract Id id();
-
   protected abstract Registry.Type type();
-
   protected abstract String elementName();
-
   protected abstract Class<? extends Annotation> propertyAnnotation();
-
   protected abstract Class<? extends Annotation> elementAnnotation();
 }

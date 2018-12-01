@@ -17,13 +17,15 @@
 package org.openjax.jsonx.runtime;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.BiConsumer;
 
-class EncodeIterator extends ArrayIterator {
+class ArrayEncodeIterator extends ArrayIterator {
   private final ListIterator<Object> listIterator;
 
-  public EncodeIterator(final ListIterator<Object> listIterator) {
+  public ArrayEncodeIterator(final ListIterator<Object> listIterator) {
     this.listIterator = listIterator;
   }
 
@@ -54,8 +56,9 @@ class EncodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected boolean currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement) {
+  protected String currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final BiConsumer<Field,Object> callback) {
     final Class<?> cls = current.getClass();
-    return type != Object.class ? type.isAssignableFrom(cls) : !cls.isArray() && !Boolean.class.isAssignableFrom(cls) && !List.class.isAssignableFrom(cls) && !Number.class.isAssignableFrom(cls) && !String.class.isAssignableFrom(cls);
+    final boolean isValid = type != Object.class ? type.isAssignableFrom(cls) : !cls.isArray() && !Boolean.class.isAssignableFrom(cls) && !List.class.isAssignableFrom(cls) && !Number.class.isAssignableFrom(cls) && !String.class.isAssignableFrom(cls);
+    return !isValid ? "Content is not expected: " + currentPreview() : null;
   }
 }

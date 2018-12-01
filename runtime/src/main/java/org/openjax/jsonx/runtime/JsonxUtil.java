@@ -123,6 +123,27 @@ public final class JsonxUtil {
     throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
   }
 
+  public static String getName(final Field field) {
+    for (final Annotation annotation : field.getAnnotations()) {
+      if (annotation instanceof ArrayProperty)
+        return getName(((ArrayProperty)annotation).name(), field);
+
+      if (annotation instanceof BooleanProperty)
+        return getName(((BooleanProperty)annotation).name(), field);
+
+      if (annotation instanceof NumberProperty)
+        return getName(((NumberProperty)annotation).name(), field);
+
+      if (annotation instanceof ObjectProperty)
+        return getName(((ObjectProperty)annotation).name(), field);
+
+      if (annotation instanceof StringProperty)
+        return getName(((StringProperty)annotation).name(), field);
+    }
+
+    return null;
+  }
+
   public static String getName(final String name, final Field field) {
     return name.length() > 0 ? name : field.getName();
   }

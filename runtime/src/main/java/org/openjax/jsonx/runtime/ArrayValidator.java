@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.BiConsumer;
 
 import org.fastjax.util.Annotations;
 import org.fastjax.util.DelegateList;
@@ -111,7 +112,7 @@ public class ArrayValidator {
     return -1;
   }
 
-  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations) throws DecodeException, IOException {
+  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, int a, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) throws IOException {
     final int i = iterator.nextIndex();
     if (!iterator.hasNext()) {
       final int nextRequiredIndex = getNextRequiredElement(annotations, a, count);
@@ -119,13 +120,17 @@ public class ArrayValidator {
     }
 
     if (a == annotations.length) {
-      if (!iterator.hasNext())
-        return null;
+      if (validate) {
+        if (!iterator.hasNext())
+          return null;
 
-      iterator.next();
-      final String preview = iterator.currentPreview();
-      iterator.previous();
-      return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], AttributeComparator.instance) + ": No members are expected at this point: " + preview;
+        iterator.next();
+        final String preview = iterator.currentPreview();
+        iterator.previous();
+        return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], AttributeComparator.instance) + ": No members are expected at this point: " + preview;
+      }
+
+      a = annotations.length - 1;
     }
 
     final int minOccurs;
@@ -179,9 +184,9 @@ public class ArrayValidator {
       throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
 
 //    System.err.println("Matching " + j + ", count " + count + " against " + i);
-    final String error;
+    String error;
     if (iterator.nextIsNull()) {
-      if (nullable) {
+      if (nullable || !validate) {
         error = null;
         relations.set(i, iterator.currentRelate(annotation));
       }
@@ -190,15 +195,12 @@ public class ArrayValidator {
       }
     }
     else {
-      if (iterator.currentMatchesType(type, annotation, idToElement)) {
-        error = iterator.currentIsValid(i, annotation, idToElement, relations);
+      if ((error = iterator.currentMatchesType(type, annotation, idToElement, callback)) == null || !validate) {
+        error = iterator.currentIsValid(i, annotation, idToElement, relations, validate, callback);
       }
-      else if (count < minOccurs) {
-        error = "Content is not expected: " + iterator.currentPreview();
-      }
-      else {
+      else if (count >= minOccurs) {
         iterator.previous();
-        return validate(iterator, 0, annotations, a + 1, idToElement, relations);
+        return validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, callback);
       }
     }
 
@@ -207,13 +209,13 @@ public class ArrayValidator {
     do {
       if (result != null) {
         iterator.previous();
-        return count >= minOccurs && maxOccurs >= count && validate(iterator, 0, annotations, a + 1, idToElement, relations) == null ? null : result;
+        return count >= minOccurs && maxOccurs >= count && validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, callback) == null ? null : result;
       }
 
       if (count < maxOccurs - 1)
-        result = validate(iterator, count + 1, annotations, a, idToElement, relations);
+        result = validate(iterator, count + 1, annotations, a, idToElement, relations, validate, callback);
       else
-        result = validate(iterator, 0, annotations, a + 1, idToElement, relations);
+        result = validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, callback);
     }
     while (result != null);
 
@@ -221,26 +223,20 @@ public class ArrayValidator {
   }
 
   @SuppressWarnings("unchecked")
-  static String validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations) {
+  static String validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
     final Annotation[] annotations = idToElement.get(elementIds);
     try {
-      return validate(new EncodeIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations);
+      return validate(new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations, validate, callback);
     }
-    catch (final DecodeException | IOException e) {
+    catch (final IOException e) {
       throw new RuntimeException("Should not happen, as this method is only called for encode", e);
     }
   }
 
-  static String validate(final Field field, final List<Object> members, final Relations relations) {
-    final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsonxUtil.digest(field, idToElement);
-    return validate(members, idToElement, elementIds, relations);
-  }
-
-  static String validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations) {
+  static String validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsonxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
-    return validate(members, idToElement, elementIds, relations);
+    return validate(members, idToElement, elementIds, relations, validate, callback);
   }
 
   private ArrayValidator() {

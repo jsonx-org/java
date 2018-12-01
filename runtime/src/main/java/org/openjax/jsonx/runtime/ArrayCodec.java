@@ -16,14 +16,45 @@
 
 package org.openjax.jsonx.runtime;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.function.BiConsumer;
 
-class ArraySpec extends Spec {
+import org.fastjax.json.JsonReader;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+
+class ArrayCodec extends Codec {
+  static Relations encode(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
+    final Relations relations = new Relations();
+    final IdToElement idToElement = new IdToElement();
+    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    final String error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
+    if (validate && error != null)
+      throw new EncodeException(error);
+
+    return relations;
+  }
+
+  static Object decode(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader, final BiConsumer<Field,Object> callback) throws IOException {
+    final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
+    final Relations relations = new Relations();
+    final String error = ArrayValidator.validate(iterator, 0, annotations, 0, idToElement, relations, true, callback);
+    if (error != null)
+      return error;
+
+    final String token = reader.readToken();
+    if (!"]".equals(token))
+      return "Expected ']', but got '" + token + "'";
+
+    return relations.deflate();
+  }
+
   private final Annotation[] annotations;
   private final IdToElement idToElement = new IdToElement();
 
-  ArraySpec(final ArrayProperty property, final Field field) {
+  ArrayCodec(final ArrayProperty property, final Field field) {
     super(field, property.name(), property.use());
     final int[] elementIds = JsonxUtil.digest(field, idToElement);
     this.annotations = idToElement.get(elementIds);

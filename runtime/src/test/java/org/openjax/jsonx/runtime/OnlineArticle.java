@@ -20,7 +20,7 @@ import org.fastjax.net.URLs;
 
 @ObjectType
 public class OnlineArticle extends Publication {
-  @StringProperty(use=Use.REQUIRED, pattern=URLs.REGEX, urlDecode=true, urlEncode=true)
+  @StringProperty(use=Use.REQUIRED, pattern=URLs.REGEX, urlDecode=true, urlEncode=false)
   private String url;
 
   public String getUrl() {
