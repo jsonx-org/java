@@ -64,9 +64,9 @@ public class SchemaTest {
     }
 
     for (int i = 0; i < 10; i++)
-      settings.add(new Settings(i));
+      settings.add(new Settings(i, 2));
 
-    settings.add(new Settings(Integer.MAX_VALUE));
+    settings.add(new Settings(Integer.MAX_VALUE, 2));
   }
 
   private static Jsonx newControlBinding(final String fileName) throws IOException, MalformedURLException, ValidationException {

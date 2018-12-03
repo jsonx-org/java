@@ -16,21 +16,21 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.lang.reflect.Field;
+import static org.junit.Assert.*;
 
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
+class UseCase extends FailureCase<PropertyTrial<? super Object>> {
+  static final UseCase CASE = new UseCase();
+
+  @Override
+  void onEncode(final PropertyTrial<? super Object> trial, final EncodeException e) throws Exception {
+    assertEquals(trial.field.getDeclaringClass().getName() + "#" + trial.field.getName() + " is required", e.getMessage());
   }
 
-  final String matches(final String json) {
-    if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
-
-    return validate(json);
+  @Override
+  void onDecode(final PropertyTrial<? super Object> trial, final DecodeException e) throws Exception {
+    assertTrue(e.getMessage(), e.getMessage().contains("Property \"" + trial.name + "\" is required"));
   }
 
-  abstract boolean test(final char firstChar);
-  abstract String validate(final String json);
-  abstract T decode(final String json);
+  private UseCase() {
+  }
 }

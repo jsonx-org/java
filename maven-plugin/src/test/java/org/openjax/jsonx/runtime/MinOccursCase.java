@@ -16,21 +16,22 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.lang.reflect.Field;
+import static org.junit.Assert.*;
 
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
+class MinOccursCase extends FailureCase<ArrayTrial<Object>> {
+  static final MinOccursCase CASE = new MinOccursCase();
+
+  @Override
+  void onEncode(final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
+//    e.printStackTrace();
+    assertTrue(trial.name, e.getMessage().endsWith("Content is not complete"));
   }
 
-  final String matches(final String json) {
-    if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
-
-    return validate(json);
+  @Override
+  void onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
+    assertTrue(trial.name, e.getMessage().contains("Content is not complete"));
   }
 
-  abstract boolean test(final char firstChar);
-  abstract String validate(final String json);
-  abstract T decode(final String json);
+  private MinOccursCase() {
+  }
 }

@@ -450,7 +450,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  protected String toSource() {
+  protected String toSource(final Settings settings) {
     return null;
   }
 }

@@ -32,7 +32,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//@Ignore
 public class LibraryTest {
   private static final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
   private static final JxEncoder encoder = new JxEncoder(2);

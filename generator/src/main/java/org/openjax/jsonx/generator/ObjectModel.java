@@ -38,6 +38,7 @@ import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.JsonxUtil;
+import org.openjax.jsonx.runtime.JxEncoder;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.ObjectProperty;
 import org.openjax.jsonx.runtime.ObjectType;
@@ -320,17 +321,55 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected String toSource() {
+  protected String toSource(final Settings settings) {
     final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0) {
       final Iterator<Member> iterator = members.values().iterator();
-      for (int i = 0; iterator.hasNext(); i++) {
+      for (int i = 0; iterator.hasNext(); ++i) {
         if (i > 0)
           builder.append("\n\n");
 
         builder.append(iterator.next().toField());
       }
     }
+
+    builder.append("\n\n@").append(Override.class.getName());
+    builder.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
+    builder.append("\n  if (obj == this)");
+    builder.append("\n    return true;");
+    builder.append("\n\n  if (!(obj instanceof ").append(type.getCanonicalName()).append(")").append((type.getSuperType() != null ? " || !super.equals(obj)" : "")).append(")");
+    builder.append("\n    return false;\n");
+    if (members != null && members.size() > 0) {
+      builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
+      for (final Member member : members.values()) {
+        final String instanceName = member.toInstanceName();
+        builder.append("\n  if (that.").append(instanceName).append(" != null ? !that.").append(instanceName).append(".equals(").append(instanceName).append(") : ").append(instanceName).append(" != null)");
+        builder.append("\n    return false;\n");
+      }
+    }
+    builder.append("\n  return true;");
+    builder.append("\n}");
+
+    builder.append("\n\n@").append(Override.class.getName());
+    builder.append("\npublic int hashCode() {");
+    if (members != null && members.size() > 0) {
+      builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(";");
+      for (final Member member : members.values()) {
+        final String instanceName = member.toInstanceName();
+        builder.append("\n  hashCode = 31 * hashCode + (").append(instanceName).append(" == null ? 0 : ").append(instanceName).append(".hashCode());");
+      }
+
+      builder.append("\n  return hashCode;");
+    }
+    else {
+      builder.append("\n  return ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(";");
+    }
+    builder.append("\n}");
+
+    builder.append("\n\n@").append(Override.class.getName());
+    builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
+    builder.append("\n  return new ").append(JxEncoder.class.getName()).append("(").append(settings.getToStringIndent()).append(").encode(this);");
+    builder.append("\n}");
 
     return builder.toString();
   }

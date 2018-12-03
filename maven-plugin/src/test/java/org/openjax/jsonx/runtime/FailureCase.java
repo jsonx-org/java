@@ -16,21 +16,7 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.lang.reflect.Field;
-
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
-  }
-
-  final String matches(final String json) {
-    if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
-
-    return validate(json);
-  }
-
-  abstract boolean test(final char firstChar);
-  abstract String validate(final String json);
-  abstract T decode(final String json);
+abstract class FailureCase<T extends PropertyTrial<?>> extends Case<T> {
+  abstract void onEncode(final T trial, final EncodeException e) throws Exception;
+  abstract void onDecode(final T trial, final DecodeException e) throws Exception;
 }

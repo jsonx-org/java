@@ -19,35 +19,21 @@ package org.openjax.jsonx.runtime;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.fastjax.json.JsonReader;
 import org.fastjax.util.ArrayIntList;
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
   private int cursor = -1;
 
-  public ArrayDecodeIterator(final JsonReader reader) {
+  ArrayDecodeIterator(final JsonReader reader) {
     this.reader = reader;
-  }
-
-  @Override
-  protected void next() throws IOException {
-    if (++cursor == indexes.size())
-      indexes.add(reader.getIndex());
-
-    current = reader.readToken();
-    if ("null".equals(current))
-      current = null;
-  }
-
-  @Override
-  protected void previous() {
-    reader.setIndex(indexes.get(cursor--));
   }
 
   @Override
@@ -69,9 +55,24 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
+  protected void next() throws IOException {
+    if (++cursor == indexes.size())
+      indexes.add(reader.getIndex());
+
+    current = reader.readToken();
+    if ("null".equals(current))
+      current = null;
+  }
+
+  @Override
   protected boolean nextIsNull() throws IOException {
     next();
     return current == null;
+  }
+
+  @Override
+  protected void previous() {
+    reader.setIndex(indexes.get(cursor--));
   }
 
   @Override
@@ -83,7 +84,7 @@ class ArrayDecodeIterator extends ArrayIterator {
     }
     else if (Number.class.equals(type)) {
       final char ch = token.charAt(0);
-      value = ch == '-' || '0' <= ch && ch <= '9' ? new BigDecimal(token) : null;
+      value = ch == '-' || '0' <= ch && ch <= '9' ? NumberCodec.decode(((NumberElement)annotation).form(), token) : null;
     }
     else if (String.class.equals(type)) {
       value = token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? token.substring(1, token.length() - 1) : null;
@@ -126,5 +127,27 @@ class ArrayDecodeIterator extends ArrayIterator {
 
     current = value;
     return null;
+  }
+
+  @Override
+  protected final String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+    if (annotation instanceof ArrayElement) {
+      relations.set(i, new Relation(current, annotation));
+      return null;
+    }
+
+    if (annotation instanceof StringElement)
+      return validate((StringElement)annotation, current, i, relations, true, validate);
+
+    if (annotation instanceof ObjectElement)
+      return validate((ObjectElement)annotation, current, i, relations, validate);
+
+    if (annotation instanceof BooleanElement)
+      return validate((BooleanElement)annotation, current, i, relations);
+
+    if (annotation instanceof NumberElement)
+      return validate((NumberElement)annotation, current, i, relations, validate);
+
+    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 }

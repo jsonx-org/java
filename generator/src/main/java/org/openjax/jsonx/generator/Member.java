@@ -218,6 +218,10 @@ abstract class Member extends Element {
       attributes.put("maxOccurs", maxOccurs);
   }
 
+  protected final String toInstanceName() {
+    return JavaIdentifiers.toInstanceCase(name);
+  }
+
   protected final String toField() {
     final StringBuilder builder = new StringBuilder();
     final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
@@ -226,8 +230,8 @@ abstract class Member extends Element {
 
     final AttributeMap attributes = new AttributeMap();
     toAnnotationAttributes(attributes, this);
-    final String instanceCase = JavaIdentifiers.toInstanceCase(name);
-    if (!name.equals(instanceCase) && !attributes.containsKey("name"))
+    final String instanceName = toInstanceName();
+    if (!name.equals(instanceName) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + name + "\"");
 
     String classCase = JavaIdentifiers.toClassCase(name);
@@ -235,12 +239,12 @@ abstract class Member extends Element {
       classCase = "0lass";
 
     builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
-    builder.append("\nprivate ").append(type().toCanonicalString()).append(' ').append(instanceCase).append(';');
-    builder.append("\n\npublic void set").append(classCase).append("(final ").append(type().toCanonicalString()).append(" ").append(instanceCase).append(") {");
-    builder.append("\n  this.").append(instanceCase).append(" = ").append(instanceCase).append(';');
+    builder.append("\nprivate ").append(type().toCanonicalString()).append(' ').append(instanceName).append(';');
+    builder.append("\n\npublic void set").append(classCase).append("(final ").append(type().toCanonicalString()).append(" ").append(instanceName).append(") {");
+    builder.append("\n  this.").append(instanceName).append(" = ").append(instanceName).append(';');
     builder.append("\n}");
     builder.append("\n\npublic ").append(type().toCanonicalString()).append(" get").append(classCase).append("() {");
-    builder.append("\n  return ").append(instanceCase).append(';');
+    builder.append("\n  return ").append(instanceName).append(';');
     builder.append("\n}");
     return builder.toString();
   }

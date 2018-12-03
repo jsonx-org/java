@@ -16,9 +16,17 @@
 
 package org.openjax.jsonx.runtime;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 class BooleanCodec extends PrimitiveCodec<Boolean> {
+  static String encode(final Annotation annotation, final Boolean object, final boolean validate) throws EncodeException, ValidationException {
+    if (!(annotation instanceof BooleanProperty) && !(annotation instanceof BooleanElement))
+        throw new IllegalArgumentException("Illegal annotation type for \"boolean\": " + annotation.annotationType().getName());
+
+    return String.valueOf(object);
+  }
+
   BooleanCodec(final BooleanProperty property, final Field field) {
     super(field, property.name(), property.use());
   }

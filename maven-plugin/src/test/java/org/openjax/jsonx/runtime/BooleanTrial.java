@@ -17,20 +17,16 @@
 package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
+class BooleanTrial extends PropertyTrial<Boolean> {
+  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final BooleanProperty property) {
+    trials.add(new BooleanTrial(ValidCase.CASE, field, object, Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE, property));
+    if (property.use() == Use.REQUIRED)
+      trials.add(new BooleanTrial(UseCase.CASE, field, object, null, property));
   }
 
-  final String matches(final String json) {
-    if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
-
-    return validate(json);
+  private BooleanTrial(final Case<? extends PropertyTrial<? super Boolean>> kase, final Field field, final Object object, final Boolean value, final BooleanProperty property) {
+    super(kase, field, object, value, property.name(), property.use());
   }
-
-  abstract boolean test(final char firstChar);
-  abstract String validate(final String json);
-  abstract T decode(final String json);
 }

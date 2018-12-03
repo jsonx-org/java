@@ -16,21 +16,21 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.lang.reflect.Field;
+import static org.junit.Assert.*;
 
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
+class RangeCase extends FailureCase<NumberTrial> {
+  static final RangeCase CASE = new RangeCase();
+
+  @Override
+  void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
+    assertEquals(trial.name, "Range is not matched: " + trial.range, e.getMessage());
   }
 
-  final String matches(final String json) {
-    if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
-
-    return validate(json);
+  @Override
+  void onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
+    assertTrue(trial.name, e.getMessage().startsWith("Range (" + trial.range + ") is not matched: "));
   }
 
-  abstract boolean test(final char firstChar);
-  abstract String validate(final String json);
-  abstract T decode(final String json);
+  private RangeCase() {
+  }
 }

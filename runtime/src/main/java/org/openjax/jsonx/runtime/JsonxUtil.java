@@ -65,15 +65,19 @@ public final class JsonxUtil {
     }
   }
 
+  public static String getFullyQualifiedFieldName(final Field field) {
+    return field.getDeclaringClass().getName() + "#" + field.getName();
+  }
+
   public static int[] digest(final Field field, final IdToElement idToElement) {
     final ArrayProperty property = field.getAnnotation(ArrayProperty.class);
     if (property == null)
-      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + field.getDeclaringClass().getName() + "." + field.getName());
+      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedFieldName(field));
 
     if (property.type() != ArrayType.class)
       return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
 
-    return digest(field.getAnnotations(), field.getDeclaringClass().getName() + "." + field.getName(), idToElement);
+    return digest(field.getAnnotations(), getFullyQualifiedFieldName(field), idToElement);
   }
 
   public static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
@@ -120,7 +124,45 @@ public final class JsonxUtil {
     if (annotation instanceof StringElement)
       return ((StringElement)annotation).nullable();
 
-    throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
+    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
+  }
+
+  public static int getMinOccurs(final Annotation annotation) {
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).minOccurs();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).minOccurs();
+
+    if (annotation instanceof NumberElement)
+      return ((NumberElement)annotation).minOccurs();
+
+    if (annotation instanceof ObjectElement)
+      return ((ObjectElement)annotation).minOccurs();
+
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).minOccurs();
+
+    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
+  }
+
+  public static int getMaxOccurs(final Annotation annotation) {
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).maxOccurs();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).maxOccurs();
+
+    if (annotation instanceof NumberElement)
+      return ((NumberElement)annotation).maxOccurs();
+
+    if (annotation instanceof ObjectElement)
+      return ((ObjectElement)annotation).maxOccurs();
+
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).maxOccurs();
+
+    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
   public static String getName(final Field field) {

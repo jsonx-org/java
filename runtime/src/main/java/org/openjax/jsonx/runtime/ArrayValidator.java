@@ -112,7 +112,7 @@ public class ArrayValidator {
     return -1;
   }
 
-  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, int a, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) throws IOException {
+  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) throws IOException {
     final int i = iterator.nextIndex();
     if (!iterator.hasNext()) {
       final int nextRequiredIndex = getNextRequiredElement(annotations, a, count);
@@ -120,17 +120,13 @@ public class ArrayValidator {
     }
 
     if (a == annotations.length) {
-      if (validate) {
-        if (!iterator.hasNext())
-          return null;
+      if (!iterator.hasNext())
+        return null;
 
-        iterator.next();
-        final String preview = iterator.currentPreview();
-        iterator.previous();
-        return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], AttributeComparator.instance) + ": No members are expected at this point: " + preview;
-      }
-
-      a = annotations.length - 1;
+      iterator.next();
+      final String preview = iterator.currentPreview();
+      iterator.previous();
+      return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], AttributeComparator.instance) + ": No members are expected at this point: " + preview;
     }
 
     final int minOccurs;
@@ -183,7 +179,6 @@ public class ArrayValidator {
     if (maxOccurs < minOccurs)
       throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
 
-//    System.err.println("Matching " + j + ", count " + count + " against " + i);
     String error;
     if (iterator.nextIsNull()) {
       if (nullable || !validate) {

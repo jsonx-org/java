@@ -238,9 +238,9 @@ class Registry {
   }
 
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
-  private final LinkedHashMap<String,X> refToReferrers = new LinkedHashMap<>();
+  private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
-  private static class X {
+  private static class ReferrerManifest {
     final List<Referrer<?>> referrers = new ArrayList<>();
     final Set<Class<?>> referrerTypes = new HashSet<>();
 
@@ -294,9 +294,9 @@ class Registry {
       return model;
 
     final String key = model.id().toString();
-    X referrers = refToReferrers.get(key);
+    ReferrerManifest referrers = refToReferrers.get(key);
     if (referrers == null)
-      refToReferrers.put(key, referrers = new X());
+      refToReferrers.put(key, referrers = new ReferrerManifest());
 
     referrers.add(referrer);
     return model;
@@ -311,7 +311,7 @@ class Registry {
   }
 
   private boolean isRootReferable(final Member member, final Settings settings) {
-    final X referrers = refToReferrers.get(member.id().toString());
+    final ReferrerManifest referrers = refToReferrers.get(member.id().toString());
     final int numReferrers = referrers == null ? 0 : referrers.getNumReferrers();
     return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(ArrayModel.class) : numReferrers >= settings.getTemplateThreshold();
   }

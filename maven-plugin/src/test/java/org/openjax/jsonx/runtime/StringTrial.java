@@ -16,40 +16,54 @@
 
 package org.openjax.jsonx.runtime;
 
+import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Arrays;
+import java.util.List;
 
 import org.fastjax.net.URIComponent;
 
 import com.mifmif.common.regex.Generex;
 
-public final class Util {
-  public static String palindrome(final String s) {
-    if (s.length() < 2)
-      throw new IllegalArgumentException("s.length() must be greater than 2: " + s.length());
-
-    final StringBuilder builder = new StringBuilder(s);
-    for (int i = 0; i < s.length();) {
-      final int i1 = (int)(Math.random() * s.length());
-      final int i2 = (int)(Math.random() * s.length());
-      if (i1 != i2) {
-        final char c1 = builder.charAt(i1);
-        final char c2 = builder.charAt(i2);
-        builder.setCharAt(i1, c2);
-        builder.setCharAt(i2, c1);
-        ++i;
-      }
-    }
-
-    return builder.toString();
-  }
-
+class StringTrial extends PropertyTrial<String> {
+  private static final int stringLength = 12;
   private static final char[] ascii = new char[95];
 
   static {
     for (int i = 0; i < 95; ++i)
       ascii[i] = (char)(i + 32);
+  }
+
+  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final StringProperty property) {
+    final String valid = createValid(property.pattern(), property.urlDecode(), property.urlEncode());
+
+    trials.add(new StringTrial(ValidCase.CASE, field, object, valid, property));
+
+    if (property.pattern().length() > 0)
+      trials.add(new StringTrial(PatternCase.CASE, field, object, createInvalid(property.pattern(), property.urlEncode()), property));
+
+    if (property.urlDecode() || property.urlEncode())
+      trials.add(new StringTrial(UrlCodecCase.CASE, field, object, valid, property));
+
+    if (property.use() == Use.REQUIRED)
+      trials.add(new StringTrial(UseCase.CASE, field, object, null, property));
+  }
+
+  private static class StringGen {
+    private final Generex generex;
+
+    private StringGen(final String pattern) {
+      if (pattern.length() == 0)
+        this.generex = null;
+      else if (!Generex.isValidPattern(pattern))
+        throw new UnsupportedOperationException("Regex pattern \"" + pattern + "\" is not supported");
+      else
+        this.generex = new Generex(pattern);
+    }
+
+    String random() {
+      return generex == null ? randomString(stringLength) : generex.random(stringLength);
+    }
   }
 
   private static String randomString(final int len) {
@@ -73,23 +87,6 @@ public final class Util {
     return new String(chars);
   }
 
-  private static class StringGen {
-    private final Generex generex;
-
-    private StringGen(final String pattern) {
-      if (pattern == null)
-        this.generex = null;
-      else if (!Generex.isValidPattern(pattern))
-        throw new UnsupportedOperationException("Regex pattern \"" + pattern + "\" is not supported");
-      else
-        this.generex = new Generex(pattern);
-    }
-
-    String random() {
-      return generex == null ? randomString(12) : generex.random(12);
-    }
-  }
-
   private static String urlDecode(final String s) {
     try {
       return URLDecoder.decode(s, "UTF-8");
@@ -108,7 +105,7 @@ public final class Util {
     }
   }
 
-  public static String createPassString(final String pattern, final boolean urlDecode, final boolean urlEncode) {
+  static String createValid(final String pattern, final boolean urlDecode, final boolean urlEncode) {
     final StringGen strGen = new StringGen(pattern);
     if (!urlDecode && !urlEncode)
       return strGen.random();
@@ -125,16 +122,16 @@ public final class Util {
     if (s == null || i == 1000)
       throw new RuntimeException("Could not generate a urlDecode = " + urlDecode + ", urlEncode = " + urlEncode + " success string for regex: " + pattern);
 
-    if (pattern != null && !s.matches(pattern))
+    if (pattern.length() > 0 && !s.matches(pattern))
       throw new RuntimeException("String " + s + " does not match regex: " + pattern);
 
     return s;
   }
 
-  public static String createFailString(final String regex, final boolean urlEncode, final String pass) {
+  private static String createInvalid(final String regex, final boolean urlEncode) {
     String fail = null;
     for (int i = 0; i < 1000; ++i) {
-      fail = randomString(pass.length());
+      fail = randomString(stringLength);
       if (!(urlEncode ? URIComponent.encode(fail) : fail).matches(regex))
         break;
     }
@@ -145,16 +142,14 @@ public final class Util {
     return fail;
   }
 
-  public static Object arrayify(final Object value, final int minOccurs, final int maxOccurs) {
-    if (minOccurs == 0 && maxOccurs == 0)
-      return value;
+  final String pattern;
+  final boolean urlEncode;
+  final boolean urlDecode;
 
-    final int s = (int)((maxOccurs - minOccurs) * Math.random()) + 1;
-    final Object[] a = new Object[s];
-    Arrays.fill(a, value);
-    return a;
-  }
-
-  private Util() {
+  private StringTrial(final Case<? extends PropertyTrial<? super String>> kase, final Field field, final Object object, final String value, final StringProperty property) {
+    super(kase, field, object, value, property.name(), property.use());
+    this.pattern = property.pattern();
+    this.urlEncode = property.urlEncode();
+    this.urlDecode = property.urlDecode();
   }
 }

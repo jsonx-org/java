@@ -22,21 +22,30 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.function.BiConsumer;
 
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+
 class ArrayEncodeIterator extends ArrayIterator {
+  private static <T>String validate(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+    final int[] elementIds;
+    if (element.type() != ArrayType.class)
+      elementIds = JsonxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
+    else
+      elementIds = element.elementIds();
+
+    final Relations subRelations = new Relations();
+    final String subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations, validate, callback);
+    if (validate && subError != null)
+      return subError;
+
+    relations.set(i, new Relation(subRelations, element));
+    return null;
+  }
+
   private final ListIterator<Object> listIterator;
 
-  public ArrayEncodeIterator(final ListIterator<Object> listIterator) {
+  ArrayEncodeIterator(final ListIterator<Object> listIterator) {
     this.listIterator = listIterator;
-  }
-
-  @Override
-  protected void next() {
-    current = listIterator.next();
-  }
-
-  @Override
-  protected void previous() {
-    current = listIterator.previous();
   }
 
   @Override
@@ -50,9 +59,19 @@ class ArrayEncodeIterator extends ArrayIterator {
   }
 
   @Override
+  protected void next() {
+    current = listIterator.next();
+  }
+
+  @Override
   protected boolean nextIsNull() {
     next();
     return current == null;
+  }
+
+  @Override
+  protected void previous() {
+    current = listIterator.previous();
   }
 
   @Override
@@ -60,5 +79,25 @@ class ArrayEncodeIterator extends ArrayIterator {
     final Class<?> cls = current.getClass();
     final boolean isValid = type != Object.class ? type.isAssignableFrom(cls) : !cls.isArray() && !Boolean.class.isAssignableFrom(cls) && !List.class.isAssignableFrom(cls) && !Number.class.isAssignableFrom(cls) && !String.class.isAssignableFrom(cls);
     return !isValid ? "Content is not expected: " + currentPreview() : null;
+  }
+
+  @Override
+  protected String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+    if (annotation instanceof ArrayElement)
+      return validate((ArrayElement)annotation, (List<?>)current, i, idToElement, relations, validate, callback);
+
+    if (annotation instanceof ObjectElement)
+      return validate((ObjectElement)annotation, current, i, relations, validate);
+
+    if (annotation instanceof BooleanElement)
+      return validate((BooleanElement)annotation, current, i, relations);
+
+    if (annotation instanceof NumberElement)
+      return validate((NumberElement)annotation, current, i, relations, validate);
+
+    if (annotation instanceof StringElement)
+      return validate((StringElement)annotation, current, i, relations, false, validate);
+
+    throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
   }
 }

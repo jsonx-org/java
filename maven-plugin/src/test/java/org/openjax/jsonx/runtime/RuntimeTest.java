@@ -17,18 +17,46 @@
 package org.openjax.jsonx.runtime;
 
 import org.junit.Test;
+import org.openjax.jsonx.generator.datatype.ObjArr;
 import org.openjax.jsonx.generator.datatype.ObjBool;
 import org.openjax.jsonx.generator.datatype.ObjNum;
+import org.openjax.jsonx.generator.datatype.ObjObj;
 import org.openjax.jsonx.generator.datatype.ObjStr;
 
 public class RuntimeTest {
-  public void test(final Class<?> ... classes) throws Exception {
-    Trial.invoke(TrialFactory.createTrials(classes));
+  private static final int count = 100;
+
+  public void test(final Class<?> cls) throws Exception {
+    new ClassTrial(cls).invoke();
   }
 
   @Test
-  public void test1() throws Exception {
-    for (int i = 0; i < 1000; ++i)
-      test(ObjBool.class, ObjNum.class, ObjStr.class);
+  public void testObjBool() throws Exception {
+    for (int i = 0; i < count; ++i)
+      test(ObjBool.class);
+  }
+
+  @Test
+  public void testObjNum() throws Exception {
+    for (int i = 0; i < count; ++i)
+      test(ObjNum.class);
+  }
+
+  @Test
+  public void testObjStr() throws Exception {
+    for (int i = 0; i < count; ++i)
+      test(ObjStr.class);
+  }
+
+  @Test
+  public void testObjArr() throws Exception {
+    for (int i = 0; i < count; ++i)
+      test(ObjArr.class);
+  }
+
+  @Test
+  public void testObjObj() throws Exception {
+    for (int i = 0; i < count; ++i)
+      test(ObjObj.class);
   }
 }

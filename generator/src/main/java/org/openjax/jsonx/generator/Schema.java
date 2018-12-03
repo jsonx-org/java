@@ -253,17 +253,21 @@ public final class Schema extends Element {
   }
 
   public Map<String,String> toSource() {
+    return toSource(Settings.DEFAULT);
+  }
+
+  public Map<String,String> toSource(final Settings settings) {
     final Map<Registry.Type,ClassSpec> all = new HashMap<>();
     final Map<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
     for (final Model member : members()) {
       if (member instanceof Referrer && ((Referrer<?>)member).classType() != null) {
         final Referrer<?> model = (Referrer<?>)member;
-        final ClassSpec classSpec = new ClassSpec(model);
+        final ClassSpec classSpec = new ClassSpec(model, settings);
         if (model.classType().getDeclaringType() != null) {
           final Registry.Type declaringType = model.classType().getDeclaringType();
           ClassSpec parent = all.get(declaringType);
           if (parent == null) {
-            parent = new ClassSpec(declaringType);
+            parent = new ClassSpec(declaringType, settings);
             typeToJavaClass.put(declaringType, parent);
             all.put(declaringType, parent);
           }
@@ -299,7 +303,11 @@ public final class Schema extends Element {
   }
 
   public Map<String,String> toSource(final File dir) throws IOException {
-    final Map<String,String> sources = toSource();
+    return toSource(dir, Settings.DEFAULT);
+  }
+
+  public Map<String,String> toSource(final File dir, final Settings settings) throws IOException {
+    final Map<String,String> sources = toSource(settings);
     for (final Map.Entry<String,String> entry : sources.entrySet()) {
       final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
       file.getParentFile().mkdirs();

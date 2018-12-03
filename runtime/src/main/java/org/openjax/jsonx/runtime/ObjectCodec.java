@@ -100,7 +100,7 @@ class ObjectCodec extends Codec {
           final char firstChar = token.charAt(0);
           if (codec instanceof ObjectCodec) {
             if (firstChar != '{')
-              return "Expected \"" + codec.name + "\" to be " + codec.elementName() + ", but json contains object";
+              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but json contains object";
 
             value = decode(((ObjectCodec)codec).getType(), reader, callback);
             if (value instanceof String)
@@ -108,7 +108,7 @@ class ObjectCodec extends Codec {
           }
           else if (codec instanceof ArrayCodec) {
             if (firstChar != '[')
-              return "Expected \"" + codec.name + "\" to be " + codec.elementName() + ", but json contains object";
+              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but json contains object";
 
             final ArrayCodec arrayCodec = (ArrayCodec)codec;
             value = ArrayCodec.decode(arrayCodec.getAnnotations(), arrayCodec.getIdToElement(), reader, callback);

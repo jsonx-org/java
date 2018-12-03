@@ -22,15 +22,18 @@ import java.util.TreeMap;
 public class ClassSpec {
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
 
+  private final Settings settings;
   private final Referrer<?> referrer;
   private final Registry.Type type;
 
-  public ClassSpec(final Referrer<?> referrer) {
+  public ClassSpec(final Referrer<?> referrer, final Settings settings) {
+    this.settings = settings;
     this.referrer = referrer;
     this.type = referrer.classType();
   }
 
-  public ClassSpec(final Registry.Type type) {
+  public ClassSpec(final Registry.Type type, final Settings settings) {
+    this.settings = settings;
     this.referrer = null;
     this.type = type;
   }
@@ -41,7 +44,7 @@ public class ClassSpec {
 
     final StringBuilder builder = new StringBuilder();
     final Iterator<AnnotationSpec> iterator = referrer.getClassAnnotation().iterator();
-    for (int i = 0; iterator.hasNext(); i++) {
+    for (int i = 0; iterator.hasNext(); ++i) {
       if (i > 0)
         builder.append('\n');
 
@@ -67,7 +70,7 @@ public class ClassSpec {
 
     builder.append(" {");
     final Iterator<ClassSpec> iterator = nameToClassSpec.values().iterator();
-    for (int i = 0; iterator.hasNext(); i++) {
+    for (int i = 0; iterator.hasNext(); ++i) {
       final ClassSpec memberClass = iterator.next();
       if (i > 0)
         builder.append('\n');
@@ -80,7 +83,7 @@ public class ClassSpec {
     }
 
     if (referrer != null) {
-      final String code = referrer.toSource();
+      final String code = referrer.toSource(settings);
       if (code != null && code.length() > 0)
         builder.append("\n  ").append(code.replace("\n", "\n  "));
     }

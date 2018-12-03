@@ -17,20 +17,26 @@
 package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
+import java.security.SecureRandom;
 
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
+abstract class PropertyTrial<T> {
+  static final SecureRandom random = new SecureRandom();
+
+  final Case<? extends PropertyTrial<? super T>> kase;
+  final Field field;
+  final Object object;
+  final T value;
+  final String name;
+  final Use use;
+
+  PropertyTrial(final Case<? extends PropertyTrial<? super T>> kase, final Field field, final Object object, final T value, final String name, final Use use) {
+    this.kase = kase;
+    this.field = field;
+    this.object = object;
+    this.value = value;
+    this.name = JsonxUtil.getName(name, field);
+    this.use = use;
+
+    field.setAccessible(true);
   }
-
-  final String matches(final String json) {
-    if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
-
-    return validate(json);
-  }
-
-  abstract boolean test(final char firstChar);
-  abstract String validate(final String json);
-  abstract T decode(final String json);
 }

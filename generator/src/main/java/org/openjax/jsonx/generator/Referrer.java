@@ -63,5 +63,5 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
 
   protected abstract Registry.Type classType();
   protected abstract List<AnnotationSpec> getClassAnnotation();
-  protected abstract String toSource();
+  protected abstract String toSource(final Settings settings);
 }

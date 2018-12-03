@@ -19,6 +19,7 @@ package org.openjax.jsonx.runtime;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import org.fastjax.json.JsonStrings;
 import org.fastjax.net.URIComponent;
 import org.fastjax.util.Annotations;
 import org.fastjax.util.Strings;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 class StringCodec extends PrimitiveCodec<String> {
   private static final Logger logger = LoggerFactory.getLogger(StringCodec.class);
 
-  static StringBuilder encode(final Annotation annotation, final String string, final boolean validate) throws EncodeException {
+  static StringBuilder encode(final Annotation annotation, final String object, final boolean validate) throws EncodeException {
     final boolean urlEncode;
     final String pattern;
     if (annotation instanceof StringProperty) {
@@ -42,55 +43,40 @@ class StringCodec extends PrimitiveCodec<String> {
       urlEncode = element.urlEncode();
     }
     else {
-      throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
+      throw new IllegalArgumentException("Illegal annotation type for \"string\": " + annotation.annotationType().getName());
     }
 
-    if (validate && pattern.length() > 0 && !string.matches(pattern))
-      throw new EncodeException(Annotations.toSortedString(annotation, AttributeComparator.instance) + ": pattern is not matched: \"" + Strings.truncate(string, 16) + "\"");
+    if (validate && pattern.length() > 0 && !object.matches(pattern))
+      throw new EncodeException(Annotations.toSortedString(annotation, AttributeComparator.instance) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
 
-    final StringBuilder encoded = escapeString(urlEncode ? URIComponent.encode(string) : string);
+    return encode(urlEncode, object);
+  }
+
+  static StringBuilder encode(final boolean urlEncode, final String string) throws EncodeException {
+    final StringBuilder encoded = JsonStrings.escape(urlEncode ? URIComponent.encode(string) : string);
     return encoded.insert(0, '"').append('"');
   }
 
-  private static StringBuilder escapeString(final String string) {
-    final StringBuilder builder = new StringBuilder(string.length());
-    for (int i = 0, len = string.length(); i < len; ++i) {
-      final char ch = string.charAt(i);
-      /*
-       * From RFC 4627, "All Unicode characters may be placed within the
-       * quotation marks except for the characters that must be escaped:
-       * quotation mark, reverse solidus, and the control characters (U+0000
-       * through U+001F)."
-       */
-      switch (ch) {
-        case '"':
-        case '\\':
-          builder.append('\\').append(ch);
-          break;
-        case '\n':
-          builder.append("\\n");
-          break;
-        case '\r':
-          builder.append("\\r");
-          break;
-        case '\t':
-          builder.append("\\t");
-          break;
-        case '\b':
-          builder.append("\\b");
-          break;
-        case '\f':
-          builder.append("\\f");
-          break;
-        default:
-          if (ch <= 0x1F)
-            builder.append(String.format("\\u%04x", (int)ch));
-          else
-            builder.append(ch);
+  static String decode(final boolean urlDecode, final String json) {
+    final StringBuilder unescaped = new StringBuilder(json.length() - 2);
+    for (int i = 1, len = json.length() - 1; i < len; ++i) {
+      char ch = json.charAt(i);
+      if (ch == '\\') {
+        ch = json.charAt(++i);
+        if (ch != '"' && ch != '\\')
+          unescaped.append('\\');
       }
+
+      unescaped.append(ch);
     }
 
-    return builder;
+    try {
+      return urlDecode ? URIComponent.decode(unescaped.toString()) : unescaped.toString();
+    }
+    catch (final Exception e) {
+      logger.debug(e.getMessage(), e);
+      return null;
+    }
   }
 
   private final String pattern;
@@ -126,25 +112,7 @@ class StringCodec extends PrimitiveCodec<String> {
 
   @Override
   String decode(final String json) {
-    final StringBuilder unescaped = new StringBuilder(json.length() - 2);
-    for (int i = 1, len = json.length() - 1; i < len; ++i) {
-      char ch = json.charAt(i);
-      if (ch == '\\') {
-        ch = json.charAt(++i);
-        if (ch != '"' && ch != '\\')
-          unescaped.append('\\');
-      }
-
-      unescaped.append(ch);
-    }
-
-    try {
-      return urlDecode ? URIComponent.decode(unescaped.toString()) : unescaped.toString();
-    }
-    catch (final Exception e) {
-      logger.debug(e.getMessage(), e);
-      return null;
-    }
+    return decode(urlDecode, json);
   }
 
   @Override

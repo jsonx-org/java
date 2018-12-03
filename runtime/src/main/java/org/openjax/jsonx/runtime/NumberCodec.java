@@ -25,7 +25,7 @@ import org.fastjax.util.Annotations;
 import org.fastjax.util.Strings;
 
 class NumberCodec extends PrimitiveCodec<Number> {
-  static String encode(final Annotation annotation, final Number number, final boolean validate) throws EncodeException, ValidationException {
+  static String encode(final Annotation annotation, final Number object, final boolean validate) throws EncodeException, ValidationException {
     final Form form;
     final String range;
     if (annotation instanceof NumberProperty) {
@@ -39,16 +39,16 @@ class NumberCodec extends PrimitiveCodec<Number> {
       range = element.range();
     }
     else {
-      throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
+      throw new IllegalArgumentException("Illegal annotation type for \"number\": " + annotation.annotationType().getName());
     }
 
     if (validate) {
-      if (form == Form.INTEGER && number.longValue() != number.doubleValue())
-        throw new EncodeException("Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(number), 16));
+      if (form == Form.INTEGER && object.longValue() != object.doubleValue())
+        throw new EncodeException("Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(object), 16));
 
       if (range.length() > 0) {
         try {
-          if (!new Range(range).isValid(number))
+          if (!new Range(range).isValid(object))
             throw new EncodeException("Range is not matched: " + Strings.truncate(range, 16));
         }
         catch (final ParseException e) {
@@ -57,7 +57,16 @@ class NumberCodec extends PrimitiveCodec<Number> {
       }
     }
 
-    return String.valueOf(number);
+    return String.valueOf(object);
+  }
+
+  static Number decode(final Form form, final String json) {
+    try {
+      return form == Form.INTEGER ? new BigInteger(json) : new BigDecimal(json);
+    }
+    catch (final NumberFormatException e) {
+      return null;
+    }
   }
 
   private final Form form;
@@ -98,7 +107,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   @Override
   Number decode(final String json) {
-    return form == Form.INTEGER ? new BigInteger(json) : new BigDecimal(json);
+    return decode(form, json);
   }
 
   @Override
