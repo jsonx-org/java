@@ -39,7 +39,7 @@ public final class JsonxUtil {
       return cls.getMethod((parameterType == null ? "get" : "set") + JavaIdentifiers.toClassCase(propertyName), parameterType == null ? null : new Class<?> [] {parameterType});
     }
     catch (final NoSuchMethodException e) {
-      throw new IllegalStateException(e);
+      return null;
     }
   }
 

@@ -44,7 +44,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
     if (validate) {
       if (form == Form.INTEGER && object.longValue() != object.doubleValue())
-        throw new EncodeException("Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(object), 16));
+        throw new EncodeException("Illegal " + Form.class.getSimpleName() + ".INTEGER value: " + Strings.truncate(String.valueOf(object), 16));
 
       if (range.length() > 0) {
         try {
@@ -52,7 +52,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
             throw new EncodeException("Range is not matched: " + Strings.truncate(range, 16));
         }
         catch (final ParseException e) {
-          throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
+          throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, AttributeComparator.instance), e);
         }
       }
     }
@@ -98,7 +98,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
     if (form != Form.REAL) {
       final int dot = json.indexOf('.');
       if (dot != -1)
-        return "Illegal non-INTEGER value";
+        return "Illegal " + Form.class.getSimpleName() + ".INTEGER value";
     }
 
     // FIXME: decode() is done here and in the caller's scope

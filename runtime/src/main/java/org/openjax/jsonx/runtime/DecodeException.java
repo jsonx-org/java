@@ -16,24 +16,37 @@
 
 package org.openjax.jsonx.runtime;
 
-import org.fastjax.json.JsonReader;
-
 public class DecodeException extends Exception {
   private static final long serialVersionUID = 7087309932016830988L;
 
-  public DecodeException(final JsonReader json) {
-    this(null, json, null);
+  /**
+   * The zero-based character offset into the string being parsed at which the
+   * error was found during parsing.
+   */
+  private final int errorOffset;
+
+  /**
+   * Constructs a ParseException with the specified detail message and offset. A
+   * detail message is a String that describes this particular exception.
+   *
+   * @param message The detail message.
+   * @param errorOffset The position where the error is found while parsing.
+   */
+  public DecodeException(final String message, final int errorOffset) {
+    this(message, errorOffset, null);
   }
 
-  public DecodeException(final String message, final JsonReader json) {
-    this(message, json, null);
+  public DecodeException(final String message, final int errorOffset, final Throwable cause) {
+    super(message != null ? message + " [errorOffset: " + errorOffset + "]" : "[errorOffset: " + errorOffset + "]", cause);
+    this.errorOffset = errorOffset;
   }
 
-  public DecodeException(final JsonReader json, final Throwable cause) {
-    this(null, json, cause);
-  }
-
-  public DecodeException(final String message, final JsonReader json, final Throwable cause) {
-    super(message != null ? message + " [errorOffset: " + json.getIndex() + "]" : "[errorOffset: " + json.getIndex() + "]", cause);
+  /**
+   * Returns the position where the error was found.
+   *
+   * @return The position where the error was found.
+   */
+  public int getErrorOffset() {
+    return errorOffset;
   }
 }

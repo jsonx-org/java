@@ -18,6 +18,7 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.regex.PatternSyntaxException;
 
 import org.fastjax.json.JsonStrings;
 import org.fastjax.net.URIComponent;
@@ -99,8 +100,15 @@ class StringCodec extends PrimitiveCodec<String> {
       return "Is not a string";
 
     final String value = token.substring(1, token.length() - 1);
-    if (pattern != null && !value.matches(pattern))
-      return "Pattern (" + pattern + ") is not matched: " + token;
+    if (pattern != null) {
+      try {
+        if (!value.matches(pattern))
+          return "Pattern (" + pattern + ") is not matched: " + token;
+      }
+      catch (final PatternSyntaxException e) {
+        throw new ValidationException("Malformed pattern: " + pattern);
+      }
+    }
 
     // FIXME: decode() is done here and in the caller's scope
     final String decoded = decode(token);

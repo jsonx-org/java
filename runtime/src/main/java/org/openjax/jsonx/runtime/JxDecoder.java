@@ -28,13 +28,14 @@ public final class JxDecoder {
   public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader, final BiConsumer<Field,Object> callback) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"[".equals(token))
-      throw new DecodeException("Expected '[', but got '" + token + "'", reader);
+      throw new DecodeException("Expected '[', but got '" + token + "'", reader.getPosition() - 1);
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsonxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
+    final int position = reader.getPosition();
     final Object array = ArrayCodec.decode(idToElement.get(elementIds), idToElement, reader, callback);
     if (array instanceof String)
-      throw new DecodeException((String)array, reader);
+      throw new DecodeException((String)array, position);
 
     return (List<?>)array;
   }
@@ -47,11 +48,12 @@ public final class JxDecoder {
   public static <T>T parseObject(final Class<T> type, final JsonReader reader, final BiConsumer<Field,Object> callback) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"{".equals(token))
-      throw new DecodeException("Expected '{', but got '" + token + "'", reader);
+      throw new DecodeException("Expected '{', but got '" + token + "'", reader.getPosition() - 1);
 
+    final int position = reader.getPosition();
     final Object object = ObjectCodec.decode(type, reader, callback);
     if (object instanceof String)
-      throw new DecodeException((String)object, reader);
+      throw new DecodeException((String)object, position);
 
     return (T)object;
   }

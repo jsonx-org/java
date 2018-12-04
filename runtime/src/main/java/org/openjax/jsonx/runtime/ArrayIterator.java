@@ -44,7 +44,7 @@ public abstract class ArrayIterator {
     final Number number = (Number)member;
     if (validate) {
       if (element.form() == Form.INTEGER && number.longValue() != number.doubleValue())
-        return "Illegal non-INTEGER value: " + Strings.truncate(String.valueOf(member), 16);
+        return "Illegal " + Form.class.getSimpleName() + ".INTEGER value: " + Strings.truncate(String.valueOf(member), 16);
 
       try {
         if (element.range().length() > 0 && !new Range(element.range()).isValid(number))

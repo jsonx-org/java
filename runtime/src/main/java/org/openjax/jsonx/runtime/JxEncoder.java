@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.fastjax.util.Classes;
 import org.fastjax.util.FastArrays;
+import org.fastjax.util.JavaIdentifiers;
 import org.fastjax.util.function.BiObjBiIntConsumer;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
@@ -61,10 +62,13 @@ public class JxEncoder {
   private static Object getValue(final Object object, final String propertyName) {
     final Method method = JsonxUtil.getGetMethod(object.getClass(), propertyName);
     try {
+      if (method == null)
+        throw new ValidationException("Method get" + JavaIdentifiers.toClassCase(propertyName) + "() does not exist for " + object.getClass().getSimpleName() + "." + propertyName);
+
       return method.invoke(object);
     }
     catch (final IllegalAccessException | InvocationTargetException e) {
-      throw new UnsupportedOperationException(e);
+      throw new EncodeException(e);
     }
   }
 
@@ -106,7 +110,7 @@ public class JxEncoder {
         encodeNonArray(field, annotation, object, onEncoded, builder, depth);
       }
     }
-    catch (final EncodeException e) {
+    catch (final EncodeException | ValidationException e) {
       throw e;
     }
     catch (final Exception e) {

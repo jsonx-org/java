@@ -35,7 +35,7 @@ class ObjectCodec extends Codec {
     if (propertyToCodec != null)
       return propertyToCodec;
 
-    typeToCodecs.put(cls, propertyToCodec = new PropertyToCodec());
+    propertyToCodec = new PropertyToCodec();
     for (final Field field : Classes.getDeclaredFieldsDeep(cls)) {
       for (final Annotation annotation : field.getAnnotations()) {
         if (annotation instanceof ArrayProperty)
@@ -55,6 +55,7 @@ class ObjectCodec extends Codec {
       }
     }
 
+    typeToCodecs.put(cls, propertyToCodec);
     return propertyToCodec;
   }
 
@@ -100,7 +101,7 @@ class ObjectCodec extends Codec {
           final char firstChar = token.charAt(0);
           if (codec instanceof ObjectCodec) {
             if (firstChar != '{')
-              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but json contains object";
+              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but got \"object\"";
 
             value = decode(((ObjectCodec)codec).getType(), reader, callback);
             if (value instanceof String)
@@ -108,7 +109,7 @@ class ObjectCodec extends Codec {
           }
           else if (codec instanceof ArrayCodec) {
             if (firstChar != '[')
-              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but json contains object";
+              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but got \"object\"";
 
             final ArrayCodec arrayCodec = (ArrayCodec)codec;
             value = ArrayCodec.decode(arrayCodec.getAnnotations(), arrayCodec.getIdToElement(), reader, callback);

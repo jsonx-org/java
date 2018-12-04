@@ -21,6 +21,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.function.BiConsumer;
 
+import org.fastjax.json.JsonReader;
+import org.fastjax.util.FastArrays;
+import org.fastjax.util.FastCollections;
+
 abstract class Codec {
   final Field field;
   private final Method setMethod;
@@ -47,6 +51,12 @@ abstract class Codec {
         callback.accept(field, value);
     }
     catch (final IllegalAccessException e) {
+      throw new UnsupportedOperationException(e);
+    }
+    catch (final IllegalArgumentException e) {
+      if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
+        throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? FastArrays.toString(setMethod.getParameterTypes(), ',', c -> c.getName()) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+
       throw new UnsupportedOperationException(e);
     }
   }
