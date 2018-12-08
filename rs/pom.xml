@@ -1,16 +1,16 @@
 <!--
-  Copyright (c) 2017 OpenJAX
-
+  Copyright (c) 2018 OpenJAX
+  
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-
+  
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
-
+  
   You should have received a copy of The MIT License (MIT) along with this
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
@@ -20,32 +20,25 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.openjax</groupId>
-    <artifactId>openjax</artifactId>
-    <version>2.5.3-SNAPSHOT</version>
+    <groupId>org.openjax.jsonx</groupId>
+    <artifactId>jsonx</artifactId>
+    <version>0.9.8-SNAPSHOT</version>
   </parent>
-  <groupId>org.openjax.jsonx</groupId>
-  <artifactId>jsonx</artifactId>
-  <version>0.9.8-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <artifactId>jsonx-rs</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
-  <modules>
-    <module>generator</module>
-    <module>runtime</module>
-    <module>maven-plugin</module>
-    <module>rs</module>
-  </modules>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <dependencies>
     <dependency>
-      <groupId>org.fastjax</groupId>
-      <artifactId>logging</artifactId>
-      <version>0.4.1-SNAPSHOT</version>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.1</version>
     </dependency>
     <dependency>
-      <groupId>org.fastjax</groupId>
-      <artifactId>test</artifactId>
-      <version>0.6.9-SNAPSHOT</version>
-      <scope>test</scope>
+      <groupId>org.openjax.jsonx</groupId>
+      <artifactId>jsonx-runtime</artifactId>
+      <version>0.9.8-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
