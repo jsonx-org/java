@@ -25,7 +25,7 @@ import java.util.List;
 import org.fastjax.util.Annotations;
 import org.fastjax.util.JavaIdentifiers;
 
-public final class JsonxUtil {
+public final class JxUtil {
   public static Method getGetMethod(final Class<?> cls, final String propertyName) {
     return getMethod(cls, propertyName, null);
   }
@@ -45,7 +45,7 @@ public final class JsonxUtil {
 
   public static List<Class<?>> getDeclaredObjectTypes(final Field field) {
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    final int[] elementIds = JxUtil.digest(field, idToElement);
     final Annotation[] annotations = idToElement.get(elementIds);
     final List<Class<?>> types = new ArrayList<>();
     getDeclaredObjectTypes(annotations, types);
@@ -81,8 +81,8 @@ public final class JsonxUtil {
   }
 
   public static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
-    annotations = JsonxUtil.flatten(annotations);
-    JsonxUtil.fillIdToElement(idToElement, annotations);
+    annotations = JxUtil.flatten(annotations);
+    JxUtil.fillIdToElement(idToElement, annotations);
     Annotation arrayAnnotation = null;
     int[] elementIds = null;
     for (final Annotation annotation : annotations) {
@@ -191,7 +191,7 @@ public final class JsonxUtil {
   }
 
   public static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
-    annotations = JsonxUtil.flatten(annotations);
+    annotations = JxUtil.flatten(annotations);
     for (final Annotation annotation : annotations) {
       if (annotation instanceof ArrayElement)
         idToElement.put(((ArrayElement)annotation).id(), annotation);
@@ -242,6 +242,6 @@ public final class JsonxUtil {
     return flattened;
   }
 
-  private JsonxUtil() {
+  private JxUtil() {
   }
 }
