@@ -18,9 +18,8 @@ package org.openjax.jsonx.runtime;
 
 import java.math.BigInteger;
 
-@ObjectType
-public class Publishing {
-  @NumberProperty(form=Form.INTEGER, use=Use.REQUIRED)
+public class Publishing implements JxObject {
+  @NumberProperty(form=Form.INTEGER)
   private BigInteger year;
 
   public BigInteger getYear() {
@@ -31,7 +30,7 @@ public class Publishing {
     this.year = year;
   }
 
-  @StringProperty(pattern="\\S+ \\S+", use=Use.REQUIRED)
+  @StringProperty(pattern="\\S+ \\S+")
   private String publisher;
 
   public String getPublisher() {
@@ -44,6 +43,6 @@ public class Publishing {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).encode(this);
+    return new JxEncoder(2).marshal(this);
   }
 }

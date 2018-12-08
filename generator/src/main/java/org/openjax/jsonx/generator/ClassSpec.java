@@ -19,30 +19,36 @@ package org.openjax.jsonx.generator;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-public class ClassSpec {
+import org.openjax.jsonx.generator.Registry.Kind;
+import org.openjax.jsonx.runtime.JxObject;
+
+class ClassSpec {
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
 
   private final Settings settings;
   private final Referrer<?> referrer;
   private final Registry.Type type;
 
-  public ClassSpec(final Referrer<?> referrer, final Settings settings) {
+  ClassSpec(final Referrer<?> referrer, final Settings settings) {
     this.settings = settings;
     this.referrer = referrer;
     this.type = referrer.classType();
   }
 
-  public ClassSpec(final Registry.Type type, final Settings settings) {
+  ClassSpec(final Registry.Type type, final Settings settings) {
     this.settings = settings;
     this.referrer = null;
     this.type = type;
   }
 
-  public String getAnnotation() {
+  String getAnnotation() {
     if (referrer == null)
       return null;
 
     final StringBuilder builder = new StringBuilder();
+    if (referrer.getClassAnnotation() == null)
+      return null;
+
     final Iterator<AnnotationSpec> iterator = referrer.getClassAnnotation().iterator();
     for (int i = 0; iterator.hasNext(); ++i) {
       if (i > 0)
@@ -54,19 +60,23 @@ public class ClassSpec {
     return builder.toString();
   }
 
-  public void add(final ClassSpec classSpec) {
+  void add(final ClassSpec classSpec) {
     nameToClassSpec.put(classSpec.type.getName(), classSpec);
   }
 
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
-    if (referrer != null && referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract())
+    if (referrer != null && referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract)
       builder.append("abstract ");
 
     builder.append(type.getKind()).append(' ').append(type.getSimpleName());
-    if (type.getSuperType() != null)
-      builder.append(" extends ").append(type.getSuperType().getCanonicalName());
+    if (type.getKind() == Kind.CLASS && referrer != null) {
+      if (type.getSuperType() != null)
+        builder.append(" extends ").append(type.getSuperType().getCanonicalName());
+      else
+        builder.append(" implements ").append(JxObject.class.getCanonicalName());
+    }
 
     builder.append(" {");
     final Iterator<ClassSpec> iterator = nameToClassSpec.values().iterator();

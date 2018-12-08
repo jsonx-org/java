@@ -18,10 +18,11 @@ package org.openjax.jsonx.runtime;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public class Invalid {
-  public static class InvalidName {
-    @BooleanProperty(use=Use.OPTIONAL, name="foo")
+  public static class InvalidName implements JxObject {
+    @BooleanProperty(name="foo")
     private Boolean invalidName;
 
     public Boolean getInvalidName() {
@@ -33,8 +34,21 @@ public class Invalid {
     }
   }
 
-  public static class Bool {
+  public static class InvalidType implements JxObject {
     @BooleanProperty(use=Use.OPTIONAL)
+    private Boolean invalidType;
+
+    public Boolean getInvalidType() {
+      return this.invalidType;
+    }
+
+    public void setInvalidType(final Boolean invalidType) {
+      this.invalidType = invalidType;
+    }
+  }
+
+  public static class Bool implements JxObject {
+    @BooleanProperty(use=Use.OPTIONAL, nullable=false)
     private Number invalidType;
 
     public Number getInvalidType() {
@@ -45,7 +59,7 @@ public class Invalid {
       this.invalidType = invalidType;
     }
 
-    @NumberProperty(use=Use.OPTIONAL)
+    @NumberProperty(use=Use.OPTIONAL, nullable=false)
     private Boolean invalidAnnotation;
 
     public Boolean getInvalidAnnotation() {
@@ -57,21 +71,21 @@ public class Invalid {
     }
   }
 
-  public static class NumRange {
+  public static class NumRange implements JxObject {
     @NumberProperty(use=Use.OPTIONAL, form=Form.INTEGER, range="[-3,")
-    private Byte invalidRange;
+    private Optional<Byte> invalidRange;
 
-    public Byte getInvalidRange() {
+    public Optional<Byte> getInvalidRange() {
       return this.invalidRange;
     }
 
-    public void setInvalidRange(final Byte invalidRange) {
+    public void setInvalidRange(final Optional<Byte> invalidRange) {
       this.invalidRange = invalidRange;
     }
   }
 
-  public static class Num {
-    @NumberProperty(use=Use.OPTIONAL)
+  public static class Num implements JxObject {
+    @NumberProperty(use=Use.OPTIONAL, nullable=false)
     private Boolean invalidType;
 
     public Boolean getInvalidType() {
@@ -82,7 +96,7 @@ public class Invalid {
       this.invalidType = invalidType;
     }
 
-    @StringProperty(use=Use.OPTIONAL)
+    @StringProperty(use=Use.OPTIONAL, nullable=false)
     private Number invalidAnnotation;
 
     public Number getInvalidAnnotation() {
@@ -94,65 +108,79 @@ public class Invalid {
     }
 
     @NumberProperty(use=Use.OPTIONAL, form=Form.INTEGER)
-    private BigDecimal invalidForm;
+    private Optional<BigDecimal> invalidForm;
 
-    public BigDecimal getInvalidForm() {
+    public Optional<BigDecimal> getInvalidForm() {
       return this.invalidForm;
     }
 
-    public void setInvalidForm(final BigDecimal invalidForm) {
+    public void setInvalidForm(final Optional<BigDecimal> invalidForm) {
       this.invalidForm = invalidForm;
     }
   }
 
-  public static class Str {
+  public static class Str implements JxObject {
     @StringProperty(use=Use.OPTIONAL)
-    private Number invalidType;
+    private Optional<Number> invalidType;
 
-    public Number getInvalidType() {
+    public Optional<Number> getInvalidType() {
       return this.invalidType;
     }
 
-    public void setInvalidType(final Number invalidType) {
+    public void setInvalidType(final Optional<Number> invalidType) {
       this.invalidType = invalidType;
     }
 
     @BooleanProperty(use=Use.OPTIONAL)
-    private String invalidAnnotation;
+    private Optional<String> invalidAnnotation;
 
-    public String getInvalidAnnotation() {
+    public Optional<String> getInvalidAnnotation() {
       return this.invalidAnnotation;
     }
 
-    public void setInvalidAnnotation(final String invalidAnnotation) {
+    public void setInvalidAnnotation(final Optional<String> invalidAnnotation) {
       this.invalidAnnotation = invalidAnnotation;
     }
 
     @StringProperty(use=Use.OPTIONAL, pattern="[0-9]{{2,4}")
-    private String invalidPattern;
+    private Optional<String> invalidPattern;
 
-    public String getInvalidPattern() {
+    public Optional<String> getInvalidPattern() {
       return this.invalidPattern;
     }
 
-    public void setInvalidPattern(final String invalidPattern) {
+    public void setInvalidPattern(final Optional<String> invalidPattern) {
       this.invalidPattern = invalidPattern;
     }
   }
 
-  public static class Arr {
-    @ArrayProperty(use=Use.OPTIONAL)
-    private Number invalidType;
+  public static class ArrAnnotationType implements JxObject {
+    @ArrayProperty(use=Use.OPTIONAL, type=Override.class)
+    private Optional<List<?>> invalidAnnotationType;
 
-    public Number getInvalidType() {
+    public Optional<List<?>> getInvalidAnnotationType() {
+      return this.invalidAnnotationType;
+    }
+
+    public void setInvalidAnnotationType(final Optional<List<?>> invalidAnnotationType) {
+      this.invalidAnnotationType = invalidAnnotationType;
+    }
+  }
+
+  public static class Arr implements JxObject {
+    @StringElement(id=0)
+    @ArrayProperty(use=Use.OPTIONAL, elementIds={0})
+    private Optional<Number> invalidType;
+
+    public Optional<Number> getInvalidType() {
       return this.invalidType;
     }
 
-    public void setInvalidType(final Number invalidType) {
+    public void setInvalidType(final Optional<Number> invalidType) {
       this.invalidType = invalidType;
     }
 
-    @BooleanProperty(use=Use.OPTIONAL)
+    @BooleanProperty(use=Use.OPTIONAL, nullable=false)
     private List<?> invalidAnnotation;
 
     public List<?> getInvalidAnnotation() {
@@ -161,17 +189,6 @@ public class Invalid {
 
     public void setInvalidAnnotation(final List<?> invalidAnnotation) {
       this.invalidAnnotation = invalidAnnotation;
-    }
-
-    @ArrayProperty(use=Use.OPTIONAL, type=Override.class)
-    private List<?> invalidAnnotationType;
-
-    public List<?> getInvalidAnnotationType() {
-      return this.invalidAnnotationType;
-    }
-
-    public void setInvalidAnnotationType(final List<?> invalidAnnotationType) {
-      this.invalidAnnotationType = invalidAnnotationType;
     }
   }
 }

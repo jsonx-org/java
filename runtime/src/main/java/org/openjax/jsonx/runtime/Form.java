@@ -16,20 +16,7 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 public enum Form {
-  INTEGER(BigInteger.class),
-  REAL(BigDecimal.class);
-
-  private final Class<? extends Number> type;
-
-  Form(final Class<? extends Number> type) {
-    this.type = type;
-  }
-
-  public Class<? extends Number> getType() {
-    return this.type;
-  }
+  INTEGER,
+  REAL
 }

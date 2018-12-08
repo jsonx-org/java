@@ -17,24 +17,23 @@
 package org.openjax.jsonx.runtime;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.function.BiConsumer;
 
+import org.fastjax.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayEncodeIterator extends ArrayIterator {
-  private static <T>String validate(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+  private static <T>String validate(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final int[] elementIds;
     if (element.type() != ArrayType.class)
-      elementIds = JsonxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
+      elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
     else
       elementIds = element.elementIds();
 
     final Relations subRelations = new Relations();
-    final String subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations, validate, callback);
+    final String subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations, validate, onPropertyDecode);
     if (validate && subError != null)
       return subError;
 
@@ -75,28 +74,28 @@ class ArrayEncodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected String currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final BiConsumer<Field,Object> callback) {
+  protected String currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final Class<?> cls = current.getClass();
     final boolean isValid = type != Object.class ? type.isAssignableFrom(cls) : !cls.isArray() && !Boolean.class.isAssignableFrom(cls) && !List.class.isAssignableFrom(cls) && !Number.class.isAssignableFrom(cls) && !String.class.isAssignableFrom(cls);
     return !isValid ? "Content is not expected: " + currentPreview() : null;
   }
 
   @Override
-  protected String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
-    if (annotation instanceof ArrayElement)
-      return validate((ArrayElement)annotation, (List<?>)current, i, idToElement, relations, validate, callback);
-
-    if (annotation instanceof ObjectElement)
-      return validate((ObjectElement)annotation, current, i, relations, validate);
-
-    if (annotation instanceof BooleanElement)
-      return validate((BooleanElement)annotation, current, i, relations);
+  protected String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+    if (annotation instanceof StringElement)
+      return validate((StringElement)annotation, current, i, relations, false, validate);
 
     if (annotation instanceof NumberElement)
       return validate((NumberElement)annotation, current, i, relations, validate);
 
-    if (annotation instanceof StringElement)
-      return validate((StringElement)annotation, current, i, relations, false, validate);
+    if (annotation instanceof BooleanElement)
+      return validate((BooleanElement)annotation, current, i, relations);
+
+    if (annotation instanceof ArrayElement)
+      return validate((ArrayElement)annotation, (List<?>)current, i, idToElement, relations, validate, onPropertyDecode);
+
+    if (annotation instanceof ObjectElement)
+      return validate((ObjectElement)annotation, current, i, relations, validate);
 
     throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
   }

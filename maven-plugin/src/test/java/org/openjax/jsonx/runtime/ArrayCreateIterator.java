@@ -18,10 +18,9 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.function.BiConsumer;
 
+import org.fastjax.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayTrial.TrialType;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
@@ -64,7 +63,7 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final BiConsumer<Field,Object> callback) throws IOException {
+  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> callback) throws IOException {
     if (trialType == TrialType.NULLABLE) {
       current = null;
     }
@@ -96,7 +95,7 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+  protected String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> callback) {
     relations.set(i, currentRelate(annotation));
     return null;
   }

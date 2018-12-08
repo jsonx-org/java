@@ -25,29 +25,32 @@ import org.w3.www._2001.XMLSchema.yAA.$String;
 class Id {
   private static String hash(final Object ... variables) {
     final Checksum crc = new CRC32();
-    crc.update(Arrays.toString(variables).getBytes());
+    final byte[] bytes = Arrays.toString(variables).getBytes();
+    crc.update(bytes, 0, bytes.length);
     return Long.toString(crc.getValue(), 16);
   }
 
   private final String id;
 
-  public Id(final $String id) {
+  Id(final $String id) {
     this.id = id.text();
   }
 
-  public Id(final Registry.Type type) {
+  Id(final Registry.Type type) {
     this.id = type.getName();
   }
 
-  public Id(final Class<?> type) {
+  Id(final Class<?> type) {
     this.id = type.getName();
+    if ("java.util.Optional".equals(this.id))
+      System.out.println(type);
   }
 
-  public Id(final ArrayModel model) {
-    final Object[] variables = new Object[model.members().size()];
+  Id(final ArrayModel model) {
+    final Object[] variables = new Object[model.members.size()];
     for (int i = 0; i < variables.length; i++) {
-      final Member member = model.members().get(i);
-      variables[i] = member.id().toString() + member.nullable();
+      final Member member = model.members.get(i);
+      variables[i] = member.id().toString() + member.nullable;
     }
 
     this.id = "a" + hash(variables);
@@ -58,24 +61,24 @@ class Id {
    *
    * @param model The {@code BooleanModel} instance.
    */
-  public Id(final BooleanModel model) {
-    this.id = "b";
+  Id(final BooleanModel model) {
+    this.id = "b" + hash(model.nullable);
   }
 
-  public Id(final NumberModel model) {
-    this.id = "n" + hash(model.form(), model.range());
+  Id(final NumberModel model) {
+    this.id = "n" + hash(model.form, model.range, model.nullable);
   }
 
-  public Id(final StringModel model) {
-    this.id = "s" + hash(model.pattern(), model.urlDecode(), model.urlEncode());
+  Id(final StringModel model) {
+    this.id = "s" + hash(model.pattern, model.urlDecode, model.urlEncode, model.nullable);
   }
 
-  public Id(final ObjectModel model) {
+  Id(final ObjectModel model) {
     this(model.type());
   }
 
-  public Id(final Reference model) {
-    this.id = "t" + hash(model.reference().id().toString(), model.nullable(), model.minOccurs(), model.maxOccurs(), model.use());
+  Id(final Reference model) {
+    this.id = "t" + hash(model.model.id().toString(), model.minOccurs, model.maxOccurs, model.nullable, model.use);
   }
 
   @Override

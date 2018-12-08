@@ -18,8 +18,7 @@ package org.openjax.jsonx.runtime;
 
 import java.math.BigInteger;
 
-@ObjectType
-public class Address {
+public class Address implements JxObject {
   @NumberProperty(form=Form.INTEGER, range="[0,]")
   private BigInteger number;
 
@@ -142,6 +141,6 @@ public class Address {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).encode(this);
+    return new JxEncoder(2).marshal(this);
   }
 }

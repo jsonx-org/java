@@ -40,7 +40,7 @@ class Registry {
       this.name = name;
     }
 
-    public <T extends Model>T value(final T model, final Referrer<?> referrer) {
+    <T extends Model>T value(final T model, final Referrer<?> referrer) {
       refToModel.put(name, model);
       return reference(model, referrer);
     }
@@ -94,16 +94,16 @@ class Registry {
       this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), null), genericType);
     }
 
-    public Type getSuperType() {
+    Type getSuperType() {
       return superType;
     }
 
-    public Type getDeclaringType() {
+    Type getDeclaringType() {
       final String declaringClassName = Classes.getDeclaringClassName(compoundName);
       return compoundName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, null);
     }
 
-    public Type getGreatestCommonSuperType(final Type type) {
+    Type getGreatestCommonSuperType(final Type type) {
       Type a = this;
       do {
         Type b = type;
@@ -120,47 +120,47 @@ class Registry {
       return OBJECT;
     }
 
-    public Kind getKind() {
+    Kind getKind() {
       return this.kind;
     }
 
-    public String getPackage() {
+    String getPackage() {
       return packageName;
     }
 
-    public String getCanonicalPackage() {
+    String getCanonicalPackage() {
       return canonicalPackageName;
     }
 
-    public String getName() {
+    String getName() {
       return name;
     }
 
-    public String getSimpleName() {
+    String getSimpleName() {
       return simpleName;
     }
 
-    public String getCanonicalName() {
+    String getCanonicalName() {
       return canonicalName;
     }
 
-    public String getCompoundName() {
+    String getCompoundName() {
       return compoundName;
     }
 
-    public String getCanonicalCompoundName() {
+    String getCanonicalCompoundName() {
       return canonicalCompoundName;
     }
 
-    public String getRelativeName(final String packageName) {
+    String getRelativeName(final String packageName) {
       return packageName.length() == 0 ? name : name.substring(packageName.length() + 1);
     }
 
-    public String getSubName(final String superName) {
+    String getSubName(final String superName) {
       return Registry.getSubName(name, superName);
     }
 
-    public String toCanonicalString() {
+    String toCanonicalString() {
       final StringBuilder builder = new StringBuilder(canonicalName);
       if (genericType != null)
         builder.append('<').append(genericType.toCanonicalString()).append('>');
@@ -194,19 +194,19 @@ class Registry {
     }
   }
 
-  public static String getSubName(final String name, final String superName) {
+  static String getSubName(final String name, final String superName) {
     return superName != null && name.startsWith(superName) ? name.substring(superName.length() + 1) : name;
   }
 
-  public Type getType(final Kind kind, final String packageName, final String compoundName) {
+  Type getType(final Kind kind, final String packageName, final String compoundName) {
     return getType(kind, packageName, compoundName, null, null, null);
   }
 
-  public Type getType(final String packageName, final String compoundName, final String superCompoundName) {
+  Type getType(final String packageName, final String compoundName, final String superCompoundName) {
     return getType(Kind.CLASS, packageName, compoundName, packageName, superCompoundName, (Type)null);
   }
 
-  protected Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
+  Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
     final StringBuilder className = new StringBuilder();
     if (packageName.length() > 0)
       className.append(packageName).append(".");
@@ -219,17 +219,17 @@ class Registry {
     return type != null ? type : new Type(kind, packageName, compoundName, superCompoundName == null ? null : getType(Kind.CLASS, superPackageName, superCompoundName, null, null, null), genericType);
   }
 
-  public Type getType(final Class<?> cls, final Type genericType) {
+  Type getType(final Class<?> cls, final Type genericType) {
     final String name = cls.getName() + "<" + (genericType != null ? genericType.toCanonicalString() : Object.class.getName()) + ">";
     final Type type = qualifiedNameToType.get(name);
     return type != null ? type : new Type(cls, genericType);
   }
 
-  public Type getType(final Class<?> cls) {
-    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackageName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackageName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
+  Type getType(final Class<?> cls) {
+    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
   }
 
-  protected Type getType(final Class<?> ... generics) {
+  Type getType(final Class<?> ... generics) {
     return getType(0, generics);
   }
 
@@ -244,52 +244,52 @@ class Registry {
     final List<Referrer<?>> referrers = new ArrayList<>();
     final Set<Class<?>> referrerTypes = new HashSet<>();
 
-    public void add(final Referrer<?> referrer) {
+    void add(final Referrer<?> referrer) {
       referrers.add(referrer);
       referrerTypes.add(referrer.getClass());
     }
 
-    public int getNumReferrers() {
+    int getNumReferrers() {
       return referrers.size();
     }
 
-    public boolean hasReferrerType(final Class<?> type) {
+    boolean hasReferrerType(final Class<?> type) {
       return referrerTypes.contains(type);
     }
   }
 
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
-  public final Type OBJECT = getType(Object.class);
+  final Type OBJECT = getType(Object.class);
 
-  public Value declare(final Jsonx.Boolean binding) {
+  Value declare(final Jsonx.Boolean binding) {
     return new Value(binding.getTemplate$().text());
   }
 
-  public Value declare(final Jsonx.Number binding) {
+  Value declare(final Jsonx.Number binding) {
     return new Value(binding.getTemplate$().text());
   }
 
-  public Value declare(final Jsonx.String binding) {
+  Value declare(final Jsonx.String binding) {
     return new Value(binding.getTemplate$().text());
   }
 
-  public Value declare(final Jsonx.Array binding) {
+  Value declare(final Jsonx.Array binding) {
     return new Value(binding.getTemplate$() != null ? binding.getTemplate$().text() : binding.getClass$().text());
   }
 
-  public Value declare(final Jsonx.Object binding) {
+  Value declare(final Jsonx.Object binding) {
     return new Value(binding.getClass$().text());
   }
 
-  public Value declare(final Id id) {
+  Value declare(final Id id) {
     return new Value(id.toString());
   }
 
-  public Value declare(final $Object binding) {
+  Value declare(final $Object binding) {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 
-  public <T extends Member>T reference(final T model, final Referrer<?> referrer) {
+  <T extends Member>T reference(final T model, final Referrer<?> referrer) {
     if (referrer == null)
       return model;
 
@@ -302,11 +302,11 @@ class Registry {
     return model;
   }
 
-  public Model getModel(final Id id) {
+  Model getModel(final Id id) {
     return refToModel.get(id.toString());
   }
 
-  public Collection<Model> getModels() {
+  Collection<Model> getModels() {
     return refToModel.values();
   }
 
@@ -316,14 +316,14 @@ class Registry {
     return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(ArrayModel.class) : numReferrers >= settings.getTemplateThreshold();
   }
 
-  public boolean isRootMember(final Member member, final Settings settings) {
+  boolean isRootMember(final Member member, final Settings settings) {
     if (member instanceof ArrayModel && ((ArrayModel)member).classType() != null)
       return true;
 
     return isRootReferable(member, settings);
   }
 
-  public boolean isTemplateReference(final Member member, final Settings settings) {
+  boolean isTemplateReference(final Member member, final Settings settings) {
     if (getModel(member.id()) == null || member instanceof ArrayModel && ((ArrayModel)member).classType() != null)
       return false;
 

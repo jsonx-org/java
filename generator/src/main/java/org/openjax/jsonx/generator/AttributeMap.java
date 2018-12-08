@@ -21,8 +21,8 @@ import java.util.TreeMap;
 import org.fastjax.util.ObservableMap;
 import org.openjax.jsonx.runtime.AttributeComparator;
 
-public class AttributeMap extends ObservableMap<String,String> {
-  public AttributeMap() {
+class AttributeMap extends ObservableMap<String,String> {
+  AttributeMap() {
     super(new TreeMap<String,String>(AttributeComparator.instance));
   }
 
@@ -34,7 +34,7 @@ public class AttributeMap extends ObservableMap<String,String> {
     throw new IllegalStateException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
   }
 
-  public String put(final String key, final Object value) {
+  String put(final String key, final Object value) {
     return super.put(key, value == null ? null : String.valueOf(value));
   }
 }

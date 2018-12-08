@@ -18,12 +18,11 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import org.fastjax.json.JsonReader;
 import org.fastjax.util.ArrayIntList;
+import org.fastjax.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
@@ -76,7 +75,7 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final BiConsumer<Field,Object> callback) throws IOException {
+  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final String token = (String)current;
     final Object value;
     if (Boolean.class.equals(type)) {
@@ -96,12 +95,12 @@ class ArrayDecodeIterator extends ArrayIterator {
       final ArrayElement element = (ArrayElement)annotation;
       final int[] elementIds;
       if (element.type() != ArrayType.class)
-        elementIds = JsonxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
+        elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
       else
         elementIds = element.elementIds();
 
       final Annotation[] annotations = idToElement.get(elementIds);
-      final Object array = ArrayCodec.decode(annotations, idToElement, reader, callback);
+      final Object array = ArrayCodec.decode(annotations, idToElement, reader, onPropertyDecode);
       if (array instanceof String)
         return (String)array;
 
@@ -112,7 +111,7 @@ class ArrayDecodeIterator extends ArrayIterator {
         return "Content is not expected: " + token;
 
       final ObjectElement element = (ObjectElement)annotation;
-      final Object object = ObjectCodec.decode(element.type(), reader, callback);
+      final Object object = ObjectCodec.decode(element.type(), reader, onPropertyDecode);
       if (object instanceof String)
         return (String)object;
 
@@ -130,23 +129,23 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected final String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+  protected final String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+    if (annotation instanceof StringElement)
+      return validate((StringElement)annotation, current, i, relations, true, validate);
+
+    if (annotation instanceof NumberElement)
+      return validate((NumberElement)annotation, current, i, relations, validate);
+
+    if (annotation instanceof BooleanElement)
+      return validate((BooleanElement)annotation, current, i, relations);
+
     if (annotation instanceof ArrayElement) {
       relations.set(i, new Relation(current, annotation));
       return null;
     }
 
-    if (annotation instanceof StringElement)
-      return validate((StringElement)annotation, current, i, relations, true, validate);
-
     if (annotation instanceof ObjectElement)
       return validate((ObjectElement)annotation, current, i, relations, validate);
-
-    if (annotation instanceof BooleanElement)
-      return validate((BooleanElement)annotation, current, i, relations);
-
-    if (annotation instanceof NumberElement)
-      return validate((NumberElement)annotation, current, i, relations, validate);
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }

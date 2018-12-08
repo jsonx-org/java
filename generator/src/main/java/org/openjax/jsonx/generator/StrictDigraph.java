@@ -24,7 +24,7 @@ class StrictDigraph<T> extends Digraph<T> {
 
   private final String selfLinkErrorPrefix;
 
-  public StrictDigraph(final String selfLinkErrorPrefix) {
+  StrictDigraph(final String selfLinkErrorPrefix) {
     this.selfLinkErrorPrefix = selfLinkErrorPrefix;
   }
 

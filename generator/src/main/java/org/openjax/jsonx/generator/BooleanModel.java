@@ -25,23 +25,23 @@ import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.BooleanProperty;
-import org.openjax.jsonx.runtime.JsonxUtil;
+import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.Use;
 
 final class BooleanModel extends Model {
-  public static BooleanModel declare(final Registry registry, final Jsonx.Boolean binding) {
+  static BooleanModel declare(final Registry registry, final Jsonx.Boolean binding) {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Field field) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Field field) {
     final BooleanModel model = new BooleanModel(registry, property, field);
     final Id id = model.id();
 
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
-    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
     final BooleanModel model = new BooleanModel(registry, element);
     final Id id = model.id();
 
@@ -49,11 +49,11 @@ final class BooleanModel extends Model {
     return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean binding) {
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
-  public static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean binding) {
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
@@ -65,7 +65,7 @@ final class BooleanModel extends Model {
   }
 
   private BooleanModel(final Registry registry, final $Boolean binding) {
-    super(registry, binding.getName$(), binding.getUse$());
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.id = new Id(this);
   }
 
@@ -75,9 +75,9 @@ final class BooleanModel extends Model {
   }
 
   private BooleanModel(final Registry registry, final BooleanProperty property, final Field field) {
-    super(registry, null, property.use());
-    if (field.getType() != Boolean.class && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Boolean type or non-nullable boolean type");
+    super(registry, property.nullable(), property.use());
+    if (!isAssignable(field, Boolean.class, property.nullable(), property.use()) && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Boolean type, non-nullable boolean type, or optional and nullable fields of Optional<Boolean> type");
 
     this.id = new Id(this);
   }
@@ -88,27 +88,27 @@ final class BooleanModel extends Model {
   }
 
   @Override
-  protected Id id() {
+  Id id() {
     return id;
   }
 
   @Override
-  protected Registry.Type type() {
+  Registry.Type type() {
     return registry.getType(Boolean.class);
   }
 
   @Override
-  protected String elementName() {
+  String elementName() {
     return "boolean";
   }
 
   @Override
-  protected Class<? extends Annotation> propertyAnnotation() {
+  Class<? extends Annotation> propertyAnnotation() {
     return BooleanProperty.class;
   }
 
   @Override
-  protected Class<? extends Annotation> elementAnnotation() {
+  Class<? extends Annotation> elementAnnotation() {
     return BooleanElement.class;
   }
 }

@@ -18,18 +18,17 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.function.BiConsumer;
 
 import org.fastjax.util.Annotations;
 import org.fastjax.util.Strings;
+import org.fastjax.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 public abstract class ArrayIterator {
   protected static String validate(final ObjectElement element, final Object member, final int i, final Relations relations, final boolean validate) {
-    if (validate && !member.getClass().isAnnotationPresent(ObjectType.class))
-      return "@" + ObjectType.class.getSimpleName() + " not found on: " + member.getClass().getName();
+    if (validate && !JxObject.class.isAssignableFrom(member.getClass()))
+      return member.getClass().getName() + " does not implement " + JxObject.class.getName();
 
     relations.set(i, new Relation(member, element));
     return null;
@@ -83,6 +82,6 @@ public abstract class ArrayIterator {
   protected abstract void previous();
   protected abstract int nextIndex() throws IOException;
   protected abstract boolean nextIsNull() throws IOException;
-  protected abstract String currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final BiConsumer<Field,Object> callback) throws IOException;
-  protected abstract String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback);
+  protected abstract String currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
+  protected abstract String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode);
 }

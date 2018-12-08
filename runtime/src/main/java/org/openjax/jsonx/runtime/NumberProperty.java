@@ -25,6 +25,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberProperty {
   String name() default "";
+  boolean nullable() default true;
   Use use() default Use.REQUIRED;
   Form form() default Form.REAL;
   String range() default "";

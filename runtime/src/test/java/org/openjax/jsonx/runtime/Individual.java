@@ -16,8 +16,7 @@
 
 package org.openjax.jsonx.runtime;
 
-@ObjectType
-public class Individual {
+public class Individual implements JxObject {
   @StringProperty(pattern="\\S+ \\S+")
   private String name;
 
@@ -83,6 +82,6 @@ public class Individual {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).encode(this);
+    return new JxEncoder(2).marshal(this);
   }
 }

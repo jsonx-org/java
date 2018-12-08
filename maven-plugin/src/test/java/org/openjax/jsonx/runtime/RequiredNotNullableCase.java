@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 OpenJAX
+/* Copyright (c) 2018 OpenJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,7 +16,21 @@
 
 package org.openjax.jsonx.runtime;
 
-public enum Unknown {
-  IGNORE,
-  ERROR
+import static org.junit.Assert.*;
+
+class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Object>> {
+  static final RequiredNotNullableCase CASE = new RequiredNotNullableCase();
+
+  @Override
+  void onEncode(final PropertyTrial<? super Object> trial, final EncodeException e) throws Exception {
+    assertEquals(trial.field.getDeclaringClass().getName() + "#" + trial.field.getName() + " is required", e.getMessage());
+  }
+
+  @Override
+  void onDecode(final PropertyTrial<? super Object> trial, final DecodeException e) throws Exception {
+    assertTrue(e.getMessage(), e.getMessage().contains("Property \"" + trial.name + "\" is required"));
+  }
+
+  private RequiredNotNullableCase() {
+  }
 }

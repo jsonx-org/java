@@ -18,9 +18,8 @@ package org.openjax.jsonx.runtime;
 
 import java.util.List;
 
-@ObjectType(unknown=Unknown.IGNORE)
 public class Book extends Publication {
-  @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d", use=Use.REQUIRED)
+  @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d")
   private String isbn;
 
   public String getIsbn() {
@@ -38,7 +37,7 @@ public class Book extends Publication {
   @StringElement(id=3, pattern="(\\S)|(\\S.*\\S)", nullable=false, maxOccurs=1)
   @NumberElement(id=2, range="[1,]", nullable=false, maxOccurs=1)
   @ArrayElement(id=1, nullable=false, elementIds={2, 3})
-  @ArrayProperty(use=Use.REQUIRED, elementIds={1})
+  @ArrayProperty(elementIds={1})
   private List<Object> index;
 
   public List<Object> getIndex() {

@@ -25,8 +25,11 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
+import org.fastjax.lang.IllegalAnnotationException;
+import org.fastjax.util.Classes;
 import org.fastjax.util.Iterators;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
@@ -37,47 +40,46 @@ import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ObjectMember;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
-import org.openjax.jsonx.runtime.JsonxUtil;
 import org.openjax.jsonx.runtime.JxEncoder;
+import org.openjax.jsonx.runtime.JxObject;
+import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.ObjectProperty;
-import org.openjax.jsonx.runtime.ObjectType;
-import org.openjax.jsonx.runtime.Unknown;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  public static ObjectModel declare(final Registry registry, final Jsonx.Object binding) {
+  static ObjectModel declare(final Registry registry, final Jsonx.Object binding) {
     return registry.declare(binding).value(new ObjectModel(registry, binding), null);
   }
 
-  public static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object binding) {
+  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object binding) {
     return registry.declare(binding).value(new ObjectModel(registry, binding), referrer);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
-    final Id id = new Id(field.getType());
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
+    if (!isAssignable(field, JxObject.class, property.nullable(), property.use()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ObjectProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of JxObject type, or optional and nullable fields of Optional<? extends JxObject> type");
+
+    final Id id = new Id(getRealType(field));
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, field, property), referrer) : registry.reference(model, referrer));
+    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, field, property), referrer) : registry.reference(model, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
+  static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
     final Id id = new Id(element.type());
     final ObjectModel model = (ObjectModel)registry.getModel(id);
     return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof Referrer ? (Referrer<?>)referrer : null) : registry.reference(model, referrer instanceof Referrer ? (Referrer<?>)referrer : null));
   }
 
-  public static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls) {
-    return referenceOrDeclare(registry, cls, checkJSObject(cls));
-  }
-
-  private static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls, final ObjectType jsObject) {
+  static ObjectModel referenceOrDeclare(final Registry registry, final Class<?> cls) {
+    checkJSObject(cls);
     final Id id = new Id(cls);
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, cls, jsObject, null, null), null);
+    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, cls, null, null), null);
   }
 
-  public static String getFullyQualifiedName(final $Object binding) {
+  static String getFullyQualifiedName(final $Object binding) {
     final StringBuilder builder = new StringBuilder();
     $Object owner = binding;
     do
@@ -86,21 +88,17 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return builder.insert(0, ((Jsonx.Object)owner.owner()).getClass$().text()).toString();
   }
 
-  private static ObjectType checkJSObject(final Class<?> cls) {
-    final ObjectType jsObject = cls.getDeclaredAnnotation(ObjectType.class);
-    if (jsObject == null)
-      throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ObjectType.class.getSimpleName() + " annotation");
-
-    return jsObject;
+  private static void checkJSObject(final Class<?> cls) {
+    if (!JxObject.class.isAssignableFrom(cls))
+      throw new IllegalArgumentException("Class " + cls.getName() + " does not implement " + JxObject.class.getName());
   }
 
   private static void recurseInnerClasses(final Registry registry, final Class<?> cls) {
     for (final Class<?> innerClass : cls.getClasses()) {
-      final ObjectType innerJSObject = innerClass.getDeclaredAnnotation(ObjectType.class);
-      if (innerJSObject == null)
+      if (!JxObject.class.isAssignableFrom(innerClass))
         recurseInnerClasses(registry, innerClass);
       else
-        referenceOrDeclare(registry, innerClass, innerJSObject);
+        referenceOrDeclare(registry, innerClass);
     }
   }
 
@@ -147,29 +145,31 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return Collections.unmodifiableMap(members);
   }
 
+  private static Class<?> getRealType(final Field field) {
+    return Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericTypes(field)[0] : field.getType();
+  }
+
   private final Id id;
-  private final Map<String,Member> members;
+  final Map<String,Member> members;
   private final Registry.Type type;
-  private final ObjectModel superObject;
-  private final Boolean isAbstract;
-  private final Unknown unknown;
+  final ObjectModel superObject;
+  final boolean isAbstract;
 
   private ObjectModel(final Registry registry, final Jsonx.Object binding) {
     super(registry);
     this.type = registry.getType((String)binding.owner().getPackage$().text(), binding.getClass$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.isAbstract = binding.getAbstract$().text();
-    this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
     this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$());
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
     this.id = new Id(this);
   }
 
   private ObjectModel(final Registry registry, final Field field, final ObjectProperty property) {
-    this(registry, field.getType(), checkJSObject(field.getType()), null, property.use());
+    this(registry, getRealType(field), property.nullable(), property.use());
   }
 
   private ObjectModel(final Registry registry, final ObjectElement element) {
-    this(registry, element.type(), checkJSObject(element.type()), element.nullable(), null);
+    this(registry, element.type(), element.nullable(), null);
   }
 
   private static Jsonx getJsonx($AnySimpleType member) {
@@ -181,34 +181,26 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private ObjectModel(final Registry registry, final $Object binding) {
-    super(registry, binding.getName$(), binding.getUse$());
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.type = registry.getType((String)getJsonx(binding).getPackage$().text(), getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$());
-    this.isAbstract = null;
-    this.unknown = Unknown.valueOf(binding.getUnknown$().text().toUpperCase());
+    this.isAbstract = false;
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
     this.id = new Id(this);
   }
 
-  private ObjectModel(final Registry registry, final Class<?> cls, final ObjectType jsObject, final Boolean nullable, final Use use) {
+  private ObjectModel(final Registry registry, final Class<?> cls, final Boolean nullable, final Use use) {
     super(registry, nullable, use);
     final Class<?> superClass = cls.getSuperclass();
     this.type = registry.getType(cls);
     this.isAbstract = Modifier.isAbstract(cls.getModifiers());
-    this.unknown = jsObject.unknown();
-    if (superClass != null) {
-      final ObjectType superObject = superClass.getDeclaredAnnotation(ObjectType.class);
-      this.superObject = superObject == null ? null : referenceOrDeclare(registry, superClass);
-    }
-    else {
-      this.superObject = null;
-    }
+    this.superObject = superClass == null || !JxObject.class.isAssignableFrom(superClass) ? null : referenceOrDeclare(registry, superClass);
 
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     for (final Field field : cls.getDeclaredFields()) {
       final Member member = Member.toMember(registry, this, field);
       if (member != null)
-        members.put(member.name(), member);
+        members.put(member.name, member);
     }
 
     this.members = Collections.unmodifiableMap(members);
@@ -217,53 +209,37 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected Id id() {
+  Id id() {
     return id;
   }
 
-  public Map<String,Member> members() {
-    return this.members;
-  }
-
   @Override
-  public Registry.Type type() {
+  Registry.Type type() {
     return type;
   }
 
   @Override
-  protected Registry.Type classType() {
+  Registry.Type classType() {
     return type;
   }
 
-  public ObjectModel superObject() {
-    return this.superObject;
-  }
-
-  public boolean isAbstract() {
-    return this.isAbstract != null && this.isAbstract;
-  }
-
-  public Unknown unknown() {
-    return this.unknown;
-  }
-
   @Override
-  protected String elementName() {
+  String elementName() {
     return "object";
   }
 
   @Override
-  protected Class<? extends Annotation> propertyAnnotation() {
+  Class<? extends Annotation> propertyAnnotation() {
     return ObjectProperty.class;
   }
 
   @Override
-  protected Class<? extends Annotation> elementAnnotation() {
+  Class<? extends Annotation> elementAnnotation() {
     return ObjectElement.class;
   }
 
   @Override
-  protected void getDeclaredTypes(final Set<Registry.Type> types) {
+  void getDeclaredTypes(final Set<Registry.Type> types) {
     types.add(type());
     if (superObject != null)
       superObject.getDeclaredTypes(types);
@@ -274,24 +250,21 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     attributes.put(owner instanceof ArrayModel ? "type" : "class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
 
     if (superObject != null)
       attributes.put("extends", superObject.type().getRelativeName(packageName));
 
-    if (isAbstract != null && isAbstract)
+    if (isAbstract)
       attributes.put("abstract", String.valueOf(isAbstract));
-
-    if (unknown != Unknown.ERROR)
-      attributes.put("unknown", unknown.toString().toLowerCase());
 
     return attributes;
   }
 
   @Override
-  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final org.fastjax.xml.Element element = super.toXml(settings, owner, packageName);
     if (members == null || members.size() == 0)
       return element;
@@ -305,23 +278,19 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+  void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     if (owner instanceof ArrayModel)
       attributes.put("type", type.getCanonicalName() + ".class");
   }
 
   @Override
-  protected List<AnnotationSpec> getClassAnnotation() {
-    final AttributeMap attributes = new AttributeMap();
-    if (unknown() != Unknown.ERROR)
-      attributes.put("unknown", Unknown.class.getName() + '.' + unknown());
-
-    return Collections.singletonList(new AnnotationSpec(ObjectType.class, attributes));
+  List<AnnotationSpec> getClassAnnotation() {
+    return null;
   }
 
   @Override
-  protected String toSource(final Settings settings) {
+  String toSource(final Settings settings) {
     final StringBuilder builder = new StringBuilder();
     if (members != null && members.size() > 0) {
       final Iterator<Member> iterator = members.values().iterator();
@@ -368,7 +337,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     builder.append("\n\n@").append(Override.class.getName());
     builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
-    builder.append("\n  return new ").append(JxEncoder.class.getName()).append("(").append(settings.getToStringIndent()).append(").encode(this);");
+    builder.append("\n  return new ").append(JxEncoder.class.getName()).append("(").append(settings.getToStringIndent()).append(").marshal(this);");
     builder.append("\n}");
 
     return builder.toString();

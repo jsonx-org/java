@@ -27,7 +27,7 @@ import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.Form;
-import org.openjax.jsonx.runtime.JsonxUtil;
+import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.NumberElement;
 import org.openjax.jsonx.runtime.NumberProperty;
 import org.openjax.jsonx.runtime.ParseException;
@@ -38,27 +38,27 @@ import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
-  public static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
+  static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
-  public static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number binding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number binding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Field field) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Field field) {
     final NumberModel model = new NumberModel(registry, property, field);
     final Id id = model.id();
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
     final NumberModel model = new NumberModel(registry, element);
     final Id id = model.id();
 
@@ -75,8 +75,8 @@ final class NumberModel extends Model {
   }
 
   private final Id id;
-  private final Form form;
-  private final Range range;
+  final Form form;
+  final Range range;
 
   private NumberModel(final Registry registry, final Jsonx.Number binding) {
     super(registry);
@@ -92,7 +92,7 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final $Number binding) {
-    super(registry, binding.getName$(), binding.getUse$());
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     try {
       this.range = binding.getRange$() == null ? null : new Range(binding.getRange$().text());
@@ -118,9 +118,9 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final NumberProperty property, final Field field) {
-    super(registry, null, property.use());
-    if (!Number.class.isAssignableFrom(field.getType()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number subtypes or primitive numeric non-nullable types");
+    super(registry, property.nullable(), property.use());
+    if (!isAssignable(field, Number.class, property.nullable(), property.use()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Number subtype, or non-nullable fields of primitive numeric type, or optional and nullable fields of Optional<? extends Number> type");
 
     this.form = property.form() == Form.REAL ? null : property.form();
     try {
@@ -147,40 +147,33 @@ final class NumberModel extends Model {
   }
 
   @Override
-  protected Id id() {
+  Id id() {
     return id;
   }
 
-  public Form form() {
-    return this.form;
-  }
-
-  public Range range() {
-    return this.range;
+  @Override
+  Registry.Type type() {
+    final Class<?> type = form == Form.INTEGER ? BigInteger.class : BigDecimal.class;
+    return registry.getType(type);
   }
 
   @Override
-  protected Registry.Type type() {
-    return registry.getType(form == Form.INTEGER ? BigInteger.class : BigDecimal.class);
-  }
-
-  @Override
-  protected String elementName() {
+  String elementName() {
     return "number";
   }
 
   @Override
-  protected Class<? extends Annotation> propertyAnnotation() {
+  Class<? extends Annotation> propertyAnnotation() {
     return NumberProperty.class;
   }
 
   @Override
-  protected Class<? extends Annotation> elementAnnotation() {
+  Class<? extends Annotation> elementAnnotation() {
     return NumberElement.class;
   }
 
   @Override
-  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (form != null)
       attributes.put("form", form.toString().toLowerCase());
@@ -192,7 +185,7 @@ final class NumberModel extends Model {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+  void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     if (form != null)
       attributes.put("form", Form.class.getName() + "." + form);

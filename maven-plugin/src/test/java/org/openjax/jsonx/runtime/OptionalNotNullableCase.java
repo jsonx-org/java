@@ -18,23 +18,27 @@ package org.openjax.jsonx.runtime;
 
 import static org.junit.Assert.*;
 
-import org.fastjax.json.JsonStrings;
-import org.fastjax.net.URIComponent;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
-public class UrlCodecCase extends SuccessCase<StringTrial> {
-  static final UrlCodecCase CASE = new UrlCodecCase();
+class OptionalNotNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
+  static final OptionalNotNullableCase CASE = new OptionalNotNullableCase();
 
   @Override
-  void onEncode(final StringTrial trial, final Relations relations, final String value) {
-    assertEquals(trial.urlEncode ? URIComponent.encode(trial.value()) : trial.value(), JsonStrings.unescape(value.substring(1, value.length() - 1)));
+  void onEncode(final PropertyTrial<? super Object> trial, final Relations relations, final String value) throws Exception {
+    if (trial.rawValue() != null)
+      throw new IllegalStateException(OptionalNotNullableCase.class.getSimpleName() + " must be used with null value");
+
+    assertNull(value);
   }
 
   @Override
-  void onDecode(final StringTrial trial, final Relations relations, final Object value) {
-    assertEquals(trial.urlDecode && !trial.urlEncode ? URIComponent.decode(trial.value()) : trial.urlEncode && !trial.urlDecode ? URIComponent.encode(trial.value()) : trial.value(), value);
+  void onDecode(final PropertyTrial<? super Object> trial, final Relations relations, final Object value) throws Exception {
+    if (trial.rawValue() != null)
+      throw new IllegalStateException(OptionalNotNullableCase.class.getSimpleName() + " must be used with null value");
+
+    assertNull(value);
   }
 
-  private UrlCodecCase() {
+  private OptionalNotNullableCase() {
   }
 }

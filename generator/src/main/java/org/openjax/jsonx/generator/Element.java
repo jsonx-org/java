@@ -28,7 +28,7 @@ abstract class Element {
    * @param types The {@code Set} into which the {@code Registry.Type}
    *          declarations must be added.
    */
-  protected void getDeclaredTypes(final Set<Registry.Type> types) {
+  void getDeclaredTypes(final Set<Registry.Type> types) {
   }
 
   /**
@@ -40,9 +40,9 @@ abstract class Element {
    * @param packageName The package name declared in the schema element.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     return new AttributeMap();
   }
 
-  protected abstract org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName);
+  abstract org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName);
 }

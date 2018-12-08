@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.fastjax.json.JsonReader;
 import org.junit.Test;
@@ -37,18 +38,18 @@ public class LibraryTest {
   private static final JxEncoder encoder = new JxEncoder(2);
 
   private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
-    final String json = annotationType != null ? encoder.encode((List<?>)obj, annotationType) : encoder.encode(obj);
+    final String json = annotationType != null ? encoder.marshal((List<?>)obj, annotationType) : encoder.marshal((JxObject)obj);
     final JsonReader reader = new JsonReader(new StringReader(json));
     final Object decoded;
     if (annotationType != null)
       decoded = JxDecoder.parseArray(annotationType, reader);
     else
-      decoded = JxDecoder.parseObject(obj.getClass(), reader);
+      decoded = JxDecoder.parseObject(((JxObject)obj).getClass(), reader);
 
     assertEquals(obj.toString(), decoded.toString());
   }
 
-  private static void test(final Object obj) throws DecodeException, IOException {
+  private static void test(final JxObject obj) throws DecodeException, IOException {
     test(obj, null);
   }
 
@@ -113,8 +114,8 @@ public class LibraryTest {
 
     final Book book = new Book();
     book.setTitle("Magical Book");
-    book.setAuthors(Arrays.asList("Billy Bob", "Jimmy James", "Wendy Woo"));
-    book.setEditors(Arrays.asList("Silly Willy", "Johnie John", "Randy Dandy"));
+    book.setAuthors(Optional.of(Arrays.asList("Billy Bob", "Jimmy James", "Wendy Woo")));
+    book.setEditors(Optional.of(Arrays.asList("Silly Willy", "Johnie John", "Randy Dandy")));
     book.setIndex(Arrays.asList(Arrays.asList(1, "Part 1, Chapter 1"), Arrays.asList(2, "Part 1, Chapter 2"), Arrays.asList(3, "Part 1, Chapter 3"),
                                 Arrays.asList(1, "Part 2, Chapter 1"), Arrays.asList(2, "Part 2, Chapter 2"), Arrays.asList(3, "Part 2, Chapter 3")));
     book.setIsbn("978-3-16-148410-0");
@@ -132,8 +133,8 @@ public class LibraryTest {
 
     final OnlineArticle article = new OnlineArticle();
     article.setTitle("Online Article");
-    article.setAuthors(Arrays.asList("Mr. Online", "Mrs. Online"));
-    article.setEditors(Arrays.asList("Mr. Editor"));
+    article.setAuthors(Optional.of(Arrays.asList("Mr. Online", "Mrs. Online")));
+    article.setEditors(Optional.of(Arrays.asList("Mr. Editor")));
     article.setPublishings(new ArrayList<>());
     article.getPublishings().add(onlinePub1);
     article.getPublishings().add(onlinePub2);
@@ -145,15 +146,15 @@ public class LibraryTest {
 
     final Library.Journal journal = new Library.Journal();
     journal.setTitle("Zoology Redefined");
-    journal.setSubject("Zoology");
-    journal.setAuthors(Arrays.asList("Mr. Smith"));
-    journal.setEditors(Arrays.asList("Mr. Echo"));
-    journal.setOpenAccess(true);
+    journal.setSubject(Optional.of("Zoology"));
+    journal.setAuthors(Optional.of(Arrays.asList("Mr. Smith")));
+    journal.setEditors(Optional.of(Arrays.asList("Mr. Echo")));
+    journal.setOpenAccess(Optional.empty());
     journal.setPublishings(new ArrayList<>());
     journal.getPublishings().add(journalPub);
 
     final Library library = new Library();
-    library.setAddress(createAddress());
+    library.setAddress(Optional.of(createAddress()));
     library.setHandicap(true);
     final List<List<String>> schedule = new ArrayList<>();
     for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"08:00", "18:00"}, {"09:00", "19:00"}, {"10:00", "20:00"}, {"11:00", "21:00"}, {"12:00", "22:00"}, {"13:00", "23:00"}})
@@ -167,8 +168,24 @@ public class LibraryTest {
 
     library.setStaff(Collections.singletonList(createEmployee()));
 
-    final String json = encoder.encode(library);
+    final String json = encoder.marshal(library);
     logger.info(json);
     JxDecoder.parseObject(Library.class, new JsonReader(new StringReader(json)));
+  }
+
+  @Test
+  public void testOnPropertyDecode() throws DecodeException, IOException {
+    final String json = "{\"year\":2003,\"publisher\":\"Science Publisher\",\"extra\":false}";
+    try {
+      JxDecoder.parseObject(Publishing.class, new JsonReader(new StringReader(json)));
+      fail("Expected DecodeException");
+    }
+    catch (final DecodeException e) {
+      assertTrue(e.getMessage().startsWith("Unknown property: \"extra\""));
+    }
+
+    JxDecoder.parseObject(Publishing.class, new JsonReader(new StringReader(json)), (o,p,v) -> {
+      return o instanceof Publishing;
+    });
   }
 }

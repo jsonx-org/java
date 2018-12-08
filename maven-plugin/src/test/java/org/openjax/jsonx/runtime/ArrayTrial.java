@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Optional;
 
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
@@ -41,13 +42,13 @@ class ArrayTrial<T> extends PropertyTrial<T> {
 
   private static Object createArray(final Class<? extends Annotation> arrayAnnotationType, int[] elementIds, IdToElement idToElement, final TrialType trialType) {
     if (arrayAnnotationType != ArrayType.class)
-      elementIds = JsonxUtil.digest(arrayAnnotationType.getAnnotations(), arrayAnnotationType.getName(), idToElement = new IdToElement());
+      elementIds = JxUtil.digest(arrayAnnotationType.getAnnotations(), arrayAnnotationType.getName(), idToElement = new IdToElement());
 
     if (trialType == TrialType.MIN_OCCURS) {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasMinOccurs = false;
       for (int i = 0; !hasMinOccurs && i < annotations.length; ++i)
-        hasMinOccurs = JsonxUtil.getMinOccurs(annotations[i]) > 0;
+        hasMinOccurs = JxUtil.getMinOccurs(annotations[i]) > 0;
 
       return hasMinOccurs ? new ArrayList<>() : null;
     }
@@ -56,7 +57,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasNullable = false;
       for (int i = 0; !hasNullable && i < annotations.length; ++i)
-        hasNullable = !JsonxUtil.isNullable(annotations[i]);
+        hasNullable = !JxUtil.isNullable(annotations[i]);
 
       if (!hasNullable)
         return null;
@@ -65,7 +66,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasMaxOccurs = false;
       for (int i = 0; !hasMaxOccurs && i < annotations.length; ++i)
-        hasMaxOccurs = JsonxUtil.getMaxOccurs(annotations[i]) < Integer.MAX_VALUE;
+        hasMaxOccurs = JxUtil.getMaxOccurs(annotations[i]) < Integer.MAX_VALUE;
 
       if (!hasMaxOccurs)
         return null;
@@ -92,7 +93,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       while (iterator.hasNext()) {
         final Relation relation = iterator.next();
         final Integer count = annotationToCount.get(relation.annotation);
-        final int maxOccurs = JsonxUtil.getMaxOccurs(relation.annotation);
+        final int maxOccurs = JxUtil.getMaxOccurs(relation.annotation);
         if (count >= maxOccurs) {
           iterator.remove();
           annotationToCount.put(relation.annotation, count - 1);
@@ -117,8 +118,23 @@ class ArrayTrial<T> extends PropertyTrial<T> {
     if (testMaxOccurs != null)
       trials.add(new ArrayTrial<>(MaxOccursCase.CASE, field, object, testMaxOccurs, property));
 
-    if (property.use() == Use.REQUIRED)
-      trials.add(new ArrayTrial<>(UseCase.CASE, field, object, null, property));
+    if (property.use() == Use.REQUIRED) {
+      if (property.nullable()) {
+        trials.add(new ArrayTrial<>(RequiredNullableCase.CASE, field, object, null, property));
+      }
+      else {
+        trials.add(new ArrayTrial<>(RequiredNotNullableCase.CASE, field, object, null, property));
+      }
+    }
+    else {
+      if (property.nullable()) {
+        trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, null, property));
+        trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      }
+      else {
+        trials.add(new ArrayTrial<>(OptionalNotNullableCase.CASE, field, object, null, property));
+      }
+    }
   }
 
   private ArrayTrial(final Case<? extends PropertyTrial<? super T>> kase, final Field field, final Object object, final T value, final ArrayProperty property) {

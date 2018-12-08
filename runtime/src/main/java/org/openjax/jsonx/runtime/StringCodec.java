@@ -84,7 +84,7 @@ class StringCodec extends PrimitiveCodec<String> {
   private final boolean urlDecode;
 
   StringCodec(final StringProperty property, final Field field) {
-    super(field, property.name(), property.use());
+    super(field, property.name(), property.nullable(), property.use());
     this.pattern = property.pattern().length() == 0 ? null : property.pattern();
     this.urlDecode = property.urlDecode();
   }

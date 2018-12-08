@@ -26,7 +26,7 @@ class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
 
   private final String selfLinkErrorPrefix;
 
-  public StrictRefDigraph(final String selfLinkErrorPrefix, final Function<T,R> reference) {
+  StrictRefDigraph(final String selfLinkErrorPrefix, final Function<T,R> reference) {
     super(reference);
     this.selfLinkErrorPrefix = selfLinkErrorPrefix;
   }

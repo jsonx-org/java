@@ -73,7 +73,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
   private final Range range;
 
   NumberCodec(final NumberProperty property, final Field field) {
-    super(field, property.name(), property.use());
+    super(field, property.name(), property.nullable(), property.use());
     this.form = property.form();
     if (property.range().length() == 0) {
       this.range = null;

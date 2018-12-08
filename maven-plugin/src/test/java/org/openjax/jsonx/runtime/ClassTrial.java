@@ -35,12 +35,11 @@ class ClassTrial {
 
   private static final JxEncoder validEncoder = new JxEncoder(2, true);
   private static final JxEncoder invalidEncoder = new JxEncoder(2, false);
-  private static int count = 0;
 
-  private final Object binding;
+  private final JxObject binding;
   private final List<PropertyTrial<?>> trials = new ArrayList<>();
 
-  ClassTrial(final Class<?> cls) throws IllegalAccessException, IllegalArgumentException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+  ClassTrial(final Class<? extends JxObject> cls) throws IllegalAccessException, IllegalArgumentException, InstantiationException, InvocationTargetException, NoSuchMethodException {
     if (cls.isAnnotation() || Modifier.isAbstract(cls.getModifiers()))
       throw new IllegalArgumentException();
 
@@ -82,18 +81,22 @@ class ClassTrial {
     }
   }
 
-  public void invoke() throws Exception {
+  public int invoke() throws Exception {
+    int count = 0;
     for (final PropertyTrial<?> trial : trials)
       if (trial.kase instanceof ValidCase)
-        trial.field.set(trial.object, trial.value);
+        trial.setField(trial.rawValue());
 
     for (final PropertyTrial<?> trial : trials)
-      invoke(trial);
+      count += invoke(trial);
+
+    return count;
   }
 
-  private void invoke(final PropertyTrial<?> trial) throws Exception {
+  private int invoke(final PropertyTrial<?> trial) throws Exception {
+    int count = 0;
     final Object before = trial.field.get(trial.object);
-    trial.field.set(trial.object, trial.value);
+    trial.setField(trial.rawValue());
 
     String json = null;
     String value = null;
@@ -101,7 +104,7 @@ class ClassTrial {
     final Relations[] relations = new Relations[1];
     try {
       final int[] bounds = new int[2];
-      json = validEncoder.encode(binding, (f,r,s,e) -> {
+      json = validEncoder.marshal(binding, (f,r,s,e) -> {
         if (f.equals(trial.field)) {
           if (r != null)
             relations[0] = r;
@@ -111,18 +114,19 @@ class ClassTrial {
         }
       });
 
-      value = json.substring(bounds[0], bounds[1]);
+      value = bounds[0] == -1 && bounds[1] == -1 ? null : json.substring(bounds[0], bounds[1]);
     }
     catch (final Exception e) {
       exception = e;
-      json = invalidEncoder.encode(binding);
+      json = invalidEncoder.marshal(binding);
     }
 
     try {
       onEncode(trial, relations[0], value, exception);
+      ++count;
     }
     catch (final Throwable t) {
-      logger.info(String.format("%06d", ++count) + " onEncode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
+      logger.info(String.format("%06d", count) + " onEncode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
       logger.error("  Value: " + String.valueOf(value).replace("\n", "\n  "));
       logger.error("  JSON: " + String.valueOf(json).replace("\n", "\n  "));
       logger.error(t.getMessage(), t);
@@ -132,9 +136,11 @@ class ClassTrial {
     final Object[] object = new Object[1];
     exception = null;
     try {
-      JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (f,o) -> {
-        if (f.equals(trial.field))
-          object[0] = o;
+      JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,p,v) -> {
+        if (p.equals(trial.name))
+          object[0] = v;
+
+        return true;
       });
     }
     catch (final Exception e) {
@@ -143,9 +149,10 @@ class ClassTrial {
 
     try {
       onDecode(trial, relations[0], object[0], exception);
+      ++count;
     }
     catch (final Throwable t) {
-      logger.info(String.format("%06d", ++count) + " onDecode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
+      logger.info(String.format("%06d", count) + " onDecode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
       logger.error("  Value: " + String.valueOf(object[0]).replace("\n", "\n  "));
       logger.error("  JSON: " + String.valueOf(json).replace("\n", "\n  "));
       logger.error(t.getMessage(), t);
@@ -153,6 +160,7 @@ class ClassTrial {
     }
 
     trial.field.set(trial.object, before);
+    return count;
   }
 
   @SuppressWarnings("unchecked")

@@ -42,7 +42,7 @@ import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ObjectMember;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ReferenceMember;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.ArrayType;
-import org.openjax.jsonx.runtime.ObjectType;
+import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.xsb.runtime.Binding;
 
@@ -136,7 +136,7 @@ public final class Schema extends Element {
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
     PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
-      if ((c.isAnnotationPresent(ObjectType.class) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
+      if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
         classes.add(c);
         return true;
       }
@@ -203,7 +203,7 @@ public final class Schema extends Element {
         if (o1 instanceof ObjectModel)
           return o2 instanceof ObjectModel ? o1.type().getName().compareTo(o2.type().getName()) : 1;
 
-        return o2 instanceof ObjectModel ? -1 : (o1.getClass().getSimpleName() + o1.name() + o1.id()).compareTo(o2.getClass().getSimpleName() + o2.name() + o2.id());
+        return o2 instanceof ObjectModel ? -1 : (o1.getClass().getSimpleName() + o1.name + o1.id()).compareTo(o2.getClass().getSimpleName() + o2.name + o2.id());
       }
     });
 

@@ -16,34 +16,52 @@
 
 package org.openjax.jsonx.generator;
 
+import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Optional;
 
+import org.fastjax.util.Classes;
 import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
 import org.openjax.jsonx.runtime.Use;
+import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Model extends Member {
-  public Model(final Registry registry, final $JavaIdentifier name, final $String use) {
-    super(registry, name, use);
+  static boolean isAssignable(final Field field, final Class<?> cls, final boolean nullable, final Use use) {
+    if (use != Use.OPTIONAL || !nullable)
+      return cls.isAssignableFrom(field.getType());
+
+    if (!Optional.class.isAssignableFrom(field.getType()))
+      return false;
+
+    final Class<?>[] genericTypes = Classes.getGenericTypes(field);
+    if (genericTypes.length == 0 || genericTypes[0] == null)
+      return false;
+
+    return cls.isAssignableFrom(genericTypes[0]);
   }
 
-  public Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+  Model(final Registry registry, final $JavaIdentifier name, final yAA.$Boolean nullable, final $String use) {
+    super(registry, name, nullable, use);
+  }
+
+  Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
     super(registry, nullable, minOccurs, maxOccurs);
   }
 
-  public Model(final Registry registry) {
+  Model(final Registry registry) {
     super(registry, null, null, null, null, null);
   }
 
-  public Model(final Registry registry, final Boolean nullable, final Use use) {
+  Model(final Registry registry, final Boolean nullable, final Use use) {
     super(registry, null, nullable, use, null, null);
   }
 
   @Override
-  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toXmlAttributes(owner, packageName);

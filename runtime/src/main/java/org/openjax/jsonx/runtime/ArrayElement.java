@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 @Repeatable(ArrayElements.class)
 public @interface ArrayElement {
   int id();
-  boolean nullable() default false;
+  boolean nullable() default true;
   int minOccurs() default 1;
   int maxOccurs() default Integer.MAX_VALUE;
   int[] elementIds() default {};

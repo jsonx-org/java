@@ -25,24 +25,24 @@ import org.fastjax.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
-import org.openjax.jsonx.runtime.JsonxUtil;
+import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.StringProperty;
 
 final class StringModel extends Model {
-  public static StringModel declare(final Registry registry, final Jsonx.String binding) {
+  static StringModel declare(final Registry registry, final Jsonx.String binding) {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Field field) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Field field) {
     final StringModel model = new StringModel(registry, property, field);
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Reference(registry, JsonxUtil.getName(property.name(), field), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, element);
     final Id id = model.id();
 
@@ -50,11 +50,11 @@ final class StringModel extends Model {
     return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  public static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String binding) {
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
-  public static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String binding) {
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
@@ -63,9 +63,9 @@ final class StringModel extends Model {
   }
 
   private final Id id;
-  private final String pattern;
-  private final boolean urlEncode;
-  private final boolean urlDecode;
+  final String pattern;
+  final boolean urlEncode;
+  final boolean urlDecode;
 
   private StringModel(final Registry registry, final Jsonx.String binding) {
     super(registry);
@@ -76,7 +76,7 @@ final class StringModel extends Model {
   }
 
   private StringModel(final Registry registry, final $String binding) {
-    super(registry, binding.getName$(), binding.getUse$());
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
@@ -92,9 +92,9 @@ final class StringModel extends Model {
   }
 
   private StringModel(final Registry registry, final StringProperty property, final Field field) {
-    super(registry, null, property.use());
-    if (field.getType() != String.class)
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to fields of String type");
+    super(registry, property.nullable(), property.use());
+    if (!isAssignable(field, String.class, property.nullable(), property.use()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of String type, or optional and nullable fields of Optional<String> type");
 
     this.pattern = parsePattern(property.pattern());
     this.urlEncode = property.urlEncode();
@@ -111,44 +111,32 @@ final class StringModel extends Model {
   }
 
   @Override
-  protected Id id() {
+  Id id() {
     return id;
   }
 
-  public String pattern() {
-    return this.pattern;
-  }
-
-  public boolean urlEncode() {
-    return this.urlEncode;
-  }
-
-  public boolean urlDecode() {
-    return this.urlDecode;
-  }
-
   @Override
-  protected Registry.Type type() {
+  Registry.Type type() {
     return registry.getType(String.class);
   }
 
   @Override
-  protected String elementName() {
+  String elementName() {
     return "string";
   }
 
   @Override
-  protected Class<? extends Annotation> propertyAnnotation() {
+  Class<? extends Annotation> propertyAnnotation() {
     return StringProperty.class;
   }
 
   @Override
-  protected Class<? extends Annotation> elementAnnotation() {
+  Class<? extends Annotation> elementAnnotation() {
     return StringElement.class;
   }
 
   @Override
-  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (pattern != null)
       attributes.put("pattern", pattern);
@@ -163,7 +151,7 @@ final class StringModel extends Model {
   }
 
   @Override
-  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+  void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");

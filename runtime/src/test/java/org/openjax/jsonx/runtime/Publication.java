@@ -17,10 +17,10 @@
 package org.openjax.jsonx.runtime;
 
 import java.util.List;
+import java.util.Optional;
 
-@ObjectType
-public abstract class Publication {
-  @StringProperty(use=Use.REQUIRED)
+public abstract class Publication implements JxObject {
+  @StringProperty
   private String title;
 
   public String getTitle() {
@@ -32,31 +32,31 @@ public abstract class Publication {
   }
 
   @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
-  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  private List<String> authors;
+  @ArrayProperty(use=Use.OPTIONAL, elementIds=1)
+  private Optional<List<String>> authors;
 
-  public List<String> getAuthors() {
+  public Optional<List<String>> getAuthors() {
     return this.authors;
   }
 
-  public void setAuthors(final List<String> authors) {
+  public void setAuthors(final Optional<List<String>> authors) {
     this.authors = authors;
   }
 
   @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
-  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
-  private List<String> editors;
+  @ArrayProperty(use=Use.OPTIONAL, elementIds=1)
+  private Optional<List<String>> editors;
 
-  public List<String> getEditors() {
+  public Optional<List<String>> getEditors() {
     return this.editors;
   }
 
-  public void setEditors(final List<String> editors) {
+  public void setEditors(final Optional<List<String>> editors) {
     this.editors = editors;
   }
 
   @ObjectElement(id=1, type=Publishing.class, nullable=false)
-  @ArrayProperty(use=Use.REQUIRED, elementIds=1)
+  @ArrayProperty(elementIds=1)
   private List<Publishing> publishings;
 
   public List<Publishing> getPublishings() {
@@ -69,6 +69,6 @@ public abstract class Publication {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).encode(this);
+    return new JxEncoder(2).marshal(this);
   }
 }

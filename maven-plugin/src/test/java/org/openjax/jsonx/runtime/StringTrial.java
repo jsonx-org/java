@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Optional;
 
 import org.fastjax.net.URIComponent;
 
@@ -45,8 +46,23 @@ class StringTrial extends PropertyTrial<String> {
     if (property.urlDecode() || property.urlEncode())
       trials.add(new StringTrial(UrlCodecCase.CASE, field, object, valid, property));
 
-    if (property.use() == Use.REQUIRED)
-      trials.add(new StringTrial(UseCase.CASE, field, object, null, property));
+    if (property.use() == Use.REQUIRED) {
+      if (property.nullable()) {
+        trials.add(new StringTrial(RequiredNullableCase.CASE, field, object, null, property));
+      }
+      else {
+        trials.add(new StringTrial(RequiredNotNullableCase.CASE, field, object, null, property));
+      }
+    }
+    else {
+      if (property.nullable()) {
+        trials.add(new StringTrial(OptionalNullableCase.CASE, field, object, null, property));
+        trials.add(new StringTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      }
+      else {
+        trials.add(new StringTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      }
+    }
   }
 
   private static class StringGen {
@@ -146,7 +162,7 @@ class StringTrial extends PropertyTrial<String> {
   final boolean urlEncode;
   final boolean urlDecode;
 
-  private StringTrial(final Case<? extends PropertyTrial<? super String>> kase, final Field field, final Object object, final String value, final StringProperty property) {
+  private StringTrial(final Case<? extends PropertyTrial<? super String>> kase, final Field field, final Object object, final Object value, final StringProperty property) {
     super(kase, field, object, value, property.name(), property.use());
     this.pattern = property.pattern();
     this.urlEncode = property.urlEncode();

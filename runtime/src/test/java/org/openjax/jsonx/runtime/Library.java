@@ -17,46 +17,45 @@
 package org.openjax.jsonx.runtime;
 
 import java.util.List;
+import java.util.Optional;
 
-@ObjectType
-public class Library {
-  @ObjectType
+public class Library implements JxObject {
   public static class Journal extends Publication {
-    @StringProperty(use=Use.REQUIRED)
-    private String subject;
+    @StringProperty
+    private Optional<String> subject;
 
-    public String getSubject() {
+    public Optional<String> getSubject() {
       return this.subject;
     }
 
-    public void setSubject(final String subject) {
+    public void setSubject(final Optional<String> subject) {
       this.subject = subject;
     }
 
-    @BooleanProperty(use=Use.REQUIRED)
-    private Boolean openAccess;
+    @BooleanProperty(use=Use.OPTIONAL)
+    private Optional<Boolean> openAccess;
 
-    public Boolean getOpenAccess() {
+    public Optional<Boolean> getOpenAccess() {
       return this.openAccess;
     }
 
-    public void setOpenAccess(final Boolean openAccess) {
+    public void setOpenAccess(final Optional<Boolean> openAccess) {
       this.openAccess = openAccess;
     }
   }
 
-  @ObjectProperty(use=Use.REQUIRED)
-  private Address address;
+  @ObjectProperty(use=Use.OPTIONAL)
+  private Optional<Address> address;
 
-  public Address getAddress() {
+  public Optional<Address> getAddress() {
     return this.address;
   }
 
-  public void setAddress(final Address address) {
+  public void setAddress(final Optional<Address> address) {
     this.address = address;
   }
 
-  @BooleanProperty(name="handicap", use=Use.REQUIRED)
+  @BooleanProperty(name="handicap", use=Use.OPTIONAL, nullable=false)
   private Boolean _handicap;
 
   public Boolean getHandicap() {
@@ -134,6 +133,6 @@ public class Library {
 
   @Override
   public String toString() {
-    return new JxEncoder(2).encode(this);
+    return new JxEncoder(2).marshal(this);
   }
 }

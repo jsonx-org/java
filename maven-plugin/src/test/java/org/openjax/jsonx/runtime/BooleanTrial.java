@@ -18,15 +18,31 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 
 class BooleanTrial extends PropertyTrial<Boolean> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final BooleanProperty property) {
     trials.add(new BooleanTrial(ValidCase.CASE, field, object, Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE, property));
-    if (property.use() == Use.REQUIRED)
-      trials.add(new BooleanTrial(UseCase.CASE, field, object, null, property));
+    if (property.use() == Use.REQUIRED) {
+      if (property.nullable()) {
+        trials.add(new BooleanTrial(RequiredNullableCase.CASE, field, object, null, property));
+      }
+      else {
+        trials.add(new BooleanTrial(RequiredNotNullableCase.CASE, field, object, null, property));
+      }
+    }
+    else {
+      if (property.nullable()) {
+        trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, null, property));
+        trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      }
+      else {
+        trials.add(new BooleanTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      }
+    }
   }
 
-  private BooleanTrial(final Case<? extends PropertyTrial<? super Boolean>> kase, final Field field, final Object object, final Boolean value, final BooleanProperty property) {
+  private BooleanTrial(final Case<? extends PropertyTrial<? super Boolean>> kase, final Field field, final Object object, final Object value, final BooleanProperty property) {
     super(kase, field, object, value, property.name(), property.use());
   }
 }

@@ -16,9 +16,8 @@
 
 package org.openjax.jsonx.runtime;
 
-@ObjectType
 public class Employee extends Individual {
-  @ObjectProperty(use=Use.OPTIONAL)
+  @ObjectProperty
   private Individual emergencyContact;
 
   public Individual getEmergencyContact() {

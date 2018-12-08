@@ -19,8 +19,8 @@ package org.openjax.jsonx.runtime;
 import java.lang.reflect.Field;
 
 abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final Use use) {
-    super(field, name, use);
+  PrimitiveCodec(final Field field, final String name, final boolean property, final Use use) {
+    super(field, name, property, use);
   }
 
   final String matches(final String json) {

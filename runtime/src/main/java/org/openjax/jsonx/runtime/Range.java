@@ -16,11 +16,14 @@
 
 package org.openjax.jsonx.runtime;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.fastjax.util.Numbers;
 
-public class Range {
+public class Range implements Serializable {
+  private static final long serialVersionUID = 1698022878075488056L;
+
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int index, final boolean commaOk) throws ParseException {
     try {
       for (int i = index; i < string.length() - 1; i++) {
@@ -129,7 +132,7 @@ public class Range {
 
   @Override
   public int hashCode() {
-    int hashCode = 1;
+    int hashCode = 43729;
     hashCode = 31 * hashCode + min.hashCode() ^ 7;
     hashCode = 31 * hashCode + Boolean.hashCode(minInclusive);
     hashCode = 31 * hashCode + max.hashCode() ^ 7;
@@ -147,6 +150,7 @@ public class Range {
     builder.append(',');
     if (max != null)
       builder.append(max);
+
     builder.append(maxInclusive ? ']' : ')');
     return builder.toString();
   }

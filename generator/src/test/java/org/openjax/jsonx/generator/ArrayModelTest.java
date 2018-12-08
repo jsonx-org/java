@@ -49,7 +49,7 @@ public class ArrayModelTest {
   public void testGreatestCommonSuperObject() {
     final Registry registry = new Registry();
     final xL3gluGCXYYJc.Jsonx jsonx = new xL3gluGCXYYJc.Jsonx();
-    jsonx.setPackage$(new xL3gluGCXYYJc.Jsonx.Package$(getClass().getPackageName()));
+    jsonx.setPackage$(new xL3gluGCXYYJc.Jsonx.Package$(getClass().getPackage().getName()));
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));

@@ -18,19 +18,27 @@ package org.openjax.jsonx.runtime;
 
 import static org.junit.Assert.*;
 
-class UseCase extends FailureCase<PropertyTrial<? super Object>> {
-  static final UseCase CASE = new UseCase();
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+
+class RequiredNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
+  static final RequiredNullableCase CASE = new RequiredNullableCase();
 
   @Override
-  void onEncode(final PropertyTrial<? super Object> trial, final EncodeException e) throws Exception {
-    assertEquals(trial.field.getDeclaringClass().getName() + "#" + trial.field.getName() + " is required", e.getMessage());
+  void onEncode(final PropertyTrial<? super Object> trial, final Relations relations, final String value) throws Exception {
+    if (trial.rawValue() != null)
+      throw new IllegalStateException(RequiredNullableCase.class.getSimpleName() + " must be used with null value");
+
+    assertEquals("null", value);
   }
 
   @Override
-  void onDecode(final PropertyTrial<? super Object> trial, final DecodeException e) throws Exception {
-    assertTrue(e.getMessage(), e.getMessage().contains("Property \"" + trial.name + "\" is required"));
+  void onDecode(final PropertyTrial<? super Object> trial, final Relations relations, final Object value) throws Exception {
+    if (trial.rawValue() != null)
+      throw new IllegalStateException(RequiredNullableCase.class.getSimpleName() + " must be used with null value");
+
+    assertNull(value);
   }
 
-  private UseCase() {
+  private RequiredNullableCase() {
   }
 }

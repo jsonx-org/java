@@ -44,27 +44,35 @@
   <object class="sub1.simple$Booleans">
     <property name="booleanRefDefault" xsi:type="reference" type="rootBooleanNull"/>
     <property name="booleanRefOptional" xsi:type="reference" type="rootBooleanNotNull" use="optional"/>
+    <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBooleanNotNull" use="optional" nullable="false"/>
     <property name="booleanDefault" xsi:type="boolean"/>
     <property name="booleanOptional" xsi:type="boolean" use="optional"/>
+    <property name="booleanOptionalNotNullable" xsi:type="boolean" use="optional" nullable="false"/>
   </object>
   <object class="sub1.simple$BooleansArray">
     <property name="booleanRefArrayDefault" xsi:type="reference" type="sub1.simple$RootBooleanArray"/>
     <property name="booleanRefArrayOptional" xsi:type="reference" type="sub1.simple$RootBooleanArray" use="optional"/>
+    <property name="booleanRefArrayOptionalNotNullable" xsi:type="reference" type="sub1.simple$RootBooleanArray" use="optional" nullable="false"/>
     <property name="booleanArrayDefault" xsi:type="array">
       <reference type="rootBooleanNotNull" minOccurs="1" maxOccurs="3"/>
     </property>
-    <property name="booleanArrayRequired" xsi:type="array">
+    <property name="booleanArray" xsi:type="array">
       <boolean nullable="false"/>
     </property>
     <property name="booleanArrayOptional" xsi:type="array" use="optional">
+      <boolean/>
+    </property>
+    <property name="booleanArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <boolean/>
     </property>
   </object>
   <object class="sub1.simple$Numbers">
     <property name="numberRefDefault" xsi:type="reference" type="rootNumber"/>
     <property name="numberRefOptional" xsi:type="reference" type="rootNumber" use="optional"/>
+    <property name="numberRefOptionalNotNullable" xsi:type="reference" type="rootNumber" use="optional" nullable="false"/>
     <property name="numberDefault" xsi:type="number"/>
     <property name="numberOptional" xsi:type="number" use="optional"/>
+    <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
     <property name="numberMin" xsi:type="number" range="[0,]"/>
     <property name="numberMax" xsi:type="number" range="[,0]"/>
     <property name="numberInteger" xsi:type="number" form="integer"/>
@@ -76,10 +84,16 @@
     <property name="numberArrayRefOptional" xsi:type="array" use="optional">
       <reference type="rootNumber" maxOccurs="3"/>
     </property>
+    <property name="numberArrayRefOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
+      <reference type="rootNumber" maxOccurs="3"/>
+    </property>
     <property name="numberArrayDefault" xsi:type="array">
       <number minOccurs="2" maxOccurs="10"/>
     </property>
     <property name="numberArrayOptional" xsi:type="array" use="optional">
+      <number minOccurs="2" maxOccurs="12"/>
+    </property>
+    <property name="numberArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <number minOccurs="2" maxOccurs="12"/>
     </property>
     <property name="booleanArray1" xsi:type="array">
@@ -238,8 +252,10 @@
   <object class="sub1.simple$Strings">
     <property name="stringRefDefault" xsi:type="reference" type="rootString"/>
     <property name="stringRefOptional" xsi:type="reference" type="rootString" use="optional"/>
+    <property name="stringRefOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
     <property name="stringDefault" xsi:type="string"/>
     <property name="stringOptional" xsi:type="string" use="optional"/>
+    <property name="stringOptionalNotNullable" xsi:type="string" use="optional" nullable="false"/>
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
     <property name="stringUrlDecode" xsi:type="string" urlDecode="true"/>
     <property name="stringUrlEncode" xsi:type="string" urlEncode="true"/>
@@ -248,7 +264,10 @@
     <property name="stringArrayRefDefault" xsi:type="array">
       <reference type="rootMultiArray"/>
     </property>
-    <property name="stringArrayRefNotRequired" xsi:type="array" use="optional">
+    <property name="stringArrayRefOptional" xsi:type="array" use="optional">
+      <reference type="rootString"/>
+    </property>
+    <property name="stringArrayRefOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <reference type="rootString"/>
     </property>
     <property name="stringArrayDefault" xsi:type="array">
@@ -258,31 +277,44 @@
     <property name="stringArrayOptional" xsi:type="array" use="optional">
       <string minOccurs="3" maxOccurs="5"/>
     </property>
+    <property name="stringArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
+      <string minOccurs="3" maxOccurs="5"/>
+    </property>
     <property name="stringArrayPattern" xsi:type="array">
       <string pattern="[valid]+"/>
     </property>
     <property name="stringArrayUrl" xsi:type="array">
       <string urlEncode="true" maxOccurs="1" nullable="false"/>
       <string urlDecode="true" maxOccurs="1"/>
-      <string urlEncode="true" urlDecode="true" maxOccurs="1" nullable="false"/>
+      <string urlEncode="true" urlDecode="true" maxOccurs="1"/>
     </property>
   </object>
   <object class="sub2.pkg.cls$AbstractObject" abstract="true">
-    <property name="booleanProperty" xsi:type="reference" type="rootBooleanNull" use="optional"/>
+    <property name="booleanPropertyOptional" xsi:type="reference" type="rootBooleanNull" use="optional"/>
+    <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBooleanNull" use="optional" nullable="false"/>
     <property name="emptyArray" xsi:type="reference" type="rootArrayBool"/>
   </object>
   <object class="sub2.xyz.Objects">
     <property name="objectDefault" xsi:type="object" class="ObjectDefault"/>
     <property name="objectOptional" xsi:type="object" class="ObjectOptional" use="optional"/>
+    <property name="objectOptionalNotNullable" xsi:type="object" class="ObjectOptionalNullable" use="optional" nullable="false"/>
     <property name="objectOptional2" xsi:type="object" class="ObjectOptional2" use="optional"/>
+    <property name="objectOptionalNullable2" xsi:type="object" class="ObjectOptionalNullable2" use="optional"/>
     <property name="objectExtendsAbstract" xsi:type="object" class="ObjectExtendsAbstract" extends="sub2.pkg.cls$AbstractObject">
-      <property name="objectString" xsi:type="reference" type="rootString" use="optional"/>
+      <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
+      <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
       <property name="objectNumberOptional" xsi:type="number" use="optional"/>
+      <property name="objectNumberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
       <property name="objectExtendsBooleans" xsi:type="object" class="ObjectExtendsBooleans" extends="sub1.simple$Booleans"/>
-      <property name="objectExtendsBooleans2" xsi:type="object" class="ObjectExtendsBooleans2" extends="sub1.simple$Booleans" use="optional"/>
+      <property name="objectExtendsBooleansOptional2" xsi:type="object" class="ObjectExtendsOptionalBooleans2" extends="sub1.simple$Booleans" use="optional"/>
+      <property name="objectExtendsBooleansOptionalNullable2" xsi:type="object" class="ObjectExtendsBooleansOptionalNullable2" extends="sub1.simple$Booleans" use="optional"/>
       <property name="objectExtendsBooleans3" xsi:type="object" class="ObjectExtendsBooleans3" extends="sub1.simple$Booleans"/>
-      <property name="objectExtendsAbstract" xsi:type="object" class="ObjectExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" use="optional">
-        <property name="objectString" xsi:type="reference" type="rootString" use="optional"/>
+      <property name="objectOptionalExtendsAbstract" xsi:type="object" class="ObjectOptionalExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" use="optional">
+        <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
+        <property name="objectNumber" xsi:type="number"/>
+      </property>
+      <property name="objectOptionalNotNullableExtendsAbstract" xsi:type="object" class="ObjectOptionalNotNullableExtendsAbstract2" extends="sub2.pkg.cls$AbstractObject" use="optional" nullable="false">
+        <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
         <property name="objectNumber" xsi:type="number"/>
       </property>
     </property>
@@ -294,7 +326,10 @@
     <property name="objectArrayDefault" xsi:type="array">
       <reference type="sub1.simple$Booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
     </property>
-    <property name="objectArrayNotRequired" xsi:type="array" use="optional">
+    <property name="objectArrayOptional" xsi:type="array" use="optional">
+      <reference type="sub1.simple$Strings" minOccurs="1" maxOccurs="7"/>
+    </property>
+    <property name="objectArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <reference type="sub1.simple$Strings" minOccurs="1" maxOccurs="7"/>
     </property>
     <property name="objectArrayPropertiesSkipUnknown" xsi:type="array">

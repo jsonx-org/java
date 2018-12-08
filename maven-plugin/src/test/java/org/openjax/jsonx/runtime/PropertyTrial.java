@@ -18,6 +18,7 @@ package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 abstract class PropertyTrial<T> {
   static final SecureRandom random = new SecureRandom();
@@ -25,18 +26,31 @@ abstract class PropertyTrial<T> {
   final Case<? extends PropertyTrial<? super T>> kase;
   final Field field;
   final Object object;
-  final T value;
+  private final Object value;
   final String name;
   final Use use;
 
-  PropertyTrial(final Case<? extends PropertyTrial<? super T>> kase, final Field field, final Object object, final T value, final String name, final Use use) {
+  PropertyTrial(final Case<? extends PropertyTrial<? super T>> kase, final Field field, final Object object, final Object value, final String name, final Use use) {
     this.kase = kase;
     this.field = field;
     this.object = object;
     this.value = value;
-    this.name = JsonxUtil.getName(name, field);
+    this.name = JxUtil.getName(name, field);
     this.use = use;
 
     field.setAccessible(true);
+  }
+
+  void setField(final Object value) throws IllegalAccessException {
+    field.set(object, Optional.class.equals(field.getType()) && value != null && !(value instanceof Optional) ? Optional.ofNullable(value) : value);
+  }
+
+  Object rawValue() {
+    return value;
+  }
+
+  @SuppressWarnings("unchecked")
+  T value() {
+    return (T)(value instanceof Optional ? ((Optional<T>)value).orElse(null) : value);
   }
 }

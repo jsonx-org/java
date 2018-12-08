@@ -26,14 +26,15 @@ import java.math.BigInteger;
 
 import org.fastjax.json.JsonReader;
 import org.fastjax.math.BigDecimals;
+import org.fastjax.math.BigIntegers;
 import org.junit.Test;
 
 public class ArrayDecodeTest {
-  private static void test(final Object in) throws DecodeException, IOException {
+  private static void test(final JxObject in) throws DecodeException, IOException {
     test(in, null);
   }
 
-  private static void test(final Object in, final String error) throws DecodeException, IOException {
+  private static void test(final JxObject in, final String error) throws DecodeException, IOException {
     try {
       final String inJson = in.toString();
       final Object out = JxDecoder.parseObject(in.getClass(), new JsonReader(new StringReader(inJson)));
@@ -88,7 +89,7 @@ public class ArrayDecodeTest {
     test(array.setArray1d2(l(null, BigDecimals.TWO)), "Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 2");
     test(array.setArray1d2(l(true, "abc", true)), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
     test(array.setArray1d2(l(true, "abc", "abc")), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=4, form=REAL, range=\"[0,10]\", minOccurs=1, maxOccurs=2, nullable=true): Content is not complete");
-    test(array.setArray1d2(l(true, "abc", "abc", BigDecimals.PI, BigDecimal.TEN, null)), "Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=3, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal non-INTEGER value: 3.14159265358...");
+    test(array.setArray1d2(l(true, "abc", "abc", BigDecimals.PI, BigDecimal.TEN, null)), "Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=3, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal Form.INTEGER value: 3.14159265358...");
     test(array.setArray1d2(l(null, "111", null)), "Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
     test(array.setArray1d2(l(true, true, true, true)), "Invalid content was found starting with member index=3: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
     test(array.setArray1d2(l(null, "abc", "111", "abc")), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
@@ -171,12 +172,12 @@ public class ArrayDecodeTest {
     test(array.setArray2d2(l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.TEN)));
     test(array.setArray2d2(l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.ONE)));
 
-    test(array.setArray2d2(l(true, l(), BigInteger.ZERO, BigInteger.ONE, BigInteger.TWO)), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found in empty array: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
+    test(array.setArray2d2(l(true, l(), BigInteger.ZERO, BigInteger.ONE, BigIntegers.TWO)), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found in empty array: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
     test(array.setArray2d2(l(true, l(null, "abc"), "abc", BigInteger.ZERO, BigInteger.ONE)), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"abc\"");
     test(array.setArray2d2(l(true, l(null, "ABC", "ABC", BigInteger.TEN), "abc", BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=9, form=INTEGER, range=\"[0,5]\", minOccurs=0, maxOccurs=1, nullable=false): No members are expected at this point: abc");
     test(array.setArray2d2(l(true, l(null, "ABC", "ABC", BigInteger.TEN), BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=8, form=INTEGER, range=\"[5,10]\", minOccurs=0, maxOccurs=1, nullable=false): Range is not matched: 0");
     test(array.setArray2d2(l(l(null, "abc", "abc", BigInteger.TEN), false, l(BigInteger.ZERO, "123"))), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", urlEncode=false, urlDecode=false, minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 0");
-    test(array.setArray2d2(l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimals.PI, "abc"))), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=6, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal non-INTEGER value: 3.14159265358...");
+    test(array.setArray2d2(l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimals.PI, "abc"))), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=6, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal Form.INTEGER value: 3.14159265358...");
     test(array.setArray2d2(l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimal.ZERO, null, null, null))), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=4: @" + NumberElement.class.getName() + "(id=6, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal value: null");
   }
 

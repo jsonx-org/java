@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.Map;
 
-public class AnnotationSpec {
+class AnnotationSpec {
   private static String toAnnotation(final Map<String,String> attributes) {
     final StringBuilder builder = new StringBuilder();
     final Iterator<Map.Entry<String,String>> iterator = attributes.entrySet().iterator();
@@ -38,7 +38,7 @@ public class AnnotationSpec {
   private final Class<? extends Annotation> annotationType;
   private final AttributeMap attributes;
 
-  public AnnotationSpec(final Class<? extends Annotation> annotationType, final AttributeMap attributes) {
+  AnnotationSpec(final Class<? extends Annotation> annotationType, final AttributeMap attributes) {
     this.annotationType = annotationType;
     this.attributes = attributes;
   }

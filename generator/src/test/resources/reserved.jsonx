@@ -41,19 +41,19 @@
   <number template="byte" form="integer" range="[2,9]"/>
   <string template="abstract" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
   <object class="test.Reserved">
-    <property name="boolean" xsi:type="array" use="optional">
+    <property name="boolean" xsi:type="array">
       <boolean/>
     </property>
     <property name="package" xsi:type="reference" type="package" use="optional"/>
     <property name="int" xsi:type="reference" type="import"/>
-    <property name="long" xsi:type="reference" type="extends" use="optional"/>
-    <property name="class" xsi:type="reference" type="break" use="optional"/>
+    <property name="long" xsi:type="reference" type="extends" use="optional" nullable="false"/>
+    <property name="class" xsi:type="reference" type="break"/>
     <property name="continue" xsi:type="boolean" use="optional"/>
-    <property name="protected" xsi:type="reference" type="public"/>
+    <property name="protected" xsi:type="reference" type="public" nullable="false"/>
     <property name="private" xsi:type="reference" type="public" use="optional"/>
     <property name="default" xsi:type="number" range="[5,8]" use="optional"/>
-    <property name="do" xsi:type="reference" type="byte" use="optional"/>
-    <property name="final" xsi:type="string" use="optional"/>
-    <property name="finally" xsi:type="reference" type="abstract" use="optional"/>
+    <property name="do" xsi:type="reference" type="byte" use="optional" nullable="false"/>
+    <property name="final" xsi:type="string"/>
+    <property name="finally" xsi:type="reference" type="abstract"/>
   </object>
 </jsonx>

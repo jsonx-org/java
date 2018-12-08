@@ -68,18 +68,18 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   @Override
   void onEncode(final PropertyTrial<T> trial, final Relations relations, final String value) {
     final String expected;
-    if (trial.value == null) {
+    if (trial.value() == null) {
       expected = null;
     }
-    else if (trial.value instanceof List) {
-      final List<Object> list = format((List<?>)trial.value, relations, false);
+    else if (trial.value() instanceof List) {
+      final List<Object> list = format((List<?>)trial.value(), relations, false);
       expected = list.toString();
     }
     else if (trial instanceof StringTrial) {
-      expected = StringCodec.encode(((StringTrial)trial).urlEncode, (String)trial.value).toString();
+      expected = StringCodec.encode(((StringTrial)trial).urlEncode, (String)trial.value()).toString();
     }
     else {
-      expected = String.valueOf(trial.value);
+      expected = String.valueOf(trial.value());
     }
 
     final String actual;
@@ -104,23 +104,23 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   @Override
   void onDecode(final PropertyTrial<T> trial, final Relations relations, final Object value) {
     final Object expected;
-    if (trial.value == null) {
+    if (trial.value() == null) {
       expected = null;
     }
-    else if (trial.value instanceof List) {
-      expected = format((List<?>)trial.value, relations, true);
+    else if (trial.value() instanceof List) {
+      expected = format((List<?>)trial.value(), relations, true);
     }
     else if (trial instanceof StringTrial) {
       final StringTrial stringTrial = (StringTrial)trial;
       if (!stringTrial.urlEncode && stringTrial.urlDecode)
-        expected = URIComponent.decode((String)trial.value);
+        expected = URIComponent.decode((String)trial.value());
       else if (stringTrial.urlEncode && !stringTrial.urlDecode)
-        expected = URIComponent.encode((String)trial.value);
+        expected = URIComponent.encode((String)trial.value());
       else
-        expected = trial.value;
+        expected = trial.value();
     }
     else {
-      expected = trial.value;
+      expected = trial.value();
     }
 
     assertEquals(expected, value);

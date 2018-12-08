@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberElement {
   int id();
-  boolean nullable() default false;
+  boolean nullable() default true;
   Form form() default Form.REAL;
   String range() default "";
   int minOccurs() default 1;

@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
+
+import org.fastjax.util.Classes;
 
 class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
@@ -33,8 +36,23 @@ class NumberTrial extends PropertyTrial<Number> {
     if (property.form() == Form.INTEGER && BigDecimal.class.isAssignableFrom(field.getType()))
       trials.add(new NumberTrial(FormCase.CASE, field, object, makeValid(range), property));
 
-    if (property.use() == Use.REQUIRED)
-      trials.add(new NumberTrial(UseCase.CASE, field, object, null, property));
+    if (property.use() == Use.REQUIRED) {
+      if (property.nullable()) {
+        trials.add(new NumberTrial(RequiredNullableCase.CASE, field, object, null, property));
+      }
+      else {
+        trials.add(new NumberTrial(RequiredNotNullableCase.CASE, field, object, null, property));
+      }
+    }
+    else {
+      if (property.nullable()) {
+        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, null, property));
+        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      }
+      else {
+        trials.add(new NumberTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      }
+    }
   }
 
   static BigDecimal makeValid(final Range range) {
@@ -50,30 +68,32 @@ class NumberTrial extends PropertyTrial<Number> {
   }
 
   static Number toProperForm(final Field field, final Form form, final BigDecimal value) {
-    if (BigDecimal.class.isAssignableFrom(field.getType())) {
+    final boolean isOptional = Optional.class.isAssignableFrom(field.getType());
+    final Class<?> type = isOptional ? Classes.getGenericTypes(field)[0] : field.getType();
+    if (BigDecimal.class.isAssignableFrom(type)) {
       final BigDecimal decimal = value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value;
       return form == Form.INTEGER ? decimal.setScale(0, RoundingMode.DOWN) : decimal;
     }
 
-    if (BigInteger.class.isAssignableFrom(field.getType()))
+    if (BigInteger.class.isAssignableFrom(type))
       return value == null ? BigInteger.valueOf(random.nextLong()) : value.toBigInteger();
 
-    if (Long.class.isAssignableFrom(field.getType()))
+    if (Long.class.isAssignableFrom(type))
       return value == null ? random.nextLong() : value.longValue();
 
-    if (Integer.class.isAssignableFrom(field.getType()))
+    if (Integer.class.isAssignableFrom(type))
       return value == null ? random.nextInt() : value.intValue();
 
-    if (Short.class.isAssignableFrom(field.getType()))
+    if (Short.class.isAssignableFrom(type))
       return value == null ? (short)random.nextInt() : value.shortValue();
 
-    if (Byte.class.isAssignableFrom(field.getType()))
+    if (Byte.class.isAssignableFrom(type))
       return value == null ? (byte)random.nextInt() : value.byteValue();
 
-    if (Double.class.isAssignableFrom(field.getType()))
+    if (Double.class.isAssignableFrom(type))
       return value == null ? random.nextDouble() * random.nextLong() : value.doubleValue();
 
-    if (Float.class.isAssignableFrom(field.getType()))
+    if (Float.class.isAssignableFrom(type))
       return value == null ? random.nextFloat() * random.nextInt() : value.floatValue();
 
     throw new UnsupportedOperationException("Number type is not supported: " + field.getType().getName());
@@ -82,7 +102,7 @@ class NumberTrial extends PropertyTrial<Number> {
   final Form form;
   final Range range;
 
-  private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Field field, final Object object, final Number value, final NumberProperty property) {
+  private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Field field, final Object object, final Object value, final NumberProperty property) {
     super(kase, field, object, value, property.name(), property.use());
     this.form = property.form();
     this.range = property.range().length() == 0 ? null : new Range(property.range());

@@ -20,16 +20,16 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 import org.fastjax.json.JsonReader;
+import org.fastjax.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayCodec extends Codec {
   static Relations encode(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
     final Relations relations = new Relations();
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    final int[] elementIds = JxUtil.digest(field, idToElement);
     final String error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
     if (validate && error != null)
       throw new EncodeException(error);
@@ -37,10 +37,10 @@ class ArrayCodec extends Codec {
     return relations;
   }
 
-  static Object decode(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader, final BiConsumer<Field,Object> callback) throws IOException {
+  static Object decode(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
     final Relations relations = new Relations();
-    final String error = ArrayValidator.validate(iterator, 0, annotations, 0, idToElement, relations, true, callback);
+    final String error = ArrayValidator.validate(iterator, 0, annotations, 0, idToElement, relations, true, onPropertyDecode);
     if (error != null)
       return error;
 
@@ -55,8 +55,8 @@ class ArrayCodec extends Codec {
   private final IdToElement idToElement = new IdToElement();
 
   ArrayCodec(final ArrayProperty property, final Field field) {
-    super(field, property.name(), property.use());
-    final int[] elementIds = JsonxUtil.digest(field, idToElement);
+    super(field, property.name(), property.nullable(), property.use());
+    final int[] elementIds = JxUtil.digest(field, idToElement);
     this.annotations = idToElement.get(elementIds);
   }
 

@@ -19,10 +19,18 @@ package org.openjax.jsonx.runtime;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Optional;
 
 import org.fastjax.util.Classes;
 
 class ObjectTrial extends PropertyTrial<Object> {
+  private static void setField(final Field field, final Object object, final Object value) throws IllegalAccessException {
+    if (Optional.class.isAssignableFrom(field.getType()))
+      field.set(object, Optional.ofNullable(value));
+    else
+      field.set(object, value);
+  }
+
   static Object createValid(final Class<?> type) {
     try {
       final Object object = type.getDeclaredConstructor().newInstance();
@@ -36,13 +44,13 @@ class ObjectTrial extends PropertyTrial<Object> {
             final IdToElement idToElement;
             if (arrayProperty.type() == ArrayType.class) {
               idToElement = new IdToElement();
-              JsonxUtil.digest(field, idToElement);
+              JxUtil.digest(field, idToElement);
             }
             else {
               idToElement = null;
             }
 
-            field.set(object, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.elementIds(), idToElement));
+            setField(field, object, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.elementIds(), idToElement));
           }
 
           continue;
@@ -51,7 +59,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final BooleanProperty booleanProperty = field.getAnnotation(BooleanProperty.class);
         if (booleanProperty != null) {
           if (booleanProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            field.set(object, Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE);
+            setField(field, object, Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE);
 
           continue;
         }
@@ -59,7 +67,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final NumberProperty numberProperty = field.getAnnotation(NumberProperty.class);
         if (numberProperty != null) {
           if (numberProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            field.set(object, NumberTrial.toProperForm(field, numberProperty.form(), NumberTrial.makeValid(numberProperty.range().length() == 0 ? null : new Range(numberProperty.range()))));
+            setField(field, object, NumberTrial.toProperForm(field, numberProperty.form(), NumberTrial.makeValid(numberProperty.range().length() == 0 ? null : new Range(numberProperty.range()))));
 
           continue;
         }
@@ -67,7 +75,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final ObjectProperty objectProperty = field.getAnnotation(ObjectProperty.class);
         if (objectProperty != null) {
           if (objectProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            field.set(object, ObjectTrial.createValid(field.getType()));
+            setField(field, object, ObjectTrial.createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericTypes(field)[0] : field.getType()));
 
           continue;
         }
@@ -75,7 +83,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final StringProperty stringProperty = field.getAnnotation(StringProperty.class);
         if (stringProperty != null) {
           if (stringProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            field.set(object, StringTrial.createValid(stringProperty.pattern(), stringProperty.urlDecode(), stringProperty.urlEncode()));
+            setField(field, object, StringTrial.createValid(stringProperty.pattern(), stringProperty.urlDecode(), stringProperty.urlEncode()));
 
           continue;
         }
@@ -89,9 +97,25 @@ class ObjectTrial extends PropertyTrial<Object> {
   }
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final ObjectProperty property) {
-    trials.add(new ObjectTrial(ValidCase.CASE, field, object, createValid(field.getType()), property));
-    if (property.use() == Use.REQUIRED)
-      trials.add(new ObjectTrial(UseCase.CASE, field, object, null, property));
+    trials.add(new ObjectTrial(ValidCase.CASE, field, object, createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericTypes(field)[0] : field.getType()), property));
+
+    if (property.use() == Use.REQUIRED) {
+      if (property.nullable()) {
+        trials.add(new ObjectTrial(RequiredNullableCase.CASE, field, object, null, property));
+      }
+      else {
+        trials.add(new ObjectTrial(RequiredNotNullableCase.CASE, field, object, null, property));
+      }
+    }
+    else {
+      if (property.nullable()) {
+        trials.add(new ObjectTrial(OptionalNullableCase.CASE, field, object, null, property));
+        trials.add(new ObjectTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      }
+      else {
+        trials.add(new ObjectTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      }
+    }
   }
 
   private ObjectTrial(final Case<? extends PropertyTrial<? super Object>> kase, final Field field, final Object object, final Object value, final ObjectProperty property) {

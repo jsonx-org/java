@@ -23,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -36,6 +38,7 @@ import org.fastjax.jci.CompilationException;
 import org.fastjax.jci.InMemoryCompiler;
 import org.fastjax.lang.PackageNotFoundException;
 import org.fastjax.test.AssertXml;
+import org.fastjax.util.Classes;
 import org.fastjax.xml.ValidationException;
 import org.fastjax.xml.sax.Validator;
 import org.junit.Test;
@@ -112,8 +115,20 @@ public class SchemaTest {
     }
   }
 
+  // This is necessary for jdk1.8, and is replaced with ClassLoader#getDeclaredPackage() in jdk9
+  private static Package getPackage(final ClassLoader classLoader, final String packageName) {
+    try {
+      final Method method = Classes.getDeclaredMethodDeep(classLoader.getClass(), "getPackage", String.class);
+      method.setAccessible(true);
+      return (Package)method.invoke(classLoader, packageName);
+    }
+    catch (final IllegalAccessException | InvocationTargetException e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
   private static Schema newSchema(final ClassLoader classLoader, final String packageName) throws IOException, PackageNotFoundException {
-    return new Schema(classLoader.getDefinedPackage(packageName), classLoader, c -> c.getClassLoader() == classLoader);
+    return new Schema(getPackage(classLoader, packageName), classLoader, c -> c.getClassLoader() == classLoader);
   }
 
   private static void assertSources(final Map<String,String> expected, final Map<String,String> actual) {

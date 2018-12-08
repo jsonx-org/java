@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.fastjax.util.FastCollections;
@@ -46,7 +47,7 @@ import org.openjax.xsb.runtime.Bindings;
 import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Member extends Element {
-  protected static Member toMember(final Registry registry, final Referrer<?> referrer, final Field field) {
+  static Member toMember(final Registry registry, final Referrer<?> referrer, final Field field) {
     Member declaredMember = null;
     for (final Annotation annotation : field.getAnnotations()) {
       Member member = null;
@@ -70,7 +71,7 @@ abstract class Member extends Element {
     return declaredMember;
   }
 
-  protected static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
+  static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
     @Override
     public String apply(final Binding t) {
       final String name;
@@ -122,57 +123,37 @@ abstract class Member extends Element {
       throw new ValidationException(source + ": minOccurs=\"" + minOccurs + "\" > maxOccurs=\"" + maxOccurs + "\"");
   }
 
-  protected final Registry registry;
-  private final String name;
-  private final Boolean nullable;
-  private final Use use;
-  private final Integer minOccurs;
-  private final Integer maxOccurs;
+  final Registry registry;
+  final String name;
+  final Boolean nullable;
+  final Use use;
+  final Integer minOccurs;
+  final Integer maxOccurs;
 
-  public Member(final Registry registry, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
+  Member(final Registry registry, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
     this.registry = registry;
     this.name = name;
-    this.nullable = nullable == null || !nullable ? null : nullable;
+    this.nullable = nullable == null || nullable ? null : nullable;
     this.use = use == Use.REQUIRED ? null : use;
     this.minOccurs = minOccurs == null || minOccurs == 1 ? null : minOccurs;
     this.maxOccurs = maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs;
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
-  public Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+  Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
     this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
-  public Member(final Registry registry, final $JavaIdentifier name, final yAA.$String use) {
-    this(registry, name.text(), null, use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
+  Member(final Registry registry, final $JavaIdentifier name, final yAA.$Boolean nullable, final yAA.$String use) {
+    this(registry, name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
   }
 
-  public final String name() {
-    return this.name;
-  }
-
-  public final String instanceName() {
+  final String instanceName() {
     return JavaIdentifiers.toInstanceCase(name);
   }
 
-  public final Boolean nullable() {
-    return nullable;
-  }
-
-  public final Use use() {
-    return use;
-  }
-
-  public final Integer minOccurs() {
-    return minOccurs;
-  }
-
-  public final Integer maxOccurs() {
-    return maxOccurs;
-  }
-
   @Override
-  protected Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
@@ -180,7 +161,7 @@ abstract class Member extends Element {
       attributes.put("template", id().toString());
 
     if (!(owner instanceof Schema)) {
-      if (nullable != null && nullable)
+      if (nullable != null)
         attributes.put("nullable", String.valueOf(nullable));
 
       if (use != null)
@@ -204,7 +185,7 @@ abstract class Member extends Element {
    * @param attributes The target {@code attributes} parameter.
    * @param owner The {@code Member} that owns {@code this}.
    */
-  protected void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
+  void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     if (nullable != null)
       attributes.put("nullable", nullable);
 
@@ -218,11 +199,11 @@ abstract class Member extends Element {
       attributes.put("maxOccurs", maxOccurs);
   }
 
-  protected final String toInstanceName() {
+  final String toInstanceName() {
     return JavaIdentifiers.toInstanceCase(name);
   }
 
-  protected final String toField() {
+  final String toField() {
     final StringBuilder builder = new StringBuilder();
     final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
     if (elementAnnotations != null && elementAnnotations.size() > 0)
@@ -238,24 +219,26 @@ abstract class Member extends Element {
     if ("Class".equals(classCase))
       classCase = "0lass";
 
+    final String type = nullable == null && use == Use.OPTIONAL ? Optional.class.getName() + "<" + type().toCanonicalString() + ">" : type().toCanonicalString();
+
     builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
-    builder.append("\nprivate ").append(type().toCanonicalString()).append(' ').append(instanceName).append(';');
-    builder.append("\n\npublic void set").append(classCase).append("(final ").append(type().toCanonicalString()).append(" ").append(instanceName).append(") {");
+    builder.append("\nprivate ").append(type).append(' ').append(instanceName).append(';');
+    builder.append("\n\npublic void set").append(classCase).append("(final ").append(type).append(" ").append(instanceName).append(") {");
     builder.append("\n  this.").append(instanceName).append(" = ").append(instanceName).append(';');
     builder.append("\n}");
-    builder.append("\n\npublic ").append(type().toCanonicalString()).append(" get").append(classCase).append("() {");
+    builder.append("\n\npublic ").append(type).append(" get").append(classCase).append("() {");
     builder.append("\n  return ").append(instanceName).append(';');
     builder.append("\n}");
     return builder.toString();
   }
 
-  protected List<AnnotationSpec> toElementAnnotations() {
+  List<AnnotationSpec> toElementAnnotations() {
     return null;
   }
 
-  protected abstract Id id();
-  protected abstract Registry.Type type();
-  protected abstract String elementName();
-  protected abstract Class<? extends Annotation> propertyAnnotation();
-  protected abstract Class<? extends Annotation> elementAnnotation();
+  abstract Id id();
+  abstract Registry.Type type();
+  abstract String elementName();
+  abstract Class<? extends Annotation> propertyAnnotation();
+  abstract Class<? extends Annotation> elementAnnotation();
 }

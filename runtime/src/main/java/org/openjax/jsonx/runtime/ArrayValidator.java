@@ -18,14 +18,13 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.function.BiConsumer;
 
 import org.fastjax.util.Annotations;
 import org.fastjax.util.DelegateList;
+import org.fastjax.util.function.TriPredicate;
 
 public class ArrayValidator {
   static class Relation {
@@ -89,20 +88,7 @@ public class ArrayValidator {
   private static int getNextRequiredElement(final Annotation[] annotations, final int fromIndex, int count) {
     for (int i = fromIndex; i < annotations.length; ++i) {
       final Annotation annotation = annotations[i];
-      final int minOccurs;
-      if (annotation instanceof ArrayElement)
-        minOccurs = ((ArrayElement)annotation).minOccurs();
-      else if (annotation instanceof BooleanElement)
-        minOccurs = ((BooleanElement)annotation).minOccurs();
-      else if (annotation instanceof NumberElement)
-        minOccurs = ((NumberElement)annotation).minOccurs();
-      else if (annotation instanceof ObjectElement)
-        minOccurs = ((ObjectElement)annotation).minOccurs();
-      else if (annotation instanceof StringElement)
-        minOccurs = ((StringElement)annotation).minOccurs();
-      else
-        throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
-
+      final int minOccurs = JxUtil.getMinOccurs(annotation);
       if (count < minOccurs)
         return i;
 
@@ -112,7 +98,7 @@ public class ArrayValidator {
     return -1;
   }
 
-  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) throws IOException {
+  static String validate(final ArrayIterator iterator, final int count, final Annotation[] annotations, final int a, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final int i = iterator.nextIndex();
     if (!iterator.hasNext()) {
       final int nextRequiredIndex = getNextRequiredElement(annotations, a, count);
@@ -190,12 +176,12 @@ public class ArrayValidator {
       }
     }
     else {
-      if ((error = iterator.currentMatchesType(type, annotation, idToElement, callback)) == null || !validate) {
-        error = iterator.currentIsValid(i, annotation, idToElement, relations, validate, callback);
+      if ((error = iterator.currentMatchesType(type, annotation, idToElement, onPropertyDecode)) == null || !validate) {
+        error = iterator.currentIsValid(i, annotation, idToElement, relations, validate, onPropertyDecode);
       }
       else if (count >= minOccurs) {
         iterator.previous();
-        return validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, callback);
+        return validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, onPropertyDecode);
       }
     }
 
@@ -204,13 +190,13 @@ public class ArrayValidator {
     do {
       if (result != null) {
         iterator.previous();
-        return count >= minOccurs && maxOccurs >= count && validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, callback) == null ? null : result;
+        return count >= minOccurs && maxOccurs >= count && validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, onPropertyDecode) == null ? null : result;
       }
 
       if (count < maxOccurs - 1)
-        result = validate(iterator, count + 1, annotations, a, idToElement, relations, validate, callback);
+        result = validate(iterator, count + 1, annotations, a, idToElement, relations, validate, onPropertyDecode);
       else
-        result = validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, callback);
+        result = validate(iterator, 0, annotations, a + 1, idToElement, relations, validate, onPropertyDecode);
     }
     while (result != null);
 
@@ -218,20 +204,20 @@ public class ArrayValidator {
   }
 
   @SuppressWarnings("unchecked")
-  static String validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+  static String validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final Annotation[] annotations = idToElement.get(elementIds);
     try {
-      return validate(new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations, validate, callback);
+      return validate(new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations, validate, onPropertyDecode);
     }
     catch (final IOException e) {
       throw new RuntimeException("Should not happen, as this method is only called for encode", e);
     }
   }
 
-  static String validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations, final boolean validate, final BiConsumer<Field,Object> callback) {
+  static String validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsonxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
-    return validate(members, idToElement, elementIds, relations, validate, callback);
+    final int[] elementIds = JxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
+    return validate(members, idToElement, elementIds, relations, validate, onPropertyDecode);
   }
 
   private ArrayValidator() {

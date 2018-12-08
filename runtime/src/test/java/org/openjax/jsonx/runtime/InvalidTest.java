@@ -21,13 +21,14 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Optional;
 
 import org.fastjax.json.JsonReader;
 import org.junit.Test;
 
 public class InvalidTest {
   private static final JxEncoder validEncoder = new JxEncoder(2, true);
-  private static final JxEncoder invalidEncoder = new JxEncoder(2, false);
 
   public static class InvalidName {
     @Test
@@ -36,7 +37,7 @@ public class InvalidTest {
       binding.setInvalidName(true);
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -54,6 +55,31 @@ public class InvalidTest {
     }
   }
 
+  public static class InvalidType {
+    @Test
+    public void testInvalidType() throws DecodeException, IOException {
+      final Invalid.InvalidType binding = new Invalid.InvalidType();
+      binding.setInvalidType(true);
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertEquals("Invalid field: " + Invalid.InvalidType.class.getName() + "#invalidType: Field with (nullable=true & use=Use.OPTIONAL) must be of type: " + Optional.class.getName(), e.getMessage());
+      }
+
+      try {
+        final String json = "{\"invalidType\": true}";
+        JxDecoder.parseObject(Invalid.InvalidType.class, new JsonReader(new StringReader(json)));
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertEquals("Invalid field: " + Invalid.InvalidType.class.getName() + "#invalidType: Field with (nullable=true & use=Use.OPTIONAL) must be of type: " + Optional.class.getName(), e.getMessage());
+      }
+    }
+  }
+
   public static class Bool {
     @Test
     public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
@@ -61,11 +87,11 @@ public class InvalidTest {
       binding.setInvalidType(7);
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -74,7 +100,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"boolean\""));
+        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"boolean\" with value:"));
       }
     }
 
@@ -84,11 +110,11 @@ public class InvalidTest {
       binding.setInvalidAnnotation(true);
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {
@@ -109,11 +135,11 @@ public class InvalidTest {
       binding.setInvalidType(true);
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -122,7 +148,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"number\""));
+        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"number\" with value:"));
       }
     }
 
@@ -132,11 +158,11 @@ public class InvalidTest {
       binding.setInvalidAnnotation(7);
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {
@@ -152,10 +178,10 @@ public class InvalidTest {
     @Test
     public void testInvalidForm() throws IOException {
       final Invalid.Num binding = new Invalid.Num();
-      binding.setInvalidForm(BigDecimal.valueOf(5.8));
+      binding.setInvalidForm(Optional.of(BigDecimal.valueOf(5.8)));
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected EncodeException");
       }
       catch (final EncodeException e) {
@@ -177,10 +203,10 @@ public class InvalidTest {
     @Test
     public void testInvalidRange() throws DecodeException, IOException {
       final Invalid.NumRange binding = new Invalid.NumRange();
-      binding.setInvalidRange((byte)7);
+      binding.setInvalidRange(Optional.of((byte)7));
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -202,14 +228,14 @@ public class InvalidTest {
     @Test
     public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
       final Invalid.Str binding = new Invalid.Str();
-      binding.setInvalidType(7);
+      binding.setInvalidType(Optional.of(7));
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -218,21 +244,21 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"string\""));
+        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"string\" with value:"));
       }
     }
 
     @Test
     public void testInvalidAnnotation() throws IOException, NoSuchFieldException {
       final Invalid.Str binding = new Invalid.Str();
-      binding.setInvalidAnnotation("foo");
+      binding.setInvalidAnnotation(Optional.of("foo"));
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {
@@ -248,14 +274,14 @@ public class InvalidTest {
     @Test
     public void testInvalidPattern() throws DecodeException, IOException, NoSuchFieldException {
       final Invalid.Str binding = new Invalid.Str();
-      binding.setInvalidPattern("foo");
+      binding.setInvalidPattern(Optional.of("foo"));
 
       try {
-        validEncoder.encode(binding);
+        validEncoder.marshal(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsonxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidPattern")), e.getMessage());
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidPattern")), e.getMessage());
       }
 
       try {
@@ -265,6 +291,77 @@ public class InvalidTest {
       }
       catch (final ValidationException e) {
         assertEquals("Malformed pattern: [0-9]{{2,4}", e.getMessage());
+      }
+    }
+  }
+
+  public static class Arr {
+    @Test
+    public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
+      final Invalid.Arr binding = new Invalid.Arr();
+      binding.setInvalidType(Optional.of(7));
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidType")), e.getMessage());
+      }
+
+      try {
+        final String json = "{\"invalidType\": [\"foo\"]}";
+        JxDecoder.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"array\" with value:"));
+      }
+    }
+
+    @Test
+    public void testInvalidAnnotation() throws IOException, NoSuchFieldException {
+      final Invalid.Arr binding = new Invalid.Arr();
+      binding.setInvalidAnnotation(Collections.emptyList());
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+      }
+
+      try {
+        final String json = "{\"invalidAnnotation\": []}";
+        JxDecoder.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
+        fail("Expected DecodeException");
+      }
+      catch (final DecodeException e) {
+        assertTrue(e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"boolean\", but got: ["));
+      }
+    }
+
+    @Test
+    public void testInvalidAnnotationType() throws DecodeException, IOException {
+      final Invalid.ArrAnnotationType binding = new Invalid.ArrAnnotationType();
+      binding.setInvalidAnnotationType(Optional.of(Collections.emptyList()));
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertEquals(Override.class.getName() + " does not declare @ArrayType or @ArrayProperty", e.getMessage());
+      }
+
+      try {
+        final String json = "{\"invalidPattern\": \"foo\"}";
+        JxDecoder.parseObject(Invalid.ArrAnnotationType.class, new JsonReader(new StringReader(json)));
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertEquals(Override.class.getName() + " does not declare @ArrayType or @ArrayProperty", e.getMessage());
       }
     }
   }

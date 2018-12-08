@@ -22,10 +22,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 import org.fastjax.json.JsonReader;
 import org.fastjax.util.Classes;
+import org.fastjax.util.function.TriPredicate;
 
 class ObjectCodec extends Codec {
   private static final Map<Class<?>,PropertyToCodec> typeToCodecs = new HashMap<>();
@@ -59,8 +59,8 @@ class ObjectCodec extends Codec {
     return propertyToCodec;
   }
 
-  static Object decode(final Class<?> type, final JsonReader reader, final BiConsumer<Field,Object> callback) throws IOException {
-    final Object object;
+  public static Object decode(final Class<? extends JxObject> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+    final JxObject object;
     try {
       object = type.getConstructor().newInstance();
     }
@@ -73,21 +73,26 @@ class ObjectCodec extends Codec {
         if (",".equals(token))
           token = reader.readToken();
 
-        final Codec codec = getPropertyCodec(type).nameToCodec.get(token.substring(1, token.length() - 1));
-        if (codec == null)
-          return "Unknown property: " + token;
-
         if (!":".equals(reader.readToken()))
           throw new IllegalStateException("Should have been caught by JsonReader");
 
+        final String propertyName = token.substring(1, token.length() - 1);
         token = reader.readToken();
+        final Codec codec = getPropertyCodec(type).nameToCodec.get(propertyName);
+        if (codec == null) {
+          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
+            continue;
+
+          return "Unknown property: \"" + propertyName + "\"";
+        }
+
         final Object value;
         if ("null".equals(token)) {
           final String error = codec.validateUse(null);
           if (error != null)
             return error;
 
-          value = null;
+          value = codec.toNull();
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
@@ -103,7 +108,8 @@ class ObjectCodec extends Codec {
             if (firstChar != '{')
               return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but got \"object\"";
 
-            value = decode(((ObjectCodec)codec).getType(), reader, callback);
+            final ObjectCodec objectCodec = (ObjectCodec)codec;
+            value = decode(objectCodec.getType(), reader, onPropertyDecode);
             if (value instanceof String)
               return value;
           }
@@ -112,7 +118,7 @@ class ObjectCodec extends Codec {
               return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but got \"object\"";
 
             final ArrayCodec arrayCodec = (ArrayCodec)codec;
-            value = ArrayCodec.decode(arrayCodec.getAnnotations(), arrayCodec.getIdToElement(), reader, callback);
+            value = ArrayCodec.decode(arrayCodec.getAnnotations(), arrayCodec.getIdToElement(), reader, onPropertyDecode);
             if (value instanceof String)
               return value;
           }
@@ -122,7 +128,7 @@ class ObjectCodec extends Codec {
         }
 
         if (value != null)
-          codec.set(object, value, callback);
+          codec.set(object, value, onPropertyDecode);
       }
 
       for (final Field field : Classes.getDeclaredFieldsDeep(object.getClass())) {
@@ -142,14 +148,15 @@ class ObjectCodec extends Codec {
     return object;
   }
 
-  private final Class<?> type;
+  private final Class<? extends JxObject> type;
 
+  @SuppressWarnings("unchecked")
   ObjectCodec(final ObjectProperty property, final Field field) {
-    super(field, property.name(), property.use());
-    this.type = field.getType();
+    super(field, property.name(), property.nullable(), property.use());
+    this.type = (Class<? extends JxObject>)(optional ? Classes.getGenericTypes(field)[0] : field.getType());
   }
 
-  Class<?> getType() {
+  Class<? extends JxObject> getType() {
     return type;
   }
 
