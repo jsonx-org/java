@@ -16,7 +16,19 @@
 
 package org.openjax.jsonx.generator;
 
-import static org.junit.Assert.*;
+import org.fastjax.jci.CompilationException;
+import org.fastjax.jci.InMemoryCompiler;
+import org.fastjax.lang.PackageNotFoundException;
+import org.fastjax.test.AssertXml;
+import org.fastjax.util.Classes;
+import org.fastjax.xml.ValidationException;
+import org.fastjax.xml.sax.Validator;
+import org.junit.Test;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.xsb.runtime.Bindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -34,19 +46,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.fastjax.jci.CompilationException;
-import org.fastjax.jci.InMemoryCompiler;
-import org.fastjax.lang.PackageNotFoundException;
-import org.fastjax.test.AssertXml;
-import org.fastjax.util.Classes;
-import org.fastjax.xml.ValidationException;
-import org.fastjax.xml.sax.Validator;
-import org.junit.Test;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
-import org.openjax.xsb.runtime.Bindings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.*;
 
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
@@ -66,13 +66,13 @@ public class SchemaTest {
       throw new ExceptionInInitializerError(e);
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; ++i)
       settings.add(new Settings(i, 2));
 
     settings.add(new Settings(Integer.MAX_VALUE, 2));
   }
 
-  private static Jsonx newControlBinding(final String fileName) throws IOException, MalformedURLException, ValidationException {
+  private static Jsonx newControlBinding(final String fileName) throws IOException, ValidationException {
     try (final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
       return (Jsonx)Bindings.parse(in);
     }
@@ -137,7 +137,7 @@ public class SchemaTest {
       assertEquals(entry.getValue(), actual.get(entry.getKey()));
   }
 
-  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
     logger.info(fileName + "...");
     final Jsonx controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseJsonx(controlBinding);
@@ -167,7 +167,7 @@ public class SchemaTest {
     testSettings(fileName, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, ValidationException {
+  private static void testSettings(final String fileName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final Jsonx controlBinding = newControlBinding(fileName);

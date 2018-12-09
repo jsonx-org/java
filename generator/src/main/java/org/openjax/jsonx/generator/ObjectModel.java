@@ -104,7 +104,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private Map<String,Member> parseMembers(final $ObjectMember binding, final ObjectModel objectModel) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
-    final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
+    final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Boolean) {

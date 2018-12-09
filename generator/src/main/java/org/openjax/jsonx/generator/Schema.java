@@ -48,7 +48,7 @@ import org.openjax.xsb.runtime.Binding;
 
 public final class Schema extends Element {
   private static void findInnerRelations(final StrictRefDigraph<$Member,String> digraph, final Registry registry, final $Member object, final $Member member) {
-    final Iterator<? super Binding> iterator = Iterators.filter(member.elementIterator(), m -> $Member.class.isInstance(m));
+    final Iterator<? super Binding> iterator = Iterators.filter(member.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member next = ($Member)iterator.next();
       if (next instanceof $ObjectMember) {
@@ -90,7 +90,7 @@ public final class Schema extends Element {
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
     });
 
-    final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> $Member.class.isInstance(m));
+    final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof Jsonx.Array) {

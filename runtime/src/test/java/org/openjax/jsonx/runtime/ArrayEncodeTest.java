@@ -16,9 +16,6 @@
 
 package org.openjax.jsonx.runtime;
 
-import static org.junit.Assert.*;
-import static org.openjax.jsonx.runtime.TestUtil.*;
-
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -27,6 +24,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.openjax.jsonx.runtime.TestUtil.*;
 
 import org.fastjax.math.BigDecimals;
 import org.fastjax.math.BigIntegers;
@@ -90,7 +90,7 @@ public class ArrayEncodeTest {
       String msg = "\"" + Strings.escapeForJava(error) + "\"";
       msg = msg.replace('$', '.');
       msg = msg.replace(".class", "%class");
-      msg = msg.replaceAll("org\\.openjax\\.[\\.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
+      msg = msg.replaceAll("org\\.openjax\\.[.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
       msg = msg.replace("%class", ".class");
       logger.error(msg);
     }
@@ -135,28 +135,28 @@ public class ArrayEncodeTest {
 
   @NumberElement(id=0, maxOccurs=1, range="xxxx")
   @ArrayType(elementIds={0})
-  private static @interface ArrayError1 {
+  private @interface ArrayError1 {
   }
 
   @BooleanElement(id=0, maxOccurs=0, nullable=false)
   @ArrayType(elementIds={0})
-  private static @interface ArrayError2 {
+  private @interface ArrayError2 {
   }
 
   @BooleanElement(id=0, maxOccurs=-1, nullable=false)
   @ArrayType(elementIds={-1})
-  private static @interface ArrayError3 {
+  private @interface ArrayError3 {
   }
 
   @BooleanElement(id=0, maxOccurs=-1, nullable=false)
   @ArrayType(elementIds={})
-  private static @interface ArrayError4 {
+  private @interface ArrayError4 {
   }
 
   @BooleanElement(id=0, nullable=false)
   @BooleanElement(id=0, nullable=false)
   @ArrayType(elementIds={0})
-  private static @interface ArrayError5 {
+  private @interface ArrayError5 {
   }
 
   @Test

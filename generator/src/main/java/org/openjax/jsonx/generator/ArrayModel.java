@@ -138,7 +138,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember binding) {
     final List<Member> members = new ArrayList<>();
-    final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> $Member.class.isInstance(m));
+    final Iterator<? super $Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Array.Array) {

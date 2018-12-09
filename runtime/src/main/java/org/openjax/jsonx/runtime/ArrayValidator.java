@@ -16,15 +16,15 @@
 
 package org.openjax.jsonx.runtime;
 
+import org.fastjax.util.Annotations;
+import org.fastjax.util.DelegateList;
+import org.fastjax.util.function.TriPredicate;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.fastjax.util.Annotations;
-import org.fastjax.util.DelegateList;
-import org.fastjax.util.function.TriPredicate;
 
 public class ArrayValidator {
   static class Relation {
@@ -60,7 +60,7 @@ public class ArrayValidator {
       return element;
     }
 
-    public List<Object> deflate() {
+    List<Object> deflate() {
       for (int i = 0; i < size(); ++i) {
         final Object member = get(i);
         target.set(i, member instanceof Relation ? ((Relation)member).deflate() : member);

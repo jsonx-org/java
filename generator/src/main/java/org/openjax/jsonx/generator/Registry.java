@@ -46,7 +46,7 @@ class Registry {
     }
   }
 
-  static enum Kind {
+  enum Kind {
     CLASS("class"),
     ANNOTATION("@interface");
 

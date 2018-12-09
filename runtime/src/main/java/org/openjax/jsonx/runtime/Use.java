@@ -18,5 +18,5 @@ package org.openjax.jsonx.runtime;
 
 public enum Use {
   OPTIONAL,
-  REQUIRED;
+  REQUIRED
 }

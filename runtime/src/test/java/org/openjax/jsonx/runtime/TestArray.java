@@ -22,7 +22,7 @@ import java.util.Optional;
 public class TestArray implements JxObject {
   @BooleanElement(id=0, maxOccurs=3)
   @ArrayType(elementIds={0})
-  static @interface Array1d1 {
+  @interface Array1d1 {
   }
 
   @ArrayProperty(type=Array1d1.class, use=Use.OPTIONAL)
@@ -48,7 +48,7 @@ public class TestArray implements JxObject {
   @StringElement(id=1, minOccurs=2, maxOccurs=3, pattern="[a-z]+")
   @BooleanElement(id=0, minOccurs=0, maxOccurs=3)
   @ArrayType(elementIds={0, 1, 2, 3, 4})
-  static @interface Array1d2 {
+  @interface Array1d2 {
   }
 
   @ArrayProperty(type=Array1d2.class, use=Use.OPTIONAL)
@@ -70,7 +70,7 @@ public class TestArray implements JxObject {
 
   @ArrayElement(id=0, type=Array1d2.class, nullable=false)
   @ArrayType(elementIds={0})
-  static @interface Array2d1 {
+  @interface Array2d1 {
   }
 
   @ArrayProperty(type=Array2d1.class, use=Use.OPTIONAL)
@@ -101,7 +101,7 @@ public class TestArray implements JxObject {
   @BooleanElement(id=1, minOccurs=0)
   @ArrayElement(id=0, type=Array1d2.class, minOccurs=0, nullable=false)
   @ArrayType(elementIds={0, 1, 2, 8, 9})
-  static @interface Array2d2 {
+  @interface Array2d2 {
   }
 
   @ArrayProperty(type=Array2d2.class, use=Use.OPTIONAL)
@@ -124,7 +124,7 @@ public class TestArray implements JxObject {
   @ArrayElement(id=1, type=Array2d2.class, nullable=false)
   @ArrayElement(id=0, type=Array1d2.class, minOccurs=0, nullable=false)
   @ArrayType(elementIds={0, 1})
-  static @interface Array3d {
+  @interface Array3d {
   }
 
   @ArrayProperty(type=Array3d.class, use=Use.OPTIONAL)

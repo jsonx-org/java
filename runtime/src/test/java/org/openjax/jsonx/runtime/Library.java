@@ -117,7 +117,7 @@ public class Library implements JxObject {
 
   @ObjectElement(id=0, type=Employee.class)
   @ArrayType(elementIds={0})
-  public static @interface Staff {
+  public @interface Staff {
   }
 
   @ArrayProperty(type=Staff.class)
