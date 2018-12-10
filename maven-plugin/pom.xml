@@ -106,8 +106,7 @@
             <configuration>
               <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
               <schemas>
-                <schema>src/test/resources/json.jsonx</schema>
-                <schema>src/test/resources/type.jsonx</schema>
+                <schema>src/test/resources/test.jsonx</schema>
               </schemas>
             </configuration>
           </plugin>

@@ -301,7 +301,7 @@
         </xs:sequence>
         <xs:attribute name="extends" type="dt:stringNonEmpty">
           <xs:annotation>
-            <xs:documentation>Parent type of object. Required.</xs:documentation>
+            <xs:documentation>Super type of object. Optional.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="unknown" type="jsonx:unknown" default="error">
@@ -316,9 +316,9 @@
   <xs:complexType name="object">
     <xs:complexContent>
       <xs:extension base="jsonx:objectMember">
-        <xs:attribute name="class" type="dt:javaIdentifier" use="optional">
+        <xs:attribute name="class" type="dt:javaIdentifier" use="required">
           <xs:annotation>
-            <xs:documentation>Name of class. Optional.</xs:documentation>
+            <xs:documentation>Name of class. Required.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attributeGroup ref="jsonx:nameable"/>
