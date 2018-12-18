@@ -23,9 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fastjax.util.Annotations;
+import org.fastjax.util.FixedOrderComparator;
 import org.fastjax.util.JavaIdentifiers;
 
 public final class JxUtil {
+  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "xsi:type", "type", "elementIds", "template", "reference", "form", "range", "pattern", "urlEncode", "urlDecode", "use", "minOccurs", "maxOccurs", "nullable");
+
   public static Method getGetMethod(final Class<?> cls, final String propertyName) {
     return getMethod(cls, propertyName, null);
   }
@@ -103,7 +106,7 @@ public final class JxUtil {
       throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
 
     if (elementIds.length == 0)
-      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(arrayAnnotation, AttributeComparator.instance));
+      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(arrayAnnotation, JxUtil.ATTRIBUTES));
 
     return elementIds;
   }

@@ -48,7 +48,7 @@ import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
-  static ArrayModel declare(final Registry registry, final Jsonx.Array binding) {
+  static ArrayModel declare(final Registry registry, final Jsonx.ArrayType binding) {
     return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
@@ -126,7 +126,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       return registry.getType(List.class, members.get(0).type());
 
     Registry.Type gct = members.get(0).type().getGreatestCommonSuperType(members.get(1).type());
-    for (int i = 2; i < members.size() && gct != null; i++)
+    for (int i = 2; i < members.size() && gct != null; ++i)
       gct = gct.getGreatestCommonSuperType(members.get(i).type());
 
     return registry.getType(List.class, gct);
@@ -155,7 +155,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       }
       else if (member instanceof $Array.Reference) {
         final $Array.Reference reference = ($Array.Reference)member;
-        final Member model = registry.getModel(new Id(reference.getType$()));
+        final Member model = registry.getModel(new Id(reference.getType$().text()));
         if (model == null)
           throw new IllegalStateException("Template type=\"" + reference.getType$().text() + "\" in array not found");
 
@@ -197,24 +197,17 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private final Registry.Type type;
   final List<Member> members;
 
-  private ArrayModel(final Registry registry, final Jsonx.Array binding) {
+  private ArrayModel(final Registry registry, final Jsonx.ArrayType binding) {
     super(registry);
     this.members = parseMembers(registry, this, binding);
-    if (binding.getClass$() != null) {
-      this.type = registry.getType(Registry.Kind.ANNOTATION, (String)binding.owner().getPackage$().text(), binding.getClass$().text());
-      this.id = new Id(binding.getClass$());
-    }
-    else {
-      this.type = null;
-      this.id = new Id(binding.getTemplate$());
-    }
+    this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, binding.getName$().text());
+    this.id = new Id(binding.getName$().text());
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.type = null;
     this.members = parseMembers(registry, this, binding);
-
+    this.type = null;
     this.id = new Id(this);
   }
 
@@ -223,9 +216,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (this.maxOccurs != null && this.minOccurs != null && this.minOccurs > this.maxOccurs)
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs + "\" > maxOccurs=\"" + this.maxOccurs + "\"");
 
-    this.type = null;
     this.members = parseMembers(registry, this, binding);
-
+    this.type = null;
     this.id = new Id(this);
   }
 
@@ -344,9 +336,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (owner instanceof Schema) {
       if (type != null)
-        attributes.put("class", type.getSubName(packageName));
+        attributes.put("name", type.getSubName(packageName));
       else
-        attributes.put("template", id().toString());
+        attributes.put("name", id().toString());
     }
 
     return attributes;
@@ -355,7 +347,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final org.fastjax.xml.Element element = super.toXml(settings, owner, packageName);
-    if (owner instanceof ObjectModel && registry.isTemplateReference(this, settings) || members.size() == 0)
+    if (members.size() == 0)
       return element;
 
     final List<org.fastjax.xml.Element> elements = new ArrayList<>();
@@ -369,7 +361,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private void renderAnnotations(final AttributeMap attributes, final List<AnnotationSpec> annotations) {
     final int[] indices = new int[members.size()];
     int index = 0;
-    for (int i = 0; i < members.size(); i++) {
+    for (int i = 0; i < members.size(); ++i) {
       indices[i] = index;
       index += writeElementAnnotations(annotations, members.get(i), index, this);
     }
@@ -401,14 +393,20 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final ArrayModel arrayModel = (ArrayModel)reference;
       int offset = 1;
       final List<AnnotationSpec> inner = new ArrayList<>();
-      final int[] indices = new int[arrayModel.members.size()];
-      for (int i = 0; i < arrayModel.members.size(); i++) {
-        indices[i] = index + offset;
-        offset += writeElementAnnotations(inner, arrayModel.members.get(i), index + offset, owner);
+      if (arrayModel.type == null) {
+        final int[] indices = new int[arrayModel.members.size()];
+        for (int i = 0; i < arrayModel.members.size(); ++i) {
+          indices[i] = index + offset;
+          offset += writeElementAnnotations(inner, arrayModel.members.get(i), index + offset, owner);
+        }
+
+        // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
+        arrayModel.toAnnotationAttributes(attributes, indices, owner);
+      }
+      else {
+        arrayModel.toAnnotationAttributes(attributes, owner);
       }
 
-      // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
-      arrayModel.toAnnotationAttributes(attributes, indices, owner);
       if (member.minOccurs != null)
         attributes.put("minOccurs", member.minOccurs);
 

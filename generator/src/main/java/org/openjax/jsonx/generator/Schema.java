@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +35,6 @@ import org.fastjax.lang.PackageNotFoundException;
 import org.fastjax.util.FastCollections;
 import org.fastjax.util.IdentityHashSet;
 import org.fastjax.util.Iterators;
-import org.fastjax.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ObjectMember;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ReferenceMember;
@@ -65,27 +63,25 @@ public final class Schema extends Element {
   }
 
   private final Registry registry;
-  private final String packageName;
 
-  public Schema(final Jsonx jsonx) {
-    this.registry = new Registry();
-    this.packageName = (String)jsonx.getPackage$().text();
+  public Schema(final Jsonx jsonx, final String packageName) {
+    this.registry = new Registry(packageName);
 
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
-      if (obj instanceof Jsonx.Array)
-        return ((Jsonx.Array)obj).getTemplate$() != null ? ((Jsonx.Array)obj).getTemplate$().text() : ((Jsonx.Array)obj).getClass$().text();
+      if (obj instanceof Jsonx.ArrayType)
+        return ((Jsonx.ArrayType)obj).getName$().text();
 
-      if (obj instanceof Jsonx.Boolean)
-        return ((Jsonx.Boolean)obj).getTemplate$().text();
+      if (obj instanceof Jsonx.BooleanType)
+        return ((Jsonx.BooleanType)obj).getName$().text();
 
-      if (obj instanceof Jsonx.Number)
-        return ((Jsonx.Number)obj).getTemplate$().text();
+      if (obj instanceof Jsonx.NumberType)
+        return ((Jsonx.NumberType)obj).getName$().text();
 
-      if (obj instanceof Jsonx.String)
-        return ((Jsonx.String)obj).getTemplate$().text();
+      if (obj instanceof Jsonx.StringType)
+        return ((Jsonx.StringType)obj).getName$().text();
 
-      if (obj instanceof Jsonx.Object)
-        return ((Jsonx.Object)obj).getClass$().text();
+      if (obj instanceof Jsonx.ObjectType)
+        return ((Jsonx.ObjectType)obj).getName$().text();
 
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
     });
@@ -93,12 +89,12 @@ public final class Schema extends Element {
     final Iterator<? super $Member> iterator = Iterators.filter(jsonx.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
-      if (member instanceof Jsonx.Array) {
+      if (member instanceof Jsonx.ArrayType) {
         digraph.addVertex(member);
         findInnerRelations(digraph, registry, member, member);
       }
-      else if (member instanceof Jsonx.Object) {
-        final Jsonx.Object object = (Jsonx.Object)member;
+      else if (member instanceof Jsonx.ObjectType) {
+        final Jsonx.ObjectType object = (Jsonx.ObjectType)member;
         if (object.getExtends$() != null)
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
@@ -118,16 +114,16 @@ public final class Schema extends Element {
     final ListIterator<$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious()) {
       final $Member member = topologicalOrder.previous();
-      if (member instanceof Jsonx.Array)
-        ArrayModel.declare(registry, (Jsonx.Array)member);
-      else if (member instanceof Jsonx.Boolean)
-        BooleanModel.declare(registry, (Jsonx.Boolean)member);
-      else if (member instanceof Jsonx.Number)
-        NumberModel.declare(registry, (Jsonx.Number)member);
-      else if (member instanceof Jsonx.String)
-        StringModel.declare(registry, (Jsonx.String)member);
-      else if (member instanceof Jsonx.Object)
-        ObjectModel.declare(registry, (Jsonx.Object)member);
+      if (member instanceof Jsonx.ArrayType)
+        ArrayModel.declare(registry, (Jsonx.ArrayType)member);
+      else if (member instanceof Jsonx.BooleanType)
+        BooleanModel.declare(registry, (Jsonx.BooleanType)member);
+      else if (member instanceof Jsonx.NumberType)
+        NumberModel.declare(registry, (Jsonx.NumberType)member);
+      else if (member instanceof Jsonx.StringType)
+        StringModel.declare(registry, (Jsonx.StringType)member);
+      else if (member instanceof Jsonx.ObjectType)
+        ObjectModel.declare(registry, (Jsonx.ObjectType)member);
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
@@ -168,30 +164,11 @@ public final class Schema extends Element {
   }
 
   public Schema(final Set<Class<?>> classes) {
-    final Registry registry = new Registry();
-    for (final Class<?> cls : classes) {
-      if (cls.isAnnotation())
-        ArrayModel.referenceOrDeclare(registry, cls);
-      else
-        ObjectModel.referenceOrDeclare(registry, cls);
-    }
-
+    final Registry registry = new Registry(classes);
     this.registry = registry;
-    this.packageName = getClassPrefix();
   }
 
-  private String getClassPrefix() {
-    final Set<Registry.Type> types = new HashSet<>();
-    getDeclaredTypes(types);
-    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
-    if (classPrefix == null)
-      return null;
-
-    final int index = classPrefix.lastIndexOf('.');
-    return index == -1 ? "" : classPrefix.substring(0, index);
-  }
-
-  private Collection<Model> rootMembers(final Settings settings) {
+  private List<Model> rootMembers(final Settings settings) {
     final List<Model> members = new ArrayList<>();
     for (final Model model : registry.getModels())
       if (registry.isRootMember(model, settings))
@@ -200,31 +177,16 @@ public final class Schema extends Element {
     members.sort(new Comparator<Model>() {
       @Override
       public int compare(final Model o1, final Model o2) {
-        if (o1 instanceof ObjectModel)
-          return o2 instanceof ObjectModel ? o1.type().getName().compareTo(o2.type().getName()) : 1;
-
-        return o2 instanceof ObjectModel ? -1 : (o1.getClass().getSimpleName() + o1.name + o1.id()).compareTo(o2.getClass().getSimpleName() + o2.name + o2.id());
+        return o1.compareTo(o2);
       }
     });
-
     return members;
   }
 
-  private Collection<Model> members() {
-    return registry.getModels();
-  }
-
   @Override
-  protected void getDeclaredTypes(final Set<Registry.Type> types) {
-    if (members() != null)
-      for (final Model member : members())
-        member.getDeclaredTypes(types);
-  }
-
-  @Override
-  protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final List<org.fastjax.xml.Element> elements;
-    final Collection<Model> members = rootMembers(settings);
+    final List<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
       for (final Model member : members)
@@ -235,9 +197,6 @@ public final class Schema extends Element {
     }
 
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
-    if (packageName.length() > 0)
-      attributes.put("package", packageName);
-
     attributes.put("xmlns", "http://jsonx.openjax.org/jsonx-0.9.8.xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", "http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx-0.9.8.xsd");
@@ -249,7 +208,7 @@ public final class Schema extends Element {
   }
 
   public org.fastjax.xml.Element toXml(final Settings settings) {
-    return toXml(settings == null ? Settings.DEFAULT : settings, this, packageName);
+    return toXml(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
   }
 
   public Map<String,String> toSource() {
@@ -259,7 +218,7 @@ public final class Schema extends Element {
   public Map<String,String> toSource(final Settings settings) {
     final Map<Registry.Type,ClassSpec> all = new HashMap<>();
     final Map<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
-    for (final Model member : members()) {
+    for (final Model member : registry.getModels()) {
       if (member instanceof Referrer && ((Referrer<?>)member).classType() != null) {
         final Referrer<?> model = (Referrer<?>)member;
         final ClassSpec classSpec = new ClassSpec(model, settings);

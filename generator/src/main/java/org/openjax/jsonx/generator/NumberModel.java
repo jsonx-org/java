@@ -38,7 +38,7 @@ import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
-  static NumberModel declare(final Registry registry, final Jsonx.Number binding) {
+  static NumberModel declare(final Registry registry, final Jsonx.NumberType binding) {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
@@ -78,7 +78,7 @@ final class NumberModel extends Model {
   final Form form;
   final Range range;
 
-  private NumberModel(final Registry registry, final Jsonx.Number binding) {
+  private NumberModel(final Registry registry, final Jsonx.NumberType binding) {
     super(registry);
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     try {
@@ -88,7 +88,7 @@ final class NumberModel extends Model {
       throw createValidationException(binding, binding.getRange$().text(), e);
     }
 
-    this.id = new Id(binding.getTemplate$());
+    this.id = new Id(binding.getName$().text());
   }
 
   private NumberModel(final Registry registry, final $Number binding) {

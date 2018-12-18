@@ -50,7 +50,7 @@ public abstract class ArrayIterator {
           return "Range is not matched: " + Strings.truncate(String.valueOf(member), 16);
       }
       catch (final ParseException e) {
-        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(element, AttributeComparator.instance));
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(element, JxUtil.ATTRIBUTES));
       }
     }
 

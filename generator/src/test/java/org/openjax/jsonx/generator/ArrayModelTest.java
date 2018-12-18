@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
 
@@ -47,9 +46,7 @@ public class ArrayModelTest {
 
   @Test
   public void testGreatestCommonSuperObject() {
-    final Registry registry = new Registry();
-    final xL3gluGCXYYJc.Jsonx jsonx = new xL3gluGCXYYJc.Jsonx();
-    jsonx.setPackage$(new xL3gluGCXYYJc.Jsonx.Package$(getClass().getPackage().getName()));
+    final Registry registry = new Registry(getClass().getPackage().getName());
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));

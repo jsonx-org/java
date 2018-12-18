@@ -21,14 +21,15 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.fastjax.util.FastCollections;
 import org.fastjax.util.JavaIdentifiers;
-import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
+import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$Identifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
@@ -76,27 +77,27 @@ abstract class Member extends Element {
     public String apply(final Binding t) {
       final String name;
       if (t instanceof $Array)
-        name = "name=\"" + (($Array)t).getName$().text();
+        name = (($Array)t).getName$().text();
       else if (t instanceof $Boolean)
-        name = "name=\"" + (($Boolean)t).getName$().text();
+        name = (($Boolean)t).getName$().text();
       else if (t instanceof $Number)
-        name = "name=\"" + (($Number)t).getName$().text();
+        name = (($Number)t).getName$().text();
       else if (t instanceof $Object)
-        name = "name=\"" + (($Object)t).getName$().text();
+        name = (($Object)t).getName$().text();
       else if (t instanceof $String)
-        name = "name=\"" + (($String)t).getName$().text();
+        name = (($String)t).getName$().text();
       else if (t instanceof $Reference)
-        name = "name=\"" + (($Reference)t).getName$().text();
-      else if (t instanceof Jsonx.Array)
-        name = ((Jsonx.Array)t).getClass$() != null ? "class=\"" + ((Jsonx.Array)t).getClass$().text() : "template=\"" + ((Jsonx.Array)t).getTemplate$().text();
-      else if (t instanceof Jsonx.Boolean)
-        name = "template=\"" + ((Jsonx.Boolean)t).getTemplate$().text();
-      else if (t instanceof Jsonx.Number)
-        name = "template=\"" + ((Jsonx.Number)t).getTemplate$().text();
-      else if (t instanceof Jsonx.Object)
-        name = "class=\"" + ((Jsonx.Object)t).getClass$().text();
-      else if (t instanceof Jsonx.String)
-        name = "template=\"" + ((Jsonx.String)t).getTemplate$().text();
+        name = (($Reference)t).getName$().text();
+      else if (t instanceof Jsonx.ArrayType)
+        name = ((Jsonx.ArrayType)t).getName$().text();
+      else if (t instanceof Jsonx.BooleanType)
+        name = ((Jsonx.BooleanType)t).getName$().text();
+      else if (t instanceof Jsonx.NumberType)
+        name = ((Jsonx.NumberType)t).getName$().text();
+      else if (t instanceof Jsonx.ObjectType)
+        name = ((Jsonx.ObjectType)t).getName$().text();
+      else if (t instanceof Jsonx.StringType)
+        name = ((Jsonx.StringType)t).getName$().text();
       else
         name = null;
 
@@ -105,12 +106,12 @@ abstract class Member extends Element {
 
       final StringBuilder builder = new StringBuilder();
       builder.append(t.name().getLocalPart());
-      builder.append("[@").append(name).append("\"]");
+      builder.append("[@").append("name=\"").append(name).append("\"]");
       return builder.toString();
     }
   };
 
-  private static Integer parseMaxCardinality(final int minCardinality, final $MaxCardinality maxCardinality) {
+  private static Integer parseMaxCardinality(final int minCardinality, final $MaxOccurs maxCardinality) {
     final Integer max = "unbounded".equals(maxCardinality.text()) ? null : Integer.parseInt(maxCardinality.text());
     if (max != null && minCardinality > max)
       throw new ValidationException("minOccurs=\"" + minCardinality + "\" > maxOccurs=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@minOccurs=" + minCardinality + " and @maxOccurs=" + maxCardinality.text() + "]");
@@ -140,11 +141,11 @@ abstract class Member extends Element {
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
-  Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+  Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
     this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
   }
 
-  Member(final Registry registry, final $JavaIdentifier name, final yAA.$Boolean nullable, final yAA.$String use) {
+  Member(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final yAA.$String use) {
     this(registry, name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
   }
 
@@ -158,7 +159,7 @@ abstract class Member extends Element {
     if (name != null)
       attributes.put("name", name);
     else if (owner instanceof Schema && !(this instanceof Referrer))
-      attributes.put("template", id().toString());
+      attributes.put("name", id().toString());
 
     if (!(owner instanceof Schema)) {
       if (nullable != null)
@@ -234,6 +235,17 @@ abstract class Member extends Element {
 
   List<AnnotationSpec> toElementAnnotations() {
     return null;
+  }
+
+  /**
+   * Intended to be overridden by each concrete subclass, this method collects
+   * all {@code Registry.Type} declarations of elements that are members of
+   * {@code this} element.
+   *
+   * @param types The {@code Set} into which the {@code Registry.Type}
+   *          declarations must be added.
+   */
+  void getDeclaredTypes(final Set<Registry.Type> types) {
   }
 
   abstract Id id();

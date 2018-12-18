@@ -30,7 +30,7 @@ import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.StringProperty;
 
 final class StringModel extends Model {
-  static StringModel declare(final Registry registry, final Jsonx.String binding) {
+  static StringModel declare(final Registry registry, final Jsonx.StringType binding) {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
@@ -67,12 +67,12 @@ final class StringModel extends Model {
   final boolean urlEncode;
   final boolean urlDecode;
 
-  private StringModel(final Registry registry, final Jsonx.String binding) {
+  private StringModel(final Registry registry, final Jsonx.StringType binding) {
     super(registry);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
-    this.id = new Id(binding.getTemplate$());
+    this.id = new Id(binding.getName$().text());
   }
 
   private StringModel(final Registry registry, final $String binding) {

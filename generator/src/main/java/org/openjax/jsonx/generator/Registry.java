@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.fastjax.util.Classes;
+import org.fastjax.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 
@@ -240,6 +241,36 @@ class Registry {
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
+  final String packageName;
+
+  Registry(final String packageName) {
+    this.packageName = packageName;
+  }
+
+  Registry(final Set<Class<?>> classes) {
+    for (final Class<?> cls : classes) {
+      if (cls.isAnnotation())
+        ArrayModel.referenceOrDeclare(this, cls);
+      else
+        ObjectModel.referenceOrDeclare(this, cls);
+    }
+
+    this.packageName = getClassPrefix();
+  }
+
+  private String getClassPrefix() {
+    final Set<Registry.Type> types = new HashSet<>();
+    if (getModels() != null)
+      for (final Model member : getModels())
+        member.getDeclaredTypes(types);
+
+    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
+    if (classPrefix == null)
+      return null;
+
+    return classPrefix;
+  }
+
   private static class ReferrerManifest {
     final List<Referrer<?>> referrers = new ArrayList<>();
     final Set<Class<?>> referrerTypes = new HashSet<>();
@@ -261,24 +292,24 @@ class Registry {
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   final Type OBJECT = getType(Object.class);
 
-  Value declare(final Jsonx.Boolean binding) {
-    return new Value(binding.getTemplate$().text());
+  Value declare(final Jsonx.BooleanType binding) {
+    return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.Number binding) {
-    return new Value(binding.getTemplate$().text());
+  Value declare(final Jsonx.NumberType binding) {
+    return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.String binding) {
-    return new Value(binding.getTemplate$().text());
+  Value declare(final Jsonx.StringType binding) {
+    return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.Array binding) {
-    return new Value(binding.getTemplate$() != null ? binding.getTemplate$().text() : binding.getClass$().text());
+  Value declare(final Jsonx.ArrayType binding) {
+    return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.Object binding) {
-    return new Value(binding.getClass$().text());
+  Value declare(final Jsonx.ObjectType binding) {
+    return new Value(binding.getName$().text());
   }
 
   Value declare(final Id id) {
@@ -310,23 +341,15 @@ class Registry {
     return refToModel.values();
   }
 
-  private boolean isRootReferable(final Member member, final Settings settings) {
+  boolean isRootMember(final Member member, final Settings settings) {
     final ReferrerManifest referrers = refToReferrers.get(member.id().toString());
     final int numReferrers = referrers == null ? 0 : referrers.getNumReferrers();
-    return member instanceof ObjectModel ? numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(ArrayModel.class) : numReferrers >= settings.getTemplateThreshold();
-  }
+    if (member instanceof ArrayModel)
+      return ((ArrayModel)member).classType() != null;
 
-  boolean isRootMember(final Member member, final Settings settings) {
-    if (member instanceof ArrayModel && ((ArrayModel)member).classType() != null)
-      return true;
+    if (member instanceof ObjectModel)
+      return numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(ArrayModel.class);
 
-    return isRootReferable(member, settings);
-  }
-
-  boolean isTemplateReference(final Member member, final Settings settings) {
-    if (getModel(member.id()) == null || member instanceof ArrayModel && ((ArrayModel)member).classType() != null)
-      return false;
-
-    return isRootReferable(member, settings);
+    return numReferrers >= settings.getTemplateThreshold();
   }
 }

@@ -17,20 +17,8 @@
 package org.openjax.jsonx.generator;
 
 import java.util.Map;
-import java.util.Set;
 
 abstract class Element {
-  /**
-   * Intended to be overridden by each concrete subclass, this method collects
-   * all {@code Registry.Type} declarations of elements that are members of
-   * {@code this} element.
-   *
-   * @param types The {@code Set} into which the {@code Registry.Type}
-   *          declarations must be added.
-   */
-  void getDeclaredTypes(final Set<Registry.Type> types) {
-  }
-
   /**
    * Intended to be overridden by each concrete subclass, this method returns a
    * {@code Map<String,String>} of name/value attributes that define the spec of

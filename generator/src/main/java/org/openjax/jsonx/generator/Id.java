@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-import org.w3.www._2001.XMLSchema.yAA.$String;
-
 class Id {
   private static String hash(final Object ... variables) {
     final Checksum crc = new CRC32();
@@ -32,8 +30,8 @@ class Id {
 
   private final String id;
 
-  Id(final $String id) {
-    this.id = id.text();
+  Id(final String id) {
+    this.id = id;
   }
 
   Id(final Registry.Type type) {
@@ -42,18 +40,16 @@ class Id {
 
   Id(final Class<?> type) {
     this.id = type.getName();
-    if ("java.util.Optional".equals(this.id))
-      System.out.println(type);
   }
 
   Id(final ArrayModel model) {
     final Object[] variables = new Object[model.members.size()];
-    for (int i = 0; i < variables.length; i++) {
+    for (int i = 0; i < variables.length; ++i) {
       final Member member = model.members.get(i);
       variables[i] = member.id().toString() + member.nullable;
     }
 
-    this.id = "a" + hash(variables);
+    this.id = "A" + hash(variables);
   }
 
   /**
@@ -62,15 +58,15 @@ class Id {
    * @param model The {@code BooleanModel} instance.
    */
   Id(final BooleanModel model) {
-    this.id = "b" + hash(model.nullable);
+    this.id = "B" + hash(model.nullable);
   }
 
   Id(final NumberModel model) {
-    this.id = "n" + hash(model.form, model.range, model.nullable);
+    this.id = "N" + hash(model.form, model.range, model.nullable);
   }
 
   Id(final StringModel model) {
-    this.id = "s" + hash(model.pattern, model.urlDecode, model.urlEncode, model.nullable);
+    this.id = "S" + hash(model.pattern, model.urlDecode, model.urlEncode, model.nullable);
   }
 
   Id(final ObjectModel model) {
@@ -78,7 +74,7 @@ class Id {
   }
 
   Id(final Reference model) {
-    this.id = "t" + hash(model.model.id().toString(), model.minOccurs, model.maxOccurs, model.nullable, model.use);
+    this.id = "T" + hash(model.model.id().toString(), model.minOccurs, model.maxOccurs, model.nullable, model.use);
   }
 
   @Override

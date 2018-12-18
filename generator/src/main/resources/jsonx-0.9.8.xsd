@@ -26,26 +26,18 @@
   
   <xs:complexType name="member" abstract="true"/>
   
-  <xs:complexType name="element" abstract="true">
-    <xs:complexContent>
-      <xs:extension base="jsonx:member">
-        <xs:attributeGroup ref="jsonx:nameable"/>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  
   <xs:attributeGroup name="annullable">
     <xs:attribute name="nullable" type="xs:boolean" default="true">
       <xs:annotation>
-        <xs:documentation>Can a property or an array member be null. Default: true.</xs:documentation>
+        <xs:documentation>Can a property or array member be null. Default: true.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
   
   <xs:attributeGroup name="nameable">
-    <xs:attribute name="name" type="dt:javaIdentifier" use="optional">
+    <xs:attribute name="name" type="dt:identifier" use="optional">
       <xs:annotation>
-        <xs:documentation>Name of element. Optional.</xs:documentation>
+        <xs:documentation>Name of property. Optional.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -64,10 +56,19 @@
     </xs:attribute>
   </xs:attributeGroup>
   
-  <xs:attributeGroup name="templatable">
-    <xs:attribute name="template" type="dt:javaIdentifier" use="optional">
+  <xs:simpleType name="typeName">
+    <xs:annotation>
+      <xs:documentation>Identifier pattern that must start with either a capital letter, or must include a '$' followed by a capital letter.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="dt:identifier">
+      <xs:pattern value="([A-Z].*)|(.*\$[A-Z].*)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:attributeGroup name="type">
+    <xs:attribute name="name" type="jsonx:typeName" use="required">
       <xs:annotation>
-        <xs:documentation>Name of template. Optional.</xs:documentation>
+        <xs:documentation>Name of type. Required.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -75,9 +76,9 @@
   <xs:complexType name="referenceMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
-        <xs:attribute name="type" type="dt:javaQualifiedIdentifier" use="optional">
+        <xs:attribute name="type" type="jsonx:typeName" use="required">
           <xs:annotation>
-            <xs:documentation>Name of referenced template or class. Optional.</xs:documentation>
+            <xs:documentation>Name of referenced type. Required.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -117,13 +118,6 @@
     </xs:restriction>
   </xs:simpleType>
   
-  <xs:simpleType name="range">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[\(\[](-?\d+(\.\d+)?)?,(-?\d+(\.\d+)?)?[\)\]]"/>
-      <xs:minLength value="4"/>
-    </xs:restriction>
-  </xs:simpleType>
-  
   <xs:complexType name="numberMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
@@ -132,7 +126,7 @@
             <xs:documentation>Numeric form of number (integer or real). Default: real.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="range" type="jsonx:range">
+        <xs:attribute name="range">
           <xs:annotation>
             <xs:documentation>
               Value range expressed in interval notation:
@@ -142,6 +136,12 @@
               Degenerate interval: [val]
             </xs:documentation>
           </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="[\(\[](-?\d+(\.\d+)?)?,(-?\d+(\.\d+)?)?[\)\]]"/>
+              <xs:minLength value="4"/>
+            </xs:restriction>
+          </xs:simpleType>
         </xs:attribute>
       </xs:extension>
     </xs:complexContent>
@@ -189,7 +189,7 @@
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:simpleType name="maxCardinality">
+  <xs:simpleType name="maxOccurs">
     <xs:restriction base="xs:string">
       <xs:pattern value="(\d+)|(unbounded)"/>
     </xs:restriction>
@@ -201,7 +201,7 @@
         <xs:documentation>Minimum inclusive occurrence of element in array. Default: 1.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="maxOccurs" type="jsonx:maxCardinality" default="unbounded">
+    <xs:attribute name="maxOccurs" type="jsonx:maxOccurs" default="unbounded">
       <xs:annotation>
         <xs:documentation>Maximum inclusive occurrence of element in array. Default: unbounded.</xs:documentation>
       </xs:annotation>
@@ -277,13 +277,6 @@
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:simpleType name="unknown">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="ignore"/>
-      <xs:enumeration value="error"/>
-    </xs:restriction>
-  </xs:simpleType>
-  
   <xs:complexType name="objectMember" abstract="true">
     <xs:complexContent>
       <xs:extension base="jsonx:member">
@@ -293,20 +286,11 @@
               <xs:selector xpath="./jsonx:property"/>
               <xs:field xpath="@name"/>
             </xs:unique>
-            <xs:unique name="propertyClassUnique">
-              <xs:selector xpath="./jsonx:property"/>
-              <xs:field xpath="@class"/>
-            </xs:unique>
           </xs:element>
-        </xs:sequence>
+        </xs:sequence> 
         <xs:attribute name="extends" type="dt:stringNonEmpty">
           <xs:annotation>
             <xs:documentation>Super type of object. Optional.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="unknown" type="jsonx:unknown" default="error">
-          <xs:annotation>
-            <xs:documentation>Policy when unknown property is encountered (ignore or error). Default: error.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -316,11 +300,6 @@
   <xs:complexType name="object">
     <xs:complexContent>
       <xs:extension base="jsonx:objectMember">
-        <xs:attribute name="class" type="dt:javaIdentifier" use="required">
-          <xs:annotation>
-            <xs:documentation>Name of class. Required.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
         <xs:attributeGroup ref="jsonx:nameable"/>
         <xs:attributeGroup ref="jsonx:annullable"/>
         <xs:attributeGroup ref="jsonx:use"/>
@@ -332,65 +311,52 @@
     <xs:complexType>
       <xs:sequence>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="boolean">
+          <xs:element name="booleanType">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:booleanMember">
-                  <xs:attributeGroup ref="jsonx:templatable"/>
+                  <xs:attributeGroup ref="jsonx:type"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="number">
+          <xs:element name="numberType">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:numberMember">
-                  <xs:attributeGroup ref="jsonx:templatable"/>
+                  <xs:attributeGroup ref="jsonx:type"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="string">
+          <xs:element name="stringType">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:stringMember">
-                  <xs:attributeGroup ref="jsonx:templatable"/>
+                  <xs:attributeGroup ref="jsonx:type"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="array">
+          <xs:element name="arrayType">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:arrayMember">
-                  <xs:attribute name="class" type="dt:javaQualifiedIdentifier" use="optional">
-                    <xs:annotation>
-                      <xs:documentation>Name of class. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
-                  <xs:attribute name="template" type="dt:javaIdentifier" use="optional">
-                    <xs:annotation>
-                      <xs:documentation>Name of template. Required.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
+                  <xs:attributeGroup ref="jsonx:type"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="object">
+          <xs:element name="objectType">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jsonx:objectMember">
-                  <xs:attribute name="class" type="dt:javaQualifiedIdentifier" use="optional">
-                    <xs:annotation>
-                      <xs:documentation>Name of class. Optional.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
                   <xs:attribute name="abstract" type="xs:boolean" default="false">
                     <xs:annotation>
                       <xs:documentation>Is object abstract. Default: false.</xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
+                  <xs:attributeGroup ref="jsonx:type"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -398,40 +364,21 @@
               <xs:selector xpath="./*"/>
               <xs:field xpath="@name"/>
             </xs:unique>
-            <xs:unique name="objectPropertyClassUnique">
-              <xs:selector xpath="./jsonx:property"/>
-              <xs:field xpath="@class"/>
-            </xs:unique>
           </xs:element>
         </xs:choice>
       </xs:sequence>
-      <!-- FIXME: XSB fails to recognize this as a String -->
-      <xs:attribute name="package" default="">
-        <xs:annotation>
-          <xs:documentation>Name of package. Required.</xs:documentation>
-        </xs:annotation>
-        <xs:simpleType>
-          <xs:union memberTypes="dt:javaQualifiedIdentifier">
-            <xs:simpleType>
-              <xs:restriction base="xs:string">
-                <xs:length value="0"/>
-              </xs:restriction>
-            </xs:simpleType>
-          </xs:union>
-        </xs:simpleType>
-      </xs:attribute>
     </xs:complexType>
     <xs:key name="templateKey">
-      <xs:selector xpath="./jsonx:boolean | ./jsonx:number | ./jsonx:string | ./jsonx:array | ./jsonx:object"/>
-      <xs:field xpath="@template | @class"/>
+      <xs:selector xpath="./jsonx:booleanType | ./jsonx:numberType | ./jsonx:stringType | ./jsonx:arrayType | ./jsonx:objectType"/>
+      <xs:field xpath="@name"/>
     </xs:key>
     <xs:key name="arrayClassKey">
-      <xs:selector xpath="./jsonx:array"/>
-      <xs:field xpath="@template | @class"/>
+      <xs:selector xpath="./jsonx:arrayType"/>
+      <xs:field xpath="@name"/>
     </xs:key>
     <xs:key name="objectClassKey">
-      <xs:selector xpath="./jsonx:object"/>
-      <xs:field xpath="@class"/>
+      <xs:selector xpath="./jsonx:objectType"/>
+      <xs:field xpath="@name"/>
     </xs:key>
     <xs:keyref name="propertyReferenceKeyRef" refer="jsonx:templateKey">
       <xs:selector xpath=".//jsonx:property"/>
@@ -442,7 +389,7 @@
       <xs:field xpath="@type"/>
     </xs:keyref>
     <xs:keyref name="objectExtendsKeyRef" refer="jsonx:objectClassKey">
-      <xs:selector xpath=".//jsonx:object"/>
+      <xs:selector xpath=".//jsonx:template"/>
       <xs:field xpath="@extends"/>
     </xs:keyref>
     <xs:keyref name="propertyExtendsKeyRef" refer="jsonx:objectClassKey">

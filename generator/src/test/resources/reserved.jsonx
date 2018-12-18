@@ -15,45 +15,44 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <jsonx
-  package="org.openjax.jsonx.generator.reserved"
   xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
-  <array template="break">
-    <reference type="extends" minOccurs="9" maxOccurs="10"/>
-    <reference type="import" minOccurs="7" maxOccurs="8"/>
-    <reference type="public"/>
-    <reference type="public" nullable="false"/>
-  </array>
-  <array template="extends">
-    <reference type="import" nullable="false" minOccurs="3" maxOccurs="4"/>
-    <reference type="byte" nullable="false"/>
-    <reference type="abstract"/>
-  </array>
-  <array template="import">
-    <reference type="package" minOccurs="1" maxOccurs="2"/>
-    <reference type="public" nullable="false"/>
-  </array>
-  <array template="package">
-    <reference type="public" minOccurs="5" maxOccurs="6"/>
-  </array>
-  <boolean template="public"/>
-  <number template="byte" form="integer" range="[2,9]"/>
-  <string template="abstract" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
-  <object class="test.Reserved">
+  <arrayType name="Break">
+    <reference type="Extends" minOccurs="9" maxOccurs="10"/>
+    <reference type="Import" minOccurs="7" maxOccurs="8"/>
+    <reference type="Public"/>
+    <reference type="Public" nullable="false"/>
+  </arrayType>
+  <arrayType name="Extends">
+    <reference type="Import" nullable="false" minOccurs="3" maxOccurs="4"/>
+    <reference type="Byte" nullable="false"/>
+    <reference type="Abstract"/>
+  </arrayType>
+  <arrayType name="Import">
+    <reference type="Package" minOccurs="1" maxOccurs="2"/>
+    <reference type="Public" nullable="false"/>
+  </arrayType>
+  <arrayType name="Package">
+    <reference type="Public" minOccurs="5" maxOccurs="6"/>
+  </arrayType>
+  <booleanType name="Public"/>
+  <numberType name="Byte" form="integer" range="[2,9]"/>
+  <stringType name="Abstract" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
+  <objectType name="test$Reserved">
     <property name="boolean" xsi:type="array">
       <boolean/>
     </property>
-    <property name="package" xsi:type="reference" type="package" use="optional"/>
-    <property name="int" xsi:type="reference" type="import"/>
-    <property name="long" xsi:type="reference" type="extends" use="optional" nullable="false"/>
-    <property name="class" xsi:type="reference" type="break"/>
+    <property name="package" xsi:type="reference" type="Package" use="optional"/>
+    <property name="int" xsi:type="reference" type="Import"/>
+    <property name="long" xsi:type="reference" type="Extends" use="optional" nullable="false"/>
+    <property name="class" xsi:type="reference" type="Break"/>
     <property name="continue" xsi:type="boolean" use="optional"/>
-    <property name="protected" xsi:type="reference" type="public" nullable="false"/>
-    <property name="private" xsi:type="reference" type="public" use="optional"/>
+    <property name="protected" xsi:type="reference" type="Public" nullable="false"/>
+    <property name="private" xsi:type="reference" type="Public" use="optional"/>
     <property name="default" xsi:type="number" range="[5,8]" use="optional"/>
-    <property name="do" xsi:type="reference" type="byte" use="optional" nullable="false"/>
+    <property name="do" xsi:type="reference" type="Byte" use="optional" nullable="false"/>
     <property name="final" xsi:type="string"/>
-    <property name="finally" xsi:type="reference" type="abstract"/>
-  </object>
+    <property name="finally" xsi:type="reference" type="Abstract"/>
+  </objectType>
 </jsonx>

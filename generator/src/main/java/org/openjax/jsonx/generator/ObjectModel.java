@@ -46,10 +46,9 @@ import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.ObjectProperty;
 import org.openjax.jsonx.runtime.Use;
-import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  static ObjectModel declare(final Registry registry, final Jsonx.Object binding) {
+  static ObjectModel declare(final Registry registry, final Jsonx.ObjectType binding) {
     return registry.declare(binding).value(new ObjectModel(registry, binding), null);
   }
 
@@ -83,9 +82,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final StringBuilder builder = new StringBuilder();
     $Object owner = binding;
     do
-      builder.insert(0, '$').insert(1, owner.getClass$().text());
+      builder.insert(0, '$').insert(1, owner.getName$().text());
     while (owner.owner() instanceof $Object && (owner = ($Object)owner.owner()) != null);
-    return builder.insert(0, ((Jsonx.Object)owner.owner()).getClass$().text()).toString();
+    return builder.insert(0, ((Jsonx.ObjectType)owner.owner()).getName$().text()).toString();
   }
 
   private static void checkJSObject(final Class<?> cls) {
@@ -126,7 +125,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
       else if (member instanceof $Reference) {
         final $Reference reference = ($Reference)member;
-        final Member model = registry.getModel(new Id(reference.getType$()));
+        final Member model = registry.getModel(new Id(reference.getType$().text()));
         if (model == null)
           throw new IllegalStateException("Template \"" + reference.getName$().text() + "\" -> reference=\"" + reference.getType$().text() + "\" not found");
 
@@ -155,11 +154,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
   final ObjectModel superObject;
   final boolean isAbstract;
 
-  private ObjectModel(final Registry registry, final Jsonx.Object binding) {
+  private ObjectModel(final Registry registry, final Jsonx.ObjectType binding) {
     super(registry);
-    this.type = registry.getType((String)binding.owner().getPackage$().text(), binding.getClass$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
+    this.type = registry.getType(registry.packageName, binding.getName$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
     this.isAbstract = binding.getAbstract$().text();
-    this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$());
+    this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$().text());
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
     this.id = new Id(this);
   }
@@ -172,18 +171,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this(registry, element.type(), element.nullable(), null);
   }
 
-  private static Jsonx getJsonx($AnySimpleType member) {
-    do
-      if (member instanceof Jsonx)
-        return (Jsonx)member;
-    while ((member = member.owner()) != null);
-    return null;
-  }
-
   private ObjectModel(final Registry registry, final $Object binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.type = registry.getType((String)getJsonx(binding).getPackage$().text(), getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
-    this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$());
+    this.type = registry.getType(registry.packageName, getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
+    this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$().text());
     this.isAbstract = false;
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
     this.id = new Id(this);
@@ -229,6 +220,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
+  String sortKey() {
+    return "z" + type().getName();
+  }
+
+  @Override
   Class<? extends Annotation> propertyAnnotation() {
     return ObjectProperty.class;
   }
@@ -252,7 +248,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
-    attributes.put(owner instanceof ArrayModel ? "type" : "class", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
+    attributes.put(owner instanceof ArrayModel ? "type" : "name", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
 
     if (superObject != null)
       attributes.put("extends", superObject.type().getRelativeName(packageName));

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
@@ -55,7 +55,7 @@ final class Reference extends Member {
     this.id = new Id(this);
   }
 
-  Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs, final Model model) {
+  Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Model model) {
     super(registry, nullable, minOccurs, maxOccurs);
     this.model = model;
     this.id = new Id(this);
@@ -103,8 +103,10 @@ final class Reference extends Member {
       return element;
     }
 
-    if (model != null)
-      attributes.put("type", Registry.getSubName(model.id().toString(), packageName));
+    if (model != null) {
+      final String subName = Registry.getSubName(model.id().toString(), packageName);
+      attributes.put("type", subName);
+    }
 
     if (!(owner instanceof ObjectModel))
       return new org.fastjax.xml.Element(elementName(), attributes, null);

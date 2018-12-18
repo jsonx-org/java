@@ -102,7 +102,7 @@ public class ArrayValidator {
     final int i = iterator.nextIndex();
     if (!iterator.hasNext()) {
       final int nextRequiredIndex = getNextRequiredElement(annotations, a, count);
-      return nextRequiredIndex == -1 ? null : "Invalid content was found " + (i == 0 ? "in empty array" : "starting with member index=" + (i - 1)) + ": " + Annotations.toSortedString(annotations[nextRequiredIndex], AttributeComparator.instance) + ": Content is not complete";
+      return nextRequiredIndex == -1 ? null : "Invalid content was found " + (i == 0 ? "in empty array" : "starting with member index=" + (i - 1)) + ": " + Annotations.toSortedString(annotations[nextRequiredIndex], JxUtil.ATTRIBUTES) + ": Content is not complete";
     }
 
     if (a == annotations.length) {
@@ -112,7 +112,7 @@ public class ArrayValidator {
       iterator.next();
       final String preview = iterator.currentPreview();
       iterator.previous();
-      return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], AttributeComparator.instance) + ": No members are expected at this point: " + preview;
+      return "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotations[a - 1], JxUtil.ATTRIBUTES) + ": No members are expected at this point: " + preview;
     }
 
     final int minOccurs;
@@ -160,10 +160,10 @@ public class ArrayValidator {
     }
 
     if (minOccurs < 0)
-      throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
+      throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES));
 
     if (maxOccurs < minOccurs)
-      throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, AttributeComparator.instance));
+      throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES));
 
     String error;
     if (iterator.nextIsNull()) {
@@ -185,7 +185,7 @@ public class ArrayValidator {
       }
     }
 
-    String result = error == null ? null : "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotation, AttributeComparator.instance) + ": " + error;
+    String result = error == null ? null : "Invalid content was found starting with member index=" + i + ": " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": " + error;
 
     do {
       if (result != null) {

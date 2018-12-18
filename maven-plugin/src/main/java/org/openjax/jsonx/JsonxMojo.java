@@ -41,12 +41,15 @@ public class JsonxMojo extends GeneratorMojo {
   @Parameter(property = "schemas", required = true)
   private List<String> schemas;
 
+  @Parameter(property = "package", required = true)
+  private String pkg;
+
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     try {
       for (final URL resource : configuration.getSourceInputs("schemas")) {
         try (final InputStream in = resource.openStream()) {
-          final Schema schema = new Schema((Jsonx)Bindings.parse(in));
+          final Schema schema = new Schema((Jsonx)Bindings.parse(in), pkg);
           schema.toSource(configuration.getDestDir());
         }
       }

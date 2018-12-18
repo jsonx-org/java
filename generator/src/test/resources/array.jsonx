@@ -15,42 +15,41 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <jsonx
-  package="org.openjax.jsonx.generator"
   xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
-  <array class="RootArray3">
-    <reference type="foo.bar$RootArray2" minOccurs="3" maxOccurs="4"/>
-    <reference type="rootNumber" nullable="false"/>
-    <reference type="rootString"/>
-  </array>
-  <array class="foo.bar$RootArray1">
-    <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
-  </array>
-  <array class="foo.bar$RootArray2">
-    <reference type="foo.bar$RootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
-    <reference type="rootBoolean"/>
-  </array>
-  <array template="templateArray">
+  <arrayType name="RootArray3">
+    <reference type="bar$RootArray2" minOccurs="3" maxOccurs="4"/>
+    <reference type="RootNumber" nullable="false"/>
+    <reference type="RootString"/>
+  </arrayType>
+  <arrayType name="TemplateArray">
     <reference type="RootArray3" minOccurs="9" maxOccurs="10"/>
-    <reference type="foo.bar$RootArray2" minOccurs="7" maxOccurs="8"/>
-    <reference type="rootBoolean"/>
-    <reference type="rootBoolean" nullable="false"/>
-  </array>
-  <boolean template="rootBoolean"/>
-  <number template="rootNumber" form="integer" range="[2,9]"/>
-  <string template="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
-  <object class="test.Array">
+    <reference type="bar$RootArray2" minOccurs="7" maxOccurs="8"/>
+    <reference type="RootBoolean"/>
+    <reference type="RootBoolean" nullable="false"/>
+  </arrayType>
+  <arrayType name="bar$RootArray1">
+    <reference type="RootBoolean" minOccurs="5" maxOccurs="6"/>
+  </arrayType>
+  <arrayType name="bar$RootArray2">
+    <reference type="bar$RootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
+    <reference type="RootBoolean"/>
+  </arrayType>
+  <booleanType name="RootBoolean"/>
+  <numberType name="RootNumber" form="integer" range="[2,9]"/>
+  <stringType name="RootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
+  <objectType name="ObjectWithArray">
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">
         <string maxOccurs="3" nullable="false"/>
-        <reference type="rootString" minOccurs="2"/>
+        <reference type="RootString" minOccurs="2"/>
         <boolean nullable="false"/>
         <array minOccurs="3" maxOccurs="5">
           <string nullable="false" minOccurs="2" maxOccurs="7"/>
-          <reference type="rootNumber"/>
+          <reference type="RootNumber"/>
           <array maxOccurs="1">
-            <reference type="foo.bar$RootArray2"/>
+            <reference type="bar$RootArray2"/>
             <array maxOccurs="2">
               <array nullable="false">
                 <string/>
@@ -58,10 +57,10 @@
             </array>
             <boolean minOccurs="5"/>
           </array>
-          <reference type="rootBoolean"/>
+          <reference type="RootBoolean"/>
           <number maxOccurs="7"/>
         </array>
-        <reference type="templateArray"/>
+        <reference type="TemplateArray"/>
         <number nullable="false"/>
       </array>
       <string/>
@@ -71,9 +70,9 @@
     <property name="arrayDirectOptional" xsi:type="array" use="optional">
       <string nullable="false"/>
     </property>
-    <property name="arrayOne" xsi:type="reference" type="foo.bar$RootArray1" use="optional"/>
-    <property name="arrayTwo" xsi:type="reference" type="foo.bar$RootArray2"/>
+    <property name="arrayOne" xsi:type="reference" type="bar$RootArray1" use="optional"/>
+    <property name="arrayTwo" xsi:type="reference" type="bar$RootArray2"/>
     <property name="arrayThree" xsi:type="reference" type="RootArray3"/>
-    <property name="arrayFour" xsi:type="reference" type="templateArray" use="optional"/>
-  </object>
+    <property name="arrayFour" xsi:type="reference" type="TemplateArray" use="optional"/>
+  </objectType>
 </jsonx>

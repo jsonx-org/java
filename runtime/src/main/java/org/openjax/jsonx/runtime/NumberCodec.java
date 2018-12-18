@@ -52,7 +52,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
             throw new EncodeException("Range is not matched: " + Strings.truncate(range, 16));
         }
         catch (final ParseException e) {
-          throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, AttributeComparator.instance), e);
+          throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES), e);
         }
       }
     }
@@ -83,7 +83,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
         this.range = new Range(property.range());
       }
       catch (final ParseException e) {
-        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, AttributeComparator.instance));
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JxUtil.ATTRIBUTES));
       }
     }
   }

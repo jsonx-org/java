@@ -18,8 +18,8 @@ package org.openjax.jsonx.generator;
 
 import java.util.List;
 
-import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
+import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$Identifier;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
@@ -27,11 +27,11 @@ import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Referrer<T extends Referrer<?>> extends Model {
-  Referrer(final Registry registry, final $JavaIdentifier name, final yAA.$Boolean nullable, final $String use) {
+  Referrer(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final $String use) {
     super(registry, name, nullable, use);
   }
 
-  Referrer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+  Referrer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
     super(registry, nullable, minOccurs, maxOccurs);
   }
 
@@ -44,7 +44,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
   }
 
   @SuppressWarnings("unchecked")
-  T getReference(final $String className) {
+  T getReference(final String className) {
     if (className == null)
       return null;
 

@@ -21,15 +21,15 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.fastjax.util.Classes;
-import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$JavaIdentifier;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxCardinality;
+import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$Identifier;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
-abstract class Model extends Member {
+abstract class Model extends Member implements Comparable<Model> {
   static boolean isAssignable(final Field field, final Class<?> cls, final boolean nullable, final Use use) {
     if (use != Use.OPTIONAL || !nullable)
       return cls.isAssignableFrom(field.getType());
@@ -44,11 +44,11 @@ abstract class Model extends Member {
     return cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final $JavaIdentifier name, final yAA.$Boolean nullable, final $String use) {
+  Model(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final $String use) {
     super(registry, name, nullable, use);
   }
 
-  Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxCardinality maxOccurs) {
+  Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
     super(registry, nullable, minOccurs, maxOccurs);
   }
 
@@ -60,23 +60,32 @@ abstract class Model extends Member {
     super(registry, null, nullable, use, null, null);
   }
 
+  String sortKey() {
+    return getClass().getSimpleName() + id();
+  }
+
+  @Override
+  public final int compareTo(final Model o) {
+    return sortKey().compareTo(o.sortKey());
+  }
+
   @Override
   org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toXmlAttributes(owner, packageName);
-      return new org.fastjax.xml.Element(elementName(), attributes, null);
+      return new org.fastjax.xml.Element(owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
     }
 
-    if (registry.isTemplateReference(this, settings)) {
-      attributes = super.toXmlAttributes(owner, packageName);
-      attributes.put("xsi:type", "template");
-      attributes.put("reference", id().toString());
-    }
-    else {
+//    if (registry.isTemplateReference(this, settings)) {
+//      attributes = super.toXmlAttributes(owner, packageName);
+//      attributes.put("xsi:type", "template");
+//      attributes.put("reference", id().toString());
+//    }
+//    else {
       attributes = toXmlAttributes(owner, packageName);
       attributes.put("xsi:type", elementName());
-    }
+//    }
 
     return new org.fastjax.xml.Element("property", attributes, null);
   }

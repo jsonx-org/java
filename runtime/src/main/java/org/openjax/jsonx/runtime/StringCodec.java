@@ -48,7 +48,7 @@ class StringCodec extends PrimitiveCodec<String> {
     }
 
     if (validate && pattern.length() > 0 && !object.matches(pattern))
-      throw new EncodeException(Annotations.toSortedString(annotation, AttributeComparator.instance) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
+      throw new EncodeException(Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
 
     return encode(urlEncode, object);
   }

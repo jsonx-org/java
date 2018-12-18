@@ -16,19 +16,7 @@
 
 package org.openjax.jsonx.generator;
 
-import org.fastjax.jci.CompilationException;
-import org.fastjax.jci.InMemoryCompiler;
-import org.fastjax.lang.PackageNotFoundException;
-import org.fastjax.test.AssertXml;
-import org.fastjax.util.Classes;
-import org.fastjax.xml.ValidationException;
-import org.fastjax.xml.sax.Validator;
-import org.junit.Test;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
-import org.openjax.xsb.runtime.Bindings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -46,7 +34,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import org.fastjax.jci.CompilationException;
+import org.fastjax.jci.InMemoryCompiler;
+import org.fastjax.lang.PackageNotFoundException;
+import org.fastjax.test.AssertXml;
+import org.fastjax.util.Classes;
+import org.fastjax.xml.ValidationException;
+import org.fastjax.xml.sax.Validator;
+import org.junit.Test;
+import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.xsb.runtime.Bindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
@@ -84,10 +84,10 @@ public class SchemaTest {
     return xml;
   }
 
-  private static Schema testParseJsonx(final Jsonx controlBinding) throws IOException, SAXException {
+  private static Schema testParseJsonx(final Jsonx controlBinding, final String pkg) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> JSONX");
-    final Schema controlSchema = new Schema(controlBinding);
+    final Schema controlSchema = new Schema(controlBinding, pkg);
     logger.info("    b) JSONX -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
     final Jsonx testBinding = (Jsonx)Bindings.parse(xml);
@@ -132,15 +132,30 @@ public class SchemaTest {
   }
 
   private static void assertSources(final Map<String,String> expected, final Map<String,String> actual) {
-    assertEquals(expected.size(), actual.size());
     for (final Map.Entry<String,String> entry : expected.entrySet())
       assertEquals(entry.getValue(), actual.get(entry.getKey()));
+
+    try {
+      assertEquals(expected.size(), actual.size());
+    }
+    catch (final AssertionError e) {
+      if (expected.size() < actual.size()) {
+        actual.keySet().removeAll(expected.keySet());
+        logger.error(actual.toString());
+      }
+      else {
+        expected.keySet().removeAll(actual.keySet());
+        logger.error(expected.toString());
+      }
+
+      throw e;
+    }
   }
 
-  public static void test(final String fileName) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
+  public static void test(final String fileName, final String pkg) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
     logger.info(fileName + "...");
     final Jsonx controlBinding = newControlBinding(fileName);
-    final Schema controlSchema = testParseJsonx(controlBinding);
+    final Schema controlSchema = testParseJsonx(controlBinding, pkg);
 
     logger.info("  4) JSONX -> Java(1)");
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -152,26 +167,32 @@ public class SchemaTest {
     final ClassLoader classLoader = compiler.compile(compiledClassesDir);
 
     logger.info("  6) Java(1) -> JSONX");
-    final Schema test1Schema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
+    final Schema test1Schema = newSchema(classLoader, pkg);
     final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
     logger.info("  7) Validate JSONX");
     writeFile("out-" + fileName, xml);
-    Validator.validate(xml, false);
+    try {
+      Validator.validate(xml, false);
+    }
+    catch (final SAXException e) {
+      logger.error(xml);
+      throw e;
+    }
 
-    final Schema test2Schema = testParseJsonx((Jsonx)Bindings.parse(xml));
+    final Schema test2Schema = testParseJsonx((Jsonx)Bindings.parse(xml), pkg);
     logger.info("  8) JSONX -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
     assertSources(test1Sources, test2Sources);
 
-    testSettings(fileName, test1Sources);
+    testSettings(fileName, pkg, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
+  private static void testSettings(final String fileName, final String pkg, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final Jsonx controlBinding = newControlBinding(fileName);
-      final Schema controlSchema = new Schema(controlBinding);
+      final Schema controlSchema = new Schema(controlBinding, pkg);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -181,10 +202,10 @@ public class SchemaTest {
       assertSources(originalSources, test1Sources);
 
       final ClassLoader classLoader = compiler.compile();
-      final Schema test1Schema = newSchema(classLoader, (String)controlBinding.getPackage$().text());
+      final Schema test1Schema = newSchema(classLoader, pkg);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema test2Schema = new Schema((Jsonx)Bindings.parse(schema));
+      final Schema test2Schema = new Schema((Jsonx)Bindings.parse(schema), pkg);
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
     }
@@ -192,31 +213,31 @@ public class SchemaTest {
 
   @Test
   public void testArray() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("array.jsonx");
+    test("array.jsonx", "org.openjax.jsonx.generator");
   }
 
   @Test
   public void testDataType() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("datatype.jsonx");
+    test("datatype.jsonx", "org.openjax.jsonx.generator.datatype");
   }
 
   @Test
   public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("template.jsonx");
+    test("template.jsonx", "org.openjax.jsonx.generator");
   }
 
   @Test
   public void testReference() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reference.jsonx");
+    test("reference.jsonx", "org.openjax.jsonx.generator.reference");
   }
 
   @Test
   public void testReserved() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reserved.jsonx");
+    test("reserved.jsonx", "org.openjax.jsonx.generator.reserved");
   }
 
   @Test
   public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("complete.jsonx");
+    test("complete.jsonx", "org.openjax.jsonx.generator.complete");
   }
 }

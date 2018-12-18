@@ -29,7 +29,7 @@ import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.Use;
 
 final class BooleanModel extends Model {
-  static BooleanModel declare(final Registry registry, final Jsonx.Boolean binding) {
+  static BooleanModel declare(final Registry registry, final Jsonx.BooleanType binding) {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
@@ -59,9 +59,9 @@ final class BooleanModel extends Model {
 
   private final Id id;
 
-  private BooleanModel(final Registry registry, final Jsonx.Boolean binding) {
+  private BooleanModel(final Registry registry, final Jsonx.BooleanType binding) {
     super(registry);
-    this.id = new Id(binding.getTemplate$());
+    this.id = new Id(binding.getName$().text());
   }
 
   private BooleanModel(final Registry registry, final $Boolean binding) {
