@@ -25,9 +25,18 @@ import java.util.List;
 import org.fastjax.util.Annotations;
 import org.fastjax.util.FixedOrderComparator;
 import org.fastjax.util.JavaIdentifiers;
+import org.fastjax.util.Strings;
 
 public final class JxUtil {
   public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "xsi:type", "type", "elementIds", "template", "reference", "form", "range", "pattern", "urlEncode", "urlDecode", "use", "minOccurs", "maxOccurs", "nullable");
+
+  public static String flipName(final String name) {
+    int i = name.lastIndexOf('$');
+    if (i == -1)
+      i = name.lastIndexOf('.');
+
+    return i == -1 ? Strings.flipFirstCap(name) : name.substring(0, i + 1) + Strings.flipFirstCap(name.substring(i + 1));
+  }
 
   public static Method getGetMethod(final Class<?> cls, final String propertyName) {
     return getMethod(cls, propertyName, null);

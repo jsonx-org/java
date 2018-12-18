@@ -41,7 +41,7 @@ public class JsonxMojo extends GeneratorMojo {
   @Parameter(property = "schemas", required = true)
   private List<String> schemas;
 
-  @Parameter(property = "package", required = true)
+  @Parameter(property = "pkg", required = true)
   private String pkg;
 
   @Override

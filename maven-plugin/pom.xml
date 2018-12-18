@@ -105,7 +105,7 @@
             </executions>
             <configuration>
               <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
-              <package>org.openjax.jsonx</package>
+              <pkg>org.openjax.jsonx</pkg>
               <schemas>
                 <schema>src/test/resources/test.jsonx</schema>
               </schemas>

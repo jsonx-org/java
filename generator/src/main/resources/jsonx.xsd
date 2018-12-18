@@ -61,7 +61,7 @@
       <xs:documentation>Identifier pattern that must start with either a capital letter, or must include a '$' followed by a capital letter.</xs:documentation>
     </xs:annotation>
     <xs:restriction base="dt:identifier">
-      <xs:pattern value="([A-Z].*)|(.*\$[A-Z].*)"/>
+      <xs:pattern value="([a-z][^$]+)|(.*\$[a-z].*)"/>
     </xs:restriction>
   </xs:simpleType>
   
@@ -288,7 +288,7 @@
             </xs:unique>
           </xs:element>
         </xs:sequence> 
-        <xs:attribute name="extends" type="dt:stringNonEmpty">
+        <xs:attribute name="extends" type="jsonx:typeName">
           <xs:annotation>
             <xs:documentation>Super type of object. Optional.</xs:documentation>
           </xs:annotation>

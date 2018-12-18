@@ -31,6 +31,7 @@ import java.util.Set;
 import org.fastjax.lang.IllegalAnnotationException;
 import org.fastjax.util.Classes;
 import org.fastjax.util.Iterators;
+import org.fastjax.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
@@ -82,9 +83,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final StringBuilder builder = new StringBuilder();
     $Object owner = binding;
     do
-      builder.insert(0, '$').insert(1, owner.getName$().text());
+      builder.insert(0, '$').insert(1, Strings.flipFirstCap(owner.getName$().text()));
     while (owner.owner() instanceof $Object && (owner = ($Object)owner.owner()) != null);
-    return builder.insert(0, ((Jsonx.ObjectType)owner.owner()).getName$().text()).toString();
+    return builder.insert(0, JxUtil.flipName(((Jsonx.ObjectType)owner.owner()).getName$().text())).toString();
   }
 
   private static void checkJSObject(final Class<?> cls) {
@@ -156,7 +157,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private ObjectModel(final Registry registry, final Jsonx.ObjectType binding) {
     super(registry);
-    this.type = registry.getType(registry.packageName, binding.getName$().text(), binding.getExtends$() == null ? null : binding.getExtends$().text());
+    this.type = registry.getType(registry.packageName, JxUtil.flipName(binding.getName$().text()), binding.getExtends$() == null ? null : JxUtil.flipName(binding.getExtends$().text()));
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$().text());
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
@@ -173,7 +174,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private ObjectModel(final Registry registry, final $Object binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.type = registry.getType(registry.packageName, getFullyQualifiedName(binding), binding.getExtends$() == null ? null : binding.getExtends$().text());
+    this.type = registry.getType(registry.packageName, getFullyQualifiedName(binding), binding.getExtends$() == null ? null : JxUtil.flipName(binding.getExtends$().text()));
     this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$().text());
     this.isAbstract = false;
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
@@ -248,10 +249,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
-    attributes.put(owner instanceof ArrayModel ? "type" : "name", owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName));
+    attributes.put(owner instanceof ArrayModel ? "type" : "name", JxUtil.flipName(owner instanceof ObjectModel ? type.getSubName(((ObjectModel)owner).type().getName()) : type.getSubName(packageName)));
 
     if (superObject != null)
-      attributes.put("extends", superObject.type().getRelativeName(packageName));
+      attributes.put("extends", JxUtil.flipName(superObject.type().getRelativeName(packageName)));
 
     if (isAbstract)
       attributes.put("abstract", String.valueOf(isAbstract));

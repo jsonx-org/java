@@ -200,7 +200,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private ArrayModel(final Registry registry, final Jsonx.ArrayType binding) {
     super(registry);
     this.members = parseMembers(registry, this, binding);
-    this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, binding.getName$().text());
+    this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, JxUtil.flipName(binding.getName$().text()));
     this.id = new Id(binding.getName$().text());
   }
 
@@ -336,7 +336,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (owner instanceof Schema) {
       if (type != null)
-        attributes.put("name", type.getSubName(packageName));
+        attributes.put("name", JxUtil.flipName(type.getSubName(packageName)));
       else
         attributes.put("name", id().toString());
     }

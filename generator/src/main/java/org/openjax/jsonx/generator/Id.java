@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
+import org.openjax.jsonx.runtime.JxUtil;
+
 class Id {
   private static String hash(final Object ... variables) {
     final Checksum crc = new CRC32();
@@ -35,11 +37,11 @@ class Id {
   }
 
   Id(final Registry.Type type) {
-    this.id = type.getName();
+    this.id = JxUtil.flipName(type.getName());
   }
 
   Id(final Class<?> type) {
-    this.id = type.getName();
+    this.id = JxUtil.flipName(type.getName());
   }
 
   Id(final ArrayModel model) {
@@ -49,7 +51,7 @@ class Id {
       variables[i] = member.id().toString() + member.nullable;
     }
 
-    this.id = "A" + hash(variables);
+    this.id = "a" + hash(variables);
   }
 
   /**
@@ -58,15 +60,15 @@ class Id {
    * @param model The {@code BooleanModel} instance.
    */
   Id(final BooleanModel model) {
-    this.id = "B" + hash(model.nullable);
+    this.id = "b" + hash(model.nullable);
   }
 
   Id(final NumberModel model) {
-    this.id = "N" + hash(model.form, model.range, model.nullable);
+    this.id = "n" + hash(model.form, model.range, model.nullable);
   }
 
   Id(final StringModel model) {
-    this.id = "S" + hash(model.pattern, model.urlDecode, model.urlEncode, model.nullable);
+    this.id = "s" + hash(model.pattern, model.urlDecode, model.urlEncode, model.nullable);
   }
 
   Id(final ObjectModel model) {
@@ -74,7 +76,7 @@ class Id {
   }
 
   Id(final Reference model) {
-    this.id = "T" + hash(model.model.id().toString(), model.minOccurs, model.maxOccurs, model.nullable, model.use);
+    this.id = "t" + hash(model.model.id().toString(), model.minOccurs, model.maxOccurs, model.nullable, model.use);
   }
 
   @Override

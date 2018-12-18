@@ -18,38 +18,38 @@
   xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
-  <arrayType name="RootArray3">
-    <reference type="bar$RootArray2" minOccurs="3" maxOccurs="4"/>
-    <reference type="RootNumber" nullable="false"/>
-    <reference type="RootString"/>
+  <arrayType name="bar$rootArray1">
+    <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
   </arrayType>
-  <arrayType name="TemplateArray">
-    <reference type="RootArray3" minOccurs="9" maxOccurs="10"/>
-    <reference type="bar$RootArray2" minOccurs="7" maxOccurs="8"/>
-    <reference type="RootBoolean"/>
-    <reference type="RootBoolean" nullable="false"/>
+  <arrayType name="bar$rootArray2">
+    <reference type="bar$rootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
+    <reference type="rootBoolean"/>
   </arrayType>
-  <arrayType name="bar$RootArray1">
-    <reference type="RootBoolean" minOccurs="5" maxOccurs="6"/>
+  <arrayType name="rootArray3">
+    <reference type="bar$rootArray2" minOccurs="3" maxOccurs="4"/>
+    <reference type="rootNumber" nullable="false"/>
+    <reference type="rootString"/>
   </arrayType>
-  <arrayType name="bar$RootArray2">
-    <reference type="bar$RootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
-    <reference type="RootBoolean"/>
+  <arrayType name="templateArray">
+    <reference type="rootArray3" minOccurs="9" maxOccurs="10"/>
+    <reference type="bar$rootArray2" minOccurs="7" maxOccurs="8"/>
+    <reference type="rootBoolean"/>
+    <reference type="rootBoolean" nullable="false"/>
   </arrayType>
-  <booleanType name="RootBoolean"/>
-  <numberType name="RootNumber" form="integer" range="[2,9]"/>
-  <stringType name="RootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
-  <objectType name="ObjectWithArray">
+  <booleanType name="rootBoolean"/>
+  <numberType name="rootNumber" form="integer" range="[2,9]"/>
+  <stringType name="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
+  <objectType name="objectWithArray">
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">
         <string maxOccurs="3" nullable="false"/>
-        <reference type="RootString" minOccurs="2"/>
+        <reference type="rootString" minOccurs="2"/>
         <boolean nullable="false"/>
         <array minOccurs="3" maxOccurs="5">
           <string nullable="false" minOccurs="2" maxOccurs="7"/>
-          <reference type="RootNumber"/>
+          <reference type="rootNumber"/>
           <array maxOccurs="1">
-            <reference type="bar$RootArray2"/>
+            <reference type="bar$rootArray2"/>
             <array maxOccurs="2">
               <array nullable="false">
                 <string/>
@@ -57,22 +57,22 @@
             </array>
             <boolean minOccurs="5"/>
           </array>
-          <reference type="RootBoolean"/>
+          <reference type="rootBoolean"/>
           <number maxOccurs="7"/>
         </array>
-        <reference type="TemplateArray"/>
+        <reference type="templateArray"/>
         <number nullable="false"/>
       </array>
       <string/>
-      <reference type="RootArray3"/>
+      <reference type="rootArray3"/>
       <boolean nullable="false"/>
     </property>
     <property name="arrayDirectOptional" xsi:type="array" use="optional">
       <string nullable="false"/>
     </property>
-    <property name="arrayOne" xsi:type="reference" type="bar$RootArray1" use="optional"/>
-    <property name="arrayTwo" xsi:type="reference" type="bar$RootArray2"/>
-    <property name="arrayThree" xsi:type="reference" type="RootArray3"/>
-    <property name="arrayFour" xsi:type="reference" type="TemplateArray" use="optional"/>
+    <property name="arrayOne" xsi:type="reference" type="bar$rootArray1" use="optional"/>
+    <property name="arrayTwo" xsi:type="reference" type="bar$rootArray2"/>
+    <property name="arrayThree" xsi:type="reference" type="rootArray3"/>
+    <property name="arrayFour" xsi:type="reference" type="templateArray" use="optional"/>
   </objectType>
 </jsonx>
