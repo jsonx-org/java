@@ -29,13 +29,13 @@
   <numberType name="numRange1" range="[1,]"/>
   <numberType name="numRange2" range="[,2]"/>
   <stringType name="str"/>
-  <stringType name="strDec" urlDecode="true"/>
-  <stringType name="strDecEnc" urlDecode="true" urlEncode="true"/>
-  <stringType name="strEnc" urlEncode="true"/>
+  <stringType name="strDec"/>
+  <stringType name="strDecEnc"/>
+  <stringType name="strEnc"/>
   <stringType name="strPattern" pattern="[a-z]+"/>
-  <stringType name="strPatternDec" pattern="[a-z]+" urlDecode="true"/>
-  <stringType name="strPatternDecEnc" pattern="[a-z]+" urlDecode="true" urlEncode="true"/>
-  <stringType name="strPatternEnc" pattern="[a-z]+" urlEncode="true"/>
+  <stringType name="strPatternDec" pattern="[a-z]+"/>
+  <stringType name="strPatternDecEnc" pattern="[a-z]+"/>
+  <stringType name="strPatternEnc" pattern="[a-z]+"/>
   <objectType name="objArr">
     <property name="bool" xsi:type="reference" type="bool"/>
     <property name="boolOptional" xsi:type="reference" type="bool" use="optional"/>

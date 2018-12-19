@@ -29,8 +29,6 @@ public @interface StringElement {
   int id();
   boolean nullable() default true;
   String pattern() default "";
-  boolean urlEncode() default false;
-  boolean urlDecode() default false;
   int minOccurs() default 1;
   int maxOccurs() default Integer.MAX_VALUE;
 }

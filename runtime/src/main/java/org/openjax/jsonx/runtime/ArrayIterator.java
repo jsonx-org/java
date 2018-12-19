@@ -63,7 +63,7 @@ public abstract class ArrayIterator {
     if (validate && element.pattern().length() != 0 && !string.matches(element.pattern()))
       return "Pattern is not matched: \"" + Strings.truncate(string, 16) + "\"";
 
-    relations.set(i, new Relation(decode ? StringCodec.decode(element.urlDecode(), "\"" + string + "\"") : member, element));
+    relations.set(i, new Relation(decode ? StringCodec.decode("\"" + string + "\"") : member, element));
     return null;
   }
 

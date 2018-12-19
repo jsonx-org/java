@@ -100,7 +100,7 @@ class ObjectCodec extends Codec {
           if (error != null)
             return error;
 
-          value = primitiveCodec.decode(token);
+          value = primitiveCodec.parse(token);
         }
         else {
           final char firstChar = token.charAt(0);

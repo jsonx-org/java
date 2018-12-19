@@ -38,7 +38,7 @@
   </arrayType>
   <booleanType name="rootBoolean"/>
   <numberType name="rootNumber" form="integer" range="[2,9]"/>
-  <stringType name="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
+  <stringType name="rootString" pattern="[a-z]+"/>
   <objectType name="objectWithArray">
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">

@@ -165,16 +165,6 @@
             <xs:documentation>Regex pattern for string.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="urlEncode" type="xs:boolean" default="false">
-          <xs:annotation>
-            <xs:documentation>Should string be url-encoded. Default: false.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="urlDecode" type="xs:boolean" default="false">
-          <xs:annotation>
-            <xs:documentation>Should string be url-decoded. Default: false.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

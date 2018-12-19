@@ -85,7 +85,7 @@ class ArrayCreateIterator extends ArrayIterator {
     }
     else if (annotation instanceof StringElement) {
       final StringElement element = (StringElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : StringTrial.createValid(element.pattern(), element.urlDecode(), element.urlEncode());
+      current = element.nullable() && Math.random() < 0.5 ? null : StringTrial.createValid(element.pattern());
     }
     else {
       throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());

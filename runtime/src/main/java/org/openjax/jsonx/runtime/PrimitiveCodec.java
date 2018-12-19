@@ -32,5 +32,5 @@ abstract class PrimitiveCodec<T> extends Codec {
 
   abstract boolean test(final char firstChar);
   abstract String validate(final String json);
-  abstract T decode(final String json);
+  abstract T parse(final String json);
 }

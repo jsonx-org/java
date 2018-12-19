@@ -19,7 +19,7 @@ package org.openjax.jsonx.runtime;
 import org.fastjax.net.URLs;
 
 public class OnlineArticle extends Publication {
-  @StringProperty(pattern=URLs.REGEX, urlDecode=true, urlEncode=false)
+  @StringProperty(pattern=URLs.REGEX)
   private String url;
 
   public String getUrl() {

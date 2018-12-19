@@ -102,11 +102,11 @@ class NumberCodec extends PrimitiveCodec<Number> {
     }
 
     // FIXME: decode() is done here and in the caller's scope
-    return range != null && !range.isValid(decode(json)) ? "Range (" + range + ") is not matched: " + json : null;
+    return range != null && !range.isValid(parse(json)) ? "Range (" + range + ") is not matched: " + json : null;
   }
 
   @Override
-  Number decode(final String json) {
+  Number parse(final String json) {
     return decode(form, json);
   }
 

@@ -28,6 +28,4 @@ public @interface StringProperty {
   boolean nullable() default true;
   Use use() default Use.REQUIRED;
   String pattern() default "";
-  boolean urlEncode() default false;
-  boolean urlDecode() default false;
 }

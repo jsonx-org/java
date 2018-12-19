@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fastjax.json.JsonStrings;
-import org.fastjax.net.URIComponent;
-import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 import com.google.common.base.Strings;
@@ -36,22 +34,11 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
     for (int i = 0; i < list.size(); ++i) {
       final Object member = list.get(i);
       if (member instanceof String) {
-        final Relation relation = relations.get(i);
-        final StringElement element = (StringElement)relation.annotation;
         if (!decode) {
-          final String value = element.urlEncode() ? URIComponent.encode((String)member) : (String)member;
-          out.add("\"" + JsonStrings.escape(value) + "\"");
+          out.add("\"" + JsonStrings.escape((String)member) + "\"");
         }
         else {
-          final String value;
-          if (!element.urlEncode() && element.urlDecode())
-            value = URIComponent.decode((String)member);
-          else if (element.urlEncode() && !element.urlDecode())
-            value = URIComponent.encode((String)member);
-          else
-            value = (String)member;
-
-          out.add(value);
+          out.add(member);
         }
       }
       else if (member instanceof List) {
@@ -76,7 +63,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = list.toString();
     }
     else if (trial instanceof StringTrial) {
-      expected = StringCodec.encode(((StringTrial)trial).urlEncode, (String)trial.value()).toString();
+      expected = StringCodec.encode((String)trial.value()).toString();
     }
     else {
       expected = String.valueOf(trial.value());
@@ -104,24 +91,12 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   @Override
   void onDecode(final PropertyTrial<T> trial, final Relations relations, final Object value) {
     final Object expected;
-    if (trial.value() == null) {
+    if (trial.value() == null)
       expected = null;
-    }
-    else if (trial.value() instanceof List) {
+    else if (trial.value() instanceof List)
       expected = format((List<?>)trial.value(), relations, true);
-    }
-    else if (trial instanceof StringTrial) {
-      final StringTrial stringTrial = (StringTrial)trial;
-      if (!stringTrial.urlEncode && stringTrial.urlDecode)
-        expected = URIComponent.decode((String)trial.value());
-      else if (stringTrial.urlEncode && !stringTrial.urlDecode)
-        expected = URIComponent.encode((String)trial.value());
-      else
-        expected = trial.value();
-    }
-    else {
+    else
       expected = trial.value();
-    }
 
     assertEquals(expected, value);
   }

@@ -83,7 +83,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final StringProperty stringProperty = field.getAnnotation(StringProperty.class);
         if (stringProperty != null) {
           if (stringProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, StringTrial.createValid(stringProperty.pattern(), stringProperty.urlDecode(), stringProperty.urlEncode()));
+            setField(field, object, StringTrial.createValid(stringProperty.pattern()));
 
           continue;
         }

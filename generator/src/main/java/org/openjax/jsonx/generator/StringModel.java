@@ -64,30 +64,22 @@ final class StringModel extends Model {
 
   private final Id id;
   final String pattern;
-  final boolean urlEncode;
-  final boolean urlDecode;
 
   private StringModel(final Registry registry, final Jsonx.StringType binding) {
     super(registry);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.urlEncode = binding.getUrlEncode$().text();
-    this.urlDecode = binding.getUrlDecode$().text();
     this.id = new Id(binding.getName$());
   }
 
   private StringModel(final Registry registry, final $String binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.urlEncode = binding.getUrlEncode$().text();
-    this.urlDecode = binding.getUrlDecode$().text();
     this.id = new Id(this);
   }
 
   private StringModel(final Registry registry, final $Array.String binding) {
     super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.urlEncode = binding.getUrlEncode$().text();
-    this.urlDecode = binding.getUrlDecode$().text();
     this.id = new Id(this);
   }
 
@@ -97,16 +89,12 @@ final class StringModel extends Model {
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of String type, or optional and nullable fields of Optional<String> type");
 
     this.pattern = parsePattern(property.pattern());
-    this.urlEncode = property.urlEncode();
-    this.urlDecode = property.urlDecode();
     this.id = new Id(this);
   }
 
   private StringModel(final Registry registry, final StringElement element) {
     super(registry, element.nullable(), null);
     this.pattern = parsePattern(element.pattern());
-    this.urlEncode = element.urlEncode();
-    this.urlDecode = element.urlDecode();
     this.id = new Id(this);
   }
 
@@ -141,12 +129,6 @@ final class StringModel extends Model {
     if (pattern != null)
       attributes.put("pattern", pattern);
 
-    if (urlEncode)
-      attributes.put("urlEncode", String.valueOf(urlEncode));
-
-    if (urlDecode)
-      attributes.put("urlDecode", String.valueOf(urlDecode));
-
     return attributes;
   }
 
@@ -155,11 +137,5 @@ final class StringModel extends Model {
     super.toAnnotationAttributes(attributes, owner);
     if (pattern != null)
       attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");
-
-    if (urlEncode)
-      attributes.put("urlEncode", urlEncode);
-
-    if (urlDecode)
-      attributes.put("urlDecode", urlDecode);
   }
 }

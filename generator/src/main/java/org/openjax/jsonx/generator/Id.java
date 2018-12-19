@@ -69,7 +69,7 @@ class Id {
   }
 
   Id(final StringModel model) {
-    this.id = "s" + hash(model.pattern, model.urlDecode, model.urlEncode, model.nullable);
+    this.id = "s" + hash(model.pattern, model.nullable);
   }
 
   Id(final ObjectModel model) {

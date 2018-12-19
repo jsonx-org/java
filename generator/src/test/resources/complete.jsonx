@@ -39,7 +39,7 @@
   <booleanType name="rootBooleanNotNull"/>
   <booleanType name="rootBooleanNull"/>
   <numberType name="rootNumber" form="integer" range="(2,9)"/>
-  <stringType name="rootString" pattern="[a-z]+" urlEncode="true" urlDecode="true"/>
+  <stringType name="rootString" pattern="[a-z]+"/>
   <objectType name="cls$abstractObject" abstract="true">
     <property name="booleanPropertyOptional" xsi:type="reference" type="rootBooleanNull" use="optional"/>
     <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBooleanNull" use="optional" nullable="false"/>
@@ -261,8 +261,8 @@
     <property name="stringOptional" xsi:type="string" use="optional"/>
     <property name="stringOptionalNotNullable" xsi:type="string" use="optional" nullable="false"/>
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
-    <property name="stringUrlDecode" xsi:type="string" urlDecode="true"/>
-    <property name="stringUrlEncode" xsi:type="string" urlEncode="true"/>
+    <property name="stringUrlDecode" xsi:type="string"/>
+    <property name="stringUrlEncode" xsi:type="string"/>
   </objectType>
   <objectType name="simple$stringsArray">
     <property name="stringArrayRefDefault" xsi:type="array">
@@ -288,9 +288,9 @@
       <string pattern="[valid]+"/>
     </property>
     <property name="stringArrayUrl" xsi:type="array">
-      <string urlEncode="true" maxOccurs="1" nullable="false"/>
-      <string urlDecode="true" maxOccurs="1"/>
-      <string urlEncode="true" urlDecode="true" maxOccurs="1"/>
+      <string maxOccurs="1" nullable="false"/>
+      <string maxOccurs="1"/>
+      <string maxOccurs="1"/>
     </property>
   </objectType>
   <objectType name="xyz$objects">

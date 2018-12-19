@@ -21,27 +21,19 @@ import java.lang.reflect.Field;
 import java.util.regex.PatternSyntaxException;
 
 import org.fastjax.json.JsonStrings;
-import org.fastjax.net.URIComponent;
 import org.fastjax.util.Annotations;
 import org.fastjax.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class StringCodec extends PrimitiveCodec<String> {
-  private static final Logger logger = LoggerFactory.getLogger(StringCodec.class);
-
   static StringBuilder encode(final Annotation annotation, final String object, final boolean validate) throws EncodeException {
-    final boolean urlEncode;
     final String pattern;
     if (annotation instanceof StringProperty) {
       final StringProperty property = (StringProperty)annotation;
       pattern = property.pattern();
-      urlEncode = property.urlEncode();
     }
     else if (annotation instanceof StringElement) {
       final StringElement element = (StringElement)annotation;
       pattern = element.pattern();
-      urlEncode = element.urlEncode();
     }
     else {
       throw new IllegalArgumentException("Illegal annotation type for \"string\": " + annotation.annotationType().getName());
@@ -50,15 +42,14 @@ class StringCodec extends PrimitiveCodec<String> {
     if (validate && pattern.length() > 0 && !object.matches(pattern))
       throw new EncodeException(Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
 
-    return encode(urlEncode, object);
+    return encode(object);
   }
 
-  static StringBuilder encode(final boolean urlEncode, final String string) throws EncodeException {
-    final StringBuilder encoded = JsonStrings.escape(urlEncode ? URIComponent.encode(string) : string);
-    return encoded.insert(0, '"').append('"');
+  static StringBuilder encode(final String string) throws EncodeException {
+    return JsonStrings.escape(string).insert(0, '"').append('"');
   }
 
-  static String decode(final boolean urlDecode, final String json) {
+  static String decode(final String json) {
     final StringBuilder unescaped = new StringBuilder(json.length() - 2);
     for (int i = 1, len = json.length() - 1; i < len; ++i) {
       char ch = json.charAt(i);
@@ -71,22 +62,14 @@ class StringCodec extends PrimitiveCodec<String> {
       unescaped.append(ch);
     }
 
-    try {
-      return urlDecode ? URIComponent.decode(unescaped.toString()) : unescaped.toString();
-    }
-    catch (final Exception e) {
-      logger.debug(e.getMessage(), e);
-      return null;
-    }
+    return unescaped.toString();
   }
 
   private final String pattern;
-  private final boolean urlDecode;
 
   StringCodec(final StringProperty property, final Field field) {
     super(field, property.name(), property.nullable(), property.use());
     this.pattern = property.pattern().length() == 0 ? null : property.pattern();
-    this.urlDecode = property.urlDecode();
   }
 
   @Override
@@ -111,7 +94,7 @@ class StringCodec extends PrimitiveCodec<String> {
     }
 
     // FIXME: decode() is done here and in the caller's scope
-    final String decoded = decode(token);
+    final String decoded = parse(token);
     if (decoded == null)
       return "Invalid URL encoding: \"" + token + "\"";
 
@@ -119,8 +102,8 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   @Override
-  String decode(final String json) {
-    return decode(urlDecode, json);
+  String parse(final String json) {
+    return decode(json);
   }
 
   @Override

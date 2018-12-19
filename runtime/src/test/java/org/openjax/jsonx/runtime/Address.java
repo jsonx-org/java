@@ -30,7 +30,7 @@ public class Address implements JxObject {
     this.number = number;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String street;
 
   public String getStreet() {
@@ -41,7 +41,7 @@ public class Address implements JxObject {
     this.street = street;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String city;
 
   public String getCity() {
@@ -52,7 +52,7 @@ public class Address implements JxObject {
     this.city = city;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String postalCode;
 
   public String getPostalCode() {
@@ -63,7 +63,7 @@ public class Address implements JxObject {
     this.postalCode = postalCode;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String locality;
 
   public String getLocality() {
@@ -74,7 +74,7 @@ public class Address implements JxObject {
     this.locality = locality;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)", urlEncode=true, urlDecode=true)
+  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String country;
 
   public String getCountry() {

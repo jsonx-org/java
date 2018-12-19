@@ -42,7 +42,7 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
   }
 
   @Override
-  Boolean decode(final String json) {
+  Boolean parse(final String json) {
     return Boolean.valueOf(json);
   }
 
