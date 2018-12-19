@@ -61,7 +61,7 @@
       <xs:documentation>Identifier pattern that must start with either a capital letter, or must include a '$' followed by a capital letter.</xs:documentation>
     </xs:annotation>
     <xs:restriction base="dt:identifier">
-      <xs:pattern value="([A-Z].*)|(.*\$[A-Z].*)"/>
+      <xs:pattern value="([a-z][^$]+)|(.*\$[a-z].*)"/>
     </xs:restriction>
   </xs:simpleType>
   
@@ -163,16 +163,6 @@
         <xs:attribute name="pattern" type="dt:stringNonEmpty">
           <xs:annotation>
             <xs:documentation>Regex pattern for string.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="urlEncode" type="xs:boolean" default="false">
-          <xs:annotation>
-            <xs:documentation>Should string be url-encoded. Default: false.</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="urlDecode" type="xs:boolean" default="false">
-          <xs:annotation>
-            <xs:documentation>Should string be url-decoded. Default: false.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -288,7 +278,7 @@
             </xs:unique>
           </xs:element>
         </xs:sequence> 
-        <xs:attribute name="extends" type="dt:stringNonEmpty">
+        <xs:attribute name="extends" type="jsonx:typeName">
           <xs:annotation>
             <xs:documentation>Super type of object. Optional.</xs:documentation>
           </xs:annotation>
