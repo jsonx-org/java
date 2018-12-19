@@ -72,7 +72,7 @@ final class StringModel extends Model {
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.urlEncode = binding.getUrlEncode$().text();
     this.urlDecode = binding.getUrlDecode$().text();
-    this.id = new Id(binding.getName$().text());
+    this.id = new Id(binding.getName$());
   }
 
   private StringModel(final Registry registry, final $String binding) {

@@ -24,7 +24,7 @@ class AnnotationSpec {
   private static String toAnnotation(final Map<String,String> attributes) {
     final StringBuilder builder = new StringBuilder();
     final Iterator<Map.Entry<String,String>> iterator = attributes.entrySet().iterator();
-    for (int i = 0; iterator.hasNext(); i++) {
+    for (int i = 0; iterator.hasNext(); ++i) {
       if (i > 0)
         builder.append(", ");
 

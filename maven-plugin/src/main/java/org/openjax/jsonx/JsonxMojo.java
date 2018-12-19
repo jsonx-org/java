@@ -29,6 +29,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.fastjax.maven.mojo.GeneratorMojo;
 import org.fastjax.maven.mojo.SourceInput;
+import org.fastjax.util.Identifiers;
 import org.fastjax.xml.ValidationException;
 import org.openjax.jsonx.generator.Schema;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
@@ -41,11 +42,22 @@ public class JsonxMojo extends GeneratorMojo {
   @Parameter(property = "schemas", required = true)
   private List<String> schemas;
 
-  @Parameter(property = "pkg", required = true)
+  @Parameter(name = "package", property = "package", required = true)
   private String pkg;
+
+  public String getPackage() {
+    return this.pkg;
+  }
+
+  public void setPackage(final String pkg) {
+    this.pkg = pkg;
+  }
 
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
+    if (!Identifiers.isValid(pkg))
+      throw new IllegalArgumentException("Illegal \"package\" parameter: " + pkg);
+
     try {
       for (final URL resource : configuration.getSourceInputs("schemas")) {
         try (final InputStream in = resource.openStream()) {

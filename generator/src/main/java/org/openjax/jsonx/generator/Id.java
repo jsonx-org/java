@@ -21,6 +21,7 @@ import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 import org.openjax.jsonx.runtime.JxUtil;
+import org.w3.www._2001.XMLSchema.yAA.$String;
 
 class Id {
   private static String hash(final Object ... variables) {
@@ -32,8 +33,8 @@ class Id {
 
   private final String id;
 
-  Id(final String id) {
-    this.id = id;
+  Id(final $String id) {
+    this.id = id.text();
   }
 
   Id(final Registry.Type type) {

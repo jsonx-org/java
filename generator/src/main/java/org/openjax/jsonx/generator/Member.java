@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.fastjax.util.FastCollections;
-import org.fastjax.util.JavaIdentifiers;
+import org.fastjax.util.Identifiers;
 import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$Identifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
@@ -150,7 +150,7 @@ abstract class Member extends Element {
   }
 
   final String instanceName() {
-    return JavaIdentifiers.toInstanceCase(name);
+    return Identifiers.toInstanceCase(name);
   }
 
   @Override
@@ -201,7 +201,7 @@ abstract class Member extends Element {
   }
 
   final String toInstanceName() {
-    return JavaIdentifiers.toInstanceCase(name);
+    return Identifiers.toInstanceCase(name);
   }
 
   final String toField() {
@@ -216,7 +216,7 @@ abstract class Member extends Element {
     if (!name.equals(instanceName) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + name + "\"");
 
-    String classCase = JavaIdentifiers.toClassCase(name);
+    String classCase = Identifiers.toClassCase(name);
     if ("Class".equals(classCase))
       classCase = "0lass";
 

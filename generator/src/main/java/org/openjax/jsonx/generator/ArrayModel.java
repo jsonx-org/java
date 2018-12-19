@@ -155,7 +155,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       }
       else if (member instanceof $Array.Reference) {
         final $Array.Reference reference = ($Array.Reference)member;
-        final Member model = registry.getModel(new Id(reference.getType$().text()));
+        final Member model = registry.getModel(new Id(reference.getType$()));
         if (model == null)
           throw new IllegalStateException("Template type=\"" + reference.getType$().text() + "\" in array not found");
 
@@ -201,7 +201,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     super(registry);
     this.members = parseMembers(registry, this, binding);
     this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, JxUtil.flipName(binding.getName$().text()));
-    this.id = new Id(binding.getName$().text());
+    this.id = new Id(binding.getName$());
   }
 
   private ArrayModel(final Registry registry, final $Array binding) {

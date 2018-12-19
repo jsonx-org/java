@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.fastjax.util.Annotations;
 import org.fastjax.util.FixedOrderComparator;
-import org.fastjax.util.JavaIdentifiers;
+import org.fastjax.util.Identifiers;
 import org.fastjax.util.Strings;
 
 public final class JxUtil {
@@ -48,7 +48,7 @@ public final class JxUtil {
 
   private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
     try {
-      return cls.getMethod((parameterType == null ? "get" : "set") + JavaIdentifiers.toClassCase(propertyName), parameterType == null ? null : new Class<?> [] {parameterType});
+      return cls.getMethod((parameterType == null ? "get" : "set") + Identifiers.toClassCase(propertyName), parameterType == null ? null : new Class<?> [] {parameterType});
     }
     catch (final NoSuchMethodException e) {
       return null;

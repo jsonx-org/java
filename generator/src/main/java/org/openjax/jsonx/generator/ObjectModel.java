@@ -126,7 +126,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
       else if (member instanceof $Reference) {
         final $Reference reference = ($Reference)member;
-        final Member model = registry.getModel(new Id(reference.getType$().text()));
+        final Member model = registry.getModel(new Id(reference.getType$()));
         if (model == null)
           throw new IllegalStateException("Template \"" + reference.getName$().text() + "\" -> reference=\"" + reference.getType$().text() + "\" not found");
 
@@ -159,7 +159,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     super(registry);
     this.type = registry.getType(registry.packageName, JxUtil.flipName(binding.getName$().text()), binding.getExtends$() == null ? null : JxUtil.flipName(binding.getExtends$().text()));
     this.isAbstract = binding.getAbstract$().text();
-    this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$().text());
+    this.superObject = getReference(binding.getExtends$());
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
     this.id = new Id(this);
   }
@@ -175,7 +175,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private ObjectModel(final Registry registry, final $Object binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.type = registry.getType(registry.packageName, getFullyQualifiedName(binding), binding.getExtends$() == null ? null : JxUtil.flipName(binding.getExtends$().text()));
-    this.superObject = binding.getExtends$() == null ? null : getReference(binding.getExtends$().text());
+    this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
     this.id = new Id(this);

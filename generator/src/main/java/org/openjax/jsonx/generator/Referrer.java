@@ -44,7 +44,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
   }
 
   @SuppressWarnings("unchecked")
-  T getReference(final String className) {
+  T getReference(final $String className) {
     if (className == null)
       return null;
 

@@ -77,15 +77,8 @@ abstract class Model extends Member implements Comparable<Model> {
       return new org.fastjax.xml.Element(owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
     }
 
-//    if (registry.isTemplateReference(this, settings)) {
-//      attributes = super.toXmlAttributes(owner, packageName);
-//      attributes.put("xsi:type", "template");
-//      attributes.put("reference", id().toString());
-//    }
-//    else {
-      attributes = toXmlAttributes(owner, packageName);
-      attributes.put("xsi:type", elementName());
-//    }
+    attributes = toXmlAttributes(owner, packageName);
+    attributes.put("xsi:type", elementName());
 
     return new org.fastjax.xml.Element("property", attributes, null);
   }

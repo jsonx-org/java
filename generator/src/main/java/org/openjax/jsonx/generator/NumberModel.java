@@ -88,7 +88,7 @@ final class NumberModel extends Model {
       throw createValidationException(binding, binding.getRange$().text(), e);
     }
 
-    this.id = new Id(binding.getName$().text());
+    this.id = new Id(binding.getName$());
   }
 
   private NumberModel(final Registry registry, final $Number binding) {

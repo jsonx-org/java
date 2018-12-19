@@ -61,7 +61,7 @@ final class BooleanModel extends Model {
 
   private BooleanModel(final Registry registry, final Jsonx.BooleanType binding) {
     super(registry);
-    this.id = new Id(binding.getName$().text());
+    this.id = new Id(binding.getName$());
   }
 
   private BooleanModel(final Registry registry, final $Boolean binding) {
