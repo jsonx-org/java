@@ -109,7 +109,7 @@ class StringTrial extends PropertyTrial<String> {
     }
 
     if (fail.matches(regex))
-      throw new RuntimeException("Could not generate a fail string for regex: " + regex);
+      throw new IllegalStateException("Could not generate a fail string for regex: " + regex);
 
     return fail;
   }

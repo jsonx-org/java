@@ -210,7 +210,7 @@ public class ArrayValidator {
       return validate(new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 0, annotations, 0, idToElement, relations, validate, onPropertyDecode);
     }
     catch (final IOException e) {
-      throw new RuntimeException("Should not happen, as this method is only called for encode", e);
+      throw new IllegalStateException("Should not happen, as this method is only called for encode", e);
     }
   }
 

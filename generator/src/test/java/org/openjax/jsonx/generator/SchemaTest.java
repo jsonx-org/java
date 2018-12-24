@@ -30,6 +30,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +165,7 @@ public class SchemaTest {
       compiler.addSource(entry.getValue());
 
     logger.info("  5) -- Java(1) Compile --");
-    final ClassLoader classLoader = compiler.compile(compiledClassesDir);
+    final ClassLoader classLoader = compiler.compile(Arrays.asList("-g"), compiledClassesDir);
 
     logger.info("  6) Java(1) -> JSONX");
     final Schema test1Schema = newSchema(classLoader, pkg);
