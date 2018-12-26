@@ -150,6 +150,16 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
 
 **JSONX** can be used as the `MessageBodyReader` and `MessageBodyWriter` to marshal and parse JSON objects in a JAX-RS 2.0 server. Please [see here][xrs-getting-started] for an example of how to initiate **JSONX** as a Provider for your JAX-RS 2.0 application. The [XRS implementation][xrs] offers a CohesionFirst alternative to JAX-RS 2.0.
 
+### JavaDocs
+
+JavaDocs are available [here](https://jsonx.openjax.org/javadocs/).
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.

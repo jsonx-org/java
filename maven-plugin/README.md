@@ -42,6 +42,16 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 | `/schemas`        | List    | Required | List of `resource` elements.                                                  |
 | `/schemas/schema` | String  | Required | File path of XML Schema.                                                      |
 
+### JavaDocs
+
+JavaDocs are available [here](https://jsonx.openjax.org/javadocs/).
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
