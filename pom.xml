@@ -29,6 +29,7 @@
   <version>0.9.8-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
+  <url>https://jsonx.openjax.org/</url>
   <modules>
     <module>generator</module>
     <module>runtime</module>
