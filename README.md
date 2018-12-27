@@ -1,7 +1,6 @@
-<img src="https://images.cooltext.com/5195722.png" align="right">
+# OpenJAX JSONX
 
-## JSONX<br><a href="https://www.openjax.org/"><img src="https://img.shields.io/badge/OpenJAX--blue.svg"></a>
-> Java <-> JSON Binding
+**Java <-> JSON Binding**
 
 ### Introduction
 
