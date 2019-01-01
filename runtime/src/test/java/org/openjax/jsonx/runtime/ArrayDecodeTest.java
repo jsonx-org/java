@@ -24,10 +24,10 @@ import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.fastjax.json.JsonReader;
-import org.fastjax.math.BigDecimals;
-import org.fastjax.math.BigIntegers;
 import org.junit.Test;
+import org.openjax.classic.json.JsonReader;
+import org.openjax.classic.math.BigDecimals;
+import org.openjax.classic.math.BigIntegers;
 
 public class ArrayDecodeTest {
   private static void test(final JxObject in) throws DecodeException, IOException {

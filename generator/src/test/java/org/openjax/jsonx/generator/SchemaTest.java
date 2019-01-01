@@ -30,19 +30,19 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.fastjax.jci.CompilationException;
-import org.fastjax.jci.InMemoryCompiler;
-import org.fastjax.lang.PackageNotFoundException;
-import org.fastjax.test.AssertXml;
-import org.fastjax.util.Classes;
-import org.fastjax.xml.ValidationException;
-import org.fastjax.xml.sax.Validator;
 import org.junit.Test;
+import org.openjax.classic.jci.CompilationException;
+import org.openjax.classic.jci.InMemoryCompiler;
+import org.openjax.classic.lang.PackageNotFoundException;
+import org.openjax.classic.test.AssertXml;
+import org.openjax.classic.util.Classes;
+import org.openjax.classic.xml.api.Element;
+import org.openjax.classic.xml.api.ValidationException;
+import org.openjax.classic.xml.sax.Validator;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.xsb.runtime.Bindings;
 import org.slf4j.Logger;
@@ -79,8 +79,8 @@ public class SchemaTest {
     }
   }
 
-  private static org.fastjax.xml.Element toXml(final Schema schema, final Settings settings) {
-    final org.fastjax.xml.Element xml = schema.toXml(settings);
+  private static Element toXml(final Schema schema, final Settings settings) {
+    final Element xml = schema.toXml(settings);
     xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/jsonx-0.9.8.xsd " + jsonxXsd);
     return xml;
   }
@@ -165,7 +165,7 @@ public class SchemaTest {
       compiler.addSource(entry.getValue());
 
     logger.info("  5) -- Java(1) Compile --");
-    final ClassLoader classLoader = compiler.compile(Arrays.asList("-g"), compiledClassesDir);
+    final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
     logger.info("  6) Java(1) -> JSONX");
     final Schema test1Schema = newSchema(classLoader, pkg);
@@ -202,7 +202,7 @@ public class SchemaTest {
 
       assertSources(originalSources, test1Sources);
 
-      final ClassLoader classLoader = compiler.compile();
+      final ClassLoader classLoader = compiler.compile(null);
       final Schema test1Schema = newSchema(classLoader, pkg);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);

@@ -129,7 +129,7 @@
       <version>3.5.0</version>
     </dependency>
     <dependency>
-      <groupId>org.fastjax.maven</groupId>
+      <groupId>org.openjax.classic.maven</groupId>
       <artifactId>maven-mojo</artifactId>
       <version>0.3.5-SNAPSHOT</version>
     </dependency>

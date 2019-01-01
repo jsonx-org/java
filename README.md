@@ -151,7 +151,7 @@ The [JSONx Schema][jsonx-xsd] offers semantics for the definition of check const
 
 ### JavaDocs
 
-JavaDocs are available [here](https://jsonx.openjax.org/javadocs/).
+JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

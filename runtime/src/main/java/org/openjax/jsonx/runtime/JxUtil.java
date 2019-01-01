@@ -22,10 +22,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fastjax.util.Annotations;
-import org.fastjax.util.FixedOrderComparator;
-import org.fastjax.util.Identifiers;
-import org.fastjax.util.Strings;
+import org.openjax.classic.util.Annotations;
+import org.openjax.classic.util.FixedOrderComparator;
+import org.openjax.classic.util.Identifiers;
+import org.openjax.classic.util.Strings;
 
 public final class JxUtil {
   public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "xsi:type", "type", "elementIds", "template", "reference", "form", "range", "pattern", "use", "minOccurs", "maxOccurs", "nullable");

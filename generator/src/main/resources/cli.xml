@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <cli
-  xmlns="http://easyjax.org/cli-1.1.7.xsd"
+  xmlns="http://support.openjax.org/cli-1.1.7.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://easyjax.org/cli-1.1.7.xsd http://easyjax.org/cli.xsd">
+  xsi:schemaLocation="http://support.openjax.org/cli-1.1.7.xsd http://support.openjax.org/cli.xsd">
   <option>
     <name long="dir" short="d"/>
     <argument label="DEST_DIR" default="."/>

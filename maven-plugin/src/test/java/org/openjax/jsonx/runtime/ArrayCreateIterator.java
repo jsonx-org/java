@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 
-import org.fastjax.util.function.TriPredicate;
+import org.openjax.classic.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayTrial.TrialType;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 

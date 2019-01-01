@@ -54,7 +54,7 @@ public class TypeTest {
       }
 
       @Override
-      protected org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
+      protected org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
         return null;
       }
     };

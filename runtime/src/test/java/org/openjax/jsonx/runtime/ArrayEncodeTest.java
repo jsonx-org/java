@@ -16,6 +16,9 @@
 
 package org.openjax.jsonx.runtime;
 
+import static org.junit.Assert.*;
+import static org.openjax.jsonx.runtime.TestUtil.*;
+
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -25,14 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.openjax.jsonx.runtime.TestUtil.*;
-
-import org.fastjax.math.BigDecimals;
-import org.fastjax.math.BigIntegers;
-import org.fastjax.util.FastCollections;
-import org.fastjax.util.Strings;
 import org.junit.Test;
+import org.openjax.classic.math.BigDecimals;
+import org.openjax.classic.math.BigIntegers;
+import org.openjax.classic.util.FastCollections;
+import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.slf4j.Logger;

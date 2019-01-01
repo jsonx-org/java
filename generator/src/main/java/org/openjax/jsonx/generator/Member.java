@@ -24,9 +24,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.fastjax.util.FastCollections;
-import org.fastjax.util.Identifiers;
-import org.fastjax.xml.datatypes_0_9_2.xL5gluGCXYYJc.$Identifier;
+import org.openjax.classic.util.FastCollections;
+import org.openjax.classic.util.Identifiers;
+import org.openjax.classic.xml.datatypes_0_9_2.xNwwJbgwJdgwJcA.$Identifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;

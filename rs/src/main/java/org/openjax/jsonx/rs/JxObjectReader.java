@@ -29,7 +29,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import org.fastjax.json.JsonReader;
+import org.openjax.classic.json.JsonReader;
 import org.openjax.jsonx.runtime.DecodeException;
 import org.openjax.jsonx.runtime.JxDecoder;
 import org.openjax.jsonx.runtime.JxObject;

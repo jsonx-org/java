@@ -21,9 +21,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import org.fastjax.util.Classes;
-import org.fastjax.util.FastArrays;
-import org.fastjax.util.function.TriPredicate;
+import org.openjax.classic.util.Classes;
+import org.openjax.classic.util.FastArrays;
+import org.openjax.classic.util.function.TriPredicate;
 
 abstract class Codec {
   final Field field;

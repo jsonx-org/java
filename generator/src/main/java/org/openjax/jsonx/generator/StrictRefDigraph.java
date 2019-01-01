@@ -18,7 +18,7 @@ package org.openjax.jsonx.generator;
 
 import java.util.function.Function;
 
-import org.fastjax.util.RefDigraph;
+import org.openjax.classic.util.RefDigraph;
 import org.openjax.jsonx.runtime.ValidationException;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {

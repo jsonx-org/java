@@ -16,15 +16,15 @@
 
 package org.openjax.jsonx.runtime;
 
-import org.fastjax.util.Annotations;
-import org.fastjax.util.DelegateList;
-import org.fastjax.util.function.TriPredicate;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.openjax.classic.util.Annotations;
+import org.openjax.classic.util.DelegateList;
+import org.openjax.classic.util.function.TriPredicate;
 
 public class ArrayValidator {
   static class Relation {

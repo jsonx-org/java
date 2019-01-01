@@ -20,8 +20,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import org.fastjax.lang.IllegalAnnotationException;
-import org.fastjax.util.Strings;
+import org.openjax.classic.lang.IllegalAnnotationException;
+import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;

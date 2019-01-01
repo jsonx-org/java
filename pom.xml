@@ -36,15 +36,23 @@
     <module>maven-plugin</module>
     <module>rs</module>
   </modules>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.openjax.classic.xml</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
     <dependency>
-      <groupId>org.fastjax</groupId>
-      <artifactId>logging</artifactId>
+      <groupId>org.openjax.classic</groupId>
+      <artifactId>classic-logging</artifactId>
       <version>0.4.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.fastjax</groupId>
-      <artifactId>test</artifactId>
+      <groupId>org.openjax.classic</groupId>
+      <artifactId>classic-test</artifactId>
       <version>0.6.9-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>

@@ -28,10 +28,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.fastjax.lang.IllegalAnnotationException;
-import org.fastjax.util.Classes;
-import org.fastjax.util.Iterators;
-import org.fastjax.util.Strings;
+import org.openjax.classic.lang.IllegalAnnotationException;
+import org.openjax.classic.util.Classes;
+import org.openjax.classic.util.Iterators;
+import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
@@ -261,12 +261,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  org.fastjax.xml.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final org.fastjax.xml.Element element = super.toXml(settings, owner, packageName);
+  org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final org.openjax.classic.xml.api.Element element = super.toXml(settings, owner, packageName);
     if (members == null || members.size() == 0)
       return element;
 
-    final List<org.fastjax.xml.Element> elements = new ArrayList<>();
+    final List<org.openjax.classic.xml.api.Element> elements = new ArrayList<>();
     for (final Member member : this.members.values())
       elements.add(member.toXml(settings, this, packageName));
 

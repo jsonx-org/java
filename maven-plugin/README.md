@@ -43,7 +43,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 
 ### JavaDocs
 
-JavaDocs are available [here](https://jsonx.openjax.org/javadocs/).
+JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

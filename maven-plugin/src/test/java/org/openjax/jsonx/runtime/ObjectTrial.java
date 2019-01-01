@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
-import org.fastjax.util.Classes;
+import org.openjax.classic.util.Classes;
 
 class ObjectTrial extends PropertyTrial<Object> {
   private static void setField(final Field field, final Object object, final Object value) throws IllegalAccessException {

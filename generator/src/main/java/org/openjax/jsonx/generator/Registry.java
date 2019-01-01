@@ -24,8 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.fastjax.util.Classes;
-import org.fastjax.util.Strings;
+import org.openjax.classic.util.Classes;
+import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 

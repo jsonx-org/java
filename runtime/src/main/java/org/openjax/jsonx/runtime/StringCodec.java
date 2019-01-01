@@ -20,9 +20,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.regex.PatternSyntaxException;
 
-import org.fastjax.json.JsonStrings;
-import org.fastjax.util.Annotations;
-import org.fastjax.util.Strings;
+import org.openjax.classic.json.JsonStrings;
+import org.openjax.classic.util.Annotations;
+import org.openjax.classic.util.Strings;
 
 class StringCodec extends PrimitiveCodec<String> {
   static StringBuilder encode(final Annotation annotation, final String object, final boolean validate) throws EncodeException {

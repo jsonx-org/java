@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.fastjax.util.Strings;
+import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.runtime.DecodeException;
 
 @Provider

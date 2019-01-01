@@ -24,8 +24,8 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Optional;
 
-import org.fastjax.json.JsonReader;
 import org.junit.Test;
+import org.openjax.classic.json.JsonReader;
 
 public class InvalidTest {
   private static final JxEncoder validEncoder = new JxEncoder(2, true);

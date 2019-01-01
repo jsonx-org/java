@@ -23,10 +23,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
-import org.fastjax.util.Classes;
-import org.fastjax.util.FastArrays;
-import org.fastjax.util.Identifiers;
-import org.fastjax.util.function.BiObjBiIntConsumer;
+import org.openjax.classic.util.Classes;
+import org.openjax.classic.util.FastArrays;
+import org.openjax.classic.util.Identifiers;
+import org.openjax.classic.util.function.BiObjBiIntConsumer;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 

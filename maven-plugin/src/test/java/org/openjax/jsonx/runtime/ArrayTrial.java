@@ -77,7 +77,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 0, idToElement.get(elementIds), 0, idToElement, relations, true, null);
     }
     catch (final IOException e) {
-      throw new UnsupportedOperationException(e);
+      throw new IllegalStateException(e);
     }
 
     if (trialType == TrialType.MAX_OCCURS) {

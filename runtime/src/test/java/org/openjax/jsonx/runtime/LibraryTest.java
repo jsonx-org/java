@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.fastjax.json.JsonReader;
 import org.junit.Test;
+import org.openjax.classic.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

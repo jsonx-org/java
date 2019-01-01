@@ -16,7 +16,7 @@
 
 package org.openjax.jsonx.generator;
 
-import org.fastjax.util.Digraph;
+import org.openjax.classic.util.Digraph;
 import org.openjax.jsonx.runtime.ValidationException;
 
 class StrictDigraph<T> extends Digraph<T> {

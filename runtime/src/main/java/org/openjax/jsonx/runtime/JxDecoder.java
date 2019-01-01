@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import org.fastjax.json.JsonReader;
-import org.fastjax.util.function.TriPredicate;
+import org.openjax.classic.json.JsonReader;
+import org.openjax.classic.util.function.TriPredicate;
 
 public final class JxDecoder {
   public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {

@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.fastjax.util.function.TriPredicate;
+import org.openjax.classic.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
