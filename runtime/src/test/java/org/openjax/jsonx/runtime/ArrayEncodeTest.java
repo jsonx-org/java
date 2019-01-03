@@ -29,10 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.openjax.classic.math.BigDecimals;
-import org.openjax.classic.math.BigIntegers;
-import org.openjax.classic.util.FastCollections;
-import org.openjax.classic.util.Strings;
+import org.openjax.standard.math.BigDecimals;
+import org.openjax.standard.math.BigIntegers;
+import org.openjax.standard.util.FastCollections;
+import org.openjax.standard.util.Strings;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.slf4j.Logger;

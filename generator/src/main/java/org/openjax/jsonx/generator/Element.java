@@ -32,5 +32,5 @@ abstract class Element {
     return new AttributeMap();
   }
 
-  abstract org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName);
+  abstract org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName);
 }

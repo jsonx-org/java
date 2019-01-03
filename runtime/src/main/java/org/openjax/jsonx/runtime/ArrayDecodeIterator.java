@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import org.openjax.classic.json.JsonReader;
-import org.openjax.classic.util.ArrayIntList;
-import org.openjax.classic.util.function.TriPredicate;
+import org.openjax.standard.json.JsonReader;
+import org.openjax.standard.util.ArrayIntList;
+import org.openjax.standard.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 

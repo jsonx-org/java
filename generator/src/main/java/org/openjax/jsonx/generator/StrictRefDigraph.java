@@ -18,8 +18,8 @@ package org.openjax.jsonx.generator;
 
 import java.util.function.Function;
 
-import org.openjax.classic.util.RefDigraph;
 import org.openjax.jsonx.runtime.ValidationException;
+import org.openjax.standard.util.RefDigraph;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
   private static final long serialVersionUID = 4143833580153219718L;

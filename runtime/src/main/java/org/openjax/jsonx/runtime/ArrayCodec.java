@@ -21,8 +21,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.openjax.classic.json.JsonReader;
-import org.openjax.classic.util.function.TriPredicate;
+import org.openjax.standard.json.JsonReader;
+import org.openjax.standard.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayCodec extends Codec {

@@ -87,10 +87,10 @@ final class Reference extends Member {
   }
 
   @Override
-  org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
     if (!registry.isRootMember(model, settings)) {
-      final org.openjax.classic.xml.api.Element element = model.toXml(settings, owner, packageName);
+      final org.openjax.standard.xml.api.Element element = model.toXml(settings, owner, packageName);
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
@@ -109,10 +109,10 @@ final class Reference extends Member {
     }
 
     if (!(owner instanceof ObjectModel))
-      return new org.openjax.classic.xml.api.Element(elementName(), attributes, null);
+      return new org.openjax.standard.xml.api.Element(elementName(), attributes, null);
 
     attributes.put("xsi:type", elementName());
-    return new org.openjax.classic.xml.api.Element("property", attributes, null);
+    return new org.openjax.standard.xml.api.Element("property", attributes, null);
   }
 
   @Override

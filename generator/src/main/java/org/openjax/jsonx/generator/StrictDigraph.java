@@ -16,8 +16,8 @@
 
 package org.openjax.jsonx.generator;
 
-import org.openjax.classic.util.Digraph;
 import org.openjax.jsonx.runtime.ValidationException;
+import org.openjax.standard.util.Digraph;
 
 class StrictDigraph<T> extends Digraph<T> {
   private static final long serialVersionUID = 4143833580153219718L;

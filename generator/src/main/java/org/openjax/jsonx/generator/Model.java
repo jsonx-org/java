@@ -20,10 +20,10 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.classic.util.Classes;
-import org.openjax.classic.xml.datatypes_0_9_2.xNwwJbgwJdgwJcA.$Identifier;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
+import org.openjax.standard.util.Classes;
+import org.openjax.standard.xml.datatypes_0_9_2.xNxQJbgwJdgwJcA.$Identifier;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -70,16 +70,16 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
+  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,String> attributes;
     if (!(owner instanceof ObjectModel)) {
       attributes = toXmlAttributes(owner, packageName);
-      return new org.openjax.classic.xml.api.Element(owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
+      return new org.openjax.standard.xml.api.Element(owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
     }
 
     attributes = toXmlAttributes(owner, packageName);
     attributes.put("xsi:type", elementName());
 
-    return new org.openjax.classic.xml.api.Element("property", attributes, null);
+    return new org.openjax.standard.xml.api.Element("property", attributes, null);
   }
 }

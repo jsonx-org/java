@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.Test;
-import org.openjax.classic.json.JsonReader;
+import org.openjax.standard.json.JsonReader;
 
 public class InvalidTest {
   private static final JxEncoder validEncoder = new JxEncoder(2, true);

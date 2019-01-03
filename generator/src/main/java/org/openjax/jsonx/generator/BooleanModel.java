@@ -19,7 +19,6 @@ package org.openjax.jsonx.generator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.classic.lang.IllegalAnnotationException;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
@@ -27,6 +26,7 @@ import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.BooleanProperty;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.Use;
+import org.openjax.standard.lang.IllegalAnnotationException;
 
 final class BooleanModel extends Model {
   static BooleanModel declare(final Registry registry, final Jsonx.BooleanType binding) {

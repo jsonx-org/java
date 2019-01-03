@@ -16,7 +16,7 @@
 
 package org.openjax.jsonx.runtime;
 
-import org.openjax.classic.net.URLs;
+import org.openjax.standard.net.URLs;
 
 public class OnlineArticle extends Publication {
   @StringProperty(pattern=URLs.REGEX)

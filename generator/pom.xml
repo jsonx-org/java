@@ -76,8 +76,8 @@
   </profiles>
   <dependencies>
     <dependency>
-      <groupId>org.openjax.classic</groupId>
-      <artifactId>classic-jci</artifactId>
+      <groupId>org.openjax.standard</groupId>
+      <artifactId>standard-jci</artifactId>
       <version>0.8.3-SNAPSHOT</version>
     </dependency>
     <dependency>

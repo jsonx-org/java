@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openjax.classic.json.JsonStrings;
+import org.openjax.standard.json.JsonStrings;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 import com.google.common.base.Strings;

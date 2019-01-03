@@ -18,8 +18,8 @@ package org.openjax.jsonx.generator;
 
 import java.util.TreeMap;
 
-import org.openjax.classic.util.ObservableMap;
 import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.standard.util.ObservableMap;
 
 class AttributeMap extends ObservableMap<String,String> {
   AttributeMap() {

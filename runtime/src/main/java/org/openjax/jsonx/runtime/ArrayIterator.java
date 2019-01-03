@@ -19,9 +19,9 @@ package org.openjax.jsonx.runtime;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.openjax.classic.util.Annotations;
-import org.openjax.classic.util.Strings;
-import org.openjax.classic.util.function.TriPredicate;
+import org.openjax.standard.util.Annotations;
+import org.openjax.standard.util.Strings;
+import org.openjax.standard.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 

@@ -30,11 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.openjax.classic.lang.PackageLoader;
-import org.openjax.classic.lang.PackageNotFoundException;
-import org.openjax.classic.util.FastCollections;
-import org.openjax.classic.util.IdentityHashSet;
-import org.openjax.classic.util.Iterators;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ObjectMember;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ReferenceMember;
@@ -42,6 +37,11 @@ import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.ArrayType;
 import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.ValidationException;
+import org.openjax.standard.lang.PackageLoader;
+import org.openjax.standard.lang.PackageNotFoundException;
+import org.openjax.standard.util.FastCollections;
+import org.openjax.standard.util.IdentityHashSet;
+import org.openjax.standard.util.Iterators;
 import org.openjax.xsb.runtime.Binding;
 
 public final class Schema extends Element {
@@ -184,8 +184,8 @@ public final class Schema extends Element {
   }
 
   @Override
-  org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final List<org.openjax.classic.xml.api.Element> elements;
+  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final List<org.openjax.standard.xml.api.Element> elements;
     final List<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
@@ -200,14 +200,14 @@ public final class Schema extends Element {
     attributes.put("xmlns", "http://jsonx.openjax.org/jsonx-0.9.8.xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", "http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx-0.9.8.xsd");
-    return new org.openjax.classic.xml.api.Element("jsonx", attributes, elements);
+    return new org.openjax.standard.xml.api.Element("jsonx", attributes, elements);
   }
 
-  public org.openjax.classic.xml.api.Element toXml() {
+  public org.openjax.standard.xml.api.Element toXml() {
     return toXml(null);
   }
 
-  public org.openjax.classic.xml.api.Element toXml(final Settings settings) {
+  public org.openjax.standard.xml.api.Element toXml(final Settings settings) {
     return toXml(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
   }
 

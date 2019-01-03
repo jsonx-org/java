@@ -21,8 +21,8 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.openjax.classic.util.Annotations;
-import org.openjax.classic.util.Strings;
+import org.openjax.standard.util.Annotations;
+import org.openjax.standard.util.Strings;
 
 class NumberCodec extends PrimitiveCodec<Number> {
   static String encode(final Annotation annotation, final Number object, final boolean validate) throws EncodeException, ValidationException {

@@ -23,9 +23,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openjax.classic.json.JsonReader;
-import org.openjax.classic.util.Classes;
-import org.openjax.classic.util.function.TriPredicate;
+import org.openjax.standard.json.JsonReader;
+import org.openjax.standard.util.Classes;
+import org.openjax.standard.util.function.TriPredicate;
 
 class ObjectCodec extends Codec {
   private static final Map<Class<?>,PropertyToCodec> typeToCodecs = new HashMap<>();

@@ -20,14 +20,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import org.openjax.classic.lang.IllegalAnnotationException;
-import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.StringProperty;
+import org.openjax.standard.lang.IllegalAnnotationException;
+import org.openjax.standard.util.Strings;
 
 final class StringModel extends Model {
   static StringModel declare(final Registry registry, final Jsonx.StringType binding) {

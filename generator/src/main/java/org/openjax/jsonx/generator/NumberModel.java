@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.openjax.classic.lang.IllegalAnnotationException;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
@@ -34,6 +33,7 @@ import org.openjax.jsonx.runtime.ParseException;
 import org.openjax.jsonx.runtime.Range;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.runtime.ValidationException;
+import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 

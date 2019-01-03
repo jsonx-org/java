@@ -24,10 +24,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.openjax.classic.util.Classes;
-import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.standard.util.Classes;
+import org.openjax.standard.util.Strings;
 
 class Registry {
   final class Value {

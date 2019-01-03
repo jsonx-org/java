@@ -28,10 +28,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.openjax.classic.lang.IllegalAnnotationException;
-import org.openjax.classic.util.Classes;
-import org.openjax.classic.util.Iterators;
-import org.openjax.classic.util.Strings;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
@@ -47,6 +43,10 @@ import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.ObjectProperty;
 import org.openjax.jsonx.runtime.Use;
+import org.openjax.standard.lang.IllegalAnnotationException;
+import org.openjax.standard.util.Classes;
+import org.openjax.standard.util.Iterators;
+import org.openjax.standard.util.Strings;
 
 final class ObjectModel extends Referrer<ObjectModel> {
   static ObjectModel declare(final Registry registry, final Jsonx.ObjectType binding) {
@@ -261,12 +261,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  org.openjax.classic.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final org.openjax.classic.xml.api.Element element = super.toXml(settings, owner, packageName);
+  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
+    final org.openjax.standard.xml.api.Element element = super.toXml(settings, owner, packageName);
     if (members == null || members.size() == 0)
       return element;
 
-    final List<org.openjax.classic.xml.api.Element> elements = new ArrayList<>();
+    final List<org.openjax.standard.xml.api.Element> elements = new ArrayList<>();
     for (final Member member : this.members.values())
       elements.add(member.toXml(settings, this, packageName));
 

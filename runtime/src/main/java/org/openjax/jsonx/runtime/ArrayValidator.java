@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.openjax.classic.util.Annotations;
-import org.openjax.classic.util.DelegateList;
-import org.openjax.classic.util.function.TriPredicate;
+import org.openjax.standard.util.Annotations;
+import org.openjax.standard.util.DelegateList;
+import org.openjax.standard.util.function.TriPredicate;
 
 public class ArrayValidator {
   static class Relation {
