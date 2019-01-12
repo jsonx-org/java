@@ -1,6 +1,8 @@
 # OpenJAX JSONX
 
-**Java <-> JSON Binding**
+> Java <-> JSON Binding
+
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
 
 ### Introduction
 
