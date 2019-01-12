@@ -1,6 +1,8 @@
 # OpenJAX JSONX Maven Plugin
 
-**Maven Plugin for [JSONX][jsonx] framework**
+> Maven Plugin for [JSONX][jsonx] framework
+
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
 
 ### Introduction
 
