@@ -3,6 +3,7 @@
 > Maven Plugin for [JSONX][jsonx] framework
 
 [![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
 
 ### Introduction
 
