@@ -34,7 +34,7 @@ import org.openjax.jsonx.runtime.JxObject;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class JxObjectWriter implements MessageBodyWriter<JxObject> {
-  private final JxEncoder encoder;
+  protected final JxEncoder encoder;
 
   public JxObjectWriter(final JxEncoder encoder) {
     this.encoder = encoder;
@@ -42,7 +42,7 @@ public class JxObjectWriter implements MessageBodyWriter<JxObject> {
 
   @Override
   public long getSize(final JxObject t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
-    return t.toString().getBytes().length;
+    return -1;
   }
 
   @Override
