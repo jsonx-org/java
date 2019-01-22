@@ -76,10 +76,15 @@
                   <profiles>
                     <profile>!maven-invoker-plugin</profile>
                     <profile>plugin-test</profile>
+                    <profile>skip-coveralls</profile>
                   </profiles>
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
