@@ -82,6 +82,6 @@ public abstract class ArrayIterator {
   protected abstract void previous();
   protected abstract int nextIndex() throws IOException;
   protected abstract boolean nextIsNull() throws IOException;
-  protected abstract String currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
-  protected abstract String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode);
+  protected abstract String currentMatchesType(Class<?> type, Annotation annotation, IdToElement idToElement, TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
+  protected abstract String currentIsValid(int i, Annotation annotation, IdToElement idToElement, Relations relations, boolean validate, TriPredicate<JxObject,String,Object> onPropertyDecode);
 }

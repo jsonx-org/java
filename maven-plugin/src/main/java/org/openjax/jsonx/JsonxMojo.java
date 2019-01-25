@@ -67,7 +67,7 @@ public class JsonxMojo extends GeneratorMojo {
       }
     }
     catch (final IOException | ValidationException e) {
-      throw new MojoExecutionException(e.getMessage(), e);
+      throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);
     }
   }
 }
