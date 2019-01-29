@@ -85,10 +85,10 @@ public class SchemaTest {
     return xml;
   }
 
-  private static Schema testParseJsonx(final Jsonx controlBinding, final String pkg) throws IOException, SAXException {
+  private static Schema testParseJsonx(final Jsonx controlBinding, final String packageName) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> JSONX");
-    final Schema controlSchema = new Schema(controlBinding, pkg);
+    final Schema controlSchema = new Schema(controlBinding, packageName + ".");
     logger.info("    b) JSONX -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
     final Jsonx testBinding = (Jsonx)Bindings.parse(xml);
@@ -153,10 +153,10 @@ public class SchemaTest {
     }
   }
 
-  public static void test(final String fileName, final String pkg) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
+  public static void test(final String fileName, final String packageName) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
     logger.info(fileName + "...");
     final Jsonx controlBinding = newControlBinding(fileName);
-    final Schema controlSchema = testParseJsonx(controlBinding, pkg);
+    final Schema controlSchema = testParseJsonx(controlBinding, packageName);
 
     logger.info("  4) JSONX -> Java(1)");
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -168,7 +168,7 @@ public class SchemaTest {
     final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
     logger.info("  6) Java(1) -> JSONX");
-    final Schema test1Schema = newSchema(classLoader, pkg);
+    final Schema test1Schema = newSchema(classLoader, packageName);
     final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
     logger.info("  7) Validate JSONX");
     writeFile("out-" + fileName, xml);
@@ -180,20 +180,20 @@ public class SchemaTest {
       throw e;
     }
 
-    final Schema test2Schema = testParseJsonx((Jsonx)Bindings.parse(xml), pkg);
+    final Schema test2Schema = testParseJsonx((Jsonx)Bindings.parse(xml), packageName);
     logger.info("  8) JSONX -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
     assertSources(test1Sources, test2Sources);
 
-    testSettings(fileName, pkg, test1Sources);
+    testSettings(fileName, packageName, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final String pkg, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
+  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final Jsonx controlBinding = newControlBinding(fileName);
-      final Schema controlSchema = new Schema(controlBinding, pkg);
+      final Schema controlSchema = new Schema(controlBinding, packageName + ".");
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -202,11 +202,11 @@ public class SchemaTest {
 
       assertSources(originalSources, test1Sources);
 
-      final ClassLoader classLoader = compiler.compile(null);
-      final Schema test1Schema = newSchema(classLoader, pkg);
+      final ClassLoader classLoader = compiler.compile();
+      final Schema test1Schema = newSchema(classLoader, packageName);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema test2Schema = new Schema((Jsonx)Bindings.parse(schema), pkg);
+      final Schema test2Schema = new Schema((Jsonx)Bindings.parse(schema), packageName + ".");
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
     }

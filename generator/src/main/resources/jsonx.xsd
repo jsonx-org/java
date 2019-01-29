@@ -35,9 +35,9 @@
   </xs:attributeGroup>
   
   <xs:attributeGroup name="nameable">
-    <xs:attribute name="name" type="dt:identifier" use="optional">
+    <xs:attribute name="name" type="dt:identifier" use="required">
       <xs:annotation>
-        <xs:documentation>Name of property. Optional.</xs:documentation>
+        <xs:documentation>Name of property. Required.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>

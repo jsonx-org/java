@@ -35,33 +35,26 @@ import org.openjax.jsonx.generator.Schema;
 import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.xsb.runtime.Bindings;
 
-@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-@Execute(goal = "generate")
+@Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
+@Execute(goal="generate")
 public class JsonxMojo extends GeneratorMojo {
   @SourceInput
-  @Parameter(property = "schemas", required = true)
+  @Parameter(property="schemas", required=true)
   private List<String> schemas;
 
-  @Parameter(name = "package", property = "package", required = true)
-  private String pkg;
-
-  public String getPackage() {
-    return this.pkg;
-  }
-
-  public void setPackage(final String pkg) {
-    this.pkg = pkg;
-  }
+  @Parameter(name="prefix", property="prefix", required=true)
+  private String prefix;
 
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
-    if (!Identifiers.isValid(pkg))
-      throw new IllegalArgumentException("Illegal \"package\" parameter: " + pkg);
+    final char lastChar = prefix == null ? '\0' : prefix.charAt(prefix.length() - 1);
+    if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? prefix.substring(0, prefix.length() - 1) : prefix))
+      throw new IllegalArgumentException("Illegal \"prefix\" parameter: " + prefix);
 
     try {
       for (final URL resource : configuration.getSourceInputs("schemas")) {
         try (final InputStream in = resource.openStream()) {
-          final Schema schema = new Schema((Jsonx)Bindings.parse(in), pkg);
+          final Schema schema = new Schema((Jsonx)Bindings.parse(in), prefix);
           schema.toSource(configuration.getDestDir());
         }
       }

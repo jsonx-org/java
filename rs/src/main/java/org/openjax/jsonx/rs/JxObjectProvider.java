@@ -19,36 +19,123 @@ package org.openjax.jsonx.rs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.openjax.standard.json.JsonReader;
+import org.openjax.jsonx.runtime.ArrayProperty;
+import org.openjax.jsonx.runtime.ArrayType;
 import org.openjax.jsonx.runtime.DecodeException;
 import org.openjax.jsonx.runtime.JxDecoder;
+import org.openjax.jsonx.runtime.JxEncoder;
 import org.openjax.jsonx.runtime.JxObject;
+import org.openjax.standard.json.JsonReader;
 
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
-public class JxObjectReader implements MessageBodyReader<JxObject> {
-  @Override
-  public boolean isReadable(final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
-    return JxObject.class.isAssignableFrom(rawType);
+@Produces(MediaType.APPLICATION_JSON)
+public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
+  protected final JxEncoder encoder;
+
+  public JxObjectProvider(final JxEncoder encoder) {
+    this.encoder = encoder;
   }
 
   @Override
-  public JxObject readFrom(final Class<JxObject> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
+  public boolean isReadable(final Class<?> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
+    if (JxObject.class.isAssignableFrom(type))
+      return true;
+
+    if (!List.class.isAssignableFrom(type))
+      return false;
+
+    for (final Annotation annotation : annotations) {
+      if (ArrayProperty.class.equals(annotation.annotationType()))
+        return true;
+
+      final ArrayType arrayType = annotation.annotationType().getDeclaredAnnotation(ArrayType.class);
+      if (arrayType != null)
+        return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean isWriteable(final Class<?> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
+    return isReadable(type, genericType, annotations, mediaType);
+  }
+
+  @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
     try {
-      return JxDecoder.parseObject(rawType, new JsonReader(new InputStreamReader(entityStream)));
+      if (JxObject.class.isAssignableFrom(type))
+        return JxDecoder.parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
+
+      for (final Annotation annotation : annotations) {
+        final Class<? extends Annotation> annotationType;
+        if (ArrayProperty.class.equals(annotation.annotationType())) {
+          annotationType = annotation.annotationType();
+        }
+        else {
+          final ArrayType arrayType = annotation.annotationType().getDeclaredAnnotation(ArrayType.class);
+          annotationType = arrayType == null ? null : annotation.annotationType();
+        }
+
+        if (annotationType != null)
+          return JxDecoder.parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
+      }
+
+      throw new IllegalArgumentException("Illegal type: " + type.getName());
     }
     catch (final DecodeException e) {
       throw new BadRequestException(e);
     }
+  }
+
+  @Override
+  public long getSize(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType) {
+    return -1;
+  }
+
+  @Override
+  public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
+    byte[] bytes = null;
+    if (t instanceof JxObject) {
+      bytes = encoder.marshal((JxObject)t).getBytes();
+    }
+    else if (t instanceof List) {
+      for (final Annotation annotation : annotations) {
+        final Class<? extends Annotation> annotationType;
+        if (ArrayProperty.class.equals(annotation.annotationType())) {
+          annotationType = annotation.annotationType();
+        }
+        else {
+          final ArrayType arrayType = annotation.annotationType().getDeclaredAnnotation(ArrayType.class);
+          annotationType = arrayType == null ? null : annotation.annotationType();
+        }
+
+        if (annotationType != null)
+          bytes = encoder.marshal((List<?>)t, annotationType).getBytes();
+      }
+    }
+
+    if (bytes == null)
+      throw new IllegalArgumentException("Illegal type: " + rawType.getName());
+
+    entityStream.write(bytes);
+    httpHeaders.putSingle(HttpHeaders.CONTENT_LENGTH, bytes.length);
   }
 }

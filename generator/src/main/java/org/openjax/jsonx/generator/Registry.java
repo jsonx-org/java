@@ -84,6 +84,8 @@ class Registry {
       this.compoundName = compoundName;
       this.name = defaultPackage ? compoundName : packageName + "." + compoundName;
       this.canonicalCompoundName = Classes.toCanonicalClassName(compoundName);
+      if (canonicalCompoundName.contains("Idd"))
+        Classes.toCanonicalClassName(compoundName);
       this.simpleName = canonicalCompoundName.substring(canonicalCompoundName.lastIndexOf('.') + 1);
       this.canonicalName = defaultPackage ? canonicalCompoundName : packageName + "." + canonicalCompoundName;
       this.superType = superType;
@@ -242,9 +244,25 @@ class Registry {
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
   final String packageName;
+  final String classPrefix;
 
-  Registry(final String packageName) {
-    this.packageName = packageName;
+  Registry(final String prefix) {
+    if (prefix.length() > 0) {
+      final char lastChar = prefix.charAt(prefix.length() - 1);
+      if (lastChar == '.') {
+        this.packageName = prefix.substring(0, prefix.length() - 1);
+        this.classPrefix = "";
+      }
+      else {
+        final int index = prefix.lastIndexOf(".", prefix.length() - 1);
+        this.packageName = prefix.substring(0, index);
+        this.classPrefix = prefix.substring(index + 1);
+      }
+    }
+    else {
+      this.packageName = "";
+      this.classPrefix = "";
+    }
   }
 
   Registry(final Set<Class<?>> classes) {
@@ -256,6 +274,7 @@ class Registry {
     }
 
     this.packageName = getClassPrefix();
+    this.classPrefix = "";
   }
 
   private String getClassPrefix() {

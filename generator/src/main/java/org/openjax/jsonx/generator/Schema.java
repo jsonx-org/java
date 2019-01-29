@@ -64,8 +64,8 @@ public final class Schema extends Element {
 
   private final Registry registry;
 
-  public Schema(final Jsonx jsonx, final String packageName) {
-    this.registry = new Registry(packageName);
+  public Schema(final Jsonx jsonx, final String prefix) {
+    this.registry = new Registry(prefix);
 
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
       if (obj instanceof Jsonx.ArrayType)

@@ -200,7 +200,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private ArrayModel(final Registry registry, final Jsonx.ArrayType binding) {
     super(registry);
     this.members = parseMembers(registry, this, binding);
-    this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, JxUtil.flipName(binding.getName$().text()));
+    this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()));
     this.id = new Id(binding.getName$());
   }
 

@@ -157,7 +157,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private ObjectModel(final Registry registry, final Jsonx.ObjectType binding) {
     super(registry);
-    this.type = registry.getType(registry.packageName, JxUtil.flipName(binding.getName$().text()), binding.getExtends$() == null ? null : JxUtil.flipName(binding.getExtends$().text()));
+    this.type = registry.getType(registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null);
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
@@ -174,7 +174,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private ObjectModel(final Registry registry, final $Object binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.type = registry.getType(registry.packageName, getFullyQualifiedName(binding), binding.getExtends$() == null ? null : JxUtil.flipName(binding.getExtends$().text()));
+    this.type = registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null);
     this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;
     this.members = Collections.unmodifiableMap(parseMembers(binding, this));
