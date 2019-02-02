@@ -136,6 +136,5 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       throw new IllegalArgumentException("Illegal type: " + rawType.getName());
 
     entityStream.write(bytes);
-    httpHeaders.putSingle(HttpHeaders.CONTENT_LENGTH, bytes.length);
   }
 }
