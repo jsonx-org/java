@@ -18,29 +18,29 @@
   xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
-  <arrayType name="break">
+  <arrayType name="break" maxIterate="2">
     <reference type="extends" minOccurs="9" maxOccurs="10"/>
     <reference type="import" minOccurs="7" maxOccurs="8"/>
     <reference type="public"/>
     <reference type="public" nullable="false"/>
   </arrayType>
-  <arrayType name="extends">
+  <arrayType name="extends" minIterate="2" maxIterate="3">
     <reference type="import" nullable="false" minOccurs="3" maxOccurs="4"/>
     <reference type="byte" nullable="false"/>
     <reference type="abstract"/>
   </arrayType>
-  <arrayType name="import">
+  <arrayType name="import" maxIterate="7">
     <reference type="package" minOccurs="1" maxOccurs="2"/>
     <reference type="public" nullable="false"/>
   </arrayType>
-  <arrayType name="package">
+  <arrayType name="package" minIterate="4" maxIterate="8">
     <reference type="public" minOccurs="5" maxOccurs="6"/>
   </arrayType>
   <booleanType name="public"/>
   <numberType name="byte" form="integer" range="[2,9]"/>
   <stringType name="abstract" pattern="[a-z]+"/>
   <objectType name="test$reserved">
-    <property name="boolean" xsi:type="array">
+    <property name="boolean" xsi:type="array" minIterate="5" maxIterate="10">
       <boolean/>
     </property>
     <property name="package" xsi:type="reference" type="package" use="optional"/>
