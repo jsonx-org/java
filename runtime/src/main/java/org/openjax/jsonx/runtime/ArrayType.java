@@ -24,5 +24,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ArrayType {
+  int minIterate() default 1;
+  int maxIterate() default 1;
   int[] elementIds();
 }

@@ -14,10 +14,10 @@
   You should have received a copy of The MIT License (MIT) along with this
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
-<jsonx
-  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
+<schema
+  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
   <arrayType name="arrayObj">
     <reference type="objArr" maxOccurs="1"/>
   </arrayType>
@@ -83,4 +83,4 @@
     <property name="strPatternEncOptional" xsi:type="reference" type="strPatternEnc" use="optional"/>
     <property name="strPatternEncOptionalNotNullable" xsi:type="reference" type="strPatternEnc" use="optional" nullable="false"/>
   </objectType>
-</jsonx>
+</schema>

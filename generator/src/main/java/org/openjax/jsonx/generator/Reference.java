@@ -20,10 +20,10 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
 import org.openjax.jsonx.runtime.Use;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 

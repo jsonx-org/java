@@ -27,10 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ArrayMember;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.jsonx.runtime.ArrayElement;
 import org.openjax.jsonx.runtime.ArrayProperty;
 import org.openjax.jsonx.runtime.ArrayType;
@@ -40,6 +36,10 @@ import org.openjax.jsonx.runtime.NumberElement;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.ValidationException;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$ArrayMember;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
 import org.openjax.standard.lang.AnnotationParameterException;
 import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.FastArrays;
@@ -48,11 +48,11 @@ import org.openjax.standard.util.Iterators;
 import org.openjax.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
-  static ArrayModel declare(final Registry registry, final Jsonx.ArrayType binding) {
+  static ArrayModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.ArrayType binding) {
     return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
-  private static ArrayModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Annotation annotation, final Class<? extends Annotation> annotationType, final Id id, final Registry.Type type) {
+  private static ArrayModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Annotation annotation, final int minIterate, final int maxIterate, final Class<? extends Annotation> annotationType, final Id id, final Registry.Type type) {
     final ArrayModel registered = (ArrayModel)registry.getModel(id);
     if (registered != null)
       return registry.reference(registered, referrer);
@@ -61,7 +61,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (arrayType == null)
       throw new IllegalAnnotationException(annotation, annotationType.getName() + " does not specify the required @" + ArrayType.class.getSimpleName() + " annotation");
 
-    return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.elementIds(), annotationType.getAnnotations(), type, annotationType.getName()), referrer);
+    return registry.declare(id).value(new ArrayModel(registry, arrayType, minIterate, maxIterate, arrayType.elementIds(), annotationType.getAnnotations(), type, annotationType.getName()), referrer);
   }
 
   static ArrayModel referenceOrDeclare(final Registry registry, final Class<?> cls) {
@@ -74,40 +74,40 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (arrayType == null)
       throw new IllegalArgumentException("Class " + cls.getName() + " does not specify the @" + ArrayType.class.getSimpleName() + " annotation");
 
-    return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.elementIds(), cls.getAnnotations(), registry.getType(cls), cls.getName()), null);
+    return registry.declare(id).value(new ArrayModel(registry, arrayType, arrayType.minIterate(), arrayType.maxIterate(), arrayType.elementIds(), cls.getAnnotations(), registry.getType(cls), cls.getName()), null);
   }
 
-  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final Field field) {
-    if (!isAssignable(field, List.class, property.nullable(), property.use()))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of List<?> types, or optional and nullable fields of Optional<? extends List<?>> type");
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty arrayProperty, final Field field) {
+    if (!isAssignable(field, List.class, arrayProperty.nullable(), arrayProperty.use()))
+      throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of List<?> types, or optional and nullable fields of Optional<? extends List<?>> type");
 
-    if (ArrayType.class.equals(property.type())) {
-      final ArrayModel model = new ArrayModel(registry, property, property.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
+    if (ArrayType.class.equals(arrayProperty.type())) {
+      final ArrayModel model = new ArrayModel(registry, arrayProperty, arrayProperty.minIterate(), arrayProperty.maxIterate(), arrayProperty.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
       final Id id = model.id();
 
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
-      return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, JxUtil.getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
-    final Registry.Type type = registry.getType(property.type());
+    final Registry.Type type = registry.getType(arrayProperty.type());
     final Id id = new Id(type);
 
-    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), referenceOrDeclare(registry, referrer, property, property.type(), id, type));
+    return new Reference(registry, JxUtil.getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.use(), referenceOrDeclare(registry, referrer, arrayProperty, arrayProperty.minIterate(), arrayProperty.maxIterate(), arrayProperty.type(), id, type));
   }
 
-  private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayElement element, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
-    if (ArrayType.class.equals(element.type())) {
-      final ArrayModel model = new ArrayModel(registry, element, idToElement, declaringTypeName);
+  private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayElement arrayElement, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+    if (ArrayType.class.equals(arrayElement.type())) {
+      final ArrayModel model = new ArrayModel(registry, arrayElement, idToElement, declaringTypeName);
       final Id id = model.id();
 
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
-      return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
-    final Registry.Type type = registry.getType(element.type());
+    final Registry.Type type = registry.getType(arrayElement.type());
     final Id id = new Id(type);
 
-    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), referenceOrDeclare(registry, referrer, element, element.type(), id, type));
+    return new Reference(registry, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), referenceOrDeclare(registry, referrer, arrayElement, arrayElement.minIterate(), arrayElement.maxIterate(), arrayElement.type(), id, type));
   }
 
   static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Array binding) {
@@ -132,7 +132,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return registry.getType(List.class, gct);
   }
 
-  private static void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
+  private void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
+    writeIterateClauses(attributes);
     attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + FastArrays.toString(indices, ", ") + "}");
   }
 
@@ -196,11 +197,19 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private final Id id;
   private final Registry.Type type;
   final List<Member> members;
+  final Integer minIterate;
+  final Integer maxIterate;
 
-  private ArrayModel(final Registry registry, final Jsonx.ArrayType binding) {
+  private static Integer parseIterate(final Integer minIterate) {
+    return minIterate == null || minIterate == 1 ? null : minIterate;
+  }
+
+  private ArrayModel(final Registry registry, final xL4gluGCXYYJc.Schema.ArrayType binding) {
     super(registry);
     this.members = parseMembers(registry, this, binding);
     this.type = registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()));
+    this.minIterate = parseIterate(binding.getMinIterate$().text());
+    this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
     this.id = new Id(binding.getName$());
   }
 
@@ -208,6 +217,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.members = parseMembers(registry, this, binding);
     this.type = null;
+    this.minIterate = parseIterate(binding.getMinIterate$().text());
+    this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
     this.id = new Id(this);
   }
 
@@ -218,10 +229,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
     this.members = parseMembers(registry, this, binding);
     this.type = null;
+    this.minIterate = parseIterate(binding.getMinIterate$().text());
+    this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
     this.id = new Id(this);
   }
 
-  private ArrayModel(final Registry registry, final Annotation annotation, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {
+  private ArrayModel(final Registry registry, final Annotation arrayAnnotation, final int minIterate, final int maxIterate, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {
     super(registry);
     final Map<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
@@ -267,27 +280,33 @@ final class ArrayModel extends Referrer<ArrayModel> {
       topologicalOrder.put(elementId, idToElement.get(elementId));
 
     this.type = type;
-    this.members = parseMembers(registry, this, annotation, elementIds, topologicalOrder, declaringTypeName);
+    this.members = parseMembers(registry, this, arrayAnnotation, elementIds, topologicalOrder, declaringTypeName);
+    this.minIterate = parseIterate(minIterate);
+    this.maxIterate = parseIterate(maxIterate);
     this.id = type != null ? new Id(type) : new Id(this);
   }
 
-  private ArrayModel(final Registry registry, final ArrayElement element, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
-    super(registry, element.nullable(), null);
-    if (element.type() != ArrayType.class)
+  private ArrayModel(final Registry registry, final ArrayElement arrayElement, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+    super(registry, arrayElement.nullable(), null);
+    if (arrayElement.type() != ArrayType.class)
       throw new IllegalArgumentException("This constructor is only for elementIds");
 
     this.type = null;
-    this.members = parseMembers(registry, this, element, element.elementIds(), idToElement, declaringTypeName);
+    this.members = parseMembers(registry, this, arrayElement, arrayElement.elementIds(), idToElement, declaringTypeName);
+    this.minIterate = parseIterate(arrayElement.minIterate());
+    this.maxIterate = parseIterate(arrayElement.maxIterate());
     this.id = new Id(this);
   }
 
-  private ArrayModel(final Registry registry, final ArrayProperty property, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
-    super(registry, property.nullable(), property.use());
-    if (property.type() != ArrayType.class)
+  private ArrayModel(final Registry registry, final ArrayProperty arrayProperty, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+    super(registry, arrayProperty.nullable(), arrayProperty.use());
+    if (arrayProperty.type() != ArrayType.class)
       throw new IllegalArgumentException("This constructor is only for elementIds");
 
     this.type = null;
-    this.members = parseMembers(registry, this, property, property.elementIds(), idToElement, declaringTypeName);
+    this.members = parseMembers(registry, this, arrayProperty, arrayProperty.elementIds(), idToElement, declaringTypeName);
+    this.minIterate = parseIterate(arrayProperty.minIterate());
+    this.maxIterate = parseIterate(arrayProperty.maxIterate());
     this.id = new Id(this);
   }
 
@@ -334,12 +353,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
-    if (owner instanceof Schema) {
-      if (type != null)
-        attributes.put("name", JxUtil.flipName(type.getSubName(packageName)));
-      else
-        attributes.put("name", id().toString());
-    }
+    if (owner instanceof Schema)
+      attributes.put("name", type != null ? JxUtil.flipName(type.getSubName(packageName)) : id().toString());
+
+    if (minIterate != null)
+      attributes.put("minIterate", String.valueOf(minIterate));
+
+    if (maxIterate != null)
+      attributes.put("maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
 
     return attributes;
   }
@@ -360,8 +381,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   private void renderAnnotations(final AttributeMap attributes, final List<AnnotationSpec> annotations) {
     final int[] indices = new int[members.size()];
-    int index = 0;
-    for (int i = 0; i < members.size(); ++i) {
+    for (int i = 0, index = 0; i < members.size(); ++i) {
       indices[i] = index;
       index += writeElementAnnotations(annotations, members.get(i), index, this);
     }
@@ -372,15 +392,26 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
-    if (type != null)
+    if (type != null) {
       attributes.put("type", type.getCanonicalName() + ".class");
-    else
+      writeIterateClauses(attributes);
+    }
+    else {
       renderAnnotations(attributes, new ArrayList<>());
+    }
   }
 
   private void toAnnotationAttributes(final AttributeMap attributes, final int[] indices, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     writeElementIdsClause(attributes, indices);
+  }
+
+  private void writeIterateClauses(final AttributeMap attributes) {
+    if (minIterate != null)
+      attributes.put("minIterate", minIterate);
+
+    if (maxIterate != null)
+      attributes.put("maxIterate", maxIterate);
   }
 
   private static int writeElementAnnotations(final List<AnnotationSpec> annotations, final Member member, final int index, final Member owner) {
@@ -400,7 +431,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
           offset += writeElementAnnotations(inner, arrayModel.members.get(i), index + offset, owner);
         }
 
-        // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Element.toAnnotation()
+        // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Member#toAnnotationAttributes()
         arrayModel.toAnnotationAttributes(attributes, indices, owner);
       }
       else {

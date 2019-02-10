@@ -47,7 +47,7 @@
             <configuration>
               <destDir>${project.build.directory}/generated-sources/xsb</destDir>
               <schemas>
-                <schema>src/main/resources/jsonx.xsd</schema>
+                <schema>src/main/resources/schema.xsd</schema>
               </schemas>
             </configuration>
           </execution>

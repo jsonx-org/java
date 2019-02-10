@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Number;
 import org.openjax.jsonx.runtime.Form;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.NumberElement;
@@ -38,7 +38,7 @@ import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
-  static NumberModel declare(final Registry registry, final Jsonx.NumberType binding) {
+  static NumberModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.NumberType binding) {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
@@ -78,7 +78,7 @@ final class NumberModel extends Model {
   final Form form;
   final Range range;
 
-  private NumberModel(final Registry registry, final Jsonx.NumberType binding) {
+  private NumberModel(final Registry registry, final xL4gluGCXYYJc.Schema.NumberType binding) {
     super(registry);
     this.form = binding.getForm$().isDefault() ? null : Form.valueOf(binding.getForm$().text().toUpperCase());
     try {

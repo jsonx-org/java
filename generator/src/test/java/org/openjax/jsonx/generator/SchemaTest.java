@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.jci.CompilationException;
 import org.openjax.standard.jci.InMemoryCompiler;
 import org.openjax.standard.lang.PackageNotFoundException;
@@ -43,7 +44,6 @@ import org.openjax.standard.util.Classes;
 import org.openjax.standard.xml.api.Element;
 import org.openjax.standard.xml.api.ValidationException;
 import org.openjax.standard.xml.sax.Validator;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.xsb.runtime.Bindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ import org.xml.sax.SAXException;
 
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
-  private static final URL jsonxXsd = Thread.currentThread().getContextClassLoader().getResource("jsonx.xsd");
+  private static final URL schemaXsd = Thread.currentThread().getContextClassLoader().getResource("schema.xsd");
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
@@ -73,25 +73,25 @@ public class SchemaTest {
     settings.add(new Settings(Integer.MAX_VALUE, 2));
   }
 
-  private static Jsonx newControlBinding(final String fileName) throws IOException, ValidationException {
+  private static xL4gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, ValidationException {
     try (final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
-      return (Jsonx)Bindings.parse(in);
+      return (xL4gluGCXYYJc.Schema)Bindings.parse(in);
     }
   }
 
   private static Element toXml(final Schema schema, final Settings settings) {
     final Element xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/jsonx-0.9.8.xsd " + jsonxXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd " + schemaXsd);
     return xml;
   }
 
-  private static Schema testParseJsonx(final Jsonx controlBinding, final String packageName) throws IOException, SAXException {
+  private static Schema testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String packageName) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> JSONX");
     final Schema controlSchema = new Schema(controlBinding, packageName + ".");
     logger.info("    b) JSONX -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
-    final Jsonx testBinding = (Jsonx)Bindings.parse(xml);
+    final xL4gluGCXYYJc.Schema testBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual(true);
     return controlSchema;
@@ -155,8 +155,8 @@ public class SchemaTest {
 
   public static void test(final String fileName, final String packageName) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
     logger.info(fileName + "...");
-    final Jsonx controlBinding = newControlBinding(fileName);
-    final Schema controlSchema = testParseJsonx(controlBinding, packageName);
+    final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
+    final Schema controlSchema = testParseSchema(controlBinding, packageName);
 
     logger.info("  4) JSONX -> Java(1)");
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -180,7 +180,7 @@ public class SchemaTest {
       throw e;
     }
 
-    final Schema test2Schema = testParseJsonx((Jsonx)Bindings.parse(xml), packageName);
+    final Schema test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), packageName);
     logger.info("  8) JSONX -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
@@ -192,7 +192,7 @@ public class SchemaTest {
   private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
-      final Jsonx controlBinding = newControlBinding(fileName);
+      final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
       final Schema controlSchema = new Schema(controlBinding, packageName + ".");
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -206,7 +206,7 @@ public class SchemaTest {
       final Schema test1Schema = newSchema(classLoader, packageName);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema test2Schema = new Schema((Jsonx)Bindings.parse(schema), packageName + ".");
+      final Schema test2Schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(schema), packageName + ".");
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
     }

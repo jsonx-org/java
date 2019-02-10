@@ -23,8 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Number;
 
 public class ArrayModelTest {
   private static class Number extends $Number {

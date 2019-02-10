@@ -24,14 +24,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Boolean;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Number;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$String;
 import org.openjax.jsonx.runtime.ArrayProperty;
 import org.openjax.jsonx.runtime.BooleanProperty;
 import org.openjax.jsonx.runtime.NumberProperty;
@@ -88,16 +88,16 @@ abstract class Member extends Element {
         name = (($String)t).getName$().text();
       else if (t instanceof $Reference)
         name = (($Reference)t).getName$().text();
-      else if (t instanceof Jsonx.ArrayType)
-        name = ((Jsonx.ArrayType)t).getName$().text();
-      else if (t instanceof Jsonx.BooleanType)
-        name = ((Jsonx.BooleanType)t).getName$().text();
-      else if (t instanceof Jsonx.NumberType)
-        name = ((Jsonx.NumberType)t).getName$().text();
-      else if (t instanceof Jsonx.ObjectType)
-        name = ((Jsonx.ObjectType)t).getName$().text();
-      else if (t instanceof Jsonx.StringType)
-        name = ((Jsonx.StringType)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.ArrayType)
+        name = ((xL4gluGCXYYJc.Schema.ArrayType)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.BooleanType)
+        name = ((xL4gluGCXYYJc.Schema.BooleanType)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.NumberType)
+        name = ((xL4gluGCXYYJc.Schema.NumberType)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.ObjectType)
+        name = ((xL4gluGCXYYJc.Schema.ObjectType)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.StringType)
+        name = ((xL4gluGCXYYJc.Schema.StringType)t).getName$().text();
       else
         name = null;
 
@@ -111,12 +111,12 @@ abstract class Member extends Element {
     }
   };
 
-  private static Integer parseMaxCardinality(final int minCardinality, final $MaxOccurs maxCardinality) {
-    final Integer max = "unbounded".equals(maxCardinality.text()) ? null : Integer.parseInt(maxCardinality.text());
-    if (max != null && minCardinality > max)
-      throw new ValidationException("minOccurs=\"" + minCardinality + "\" > maxOccurs=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@minOccurs=" + minCardinality + " and @maxOccurs=" + maxCardinality.text() + "]");
+  static Integer parseMaxCardinality(final int minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {
+    final Integer max = "unbounded".equals(maxCardinality.text()) ? Integer.MAX_VALUE : Integer.parseInt(maxCardinality.text());
+    if (minCardinality > max)
+      throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
 
-    return max;
+    return max == dflt ? null : max;
   }
 
   private static void checkMinMaxOccurs(final String source, final Integer minOccurs, final Integer maxOccurs) {
@@ -142,7 +142,7 @@ abstract class Member extends Element {
   }
 
   Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs));
+    this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
   }
 
   Member(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final yAA.$String use) {

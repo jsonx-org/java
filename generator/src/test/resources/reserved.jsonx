@@ -14,10 +14,10 @@
   You should have received a copy of The MIT License (MIT) along with this
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
-<jsonx
-  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
+<schema
+  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
   <arrayType name="break">
     <reference type="extends" minOccurs="9" maxOccurs="10"/>
     <reference type="import" minOccurs="7" maxOccurs="8"/>
@@ -55,4 +55,4 @@
     <property name="final" xsi:type="string"/>
     <property name="finally" xsi:type="reference" type="abstract"/>
   </objectType>
-</jsonx>
+</schema>

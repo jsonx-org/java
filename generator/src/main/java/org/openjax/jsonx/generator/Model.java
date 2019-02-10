@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.standard.util.Classes;
 import org.openjax.standard.xml.datatypes_0_9_2.xNxQJbgwJdgwJcA.$Identifier;

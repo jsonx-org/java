@@ -24,8 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
 import org.openjax.standard.util.Classes;
 import org.openjax.standard.util.Strings;
 
@@ -265,7 +265,7 @@ class Registry {
     }
   }
 
-  Registry(final Set<Class<?>> classes) {
+  Registry(final Collection<Class<?>> classes) {
     for (final Class<?> cls : classes) {
       if (cls.isAnnotation())
         ArrayModel.referenceOrDeclare(this, cls);
@@ -311,23 +311,23 @@ class Registry {
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   final Type OBJECT = getType(Object.class);
 
-  Value declare(final Jsonx.BooleanType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.BooleanType binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.NumberType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.NumberType binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.StringType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.StringType binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.ArrayType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.ArrayType binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final Jsonx.ObjectType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.ObjectType binding) {
     return new Value(binding.getName$().text());
   }
 

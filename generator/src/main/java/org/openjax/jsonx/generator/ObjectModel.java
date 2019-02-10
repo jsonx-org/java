@@ -28,15 +28,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Member;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Number;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Object;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$ObjectMember;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Reference;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Boolean;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Number;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$ObjectMember;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$String;
 import org.openjax.jsonx.runtime.JxEncoder;
 import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.JxUtil;
@@ -49,7 +49,7 @@ import org.openjax.standard.util.Iterators;
 import org.openjax.standard.util.Strings;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  static ObjectModel declare(final Registry registry, final Jsonx.ObjectType binding) {
+  static ObjectModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.ObjectType binding) {
     return registry.declare(binding).value(new ObjectModel(registry, binding), null);
   }
 
@@ -85,7 +85,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     do
       builder.insert(0, '$').insert(1, Strings.flipFirstCap(owner.getName$().text()));
     while (owner.owner() instanceof $Object && (owner = ($Object)owner.owner()) != null);
-    return builder.insert(0, JxUtil.flipName(((Jsonx.ObjectType)owner.owner()).getName$().text())).toString();
+    return builder.insert(0, JxUtil.flipName(((xL4gluGCXYYJc.Schema.ObjectType)owner.owner()).getName$().text())).toString();
   }
 
   private static void checkJSObject(final Class<?> cls) {
@@ -155,7 +155,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   final ObjectModel superObject;
   final boolean isAbstract;
 
-  private ObjectModel(final Registry registry, final Jsonx.ObjectType binding) {
+  private ObjectModel(final Registry registry, final xL4gluGCXYYJc.Schema.ObjectType binding) {
     super(registry);
     this.type = registry.getType(registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null);
     this.isAbstract = binding.getAbstract$().text();

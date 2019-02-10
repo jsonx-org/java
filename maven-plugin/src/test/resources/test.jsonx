@@ -14,10 +14,10 @@
   You should have received a copy of The MIT License (MIT) along with this
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
-<jsonx
-  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
+<schema
+  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema.xsd">
   
   <objectType abstract="true" name="xmldsigType">
     <property name="xmldsig" xsi:type="string"/>
@@ -124,4 +124,4 @@
       <reference type="data" nullable="false"/>
     </property>
   </objectType>
-</jsonx>
+</schema>

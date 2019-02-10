@@ -19,9 +19,9 @@ package org.openjax.jsonx.generator;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Boolean;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Boolean;
 import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.BooleanProperty;
 import org.openjax.jsonx.runtime.JxUtil;
@@ -29,7 +29,7 @@ import org.openjax.jsonx.runtime.Use;
 import org.openjax.standard.lang.IllegalAnnotationException;
 
 final class BooleanModel extends Model {
-  static BooleanModel declare(final Registry registry, final Jsonx.BooleanType binding) {
+  static BooleanModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.BooleanType binding) {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
@@ -59,7 +59,7 @@ final class BooleanModel extends Model {
 
   private final Id id;
 
-  private BooleanModel(final Registry registry, final Jsonx.BooleanType binding) {
+  private BooleanModel(final Registry registry, final xL4gluGCXYYJc.Schema.BooleanType binding) {
     super(registry);
     this.id = new Id(binding.getName$());
   }

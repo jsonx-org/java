@@ -20,9 +20,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$Array;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$String;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$String;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.StringProperty;
@@ -30,7 +30,7 @@ import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.Strings;
 
 final class StringModel extends Model {
-  static StringModel declare(final Registry registry, final Jsonx.StringType binding) {
+  static StringModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.StringType binding) {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
@@ -65,7 +65,7 @@ final class StringModel extends Model {
   private final Id id;
   final String pattern;
 
-  private StringModel(final Registry registry, final Jsonx.StringType binding) {
+  private StringModel(final Registry registry, final xL4gluGCXYYJc.Schema.StringType binding) {
     super(registry);
     this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
     this.id = new Id(binding.getName$());

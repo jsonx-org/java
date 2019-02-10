@@ -27,12 +27,12 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.openjax.jsonx.generator.Schema;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.maven.mojo.GeneratorMojo;
 import org.openjax.standard.maven.mojo.SourceInput;
 import org.openjax.standard.util.Identifiers;
 import org.openjax.standard.xml.api.ValidationException;
-import org.openjax.jsonx.generator.Schema;
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.Jsonx;
 import org.openjax.xsb.runtime.Bindings;
 
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
@@ -54,7 +54,7 @@ public class JsonxMojo extends GeneratorMojo {
     try {
       for (final URL resource : configuration.getSourceInputs("schemas")) {
         try (final InputStream in = resource.openStream()) {
-          final Schema schema = new Schema((Jsonx)Bindings.parse(in), prefix);
+          final Schema schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
           schema.toSource(configuration.getDestDir());
         }
       }

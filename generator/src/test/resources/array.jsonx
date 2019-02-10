@@ -14,23 +14,23 @@
   You should have received a copy of The MIT License (MIT) along with this
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
-<jsonx
-  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
+<schema
+  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
   <arrayType name="bar$rootArray1">
     <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
   </arrayType>
-  <arrayType name="bar$rootArray2">
+  <arrayType name="bar$rootArray2" maxIterate="21">
     <reference type="bar$rootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
     <reference type="rootBoolean"/>
   </arrayType>
-  <arrayType name="rootArray3">
+  <arrayType name="rootArray3" minIterate="2" maxIterate="unbounded">
     <reference type="bar$rootArray2" minOccurs="3" maxOccurs="4"/>
     <reference type="rootNumber" nullable="false"/>
     <reference type="rootString"/>
   </arrayType>
-  <arrayType name="templateArray">
+  <arrayType name="templateArray" minIterate="4" maxIterate="11">
     <reference type="rootArray3" minOccurs="9" maxOccurs="10"/>
     <reference type="bar$rootArray2" minOccurs="7" maxOccurs="8"/>
     <reference type="rootBoolean"/>
@@ -40,15 +40,15 @@
   <numberType name="rootNumber" form="integer" range="[2,9]"/>
   <stringType name="rootString" pattern="[a-z]+"/>
   <objectType name="objectWithArray">
-    <property name="arrayArray" xsi:type="array">
-      <array nullable="false">
+    <property name="arrayArray" xsi:type="array" minIterate="4" maxIterate="7">
+      <array minIterate="2" maxIterate="9" nullable="false">
         <string maxOccurs="3" nullable="false"/>
         <reference type="rootString" minOccurs="2"/>
         <boolean nullable="false"/>
-        <array minOccurs="3" maxOccurs="5">
+        <array minIterate="0" maxIterate="3" minOccurs="3" maxOccurs="5">
           <string nullable="false" minOccurs="2" maxOccurs="7"/>
           <reference type="rootNumber"/>
-          <array maxOccurs="1">
+          <array maxIterate="2" maxOccurs="1">
             <reference type="bar$rootArray2"/>
             <array maxOccurs="2">
               <array nullable="false">
@@ -67,12 +67,13 @@
       <reference type="rootArray3"/>
       <boolean nullable="false"/>
     </property>
-    <property name="arrayDirectOptional" xsi:type="array" use="optional">
+    <property name="arrayDirectOptional" xsi:type="array" use="optional" maxIterate="unbounded">
       <string nullable="false"/>
+      <number nullable="false" maxOccurs="3"/>
     </property>
     <property name="arrayOne" xsi:type="reference" type="bar$rootArray1" use="optional"/>
     <property name="arrayTwo" xsi:type="reference" type="bar$rootArray2"/>
     <property name="arrayThree" xsi:type="reference" type="rootArray3"/>
     <property name="arrayFour" xsi:type="reference" type="templateArray" use="optional"/>
   </objectType>
-</jsonx>
+</schema>

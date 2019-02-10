@@ -52,7 +52,7 @@ class Id {
       variables[i] = member.id().toString() + member.nullable;
     }
 
-    this.id = "a" + hash(variables);
+    this.id = "a" + hash(model.minIterate, model.maxIterate, variables);
   }
 
   /**

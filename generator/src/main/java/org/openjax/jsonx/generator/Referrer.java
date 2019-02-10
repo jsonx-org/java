@@ -18,7 +18,7 @@ package org.openjax.jsonx.generator;
 
 import java.util.List;
 
-import org.openjax.jsonx.jsonx_0_9_8.xL3gluGCXYYJc.$MaxOccurs;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.standard.xml.datatypes_0_9_2.xNxQJbgwJdgwJcA.$Identifier;
 import org.w3.www._2001.XMLSchema.yAA;

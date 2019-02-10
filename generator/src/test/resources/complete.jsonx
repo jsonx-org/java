@@ -14,20 +14,20 @@
   You should have received a copy of The MIT License (MIT) along with this
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
-<jsonx
-  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
+<schema
+  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd ../../main/resources/jsonx.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
   <arrayType name="rootArrayBool">
     <boolean/>
   </arrayType>
-  <arrayType name="rootMultiArray">
-    <array minOccurs="1" maxOccurs="1">
-      <array maxOccurs="14">
+  <arrayType name="rootMultiArray" maxIterate="3">
+    <array minOccurs="1" maxOccurs="1" maxIterate="2">
+      <array maxOccurs="14" maxIterate="5">
         <boolean nullable="false"/>
         <number form="integer" range="(1.2,2.4)" maxOccurs="3"/>
       </array>
-      <array minOccurs="2" maxOccurs="13">
+      <array minOccurs="2" maxOccurs="13" minIterate="2" maxIterate="3">
         <reference type="rootArrayBool" minOccurs="2" nullable="false"/>
         <reference type="rootBooleanNull" maxOccurs="15"/>
       </array>
@@ -103,16 +103,16 @@
     <property name="booleanArray1" xsi:type="array">
       <boolean minOccurs="1"/>
     </property>
-    <property name="booleanArray2" xsi:type="array">
+    <property name="booleanArray2" xsi:type="array" maxIterate="3">
       <boolean minOccurs="1"/>
       <boolean minOccurs="2"/>
     </property>
-    <property name="booleanArray3" xsi:type="array">
+    <property name="booleanArray3" xsi:type="array" maxIterate="5">
       <boolean minOccurs="1"/>
       <boolean minOccurs="2"/>
       <boolean minOccurs="3"/>
     </property>
-    <property name="booleanArray4" xsi:type="array">
+    <property name="booleanArray4" xsi:type="array" minIterate="2" maxIterate="7">
       <boolean minOccurs="1"/>
       <boolean minOccurs="2"/>
       <boolean minOccurs="3"/>
@@ -121,16 +121,16 @@
     <property name="stringArray1" xsi:type="array">
       <string minOccurs="1"/>
     </property>
-    <property name="stringArray2" xsi:type="array">
+    <property name="stringArray2" xsi:type="array" minIterate="3" maxIterate="3">
       <string minOccurs="1"/>
       <string minOccurs="2"/>
     </property>
-    <property name="stringArray3" xsi:type="array">
+    <property name="stringArray3" xsi:type="array" maxIterate="2">
       <string minOccurs="1"/>
       <string minOccurs="2"/>
       <string minOccurs="3"/>
     </property>
-    <property name="stringArray4" xsi:type="array">
+    <property name="stringArray4" xsi:type="array" minIterate="2" maxIterate="7">
       <string minOccurs="1"/>
       <string minOccurs="2"/>
       <string minOccurs="3"/>
@@ -139,7 +139,7 @@
     <property name="numberArray1" xsi:type="array">
       <number minOccurs="1"/>
     </property>
-    <property name="numberArray2" xsi:type="array">
+    <property name="numberArray2" xsi:type="array" maxIterate="4">
       <number minOccurs="1"/>
       <number minOccurs="2"/>
     </property>
@@ -148,7 +148,7 @@
       <number minOccurs="2"/>
       <number minOccurs="3"/>
     </property>
-    <property name="numberArray4" xsi:type="array">
+    <property name="numberArray4" xsi:type="array" minIterate="4" maxIterate="8">
       <number minOccurs="1"/>
       <number minOccurs="2"/>
       <number minOccurs="3"/>
@@ -166,7 +166,7 @@
       <reference type="simple$booleans" minOccurs="2" maxOccurs="7"/>
       <reference type="simple$booleans" minOccurs="2" maxOccurs="8"/>
     </property>
-    <property name="objectArraySame4" xsi:type="array">
+    <property name="objectArraySame4" xsi:type="array" minIterate="2" maxIterate="4">
       <reference type="simple$booleans" minOccurs="2" maxOccurs="9"/>
       <reference type="simple$booleans" minOccurs="3" maxOccurs="3"/>
       <reference type="simple$booleans" minOccurs="3" maxOccurs="4"/>
@@ -176,7 +176,7 @@
       <reference type="simple$booleans" minOccurs="3" maxOccurs="6"/>
       <reference type="simple$strings" minOccurs="3" maxOccurs="7"/>
     </property>
-    <property name="objectArrayDiff3" xsi:type="array">
+    <property name="objectArrayDiff3" xsi:type="array" minIterate="2" maxIterate="3">
       <reference type="simple$booleans" minOccurs="3" maxOccurs="8"/>
       <reference type="simple$strings" minOccurs="3" maxOccurs="9"/>
       <reference type="simple$booleans" minOccurs="4" maxOccurs="4"/>
@@ -187,7 +187,7 @@
       <reference type="simple$booleans" minOccurs="4" maxOccurs="7"/>
       <reference type="simple$strings" minOccurs="4" maxOccurs="8"/>
     </property>
-    <property name="objectArrayDiff5" xsi:type="array">
+    <property name="objectArrayDiff5" xsi:type="array" minIterate="3" maxIterate="3">
       <reference type="simple$booleans" minOccurs="4" maxOccurs="9"/>
       <reference type="simple$strings" minOccurs="5" maxOccurs="5"/>
       <reference type="simple$numbers" minOccurs="5" maxOccurs="6"/>
@@ -234,9 +234,9 @@
       <array nullable="false">
         <string/>
         <boolean nullable="false"/>
-        <array>
+        <array minIterate="2" maxIterate="3">
           <string nullable="false"/>
-          <array>
+          <array minIterate="2" maxIterate="5">
             <number/>
             <array>
               <array nullable="false">
@@ -287,7 +287,7 @@
     <property name="stringArrayPattern" xsi:type="array">
       <string pattern="[valid]+"/>
     </property>
-    <property name="stringArrayUrl" xsi:type="array">
+    <property name="stringArrayUrl" xsi:type="array" minIterate="2" maxIterate="5">
       <string maxOccurs="1" nullable="false"/>
       <string maxOccurs="1"/>
       <string maxOccurs="1"/>
@@ -335,4 +335,4 @@
       <reference type="simple$numbers"/>
     </property>
   </objectType>
-</jsonx>
+</schema>

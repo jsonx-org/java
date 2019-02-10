@@ -28,6 +28,8 @@ public @interface ArrayProperty {
   String name() default "";
   boolean nullable() default true;
   Use use() default Use.REQUIRED;
+  int minIterate() default 1;
+  int maxIterate() default 1;
   int[] elementIds() default {};
   Class<? extends Annotation> type() default ArrayType.class;
 }
