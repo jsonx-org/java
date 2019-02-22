@@ -37,8 +37,8 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
   }
 
   @Override
-  String validate(final String json) {
-    return !"true".equals(json) && !"false".equals(json) ? "Not a valid boolean token: " + json : null;
+  StringBuilder validate(final String json) {
+    return !"true".equals(json) && !"false".equals(json) ? new StringBuilder("Not a valid boolean token: ").append(json) : null;
   }
 
   @Override

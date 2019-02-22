@@ -94,15 +94,15 @@ class NumberCodec extends PrimitiveCodec<Number> {
   }
 
   @Override
-  String validate(final String json) {
+  StringBuilder validate(final String json) {
     if (form != Form.REAL) {
       final int dot = json.indexOf('.');
       if (dot != -1)
-        return "Illegal " + Form.class.getSimpleName() + ".INTEGER value";
+        return new StringBuilder("Illegal ").append(Form.class.getSimpleName()).append(".INTEGER value");
     }
 
     // FIXME: decode() is done here and in the caller's scope
-    return range != null && !range.isValid(parse(json)) ? "Range (" + range + ") is not matched: " + json : null;
+    return range != null && !range.isValid(parse(json)) ? new StringBuilder("Range (").append(range).append(") is not matched: ").append(json) : null;
   }
 
   @Override

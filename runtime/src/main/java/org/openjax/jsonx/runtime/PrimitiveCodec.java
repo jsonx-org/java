@@ -23,14 +23,14 @@ abstract class PrimitiveCodec<T> extends Codec {
     super(field, name, property, use);
   }
 
-  final String matches(final String json) {
+  final StringBuilder matches(final String json) {
     if (!test(json.charAt(0)))
-      return "Expected \"" + name + "\" to be a \"" + elementName() + "\", but got: " + json;
+      return new StringBuilder("Expected \"").append(name).append("\" to be a \"").append(elementName()).append("\", but got: ").append(json);
 
     return validate(json);
   }
 
   abstract boolean test(char firstChar);
-  abstract String validate(String json);
+  abstract StringBuilder validate(String json);
   abstract T parse(String json);
 }

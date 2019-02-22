@@ -20,15 +20,15 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 
-import org.openjax.standard.util.function.TriPredicate;
 import org.openjax.jsonx.runtime.ArrayTrial.TrialType;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayCreateIterator extends ArrayIterator {
   private final IdToElement idToElement;
   private final int[] elementIds;
-  private int index = -1;
   private final TrialType trialType;
+  private int cursor = 0;
 
   ArrayCreateIterator(final IdToElement idToElement, final int[] elementIds, final TrialType trialType) {
     this.idToElement = idToElement;
@@ -38,38 +38,32 @@ class ArrayCreateIterator extends ArrayIterator {
 
   @Override
   protected boolean hasNext() throws IOException {
-    return index < elementIds.length - 1;
+    return cursor < elementIds.length;
   }
 
   @Override
   protected int nextIndex() throws IOException {
-    return hasNext() ? index + 1 : index;
+    return cursor;
   }
 
   @Override
   protected void next() throws IOException {
-    current = idToElement.get(elementIds[++index]);
-  }
-
-  @Override
-  protected boolean nextIsNull() throws IOException {
-    next();
-    return current == null;
+    current = idToElement.get(elementIds[cursor++]);
   }
 
   @Override
   protected void previous() {
-    --index;
+    --cursor;
   }
 
   @Override
-  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> callback) throws IOException {
+  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> callback) throws IOException {
     if (trialType == TrialType.NULLABLE) {
       current = null;
     }
     else if (annotation instanceof ArrayElement) {
       final ArrayElement element = (ArrayElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : ArrayTrial.createValid(element.type(), element.elementIds(), idToElement);
+      current = element.nullable() && Math.random() < 0.5 ? null : ArrayTrial.createValid(element.type(), element.minIterate(), element.maxIterate(), element.elementIds(), idToElement);
     }
     else if (annotation instanceof BooleanElement) {
       final BooleanElement element = (BooleanElement)annotation;
@@ -95,7 +89,7 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> callback) {
+  protected StringBuilder currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> callback) {
     relations.set(i, currentRelate(annotation));
     return null;
   }

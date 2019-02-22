@@ -42,15 +42,21 @@ class ObjectTrial extends PropertyTrial<Object> {
         if (arrayProperty != null) {
           if (arrayProperty.use() == Use.REQUIRED || Math.random() < 0.5) {
             final IdToElement idToElement;
+            final int minIterate;
+            final int maxIterate;
             if (arrayProperty.type() == ArrayType.class) {
               idToElement = new IdToElement();
               JxUtil.digest(field, idToElement);
+              minIterate = idToElement.getMinIterate();
+              maxIterate = idToElement.getMaxIterate();
             }
             else {
               idToElement = null;
+              minIterate = arrayProperty.minIterate();
+              maxIterate = arrayProperty.maxIterate();
             }
 
-            setField(field, object, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.elementIds(), idToElement));
+            setField(field, object, ArrayTrial.createValid(arrayProperty.type(), minIterate, maxIterate, arrayProperty.elementIds(), idToElement));
           }
 
           continue;

@@ -18,18 +18,18 @@
   xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
-  <arrayType name="arrayArr" maxIterate="2">
+  <arrayType name="arrayArr">
     <reference type="arrayBool" maxOccurs="1"/>
     <reference type="arrayNum" maxOccurs="1"/>
     <reference type="arrayObj" maxOccurs="1"/>
     <reference type="arrayObj" maxOccurs="1"/>
     <reference type="arrayStr" maxOccurs="1"/>
   </arrayType>
-  <arrayType name="arrayBool" minIterate="2" maxIterate="3">
+  <arrayType name="arrayBool">
     <reference type="bool" minOccurs="1" maxOccurs="1"/>
     <reference type="bool" minOccurs="0" maxOccurs="1" nullable="false"/>
   </arrayType>
-  <arrayType name="arrayNum" minIterate="3" maxIterate="5">
+  <arrayType name="arrayNum">
     <reference type="num" minOccurs="1" maxOccurs="1"/>
     <reference type="num" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="numInt" minOccurs="1" maxOccurs="1"/>
@@ -43,14 +43,14 @@
     <reference type="numRange2" minOccurs="1" maxOccurs="1"/>
     <reference type="numRange2" minOccurs="0" maxOccurs="1" nullable="false"/>
   </arrayType>
-  <arrayType name="arrayObj" maxIterate="7">
+  <arrayType name="arrayObj">
     <reference type="objArr" maxOccurs="1"/>
     <reference type="objBool" maxOccurs="1"/>
     <reference type="objNum" maxOccurs="1"/>
     <reference type="objObj" maxOccurs="1"/>
     <reference type="objStr" maxOccurs="1"/>
   </arrayType>
-  <arrayType name="arrayStr" minIterate="4" maxIterate="9">
+  <arrayType name="arrayStr">
     <reference type="str" minOccurs="1" maxOccurs="1"/>
     <reference type="str" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="strDec" minOccurs="1" maxOccurs="1"/>

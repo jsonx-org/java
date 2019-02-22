@@ -20,16 +20,16 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.util.ArrayIntList;
 import org.openjax.standard.util.function.TriPredicate;
-import org.openjax.jsonx.runtime.ArrayValidator.Relation;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
-  private int cursor = -1;
+  private int cursor = 0;
 
   ArrayDecodeIterator(final JsonReader reader) {
     this.reader = reader;
@@ -50,12 +50,12 @@ class ArrayDecodeIterator extends ArrayIterator {
 
   @Override
   protected int nextIndex() throws IOException {
-    return hasNext() ? cursor + 1 : cursor;
+    return cursor;
   }
 
   @Override
   protected void next() throws IOException {
-    if (++cursor == indexes.size())
+    if (cursor++ == indexes.size())
       indexes.add(reader.getIndex());
 
     current = reader.readToken();
@@ -64,18 +64,12 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected boolean nextIsNull() throws IOException {
-    next();
-    return current == null;
-  }
-
-  @Override
   protected void previous() {
-    reader.setIndex(indexes.get(cursor--));
+    reader.setIndex(indexes.get(--cursor));
   }
 
   @Override
-  protected String currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final String token = (String)current;
     final Object value;
     if (Boolean.class.equals(type)) {
@@ -90,30 +84,38 @@ class ArrayDecodeIterator extends ArrayIterator {
     }
     else if (List.class.equals(type)) {
       if (!"[".equals(token))
-        return "Content is not expected: " + token;
+        return new StringBuilder("Content is not expected: ").append(token);
 
       final ArrayElement element = (ArrayElement)annotation;
       final int[] elementIds;
-      if (element.type() != ArrayType.class)
+      final int minIterate;
+      final int maxIterate;
+      if (element.type() != ArrayType.class) {
         elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
-      else
+        minIterate = idToElement.getMinIterate();
+        maxIterate = idToElement.getMaxIterate();
+      }
+      else {
+        minIterate = element.minIterate();
+        maxIterate = element.maxIterate();
         elementIds = element.elementIds();
+      }
 
       final Annotation[] annotations = idToElement.get(elementIds);
-      final Object array = ArrayCodec.decode(annotations, idToElement, reader, onPropertyDecode);
-      if (array instanceof String)
-        return (String)array;
+      final Object array = ArrayCodec.decode(annotations, minIterate, maxIterate, idToElement, reader, onPropertyDecode);
+      if (array instanceof StringBuilder)
+        return (StringBuilder)array;
 
       value = array;
     }
     else if (Object.class.equals(type)) {
       if (!"{".equals(token))
-        return "Content is not expected: " + token;
+        return new StringBuilder("Content is not expected: ").append(token);
 
       final ObjectElement element = (ObjectElement)annotation;
       final Object object = ObjectCodec.decode(element.type(), reader, onPropertyDecode);
-      if (object instanceof String)
-        return (String)object;
+      if (object instanceof StringBuilder)
+        return (StringBuilder)object;
 
       value = object;
     }
@@ -122,14 +124,14 @@ class ArrayDecodeIterator extends ArrayIterator {
     }
 
     if (value == null)
-      return "Content is not expected: " + currentPreview();
+      return new StringBuilder("Content is not expected: ").append(currentPreview());
 
     current = value;
     return null;
   }
 
   @Override
-  protected final String currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  protected final StringBuilder currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (annotation instanceof StringElement)
       return validate((StringElement)annotation, current, i, relations, true, validate);
 

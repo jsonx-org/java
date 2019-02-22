@@ -100,13 +100,19 @@ public final class JxUtil {
     for (final Annotation annotation : annotations) {
       if (annotation instanceof ArrayType) {
         arrayAnnotation = annotation;
-        elementIds = ((ArrayType)annotation).elementIds();
+        final ArrayType arrayType = (ArrayType)annotation;
+        elementIds = arrayType.elementIds();
+        idToElement.setMinIterate(arrayType.minIterate());
+        idToElement.setMaxIterate(arrayType.maxIterate());
         break;
       }
 
       if (annotation instanceof ArrayProperty) {
         arrayAnnotation = annotation;
-        elementIds = ((ArrayProperty)annotation).elementIds();
+        final ArrayProperty arrayProperty = (ArrayProperty)annotation;
+        elementIds = arrayProperty.elementIds();
+        idToElement.setMinIterate(arrayProperty.minIterate());
+        idToElement.setMaxIterate(arrayProperty.maxIterate());
         break;
       }
     }
@@ -154,6 +160,25 @@ public final class JxUtil {
 
     if (annotation instanceof StringElement)
       return ((StringElement)annotation).minOccurs();
+
+    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
+  }
+
+  public static int getId(final Annotation annotation) {
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).id();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).id();
+
+    if (annotation instanceof NumberElement)
+      return ((NumberElement)annotation).id();
+
+    if (annotation instanceof ObjectElement)
+      return ((ObjectElement)annotation).id();
+
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).id();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }

@@ -48,8 +48,8 @@ abstract class Codec {
 
   abstract String elementName();
 
-  String validateUse(final Object value) {
-    return value == null && !nullable && use == Use.REQUIRED ? "Property \"" + name + "\" is required: " + value : null;
+  StringBuilder validateUse(final Object value) {
+    return value == null && !nullable && use == Use.REQUIRED ? new StringBuilder("Property \"").append(name).append("\" is required: ").append(value) : null;
   }
 
   Object toNull() {

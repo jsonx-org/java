@@ -32,9 +32,9 @@ public final class JxDecoder {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final int position = reader.getPosition();
-    final Object array = ArrayCodec.decode(idToElement.get(elementIds), idToElement, reader, onPropertyDecode);
-    if (array instanceof String)
-      throw new DecodeException((String)array, position);
+    final Object array = ArrayCodec.decode(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, onPropertyDecode);
+    if (array instanceof StringBuilder)
+      throw new DecodeException(((StringBuilder)array).toString(), position);
 
     return (List<?>)array;
   }
@@ -52,8 +52,8 @@ public final class JxDecoder {
     // FIXME: This position is incorrect for the DecodeException
     final int position = reader.getPosition();
     final Object object = ObjectCodec.decode(type, reader, onPropertyDecode);
-    if (object instanceof String)
-      throw new DecodeException((String)object, position);
+    if (object instanceof StringBuilder)
+      throw new DecodeException(((StringBuilder)object).toString(), position);
 
     return (T)object;
   }

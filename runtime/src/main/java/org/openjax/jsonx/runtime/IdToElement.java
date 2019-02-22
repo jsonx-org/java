@@ -22,8 +22,27 @@ import java.util.HashMap;
 import org.openjax.standard.util.ObservableMap;
 
 public class IdToElement extends ObservableMap<Integer,Annotation> {
+  private int minIterate;
+  private int maxIterate;
+
   public IdToElement() {
     super(new HashMap<>());
+  }
+
+  public int getMinIterate() {
+    return this.minIterate;
+  }
+
+  public void setMinIterate(final int minIterate) {
+    this.minIterate = minIterate;
+  }
+
+  public int getMaxIterate() {
+    return this.maxIterate;
+  }
+
+  public void setMaxIterate(final int maxIterate) {
+    this.maxIterate = maxIterate;
   }
 
   @Override

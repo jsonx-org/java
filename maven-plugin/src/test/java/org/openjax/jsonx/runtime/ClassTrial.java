@@ -174,7 +174,7 @@ class ClassTrial {
     else if (trial.kase instanceof FailureCase) {
       if (e == null)
         System.out.println();
-      assertNotNull(e);
+      assertNotNull(trial.getClass().getSimpleName(), e);
       if (!(e instanceof EncodeException))
         throw e;
 

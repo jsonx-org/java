@@ -30,17 +30,17 @@ class ArrayCodec extends Codec {
     final Relations relations = new Relations();
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JxUtil.digest(field, idToElement);
-    final String error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
+    final StringBuilder error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
     if (validate && error != null)
-      throw new EncodeException(error);
+      throw new EncodeException(field.getDeclaringClass().getName() + "#" + field.getName() + ": " + error.toString());
 
     return relations;
   }
 
-  static Object decode(final Annotation[] annotations, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  static Object decode(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
     final Relations relations = new Relations();
-    final String error = ArrayValidator.validate(iterator, 0, annotations, 0, idToElement, relations, true, onPropertyDecode);
+    final StringBuilder error = ArrayValidator.validate(iterator, 1, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode);
     if (error != null)
       return error;
 

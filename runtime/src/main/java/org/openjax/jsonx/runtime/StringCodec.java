@@ -78,15 +78,15 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   @Override
-  String validate(final String token) {
+  StringBuilder validate(final String token) {
     if ((token.charAt(0) != '"' || token.charAt(token.length() - 1) != '"') && (token.charAt(0) != '\'' || token.charAt(token.length() - 1) != '\''))
-      return "Is not a string";
+      return new StringBuilder("Is not a string");
 
     final String value = token.substring(1, token.length() - 1);
     if (pattern != null) {
       try {
         if (!value.matches(pattern))
-          return "Pattern (" + pattern + ") is not matched: " + token;
+          return new StringBuilder("Pattern (").append(pattern).append(") is not matched: ").append(token);
       }
       catch (final PatternSyntaxException e) {
         throw new ValidationException("Malformed pattern: " + pattern);
@@ -96,7 +96,7 @@ class StringCodec extends PrimitiveCodec<String> {
     // FIXME: decode() is done here and in the caller's scope
     final String decoded = parse(token);
     if (decoded == null)
-      return "Invalid URL encoding: \"" + token + "\"";
+      return new StringBuilder("Invalid URL encoding: \"").append(token).append("\"");
 
     return null;
   }

@@ -30,8 +30,8 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayTrial<T> extends PropertyTrial<T> {
-  static Object createValid(final Class<? extends Annotation> arrayAnnotationType, int[] elementIds, IdToElement idToElement) {
-    return createArray(arrayAnnotationType, elementIds, idToElement, null);
+  static Object createValid(final Class<? extends Annotation> arrayAnnotationType, final int minIterate, final int maxIterate, int[] elementIds, IdToElement idToElement) {
+    return createArray(arrayAnnotationType, minIterate, maxIterate, elementIds, idToElement, null);
   }
 
   enum TrialType {
@@ -40,9 +40,12 @@ class ArrayTrial<T> extends PropertyTrial<T> {
     MIN_OCCURS
   }
 
-  private static Object createArray(final Class<? extends Annotation> arrayAnnotationType, int[] elementIds, IdToElement idToElement, final TrialType trialType) {
-    if (arrayAnnotationType != ArrayType.class)
+  private static Object createArray(final Class<? extends Annotation> arrayAnnotationType, int minIterate, int maxIterate, int[] elementIds, IdToElement idToElement, final TrialType trialType) {
+    if (arrayAnnotationType != ArrayType.class) {
       elementIds = JxUtil.digest(arrayAnnotationType.getAnnotations(), arrayAnnotationType.getName(), idToElement = new IdToElement());
+      minIterate = idToElement.getMinIterate();
+      maxIterate = idToElement.getMaxIterate();
+    }
 
     if (trialType == TrialType.MIN_OCCURS) {
       final Annotation[] annotations = idToElement.get(elementIds);
@@ -74,7 +77,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
 
     final Relations relations = new Relations();
     try {
-      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 0, idToElement.get(elementIds), 0, idToElement, relations, true, null);
+      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null);
     }
     catch (final IOException e) {
       throw new IllegalStateException(e);
@@ -105,16 +108,16 @@ class ArrayTrial<T> extends PropertyTrial<T> {
   }
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final ArrayProperty property) {
-    trials.add(new ArrayTrial<>(ValidCase.CASE, field, object, createValid(property.type(), property.elementIds(), new IdToElement()), property));
-    final Object testNullable = createArray(property.type(), property.elementIds(), new IdToElement(), TrialType.NULLABLE);
+    trials.add(new ArrayTrial<>(ValidCase.CASE, field, object, createValid(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement()), property));
+    final Object testNullable = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.NULLABLE);
     if (testNullable != null)
       trials.add(new ArrayTrial<>(NullableCase.CASE, field, object, testNullable, property));
 
-    final Object testMinOccurs = createArray(property.type(), property.elementIds(), new IdToElement(), TrialType.MIN_OCCURS);
+    final Object testMinOccurs = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.MIN_OCCURS);
     if (testMinOccurs != null)
       trials.add(new ArrayTrial<>(MinOccursCase.CASE, field, object, testMinOccurs, property));
 
-    final Object testMaxOccurs = createArray(property.type(), property.elementIds(), new IdToElement(), TrialType.MAX_OCCURS);
+    final Object testMaxOccurs = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.MAX_OCCURS);
     if (testMaxOccurs != null)
       trials.add(new ArrayTrial<>(MaxOccursCase.CASE, field, object, testMaxOccurs, property));
 

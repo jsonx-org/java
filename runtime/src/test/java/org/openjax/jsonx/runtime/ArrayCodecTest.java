@@ -19,7 +19,11 @@ package org.openjax.jsonx.runtime;
 import static org.junit.Assert.*;
 import static org.openjax.jsonx.runtime.TestUtil.*;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -29,20 +33,54 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.runtime.TestArray.Array1d1;
+import org.openjax.jsonx.runtime.TestArray.Array1d2;
+import org.openjax.jsonx.runtime.TestArray.Array1d3;
+import org.openjax.jsonx.runtime.TestArray.Array2d1;
+import org.openjax.jsonx.runtime.TestArray.Array2d2;
+import org.openjax.jsonx.runtime.TestArray.Array3d;
+import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.math.BigDecimals;
 import org.openjax.standard.math.BigIntegers;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.Strings;
-import org.openjax.jsonx.runtime.ArrayValidator.Relation;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ArrayEncodeTest {
-  private static final Logger logger = LoggerFactory.getLogger(ArrayEncodeTest.class);
+public class ArrayCodecTest {
+  private static final Logger logger = LoggerFactory.getLogger(ArrayCodecTest.class);
 
   private static final Map<Class<? extends Annotation>,IdToElement> classToIdToElement = new HashMap<>();
-  private static boolean debug = false;
+  private static boolean debug = true;
+
+  private static void testDecode(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String expected) throws DecodeException, IOException {
+    final JxObject in;
+    try {
+      final Method method = jxObject.getClass().getMethod("set" + annotationType.getSimpleName(), List.class);
+      in = (JxObject)method.invoke(jxObject, members);
+    }
+    catch (final IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+      throw new IllegalStateException(e);
+    }
+
+    try {
+      final String inJson = in.toString();
+      final Object out = JxDecoder.parseObject(in.getClass(), new JsonReader(new StringReader(inJson)));
+      final String outJson = out.toString();
+      assertEquals(inJson, outJson);
+      if (expected != null)
+        fail("Expected: " + expected);
+    }
+    catch (final Exception e) {
+      if (expected == null)
+        throw e;
+
+      if (!debug)
+        assertEquals(expected, e.getMessage());
+    }
+  }
 
   private static IdToElement getIdToElement(final Class<? extends Annotation> annotationType) {
     IdToElement idToElement = classToIdToElement.get(annotationType);
@@ -66,7 +104,7 @@ public class ArrayEncodeTest {
     return annotation;
   }
 
-  private static void test(final Class<? extends Annotation> annotationType, final List<Object> members, final String[] expected) {
+  private static void test(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String[] expected) throws DecodeException, IOException {
     final IdToElement idToElement = getIdToElement(annotationType);
     final List<Annotation> annotations = new ArrayList<>();
     for (final String term : expected) {
@@ -76,10 +114,12 @@ public class ArrayEncodeTest {
 
     final Annotation[] selected = annotations.toArray(new Annotation[annotations.size()]);
     test(selected, annotationType, members, null);
+    testDecode(annotationType, jxObject, members, null);
   }
 
-  private static void test(final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
+  private static void test(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String expected) throws DecodeException, IOException {
     test(null, annotationType, members, expected);
+    testDecode(annotationType, jxObject, members, expected);
   }
 
   private static void test(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
@@ -92,11 +132,12 @@ public class ArrayEncodeTest {
       msg = msg.replace(".class", "%class");
       msg = msg.replaceAll("org\\.openjax\\.[.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
       msg = msg.replace("%class", ".class");
-      logger.error(msg);
+      final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+      logger.error(stackTrace[3].getLineNumber() + ": " + msg);
     }
 
     if (debug)
-      assertEquals(expected == null, error == null);
+      assertEquals(flatRelations.toString(), expected == null, error == null);
     else
       assertEquals(expected, error);
 
@@ -104,9 +145,9 @@ public class ArrayEncodeTest {
       final List<Object> flatMembers = FastCollections.flatten(members, new ArrayList<>(), true);
       assertEquals(flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
-      for (int i = 0; i < annotations.length; i++) {
+      for (int i = 0; i < annotations.length; ++i) {
         final Relation relation = flatRelations.get(i);
-        assertEquals(String.valueOf(i), annotations[i], relation.annotation);
+        assertEquals(i + ": " + flatRelations.toString(), annotations[i], relation.annotation);
         if (relation.member instanceof Relations) {
           assertTrue(flatMembers.get(i) instanceof List);
           assertMembersEqual((List<?>)flatMembers.get(i), (Relations)relation.member);
@@ -120,7 +161,7 @@ public class ArrayEncodeTest {
 
   private static void assertMembersEqual(final List<?> expected, final Relations actual) {
     assertEquals(expected.size(), actual.size());
-    for (int i = 0; i < expected.size(); i++) {
+    for (int i = 0; i < expected.size(); ++i) {
       final Object member = expected.get(i);
       final Relation relation = actual.get(i);
       if (member instanceof List) {
@@ -160,9 +201,9 @@ public class ArrayEncodeTest {
   }
 
   @Test
-  public void testArrayError() {
+  public void testArrayError() throws DecodeException, IOException {
     try {
-      test(ArrayError1.class, l(BigDecimals.PI), "");
+      test(ArrayError1.class, null, l(BigDecimals.PI), "");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
@@ -170,7 +211,7 @@ public class ArrayEncodeTest {
     }
 
     try {
-      test(ArrayError2.class, l(null, true), "");
+      test(ArrayError2.class, null, l(null, true), "");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
@@ -178,7 +219,7 @@ public class ArrayEncodeTest {
     }
 
     try {
-      test(ArrayError3.class, l(null, true), "");
+      test(ArrayError3.class, null, l(null, true), "");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
@@ -186,7 +227,7 @@ public class ArrayEncodeTest {
     }
 
     try {
-      test(ArrayError4.class, l(null, true), "");
+      test(ArrayError4.class, null, l(null, true), "");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
@@ -194,7 +235,7 @@ public class ArrayEncodeTest {
     }
 
     try {
-      test(ArrayError5.class, l(null, true), "");
+      test(ArrayError5.class, null, l(null, true), "");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
@@ -203,165 +244,316 @@ public class ArrayEncodeTest {
   }
 
   @Test
-  public void testArray1d1() {
-    test(TestArray.Array1d1.class, l((Object)null), a("0"));
-    test(TestArray.Array1d1.class, l(true), a("0"));
-    test(TestArray.Array1d1.class, l(true, null), a("0", "0"));
-    test(TestArray.Array1d1.class, l(true, null, true), a("0", "0", "0"));
-    test(TestArray.Array1d1.class, l(true, null, true, null), "Invalid content was found starting with member index=3: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=3, nullable=true): No members are expected at this point: null");
-    test(TestArray.Array1d1.class, l(true, null, true, true, null), "Invalid content was found starting with member index=3: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=3, nullable=true): No members are expected at this point: true");
+  public void testArray1d1() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
+
+    test(Array1d1.class, array, l(), a());
+    test(Array1d1.class, array, l((Object)null), a("0"));
+    test(Array1d1.class, array, l(true), a("0"));
+    test(Array1d1.class, array, l(true, null), a("0", "0"));
+    test(Array1d1.class, array, l(true, null, true), a("0", "0", "0"));
+    test(Array1d1.class, array, l(true, null, true, null), a("0", "0", "0", "0"));
+    test(Array1d1.class, array, l(true, null, true, null, true), "Invalid content was found starting with member index=4: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=2, nullable=true): No members are expected at this point: true");
+    test(Array1d1.class, array, l(true, null, true, true, null, true), "Invalid content was found starting with member index=4: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=2, nullable=true): No members are expected at this point: null");
   }
 
   @Test
-  public void testArray1d2() {
-    test(TestArray.Array1d2.class, l(null, "abc", null), a("1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, "abc", BigInteger.ONE), a("1", "1", "4"));
-    test(TestArray.Array1d2.class, l(true, "abc", null, BigInteger.ONE), a("0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(true, null, "abc", BigDecimals.TWO), a("0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(true, null, "abc", "abc", BigDecimals.TWO), a("0", "0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(true, null, "abc", "123", BigDecimals.TWO), a("0", "1", "1", "2", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, null, null), a("0", "0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, null), a("0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null), a("1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, BigDecimals.TWO), a("1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, BigDecimal.TEN), a("1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, BigDecimals.TWO), a("0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, BigDecimals.TWO, BigDecimal.TEN), a("0", "1", "1", "3", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, BigDecimals.PI, BigInteger.ONE), a("0", "1", "1", "4", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, null, BigDecimals.TWO), a("0", "0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, null, null, BigDecimals.TWO), a("0", "0", "0", "1", "1", "4"));
-    test(TestArray.Array1d2.class, l(null, null, null, BigDecimals.PI, BigInteger.ONE), a("0", "1", "1", "4", "4"));
-    test(TestArray.Array1d2.class, l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), a("0", "1", "1", "1", "4", "4"));
-    test(TestArray.Array1d2.class, l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), a("0", "1", "1", "2", "4", "4"));
-    test(TestArray.Array1d2.class, l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), a("0", "0", "1", "1", "4", "4"));
-    test(TestArray.Array1d2.class, l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "2", "4", "4"));
-    test(TestArray.Array1d2.class, l(null, BigDecimals.TWO), "Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 2");
-    test(TestArray.Array1d2.class, l(true, "abc", true), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
-    test(TestArray.Array1d2.class, l(true, "abc", "abc"), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=4, form=REAL, range=\"[0,10]\", minOccurs=1, maxOccurs=2, nullable=true): Content is not complete");
-    test(TestArray.Array1d2.class, l(true, "abc", "abc", BigDecimals.PI, BigDecimal.TEN, null), "Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=3, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal Form.INTEGER value: 3.14159265358...");
-    test(TestArray.Array1d2.class, l(null, "111", null), "Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
-    test(TestArray.Array1d2.class, l(true, true, true, true), "Invalid content was found starting with member index=3: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
-    test(TestArray.Array1d2.class, l(null, "abc", "111", "abc"), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
+  public void testArray1d2() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
+
+    test(Array1d2.class, array, l(), "Invalid content was found in empty array: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(true), "Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(true, false), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(true, false, true), a("1", "1", "1"));
+    test(Array1d2.class, array, l(true, false, null), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Illegal value: null");
+    test(Array1d2.class, array, l(true, null, false), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2, nullable=true): Content is not complete");
+    test(Array1d2.class, array, l(null, false, true), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2, nullable=true): Content is not complete");
+    test(Array1d2.class, array, l(true, false, null, true), a("1", "1", "0", "1"));
+    test(Array1d2.class, array, l(true, null, false, true), a("1", "0", "1", "1"));
+    test(Array1d2.class, array, l(null, true, false, true), a("0", "1", "1", "1"));
+    test(Array1d2.class, array, l(true, false, true, false), a("1", "1", "1", "1"));
+    test(Array1d2.class, array, l(true, false, true, null), "Invalid content was found starting with member index=3: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(null, null, null, true, false, true), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Illegal value: null");
+    test(Array1d2.class, array, l(null, true, null, false, true), a("0", "1", "0", "1", "1"));
+    test(Array1d2.class, array, l(null, true, null, false, null, true), a("0", "1", "0", "1", "0", "1"));
+    test(Array1d2.class, array, l(null, true, null, false, null, null, true), a("0", "1", "0", "1", "0", "0", "1"));
+    test(Array1d2.class, array, l(null, true, null, null, false, null, true), a("0", "1", "0", "0", "1", "0", "1"));
+    test(Array1d2.class, array, l(null, true, null, null, false, null, null, true), a("0", "1", "0", "0", "1", "0", "0", "1"));
+    test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true), a("0", "0", "1", "0", "0", "1", "0", "0", "1"));
+    test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true, null), "Invalid content was found starting with member index=9: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true, false), a("0", "0", "1", "0", "0", "1", "0", "0", "1", "1"));
   }
 
   @Test
-  public void testArray2d1() {
-    test(TestArray.Array2d1.class, l(l(null, "abc", null)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(true, "abc", null, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, null, null)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, null)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN)), a("0", "0.0", "0.1", "0.1", "0.3", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d1.class, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
-    test(TestArray.Array2d1.class, l(l()), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found in empty array: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
-    test(TestArray.Array2d1.class, l(l(true, "abc", null, BigInteger.ZERO, BigDecimal.valueOf(100))), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=4: @" + NumberElement.class.getName() + "(id=3, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Range is not matched: 100");
-    test(TestArray.Array2d1.class, l(l(true, "abc", BigDecimals.PI, BigDecimal.TEN, null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 3.14159265358...");
-    test(TestArray.Array2d1.class, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
-    test(TestArray.Array2d1.class, l(l("abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
-    test(TestArray.Array2d1.class, l(l(true)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
-    test(TestArray.Array2d1.class, l(l(null, "abc", "111", "abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
-    test(TestArray.Array2d1.class, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
+  public void testArray1d3() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
+
+    test(Array1d3.class, array, l(), a());
+
+    test(Array1d3.class, array, l(null, "abc", null), a("1", "1", "4"));
+    test(Array1d3.class, array, l(null, "abc", null, null, "abc", null), a("1", "1", "4", "1", "1", "4"));
+
+    test(Array1d3.class, array, l(null, "abc", 4), a("1", "1", "4"));
+    test(Array1d3.class, array, l(null, "abc", 4, null, "abc", null), a("1", "1", "4", "1", "1", "4"));
+
+    test(Array1d3.class, array, l(null, "abc", BigInteger.ONE), a("1", "1", "4"));
+    test(Array1d3.class, array, l(null, "abc", BigInteger.ONE, null, "abc", BigInteger.ONE), a("1", "1", "4", "1", "1", "4"));
+
+    test(Array1d3.class, array, l(true, null, "abc", BigDecimals.TWO), a("0", "1", "1", "4"));
+    test(Array1d3.class, array, l(true, null, "abc", BigDecimals.TWO, true, null, "abc", BigDecimals.TWO), a("0", "1", "1", "4", "0", "1", "1", "4"));
+
+    test(Array1d3.class, array, l(true, "abc", null, BigInteger.ONE), a("0", "1", "1", "4"));
+    test(Array1d3.class, array, l(true, "abc", null, BigInteger.ONE, true, "abc", null, BigInteger.ONE), a("0", "1", "1", "4", "0", "1", "1", "4"));
+
+    test(Array1d3.class, array, l(true, null, "abc", "abc", BigDecimals.TWO), a("0", "1", "1", "2", "4"));
+    test(Array1d3.class, array, l(true, null, "abc", "abc", BigDecimals.TWO, true, null, "abc", "abc", BigDecimals.TWO), a("0", "1", "1", "2", "4", "0", "1", "1", "2", "4"));
+
+    test(Array1d3.class, array, l(true, null, "abc", "123", BigDecimals.TWO), a("0", "1", "1", "2", "4"));
+    test(Array1d3.class, array, l(true, null, "abc", "123", BigDecimals.TWO, true, null, "abc", "123", BigDecimals.TWO), a("0", "1", "1", "2", "4", "0", "1", "1", "2", "4"));
+
+    test(Array1d3.class, array, l(null, null, null), a("1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, null), a("1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null), a("1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null), a("1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "4", "1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, BigDecimals.TWO), a("1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, BigDecimal.TEN), a("1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, BigDecimals.TWO), a("1", "1", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, BigDecimals.TWO, BigDecimal.TEN), a("1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, BigDecimals.TWO), a("1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, null, null, null, BigDecimals.TWO), a("1", "1", "4", "1", "1", "4"));
+    test(Array1d3.class, array, l(null, null, null, BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "2", "4", "4"));
+    test(Array1d3.class, array, l(null, BigDecimals.TWO), "Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 2");
+    test(Array1d3.class, array, l(null, "abc", BigInteger.valueOf(5), null, BigDecimals.TWO), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 5");
+    test(Array1d3.class, array, l(true, "abc", true), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
+    test(Array1d3.class, array, l(true, "abc", "abc"), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=4, form=REAL, range=\"[0,10]\", minOccurs=1, maxOccurs=2, nullable=true): Content is not complete");
+    test(Array1d3.class, array, l(true, "abc", "abc", BigDecimals.PI, BigDecimal.TEN, null), "Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=3, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal Form.INTEGER value: 3.14159265358...");
+    test(Array1d3.class, array, l(null, "111", null), "Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
+    test(Array1d3.class, array, l(true, true, true, true), "Invalid content was found starting with member index=3: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
+    test(Array1d3.class, array, l(null, "abc", "111", "abc"), "Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
   }
 
   @Test
-  public void testArray2d2() {
-    test(TestArray.Array2d2.class, l(l(null, "abc", null)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(true, "abc", null, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, null, null)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, null)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN)), a("0", "0.0", "0.1", "0.1", "0.3", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(TestArray.Array2d2.class, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+  public void testArray2d1() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
 
-    test(TestArray.Array2d2.class, l(l(null, "ABC", null)), a("2", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(null, "ABC", BigInteger.ONE)), a("2", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(true, "ABC", null, BigInteger.ONE)), a("2", "3", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(true, null, "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(true, null, "ABC", "ABC", BigDecimals.TWO)), a("2", "3", "3", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(true, null, "ABC", "123", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7"));
-    test(TestArray.Array2d2.class, l(l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "3", "4", "4", "4", "7", "7"));
-    test(TestArray.Array2d2.class, l(l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE)), a("2", "3", "4", "4", "5", "7", "7"));
-    test(TestArray.Array2d2.class, l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "3", "3", "4", "4", "7", "7"));
-    test(TestArray.Array2d2.class, l(l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7"));
-
-    test(TestArray.Array2d2.class, l(l(null, "abc", null), l(null, "ABC", null)), a("0", "0.1", "0.1", "0.4", "2", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(null, "abc", null), null, l(null, "ABC", null)), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7"));
-    test(TestArray.Array2d2.class, l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.TEN), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7", "8"));
-    test(TestArray.Array2d2.class, l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.ONE), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7", "9"));
-
-    test(TestArray.Array2d2.class, l(true, l(), BigInteger.ZERO, BigInteger.ONE, BigIntegers.TWO), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found in empty array: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
-    test(TestArray.Array2d2.class, l(true, l(null, "abc"), "abc", BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"abc\"");
-    test(TestArray.Array2d2.class, l(true, l(null, "ABC", "ABC", BigInteger.TEN), "abc", BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=9, form=INTEGER, range=\"[0,5]\", minOccurs=0, maxOccurs=1, nullable=false): No members are expected at this point: abc");
-    test(TestArray.Array2d2.class, l(true, l(null, "ABC", "ABC", BigInteger.TEN), BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=2: @" + NumberElement.class.getName() + "(id=8, form=INTEGER, range=\"[5,10]\", minOccurs=0, maxOccurs=1, nullable=false): Range is not matched: 0");
-    test(TestArray.Array2d2.class, l(l(null, "abc", "abc", BigInteger.TEN), false, l(BigInteger.ZERO, "123")), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=4, pattern=\"[A-Z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 0");
-    test(TestArray.Array2d2.class, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimals.PI, "abc")), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=3: @" + NumberElement.class.getName() + "(id=6, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal Form.INTEGER value: 3.14159265358...");
-    test(TestArray.Array2d2.class, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimal.ZERO, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=2, type=" + ArrayType.class.getName() + ".class, elementIds={3, 4, 5, 6, 7}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=4: @" + NumberElement.class.getName() + "(id=6, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Illegal value: null");
+    test(Array2d1.class, array, l(l()), a("0"));
+    test(Array2d1.class, array, l(l(), l()), a("0", "0"));
+    test(Array2d1.class, array, l(l(), l(), l()), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: []");
+    test(Array2d1.class, array, l(l(null, "abc", null)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, "abc", null), l(null, "abc", null)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, "abc", null), l(null, "abc", null), l(null, "abc", null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, abc, n...");
+    test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, abc, 1]");
+    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, abc, n...");
+    test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
+    test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4"));
+    test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0", "0.0", "0.1", "0.1", "0.2", "0.4"));
+    test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
+    test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4"));
+    test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0", "0.0", "0.1", "0.1", "0.2", "0.4"));
+    test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
+    test(Array2d1.class, array, l(l(null, null, null, null, null)), a("0", "0.1", "0.1", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, null, null), l(null, null, null, null, null)), a("0", "0.1", "0.1", "0.2", "0.4", "0.4", "0", "0.1", "0.1", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, null, null), l(null, null, null, null, null), l(null, null, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
+    test(Array2d1.class, array, l(l(null, null, null, null)), a("0", "0.1", "0.1", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, null), l(null, null, null, null)), a("0", "0.1", "0.1", "0.4", "0.4", "0", "0.1", "0.1", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, null), l(null, null, null, null), l(null, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
+    test(Array2d1.class, array, l(l(null, null, null)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null), l(null, null, null)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null), l(null, null, null), l(null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
+    test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, 2]");
+    test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, 10]");
+    test(Array2d1.class, array, l(l(null, null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4", "0.1", "0.1", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ZERO, BigDecimal.valueOf(100))), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=4: @" + NumberElement.class.getName() + "(id=3, form=INTEGER, range=\"[0,4]\", minOccurs=0, maxOccurs=2, nullable=false): Range is not matched: 100");
+    test(Array2d1.class, array, l(l(true, "abc", BigDecimals.PI, BigDecimal.TEN, null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: 3.14159265358...");
+    test(Array2d1.class, array, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
+    test(Array2d1.class, array, l(l("abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
+    test(Array2d1.class, array, l(l(true)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
+    test(Array2d1.class, array, l(l(null, "abc", "111", "abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=2: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
+    test(Array2d1.class, array, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Pattern is not matched: \"111\"");
   }
 
   @Test
-  public void testArray3d() {
-    test(TestArray.Array3d.class, l(l(null, "abc", null), l(l(null, "abc", null))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, "abc", BigInteger.ONE), l(l(null, "abc", BigInteger.ONE))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(true, "abc", null, BigInteger.ONE), l(l(true, "abc", null, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(true, null, "abc", BigDecimals.TWO), l(l(true, null, "abc", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(l(true, null, "abc", "abc", BigDecimals.TWO))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(true, null, "abc", "123", BigDecimals.TWO), l(l(true, null, "abc", "123", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.2", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, null, null), l(l(null, null, null, null, null))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, null), l(l(null, null, null, null))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null), l(l(null, null, null))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, BigDecimals.TWO), l(l(null, null, BigDecimals.TWO))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, BigDecimal.TEN), l(l(null, null, BigDecimal.TEN))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, BigDecimals.TWO), l(l(null, null, null, BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN), l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN))), a("0", "0.0", "0.1", "0.1", "0.3", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.3", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE), l(l(null, null, null, BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.4", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, null, BigDecimals.TWO), l(l(null, null, null, null, BigDecimals.TWO))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, null, null, BigDecimals.TWO), l(l(null, null, null, null, null, BigDecimals.TWO))), a("0", "0.0", "0.0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE), l(l(null, null, null, BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.4", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.1", "0.4", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.1", "1.0.4", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.2", "1.0.4", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "1", "1.0", "1.0.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4", "1.0.4"));
-    test(TestArray.Array3d.class, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.2", "1.0.2", "1.0.4", "1.0.4"));
+  public void testArray2d2() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
 
-    test(TestArray.Array3d.class, l(l(null, "abc", null), l(l(null, "ABC", null))), a("0", "0.1", "0.1", "0.4", "1", "1.2", "1.4", "1.4", "1.7"));
-    test(TestArray.Array3d.class, l(l(null, "abc", BigInteger.ONE), l(l(null, "ABC", BigInteger.ONE))), a("0", "0.1", "0.1", "0.4", "1", "1.2", "1.4", "1.4", "1.7"));
-    test(TestArray.Array3d.class, l(l(true, "abc", null, BigInteger.ONE), l(l(true, "ABC", null, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.7"));
-    test(TestArray.Array3d.class, l(l(true, null, "abc", BigDecimals.TWO), l(l(true, null, "ABC", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.7"));
-    test(TestArray.Array3d.class, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(l(true, null, "ABC", "ABC", BigDecimals.TWO))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "1", "1.2", "1.3", "1.3", "1.4", "1.4", "1.7"));
-    test(TestArray.Array3d.class, l(l(true, null, "abc", "123", BigDecimals.TWO), l(l(true, null, "ABC", "123", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.5", "1.7"));
-    test(TestArray.Array3d.class, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.1", "0.4", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.4", "1.7", "1.7"));
-    test(TestArray.Array3d.class, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), l(l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.5", "1.7", "1.7"));
-    test(TestArray.Array3d.class, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "1", "1.2", "1.3", "1.3", "1.4", "1.4", "1.7", "1.7"));
-    test(TestArray.Array3d.class, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.5", "1.7", "1.7"));
+    test(Array2d2.class, array, l(l(null, "abc", null)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", null), l(null, "abc", null)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", null, null, "abc", null)), a("0", "0.1", "0.1", "0.4", "0.1", "0.1", "0.4"));
 
-    test(TestArray.Array3d.class, l(true), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=1, type=" + TestArray.Array2d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Content is not expected: true");
-    test(TestArray.Array3d.class, l(l(true, "abc", "abc", BigDecimals.PI), l(l(null, "abc"), false, l(BigInteger.ZERO, "abc"))), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + TestArray.Array1d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: [null, abc]");
+    test(Array2d2.class, array, l(l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", BigInteger.ONE, null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4", "0.1", "0.1", "0.4"));
+
+    test(Array2d2.class, array, l(l(true, "abc", null, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4"));
+    test(Array2d2.class, array, l(l(true, "abc", null, BigInteger.ONE), l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.1", "0.1", "0.4"));
+    test(Array2d2.class, array, l(l(true, "abc", null, BigInteger.ONE, true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4", "0.0", "0.1", "0.1", "0.4"));
+
+    test(Array2d2.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4"));
+    test(Array2d2.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0", "0.0", "0.1", "0.1", "0.2", "0.4"));
+    test(Array2d2.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO, true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.0", "0.1", "0.1", "0.2", "0.4"));
+
+    test(Array2d2.class, array, l(l(null, null, null, null, null)), a("2", "4", "4", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, null, null), l(null, null, null, null)), a("2", "4", "4", "5", "7", "7", "2", "4", "4", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, null, null, null, null, null, null)), a("2", "4", "4", "7", "4", "4", "5", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, null, null), l(null, null, BigDecimals.TWO)), a("2", "4", "4", "7", "2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, null, BigDecimal.TEN), l(null, null, null, BigDecimals.TWO)), a("2", "4", "4", "7", "2", "4", "4", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, BigDecimal.TEN, null, null, null, BigDecimals.TWO)), a("2", "4", "4", "7", "4", "4", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN)), a("2", "4", "4", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN), l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "7", "7", "2", "4", "4", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN, null, null, null, BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "7", "7", "4", "4", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, null, null, null, BigDecimals.TWO)), a("2", "4", "4", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, null, null, BigDecimals.TWO)), a("2", "4", "4", "7", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, null, BigDecimals.TWO), l(null, null, null, null, null, BigDecimals.TWO)), a("2", "4", "4", "5", "7", "7", "2", "4", "4", "7", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, null, null, null, BigDecimals.TWO, null, null, null, null, null, BigDecimals.TWO)), a("2", "4", "4", "5", "7", "7", "4", "4", "5", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE, null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+
+    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE, null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+
+    test(Array2d2.class, array, l(l(null, "ABC", null)), a("2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", null), l(null, "ABC", null)), a("2", "4", "4", "7", "2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", null, null, "ABC", null)), a("2", "4", "4", "7", "4", "4", "7"));
+
+    test(Array2d2.class, array, l(l(null, "ABC", BigInteger.ONE)), a("2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", BigInteger.ONE), l(null, "ABC", BigInteger.ONE)), a("2", "4", "4", "7", "2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", BigInteger.ONE, null, "ABC", BigInteger.ONE)), a("2", "4", "4", "7", "4", "4", "7"));
+
+    test(Array2d2.class, array, l(l(true, "ABC", null, BigInteger.ONE)), a("2", "3", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(true, "ABC", null, BigInteger.ONE), l(true, "ABC", null, BigInteger.ONE)), a("2", "3", "4", "4", "7", "2", "3", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(true, "ABC", null, BigInteger.ONE, true, "ABC", null, BigInteger.ONE)), a("2", "3", "4", "4", "7", "3", "4", "4", "7"));
+
+    test(Array2d2.class, array, l(l(true, null, "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(true, null, "ABC", BigDecimals.TWO), l(true, null, "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "7", "2", "3", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(true, null, "ABC", BigDecimals.TWO, true, null, "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "7", "3", "4", "4", "7"));
+
+    test(Array2d2.class, array, l(l(true, null, "ABC", "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7"));
+    test(Array2d2.class, array, l(l(true, null, "ABC", "ABC", BigDecimals.TWO), l(true, null, "ABC", "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7", "2", "3", "4", "4", "5", "7"));
+    test(Array2d2.class, array, l(l(true, null, "ABC", "ABC", BigDecimals.TWO, true, null, "ABC", "ABC", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7", "3", "4", "4", "5", "7"));
+
+    test(Array2d2.class, array, l(l(true, null, "ABC", "123", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7"));
+    test(Array2d2.class, array, l(l(true, null, "ABC", "123", BigDecimals.TWO), l(true, null, "ABC", "123", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7", "2", "3", "4", "4", "5", "7"));
+    test(Array2d2.class, array, l(l(true, null, "ABC", "123", BigDecimals.TWO, true, null, "ABC", "123", BigDecimals.TWO)), a("2", "3", "4", "4", "5", "7", "3", "4", "4", "5", "7"));
+
+    test(Array2d2.class, array, l(l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE), l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE, null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "4", "4", "5", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE), l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE, null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "4", "4", "5", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE), l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE, null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "4", "4", "5", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7"));
+    test(Array2d2.class, array, l(l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE), l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE)), a("2", "4", "4", "5", "5", "7", "7", "2", "4", "4", "5", "5", "7", "7"));
+
+    test(Array2d2.class, array, l(l(null, "abc", null), l(null, "ABC", null)), a("0", "0.1", "0.1", "0.4", "2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, "abc", null), null, l(null, "ABC", null)), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7"));
+    test(Array2d2.class, array, l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.TEN), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7", "8"));
+    test(Array2d2.class, array, l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.ONE), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7", "9"));
+
+    test(Array2d2.class, array, l(true, l(), BigInteger.ZERO, BigInteger.ONE, BigIntegers.TWO), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(true, l(null, "abc"), "abc", BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(true, l(null, "ABC", "ABC", BigInteger.TEN), "abc", BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(true, l(null, "ABC", "ABC", BigInteger.TEN), BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(l(null, "abc", "abc", BigInteger.TEN), false, l(BigInteger.ZERO, "123")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: false");
+    test(Array2d2.class, array, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimals.PI, "abc")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: false");
+
+    test(Array2d2.class, array, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimal.ZERO, null, null, "abc")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: false");
+  }
+
+  @Test
+  public void testArray3d() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
+
+    test(Array3d.class, array, l(l(), l(), l(l()), l()), a("1", "1", "1", "1.0", "1"));
+
+    test(Array3d.class, array, l(l(null, "abc", null), l(l(null, "abc", null))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
+
+    test(Array3d.class, array, l(l(null, "abc", BigInteger.ONE), l(l(null, "abc", BigInteger.ONE))), a("0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4"));
+    test(Array3d.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE), l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE))), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4", "1.0", "1.0.1", "1.0.1", "1.0.4"));
+    test(Array3d.class, array, l(l(null, "abc", BigInteger.ONE, null, "abc", BigInteger.ONE), l(l(null, "abc", BigInteger.ONE, null, "abc", BigInteger.ONE))), a("0", "0.1", "0.1", "0.4", "0.1", "0.1", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.4", "1.0.1", "1.0.1", "1.0.4"));
+
+    test(Array3d.class, array, l(l(true, "abc", null, BigInteger.ONE), l(l(true, "abc", null, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
+    test(Array3d.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(l(true, null, "abc", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.4"));
+    test(Array3d.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(l(true, null, "abc", "abc", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.2", "1.0.4"));
+    test(Array3d.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(l(true, null, "abc", "123", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "1", "1.0", "1.0.0", "1.0.1", "1.0.1", "1.0.2", "1.0.4"));
+    test(Array3d.class, array, l(l(null, null, null, null, null), l(l(null, null, null, null, null))), a("1", "1.1", "1.1", "1.1", "1.1", "1.1", "1", "1.2", "1.4", "1.4", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, null), l(l(null, null, null, null))), a("1", "1.1", "1.1", "1.1", "1.1", "1", "1.2", "1.4", "1.4", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null), l(l(null, null, null))), a("1", "1.1", "1.1", "1.1", "1", "1.2", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(null, null, BigDecimals.TWO), l(l(null, null, BigDecimals.TWO))), a("1", "1.1", "1.1", "1.9", "1", "1.2", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(null, null, BigDecimal.TEN), l(l(null, null, BigDecimal.TEN))), a("1", "1.1", "1.1", "1.8", "1", "1.2", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, BigDecimals.TWO), l(l(null, null, null, BigDecimals.TWO))), a("1", "1.1", "1.1", "1.1", "1.9", "1", "1.2", "1.4", "1.4", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN), l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN))), a("0", "0.1", "0.1", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE), l(l(null, null, null, BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, null, BigDecimals.TWO), l(l(null, null, null, null, BigDecimals.TWO))), a("1", "1.1", "1.1", "1.1", "1.1", "1.9", "1", "1.2", "1.4", "1.4", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, null, null, BigDecimals.TWO), l(l(null, null, null, null, null, BigDecimals.TWO))), a("1", "1.1", "1.1", "1.1", "1.1", "1.1", "1.9", "1", "1.2", "1.4", "1.4", "1.7", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE), l(l(null, null, null, BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.2", "1.0.2", "1.0.4", "1.0.4"));
+    test(Array3d.class, array, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.2", "1.0.2", "1.0.4", "1.0.4"));
+    test(Array3d.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.2", "1.0.2", "1.0.4", "1.0.4"));
+    test(Array3d.class, array, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.0", "1.0.1", "1.0.1", "1.0.2", "1.0.2", "1.0.4", "1.0.4"));
+
+    test(Array3d.class, array, l(l(null, "abc", null), l(l(null, "ABC", null))), a("0", "0.1", "0.1", "0.4", "1", "1.2", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(null, "abc", BigInteger.ONE), l(l(null, "ABC", BigInteger.ONE))), a("0", "0.1", "0.1", "0.4", "1", "1.2", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(true, "abc", null, BigInteger.ONE), l(l(true, "ABC", null, BigInteger.ONE))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(l(true, null, "ABC", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.7"));
+    test(Array3d.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(l(true, null, "ABC", "ABC", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.5", "1.7"));
+    test(Array3d.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(l(true, null, "ABC", "123", BigDecimals.TWO))), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "1", "1.2", "1.3", "1.4", "1.4", "1.5", "1.7"));
+    test(Array3d.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, "ABC", null, "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), l(l(null, "ABC", null, "123", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.5", "1.7", "1.7"));
+    test(Array3d.class, array, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.5", "1.7", "1.7"));
+
+    test(Array3d.class, array, l(true), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=1, type=" + Array2d2.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=2147483647, nullable=false): Content is not expected: true");
+    test(Array3d.class, array, l(l(true, "abc", "abc", BigDecimals.PI), l(l(null, "abc"), false, l(BigInteger.ZERO, "abc"))), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: [null, abc]");
   }
 }

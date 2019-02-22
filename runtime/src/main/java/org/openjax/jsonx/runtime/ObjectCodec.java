@@ -83,12 +83,12 @@ class ObjectCodec extends Codec {
           if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
             continue;
 
-          return "Unknown property: \"" + propertyName + "\"";
+          return new StringBuilder("Unknown property: \"").append(propertyName).append("\"");
         }
 
         final Object value;
         if ("null".equals(token)) {
-          final String error = codec.validateUse(null);
+          final StringBuilder error = codec.validateUse(null);
           if (error != null)
             return error;
 
@@ -96,7 +96,7 @@ class ObjectCodec extends Codec {
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
-          final String error = primitiveCodec.matches(token);
+          final StringBuilder error = primitiveCodec.matches(token);
           if (error != null)
             return error;
 
@@ -106,20 +106,20 @@ class ObjectCodec extends Codec {
           final char firstChar = token.charAt(0);
           if (codec instanceof ObjectCodec) {
             if (firstChar != '{')
-              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but got \"object\"";
+              return new StringBuilder("Expected \"").append(codec.name).append("\" to be a \"").append(codec.elementName()).append("\", but got \"object\"");
 
             final ObjectCodec objectCodec = (ObjectCodec)codec;
             value = decode(objectCodec.getType(), reader, onPropertyDecode);
-            if (value instanceof String)
+            if (value instanceof StringBuilder)
               return value;
           }
           else if (codec instanceof ArrayCodec) {
             if (firstChar != '[')
-              return "Expected \"" + codec.name + "\" to be a \"" + codec.elementName() + "\", but got \"object\"";
+              return new StringBuilder("Expected \"").append(codec.name).append("\" to be a \"").append(codec.elementName()).append("\", but got \"object\"");
 
             final ArrayCodec arrayCodec = (ArrayCodec)codec;
-            value = ArrayCodec.decode(arrayCodec.getAnnotations(), arrayCodec.getIdToElement(), reader, onPropertyDecode);
-            if (value instanceof String)
+            value = ArrayCodec.decode(arrayCodec.getAnnotations(), arrayCodec.getIdToElement().getMinIterate(), arrayCodec.getIdToElement().getMaxIterate(), arrayCodec.getIdToElement(), reader, onPropertyDecode);
+            if (value instanceof StringBuilder)
               return value;
           }
           else {
@@ -135,7 +135,7 @@ class ObjectCodec extends Codec {
         field.setAccessible(true);
         if (field.get(object) == null) {
           final Codec codec = getPropertyCodec(type).fieldToCodec.get(field);
-          final String error = codec.validateUse(null);
+          final StringBuilder error = codec.validateUse(null);
           if (error != null)
             return error;
         }
