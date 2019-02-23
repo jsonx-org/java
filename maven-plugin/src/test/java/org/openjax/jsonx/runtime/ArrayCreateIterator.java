@@ -25,20 +25,19 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayCreateIterator extends ArrayIterator {
-  private final IdToElement idToElement;
-  private final int[] elementIds;
   private final TrialType trialType;
   private int cursor = 0;
+  private Annotation annotation;
+  private Annotation lastAnnotation;
 
   ArrayCreateIterator(final IdToElement idToElement, final int[] elementIds, final TrialType trialType) {
-    this.idToElement = idToElement;
-    this.elementIds = elementIds;
     this.trialType = trialType;
+    this.lastAnnotation = idToElement.get(elementIds[elementIds.length - 1]);
   }
 
   @Override
   protected boolean hasNext() throws IOException {
-    return cursor < elementIds.length;
+    return lastAnnotation != annotation;
   }
 
   @Override
@@ -48,7 +47,8 @@ class ArrayCreateIterator extends ArrayIterator {
 
   @Override
   protected void next() throws IOException {
-    current = idToElement.get(elementIds[cursor++]);
+    current = this;
+    ++cursor;
   }
 
   @Override
@@ -57,7 +57,8 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> callback) throws IOException {
+  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final TriPredicate<JxObject,String,Object> callback) throws IOException {
+    this.annotation = annotation;
     if (trialType == TrialType.NULLABLE) {
       current = null;
     }

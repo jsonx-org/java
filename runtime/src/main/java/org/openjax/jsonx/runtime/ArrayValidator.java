@@ -107,22 +107,20 @@ public class ArrayValidator {
   }
 
   static StringBuilder validate(final ArrayIterator iterator, final int occurrence, final Annotation[] annotations, final int a, final int minIterate, final int maxIterate, final int iteration, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    if (occurrence == 0 || iteration == 0)
-      throw new IllegalStateException();
-
     final int index = iterator.nextIndex();
     if (!iterator.hasNext()) {
       if (minIterate == 0 && iteration == 1 && index == 0)
         return null;
 
       int nextRequiredIndex = getNextRequiredElement(annotations, a, occurrence);
-      if (nextRequiredIndex == -1 && iteration < minIterate)
-        nextRequiredIndex = 0;
+      if (nextRequiredIndex == -1) {
+        if (iteration < minIterate)
+          nextRequiredIndex = 0;
+        else
+          return null;
+      }
 
-      if (nextRequiredIndex == -1)
-        return null;
-
-      return new StringBuilder("Invalid content was found " + (index == 0 ? "in empty array" : "starting with member index=" + (index - 1)) + ": " + Annotations.toSortedString(annotations[nextRequiredIndex], JxUtil.ATTRIBUTES) + ": Content is not complete");
+      return new StringBuilder("Invalid content was found ").append((index == 0 ? "in empty array" : "starting with member index=" + (index - 1)) + ": " + Annotations.toSortedString(annotations[nextRequiredIndex], JxUtil.ATTRIBUTES) + ": Content is not complete");
     }
 
     if (a == annotations.length) {
@@ -132,7 +130,7 @@ public class ArrayValidator {
       iterator.next();
       final String preview = iterator.currentPreview();
       iterator.previous();
-      return new StringBuilder("Invalid content was found starting with member index=" + index + ": " + Annotations.toSortedString(annotations[a - 1], JxUtil.ATTRIBUTES) + ": No members are expected at this point: " + preview);
+      return new StringBuilder("Invalid content was found starting with member index=").append(index).append(": ").append(Annotations.toSortedString(annotations[a - 1], JxUtil.ATTRIBUTES)).append(": No members are expected at this point: ").append(preview);
     }
 
     final int minOccurs;
@@ -176,7 +174,7 @@ public class ArrayValidator {
       type = String.class;
     }
     else {
-      throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
+      throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
     }
 
     if (minOccurs < 0)
@@ -184,14 +182,6 @@ public class ArrayValidator {
 
     if (maxOccurs < minOccurs)
       throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES));
-
-    int before = iterator.nextIndex();
-
-    // If `minOccurs` has already been satisfied, then let's first try to skip the next member
-    if (minOccurs < occurrence && r(iterator, iterator.nextIndex(), relations, validate(iterator, 1, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode)) == null)
-      return null;
-
-    assertIndex(before, iterator);
 
     StringBuilder error;
     if (iterator.nextIsNull()) {
@@ -209,64 +199,54 @@ public class ArrayValidator {
 
 //    System.err.println("m[" + index + "], a[" + a + "], o(" + minOccurs + ", " + maxOccurs + ")[" + occurrence + "], i(" + minIterate + ", " + maxIterate + ")[" + iteration + "]");
 
+//    int before;
     if (error != null) {
       error.insert(0, "Invalid content was found starting with member index=" + index + ": " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": ");
-      return error;
+    }
+    else if (occurrence < minOccurs) {
+      // If `minOccurs` is not yet satisfied, require increment `occurrence`
+      return rewind(iterator, iterator.nextIndex(), validate(iterator, occurrence + 1, annotations, a, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode));
+    }
+    else {
+//      before = iterator.nextIndex();
+      // If `occurrence` is under `maxOccurs`, optional increment `occurrence`.
+      if (occurrence < maxOccurs && (error = rewind(iterator, iterator.nextIndex(), validate(iterator, occurrence + 1, annotations, a, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode))) == null)
+        return null;
+//      assertIndex(before, iterator);
     }
 
-    // If `minOccurs` is not yet satisfied, require increment `occurrence`
-    if (occurrence < minOccurs)
-      return r(iterator, iterator.nextIndex(), relations, validate(iterator, occurrence + 1, annotations, a, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode));
+    // If `minOccurs` has already been satisfied, then let's first try to skip the next member
+    if (minOccurs < occurrence) {
+//      before = iterator.nextIndex();
+      iterator.previous();
+      final Relation rollback = error != null ? null : relations.get(index);
+      if (rewind(iterator, iterator.nextIndex(), validate(iterator, 1, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode)) == null)
+        return null;
 
-    before = iterator.nextIndex();
-    // If `occurrence` is under `maxOccurs`, optional increment `occurrence`.
-    final StringBuilder error2;
-    if (occurrence >= maxOccurs)
-      error2 = null;
-    else if ((error2 = r(iterator, iterator.nextIndex(), relations, validate(iterator, occurrence + 1, annotations, a, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode))) == null)
-      return null;
+      if (rollback != null)
+        relations.set(index, rollback);
 
-    if (error2 != null)
-      assertIndex(before, iterator);
-    else
-      before = iterator.nextIndex();
+      iterator.next();
+//      assertIndex(before, iterator);
+    }
 
-    final StringBuilder error3 = r(iterator, iterator.nextIndex(), relations, validate(iterator, 1, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode));
-
-    if (error3 != null)
-      assertIndex(before, iterator);
-
-    return error3 == null ? null : error2 != null ? error2 : error3;
+    return error != null ? error : rewind(iterator, iterator.nextIndex(), validate(iterator, 1, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode));
   }
 
-  private static StringBuilder r(final ArrayIterator iterator, final int index, final Relations relations, final StringBuilder error) throws IOException {
+  private static StringBuilder rewind(final ArrayIterator iterator, final int index, final StringBuilder error) throws IOException {
     if (error == null)
       return null;
 
     for (int i = iterator.nextIndex(); i > index; --i)
       iterator.previous();
 
-    if (rewind(error)) {
-//      System.err.println(" " + relations + " back: " + (iterator.nextIndex() - 1));
-//      iterator.previous();
-    }
-
     return error;
   }
 
-  private static boolean rewind(final StringBuilder error) {
-    final int lastChar = error.length() - 1;
-    if (error.charAt(lastChar) != '\0')
-      return true;
-
-    error.setLength(lastChar);
-    return false;
-  }
-
-  private static void assertIndex(final int before, final ArrayIterator iterator) throws IOException {
-    if (iterator.nextIndex() != before)
-      throw new IllegalStateException(iterator.nextIndex() + " != " + before);
-  }
+//  private static void assertIndex(final int before, final ArrayIterator iterator) throws IOException {
+//    if (iterator.nextIndex() != before)
+//      throw new IllegalStateException(iterator.nextIndex() + " != " + before);
+//  }
 
   @SuppressWarnings("unchecked")
   static StringBuilder validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
@@ -283,11 +263,7 @@ public class ArrayValidator {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final StringBuilder error = validate(members, idToElement, elementIds, relations, validate, onPropertyDecode);
-    if (error == null)
-      return null;
-
-    rewind(error);
-    return error.toString();
+    return error == null ? null : error.toString();
   }
 
   private ArrayValidator() {
