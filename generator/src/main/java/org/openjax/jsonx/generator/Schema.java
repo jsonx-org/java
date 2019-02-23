@@ -36,36 +36,16 @@ import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$ObjectMember;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$ReferenceMember;
 import org.openjax.standard.lang.PackageLoader;
 import org.openjax.standard.lang.PackageNotFoundException;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.IdentityHashSet;
 import org.openjax.standard.util.Iterators;
-import org.openjax.xsb.runtime.Binding;
 
 /**
  * The {@code Schema} is the root {@code Element} of a JSONX Schema Document.
  */
 public final class Schema extends Element {
-  private static void findInnerRelations(final StrictRefDigraph<$Member,String> digraph, final Registry registry, final $Member object, final $Member member) {
-    final Iterator<? super Binding> iterator = Iterators.filter(member.elementIterator(), m -> m instanceof $Member);
-    while (iterator.hasNext()) {
-      final $Member next = ($Member)iterator.next();
-      if (next instanceof $ObjectMember) {
-        final $ObjectMember model = ($ObjectMember)next;
-        if (model.getExtends$() != null)
-          digraph.addEdgeRef(object, model.getExtends$().text());
-      }
-      else if (next instanceof $ReferenceMember) {
-        digraph.addEdgeRef(object, (($ReferenceMember)next).getType$().text());
-      }
-
-      findInnerRelations(digraph, registry, object, next);
-    }
-  }
-
   private final Registry registry;
 
   /**
@@ -101,18 +81,12 @@ public final class Schema extends Element {
     final Iterator<? super $Member> iterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
-      if (member instanceof xL4gluGCXYYJc.Schema.ArrayType) {
-        digraph.addVertex(member);
-        findInnerRelations(digraph, registry, member, member);
-      }
-      else if (member instanceof xL4gluGCXYYJc.Schema.ObjectType) {
+      if (member instanceof xL4gluGCXYYJc.Schema.ObjectType) {
         final xL4gluGCXYYJc.Schema.ObjectType object = (xL4gluGCXYYJc.Schema.ObjectType)member;
         if (object.getExtends$() != null)
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
           digraph.addVertex(object);
-
-        findInnerRelations(digraph, registry, member, member);
       }
       else {
         digraph.addVertex(member);
@@ -139,6 +113,12 @@ public final class Schema extends Element {
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
+
+    for (final Model model : registry.getModels())
+      if (model instanceof Referrer)
+        ((Referrer<?>)model).resolveReferences();
+
+    registry.resolveReferences();
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {

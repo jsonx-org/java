@@ -21,8 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
 
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
@@ -278,7 +276,7 @@ class Registry {
   }
 
   private String getClassPrefix() {
-    final Set<Registry.Type> types = new HashSet<>();
+    final HashSet<Registry.Type> types = new HashSet<>();
     if (getModels() != null)
       for (final Model member : getModels())
         member.getDeclaredTypes(types);
@@ -291,8 +289,8 @@ class Registry {
   }
 
   private static class ReferrerManifest {
-    final List<Referrer<?>> referrers = new ArrayList<>();
-    final Set<Class<?>> referrerTypes = new HashSet<>();
+    final ArrayList<Referrer<?>> referrers = new ArrayList<>();
+    final HashSet<Class<?>> referrerTypes = new HashSet<>();
 
     void add(final Referrer<?> referrer) {
       referrers.add(referrer);
@@ -309,6 +307,7 @@ class Registry {
   }
 
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
+  private final ArrayList<Runnable> deferredReferences = new ArrayList<>();
   final Type OBJECT = getType(Object.class);
 
   Value declare(final xL4gluGCXYYJc.Schema.BooleanType binding) {
@@ -343,13 +342,31 @@ class Registry {
     if (referrer == null)
       return model;
 
-    final String key = model.id().toString();
-    ReferrerManifest referrers = refToReferrers.get(key);
-    if (referrers == null)
-      refToReferrers.put(key, referrers = new ReferrerManifest());
+    final Runnable runnable = () -> {
+      if (model instanceof Referrer)
+        ((Referrer<?>)model).resolveReferences();
 
-    referrers.add(referrer);
+      final String key = model.id().toString();
+      ReferrerManifest referrers = refToReferrers.get(key);
+      if (referrers == null)
+        refToReferrers.put(key, referrers = new ReferrerManifest());
+
+      referrers.add(referrer);
+    };
+
+    if (model.id() == null)
+      deferredReferences.add(runnable);
+    else
+      runnable.run();
+
     return model;
+  }
+
+  void resolveReferences() {
+    for (int i = 0; i < deferredReferences.size(); ++i)
+      deferredReferences.get(i).run();
+
+    deferredReferences.clear();
   }
 
   Model getModel(final Id id) {
@@ -361,6 +378,9 @@ class Registry {
   }
 
   boolean isRootMember(final Member member, final Settings settings) {
+    if (deferredReferences.size() > 0)
+      throw new IllegalStateException("Deferred references have not been resolved");
+
     final ReferrerManifest referrers = refToReferrers.get(member.id().toString());
     final int numReferrers = referrers == null ? 0 : referrers.getNumReferrers();
     if (member instanceof ArrayModel)

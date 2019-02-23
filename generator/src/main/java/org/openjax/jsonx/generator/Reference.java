@@ -19,7 +19,9 @@ package org.openjax.jsonx.generator;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
+import org.openjax.jsonx.generator.Registry.Type;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
@@ -31,14 +33,75 @@ final class Reference extends Member {
   final Member model;
   private final Id id;
 
-  Reference(final Registry registry, final $Array.Reference binding, final Member model) {
+  static class Deferred extends Member {
+    private final Supplier<Reference> supplier;
+
+    private Deferred(final Supplier<Reference> supplier) {
+      super(null, null, null, null, null, null);
+      this.supplier = supplier;
+    }
+
+    Reference resolve() {
+      return supplier.get();
+    }
+
+    @Override
+    Id id() {
+      return null;
+    }
+
+    @Override
+    Type type() {
+      return null;
+    }
+
+    @Override
+    String elementName() {
+      return null;
+    }
+
+    @Override
+    Class<? extends Annotation> propertyAnnotation() {
+      return null;
+    }
+
+    @Override
+    Class<? extends Annotation> elementAnnotation() {
+      return null;
+    }
+
+    @Override
+    org.openjax.standard.xml.api.Element toXml(Settings settings, Element owner, String packageName) {
+      return null;
+    }
+  }
+
+  static Deferred defer(final Registry registry, final $Array.Reference binding, final Supplier<Member> model) {
+    return new Deferred(() -> new Reference(registry, binding, model.get()));
+  }
+
+  private Reference(final Registry registry, final $Array.Reference binding, final Member model) {
     super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
     this.id = new Id(this);
   }
 
-  Reference(final Registry registry, final $Reference binding, final Model model) {
+  static Deferred defer(final Registry registry, final $Reference binding, final Supplier<Model> model) {
+    return new Deferred(() -> new Reference(registry, binding, model.get()));
+  }
+
+  private Reference(final Registry registry, final $Reference binding, final Model model) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
+    this.model = model;
+    this.id = new Id(this);
+  }
+
+  static Deferred defer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Supplier<Model> model) {
+    return new Deferred(() -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
+  }
+
+  private Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Model model) {
+    super(registry, nullable, minOccurs, maxOccurs);
     this.model = model;
     this.id = new Id(this);
   }
@@ -51,12 +114,6 @@ final class Reference extends Member {
 
   Reference(final Registry registry, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
     super(registry, null, nullable, null, minOccurs, maxOccurs);
-    this.model = model;
-    this.id = new Id(this);
-  }
-
-  Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Model model) {
-    super(registry, nullable, minOccurs, maxOccurs);
     this.model = model;
     this.id = new Id(this);
   }

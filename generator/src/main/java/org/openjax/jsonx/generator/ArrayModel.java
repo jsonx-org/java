@@ -24,9 +24,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.openjax.jsonx.generator.Reference.Deferred;
 import org.openjax.jsonx.runtime.ArrayElement;
 import org.openjax.jsonx.runtime.ArrayProperty;
 import org.openjax.jsonx.runtime.ArrayType;
@@ -156,18 +158,20 @@ final class ArrayModel extends Referrer<ArrayModel> {
       }
       else if (member instanceof $Array.Reference) {
         final $Array.Reference reference = ($Array.Reference)member;
-        final Member model = registry.getModel(new Id(reference.getType$()));
-        if (model == null)
-          throw new IllegalStateException("Template type=\"" + reference.getType$().text() + "\" in array not found");
+        members.add(Reference.defer(registry, reference, () -> {
+          final Member model = registry.getModel(new Id(reference.getType$()));
+          if (model == null)
+            throw new IllegalStateException("Template type=\"" + reference.getType$().text() + "\" in array not found");
 
-        members.add(new Reference(registry, reference, registry.reference(model, referrer)));
+          return registry.reference(model, referrer);
+        }));
       }
       else {
         throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
       }
     }
 
-    return Collections.unmodifiableList(members);
+    return members;
   }
 
   private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final Annotation annotation, final int[] elementIds, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
@@ -194,7 +198,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return Collections.unmodifiableList(elements);
   }
 
-  private final Id id;
+  private Id id;
   private final Registry.Type type;
   final List<Member> members;
   final Integer minIterate;
@@ -219,7 +223,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     this.type = null;
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
-    this.id = new Id(this);
+//    this.id = new Id(this);
   }
 
   private ArrayModel(final Registry registry, final $Array.Array binding) {
@@ -231,7 +235,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     this.type = null;
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
-    this.id = new Id(this);
+//    this.id = new Id(this);
   }
 
   private ArrayModel(final Registry registry, final Annotation arrayAnnotation, final int minIterate, final int maxIterate, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {
@@ -338,6 +342,26 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   Class<? extends Annotation> elementAnnotation() {
     return ArrayElement.class;
+  }
+
+  private boolean referencesResolved = false;
+
+  @Override
+  void resolveReferences() {
+    if (referencesResolved)
+      return;
+
+    final ListIterator<Member> iterator = members.listIterator();
+    while (iterator.hasNext()) {
+      final Member member = iterator.next();
+      if (member instanceof Deferred)
+        iterator.set(((Deferred)member).resolve());
+    }
+
+    if (id == null)
+      id = new Id(this);
+
+    referencesResolved = true;
   }
 
   @Override

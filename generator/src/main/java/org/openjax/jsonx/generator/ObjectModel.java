@@ -28,6 +28,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.openjax.jsonx.generator.Reference.Deferred;
+import org.openjax.jsonx.runtime.JxEncoder;
+import org.openjax.jsonx.runtime.JxObject;
+import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.ObjectElement;
+import org.openjax.jsonx.runtime.ObjectProperty;
+import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Boolean;
@@ -37,12 +44,6 @@ import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$ObjectMember;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$String;
-import org.openjax.jsonx.runtime.JxEncoder;
-import org.openjax.jsonx.runtime.JxObject;
-import org.openjax.jsonx.runtime.JxUtil;
-import org.openjax.jsonx.runtime.ObjectElement;
-import org.openjax.jsonx.runtime.ObjectProperty;
-import org.openjax.jsonx.runtime.Use;
 import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.Classes;
 import org.openjax.standard.util.Iterators;
@@ -130,7 +131,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
         if (model == null)
           throw new IllegalStateException("Template \"" + reference.getName$().text() + "\" -> reference=\"" + reference.getType$().text() + "\" not found");
 
-        members.put(reference.getName$().text(), model instanceof Model ? new Reference(registry, reference, registry.reference((Model)model, objectModel)) : model);
+        members.put(reference.getName$().text(), model instanceof Model ? Reference.defer(registry, reference, () -> registry.reference((Model)model, objectModel)) : model);
       }
       else if (member instanceof $Object) {
         final $Object object = ($Object)member;
@@ -142,7 +143,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
     }
 
-    return Collections.unmodifiableMap(members);
+    return members;
   }
 
   private static Class<?> getRealType(final Field field) {
@@ -160,7 +161,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.type = registry.getType(registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null);
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());
-    this.members = Collections.unmodifiableMap(parseMembers(binding, this));
+    this.members = parseMembers(binding, this);
     this.id = new Id(this);
   }
 
@@ -177,7 +178,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.type = registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null);
     this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;
-    this.members = Collections.unmodifiableMap(parseMembers(binding, this));
+    this.members = parseMembers(binding, this);
     this.id = new Id(this);
   }
 
@@ -233,6 +234,20 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   Class<? extends Annotation> elementAnnotation() {
     return ObjectElement.class;
+  }
+
+  private boolean referencesResolved = false;
+
+  @Override
+  void resolveReferences() {
+    if (referencesResolved)
+      return;
+
+    for (final Map.Entry<String,Member> member : members.entrySet())
+      if (member.getValue() instanceof Deferred)
+        member.setValue(((Deferred)member.getValue()).resolve());
+
+    referencesResolved = true;
   }
 
   @Override
