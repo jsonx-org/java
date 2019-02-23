@@ -1,0 +1,145 @@
+<!--
+  Copyright (c) 2019 OpenJAX
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<schema
+  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd schema.xsd">
+  <stringType name="name" pattern=".+"/>
+  <stringType name="use" pattern="(required|optional)"/>
+  <stringType name="min" pattern="[\d]+"/>
+  <stringType name="max" pattern="([\d]+|unbounded)"/>
+  
+  <objectType name="array" abstract="true">
+    <property xsi:type="string" name="class" pattern="array" nullable="false"/>
+    <property xsi:type="reference" name="minIterate" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxIterate" type="max" nullable="false" use="optional"/>
+    <property xsi:type="array" name="elements" nullable="false" maxIterate="unbounded">
+      <reference type="arrayElement" nullable="false"/>
+      <reference type="booleanElement" nullable="false"/>
+      <reference type="numberElement" nullable="false"/>
+      <reference type="referenceElement" nullable="false"/>
+      <reference type="stringElement" nullable="false"/>
+      <reference type="objectElement" nullable="false"/>
+    </property>
+  </objectType>
+  <objectType name="boolean" abstract="true">
+    <property xsi:type="string" name="class" pattern="boolean" nullable="false"/>
+  </objectType>
+  <objectType name="number" abstract="true">
+    <property xsi:type="string" name="class" pattern="number" nullable="false"/>
+    <property xsi:type="string" name="form" pattern="(integer|real)" nullable="false" use="optional"/>
+    <property xsi:type="string" name="range" pattern="[(\[]([\d]+(\.[\d]+)?,([\d]+(\.[\d]+)?)?)(([\d]+(\.[\d]+)?)?,[\d]+(\.[\d]+)?)[)\]]" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="object" abstract="true">
+    <property xsi:type="string" name="class" pattern="object" nullable="false"/>
+    <property xsi:type="boolean" name="abstract" nullable="false" use="optional"/>
+    <property xsi:type="string" name="extends" nullable="false" pattern=".+"/>
+    <property xsi:type="array" name="properties" nullable="false" maxIterate="unbounded">
+      <reference type="arrayProperty" nullable="false"/>
+      <reference type="booleanProperty" nullable="false"/>
+      <reference type="numberProperty" nullable="false"/>
+      <reference type="objectProperty" nullable="false"/>
+      <reference type="referenceProperty" nullable="false"/>
+      <reference type="stringProperty" nullable="false"/>
+    </property>
+  </objectType>
+  <objectType name="reference" abstract="true">
+    <property xsi:type="string" name="class" pattern="reference" nullable="false"/>
+    <property xsi:type="reference" name="type" type="name" nullable="false"/>
+  </objectType>
+  <objectType name="string" abstract="true">
+    <property xsi:type="string" name="class" pattern="string" nullable="false"/>
+    <property xsi:type="string" name="pattern" pattern=".+" nullable="false" use="optional"/>
+  </objectType>
+  
+  <objectType name="arrayType" extends="array">
+    <property xsi:type="reference" name="name" type="name" nullable="false"/>
+  </objectType>
+  <objectType name="booleanType" extends="boolean">
+    <property xsi:type="reference" name="name" type="name" nullable="false"/>
+  </objectType>
+  <objectType name="numberType" extends="number">
+    <property xsi:type="reference" name="name" type="name" nullable="false"/>
+  </objectType>
+  <objectType name="referenceType" abstract="true" extends="reference">
+    <property xsi:type="reference" name="name" type="name" nullable="false"/>
+  </objectType>
+  <objectType name="stringType" extends="string">
+    <property xsi:type="reference" name="name" type="name" nullable="false"/>
+  </objectType>
+  <objectType name="objectType" extends="object">
+    <property xsi:type="reference" name="name" type="name" nullable="false"/>
+  </objectType>
+  
+  <objectType name="arrayProperty" extends="arrayType">
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="booleanProperty" extends="booleanType">
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="numberProperty" extends="numberType">
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="referenceProperty" extends="referenceType">
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="stringProperty" extends="stringType">
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="objectProperty" extends="objectType">
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </objectType>
+  
+  <objectType name="arrayElement" extends="array">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="booleanElement" extends="boolean">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="numberElement" extends="number">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="referenceElement" extends="reference">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="stringElement" extends="string">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </objectType>
+  <objectType name="objectElement" extends="object">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </objectType>
+  
+  <arrayType name="schema" maxIterate="unbounded">
+    <reference type="arrayType" nullable="false"/>
+    <reference type="booleanType" nullable="false"/>
+    <reference type="numberType" nullable="false"/>
+    <reference type="objectType" nullable="false"/>
+    <reference type="stringType" nullable="false"/>
+  </arrayType>
+</schema>
