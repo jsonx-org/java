@@ -68,6 +68,33 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+                <argument>-classpath</argument> 
+                <classpath/>
+                <argument>org.openjax.jsonx.generator.Generator</argument>  
+                <argument>--prefix</argument>
+                <argument>org.openjax.jsonx.schema_0_9_8.</argument>
+                <argument>-d</argument>
+                <argument>${project.build.directory}/generated-sources/jsonx</argument>
+                <argument>src/main/resources/schema-0.9.8.jsonx</argument>
+              </arguments>
+              <workingDirectory>${basedir}/../generator</workingDirectory>
+            </configuration>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
             <executions>
