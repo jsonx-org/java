@@ -18,12 +18,12 @@
   xmlns="http://ch.qos.logback/xml/ns/logback"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback https://raw.githubusercontent.com/enricopulatzo/logback-XSD/master/src/main/xsd/logback.xsd">
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
       <layout class="org.openjax.standard.test.SurefireTestLayout"/>
     </encoder>
   </appender>
-
   <root level="${logbackRootLevel:-DEBUG}">
     <appender-ref ref="CONSOLE"/>
   </root>
