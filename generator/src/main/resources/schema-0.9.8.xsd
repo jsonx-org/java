@@ -369,38 +369,38 @@
       </xs:sequence>
     </xs:complexType>
     <xs:key name="templateKey">
-      <xs:selector xpath="./jx:booleanType | ./jx:numberType | ./jx:stringType | ./jx:arrayType | ./jx:objectType"/>
+      <xs:selector xpath="./jx:arrayType | ./jx:booleanType | ./jx:numberType | ./jx:objectType | ./jx:stringType"/>
       <xs:field xpath="@name"/>
     </xs:key>
-    <xs:key name="arrayClassKey">
-      <xs:selector xpath="./jx:arrayType"/>
-      <xs:field xpath="@name"/>
-    </xs:key>
-    <xs:key name="objectClassKey">
+    <xs:key name="objectNameKey">
       <xs:selector xpath="./jx:objectType"/>
       <xs:field xpath="@name"/>
     </xs:key>
-    <xs:keyref name="propertyReferenceKeyRef" refer="jx:templateKey">
+    <xs:keyref name="propertyTypeKeyRef" refer="jx:templateKey">
       <xs:selector xpath=".//jx:property"/>
       <xs:field xpath="@type"/>
     </xs:keyref>
-    <xs:keyref name="templateReferenceKeyRef" refer="jx:templateKey">
+    <xs:keyref name="templateTypeKeyRef" refer="jx:templateKey">
       <xs:selector xpath=".//jx:reference"/>
       <xs:field xpath="@type"/>
     </xs:keyref>
-    <xs:keyref name="objectExtendsKeyRef" refer="jx:objectClassKey">
+    <xs:keyref name="objectExtendsKeyRef" refer="jx:objectNameKey">
       <xs:selector xpath=".//jx:template"/>
       <xs:field xpath="@extends"/>
     </xs:keyref>
-    <xs:keyref name="propertyExtendsKeyRef" refer="jx:objectClassKey">
+    <xs:keyref name="objectTypeExtendsKeyRef" refer="jx:objectNameKey">
+      <xs:selector xpath="./jx:objectType"/>
+      <xs:field xpath="@extends"/>
+    </xs:keyref>
+    <xs:keyref name="propertyExtendsKeyRef" refer="jx:objectNameKey">
       <xs:selector xpath=".//jx:property"/>
       <xs:field xpath="@extends"/>
     </xs:keyref>
-    <xs:keyref name="arrayObjectClassKeyRef" refer="jx:objectClassKey">
+    <xs:keyref name="arrayObjectTypeKeyRef" refer="jx:objectNameKey">
       <xs:selector xpath=".//jx:array/jx:object"/>
       <xs:field xpath="@type"/>
     </xs:keyref>
-    <xs:keyref name="propertyObjectClassKeyRef" refer="jx:objectClassKey">
+    <xs:keyref name="propertyObjectTypeKeyRef" refer="jx:objectNameKey">
       <xs:selector xpath=".//jx:property/jx:object"/>
       <xs:field xpath="@type"/>
     </xs:keyref>
