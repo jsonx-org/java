@@ -28,11 +28,15 @@ import org.openjax.standard.util.Identifiers;
 import org.openjax.standard.util.Strings;
 
 public final class JxUtil {
-  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "xsi:type", "type", "elementIds", "template", "reference", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
+  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
 
-  public static String flipName(final String name) {
+  public static String flipName(String name) {
     int i = name.lastIndexOf('$');
-    if (i == -1)
+    if (i != -1)
+      name = name.replace('$', '-');
+    else if ((i = name.lastIndexOf('-')) != -1)
+      name = name.replace('-', '$');
+    else
       i = name.lastIndexOf('.');
 
     return i == -1 ? Strings.flipFirstCap(name) : name.substring(0, i + 1) + Strings.flipFirstCap(name.substring(i + 1));
@@ -46,9 +50,13 @@ public final class JxUtil {
     return getMethod(field.getDeclaringClass(), propertyName, field.getType());
   }
 
+  public static String fixReserved(final String name) {
+    return "Class".equalsIgnoreCase(name) ? "0lass" : name;
+  }
+
   private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
     try {
-      return cls.getMethod((parameterType == null ? "get" : "set") + Identifiers.toClassCase(propertyName), parameterType == null ? null : new Class<?> [] {parameterType});
+      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(Identifiers.toClassCase(propertyName)), parameterType == null ? null : new Class<?> [] {parameterType});
     }
     catch (final NoSuchMethodException e) {
       return null;
@@ -95,38 +103,41 @@ public final class JxUtil {
   public static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
     annotations = JxUtil.flatten(annotations);
     JxUtil.fillIdToElement(idToElement, annotations);
-    Annotation arrayAnnotation = null;
+    Annotation annotation = null;
     int[] elementIds = null;
-    for (final Annotation annotation : annotations) {
-      if (annotation instanceof ArrayType) {
-        arrayAnnotation = annotation;
-        final ArrayType arrayType = (ArrayType)annotation;
+    for (int i = 0; i < annotations.length; ++i) {
+      if (annotations[i] instanceof ArrayType) {
+        final ArrayType arrayType = (ArrayType)annotations[i];
         elementIds = arrayType.elementIds();
         idToElement.setMinIterate(arrayType.minIterate());
         idToElement.setMaxIterate(arrayType.maxIterate());
+        annotation = arrayType;
         break;
       }
 
-      if (annotation instanceof ArrayProperty) {
-        arrayAnnotation = annotation;
-        final ArrayProperty arrayProperty = (ArrayProperty)annotation;
+      if (annotations[i] instanceof ArrayProperty) {
+        final ArrayProperty arrayProperty = (ArrayProperty)annotations[i];
         elementIds = arrayProperty.elementIds();
         idToElement.setMinIterate(arrayProperty.minIterate());
         idToElement.setMaxIterate(arrayProperty.maxIterate());
+        annotation = arrayProperty;
         break;
       }
     }
 
-    if (arrayAnnotation == null)
+    if (annotation == null)
       throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
 
     if (elementIds.length == 0)
-      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(arrayAnnotation, JxUtil.ATTRIBUTES));
+      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES));
 
     return elementIds;
   }
 
   public static boolean isNullable(final Annotation annotation) {
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).nullable();
+
     if (annotation instanceof ArrayElement)
       return ((ArrayElement)annotation).nullable();
 
@@ -146,6 +157,9 @@ public final class JxUtil {
   }
 
   public static int getMinOccurs(final Annotation annotation) {
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).minOccurs();
+
     if (annotation instanceof ArrayElement)
       return ((ArrayElement)annotation).minOccurs();
 
@@ -165,6 +179,9 @@ public final class JxUtil {
   }
 
   public static int getId(final Annotation annotation) {
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).id();
+
     if (annotation instanceof ArrayElement)
       return ((ArrayElement)annotation).id();
 
@@ -184,6 +201,9 @@ public final class JxUtil {
   }
 
   public static int getMaxOccurs(final Annotation annotation) {
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).maxOccurs();
+
     if (annotation instanceof ArrayElement)
       return ((ArrayElement)annotation).maxOccurs();
 
@@ -204,6 +224,9 @@ public final class JxUtil {
 
   public static String getName(final Field field) {
     for (final Annotation annotation : field.getAnnotations()) {
+      if (annotation instanceof AnyProperty)
+        return getName(((AnyProperty)annotation).name(), field);
+
       if (annotation instanceof ArrayProperty)
         return getName(((ArrayProperty)annotation).name(), field);
 
@@ -230,7 +253,9 @@ public final class JxUtil {
   public static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
     annotations = JxUtil.flatten(annotations);
     for (final Annotation annotation : annotations) {
-      if (annotation instanceof ArrayElement)
+      if (annotation instanceof AnyElement)
+        idToElement.put(((AnyElement)annotation).id(), annotation);
+      else if (annotation instanceof ArrayElement)
         idToElement.put(((ArrayElement)annotation).id(), annotation);
       else if (annotation instanceof BooleanElement)
         idToElement.put(((BooleanElement)annotation).id(), annotation);
@@ -253,7 +278,9 @@ public final class JxUtil {
 
     final Annotation annotation = annotations[index];
     final Annotation[] repeatable;
-    if (ArrayElements.class.equals(annotation.annotationType()))
+    if (AnyElements.class.equals(annotation.annotationType()))
+      repeatable = ((AnyElements)annotation).value();
+    else if (ArrayElements.class.equals(annotation.annotationType()))
       repeatable = ((ArrayElements)annotation).value();
     else if (BooleanElements.class.equals(annotation.annotationType()))
       repeatable = ((BooleanElements)annotation).value();
@@ -273,7 +300,7 @@ public final class JxUtil {
     }
 
     final Annotation[] flattened = flatten(annotations, index + 1, depth + repeatable.length);
-    for (int i = 0; i < repeatable.length; i++)
+    for (int i = 0; i < repeatable.length; ++i)
       flattened[depth + i] = repeatable[i];
 
     return flattened;

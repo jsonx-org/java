@@ -19,11 +19,23 @@ package org.openjax.jsonx.runtime;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-class BooleanCodec extends PrimitiveCodec<Boolean> {
-  static String encode(final Annotation annotation, final Boolean object) throws EncodeException, ValidationException {
-    if (!(annotation instanceof BooleanProperty) && !(annotation instanceof BooleanElement))
-        throw new IllegalArgumentException("Illegal annotation type for \"boolean\": " + annotation.annotationType().getName());
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
+class BooleanCodec extends PrimitiveCodec<Boolean> {
+  static Boolean decodeArray(final String token) {
+    return "true".equals(token) ? Boolean.TRUE : "false".equals(token) ? Boolean.FALSE : null;
+  }
+
+  static StringBuilder encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
+    if (!(object instanceof Boolean))
+      return contentNotExpected(ArrayIterator.preview(object));
+
+    relations.set(index, new Relation(object, annotation));
+    return null;
+  }
+
+  static String encode(final Boolean object) throws EncodeException, ValidationException {
     return String.valueOf(object);
   }
 
@@ -43,7 +55,7 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
 
   @Override
   Boolean parse(final String json) {
-    return Boolean.valueOf(json);
+    return decodeArray(json);
   }
 
   @Override

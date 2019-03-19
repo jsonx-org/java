@@ -23,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -35,14 +36,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.openjax.jsonx.schema;
+import org.openjax.jsonx.runtime.DecodeException;
+import org.openjax.jsonx.runtime.JxDecoder;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.jci.CompilationException;
 import org.openjax.standard.jci.InMemoryCompiler;
+import org.openjax.standard.json.JSON;
+import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.lang.PackageNotFoundException;
 import org.openjax.standard.test.AssertXml;
 import org.openjax.standard.util.Classes;
-import org.openjax.standard.xml.api.Element;
 import org.openjax.standard.xml.api.ValidationException;
+import org.openjax.standard.xml.api.XmlElement;
 import org.openjax.standard.xml.sax.Validator;
 import org.openjax.xsb.runtime.Bindings;
 import org.slf4j.Logger;
@@ -79,17 +85,17 @@ public class SchemaTest {
     }
   }
 
-  private static Element toXml(final Schema schema, final Settings settings) {
-    final Element xml = schema.toXml(settings);
+  private static XmlElement toXml(final Schema schema, final Settings settings) {
+    final XmlElement xml = schema.toXml(settings);
     xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd " + schemaXsd);
     return xml;
   }
 
   private static Schema testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String packageName) throws IOException, SAXException {
     logger.info("  Parse XML...");
-    logger.info("    a) XML(1) -> JSONX");
+    logger.info("    a) XML(1) -> Schema");
     final Schema controlSchema = new Schema(controlBinding, packageName + ".");
-    logger.info("    b) JSONX -> XML(2)");
+    logger.info("    b) Schema -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
     final xL4gluGCXYYJc.Schema testBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
@@ -153,12 +159,15 @@ public class SchemaTest {
     }
   }
 
-  public static void test(final String fileName, final String packageName) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, SAXException {
+  public static void test(final String fileName, final String packageName) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     logger.info(fileName + "...");
     final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
     final Schema controlSchema = testParseSchema(controlBinding, packageName);
+//    System.out.println(controlSchema.toJson());
+//    if (true)
+//      return;
 
-    logger.info("  4) JSONX -> Java(1)");
+    logger.info("  4) Schema -> Java(1)");
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
     for (final Map.Entry<String,String> entry : test1Sources.entrySet())
@@ -167,10 +176,10 @@ public class SchemaTest {
     logger.info("  5) -- Java(1) Compile --");
     final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
-    logger.info("  6) Java(1) -> JSONX");
+    logger.info("  6) Java(1) -> Schema");
     final Schema test1Schema = newSchema(classLoader, packageName);
     final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
-    logger.info("  7) Validate JSONX");
+    logger.info("  7) Validate XML");
     writeFile("out-" + fileName, xml);
     try {
       Validator.validate(xml, false);
@@ -181,7 +190,7 @@ public class SchemaTest {
     }
 
     final Schema test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), packageName);
-    logger.info("  8) JSONX -> Java(2)");
+    logger.info("  8) Schema -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
     assertSources(test1Sources, test2Sources);
@@ -189,7 +198,7 @@ public class SchemaTest {
     testSettings(fileName, packageName, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, IOException, PackageNotFoundException, ValidationException {
+  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
@@ -209,36 +218,57 @@ public class SchemaTest {
       final Schema test2Schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(schema), packageName + ".");
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
+
+//      testJson(controlBinding, packageName);
     }
   }
 
+  @SuppressWarnings("unchecked")
+  private static void testJson(final xL4gluGCXYYJc.Schema controlBinding, final String packageName) throws DecodeException, IOException, ValidationException {
+    final Schema controlSchema = new Schema(controlBinding, packageName + ".");
+    logger.info("     testJson...");
+    logger.info("      a) Schema -> JSON");
+    final String json = JSON.toString(controlSchema.toJson());
+    logger.info("      b) JSON -> Schema");
+    System.err.println(json);
+    final Schema schema;
+    try (final JsonReader reader = new JsonReader(new StringReader(json))) {
+      schema = new Schema((List<schema.Member>)JxDecoder.parseObject(schema.Schema.class, reader), packageName);
+    }
+
+    logger.info("      c) Schema -> XML(3)");
+    final String jsonXml = toXml(schema, Settings.DEFAULT).toString();
+    final xL4gluGCXYYJc.Schema jsonBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(jsonXml);
+    AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);
+  }
+
   @Test
-  public void testArray() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("array.jsonx", "org.openjax.jsonx.generator");
   }
 
   @Test
-  public void testDataType() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("datatype.jsonx", "org.openjax.jsonx.generator.datatype");
   }
 
   @Test
-  public void testTemplate() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("template.jsonx", "org.openjax.jsonx.generator");
   }
 
   @Test
-  public void testReference() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("reference.jsonx", "org.openjax.jsonx.generator.reference");
   }
 
   @Test
-  public void testReserved() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("reserved.jsonx", "org.openjax.jsonx.generator.reserved");
   }
 
   @Test
-  public void testComplete() throws ClassNotFoundException, CompilationException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
     test("complete.jsonx", "org.openjax.jsonx.generator.complete");
   }
 }

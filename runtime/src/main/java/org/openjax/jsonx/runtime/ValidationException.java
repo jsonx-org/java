@@ -17,7 +17,7 @@
 package org.openjax.jsonx.runtime;
 
 /**
- * Signals that an error has occurred while evaluating a JSONX model.
+ * Signals that an error has occurred while evaluating a JSONx model.
  */
 public class ValidationException extends RuntimeException {
   private static final long serialVersionUID = 2984407300739435993L;

@@ -25,40 +25,44 @@
     <array minOccurs="1" maxOccurs="1" maxIterate="2">
       <array maxOccurs="14" maxIterate="5">
         <boolean nullable="false"/>
+        <any types="rootNumberReal rootMultiArray" minOccurs="2" maxOccurs="3" nullable="false"/>
         <number form="integer" range="(1.2,2.4)" maxOccurs="3"/>
       </array>
       <array minOccurs="2" maxOccurs="13" minIterate="2" maxIterate="3">
         <reference type="rootArrayBool" minOccurs="2" nullable="false"/>
-        <reference type="rootBooleanNull" maxOccurs="15"/>
+        <reference type="rootBoolean" maxOccurs="15"/>
       </array>
     </array>
   </arrayType>
-  <arrayType name="simple$rootBooleanArray">
-    <reference type="rootBooleanNotNull" maxOccurs="3"/>
+  <arrayType name="simple-rootBooleanArray">
+    <reference type="simple-rootBooleanArray" maxOccurs="3"/>
   </arrayType>
-  <booleanType name="rootBooleanNotNull"/>
-  <booleanType name="rootBooleanNull"/>
-  <numberType name="rootNumber" form="integer" range="(2,9)"/>
+  <booleanType name="rootBoolean"/>
+  <numberType name="rootNumberInteger" form="integer" range="(2,9)"/>
+  <numberType name="rootNumberReal" range="[2.3392,9.87832)"/>
   <stringType name="rootString" pattern="[a-z]+"/>
-  <objectType name="cls$abstractObject" abstract="true">
-    <property name="booleanPropertyOptional" xsi:type="reference" type="rootBooleanNull" use="optional"/>
-    <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBooleanNull" use="optional" nullable="false"/>
+  <objectType name="cls-abstractObject" abstract="true">
+    <property name="booleanPropertyOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
+    <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
     <property name="emptyArray" xsi:type="reference" type="rootArrayBool"/>
+    <property name="any1" xsi:type="any" types="rootNumberReal" use="optional"/>
   </objectType>
-  <objectType name="simple$booleans">
-    <property name="booleanRefDefault" xsi:type="reference" type="rootBooleanNull"/>
-    <property name="booleanRefOptional" xsi:type="reference" type="rootBooleanNotNull" use="optional"/>
-    <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBooleanNotNull" use="optional" nullable="false"/>
+  <objectType name="simple-booleans">
+    <property name="booleanRefDefault" xsi:type="reference" type="rootBoolean"/>
+    <property name="booleanRefOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
+    <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
+    <property name="any2" xsi:type="any" types="rootNumberInteger"/>
     <property name="booleanDefault" xsi:type="boolean"/>
     <property name="booleanOptional" xsi:type="boolean" use="optional"/>
     <property name="booleanOptionalNotNullable" xsi:type="boolean" use="optional" nullable="false"/>
   </objectType>
-  <objectType name="simple$booleansArray">
-    <property name="booleanRefArrayDefault" xsi:type="reference" type="simple$rootBooleanArray"/>
-    <property name="booleanRefArrayOptional" xsi:type="reference" type="simple$rootBooleanArray" use="optional"/>
-    <property name="booleanRefArrayOptionalNotNullable" xsi:type="reference" type="simple$rootBooleanArray" use="optional" nullable="false"/>
+  <objectType name="simple-booleansArray">
+    <property name="booleanRefArrayDefault" xsi:type="reference" type="simple-rootBooleanArray"/>
+    <property name="booleanRefArrayOptional" xsi:type="reference" type="simple-rootBooleanArray" use="optional"/>
+    <property name="booleanRefArrayOptionalNotNullable" xsi:type="reference" type="simple-rootBooleanArray" use="optional" nullable="false"/>
     <property name="booleanArrayDefault" xsi:type="array">
-      <reference type="rootBooleanNotNull" minOccurs="1" maxOccurs="3"/>
+      <any types="rootNumberInteger simple-booleansArray"/>
+      <reference type="rootBoolean" minOccurs="1" maxOccurs="3"/>
     </property>
     <property name="booleanArray" xsi:type="array">
       <boolean nullable="false"/>
@@ -70,10 +74,11 @@
       <boolean/>
     </property>
   </objectType>
-  <objectType name="simple$numbers">
-    <property name="numberRefDefault" xsi:type="reference" type="rootNumber"/>
-    <property name="numberRefOptional" xsi:type="reference" type="rootNumber" use="optional"/>
-    <property name="numberRefOptionalNotNullable" xsi:type="reference" type="rootNumber" use="optional" nullable="false"/>
+  <objectType name="simple-numbers">
+    <property name="numberRefDefault" xsi:type="reference" type="rootNumberInteger"/>
+    <property name="numberRefOptional" xsi:type="reference" type="rootNumberInteger" use="optional"/>
+    <property name="numberRefOptionalNotNullable" xsi:type="reference" type="rootNumberReal" use="optional" nullable="false"/>
+    <property name="any3" xsi:type="any" types="rootNumberInteger"/>
     <property name="numberDefault" xsi:type="number"/>
     <property name="numberOptional" xsi:type="number" use="optional"/>
     <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
@@ -81,15 +86,15 @@
     <property name="numberMax" xsi:type="number" range="[,0]"/>
     <property name="numberInteger" xsi:type="number" form="integer"/>
   </objectType>
-  <objectType name="simple$numbersArray">
+  <objectType name="simple-numbersArray">
     <property name="numberArrayRefDefault" xsi:type="array">
-      <reference type="rootNumber" maxOccurs="3"/>
+      <reference type="rootNumberInteger" maxOccurs="3"/>
     </property>
     <property name="numberArrayRefOptional" xsi:type="array" use="optional">
-      <reference type="rootNumber" maxOccurs="3"/>
+      <reference type="rootNumberReal" maxOccurs="3"/>
     </property>
     <property name="numberArrayRefOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
-      <reference type="rootNumber" maxOccurs="3"/>
+      <reference type="rootNumberInteger" maxOccurs="3"/>
     </property>
     <property name="numberArrayDefault" xsi:type="array">
       <number minOccurs="2" maxOccurs="10"/>
@@ -155,44 +160,44 @@
       <number minOccurs="4"/>
     </property>
     <property name="objectArray1" xsi:type="array">
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="3"/>
+      <reference type="simple-numbersArray" minOccurs="2" maxOccurs="3"/>
     </property>
     <property name="objectArraySame2" xsi:type="array">
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="4"/>
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="5"/>
+      <reference type="simple-booleans" minOccurs="2" maxOccurs="4"/>
+      <reference type="simple-booleans" minOccurs="2" maxOccurs="5"/>
     </property>
     <property name="objectArraySame3" xsi:type="array">
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="6"/>
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="7"/>
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="8"/>
+      <reference type="simple-booleans" minOccurs="2" maxOccurs="6"/>
+      <reference type="simple-booleans" minOccurs="2" maxOccurs="7"/>
+      <reference type="simple-booleans" minOccurs="2" maxOccurs="8"/>
     </property>
     <property name="objectArraySame4" xsi:type="array" minIterate="2" maxIterate="4">
-      <reference type="simple$booleans" minOccurs="2" maxOccurs="9"/>
-      <reference type="simple$booleans" minOccurs="3" maxOccurs="3"/>
-      <reference type="simple$booleans" minOccurs="3" maxOccurs="4"/>
-      <reference type="simple$booleans" minOccurs="3" maxOccurs="5"/>
+      <reference type="simple-booleans" minOccurs="2" maxOccurs="9"/>
+      <reference type="simple-booleans" minOccurs="3" maxOccurs="3"/>
+      <reference type="simple-booleans" minOccurs="3" maxOccurs="4"/>
+      <reference type="simple-booleans" minOccurs="3" maxOccurs="5"/>
     </property>
     <property name="objectArrayDiff2" xsi:type="array">
-      <reference type="simple$booleans" minOccurs="3" maxOccurs="6"/>
-      <reference type="simple$strings" minOccurs="3" maxOccurs="7"/>
+      <reference type="simple-numbersArray" minOccurs="3" maxOccurs="6"/>
+      <reference type="simple-strings" minOccurs="3" maxOccurs="7"/>
     </property>
     <property name="objectArrayDiff3" xsi:type="array" minIterate="2" maxIterate="3">
-      <reference type="simple$booleans" minOccurs="3" maxOccurs="8"/>
-      <reference type="simple$strings" minOccurs="3" maxOccurs="9"/>
-      <reference type="simple$booleans" minOccurs="4" maxOccurs="4"/>
+      <reference type="simple-booleans" minOccurs="3" maxOccurs="8"/>
+      <reference type="simple-strings" minOccurs="3" maxOccurs="9"/>
+      <reference type="simple-booleans" minOccurs="4" maxOccurs="4"/>
     </property>
     <property name="objectArrayDiff4" xsi:type="array">
-      <reference type="simple$booleans" minOccurs="4" maxOccurs="5"/>
-      <reference type="simple$strings" minOccurs="4" maxOccurs="6"/>
-      <reference type="simple$booleans" minOccurs="4" maxOccurs="7"/>
-      <reference type="simple$strings" minOccurs="4" maxOccurs="8"/>
+      <reference type="simple-booleans" minOccurs="4" maxOccurs="5"/>
+      <reference type="simple-strings" minOccurs="4" maxOccurs="6"/>
+      <reference type="simple-booleans" minOccurs="4" maxOccurs="7"/>
+      <reference type="simple-strings" minOccurs="4" maxOccurs="8"/>
     </property>
     <property name="objectArrayDiff5" xsi:type="array" minIterate="3" maxIterate="3">
-      <reference type="simple$booleans" minOccurs="4" maxOccurs="9"/>
-      <reference type="simple$strings" minOccurs="5" maxOccurs="5"/>
-      <reference type="simple$numbers" minOccurs="5" maxOccurs="6"/>
-      <reference type="simple$booleans" minOccurs="5" maxOccurs="7"/>
-      <reference type="simple$numbers" minOccurs="5" maxOccurs="8"/>
+      <reference type="simple-booleans" minOccurs="4" maxOccurs="9"/>
+      <reference type="simple-strings" minOccurs="5" maxOccurs="5"/>
+      <reference type="simple-numbers" minOccurs="5" maxOccurs="6"/>
+      <reference type="simple-booleans" minOccurs="5" maxOccurs="7"/>
+      <reference type="simple-numbersArray" minOccurs="5" maxOccurs="8"/>
     </property>
     <property name="numberArrayMin" xsi:type="array">
       <number range="(0,)" minOccurs="2"/>
@@ -204,17 +209,20 @@
     </property>
     <property name="numberArrayForm2" xsi:type="array">
       <number form="integer"/>
+      <any/>
       <number form="integer"/>
     </property>
     <property name="arrayNumberString" xsi:type="array">
       <number form="integer"/>
       <string/>
+      <any/>
     </property>
     <property name="arrayStringNumber" xsi:type="array">
       <string/>
       <number form="integer"/>
     </property>
     <property name="arrayBooleanNumebr" xsi:type="array">
+      <any/>
       <boolean/>
       <number form="integer"/>
     </property>
@@ -229,6 +237,7 @@
     <property name="arrayStringBoolean" xsi:type="array">
       <string/>
       <boolean/>
+      <any/>
     </property>
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">
@@ -240,31 +249,36 @@
             <number/>
             <array>
               <array nullable="false">
-                <number/>
+                <any/>
               </array>
             </array>
+            <any types="rootString" minOccurs="3" maxOccurs="4"/>
             <boolean/>
           </array>
           <number/>
+          <any/>
         </array>
+        <any types="rootNumberReal simple-numbersArray" minOccurs="4" maxOccurs="5"/>
         <number nullable="false"/>
       </array>
       <string/>
       <boolean nullable="false"/>
     </property>
   </objectType>
-  <objectType name="simple$strings">
+  <objectType name="simple-strings">
     <property name="stringRefDefault" xsi:type="reference" type="rootString"/>
     <property name="stringRefOptional" xsi:type="reference" type="rootString" use="optional"/>
     <property name="stringRefOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
     <property name="stringDefault" xsi:type="string"/>
     <property name="stringOptional" xsi:type="string" use="optional"/>
+    <property name="any4" xsi:type="any"/>
+    <property name="any5" xsi:type="any"/>
     <property name="stringOptionalNotNullable" xsi:type="string" use="optional" nullable="false"/>
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
     <property name="stringUrlDecode" xsi:type="string"/>
     <property name="stringUrlEncode" xsi:type="string"/>
   </objectType>
-  <objectType name="simple$stringsArray">
+  <objectType name="simple-stringsArray">
     <property name="stringArrayRefDefault" xsi:type="array">
       <reference type="rootMultiArray"/>
     </property>
@@ -293,46 +307,49 @@
       <string maxOccurs="1"/>
     </property>
   </objectType>
-  <objectType name="xyz$objects">
+  <objectType name="xyz-objects">
     <property name="objectDefault" xsi:type="object"/>
     <property name="objectOptional" xsi:type="object" use="optional"/>
     <property name="objectOptionalNotNullable" xsi:type="object" use="optional" nullable="false"/>
     <property name="objectOptional2" xsi:type="object" use="optional"/>
     <property name="objectOptionalNullable2" xsi:type="object" use="optional"/>
-    <property name="objectExtendsAbstract" xsi:type="object" extends="cls$abstractObject">
+    <property name="objectExtendsAbstract" xsi:type="object" extends="xyz-objects">
       <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
       <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
       <property name="objectNumberOptional" xsi:type="number" use="optional"/>
       <property name="objectNumberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
-      <property name="objectExtendsBooleans" xsi:type="object" extends="simple$booleans"/>
-      <property name="objectExtendsBooleansOptional2" xsi:type="object" extends="simple$booleans" use="optional"/>
-      <property name="objectExtendsBooleansOptionalNullable2" xsi:type="object" extends="simple$booleans" use="optional"/>
-      <property name="objectExtendsBooleans3" xsi:type="object" extends="simple$booleans"/>
-      <property name="objectOptionalExtendsAbstract" xsi:type="object" extends="cls$abstractObject" use="optional">
+      <property name="any6" xsi:type="any"/>
+      <property name="any7" xsi:type="any"/>
+      <property name="any8" xsi:type="any"/>
+      <property name="objectExtendsBooleans" xsi:type="object" extends="simple-booleans"/>
+      <property name="objectExtendsBooleansOptional2" xsi:type="object" extends="simple-booleans" use="optional"/>
+      <property name="objectExtendsBooleansOptionalNullable2" xsi:type="object" extends="simple-booleans" use="optional"/>
+      <property name="objectExtendsBooleans3" xsi:type="object" extends="simple-booleans"/>
+      <property name="objectOptionalExtendsAbstract" xsi:type="object" extends="cls-abstractObject" use="optional">
         <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
         <property name="objectNumber" xsi:type="number"/>
       </property>
-      <property name="objectOptionalNotNullableExtendsAbstract" xsi:type="object" extends="cls$abstractObject" use="optional" nullable="false">
+      <property name="objectOptionalNotNullableExtendsAbstract" xsi:type="object" extends="cls-abstractObject" use="optional" nullable="false">
         <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
         <property name="objectNumber" xsi:type="number"/>
       </property>
     </property>
-    <property name="objectExtendsStrings" xsi:type="object" extends="simple$strings">
+    <property name="objectExtendsStrings" xsi:type="object" extends="simple-strings">
       <property name="additionalString" xsi:type="string"/>
     </property>
   </objectType>
-  <objectType name="xyz$objectsArray" extends="cls$abstractObject">
+  <objectType name="xyz-objectsArray" extends="cls-abstractObject">
     <property name="objectArrayDefault" xsi:type="array">
-      <reference type="simple$booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
+      <reference type="simple-booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
     </property>
     <property name="objectArrayOptional" xsi:type="array" use="optional">
-      <reference type="simple$strings" minOccurs="1" maxOccurs="7"/>
+      <reference type="simple-strings" minOccurs="1" maxOccurs="7"/>
     </property>
     <property name="objectArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
-      <reference type="simple$strings" minOccurs="1" maxOccurs="7"/>
+      <reference type="simple-strings" minOccurs="1" maxOccurs="7"/>
     </property>
     <property name="objectArrayPropertiesSkipUnknown" xsi:type="array">
-      <reference type="simple$numbers"/>
+      <reference type="simple-numbers"/>
     </property>
   </objectType>
 </schema>

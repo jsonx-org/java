@@ -38,7 +38,7 @@ public class RuntimeTest {
 
   public void test(final Class<? extends JxObject> cls) throws Exception {
     for (int i = 0; i < 100; ++i)
-      count += new ClassTrial(cls).invoke();
+      count += new ClassTrial(cls).run();
   }
 
   @Test

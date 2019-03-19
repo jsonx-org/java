@@ -20,87 +20,147 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$String;
+import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.StringProperty;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.Strings;
 
 final class StringModel extends Model {
+  private static xL4gluGCXYYJc.Schema.StringType type(final schema.StringType jsonx) {
+    final xL4gluGCXYYJc.Schema.StringType xsb = new xL4gluGCXYYJc.Schema.StringType();
+
+    if (jsonx.getName() != null)
+      xsb.setName$(new xL4gluGCXYYJc.Schema.StringType.Name$(jsonx.getName()));
+
+    return xsb;
+  }
+
+  private static xL4gluGCXYYJc.$String property(final schema.StringProperty jsonx) {
+    final xL4gluGCXYYJc.$String xsb = new xL4gluGCXYYJc.$String() {
+      private static final long serialVersionUID = -8328022363685261988L;
+
+      @Override
+      protected xL4gluGCXYYJc.$Member inherits() {
+        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      }
+    };
+
+    if (jsonx.getName() != null)
+      xsb.setName$(new xL4gluGCXYYJc.$String.Name$(jsonx.getName()));
+
+    if (jsonx.getUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$String.Use$(xL4gluGCXYYJc.$String.Use$.Enum.valueOf(jsonx.getUse())));
+
+    return xsb;
+  }
+
+  private static xL4gluGCXYYJc.$ArrayMember.String element(final schema.StringElement jsonx) {
+    final xL4gluGCXYYJc.$ArrayMember.String xsb = new xL4gluGCXYYJc.$ArrayMember.String();
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.String.Nullable$(jsonx.getNullable()));
+
+    if (jsonx.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+
+    if (jsonx.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.String.MaxOccurs$(jsonx.getMaxOccurs()));
+
+    return xsb;
+  }
+
+  static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsonx) {
+    final xL4gluGCXYYJc.$StringMember xsb;
+    if (jsonx instanceof schema.StringType)
+      xsb  = type((schema.StringType)jsonx);
+    else if (jsonx instanceof schema.StringProperty)
+      xsb  = property((schema.StringProperty)jsonx);
+    else if (jsonx instanceof schema.StringElement)
+      xsb  = element((schema.StringElement)jsonx);
+    else
+      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+
+    if (jsonx.getPattern() != null)
+      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsonx.getPattern()));
+
+    return xsb;
+  }
+
   static StringModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.StringType binding) {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
-  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Field field) {
+  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.Schema.StringType binding) {
+    final StringModel model = new StringModel(registry, binding);
+    final Id id = model.id;
+
+    final StringModel registered = (StringModel)registry.getModel(id);
+    return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
+  }
+
+  static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Field field) {
     final StringModel model = new StringModel(registry, property, field);
-    final Id id = model.id();
+    final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
     return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
+  static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, element);
-    final Id id = model.id();
+    final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
     return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String binding) {
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array.String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String binding) {
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$String binding) {
     return registry.reference(new StringModel(registry, binding), referrer);
   }
 
   private static String parsePattern(final String pattern) {
-    return pattern.length() == 0 ? null : pattern;
+    return pattern == null || pattern.length() == 0 ? null : pattern;
   }
 
-  private final Id id;
+  private static String parsePattern(final xL4gluGCXYYJc.$StringMember.Pattern$ pattern) {
+    return pattern == null ? null : parsePattern(pattern.text());
+  }
+
   final String pattern;
 
   private StringModel(final Registry registry, final xL4gluGCXYYJc.Schema.StringType binding) {
-    super(registry);
-    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.id = new Id(binding.getName$());
+    super(registry, Id.named(binding.getName$()));
+    this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final $String binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.id = new Id(this);
+  private StringModel(final Registry registry, final xL4gluGCXYYJc.$String binding) {
+    super(registry, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
+    this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final $Array.String binding) {
-    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.pattern = binding.getPattern$() == null ? null : binding.getPattern$().text();
-    this.id = new Id(this);
+  private StringModel(final Registry registry, final xL4gluGCXYYJc.$Array.String binding) {
+    super(registry, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    this.pattern = parsePattern(binding.getPattern$());
   }
 
   private StringModel(final Registry registry, final StringProperty property, final Field field) {
-    super(registry, property.nullable(), property.use());
+    super(registry, Id.hashed("s", parsePattern(property.pattern())), property.nullable(), property.use());
     if (!isAssignable(field, String.class, property.nullable(), property.use()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of String type, or optional and nullable fields of Optional<String> type");
 
     this.pattern = parsePattern(property.pattern());
-    this.id = new Id(this);
   }
 
   private StringModel(final Registry registry, final StringElement element) {
-    super(registry, element.nullable(), null);
+    super(registry, Id.hashed("s", parsePattern(element.pattern())), element.nullable(), null);
     this.pattern = parsePattern(element.pattern());
-    this.id = new Id(this);
-  }
-
-  @Override
-  Id id() {
-    return id;
   }
 
   @Override
@@ -124,8 +184,8 @@ final class StringModel extends Model {
   }
 
   @Override
-  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (pattern != null)
       attributes.put("pattern", pattern);
 

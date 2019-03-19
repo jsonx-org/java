@@ -18,6 +18,8 @@ package org.openjax.jsonx.generator;
 
 import java.util.Map;
 
+import org.openjax.standard.xml.api.XmlElement;
+
 abstract class Element {
   /**
    * Intended to be overridden by each concrete subclass, this method returns a
@@ -28,9 +30,10 @@ abstract class Element {
    * @param packageName The package name declared in the schema element.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
     return new AttributeMap();
   }
 
-  abstract org.openjax.standard.xml.api.Element toXml(Settings settings, Element owner, String packageName);
+  abstract XmlElement toXml(Settings settings, Element owner, String packageName);
+  abstract Object toJson(Settings settings, Element owner, String packageName);
 }

@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 OpenJAX
+/* Copyright (c) 2019 OpenJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,21 +16,17 @@
 
 package org.openjax.jsonx.runtime;
 
-import static org.junit.Assert.*;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-class RangeCase extends FailureCase<NumberTrial> {
-  static final RangeCase CASE = new RangeCase();
-
-  @Override
-  void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " is not matched: "));
-  }
-
-  @Override
-  void onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " is not matched: "));
-  }
-
-  private RangeCase() {
-  }
+@Target({})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface t {
+  Class<? extends Annotation> arrays() default Annotation.class;
+  boolean booleans() default false;
+  NumberType numbers() default @NumberType(range="\0");
+  String strings() default "\0";
+  Class<? extends JxObject> objects() default JxObject.class;
 }

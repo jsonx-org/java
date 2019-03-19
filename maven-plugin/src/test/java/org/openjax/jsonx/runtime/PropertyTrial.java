@@ -21,6 +21,10 @@ import java.security.SecureRandom;
 import java.util.Optional;
 
 abstract class PropertyTrial<T> {
+  static Case<? extends PropertyTrial<? super Object>> getNullableCase(final boolean nullable) {
+    return nullable ? RequiredNullableCase.CASE : RequiredNotNullableCase.CASE;
+  }
+
   static final SecureRandom random = new SecureRandom();
 
   final Case<? extends PropertyTrial<? super T>> kase;

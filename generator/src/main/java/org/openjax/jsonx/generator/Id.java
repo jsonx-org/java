@@ -17,10 +17,12 @@
 package org.openjax.jsonx.generator;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.standard.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 class Id {
@@ -31,53 +33,26 @@ class Id {
     return Long.toString(crc.getValue(), 16);
   }
 
+  static Id hashed(final String prefix, final Object ... variables) {
+    return variables == null || variables.length == 0 ? new Id(prefix) : new Id(prefix + hash(variables));
+  }
+
+  static Id named(final Registry.Type type) {
+    return new Id(type != null ? JxUtil.flipName(type.getName()) : Strings.getRandomAlphaNumeric(6));
+  }
+
+  static Id named(final Class<?> type) {
+    return new Id(JxUtil.flipName(type.getName()));
+  }
+
+  static Id named(final $String name) {
+    return new Id(name.text());
+  }
+
   private final String id;
 
-  Id(final $String id) {
-    this.id = id.text();
-  }
-
-  Id(final Registry.Type type) {
-    this.id = JxUtil.flipName(type.getName());
-  }
-
-  Id(final Class<?> type) {
-    this.id = JxUtil.flipName(type.getName());
-  }
-
-  Id(final ArrayModel model) {
-    final Object[] variables = new Object[model.members.size()];
-    for (int i = 0; i < variables.length; ++i) {
-      final Member member = model.members.get(i);
-      variables[i] = member.id().toString() + member.nullable;
-    }
-
-    this.id = "a" + hash(model.minIterate, model.maxIterate, variables);
-  }
-
-  /**
-   * Construct {@code Id} for a {@code BooleanModel} instance.
-   *
-   * @param model The {@code BooleanModel} instance.
-   */
-  Id(final BooleanModel model) {
-    this.id = "b" + hash(model.nullable);
-  }
-
-  Id(final NumberModel model) {
-    this.id = "n" + hash(model.form, model.range, model.nullable);
-  }
-
-  Id(final StringModel model) {
-    this.id = "s" + hash(model.pattern, model.nullable);
-  }
-
-  Id(final ObjectModel model) {
-    this(model.type());
-  }
-
-  Id(final Reference model) {
-    this.id = "t" + hash(model.model.id().toString(), model.minOccurs, model.maxOccurs, model.nullable, model.use);
+  private Id(final String id) {
+    this.id = Objects.requireNonNull(id);
   }
 
   @Override

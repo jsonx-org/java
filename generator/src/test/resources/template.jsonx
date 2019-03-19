@@ -39,20 +39,26 @@
   <booleanType name="rootBoolean"/>
   <numberType name="rootNumber" form="integer" range="[2,9]"/>
   <stringType name="rootString" pattern="[a-z]+"/>
-  <objectType name="test$template">
+  <objectType name="test-template">
     <property name="arrayDirectOptionalNotNullable" xsi:type="array" use="optional" nullable="false" minIterate="3" maxIterate="5">
       <boolean/>
     </property>
     <property name="arrayOne" xsi:type="reference" type="arrayDepthOne" use="optional"/>
     <property name="arrayTwo" xsi:type="reference" type="arrayDepthTwo"/>
+    <property name="any1" xsi:type="any"/>
     <property name="arrayThree" xsi:type="reference" type="arrayDepthThree" use="optional" nullable="false"/>
     <property name="arrayFour" xsi:type="reference" type="arrayDepthFour" use="optional"/>
+    <property name="any2" xsi:type="any" types="rootString rootNumber"/>
     <property name="booleanDirectOptional" xsi:type="boolean" use="optional"/>
     <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false"/>
+    <property name="any3" xsi:type="any" types="rootNumber rootBoolean" nullable="false"/>
+    <property name="any4" xsi:type="any" types="rootString arrayDepthOne" nullable="false"/>
     <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
     <property name="numberDirectOptional" xsi:type="number" range="[5,8]" use="optional"/>
+    <property name="any5" xsi:type="any" types="arrayDepthOne arrayDepthTwo" use="optional"/>
     <property name="numberOptional" xsi:type="reference" type="rootNumber" use="optional"/>
     <property name="stringDirectOptional" xsi:type="string" use="optional"/>
     <property name="stringOptional" xsi:type="reference" type="rootString" use="optional"/>
+    <property name="any6" xsi:type="any" types="arrayDepthTwo arrayDepthThree"/>
   </objectType>
 </schema>

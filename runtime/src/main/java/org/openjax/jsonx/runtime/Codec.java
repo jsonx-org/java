@@ -26,6 +26,10 @@ import org.openjax.standard.util.FastArrays;
 import org.openjax.standard.util.function.TriPredicate;
 
 abstract class Codec {
+  static StringBuilder contentNotExpected(final String content) {
+    return new StringBuilder("Content is not expected: ").append(content);
+  }
+
   final Field field;
   private final Method setMethod;
   final boolean optional;
@@ -48,15 +52,15 @@ abstract class Codec {
 
   abstract String elementName();
 
-  StringBuilder validateUse(final Object value) {
+  final StringBuilder validateUse(final Object value) {
     return value == null && !nullable && use == Use.REQUIRED ? new StringBuilder("Property \"").append(name).append("\" is required: ").append(value) : null;
   }
 
-  Object toNull() {
+  final Object toNull() {
     return use == Use.OPTIONAL && nullable ? Optional.empty() : null;
   }
 
-  void set(final JxObject object, final Object value, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws InvocationTargetException {
+  final void set(final JxObject object, final Object value, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws InvocationTargetException {
     try {
       if (!optional || value instanceof Optional)
         setMethod.invoke(object, value);

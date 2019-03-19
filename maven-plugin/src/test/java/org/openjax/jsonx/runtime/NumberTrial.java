@@ -37,22 +37,23 @@ class NumberTrial extends PropertyTrial<Number> {
       trials.add(new NumberTrial(FormCase.CASE, field, object, makeValid(range), property));
 
     if (property.use() == Use.REQUIRED) {
-      if (property.nullable()) {
-        trials.add(new NumberTrial(RequiredNullableCase.CASE, field, object, null, property));
-      }
-      else {
-        trials.add(new NumberTrial(RequiredNotNullableCase.CASE, field, object, null, property));
-      }
+      trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));
+    }
+    else if (property.nullable()) {
+      trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, null, property));
+      trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
     }
     else {
-      if (property.nullable()) {
-        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, null, property));
-        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
-      }
-      else {
-        trials.add(new NumberTrial(OptionalNotNullableCase.CASE, field, object, null, property));
-      }
+      trials.add(new NumberTrial(OptionalNotNullableCase.CASE, field, object, null, property));
     }
+  }
+
+  static Number createValid(final Field field, final String range, final Form form) {
+    return toProperForm(field, form, range.length() == 0 ? null : makeValid(new Range(range)));
+  }
+
+  static Number createValid(final String range, final Form form) {
+    return toProperForm(form, range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)));
   }
 
   static BigDecimal makeValid(final Range range) {

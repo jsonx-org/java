@@ -17,77 +17,41 @@
 package org.openjax.jsonx.generator;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Boolean;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Number;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$String;
-import org.openjax.jsonx.runtime.ArrayProperty;
-import org.openjax.jsonx.runtime.BooleanProperty;
-import org.openjax.jsonx.runtime.NumberProperty;
-import org.openjax.jsonx.runtime.ObjectProperty;
-import org.openjax.jsonx.runtime.StringProperty;
+import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.runtime.ValidationException;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.Identifiers;
-import org.openjax.standard.xml.datatypes_0_9_2.xNxQJbgwJdgwJcA.$Identifier;
+import org.openjax.standard.util.Strings;
 import org.openjax.xsb.runtime.Attribute;
 import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Member extends Element {
-  static Member toMember(final Registry registry, final Referrer<?> referrer, final Field field) {
-    Member declaredMember = null;
-    for (final Annotation annotation : field.getAnnotations()) {
-      Member member = null;
-      if (ArrayProperty.class.equals(annotation.annotationType()))
-        member = ArrayModel.referenceOrDeclare(registry, referrer, (ArrayProperty)annotation, field);
-      else if (BooleanProperty.class.equals(annotation.annotationType()))
-        member = BooleanModel.referenceOrDeclare(registry, referrer, (BooleanProperty)annotation, field);
-      else if (NumberProperty.class.equals(annotation.annotationType()))
-        member = NumberModel.referenceOrDeclare(registry, referrer, (NumberProperty)annotation, field);
-      else if (ObjectProperty.class.equals(annotation.annotationType()))
-        member = ObjectModel.referenceOrDeclare(registry, referrer, (ObjectProperty)annotation, field);
-      else if (StringProperty.class.equals(annotation.annotationType()))
-        member = StringModel.referenceOrDeclare(registry, referrer, (StringProperty)annotation, field);
-
-      if (declaredMember == null)
-        declaredMember = member;
-      else if (member != null)
-        throw new ValidationException(field.getDeclaringClass().getName() + "." + field.getName() + " specifies multiple parameter annotations: [" + declaredMember.elementName() + ", " + member.elementName() + "]");
-    }
-
-    return declaredMember;
-  }
-
   static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
     @Override
     public String apply(final Binding t) {
       final String name;
-      if (t instanceof $Array)
-        name = (($Array)t).getName$().text();
-      else if (t instanceof $Boolean)
-        name = (($Boolean)t).getName$().text();
-      else if (t instanceof $Number)
-        name = (($Number)t).getName$().text();
-      else if (t instanceof $Object)
-        name = (($Object)t).getName$().text();
-      else if (t instanceof $String)
-        name = (($String)t).getName$().text();
-      else if (t instanceof $Reference)
-        name = (($Reference)t).getName$().text();
+      if (t instanceof xL4gluGCXYYJc.$Array)
+        name = ((xL4gluGCXYYJc.$Array)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.$Boolean)
+        name = ((xL4gluGCXYYJc.$Boolean)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.$Number)
+        name = ((xL4gluGCXYYJc.$Number)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.$Object)
+        name = ((xL4gluGCXYYJc.$Object)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.$String)
+        name = ((xL4gluGCXYYJc.$String)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.$Reference)
+        name = ((xL4gluGCXYYJc.$Reference)t).getName$().text();
       else if (t instanceof xL4gluGCXYYJc.Schema.ArrayType)
         name = ((xL4gluGCXYYJc.Schema.ArrayType)t).getName$().text();
       else if (t instanceof xL4gluGCXYYJc.Schema.BooleanType)
@@ -106,12 +70,12 @@ abstract class Member extends Element {
 
       final StringBuilder builder = new StringBuilder();
       builder.append(t.name().getLocalPart());
-      builder.append("[@").append("name=\"").append(name).append("\"]");
+      builder.append("[@").append("name=\"").append(Strings.escapeForJava(name)).append("\"]");
       return builder.toString();
     }
   };
 
-  static Integer parseMaxCardinality(final int minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {
+  static Integer parseMaxCardinality(final int minCardinality, final xL4gluGCXYYJc.$MaxOccurs maxCardinality, final String name, final Integer dflt) {
     final Integer max = "unbounded".equals(maxCardinality.text()) ? Integer.MAX_VALUE : Integer.parseInt(maxCardinality.text());
     if (minCardinality > max)
       throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
@@ -125,15 +89,23 @@ abstract class Member extends Element {
   }
 
   final Registry registry;
+  final Id id;
   final String name;
+  final boolean isRegex;
   final Boolean nullable;
   final Use use;
   final Integer minOccurs;
   final Integer maxOccurs;
 
-  Member(final Registry registry, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
+  private static boolean isRegex(final String name) {
+    return true;
+  }
+
+  Member(final Registry registry, final Id id, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
     this.registry = registry;
+    this.id = id;
     this.name = name;
+    this.isRegex = isRegex(name);
     this.nullable = nullable == null || nullable ? null : nullable;
     this.use = use == Use.REQUIRED ? null : use;
     this.minOccurs = minOccurs == null || minOccurs == 1 ? null : minOccurs;
@@ -141,29 +113,25 @@ abstract class Member extends Element {
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
-  Member(final Registry registry, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    this(registry, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
+  Member(final Registry registry, final Id id, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final xL4gluGCXYYJc.$MaxOccurs maxOccurs) {
+    this(registry, id, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
   }
 
-  Member(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final yAA.$String use) {
-    this(registry, name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
-  }
-
-  final String instanceName() {
-    return Identifiers.toInstanceCase(name);
+  Member(final Registry registry, final Id id, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final yAA.$String use) {
+    this(registry, id, (String)name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
   }
 
   @Override
-  Map<String,String> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (name != null)
       attributes.put("name", name);
     else if (owner instanceof Schema && !(this instanceof Referrer))
-      attributes.put("name", id().toString());
+      attributes.put("name", id.toString());
 
     if (!(owner instanceof Schema)) {
       if (nullable != null)
-        attributes.put("nullable", String.valueOf(nullable));
+        attributes.put("nullable", nullable);
 
       if (use != null)
         attributes.put("use", use.toString().toLowerCase());
@@ -194,12 +162,16 @@ abstract class Member extends Element {
       attributes.put("use", Use.class.getName() + "." + use);
 
     if (minOccurs != null)
-      attributes.put("minOccurs", minOccurs);
+      attributes.put("minOccurs", String.valueOf(minOccurs));
 
     if (maxOccurs != null)
-      attributes.put("maxOccurs", maxOccurs);
+      attributes.put("maxOccurs", String.valueOf(maxOccurs));
   }
 
+  /**
+   * @return The name of this member as a valid Java Identifier in
+   *         lower-camelCase.
+   */
   final String toInstanceName() {
     return Identifiers.toInstanceCase(name);
   }
@@ -216,10 +188,7 @@ abstract class Member extends Element {
     if (!name.equals(instanceName) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + name + "\"");
 
-    String classCase = Identifiers.toClassCase(name);
-    if ("Class".equals(classCase))
-      classCase = "0lass";
-
+    final String classCase = JxUtil.fixReserved(Identifiers.toClassCase(name));
     final String type = nullable == null && use == Use.OPTIONAL ? Optional.class.getName() + "<" + type().toCanonicalString() + ">" : type().toCanonicalString();
 
     builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
@@ -233,6 +202,11 @@ abstract class Member extends Element {
     return builder.toString();
   }
 
+  /**
+   * Intended to be overridden by each concrete subclass, this method returns a
+   * list of {@link AnnotationSpec} objects representing the annotations of
+   * {@code this} element.
+   */
   List<AnnotationSpec> toElementAnnotations() {
     return null;
   }
@@ -248,7 +222,6 @@ abstract class Member extends Element {
   void getDeclaredTypes(final Set<Registry.Type> types) {
   }
 
-  abstract Id id();
   abstract Registry.Type type();
   abstract String elementName();
   abstract Class<? extends Annotation> propertyAnnotation();

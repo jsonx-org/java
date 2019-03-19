@@ -41,6 +41,8 @@ import org.openjax.jsonx.runtime.TestArray.Array1d3;
 import org.openjax.jsonx.runtime.TestArray.Array2d1;
 import org.openjax.jsonx.runtime.TestArray.Array2d2;
 import org.openjax.jsonx.runtime.TestArray.Array3d;
+import org.openjax.jsonx.runtime.TestArray.ArrayAny;
+import org.openjax.jsonx.runtime.TestArray.ArrayLoop;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.math.BigDecimals;
 import org.openjax.standard.math.BigIntegers;
@@ -54,9 +56,13 @@ public class ArrayCodecTest {
 
   private static final Map<Class<? extends Annotation>,IdToElement> classToIdToElement = new HashMap<>();
   private static boolean debugPass = false;
-  private static boolean debugFail = true;
+  private static boolean debugFail = false;
+  private static boolean skipDecode = false;
 
   private static void testDecode(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String expected) throws DecodeException, IOException {
+    if (skipDecode)
+      return;
+
     final JxObject in;
     try {
       final Method method = jxObject.getClass().getMethod("set" + annotationType.getSimpleName(), List.class);
@@ -144,7 +150,7 @@ public class ArrayCodecTest {
 
     if (error == null) {
       final List<Object> flatMembers = FastCollections.flatten(members, new ArrayList<>(), true);
-      assertEquals(flatMembers.size(), flatRelations.size());
+      assertEquals("Number of members not matched", flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
       if (!debugPass) {
         for (int i = 0; i < annotations.length; ++i) {
@@ -244,6 +250,44 @@ public class ArrayCodecTest {
     catch (final ValidationException e) {
       assertTrue(e.getMessage().startsWith("Duplicate id=0 found in"));
     }
+  }
+
+  @Test
+  public void testArrayAny() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
+
+    test(ArrayAny.class, array, l(), a());
+    test(ArrayAny.class, array, l(Boolean.TRUE), a("0"));
+    test(ArrayAny.class, array, l(Boolean.TRUE, BigInteger.ONE), a("0", "1"));
+    test(ArrayAny.class, array, l(Boolean.TRUE, BigInteger.ONE, "string"), a("0", "1", "2"));
+    test(ArrayAny.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @" + AnyElement.class.getName() + "(id=0, types={@" + t.class.getName() + "(booleans=true, numbers=@" + NumberType.class.getName() + "(form=REAL, range=\" \"), objects=" + JxObject.class.getName() + ".class, strings=\" \", arrays=java.lang.annotation.Annotation.class)}, minOccurs=0, maxOccurs=2147483647, nullable=false): Illegal value: null");
+
+    test(ArrayAny.class, array, l(BigInteger.ONE), a("1"));
+    test(ArrayAny.class, array, l(BigInteger.ONE, Boolean.TRUE), a("1", "0"));
+    test(ArrayAny.class, array, l(BigInteger.ONE, "string", Boolean.TRUE), a("1", "2", "0"));
+
+    test(ArrayAny.class, array, l("string"), a("2"));
+    test(ArrayAny.class, array, l(BigInteger.ONE, "string"), a("1", "2"));
+    test(ArrayAny.class, array, l("string", BigInteger.ONE, Boolean.TRUE, "string", BigInteger.ONE, Boolean.TRUE), a("2", "1", "0", "2", "1", "0"));
+  }
+
+  @Test
+  public void testArrayLoop() throws DecodeException, IOException {
+    final TestArray array = new TestArray();
+
+    test(ArrayLoop.class, array, l(), a());
+    test(ArrayLoop.class, array, l(Boolean.TRUE), a("0"));
+    test(ArrayLoop.class, array, l(Boolean.TRUE, BigInteger.ONE), a("0", "1"));
+    test(ArrayLoop.class, array, l(Boolean.TRUE, BigInteger.ONE, "string"), a("0", "1", "2"));
+    test(ArrayLoop.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2147483647, nullable=false): Illegal value: null");
+
+    test(ArrayLoop.class, array, l(BigInteger.ONE), a("1"));
+    test(ArrayLoop.class, array, l(BigInteger.ONE, Boolean.TRUE), a("1", "0"));
+    test(ArrayLoop.class, array, l(BigInteger.ONE, "string", Boolean.TRUE), a("1", "2", "0"));
+
+    test(ArrayLoop.class, array, l("string"), a("2"));
+    test(ArrayLoop.class, array, l(BigInteger.ONE, "string"), a("1", "2"));
+    test(ArrayLoop.class, array, l("string", BigInteger.ONE, Boolean.TRUE, "string", BigInteger.ONE, Boolean.TRUE), a("2", "1", "0", "2", "1", "0"));
   }
 
   @Test

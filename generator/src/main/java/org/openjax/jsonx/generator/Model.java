@@ -17,13 +17,14 @@
 package org.openjax.jsonx.generator;
 
 import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.openjax.standard.util.Classes;
-import org.openjax.standard.xml.datatypes_0_9_2.xNxQJbgwJdgwJcA.$Identifier;
+import org.openjax.standard.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -44,24 +45,24 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final $String use) {
-    super(registry, name, nullable, use);
+  Model(final Registry registry, final Id id, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use) {
+    super(registry, id, name, nullable, use);
   }
 
-  Model(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    super(registry, nullable, minOccurs, maxOccurs);
+  Model(final Registry registry, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
+    super(registry, id, nullable, minOccurs, maxOccurs);
   }
 
-  Model(final Registry registry) {
-    super(registry, null, null, null, null, null);
+  Model(final Registry registry, final Id id) {
+    super(registry, id, null, null, null, null, null);
   }
 
-  Model(final Registry registry, final Boolean nullable, final Use use) {
-    super(registry, null, nullable, use, null, null);
+  Model(final Registry registry, final Id id, final Boolean nullable, final Use use) {
+    super(registry, id, null, nullable, use, null, null);
   }
 
   String sortKey() {
-    return getClass().getSimpleName() + id();
+    return getClass().getSimpleName() + id;
   }
 
   @Override
@@ -70,16 +71,29 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,String> attributes;
-    if (!(owner instanceof ObjectModel)) {
-      attributes = toXmlAttributes(owner, packageName);
-      return new org.openjax.standard.xml.api.Element(owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
-    }
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+    if (owner instanceof ObjectModel)
+      attributes.put("xsi:type", elementName());
 
-    attributes = toXmlAttributes(owner, packageName);
-    attributes.put("xsi:type", elementName());
+    return attributes;
+  }
 
-    return new org.openjax.standard.xml.api.Element("property", attributes, null);
+  @Override
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Object> attributes = toAttributes(owner, packageName);
+    return new XmlElement(owner instanceof ObjectModel ? "property" : owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
+  }
+
+  @Override
+  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Object> properties = new LinkedHashMap<>();
+    properties.put("class", elementName());
+
+    final Map<String,Object> attributes = toAttributes(owner, packageName);
+    attributes.remove("xsi:type");
+
+    properties.putAll(attributes);
+    return properties;
   }
 }

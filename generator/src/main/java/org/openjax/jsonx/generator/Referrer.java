@@ -18,51 +18,55 @@ package org.openjax.jsonx.generator;
 
 import java.util.List;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.openjax.jsonx.runtime.Use;
-import org.openjax.standard.xml.datatypes_0_9_2.xNxQJbgwJdgwJcA.$Identifier;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Referrer<T extends Referrer<?>> extends Model {
-  Referrer(final Registry registry, final $Identifier name, final yAA.$Boolean nullable, final $String use) {
-    super(registry, name, nullable, use);
+  private final Registry.Type type;
+
+  Referrer(final Registry registry, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {
+    super(registry, Id.named(type), name, nullable, use);
+    this.type = type;
   }
 
-  Referrer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    super(registry, nullable, minOccurs, maxOccurs);
+  Referrer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Registry.Type type) {
+    super(registry, Id.named(type), nullable, minOccurs, maxOccurs);
+    this.type = type;
   }
 
-  Referrer(final Registry registry) {
-    super(registry);
+  Referrer(final Registry registry, final Registry.Type type) {
+    super(registry, Id.named(type));
+    this.type = type;
   }
 
-  Referrer(final Registry registry, final Boolean nullable, final Use use) {
-    super(registry, nullable, use);
+  Referrer(final Registry registry, final Boolean nullable, final Use use, final Registry.Type type) {
+    super(registry, Id.named(type), nullable, use);
+    this.type = type;
   }
 
-  @SuppressWarnings("unchecked")
-  T getReference(final $String className) {
-    if (className == null)
+  Member getReference(final $String type) {
+    if (type == null)
       return null;
 
-    final T parent;
-    try {
-      parent = (T)registry.getModel(new Id(className));
-    }
-    catch (final ClassCastException e) {
-      throw new IllegalStateException("Top-level " + elementName() + " \"" + className + "\" incorrect type");
-    }
+    final Id id = Id.named(type);
+    if (registry.isPending(id))
+      return new Deferred<>(null, () -> registry.getModel(id));
 
-    if (parent == null)
-      throw new IllegalStateException("Top-level " + elementName() + " \"" + className + "\" not found");
+    final Model model = registry.getModel(id);
+    if (model == null)
+      throw new IllegalStateException("Top-level " + elementName() + " \"" + type + "\" not found");
 
-    return parent;
+    return model;
   }
 
-  abstract Registry.Type classType();
+  final Registry.Type classType() {
+    return type;
+  }
+
   abstract List<AnnotationSpec> getClassAnnotation();
   abstract String toSource(Settings settings);
   abstract void resolveReferences();

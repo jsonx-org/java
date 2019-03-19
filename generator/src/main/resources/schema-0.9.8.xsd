@@ -35,9 +35,9 @@
   </xs:attributeGroup>
   
   <xs:attributeGroup name="nameable">
-    <xs:attribute name="name" type="dt:identifier" use="required">
+    <xs:attribute name="name" type="dt:stringNonEmpty" use="required">
       <xs:annotation>
-        <xs:documentation>Name of property. Required.</xs:documentation>
+        <xs:documentation>Name of property or regex pattern of property name. Required.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -60,15 +60,26 @@
     <xs:annotation>
       <xs:documentation>Identifier pattern that must start with either a capital letter, or must include a '$' followed by a capital letter.</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="dt:identifier">
-      <xs:pattern value="([a-z][^$]+)|(.*\$[a-z].*)"/>
-    </xs:restriction>
+    <xs:restriction base="xs:IDREF"/>
   </xs:simpleType>
   
-  <xs:attributeGroup name="type">
-    <xs:attribute name="name" type="jx:typeName" use="required">
+  <xs:attributeGroup name="id">
+    <xs:attribute name="name" use="required">
       <xs:annotation>
         <xs:documentation>Name of type. Required.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:ID">
+          <xs:pattern value="([a-zA-Z]+\d*)+([\.-]?[a-zA-Z]+\d*)*"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  
+  <xs:attributeGroup name="idrefs">
+    <xs:attribute name="types" type="xs:IDREFS">
+      <xs:annotation>
+        <xs:documentation>List of accepted types. Optional.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -88,6 +99,23 @@
   <xs:complexType name="reference">
     <xs:complexContent>
       <xs:extension base="jx:referenceMember">
+        <xs:attributeGroup ref="jx:nameable"/>
+        <xs:attributeGroup ref="jx:annullable"/>
+        <xs:attributeGroup ref="jx:use"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="anyMember" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="jx:member"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="any">
+    <xs:complexContent>
+      <xs:extension base="jx:anyMember">
+        <xs:attributeGroup ref="jx:idrefs"/>
         <xs:attributeGroup ref="jx:nameable"/>
         <xs:attributeGroup ref="jx:annullable"/>
         <xs:attributeGroup ref="jx:use"/>
@@ -202,6 +230,17 @@
     <xs:complexContent>
       <xs:extension base="jx:member">
         <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element name="any">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="jx:anyMember">
+                  <xs:attributeGroup ref="jx:idrefs"/>
+                  <xs:attributeGroup ref="jx:annullable"/>
+                  <xs:attributeGroup ref="jx:recurrable"/>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
           <xs:element name="array">
             <xs:complexType>
               <xs:complexContent>
@@ -315,7 +354,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:booleanMember">
-                  <xs:attributeGroup ref="jx:type"/>
+                  <xs:attributeGroup ref="jx:id"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -324,7 +363,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:numberMember">
-                  <xs:attributeGroup ref="jx:type"/>
+                  <xs:attributeGroup ref="jx:id"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -333,7 +372,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:stringMember">
-                  <xs:attributeGroup ref="jx:type"/>
+                  <xs:attributeGroup ref="jx:id"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -342,7 +381,7 @@
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:arrayMember">
-                  <xs:attributeGroup ref="jx:type"/>
+                  <xs:attributeGroup ref="jx:id"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -356,7 +395,7 @@
                       <xs:documentation>Is object abstract. Default: false.</xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
-                  <xs:attributeGroup ref="jx:type"/>
+                  <xs:attributeGroup ref="jx:id"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -368,42 +407,10 @@
         </xs:choice>
       </xs:sequence>
     </xs:complexType>
-    <xs:key name="templateKey">
-      <xs:selector xpath="./jx:arrayType | ./jx:booleanType | ./jx:numberType | ./jx:objectType | ./jx:stringType"/>
-      <xs:field xpath="@name"/>
-    </xs:key>
-    <xs:key name="objectNameKey">
-      <xs:selector xpath="./jx:objectType"/>
-      <xs:field xpath="@name"/>
-    </xs:key>
-    <xs:keyref name="propertyTypeKeyRef" refer="jx:templateKey">
-      <xs:selector xpath=".//jx:property"/>
-      <xs:field xpath="@type"/>
-    </xs:keyref>
-    <xs:keyref name="templateTypeKeyRef" refer="jx:templateKey">
-      <xs:selector xpath=".//jx:reference"/>
-      <xs:field xpath="@type"/>
-    </xs:keyref>
-    <xs:keyref name="objectExtendsKeyRef" refer="jx:objectNameKey">
-      <xs:selector xpath=".//jx:template"/>
-      <xs:field xpath="@extends"/>
-    </xs:keyref>
-    <xs:keyref name="objectTypeExtendsKeyRef" refer="jx:objectNameKey">
-      <xs:selector xpath="./jx:objectType"/>
-      <xs:field xpath="@extends"/>
-    </xs:keyref>
-    <xs:keyref name="propertyExtendsKeyRef" refer="jx:objectNameKey">
-      <xs:selector xpath=".//jx:property"/>
-      <xs:field xpath="@extends"/>
-    </xs:keyref>
-    <xs:keyref name="arrayObjectTypeKeyRef" refer="jx:objectNameKey">
-      <xs:selector xpath=".//jx:array/jx:object"/>
-      <xs:field xpath="@type"/>
-    </xs:keyref>
-    <xs:keyref name="propertyObjectTypeKeyRef" refer="jx:objectNameKey">
-      <xs:selector xpath=".//jx:property/jx:object"/>
-      <xs:field xpath="@type"/>
-    </xs:keyref>
+    <xs:unique name="uniquePropertyName">
+      <xs:selector xpath=".//jx:objectType/jx:property"/>
+      <xs:field xpath="@xsi:name"/>
+    </xs:unique>
   </xs:element>
 
 </xs:schema>

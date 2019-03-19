@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.ArrayType;
 import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.ValidationException;
@@ -41,16 +42,38 @@ import org.openjax.standard.lang.PackageNotFoundException;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.IdentityHashSet;
 import org.openjax.standard.util.Iterators;
+import org.openjax.standard.xml.api.XmlElement;
 
 /**
  * The {@code Schema} is the root {@code Element} of a JSONX Schema Document.
  */
 public final class Schema extends Element {
+  private static xL4gluGCXYYJc.Schema jsonxToXsb(final List<schema.Member> jsonx) {
+    final xL4gluGCXYYJc.Schema schema = new xL4gluGCXYYJc.Schema();
+
+    for (final schema.Member member : jsonx) {
+      if (member instanceof schema.ArrayType)
+        schema.addArrayType((xL4gluGCXYYJc.Schema.ArrayType)ArrayModel.jsonxToXsb((schema.ArrayType)member));
+      else if (member instanceof schema.BooleanType)
+        schema.addBooleanType((xL4gluGCXYYJc.Schema.BooleanType)BooleanModel.jsonxToXsb((schema.BooleanType)member));
+      else if (member instanceof schema.NumberType)
+        schema.addNumberType((xL4gluGCXYYJc.Schema.NumberType)NumberModel.jsonxToXsb((schema.NumberType)member));
+      else if (member instanceof schema.ObjectType)
+        schema.addObjectType((xL4gluGCXYYJc.Schema.ObjectType)ObjectModel.jsonxToXsb((schema.ObjectType)member));
+      else if (member instanceof schema.StringType)
+        schema.addStringType((xL4gluGCXYYJc.Schema.StringType)StringModel.jsonxToXsb((schema.StringType)member));
+      else
+        throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
+    }
+
+    return schema;
+  }
+
   private final Registry registry;
 
   /**
-   * Creates a new {@code Schema} to be created from the specified XML binding,
-   * and with the provided class name prefix string.
+   * Creates a new {@code Schema} from the specified XML binding, and with the
+   * provided package / class name prefix string.
    *
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of
@@ -119,6 +142,18 @@ public final class Schema extends Element {
         ((Referrer<?>)model).resolveReferences();
 
     registry.resolveReferences();
+  }
+
+  /**
+   * Creates a new {@code Schema} from the specified JSONx binding, and with the
+   * provided package / class name prefix string.
+   *
+   * @param schema The XML binding (JSONx).
+   * @param prefix The class name prefix to be prepended to the names of
+   *          generated JSONX bindings.
+   */
+  public Schema(final List<schema.Member> schema, final String prefix) {
+    this(jsonxToXsb(schema), prefix);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -223,6 +258,7 @@ public final class Schema extends Element {
   public Schema(final Collection<Class<?>> classes) {
     final Registry registry = new Registry(classes);
     this.registry = registry;
+    registry.resolveReferences();
   }
 
   private List<Model> rootMembers(final Settings settings) {
@@ -237,12 +273,13 @@ public final class Schema extends Element {
         return o1.compareTo(o2);
       }
     });
+
     return members;
   }
 
   @Override
-  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final List<org.openjax.standard.xml.api.Element> elements;
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final List<XmlElement> elements;
     final List<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
@@ -253,19 +290,43 @@ public final class Schema extends Element {
       elements = null;
     }
 
-    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     attributes.put("xmlns", "http://jsonx.openjax.org/schema-0.9.8.xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd");
-    return new org.openjax.standard.xml.api.Element("schema", attributes, elements);
+    return new XmlElement("schema", attributes, elements);
   }
 
-  public org.openjax.standard.xml.api.Element toXml() {
+  public XmlElement toXml() {
     return toXml(null);
   }
 
-  public org.openjax.standard.xml.api.Element toXml(final Settings settings) {
+  public XmlElement toXml(final Settings settings) {
     return toXml(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
+  }
+
+  @Override
+  List<Map<String,Object>> toJson(final Settings settings, final Element owner, final String packageName) {
+    final List<Map<String,Object>> types;
+    final List<Model> members = rootMembers(settings);
+    if (members.size() > 0) {
+      types = new ArrayList<>();
+      for (final Model member : members)
+        types.add(member.toJson(settings, this, packageName));
+    }
+    else {
+      types = null;
+    }
+
+    return types;
+  }
+
+  public List<Map<String,Object>> toJson() {
+    return toJson(null);
+  }
+
+  public List<Map<String,Object>> toJson(final Settings settings) {
+    return toJson(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
   }
 
   public Map<String,String> toSource() {

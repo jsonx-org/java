@@ -21,20 +21,20 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openjax.standard.json.JsonStrings;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.standard.json.JsonStrings;
 
 import com.google.common.base.Strings;
 
 class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   static final ValidCase<Object> CASE = new ValidCase<>();
 
-  private static List<Object> format(final List<?> list, final Relations relations, final boolean decode) {
+  private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
     final List<Object> out = new ArrayList<>(list.size());
     for (int i = 0; i < list.size(); ++i) {
       final Object member = list.get(i);
       if (member instanceof String) {
-        if (!decode) {
+        if (escape) {
           out.add("\"" + JsonStrings.escape((String)member) + "\"");
         }
         else {
@@ -42,7 +42,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
         }
       }
       else if (member instanceof List) {
-        out.add(format((List<?>)member, (Relations)relations.get(i).member, decode));
+        out.add(format((List<?>)member, (Relations)relations.get(i).member, escape));
       }
       else {
         out.add(member);
@@ -59,10 +59,10 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = null;
     }
     else if (trial.value() instanceof List) {
-      final List<Object> list = format((List<?>)trial.value(), relations, false);
+      final List<Object> list = format((List<?>)trial.value(), relations, true);
       expected = list.toString();
     }
-    else if (trial instanceof StringTrial) {
+    else if (trial instanceof StringTrial || trial instanceof AnyTrial && trial.value() instanceof String) {
       expected = StringCodec.encode((String)trial.value()).toString();
     }
     else {
@@ -85,6 +85,8 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       actual = String.valueOf(value);
     }
 
+    if (!expected.equals(actual))
+      System.out.println();
     assertEquals(expected, actual);
   }
 
@@ -94,10 +96,12 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
     if (trial.value() == null)
       expected = null;
     else if (trial.value() instanceof List)
-      expected = format((List<?>)trial.value(), relations, true);
+      expected = format((List<?>)trial.value(), relations, false);
     else
       expected = trial.value();
 
+    if (!expected.equals(value))
+      System.out.println();
     assertEquals(expected, value);
   }
 

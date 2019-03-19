@@ -25,8 +25,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openjax.standard.json.JsonReader;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.standard.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +49,12 @@ class ClassTrial {
 
   private void createObjectFields(final Object target) {
     for (final Field field : target.getClass().getDeclaredFields()) {
+      final AnyProperty anyProperty = field.getAnnotation(AnyProperty.class);
+      if (anyProperty != null) {
+        AnyTrial.add(trials, field, binding, anyProperty);
+        continue;
+      }
+
       final ArrayProperty arrayProperty = field.getAnnotation(ArrayProperty.class);
       if (arrayProperty != null) {
         ArrayTrial.add(trials, field, binding, arrayProperty);
@@ -81,7 +87,7 @@ class ClassTrial {
     }
   }
 
-  public int invoke() throws Exception {
+  public int run() throws Exception {
     int count = 0;
     for (final PropertyTrial<?> trial : trials)
       if (trial.kase instanceof ValidCase)
@@ -101,13 +107,20 @@ class ClassTrial {
     String json = null;
     String value = null;
     Exception exception = null;
-    final Relations[] relations = new Relations[1];
+    final Relations[] relations = {null};
     try {
-      final int[] bounds = new int[2];
+      final int[] bounds = {-1, -1};
       json = validEncoder.marshal(binding, (f,r,s,e) -> {
         if (f.equals(trial.field)) {
-          if (r != null)
+          if (bounds[0] != -1)
+            throw new IllegalStateException();
+
+          if (r != null) {
+            if (relations[0] != null)
+              throw new IllegalStateException();
+
             relations[0] = r;
+          }
 
           bounds[0] = s;
           bounds[1] = e;
@@ -133,12 +146,16 @@ class ClassTrial {
       throw t;
     }
 
-    final Object[] object = new Object[1];
+    final Object[] object = {null};
     exception = null;
     try {
       JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,p,v) -> {
-        if (p.equals(trial.name))
+        if (p.equals(trial.name)) {
+          if (object[0] != null)
+            throw new IllegalStateException();
+
           object[0] = v;
+        }
 
         return true;
       });
@@ -172,8 +189,6 @@ class ClassTrial {
       ((SuccessCase<PropertyTrial<T>>)trial.kase).onEncode(trial, relations, value);
     }
     else if (trial.kase instanceof FailureCase) {
-      if (e == null)
-        System.out.println();
       assertNotNull(trial.getClass().getSimpleName(), e);
       if (!(e instanceof EncodeException))
         throw e;

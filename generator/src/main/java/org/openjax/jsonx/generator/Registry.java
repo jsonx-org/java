@@ -16,6 +16,7 @@
 
 package org.openjax.jsonx.generator;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -82,8 +83,6 @@ class Registry {
       this.compoundName = compoundName;
       this.name = defaultPackage ? compoundName : packageName + "." + compoundName;
       this.canonicalCompoundName = Classes.toCanonicalClassName(compoundName);
-      if (canonicalCompoundName.contains("Idd"))
-        Classes.toCanonicalClassName(compoundName);
       this.simpleName = canonicalCompoundName.substring(canonicalCompoundName.lastIndexOf('.') + 1);
       this.canonicalName = defaultPackage ? canonicalCompoundName : packageName + "." + canonicalCompoundName;
       this.superType = superType;
@@ -263,10 +262,11 @@ class Registry {
     }
   }
 
+  @SuppressWarnings("unchecked")
   Registry(final Collection<Class<?>> classes) {
     for (final Class<?> cls : classes) {
       if (cls.isAnnotation())
-        ArrayModel.referenceOrDeclare(this, cls);
+        ArrayModel.referenceOrDeclare(this, (Class<? extends Annotation>)cls);
       else
         ObjectModel.referenceOrDeclare(this, cls);
     }
@@ -339,25 +339,23 @@ class Registry {
   }
 
   <T extends Member>T reference(final T model, final Referrer<?> referrer) {
-    if (referrer == null)
-      return model;
-
     final Runnable runnable = () -> {
       if (model instanceof Referrer)
         ((Referrer<?>)model).resolveReferences();
 
-      final String key = model.id().toString();
+      final String key = model.id.toString();
       ReferrerManifest referrers = refToReferrers.get(key);
       if (referrers == null)
         refToReferrers.put(key, referrers = new ReferrerManifest());
 
-      referrers.add(referrer);
+      if (referrer != null)
+        referrers.add(referrer);
     };
 
-    if (model.id() == null)
+//    if (model.id == null)
       deferredReferences.add(runnable);
-    else
-      runnable.run();
+//    else
+//      runnable.run();
 
     return model;
   }
@@ -367,6 +365,10 @@ class Registry {
       deferredReferences.get(i).run();
 
     deferredReferences.clear();
+  }
+
+  boolean isPending(final Id id) {
+    return refToModel.get(id.toString()) == null && refToModel.containsKey(id.toString());
   }
 
   Model getModel(final Id id) {
@@ -381,14 +383,17 @@ class Registry {
     if (deferredReferences.size() > 0)
       throw new IllegalStateException("Deferred references have not been resolved");
 
-    final ReferrerManifest referrers = refToReferrers.get(member.id().toString());
+    if (member instanceof AnyModel)
+      return false;
+
+    final ReferrerManifest referrers = refToReferrers.get(member.id.toString());
     final int numReferrers = referrers == null ? 0 : referrers.getNumReferrers();
     if (member instanceof ArrayModel)
       return ((ArrayModel)member).classType() != null;
 
     if (member instanceof ObjectModel)
-      return numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(ArrayModel.class);
+      return numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(AnyModel.class) || referrers.hasReferrerType(ArrayModel.class);
 
-    return numReferrers >= settings.getTemplateThreshold();
+    return numReferrers >= settings.getTemplateThreshold() || referrers.hasReferrerType(AnyModel.class);
   }
 }

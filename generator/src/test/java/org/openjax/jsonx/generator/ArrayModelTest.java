@@ -34,7 +34,7 @@ public class ArrayModelTest {
     }
 
     @SuppressWarnings("unused")
-    public Number(final $Member inherits) {
+    public Number(final $Number inherits) {
       super(inherits);
     }
 

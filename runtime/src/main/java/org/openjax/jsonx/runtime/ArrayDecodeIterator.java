@@ -18,7 +18,6 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.List;
 
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
@@ -29,7 +28,7 @@ import org.openjax.standard.util.function.TriPredicate;
 class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
-  private int cursor = 0;
+  private short cursor = 0;
 
   ArrayDecodeIterator(final JsonReader reader) {
     this.reader = reader;
@@ -69,86 +68,32 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  protected StringBuilder validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final String token = (String)current;
     final Object value;
-    if (Boolean.class.equals(type)) {
-      value = "true".equals(token) ? Boolean.TRUE : "false".equals(token) ? Boolean.FALSE : null;
-    }
-    else if (Number.class.equals(type)) {
-      final char ch = token.charAt(0);
-      value = ch == '-' || '0' <= ch && ch <= '9' ? NumberCodec.decode(((NumberElement)annotation).form(), token) : null;
-    }
-    else if (String.class.equals(type)) {
-      value = token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? token.substring(1, token.length() - 1) : null;
-    }
-    else if (List.class.equals(type)) {
-      if (!"[".equals(token))
-        return new StringBuilder("Content is not expected: ").append(token);
-
-      final ArrayElement element = (ArrayElement)annotation;
-      final int[] elementIds;
-      final int minIterate;
-      final int maxIterate;
-      if (element.type() != ArrayType.class) {
-        elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
-        minIterate = idToElement.getMinIterate();
-        maxIterate = idToElement.getMaxIterate();
-      }
-      else {
-        minIterate = element.minIterate();
-        maxIterate = element.maxIterate();
-        elementIds = element.elementIds();
-      }
-
-      final Annotation[] annotations = idToElement.get(elementIds);
-      final Object array = ArrayCodec.decode(annotations, minIterate, maxIterate, idToElement, reader, onPropertyDecode);
-      if (array instanceof StringBuilder)
-        return (StringBuilder)array;
-
-      value = array;
-    }
-    else if (Object.class.equals(type)) {
-      if (!"{".equals(token))
-        return new StringBuilder("Content is not expected: ").append(token);
-
-      final ObjectElement element = (ObjectElement)annotation;
-      final Object object = ObjectCodec.decode(element.type(), reader, onPropertyDecode);
-      if (object instanceof StringBuilder)
-        return (StringBuilder)object;
-
-      value = object;
-    }
-    else {
-      throw new UnsupportedOperationException("Unsupported type: " + type.getName());
-    }
+    if (codecType == AnyCodec.class)
+      value = AnyCodec.decode(annotation, token, reader, onPropertyDecode);
+    else if (codecType == ArrayCodec.class)
+      value = ArrayCodec.decodeArray(annotation, null, token, reader, idToElement, onPropertyDecode);
+    else if (codecType == BooleanCodec.class)
+      value = BooleanCodec.decodeArray(token);
+    else if (codecType == NumberCodec.class)
+      value = NumberCodec.decodeArray(((NumberElement)annotation).form(), token);
+    else if (codecType == ObjectCodec.class)
+      value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), token, reader, onPropertyDecode);
+    else if (codecType == StringCodec.class)
+      value = StringCodec.decodeArray(token);
+    else
+      throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
 
     if (value == null)
-      return new StringBuilder("Content is not expected: ").append(currentPreview());
+      return Codec.contentNotExpected(preview(current));
+
+    if (value instanceof StringBuilder)
+      return (StringBuilder)value;
 
     current = value;
+    relations.set(index, new Relation(current, annotation));
     return null;
-  }
-
-  @Override
-  protected final StringBuilder currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
-    if (annotation instanceof StringElement)
-      return validate((StringElement)annotation, current, i, relations, true, validate);
-
-    if (annotation instanceof NumberElement)
-      return validate((NumberElement)annotation, current, i, relations, validate);
-
-    if (annotation instanceof BooleanElement)
-      return validate((BooleanElement)annotation, current, i, relations);
-
-    if (annotation instanceof ArrayElement) {
-      relations.set(i, new Relation(current, annotation));
-      return null;
-    }
-
-    if (annotation instanceof ObjectElement)
-      return validate((ObjectElement)annotation, current, i, relations, validate);
-
-    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 }

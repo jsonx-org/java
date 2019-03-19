@@ -39,7 +39,7 @@
   <booleanType name="public"/>
   <numberType name="byte" form="integer" range="[2,9]"/>
   <stringType name="abstract" pattern="[a-z]+"/>
-  <objectType name="test$reserved">
+  <objectType name="test-reserved">
     <property name="boolean" xsi:type="array" minIterate="5" maxIterate="10">
       <boolean/>
     </property>

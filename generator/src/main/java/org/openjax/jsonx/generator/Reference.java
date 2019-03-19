@@ -17,110 +17,117 @@
 package org.openjax.jsonx.generator;
 
 import java.lang.annotation.Annotation;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.openjax.jsonx.generator.Registry.Type;
+import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.Use;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
+import org.openjax.standard.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 final class Reference extends Member {
-  final Member model;
-  private final Id id;
+  private static xL4gluGCXYYJc.$ArrayMember.Reference element(final schema.ReferenceElement jsonx) {
+    final xL4gluGCXYYJc.$ArrayMember.Reference xsb = new xL4gluGCXYYJc.$ArrayMember.Reference();
 
-  static class Deferred extends Member {
-    private final Supplier<Reference> supplier;
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsonx.getNullable()));
 
-    private Deferred(final Supplier<Reference> supplier) {
-      super(null, null, null, null, null, null);
-      this.supplier = supplier;
-    }
+    if (jsonx.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
 
-    Reference resolve() {
-      return supplier.get();
-    }
+    if (jsonx.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsonx.getMaxOccurs()));
 
-    @Override
-    Id id() {
-      return null;
-    }
-
-    @Override
-    Type type() {
-      return null;
-    }
-
-    @Override
-    String elementName() {
-      return null;
-    }
-
-    @Override
-    Class<? extends Annotation> propertyAnnotation() {
-      return null;
-    }
-
-    @Override
-    Class<? extends Annotation> elementAnnotation() {
-      return null;
-    }
-
-    @Override
-    org.openjax.standard.xml.api.Element toXml(Settings settings, Element owner, String packageName) {
-      return null;
-    }
+    return xsb;
   }
 
-  static Deferred defer(final Registry registry, final $Array.Reference binding, final Supplier<Member> model) {
-    return new Deferred(() -> new Reference(registry, binding, model.get()));
+  private static xL4gluGCXYYJc.$Reference property(final schema.ReferenceProperty jsonx) {
+    final xL4gluGCXYYJc.$Reference xsb = new xL4gluGCXYYJc.$Reference() {
+      private static final long serialVersionUID = 9188863837584292929L;
+
+      @Override
+      protected $Member inherits() {
+        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      }
+    };
+
+    if (jsonx.getName() != null)
+      xsb.setName$(new xL4gluGCXYYJc.$Reference.Name$(jsonx.getName()));
+
+    if (jsonx.getUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Reference.Use$(xL4gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsonx.getUse())));
+
+    return xsb;
   }
 
-  private Reference(final Registry registry, final $Array.Reference binding, final Member model) {
-    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  static xL4gluGCXYYJc.$ReferenceMember jsonxToXsb(final schema.Reference jsonx) {
+    final xL4gluGCXYYJc.$ReferenceMember xsb;
+    if (jsonx instanceof schema.ReferenceElement)
+      xsb = element((schema.ReferenceElement)jsonx);
+    else if (jsonx instanceof schema.ReferenceProperty)
+      xsb = property((schema.ReferenceProperty)jsonx);
+    else
+      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+
+    if (jsonx.getType() != null)
+      xsb.setType$(new xL4gluGCXYYJc.$ReferenceMember.Type$(jsonx.getType()));
+
+    return xsb;
+  }
+
+  final Model model;
+
+  static Deferred<Reference> defer(final Registry registry, final $Array.Reference binding, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, binding, model.get()));
+  }
+
+  private Reference(final Registry registry, final $Array.Reference binding, final Model model) {
+    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
-    this.id = new Id(this);
   }
 
-  static Deferred defer(final Registry registry, final $Reference binding, final Supplier<Model> model) {
-    return new Deferred(() -> new Reference(registry, binding, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final $Reference binding, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, binding, model.get()));
   }
 
   private Reference(final Registry registry, final $Reference binding, final Model model) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$());
+    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.model = model;
-    this.id = new Id(this);
   }
 
-  static Deferred defer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Supplier<Model> model) {
-    return new Deferred(() -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
   }
 
   private Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Model model) {
-    super(registry, nullable, minOccurs, maxOccurs);
+    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), nullable, minOccurs, maxOccurs);
     this.model = model;
-    this.id = new Id(this);
+  }
+
+  static Deferred<Reference> defer(final Registry registry, final String name, final Boolean nullable, final Use use, final Supplier<Model> model) {
+    return new Deferred<>(name, () -> new Reference(registry, name, nullable, use, model.get()));
   }
 
   Reference(final Registry registry, final String name, final Boolean nullable, final Use use, final Model model) {
-    super(registry, name, nullable, use, null, null);
+    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), name, nullable, use, null, null);
     this.model = model;
-    this.id = new Id(this);
+  }
+
+  static Deferred<Reference> defer(final Registry registry, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
   }
 
   Reference(final Registry registry, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
-    super(registry, null, nullable, null, minOccurs, maxOccurs);
+    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, nullable, null, minOccurs, maxOccurs);
     this.model = model;
-    this.id = new Id(this);
-  }
-
-  @Override
-  Id id() {
-    return id;
   }
 
   @Override
@@ -144,10 +151,10 @@ final class Reference extends Member {
   }
 
   @Override
-  org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,String> attributes = super.toXmlAttributes(owner, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Object> attributes = toAttributes(owner, packageName);
     if (!registry.isRootMember(model, settings)) {
-      final org.openjax.standard.xml.api.Element element = model.toXml(settings, owner, packageName);
+      final XmlElement element = model.toXml(settings, owner, packageName);
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
@@ -161,15 +168,27 @@ final class Reference extends Member {
     }
 
     if (model != null) {
-      final String subName = Registry.getSubName(model.id().toString(), packageName);
+      final String subName = Registry.getSubName(model.id.toString(), packageName);
       attributes.put("type", subName);
     }
 
     if (!(owner instanceof ObjectModel))
-      return new org.openjax.standard.xml.api.Element(elementName(), attributes, null);
+      return new XmlElement(elementName(), attributes, null);
 
     attributes.put("xsi:type", elementName());
-    return new org.openjax.standard.xml.api.Element("property", attributes, null);
+    return new XmlElement("property", attributes, null);
+  }
+
+  @Override
+  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Object> properties = new LinkedHashMap<>();
+    properties.put("class", elementName());
+
+    final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
+    attributes.remove("xsi:type");
+
+    properties.putAll(attributes);
+    return properties;
   }
 
   @Override

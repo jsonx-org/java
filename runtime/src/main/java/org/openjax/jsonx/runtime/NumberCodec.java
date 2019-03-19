@@ -21,43 +21,59 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.util.Annotations;
 import org.openjax.standard.util.Strings;
 
 class NumberCodec extends PrimitiveCodec<Number> {
-  static String encode(final Annotation annotation, final Number object, final boolean validate) throws EncodeException, ValidationException {
-    final Form form;
-    final String range;
-    if (annotation instanceof NumberProperty) {
-      final NumberProperty property = (NumberProperty)annotation;
-      form = property.form();
-      range = property.range();
-    }
-    else if (annotation instanceof NumberElement) {
-      final NumberElement element = (NumberElement)annotation;
-      form = element.form();
-      range = element.range();
-    }
-    else {
-      throw new IllegalArgumentException("Illegal annotation type for \"number\": " + annotation.annotationType().getName());
-    }
+  static Number decodeArray(final Form form, final String token) {
+    final char ch;
+    if ((ch = token.charAt(0)) != '-' && (ch < '0' || '9' < ch))
+      return null;
+
+    return NumberCodec.decode(form, token);
+  }
+
+  static StringBuilder encodeArray(final Annotation annotation, final Form form, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
+    if (!(object instanceof Number))
+      return contentNotExpected(ArrayIterator.preview(object));
 
     if (validate) {
-      if (form == Form.INTEGER && object.longValue() != object.doubleValue())
-        throw new EncodeException("Illegal " + Form.class.getSimpleName() + ".INTEGER value: " + Strings.truncate(String.valueOf(object), 16));
+      final StringBuilder error = NumberCodec.validate(annotation, (Number)object, form, range);
+      if (error != null)
+        return error;
+    }
 
-      if (range.length() > 0) {
-        try {
-          if (!new Range(range).isValid(object))
-            throw new EncodeException("Range is not matched: " + Strings.truncate(range, 16));
-        }
-        catch (final ParseException e) {
-          throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES), e);
-        }
-      }
+    relations.set(index, new Relation(object, annotation));
+    return null;
+  }
+
+  static Object encode(final Annotation annotation, final Form form, final String range, final Number object, final boolean validate) throws EncodeException, ValidationException {
+    if (validate) {
+      final StringBuilder error = validate(annotation, object, form, range);
+      if (error != null)
+        return error;
     }
 
     return String.valueOf(object);
+  }
+
+  static StringBuilder validate(final Annotation annotation, final Number object, final Form form, final String range) {
+    if (form == Form.INTEGER && object.longValue() != object.doubleValue())
+      return new StringBuilder("Illegal ").append(Form.class.getSimpleName()).append(".INTEGER value: ").append(Strings.truncate(String.valueOf(object), 16));;
+
+    if (range.length() > 0) {
+      try {
+        if (!new Range(range).isValid(object))
+          return new StringBuilder("Range ").append(range).append(" is not matched: ").append(Strings.truncate(String.valueOf(object), 16));
+      }
+      catch (final ParseException e) {
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES), e);
+      }
+    }
+
+    return null;
   }
 
   static Number decode(final Form form, final String json) {
@@ -102,7 +118,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
     }
 
     // FIXME: decode() is done here and in the caller's scope
-    return range != null && !range.isValid(parse(json)) ? new StringBuilder("Range (").append(range).append(") is not matched: ").append(json) : null;
+    return range != null && !range.isValid(parse(json)) ? new StringBuilder("Range ").append(range).append(" is not matched: ").append(json) : null;
   }
 
   @Override

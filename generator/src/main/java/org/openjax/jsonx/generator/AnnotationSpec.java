@@ -18,21 +18,43 @@ package org.openjax.jsonx.generator;
 
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 class AnnotationSpec {
-  private static String toAnnotation(final Map<String,String> attributes) {
+  @SuppressWarnings("unchecked")
+  private static StringBuilder toAnnotation(final Map<String,Object> attributes) {
     final StringBuilder builder = new StringBuilder();
-    final Iterator<Map.Entry<String,String>> iterator = attributes.entrySet().iterator();
+    final Iterator<Map.Entry<String,Object>> iterator = attributes.entrySet().iterator();
     for (int i = 0; iterator.hasNext(); ++i) {
       if (i > 0)
         builder.append(", ");
 
-      final Map.Entry<String,String> entry = iterator.next();
-      builder.append(entry.getKey()).append('=').append(entry.getValue());
+      final Map.Entry<String,Object> entry = iterator.next();
+      builder.append(entry.getKey()).append('=');
+      if (entry.getValue() instanceof List) {
+        final List<Object> items = (List<Object>)entry.getValue();
+        if (items.size() == 1) {
+          builder.append(items.get(0));
+        }
+        else {
+          builder.append('{');
+          for (int j = 0; j < items.size(); ++j) {
+            if (j > 0)
+              builder.append(", ");
+
+            builder.append(items.get(j));
+          }
+
+          builder.append('}');
+        }
+      }
+      else {
+        builder.append(entry.getValue());
+      }
     }
 
-    return builder.toString();
+    return builder;
   }
 
   private final Class<? extends Annotation> annotationType;

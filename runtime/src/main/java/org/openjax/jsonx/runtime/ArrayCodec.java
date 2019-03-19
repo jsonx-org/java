@@ -21,51 +21,112 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.util.function.TriPredicate;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayCodec extends Codec {
-  static Relations encode(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
-    final Relations relations = new Relations();
-    final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JxUtil.digest(field, idToElement);
-    final StringBuilder error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
-    if (validate && error != null)
-      throw new EncodeException(field.getDeclaringClass().getName() + "#" + field.getName() + ": " + error.toString());
+  static Object decodeArray(final Annotation annotation, Object arg, final String token, final JsonReader reader, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+    if (!"[".equals(token))
+      return null;
 
-    return relations;
+    if (arg == null)
+      arg = annotation;
+
+    final Class<?> type;
+    final ArrayElement element;
+    if (arg instanceof ArrayElement) {
+      element = (ArrayElement)arg;
+      type = element.type();
+    }
+    else {
+      element = null;
+      type = (Class<?>)arg;
+      if (type == ArrayType.class)
+        throw new IllegalStateException();
+    }
+
+    final int[] elementIds;
+    final int minIterate;
+    final int maxIterate;
+    if (type != ArrayType.class) {
+      elementIds = JxUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
+      minIterate = idToElement.getMinIterate();
+      maxIterate = idToElement.getMaxIterate();
+    }
+    else {
+      minIterate = element.minIterate();
+      maxIterate = element.maxIterate();
+      elementIds = element.elementIds();
+    }
+
+    return ArrayCodec.decode(idToElement.get(elementIds), minIterate, maxIterate, idToElement, reader, onPropertyDecode);
+  }
+
+  static StringBuilder encodeArray(final Annotation annotation, final Class<? extends Annotation> type, final Object object, int index, final Relations relations, IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+    if (!(object instanceof List))
+      return contentNotExpected(ArrayIterator.preview(object));
+
+    if (index == -1)
+      index = type.getAnnotation(ArrayType.class).elementIds()[0];
+
+    final int[] elementIds;
+    if (type == ArrayType.class) {
+      final ArrayElement element = (ArrayElement)annotation;
+      elementIds = element.elementIds();
+      idToElement.setMinIterate(element.minIterate());
+      idToElement.setMaxIterate(element.maxIterate());
+    }
+    else {
+      elementIds = JxUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
+    }
+
+    final Relations subRelations = new Relations();
+    final StringBuilder subError = ArrayValidator.validate((List<?>)object, idToElement, elementIds, subRelations, validate, onPropertyDecode);
+    if (validate && subError != null)
+      return subError;
+
+    if (annotation != null)
+      relations.set(index, new Relation(subRelations, annotation));
+    else if (subRelations.size() == 1)
+      relations.set(index, subRelations.get(0));
+
+    return null;
   }
 
   static Object decode(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
     final Relations relations = new Relations();
-    final StringBuilder error = ArrayValidator.validate(iterator, 1, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode);
+    final StringBuilder error = ArrayValidator.validate(iterator, 1, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode, -1);
     if (error != null)
       return error;
 
     final String token = reader.readToken();
     if (!"]".equals(token))
-      return "Expected ']', but got '" + token + "'";
+      return new StringBuilder("Expected ']', but got '").append(token).append('\'');
 
     return relations.deflate();
   }
 
-  private final Annotation[] annotations;
-  private final IdToElement idToElement = new IdToElement();
+  static Object encode(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
+    final Relations relations = new Relations();
+    final IdToElement idToElement = new IdToElement();
+    final int[] elementIds = JxUtil.digest(field, idToElement);
+    final StringBuilder error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
+    if (validate && error != null)
+      return new StringBuilder(field.getDeclaringClass().getName()).append("#").append(field.getName()).append(": ").append(error.toString());
+
+    return relations;
+  }
+
+  final Annotation[] annotations;
+  final IdToElement idToElement = new IdToElement();
 
   ArrayCodec(final ArrayProperty property, final Field field) {
     super(field, property.name(), property.nullable(), property.use());
     final int[] elementIds = JxUtil.digest(field, idToElement);
     this.annotations = idToElement.get(elementIds);
-  }
-
-  Annotation[] getAnnotations() {
-    return annotations;
-  }
-
-  IdToElement getIdToElement() {
-    return this.idToElement;
   }
 
   @Override

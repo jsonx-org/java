@@ -30,7 +30,7 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 class ArrayTrial<T> extends PropertyTrial<T> {
-  static Object createValid(final Class<? extends Annotation> arrayAnnotationType, final int minIterate, final int maxIterate, int[] elementIds, IdToElement idToElement) {
+  static Object createValid(final Class<? extends Annotation> arrayAnnotationType, final int minIterate, final int maxIterate, final int[] elementIds, final IdToElement idToElement) {
     return createArray(arrayAnnotationType, minIterate, maxIterate, elementIds, idToElement, null);
   }
 
@@ -77,7 +77,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
 
     final Relations relations = new Relations();
     try {
-      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null);
+      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null, -1);
     }
     catch (final IOException e) {
       throw new IllegalStateException(e);
@@ -122,21 +122,14 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       trials.add(new ArrayTrial<>(MaxOccursCase.CASE, field, object, testMaxOccurs, property));
 
     if (property.use() == Use.REQUIRED) {
-      if (property.nullable()) {
-        trials.add(new ArrayTrial<>(RequiredNullableCase.CASE, field, object, null, property));
-      }
-      else {
-        trials.add(new ArrayTrial<>(RequiredNotNullableCase.CASE, field, object, null, property));
-      }
+      trials.add(new ArrayTrial<>(getNullableCase(property.nullable()), field, object, null, property));
+    }
+    else if (property.nullable()) {
+      trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, null, property));
+      trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
     }
     else {
-      if (property.nullable()) {
-        trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, null, property));
-        trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
-      }
-      else {
-        trials.add(new ArrayTrial<>(OptionalNotNullableCase.CASE, field, object, null, property));
-      }
+      trials.add(new ArrayTrial<>(OptionalNotNullableCase.CASE, field, object, null, property));
     }
   }
 

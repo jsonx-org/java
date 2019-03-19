@@ -18,7 +18,6 @@ package org.openjax.jsonx.runtime;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
 
 import org.openjax.jsonx.runtime.ArrayTrial.TrialType;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
@@ -26,7 +25,7 @@ import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayCreateIterator extends ArrayIterator {
   private final TrialType trialType;
-  private int cursor = 0;
+  private short cursor = 0;
   private Annotation annotation;
   private Annotation lastAnnotation;
 
@@ -57,10 +56,14 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final TriPredicate<JxObject,String,Object> callback) throws IOException {
+  protected StringBuilder validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     this.annotation = annotation;
     if (trialType == TrialType.NULLABLE) {
       current = null;
+    }
+    else if (annotation instanceof AnyElement) {
+      final AnyElement element = (AnyElement)annotation;
+      current = element.nullable() && Math.random() < 0.5 ? null : AnyTrial.createValid(element);
     }
     else if (annotation instanceof ArrayElement) {
       final ArrayElement element = (ArrayElement)annotation;
@@ -68,11 +71,11 @@ class ArrayCreateIterator extends ArrayIterator {
     }
     else if (annotation instanceof BooleanElement) {
       final BooleanElement element = (BooleanElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE;
+      current = element.nullable() && Math.random() < 0.5 ? null : BooleanTrial.createValid();
     }
     else if (annotation instanceof NumberElement) {
       final NumberElement element = (NumberElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : element.range().length() == 0 ? NumberTrial.toProperForm(element.form(), BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong())) : NumberTrial.toProperForm(element.form(), NumberTrial.makeValid(new Range(element.range())));
+      current = element.nullable() && Math.random() < 0.5 ? null : NumberTrial.createValid(element.range(), element.form());
     }
     else if (annotation instanceof ObjectElement) {
       final ObjectElement element = (ObjectElement)annotation;
@@ -86,12 +89,9 @@ class ArrayCreateIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
     }
 
-    return null;
-  }
-
-  @Override
-  protected StringBuilder currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> callback) {
-    relations.set(i, currentRelate(annotation));
+    if (current instanceof ArrayValidator.Relation)
+      System.out.println();
+    relations.set(index, currentRelate(annotation));
     return null;
   }
 }

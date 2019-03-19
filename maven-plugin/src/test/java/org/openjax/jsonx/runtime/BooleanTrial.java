@@ -22,24 +22,21 @@ import java.util.Optional;
 
 class BooleanTrial extends PropertyTrial<Boolean> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final BooleanProperty property) {
-    trials.add(new BooleanTrial(ValidCase.CASE, field, object, Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE, property));
+    trials.add(new BooleanTrial(ValidCase.CASE, field, object, createValid(), property));
     if (property.use() == Use.REQUIRED) {
-      if (property.nullable()) {
-        trials.add(new BooleanTrial(RequiredNullableCase.CASE, field, object, null, property));
-      }
-      else {
-        trials.add(new BooleanTrial(RequiredNotNullableCase.CASE, field, object, null, property));
-      }
+      trials.add(new BooleanTrial(getNullableCase(property.nullable()), field, object, null, property));
+    }
+    else if (property.nullable()) {
+      trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, null, property));
+      trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
     }
     else {
-      if (property.nullable()) {
-        trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, null, property));
-        trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
-      }
-      else {
-        trials.add(new BooleanTrial(OptionalNotNullableCase.CASE, field, object, null, property));
-      }
+      trials.add(new BooleanTrial(OptionalNotNullableCase.CASE, field, object, null, property));
     }
+  }
+
+  static Object createValid() {
+    return Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE;
   }
 
   private BooleanTrial(final Case<? extends PropertyTrial<? super Boolean>> kase, final Field field, final Object object, final Object value, final BooleanProperty property) {

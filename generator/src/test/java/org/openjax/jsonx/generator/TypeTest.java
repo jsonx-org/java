@@ -24,15 +24,12 @@ import java.util.List;
 
 import org.junit.Test;
 import org.openjax.jsonx.generator.Registry.Kind;
+import org.openjax.standard.json.JSON;
+import org.openjax.standard.xml.api.XmlElement;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
-    return new Member(null, null, null, null, null, null) {
-      @Override
-      protected Id id() {
-        return null;
-      }
-
+    return new Member(null, null, null, null, null, null, null) {
       @Override
       protected Registry.Type type() {
         return type;
@@ -54,7 +51,12 @@ public class TypeTest {
       }
 
       @Override
-      protected org.openjax.standard.xml.api.Element toXml(final Settings settings, final Element owner, final String packageName) {
+      protected XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+        return null;
+      }
+
+      @Override
+      JSON toJson(final Settings settings, final Element owner, final String packageName) {
         return null;
       }
     };

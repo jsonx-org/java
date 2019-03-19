@@ -20,6 +20,54 @@ import java.util.List;
 import java.util.Optional;
 
 public class TestArray implements JxObject {
+  @AnyElement(id=2, types={@t(strings=".*")}, minOccurs=0, nullable=false)
+  @AnyElement(id=1, types={@t(numbers=@NumberType)}, minOccurs=0, nullable=false)
+  @AnyElement(id=0, types={@t(booleans=true)}, minOccurs=0, nullable=false)
+  @ArrayType(elementIds={0, 1, 2}, minIterate=0, maxIterate=Integer.MAX_VALUE)
+  @interface ArrayAny {
+  }
+
+  @ArrayProperty(type=ArrayAny.class, use=Use.OPTIONAL)
+  private Optional<List<Boolean>> arrayAny;
+
+  public Optional<List<Boolean>> getArrayAny() {
+    return this.arrayAny;
+  }
+
+  public TestArray setArrayAny(final Optional<List<Boolean>> arrayAny) {
+    this.arrayAny = arrayAny;
+    return this;
+  }
+
+  public TestArray setArrayAny(final List<Boolean> arrayAny) {
+    this.arrayAny = Optional.ofNullable(arrayAny);
+    return this;
+  }
+
+  @StringElement(id=2, minOccurs=0, nullable=false)
+  @NumberElement(id=1, minOccurs=0, nullable=false)
+  @BooleanElement(id=0, minOccurs=0, nullable=false)
+  @ArrayType(elementIds={0, 1, 2}, minIterate=0, maxIterate=Integer.MAX_VALUE)
+  @interface ArrayLoop {
+  }
+
+  @ArrayProperty(type=ArrayLoop.class, use=Use.OPTIONAL)
+  private Optional<List<Boolean>> arrayLoop;
+
+  public Optional<List<Boolean>> getArrayLoop() {
+    return this.arrayLoop;
+  }
+
+  public TestArray setArrayLoop(final Optional<List<Boolean>> arrayLoop) {
+    this.arrayLoop = arrayLoop;
+    return this;
+  }
+
+  public TestArray setArrayLoop(final List<Boolean> arrayLoop) {
+    this.arrayLoop = Optional.ofNullable(arrayLoop);
+    return this;
+  }
+
   @BooleanElement(id=0, maxOccurs=2)
   @ArrayType(elementIds={0}, minIterate=0, maxIterate=2)
   @interface Array1d1 {

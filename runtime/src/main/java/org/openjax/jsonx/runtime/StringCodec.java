@@ -20,33 +20,50 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.regex.PatternSyntaxException;
 
+import org.openjax.jsonx.runtime.ArrayValidator.Relation;
+import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonStrings;
 import org.openjax.standard.util.Annotations;
 import org.openjax.standard.util.Strings;
 
 class StringCodec extends PrimitiveCodec<String> {
-  static StringBuilder encode(final Annotation annotation, final String object, final boolean validate) throws EncodeException {
-    final String pattern;
-    if (annotation instanceof StringProperty) {
-      final StringProperty property = (StringProperty)annotation;
-      pattern = property.pattern();
-    }
-    else if (annotation instanceof StringElement) {
-      final StringElement element = (StringElement)annotation;
-      pattern = element.pattern();
-    }
-    else {
-      throw new IllegalArgumentException("Illegal annotation type for \"string\": " + annotation.annotationType().getName());
+  static String decodeArray(final String token) {
+    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decode(token) : null;
+  }
+
+  static StringBuilder encodeArray(final Annotation annotation, final String pattern, final Object object, final int index, final Relations relations, final boolean validate) {
+    if (!(object instanceof String))
+      return contentNotExpected(ArrayIterator.preview(object));
+
+    final String string = (String)object;
+    if (validate) {
+      if (pattern.length() != 0 && !string.matches(pattern))
+        return new StringBuilder("Pattern is not matched: \"").append(Strings.truncate(string, 16)).append("\"");
     }
 
-    if (validate && pattern.length() > 0 && !object.matches(pattern))
-      throw new EncodeException(Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
+    relations.set(index, new Relation(false ? StringCodec.decode("\"" + string + "\"") : object, annotation));
+    return null;
+  }
+
+  static Object encode(final Annotation annotation, final String pattern, final String object, final boolean validate) throws EncodeException {
+    if (validate) {
+      final StringBuilder error = validate(annotation, object, pattern);
+      if (error != null)
+        return error;
+    }
 
     return encode(object);
   }
 
-  static StringBuilder encode(final String string) throws EncodeException {
-    return JsonStrings.escape(string).insert(0, '"').append('"');
+  private static StringBuilder validate(final Annotation annotation, final String object, final String pattern) {
+    if (pattern.length() > 0 && !object.matches(pattern))
+      return new StringBuilder(Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
+
+    return null;
+  }
+
+  static String encode(final String string) throws EncodeException {
+    return JsonStrings.escape(string).insert(0, '"').append('"').toString();
   }
 
   static String decode(final String json) {

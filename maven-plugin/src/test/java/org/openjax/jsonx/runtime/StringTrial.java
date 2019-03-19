@@ -27,35 +27,8 @@ class StringTrial extends PropertyTrial<String> {
   private static final char[] ascii = new char[95];
 
   static {
-    for (int i = 0; i < 95; ++i)
+    for (int i = 0; i < ascii.length; ++i)
       ascii[i] = (char)(i + 32);
-  }
-
-  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final StringProperty property) {
-    final String valid = createValid(property.pattern());
-
-    trials.add(new StringTrial(ValidCase.CASE, field, object, valid, property));
-
-    if (property.pattern().length() > 0)
-      trials.add(new StringTrial(PatternCase.CASE, field, object, createInvalid(property.pattern()), property));
-
-    if (property.use() == Use.REQUIRED) {
-      if (property.nullable()) {
-        trials.add(new StringTrial(RequiredNullableCase.CASE, field, object, null, property));
-      }
-      else {
-        trials.add(new StringTrial(RequiredNotNullableCase.CASE, field, object, null, property));
-      }
-    }
-    else {
-      if (property.nullable()) {
-        trials.add(new StringTrial(OptionalNullableCase.CASE, field, object, null, property));
-        trials.add(new StringTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
-      }
-      else {
-        trials.add(new StringTrial(OptionalNotNullableCase.CASE, field, object, null, property));
-      }
-    }
   }
 
   private static class StringGen {
@@ -72,6 +45,23 @@ class StringTrial extends PropertyTrial<String> {
 
     String random() {
       return generex == null ? randomString(stringLength) : generex.random(stringLength);
+    }
+  }
+
+  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final StringProperty property) {
+    trials.add(new StringTrial(ValidCase.CASE, field, object, createValid(property.pattern()), property));
+    if (property.pattern().length() > 0)
+      trials.add(new StringTrial(PatternCase.CASE, field, object, createInvalid(property.pattern()), property));
+
+    if (property.use() == Use.REQUIRED) {
+      trials.add(new StringTrial(getNullableCase(property.nullable()), field, object, null, property));
+    }
+    else if (property.nullable()) {
+      trials.add(new StringTrial(OptionalNullableCase.CASE, field, object, null, property));
+      trials.add(new StringTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+    }
+    else {
+      trials.add(new StringTrial(OptionalNotNullableCase.CASE, field, object, null, property));
     }
   }
 

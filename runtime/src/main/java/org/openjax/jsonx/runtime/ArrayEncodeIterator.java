@@ -25,7 +25,7 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayEncodeIterator extends ArrayIterator {
-  private static <T>StringBuilder validate(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  static <T>StringBuilder validateArray(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final int[] elementIds;
     if (element.type() != ArrayType.class) {
       elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
@@ -72,29 +72,25 @@ class ArrayEncodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder currentMatchesType(final Class<?> type, final Annotation annotation, final IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
-    final Class<?> cls = current.getClass();
-    final boolean isValid = type != Object.class ? type.isAssignableFrom(cls) : !cls.isArray() && !Boolean.class.isAssignableFrom(cls) && !List.class.isAssignableFrom(cls) && !Number.class.isAssignableFrom(cls) && !String.class.isAssignableFrom(cls);
-    return !isValid ? new StringBuilder("Content is not expected: ").append(currentPreview()) : null;
-  }
+  protected StringBuilder validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+    if (codecType == AnyCodec.class)
+      return AnyCodec.encodeArray((AnyElement)annotation, current, index, relations, idToElement, validate, onPropertyDecode);
 
-  @Override
-  protected StringBuilder currentIsValid(final int i, final Annotation annotation, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
-    if (annotation instanceof StringElement)
-      return validate((StringElement)annotation, current, i, relations, false, validate);
+    if (codecType == ArrayCodec.class)
+      return ArrayCodec.encodeArray(annotation, ((ArrayElement)annotation).type(), current, index, relations, idToElement, validate, onPropertyDecode);
 
-    if (annotation instanceof NumberElement)
-      return validate((NumberElement)annotation, current, i, relations, validate);
+    if (codecType == BooleanCodec.class)
+      return BooleanCodec.encodeArray(annotation, current, index, relations);
 
-    if (annotation instanceof BooleanElement)
-      return validate((BooleanElement)annotation, current, i, relations);
+    if (codecType == NumberCodec.class)
+      return NumberCodec.encodeArray(annotation, ((NumberElement)annotation).form(), ((NumberElement)annotation).range(), current, index, relations, validate);
 
-    if (annotation instanceof ArrayElement)
-      return validate((ArrayElement)annotation, (List<?>)current, i, idToElement, relations, validate, onPropertyDecode);
+    if (codecType == ObjectCodec.class)
+      return ObjectCodec.encodeArray(annotation, current, index, relations);
 
-    if (annotation instanceof ObjectElement)
-      return validate((ObjectElement)annotation, current, i, relations, validate);
+    if (codecType == StringCodec.class)
+      return StringCodec.encodeArray(annotation, ((StringElement)annotation).pattern(), current, index, relations, validate);
 
-    throw new UnsupportedOperationException("Unsupported annotation type " + annotation.annotationType().getName());
+    throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
   }
 }

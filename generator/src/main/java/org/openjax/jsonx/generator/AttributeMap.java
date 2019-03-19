@@ -21,20 +21,16 @@ import java.util.TreeMap;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.standard.util.ObservableMap;
 
-class AttributeMap extends ObservableMap<String,String> {
+class AttributeMap extends ObservableMap<String,Object> {
   AttributeMap() {
-    super(new TreeMap<String,String>(JxUtil.ATTRIBUTES));
+    super(new TreeMap<>(JxUtil.ATTRIBUTES));
   }
 
   @Override
-  protected boolean beforePut(final String key, final String oldValue, final String newValue) {
+  protected boolean beforePut(final String key, final Object oldValue, final Object newValue) {
     if (oldValue == null || oldValue.equals(newValue) || "xsi:schemaLocation".equals(key))
       return true;
 
     throw new IllegalStateException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
-  }
-
-  String put(final String key, final Object value) {
-    return super.put(key, value == null ? null : String.valueOf(value));
   }
 }
