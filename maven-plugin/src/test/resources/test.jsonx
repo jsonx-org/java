@@ -17,7 +17,7 @@
 <schema
   xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../../../generator/src/main/resources/schema.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema.xsd">
   
   <objectType abstract="true" name="xmldsigType">
     <property name="xmldsig" xsi:type="string"/>
