@@ -499,9 +499,9 @@ public class ArrayCodecTest {
     test(Array2d2.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE), l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4", "0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4"));
     test(Array2d2.class, array, l(l(null, "abc", null, "abc", BigDecimals.PI, BigInteger.ONE, null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4"));
 
-    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4"));
-    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.TWO), l(null, null, "123", "abc", BigDecimals.PI, BigInteger.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
-    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.TWO, null, null, "123", "abc", BigDecimals.PI, BigInteger.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigIntegers.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigIntegers.TWO), l(null, null, "123", "abc", BigDecimals.PI, BigIntegers.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
+    test(Array2d2.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigIntegers.TWO, null, null, "123", "abc", BigDecimals.PI, BigIntegers.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
 
     test(Array2d2.class, array, l(l(null, "ABC", null)), a("2", "4", "4", "7"));
     test(Array2d2.class, array, l(l(null, "ABC", null), l(null, "ABC", null)), a("2", "4", "4", "7", "2", "4", "4", "7"));
