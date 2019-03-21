@@ -23,7 +23,7 @@ class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Object>>
 
   @Override
   void onEncode(final PropertyTrial<? super Object> trial, final EncodeException e) throws Exception {
-    assertEquals(trial.field.getDeclaringClass().getName() + "#" + trial.field.getName() + " is required", e.getMessage());
+    assertEquals("Property \"" + trial.name + "\" is required: " + trial.field.getDeclaringClass().getName() + "#" + trial.field.getName(), e.getMessage());
   }
 
   @Override

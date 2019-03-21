@@ -33,7 +33,7 @@ class AnyCodec extends Codec {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.arrays}) {
         if (AnyType.isEnabled(type.arrays())) {
           final Object value = ArrayCodec.decodeArray(null, type.arrays(), token, reader, null, onPropertyDecode);
-          if (!(value instanceof StringBuilder))
+          if (!(value instanceof Error))
             return value;
         }
       }
@@ -42,7 +42,7 @@ class AnyCodec extends Codec {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.objects}) {
         if (AnyType.isEnabled(type.objects())) {
           final Object value = ObjectCodec.decodeArray(type.objects(), token, reader, onPropertyDecode);
-          if (!(value instanceof StringBuilder))
+          if (!(value instanceof Error))
             return value;
         }
       }
@@ -51,30 +51,28 @@ class AnyCodec extends Codec {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.fromToken(token)}) {
         if (type.booleans()) {
           final Object value = BooleanCodec.decodeArray(token);
-          if (value != null && !(value instanceof StringBuilder))
+          if (value != null && !(value instanceof Error))
             return value;
         }
         else if (AnyType.isEnabled(type.numbers())) {
           final Object value = NumberCodec.decodeArray(type.numbers().form(), token);
-          if (value != null && !(value instanceof StringBuilder))
+          if (value != null && !(value instanceof Error))
             return value;
         }
         else if (AnyType.isEnabled(type.strings())) {
           final Object value = StringCodec.decodeArray(token);
-          if (value != null && !(value instanceof StringBuilder))
+          if (value != null && !(value instanceof Error))
             return value;
         }
       }
     }
 
-    return contentNotExpected(token);
+    return Error.CONTENT_NOT_EXPECTED(token);
   }
 
-  private static final StringBuilder ERROR = new StringBuilder();
-
-  static StringBuilder encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  static Error encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final t[] types = annotation.types();
-    StringBuilder error = ERROR;
+    Error error = Error.NULL;
     for (final t type : types.length > 0 ? types : new t[] {AnyType.fromObject(object)}) {
       if (AnyType.isEnabled(type.arrays())) {
         error = ArrayCodec.encodeArray(annotation, type.arrays(), object, index, relations, idToElement, validate, onPropertyDecode);
@@ -103,30 +101,30 @@ class AnyCodec extends Codec {
       }
     }
 
-    if (error == ERROR)
+    if (error == Error.NULL)
       throw new IllegalStateException();
 
     return error;
   }
 
-  static Object encode(final Annotation annotation, final t[] types, final Object object, final boolean validate, final JxEncoder jxEncoder, final int depth) throws EncodeException, ValidationException {
-    StringBuilder error = null;
+  static Object encodeObject(final Annotation annotation, final t[] types, final Object object, final JxEncoder jxEncoder, final int depth, final boolean validate) throws EncodeException, ValidationException {
+    Error error = null;
     if (object == null)
-      return JxUtil.isNullable(annotation) ? "null" : new StringBuilder("Illegal value: null");
+      return JxUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL;
 
     for (final t type : types.length > 0 ? types : new t[] {AnyType.fromObject(object)}) {
       if (object instanceof List && AnyType.isEnabled(type.arrays())) {
         final Relations relations = new Relations();
-        if ((error = ArrayCodec.encodeArray(null, type.arrays(), object, -1, relations, null, validate, null)) == null)
+        if ((error = ArrayCodec.encodeArray(null, type.arrays(), object, type.arrays().getAnnotation(ArrayType.class).elementIds()[0], relations, null, validate, null)) == null)
           return relations;
       }
       else if (object instanceof Boolean && type.booleans()) {
-        return BooleanCodec.encode((Boolean)object);
+        return BooleanCodec.encodeObject((Boolean)object);
       }
       else if (object instanceof Number && AnyType.isEnabled(type.numbers())) {
-        final Object encoded = NumberCodec.encode(annotation, type.numbers().form(), type.numbers().range(), (Number)object, validate);
-        if (encoded instanceof StringBuilder)
-          error = (StringBuilder)encoded;
+        final Object encoded = NumberCodec.encodeObject(annotation, type.numbers().form(), type.numbers().range(), (Number)object, validate);
+        if (encoded instanceof Error)
+          error = (Error)encoded;
         else
           return encoded;
       }
@@ -136,9 +134,9 @@ class AnyCodec extends Codec {
           return builder.toString();
       }
       else if (object instanceof String && AnyType.isEnabled(type.strings())) {
-        final Object encoded = StringCodec.encode(annotation, type.strings(), (String)object, validate);
-        if (encoded instanceof StringBuilder)
-          error = (StringBuilder)encoded;
+        final Object encoded = StringCodec.encodeObject(annotation, type.strings(), (String)object, validate);
+        if (encoded instanceof Error)
+          error = (Error)encoded;
         else
           return encoded;
       }

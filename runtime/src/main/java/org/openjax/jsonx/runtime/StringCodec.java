@@ -23,50 +23,13 @@ import java.util.regex.PatternSyntaxException;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonStrings;
-import org.openjax.standard.util.Annotations;
-import org.openjax.standard.util.Strings;
 
 class StringCodec extends PrimitiveCodec<String> {
   static String decodeArray(final String token) {
-    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decode(token) : null;
+    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decodeObject(token) : null;
   }
 
-  static StringBuilder encodeArray(final Annotation annotation, final String pattern, final Object object, final int index, final Relations relations, final boolean validate) {
-    if (!(object instanceof String))
-      return contentNotExpected(ArrayIterator.preview(object));
-
-    final String string = (String)object;
-    if (validate) {
-      if (pattern.length() != 0 && !string.matches(pattern))
-        return new StringBuilder("Pattern is not matched: \"").append(Strings.truncate(string, 16)).append("\"");
-    }
-
-    relations.set(index, new Relation(false ? StringCodec.decode("\"" + string + "\"") : object, annotation));
-    return null;
-  }
-
-  static Object encode(final Annotation annotation, final String pattern, final String object, final boolean validate) throws EncodeException {
-    if (validate) {
-      final StringBuilder error = validate(annotation, object, pattern);
-      if (error != null)
-        return error;
-    }
-
-    return encode(object);
-  }
-
-  private static StringBuilder validate(final Annotation annotation, final String object, final String pattern) {
-    if (pattern.length() > 0 && !object.matches(pattern))
-      return new StringBuilder(Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES) + ": pattern is not matched: \"" + Strings.truncate(object, 16) + "\"");
-
-    return null;
-  }
-
-  static String encode(final String string) throws EncodeException {
-    return JsonStrings.escape(string).insert(0, '"').append('"').toString();
-  }
-
-  static String decode(final String json) {
+  static String decodeObject(final String json) {
     final StringBuilder unescaped = new StringBuilder(json.length() - 2);
     for (int i = 1, len = json.length() - 1; i < len; ++i) {
       char ch = json.charAt(i);
@@ -82,6 +45,41 @@ class StringCodec extends PrimitiveCodec<String> {
     return unescaped.toString();
   }
 
+  static Error encodeArray(final Annotation annotation, final String pattern, final Object object, final int index, final Relations relations, final boolean validate) {
+    if (!(object instanceof String))
+      return Error.CONTENT_NOT_EXPECTED(object);
+
+    final String string = (String)object;
+    if (validate) {
+      if (pattern.length() != 0 && !string.matches(pattern))
+        return Error.PATTERN_NOT_MATCHED(pattern, string);
+    }
+
+    relations.set(index, new Relation(false ? StringCodec.decodeObject("\"" + string + "\"") : object, annotation));
+    return null;
+  }
+
+  static String encodeObject(final String string) throws EncodeException {
+    return JsonStrings.escape(string).insert(0, '"').append('"').toString();
+  }
+
+  static Object encodeObject(final Annotation annotation, final String pattern, final String object, final boolean validate) throws EncodeException {
+    if (validate) {
+      final Error error = validate(annotation, object, pattern);
+      if (error != null)
+        return error;
+    }
+
+    return encodeObject(object);
+  }
+
+  private static Error validate(final Annotation annotation, final String object, final String pattern) {
+    if (pattern.length() > 0 && !object.matches(pattern))
+      return Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, object);
+
+    return null;
+  }
+
   private final String pattern;
 
   StringCodec(final StringProperty property, final Field field) {
@@ -95,32 +93,27 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   @Override
-  StringBuilder validate(final String token) {
+  Error validate(final String token) {
     if ((token.charAt(0) != '"' || token.charAt(token.length() - 1) != '"') && (token.charAt(0) != '\'' || token.charAt(token.length() - 1) != '\''))
-      return new StringBuilder("Is not a string");
+      return Error.NOT_A_STRING;
 
     final String value = token.substring(1, token.length() - 1);
     if (pattern != null) {
       try {
         if (!value.matches(pattern))
-          return new StringBuilder("Pattern (").append(pattern).append(") is not matched: ").append(token);
+          return Error.PATTERN_NOT_MATCHED(pattern, token);
       }
       catch (final PatternSyntaxException e) {
         throw new ValidationException("Malformed pattern: " + pattern);
       }
     }
 
-    // FIXME: decode() is done here and in the caller's scope
-    final String decoded = parse(token);
-    if (decoded == null)
-      return new StringBuilder("Invalid URL encoding: \"").append(token).append("\"");
-
     return null;
   }
 
   @Override
   String parse(final String json) {
-    return decode(json);
+    return decodeObject(json);
   }
 
   @Override

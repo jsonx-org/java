@@ -63,7 +63,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = list.toString();
     }
     else if (trial instanceof StringTrial || trial instanceof AnyTrial && trial.value() instanceof String) {
-      expected = StringCodec.encode((String)trial.value()).toString();
+      expected = StringCodec.encodeObject((String)trial.value()).toString();
     }
     else {
       expected = String.valueOf(trial.value());

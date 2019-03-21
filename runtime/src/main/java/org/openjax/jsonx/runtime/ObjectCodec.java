@@ -31,12 +31,103 @@ import org.openjax.standard.util.function.TriPredicate;
 
 class ObjectCodec extends Codec {
   static Object decodeArray(final Class<? extends JxObject> type, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    return !"{".equals(token) ? null : ObjectCodec.decode(type, reader, onPropertyDecode);
+    return !"{".equals(token) ? null : ObjectCodec.decodeObject(type, reader, onPropertyDecode);
   }
 
-  static StringBuilder encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
+  static Object decodeObject(final Class<? extends JxObject> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+    try {
+      final JxObject object = type.getConstructor().newInstance();
+      for (String token; !"}".equals(token = reader.readToken());) {
+        if (",".equals(token))
+          token = reader.readToken();
+
+        if (!":".equals(reader.readToken()))
+          throw new IllegalStateException("Should have been caught by JsonReader");
+
+        final String propertyName = token.substring(1, token.length() - 1);
+        token = reader.readToken();
+        final Codec codec = getPropertyCodec(type).nameToCodec.get(propertyName);
+        if (codec == null) {
+          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
+            continue;
+
+          return Error.UNKNOWN_PROPERTY(propertyName);
+        }
+
+        final Object value;
+        if ("null".equals(token)) {
+          final Error error = codec.validateUse(null);
+          if (error != null)
+            return error;
+
+          value = codec.toNull();
+        }
+        else if (codec instanceof PrimitiveCodec) {
+          final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
+          final Error error = primitiveCodec.matches(token);
+          if (error != null)
+            return error;
+
+          value = primitiveCodec.parse(token);
+        }
+        else {
+          if (codec instanceof AnyCodec) {
+            final AnyCodec anyCodec = (AnyCodec)codec;
+            value = AnyCodec.decode(anyCodec.property, token, reader, null);
+          }
+          else {
+            final char firstChar = token.charAt(0);
+            if (codec instanceof ObjectCodec) {
+              if (firstChar != '{')
+                return Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token);
+
+              final ObjectCodec objectCodec = (ObjectCodec)codec;
+              value = decodeObject(objectCodec.type, reader, null);
+              if (value instanceof Error)
+                return value;
+            }
+            else if (codec instanceof ArrayCodec) {
+              if (firstChar != '[')
+                return Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token);
+
+              final ArrayCodec arrayCodec = (ArrayCodec)codec;
+              value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, onPropertyDecode);
+              if (value instanceof Error)
+                return value;
+            }
+            else {
+              throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
+            }
+          }
+        }
+
+        if (value != null)
+          codec.set(object, value, onPropertyDecode);
+      }
+
+      for (final Field field : Classes.getDeclaredFieldsDeep(object.getClass())) {
+        field.setAccessible(true);
+        if (field.get(object) == null) {
+          final Codec codec = getPropertyCodec(type).fieldToCodec.get(field);
+          if (codec == null)
+            throw new IllegalStateException("Missing codec for field : " + type.getName() + "#" + field.getName());
+
+          final Error error = codec.validateUse(null);
+          if (error != null)
+            return error;
+        }
+      }
+
+      return object;
+    }
+    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof JxObject))
-      return contentNotExpected(ArrayIterator.preview(object));
+      return Error.CONTENT_NOT_EXPECTED(object);
 
     relations.set(index, new Relation(object, annotation));
     return null;
@@ -73,97 +164,6 @@ class ObjectCodec extends Codec {
 
     typeToCodecs.put(cls, propertyToCodec);
     return propertyToCodec;
-  }
-
-  public static Object decode(final Class<? extends JxObject> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    try {
-      final JxObject object = type.getConstructor().newInstance();
-      for (String token; !"}".equals(token = reader.readToken());) {
-        if (",".equals(token))
-          token = reader.readToken();
-
-        if (!":".equals(reader.readToken()))
-          throw new IllegalStateException("Should have been caught by JsonReader");
-
-        final String propertyName = token.substring(1, token.length() - 1);
-        token = reader.readToken();
-        final Codec codec = getPropertyCodec(type).nameToCodec.get(propertyName);
-        if (codec == null) {
-          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
-            continue;
-
-          return new StringBuilder("Unknown property: \"").append(propertyName).append("\"");
-        }
-
-        final Object value;
-        if ("null".equals(token)) {
-          final StringBuilder error = codec.validateUse(null);
-          if (error != null)
-            return error;
-
-          value = codec.toNull();
-        }
-        else if (codec instanceof PrimitiveCodec) {
-          final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
-          final StringBuilder error = primitiveCodec.matches(token);
-          if (error != null)
-            return error;
-
-          value = primitiveCodec.parse(token);
-        }
-        else {
-          if (codec instanceof AnyCodec) {
-            final AnyCodec anyCodec = (AnyCodec)codec;
-            value = AnyCodec.decode(anyCodec.property, token, reader, null);
-          }
-          else {
-            final char firstChar = token.charAt(0);
-            if (codec instanceof ObjectCodec) {
-              if (firstChar != '{')
-                return new StringBuilder("Expected \"").append(codec.name).append("\" to be a \"").append(codec.elementName()).append("\", but got token: \"").append(token).append('"');
-
-              final ObjectCodec objectCodec = (ObjectCodec)codec;
-              value = decode(objectCodec.type, reader, null);
-              if (value instanceof StringBuilder)
-                return value;
-            }
-            else if (codec instanceof ArrayCodec) {
-              if (firstChar != '[')
-                return new StringBuilder("Expected \"").append(codec.name).append("\" to be a \"").append(codec.elementName()).append("\", but got token: \"").append(token).append('"');
-
-              final ArrayCodec arrayCodec = (ArrayCodec)codec;
-              value = ArrayCodec.decode(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, onPropertyDecode);
-              if (value instanceof StringBuilder)
-                return value;
-            }
-            else {
-              throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
-            }
-          }
-        }
-
-        if (value != null)
-          codec.set(object, value, onPropertyDecode);
-      }
-
-      for (final Field field : Classes.getDeclaredFieldsDeep(object.getClass())) {
-        field.setAccessible(true);
-        if (field.get(object) == null) {
-          final Codec codec = getPropertyCodec(type).fieldToCodec.get(field);
-          if (codec == null)
-            throw new IllegalStateException("Missing codec for field : " + type.getName() + "#" + field.getName());
-
-          final StringBuilder error = codec.validateUse(null);
-          if (error != null)
-            return error;
-        }
-      }
-
-      return object;
-    }
-    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-      throw new IllegalStateException(e);
-    }
   }
 
   private final Class<? extends JxObject> type;

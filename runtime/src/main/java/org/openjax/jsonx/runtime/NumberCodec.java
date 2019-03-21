@@ -24,7 +24,6 @@ import java.math.BigInteger;
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.util.Annotations;
-import org.openjax.standard.util.Strings;
 
 class NumberCodec extends PrimitiveCodec<Number> {
   static Number decodeArray(final Form form, final String token) {
@@ -32,15 +31,24 @@ class NumberCodec extends PrimitiveCodec<Number> {
     if ((ch = token.charAt(0)) != '-' && (ch < '0' || '9' < ch))
       return null;
 
-    return NumberCodec.decode(form, token);
+    return NumberCodec.decodeObject(form, token);
   }
 
-  static StringBuilder encodeArray(final Annotation annotation, final Form form, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
+  static Number decodeObject(final Form form, final String json) {
+    try {
+      return form == Form.INTEGER ? new BigInteger(json) : new BigDecimal(json);
+    }
+    catch (final NumberFormatException e) {
+      return null;
+    }
+  }
+
+  static Error encodeArray(final Annotation annotation, final Form form, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!(object instanceof Number))
-      return contentNotExpected(ArrayIterator.preview(object));
+      return Error.CONTENT_NOT_EXPECTED(object);
 
     if (validate) {
-      final StringBuilder error = NumberCodec.validate(annotation, (Number)object, form, range);
+      final Error error = NumberCodec.validate(annotation, (Number)object, form, range);
       if (error != null)
         return error;
     }
@@ -49,9 +57,9 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return null;
   }
 
-  static Object encode(final Annotation annotation, final Form form, final String range, final Number object, final boolean validate) throws EncodeException, ValidationException {
+  static Object encodeObject(final Annotation annotation, final Form form, final String range, final Number object, final boolean validate) throws EncodeException, ValidationException {
     if (validate) {
-      final StringBuilder error = validate(annotation, object, form, range);
+      final Error error = validate(annotation, object, form, range);
       if (error != null)
         return error;
     }
@@ -59,14 +67,14 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return String.valueOf(object);
   }
 
-  static StringBuilder validate(final Annotation annotation, final Number object, final Form form, final String range) {
+  static Error validate(final Annotation annotation, final Number object, final Form form, final String range) {
     if (form == Form.INTEGER && object.longValue() != object.doubleValue())
-      return new StringBuilder("Illegal ").append(Form.class.getSimpleName()).append(".INTEGER value: ").append(Strings.truncate(String.valueOf(object), 16));;
+      return Error.INTEGER_NOT_VALID(Form.class, object);
 
     if (range.length() > 0) {
       try {
         if (!new Range(range).isValid(object))
-          return new StringBuilder("Range ").append(range).append(" is not matched: ").append(Strings.truncate(String.valueOf(object), 16));
+          return Error.RANGE_NOT_MATCHED(range, object);
       }
       catch (final ParseException e) {
         throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES), e);
@@ -74,15 +82,6 @@ class NumberCodec extends PrimitiveCodec<Number> {
     }
 
     return null;
-  }
-
-  static Number decode(final Form form, final String json) {
-    try {
-      return form == Form.INTEGER ? new BigInteger(json) : new BigDecimal(json);
-    }
-    catch (final NumberFormatException e) {
-      return null;
-    }
   }
 
   private final Form form;
@@ -110,20 +109,20 @@ class NumberCodec extends PrimitiveCodec<Number> {
   }
 
   @Override
-  StringBuilder validate(final String json) {
+  Error validate(final String json) {
     if (form != Form.REAL) {
       final int dot = json.indexOf('.');
       if (dot != -1)
-        return new StringBuilder("Illegal ").append(Form.class.getSimpleName()).append(".INTEGER value");
+        return Error.INTEGER_NOT_VALID(Form.class, json);
     }
 
     // FIXME: decode() is done here and in the caller's scope
-    return range != null && !range.isValid(parse(json)) ? new StringBuilder("Range ").append(range).append(" is not matched: ").append(json) : null;
+    return range != null && !range.isValid(parse(json)) ? Error.RANGE_NOT_MATCHED(range, json) : null;
   }
 
   @Override
   Number parse(final String json) {
-    return decode(form, json);
+    return decodeObject(form, json);
   }
 
   @Override

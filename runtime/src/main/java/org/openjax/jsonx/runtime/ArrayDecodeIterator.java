@@ -68,13 +68,13 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final String token = (String)current;
     final Object value;
     if (codecType == AnyCodec.class)
       value = AnyCodec.decode(annotation, token, reader, onPropertyDecode);
     else if (codecType == ArrayCodec.class)
-      value = ArrayCodec.decodeArray(annotation, null, token, reader, idToElement, onPropertyDecode);
+      value = ArrayCodec.decodeArray((ArrayElement)annotation, ((ArrayElement)annotation).type(), token, reader, idToElement, onPropertyDecode);
     else if (codecType == BooleanCodec.class)
       value = BooleanCodec.decodeArray(token);
     else if (codecType == NumberCodec.class)
@@ -87,10 +87,10 @@ class ArrayDecodeIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
 
     if (value == null)
-      return Codec.contentNotExpected(preview(current));
+      return Error.CONTENT_NOT_EXPECTED(token);
 
-    if (value instanceof StringBuilder)
-      return (StringBuilder)value;
+    if (value instanceof Error)
+      return (Error)value;
 
     current = value;
     relations.set(index, new Relation(current, annotation));

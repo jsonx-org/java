@@ -27,25 +27,9 @@ import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayCodec extends Codec {
-  static Object decodeArray(final Annotation annotation, Object arg, final String token, final JsonReader reader, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  static Object decodeArray(final ArrayElement element, final Class<? extends Annotation> type, final String token, final JsonReader reader, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     if (!"[".equals(token))
       return null;
-
-    if (arg == null)
-      arg = annotation;
-
-    final Class<?> type;
-    final ArrayElement element;
-    if (arg instanceof ArrayElement) {
-      element = (ArrayElement)arg;
-      type = element.type();
-    }
-    else {
-      element = null;
-      type = (Class<?>)arg;
-      if (type == ArrayType.class)
-        throw new IllegalStateException();
-    }
 
     final int[] elementIds;
     final int minIterate;
@@ -55,21 +39,35 @@ class ArrayCodec extends Codec {
       minIterate = idToElement.getMinIterate();
       maxIterate = idToElement.getMaxIterate();
     }
-    else {
+    else if (element != null) {
       minIterate = element.minIterate();
       maxIterate = element.maxIterate();
       elementIds = element.elementIds();
     }
+    else {
+      throw new IllegalStateException();
+    }
 
-    return ArrayCodec.decode(idToElement.get(elementIds), minIterate, maxIterate, idToElement, reader, onPropertyDecode);
+    return ArrayCodec.decodeObject(idToElement.get(elementIds), minIterate, maxIterate, idToElement, reader, onPropertyDecode);
   }
 
-  static StringBuilder encodeArray(final Annotation annotation, final Class<? extends Annotation> type, final Object object, int index, final Relations relations, IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
-    if (!(object instanceof List))
-      return contentNotExpected(ArrayIterator.preview(object));
+  static Object decodeObject(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+    final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
+    final Relations relations = new Relations();
+    final Error error = ArrayValidator.validate(iterator, 1, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode, -1);
+    if (error != null)
+      return error;
 
-    if (index == -1)
-      index = type.getAnnotation(ArrayType.class).elementIds()[0];
+    final String token = reader.readToken();
+    if (!"]".equals(token))
+      return Error.EXPECTED_ARRAY(token);
+
+    return relations.deflate();
+  }
+
+  static Error encodeArray(final Annotation annotation, final Class<? extends Annotation> type, final Object object, final int index, final Relations relations, IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+    if (!(object instanceof List))
+      return Error.CONTENT_NOT_EXPECTED(object);
 
     final int[] elementIds;
     if (type == ArrayType.class) {
@@ -83,7 +81,7 @@ class ArrayCodec extends Codec {
     }
 
     final Relations subRelations = new Relations();
-    final StringBuilder subError = ArrayValidator.validate((List<?>)object, idToElement, elementIds, subRelations, validate, onPropertyDecode);
+    final Error subError = ArrayValidator.validate((List<?>)object, idToElement, elementIds, subRelations, validate, onPropertyDecode);
     if (validate && subError != null)
       return subError;
 
@@ -95,27 +93,13 @@ class ArrayCodec extends Codec {
     return null;
   }
 
-  static Object decode(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
-    final Relations relations = new Relations();
-    final StringBuilder error = ArrayValidator.validate(iterator, 1, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode, -1);
-    if (error != null)
-      return error;
-
-    final String token = reader.readToken();
-    if (!"]".equals(token))
-      return new StringBuilder("Expected ']', but got '").append(token).append('\'');
-
-    return relations.deflate();
-  }
-
-  static Object encode(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
+  static Object encodeObject(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
     final Relations relations = new Relations();
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JxUtil.digest(field, idToElement);
-    final StringBuilder error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
+    final Error error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
     if (validate && error != null)
-      return new StringBuilder(field.getDeclaringClass().getName()).append("#").append(field.getName()).append(": ").append(error.toString());
+      return Error.INVALID_FIELD(field, error);
 
     return relations;
   }

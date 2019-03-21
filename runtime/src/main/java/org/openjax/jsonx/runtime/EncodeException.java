@@ -23,6 +23,10 @@ public class EncodeException extends RuntimeException {
     this(null, null);
   }
 
+  public EncodeException(final Error error) {
+    this(error.toString(), null);
+  }
+
   public EncodeException(final String message) {
     this(message, null);
   }

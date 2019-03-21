@@ -25,7 +25,7 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayEncodeIterator extends ArrayIterator {
-  static <T>StringBuilder validateArray(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  static <T>Error validateArray(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final int[] elementIds;
     if (element.type() != ArrayType.class) {
       elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
@@ -37,7 +37,7 @@ class ArrayEncodeIterator extends ArrayIterator {
     }
 
     final Relations subRelations = new Relations();
-    final StringBuilder subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations, validate, onPropertyDecode);
+    final Error subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations, validate, onPropertyDecode);
     if (validate && subError != null)
       return subError;
 
@@ -72,7 +72,7 @@ class ArrayEncodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (codecType == AnyCodec.class)
       return AnyCodec.encodeArray((AnyElement)annotation, current, index, relations, idToElement, validate, onPropertyDecode);
 

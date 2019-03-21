@@ -73,10 +73,10 @@ public class JxEncoder {
     }
   }
 
-  private StringBuilder encodeNonArray(final boolean isProperty, final Field field, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
+  private Error encodeNonArray(final boolean isProperty, final Field field, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
     if (field == null && object == null) {
       if (validate && !JxUtil.isNullable(annotation))
-        return new StringBuilder("field is not nullable");
+        return Error.MEMBER_NOT_NULLABLE(annotation);
 
       builder.append("null");
     }
@@ -93,14 +93,14 @@ public class JxEncoder {
 
       final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
       if (String.class.isAssignableFrom(type)) {
-        final Object encoded = StringCodec.encode(annotation, isProperty ? ((StringProperty)annotation).pattern() : ((StringElement)annotation).pattern(), (String)value, validate);
-        if (encoded instanceof StringBuilder)
-          return (StringBuilder)encoded;
+        final Object encoded = StringCodec.encodeObject(annotation, isProperty ? ((StringProperty)annotation).pattern() : ((StringElement)annotation).pattern(), (String)value, validate);
+        if (encoded instanceof Error)
+          return (Error)encoded;
 
         builder.append(encoded);
       }
       else if (Boolean.class.isAssignableFrom(type) && (annotation instanceof BooleanProperty || annotation instanceof BooleanElement)) {
-        builder.append(BooleanCodec.encode((Boolean)value));
+        builder.append(BooleanCodec.encodeObject((Boolean)value));
       }
       else if (Number.class.isAssignableFrom(type)) {
         final Form form;
@@ -116,14 +116,14 @@ public class JxEncoder {
           range = element.range();
         }
 
-        final Object encoded = NumberCodec.encode(annotation, form, range, (Number)value, validate);
-        if (encoded instanceof StringBuilder)
-          return (StringBuilder)encoded;
+        final Object encoded = NumberCodec.encodeObject(annotation, form, range, (Number)value, validate);
+        if (encoded instanceof Error)
+          return (Error)encoded;
 
         builder.append(encoded);
       }
       else if (JxObject.class.isAssignableFrom(type)) {
-        final StringBuilder error = marshal((JxObject)value, null, builder, depth + 1);
+        final Error error = marshal((JxObject)value, null, builder, depth + 1);
         if (error != null)
           return error;
       }
@@ -136,32 +136,32 @@ public class JxEncoder {
   }
 
   @SuppressWarnings("unchecked")
-  private StringBuilder encodeProperty(final Field field, final Annotation annotation, final Object object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
+  private Error encodeProperty(final Field field, final Annotation annotation, final Object object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
     try {
       if (annotation instanceof ArrayProperty) {
-        final Object encoded = ArrayCodec.encode(field, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
-        if (encoded instanceof StringBuilder)
-          return (StringBuilder)encoded;
+        final Object encoded = ArrayCodec.encodeObject(field, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
+        if (encoded instanceof Error)
+          return (Error)encoded;
 
         final Relations relations = (Relations)encoded;
         if (onFieldEncode != null)
           onFieldEncode.accept(field, relations, -1, -1);
 
-        final StringBuilder error = encodeArray(relations, builder, depth);
+        final Error error = encodeArray(relations, builder, depth);
         if (error != null)
           return error;
       }
       else if (annotation instanceof AnyProperty) {
-        final Object encoded = AnyCodec.encode(annotation, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, validate, this, depth);
-        if (encoded instanceof StringBuilder)
-          return (StringBuilder)encoded;
+        final Object encoded = AnyCodec.encodeObject(annotation, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, this, depth, validate);
+        if (encoded instanceof Error)
+          return (Error)encoded;
 
         if (encoded instanceof Relations) {
           final Relations relations = (Relations)encoded;
           if (onFieldEncode != null)
             onFieldEncode.accept(field, relations, -1, -1);
 
-          final StringBuilder error = encodeArray(relations, builder, depth);
+          final Error error = encodeArray(relations, builder, depth);
           if (error != null)
             return error;
         }
@@ -170,7 +170,7 @@ public class JxEncoder {
         }
       }
       else {
-        final StringBuilder error = encodeNonArray(true, field, annotation, object, builder, depth);
+        final Error error = encodeNonArray(true, field, annotation, object, builder, depth);
         if (error != null)
           return error;
       }
@@ -185,21 +185,21 @@ public class JxEncoder {
     return null;
   }
 
-  private StringBuilder encodeArray(final Relations relations, final StringBuilder builder, final int depth) {
+  private Error encodeArray(final Relations relations, final StringBuilder builder, final int depth) {
     builder.append('[');
     for (int i = 0; i < relations.size(); ++i) {
       if (i > 0)
         builder.append(comma);
 
       final Relation relation = relations.get(i);
-      final StringBuilder error;
+      final Error error;
       if (relation.annotation instanceof ArrayElement || relation.annotation instanceof ArrayType || relation.annotation instanceof AnyElement && relation.member instanceof Relations) {
         error = encodeArray((Relations)relation.member, builder, depth);
       }
       else if (relation.annotation instanceof AnyElement) {
-        final Object encoded = AnyCodec.encode(relation.annotation, ((AnyElement)relation.annotation).types(), relation.member, validate, this, depth);
-        if (encoded instanceof StringBuilder) {
-          error = (StringBuilder)encoded;
+        final Object encoded = AnyCodec.encodeObject(relation.annotation, ((AnyElement)relation.annotation).types(), relation.member, this, depth, validate);
+        if (encoded instanceof Error) {
+          error = (Error)encoded;
         }
         else if (encoded instanceof Relations) {
           error = encodeArray((Relations)encoded, builder, depth);
@@ -221,7 +221,7 @@ public class JxEncoder {
     return null;
   }
 
-  StringBuilder marshal(final JxObject object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
+  Error marshal(final JxObject object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
     final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
@@ -303,7 +303,7 @@ public class JxEncoder {
           builder.append("null");
         }
         else {
-          final StringBuilder error = encodeProperty(field, annotation, value, onFieldEncode, builder, depth);
+          final Error error = encodeProperty(field, annotation, value, onFieldEncode, builder, depth);
           if (error != null)
             return error;
         }
@@ -314,7 +314,7 @@ public class JxEncoder {
         hasProperties = true;
       }
       else if (validate && use == Use.REQUIRED) {
-        return new StringBuilder(object.getClass().getName() + "#" + name + " is required");
+        return Error.PROPERTY_REQUIRED(name, field);
       }
       else if (onFieldEncode != null) {
         onFieldEncode.accept(field, null, -1, -1);
@@ -331,7 +331,7 @@ public class JxEncoder {
   String encode(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
     final StringBuilder builder = new StringBuilder();
     final Relations relations = new Relations();
-    final String error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
+    final Error error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
     if (validate && error != null)
       throw new EncodeException(error);
 
@@ -339,17 +339,17 @@ public class JxEncoder {
     return builder.toString();
   }
 
-  public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
-    return encode(list, arrayAnnotationType);
-  }
-
   String marshal(final JxObject object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode) {
     final StringBuilder builder = new StringBuilder();
-    final StringBuilder error = marshal(object, onFieldEncode, builder, 1);
+    final Error error = marshal(object, onFieldEncode, builder, 1);
     if (error != null)
       throw new EncodeException(error.toString());
 
     return builder.toString();
+  }
+
+  public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
+    return encode(list, arrayAnnotationType);
   }
 
   public String marshal(final JxObject object) {

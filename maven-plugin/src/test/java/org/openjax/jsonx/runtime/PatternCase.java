@@ -23,7 +23,7 @@ class PatternCase extends FailureCase<StringTrial> {
 
   @Override
   void onEncode(final StringTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().contains(" pattern is not matched: "));
+    assertTrue(trial.name + " " + e.getMessage(), e.getMessage().contains(" Pattern is not matched: "));
   }
 
   @Override

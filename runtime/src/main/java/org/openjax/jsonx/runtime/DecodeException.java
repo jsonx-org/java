@@ -36,6 +36,10 @@ public class DecodeException extends Exception {
     this(message, errorOffset, null);
   }
 
+  public DecodeException(final Error error, final int errorOffset) {
+    this(error.toString(), errorOffset, null);
+  }
+
   public DecodeException(final String message, final int errorOffset, final Throwable cause) {
     super(message != null ? message + " [errorOffset: " + errorOffset + "]" : "[errorOffset: " + errorOffset + "]", cause);
     this.errorOffset = errorOffset;

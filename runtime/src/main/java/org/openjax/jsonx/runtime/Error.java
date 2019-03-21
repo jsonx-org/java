@@ -1,0 +1,160 @@
+/* Copyright (c) 2019 OpenJAX
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * You should have received a copy of The MIT License (MIT) along with this
+ * program. If not, see <http://opensource.org/licenses/MIT/>.
+ */
+
+package org.openjax.jsonx.runtime;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
+import org.openjax.standard.util.Annotations;
+import org.openjax.standard.util.Strings;
+
+final class Error {
+  static final Error NULL = new Error(null);
+  static final Error LOOP = new Error("Loop detected");
+  static final Error NOT_A_STRING = new Error("Is not a string");
+  static final Error ILLEGAL_VALUE_NULL = new Error("Illegal value: null");
+
+  static Error INVALID_FIELD(final Field field, final Error error) {
+    return new Error("%s: %s", field, error);
+  }
+
+  static Error EXPECTED_ARRAY(final String token) {
+    return new Error("Expected ']', but got '%s'", token);
+  }
+
+  static Error CONTENT_NOT_EXPECTED(final Object content) {
+    return new Error("Content is not expected: %s", content);
+  }
+
+  static Error EXPECTED_TYPE(final String name, final String elementName, final String token) {
+    return new Error("Expected \"%s\" to be a \"%s\", but got: %s", name, elementName, token);
+  }
+
+  static Error EXPECTED_TOKEN(final String name, final String elementName, final String token) {
+    return new Error("Expected \"%s\" to be a \"%s\", but got token: \"%s\"", name, elementName, token);
+  }
+
+  static Error UNKNOWN_PROPERTY(final String propertyName) {
+    return new Error("Unknown property: \"%s\"", propertyName);
+  }
+
+  static Error RANGE_NOT_MATCHED(final Object range, final Object object) {
+    return new Error("Range %s is not matched: %s", range, object);
+  }
+
+  static Error INTEGER_NOT_VALID(final Class<?> type, final Object object) {
+    return new Error("Illegal %s .INTEGER value: %s", type, object);
+  }
+
+  static Error BOOLEAN_NOT_VALID(final String token) {
+    return new Error("Not a valid boolean token: %s", token);
+  }
+
+  static Error MEMBER_NOT_NULLABLE(final Annotation annotation) {
+    return new Error("Member is not nullable: %s", annotation);
+  }
+
+  static Error PROPERTY_REQUIRED(final String name, final Object value) {
+    return new Error("Property \"%s\" is required: %s", name, value);
+  }
+
+  static Error PATTERN_NOT_MATCHED(final String pattern, final String string) {
+    return new Error("Pattern (%s) is not matched: \"%s\"", pattern, string);
+  }
+
+  static Error PATTERN_NOT_MATCHED_ANNOTATION(final Annotation annotation, final String string) {
+    return new Error("%s: Pattern is not matched: \"%s\"", annotation, string);
+  }
+
+  static Error INVALID_CONTENT_WAS_FOUND(final int index, final Annotation annotation) {
+    return new Error("Invalid content was found starting with member index=%d: %s: ", index, annotation);
+  }
+
+  static Error INVALID_CONTENT_NOT_COMPLETE(final int index, final Annotation annotation) {
+    return new Error("Invalid content was found starting with member index=%d: %s: Content is not complete", index, annotation);
+  }
+
+  static Error INVALID_CONTENT_IN_EMPTY_NOT_COMPLETE(final Annotation annotation) {
+    return new Error("Invalid content was found in empty array: %s: Content is not complete", annotation);
+  }
+
+  static Error INVALID_CONTENT_MEMBERS_NOT_EXPECTED(final int index, final Annotation annotation, final Object object) {
+    return new Error("Invalid content was found starting with member index=%d: %s: No members are expected at this point: %s", index, annotation, object);
+  }
+
+  private final Object[] args;
+  private final String message;
+  private Error next;
+  private String rendered;
+
+  private Error(final String message) {
+    this.message = message;
+    this.args = null;
+  }
+
+  private Error(final String message, final Object ... args) {
+    this.message = message;
+    this.args = args;
+  }
+
+  Error append(final Error error) {
+    this.next = error;
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    if (rendered != null)
+      return rendered;
+
+    final String str;
+    if (args != null) {
+      for (int i = 0; i < args.length; ++i) {
+        final Object arg = args[i];
+        final Object obj;
+        if (arg instanceof Number || arg instanceof Boolean)
+          obj = arg;
+        else if (arg instanceof Annotation)
+          obj = Annotations.toSortedString((Annotation)arg, JxUtil.ATTRIBUTES);
+        else if (arg instanceof Field)
+          obj = ((Field)arg).getDeclaringClass().getName() + "#" + ((Field)arg).getName();
+        else if (arg instanceof Class)
+          obj = ((Class<?>)arg).getSimpleName();
+        else if (arg instanceof Error)
+          obj = arg.toString();
+        else
+          obj = Strings.truncate(String.valueOf(arg), 16);
+
+        args[i] = obj;
+      }
+
+      str = String.format(message, args);
+      for (int i = 0; i < args.length; ++i)
+        args[i] = null;
+    }
+    else {
+      str = message;
+    }
+
+    if (next == null)
+      return str;
+
+    rendered = str + next.toString();
+    next = null;
+    return rendered;
+  }
+}

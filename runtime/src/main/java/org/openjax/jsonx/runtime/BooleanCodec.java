@@ -27,15 +27,15 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
     return "true".equals(token) ? Boolean.TRUE : "false".equals(token) ? Boolean.FALSE : null;
   }
 
-  static StringBuilder encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
+  static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof Boolean))
-      return contentNotExpected(ArrayIterator.preview(object));
+      return Error.CONTENT_NOT_EXPECTED(object);
 
     relations.set(index, new Relation(object, annotation));
     return null;
   }
 
-  static String encode(final Boolean object) throws EncodeException, ValidationException {
+  static String encodeObject(final Boolean object) throws EncodeException, ValidationException {
     return String.valueOf(object);
   }
 
@@ -49,8 +49,8 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
   }
 
   @Override
-  StringBuilder validate(final String json) {
-    return !"true".equals(json) && !"false".equals(json) ? new StringBuilder("Not a valid boolean token: ").append(json) : null;
+  Error validate(final String json) {
+    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json) : null;
   }
 
   @Override

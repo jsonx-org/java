@@ -44,5 +44,5 @@ public abstract class ArrayIterator {
   protected abstract void next() throws IOException;
   protected abstract void previous();
   protected abstract int nextIndex() throws IOException;
-  protected abstract StringBuilder validate(Annotation annotation, int index, Relations relations, IdToElement idToElement, Class<? extends Codec> codecType, boolean validate, TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
+  protected abstract Error validate(Annotation annotation, int index, Relations relations, IdToElement idToElement, Class<? extends Codec> codecType, boolean validate, TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
 }

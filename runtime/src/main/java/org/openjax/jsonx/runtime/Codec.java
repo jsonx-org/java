@@ -26,10 +26,6 @@ import org.openjax.standard.util.FastArrays;
 import org.openjax.standard.util.function.TriPredicate;
 
 abstract class Codec {
-  static StringBuilder contentNotExpected(final String content) {
-    return new StringBuilder("Content is not expected: ").append(content);
-  }
-
   final Field field;
   private final Method setMethod;
   final boolean optional;
@@ -47,13 +43,13 @@ abstract class Codec {
     this.nullable = nullable;
     this.use = use;
     if (nullable && use == Use.OPTIONAL && !optional)
-      throw new ValidationException("Invalid field: " + JxUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
+      throw new ValidationException("Invalid field: " + JxUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
   }
 
   abstract String elementName();
 
-  final StringBuilder validateUse(final Object value) {
-    return value == null && !nullable && use == Use.REQUIRED ? new StringBuilder("Property \"").append(name).append("\" is required: ").append(value) : null;
+  final Error validateUse(final Object value) {
+    return value == null && !nullable && use == Use.REQUIRED ? Error.PROPERTY_REQUIRED(name, value) : null;
   }
 
   final Object toNull() {

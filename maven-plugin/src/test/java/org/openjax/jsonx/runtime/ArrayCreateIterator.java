@@ -56,7 +56,7 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected StringBuilder validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     this.annotation = annotation;
     if (trialType == TrialType.NULLABLE) {
       current = null;

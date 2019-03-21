@@ -84,8 +84,13 @@ public class ArrayCodecTest {
       if (expected == null)
         throw e;
 
-      if (!debugFail)
-        assertTrue(e.getMessage().endsWith(expected));
+      if (!debugFail) {
+        final boolean endsWith = e.getMessage().endsWith(expected);
+        if (!endsWith) {
+          e.printStackTrace();
+          assertTrue(e.getMessage() + " <> " + expected, endsWith);
+        }
+      }
     }
   }
 
@@ -131,10 +136,11 @@ public class ArrayCodecTest {
 
   private static void test(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
     final Relations relations = new Relations();
-    final String error = ArrayValidator.validate(annotationType, members, relations, true, null);
+    final Error error = ArrayValidator.validate(annotationType, members, relations, true, null);
     final Relations flatRelations = FastCollections.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
-    if (expected != null && !expected.equals(error)) {
-      String msg = "\"" + Strings.escapeForJava(error) + "\"";
+    final String errorString = error == null ? null : error.toString();
+    if (expected != null && errorString != null && !expected.equals(errorString)) {
+      String msg = "\"" + Strings.escapeForJava(errorString) + "\"";
       msg = msg.replace('$', '.');
       msg = msg.replace(".class", "%class");
       msg = msg.replaceAll("org\\.openjax\\.[.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
@@ -144,11 +150,11 @@ public class ArrayCodecTest {
     }
 
     if (expected == null ? debugPass : debugFail)
-      assertEquals(flatRelations.toString(), expected == null, error == null);
+      assertEquals(flatRelations.toString(), expected == null, errorString == null);
     else
-      assertEquals(expected, error);
+      assertEquals(expected, errorString);
 
-    if (error == null) {
+    if (errorString == null) {
       final List<Object> flatMembers = FastCollections.flatten(members, new ArrayList<>(), true);
       assertEquals("Number of members not matched", flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
