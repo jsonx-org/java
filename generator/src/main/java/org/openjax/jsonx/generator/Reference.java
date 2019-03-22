@@ -136,6 +136,11 @@ final class Reference extends Member {
   }
 
   @Override
+  String nameName() {
+    return model.nameName();
+  }
+
+  @Override
   String elementName() {
     return "reference";
   }

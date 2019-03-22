@@ -19,7 +19,6 @@ package org.openjax.jsonx.generator;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import org.openjax.jsonx.generator.Registry.Kind;
 import org.openjax.jsonx.runtime.JxObject;
 
 class ClassSpec {
@@ -45,10 +44,10 @@ class ClassSpec {
     if (referrer == null)
       return null;
 
-    final StringBuilder builder = new StringBuilder();
     if (referrer.getClassAnnotation() == null)
       return null;
 
+    final StringBuilder builder = new StringBuilder();
     final Iterator<AnnotationSpec> iterator = referrer.getClassAnnotation().iterator();
     for (int i = 0; iterator.hasNext(); ++i) {
       if (i > 0)
@@ -67,11 +66,11 @@ class ClassSpec {
   @Override
   public String toString() {
     final StringBuilder builder = new StringBuilder();
-    if (referrer != null && referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract)
+    if (referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract)
       builder.append("abstract ");
 
     builder.append(type.getKind()).append(' ').append(type.getSimpleName());
-    if (type.getKind() == Kind.CLASS && referrer != null) {
+    if (type.getKind() == Registry.Kind.CLASS && referrer != null) {
       if (type.getSuperType() != null)
         builder.append(" extends ").append(type.getSuperType().getCanonicalName());
       else

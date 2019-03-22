@@ -28,7 +28,7 @@ import org.openjax.standard.util.Identifiers;
 import org.openjax.standard.util.Strings;
 
 public final class JxUtil {
-  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
+  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
 
   public static String flipName(String name) {
     int i = name.lastIndexOf('$');

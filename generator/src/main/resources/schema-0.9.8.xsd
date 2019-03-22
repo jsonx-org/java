@@ -35,9 +35,9 @@
   </xs:attributeGroup>
   
   <xs:attributeGroup name="nameable">
-    <xs:attribute name="name" type="dt:stringNonEmpty" use="required">
+    <xs:attribute name="name" type="xs:string" use="required">
       <xs:annotation>
-        <xs:documentation>Name of property or regex pattern of property name. Required.</xs:documentation>
+        <xs:documentation>Name of property. Required.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
@@ -116,9 +116,13 @@
     <xs:complexContent>
       <xs:extension base="jx:anyMember">
         <xs:attributeGroup ref="jx:idrefs"/>
-        <xs:attributeGroup ref="jx:nameable"/>
         <xs:attributeGroup ref="jx:annullable"/>
         <xs:attributeGroup ref="jx:use"/>
+        <xs:attribute name="match" type="dt:stringNonEmpty" use="required">
+          <xs:annotation>
+            <xs:documentation>Regex pattern of property name. Required.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -399,18 +403,14 @@
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
-            <xs:unique name="objectNameUnique">
-              <xs:selector xpath="./*"/>
-              <xs:field xpath="@name"/>
+            <xs:unique name="uniquePropertyName">
+              <xs:selector xpath="./jx:property"/>
+              <xs:field xpath="@name | @match"/>
             </xs:unique>
           </xs:element>
         </xs:choice>
       </xs:sequence>
     </xs:complexType>
-    <xs:unique name="uniquePropertyName">
-      <xs:selector xpath=".//jx:objectType/jx:property"/>
-      <xs:field xpath="@xsi:name"/>
-    </xs:unique>
   </xs:element>
 
 </xs:schema>

@@ -16,7 +16,9 @@
 
 package org.openjax.jsonx.generator;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
@@ -26,6 +28,56 @@ import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Referrer<T extends Referrer<?>> extends Model {
+  private static final ThreadLocal<Integer> count = new ThreadLocal<Integer>() {
+    @Override
+    protected Integer initialValue() {
+      return 0;
+    }
+  };
+
+  private static final ThreadLocal<Set<Member>> exclude = new ThreadLocal<Set<Member>>() {
+    @Override
+    protected Set<Member> initialValue() {
+      return new HashSet<>();
+    }
+  };
+
+  static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Member> members) {
+    if (members.size() == 0)
+      throw new IllegalArgumentException("members.size() == 0");
+
+    try {
+      count.set(count.get() + 1);
+      int start = 0;
+      if (exclude.get().contains(members.get(0)))
+        start = 1;
+      else
+        exclude.get().add(members.get(0));
+
+      if (members.size() == start)
+        return null;
+
+      if (members.size() == start + 1)
+        return registry.getType(List.class, members.get(start).type());
+
+      Registry.Type gct = members.get(start).type();
+      for (int i = start + 1; i < members.size() && gct != null; ++i) {
+        final Member member = members.get(i);
+        if (!exclude.get().contains(member)) {
+          exclude.get().add(member);
+          gct = gct.getGreatestCommonSuperType(member.type());
+        }
+      }
+
+      return registry.getType(List.class, gct);
+    }
+    finally {
+      count.set(count.get() - 1);
+      if (count.get() == 0)
+        exclude.get().clear();
+    }
+  }
+
   private final Registry.Type type;
 
   Referrer(final Registry registry, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {

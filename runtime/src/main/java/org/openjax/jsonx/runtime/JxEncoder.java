@@ -88,7 +88,7 @@ public class JxEncoder {
         type = object.getClass();
       }
       else {
-        type = (isOptional = Optional.class.isAssignableFrom(field.getType())) ? Classes.getGenericTypes(field)[0] : field.getType();
+        type = (isOptional = Optional.class.isAssignableFrom(field.getType())) ? Classes.getGenericClasses(field)[0] : field.getType();
       }
 
       final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;

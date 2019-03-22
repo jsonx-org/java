@@ -152,7 +152,7 @@ final class StringModel extends Model {
 
   private StringModel(final Registry registry, final StringProperty property, final Field field) {
     super(registry, Id.hashed("s", parsePattern(property.pattern())), property.nullable(), property.use());
-    if (!isAssignable(field, String.class, property.nullable(), property.use()))
+    if (!isAssignable(field, String.class, false, property.nullable(), property.use()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of String type, or optional and nullable fields of Optional<String> type");
 
     this.pattern = parsePattern(property.pattern());

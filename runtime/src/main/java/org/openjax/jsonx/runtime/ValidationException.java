@@ -24,8 +24,6 @@ public class ValidationException extends RuntimeException {
 
   public ValidationException(final String message) {
     super(message);
-    if (message.startsWith("Invalid content"))
-      System.out.println();
   }
 
   public ValidationException(final Throwable cause) {

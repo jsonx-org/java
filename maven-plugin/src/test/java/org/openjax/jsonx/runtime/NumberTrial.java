@@ -70,7 +70,7 @@ class NumberTrial extends PropertyTrial<Number> {
 
   static Number toProperForm(final Field field, final Form form, final BigDecimal value) {
     final boolean isOptional = Optional.class.isAssignableFrom(field.getType());
-    final Class<?> type = isOptional ? Classes.getGenericTypes(field)[0] : field.getType();
+    final Class<?> type = isOptional ? Classes.getGenericClasses(field)[0] : field.getType();
     if (BigDecimal.class.isAssignableFrom(type)) {
       final BigDecimal decimal = value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value;
       return form == Form.INTEGER ? decimal.setScale(0, RoundingMode.DOWN) : decimal;

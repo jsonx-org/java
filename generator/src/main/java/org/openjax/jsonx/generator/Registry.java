@@ -72,9 +72,9 @@ class Registry {
     private final String name;
     private final String canonicalName;
     private final Type superType;
-    private final Type genericType;
+    private final Type[] genericTypes;
 
-    private Type(final Kind kind, final String packageName, final String compoundName, final Type superType, final Type genericType) {
+    private Type(final Kind kind, final String packageName, final String compoundName, final Type superType, final Type[] genericTypes) {
       this.kind = kind;
       final boolean defaultPackage = packageName.length() == 0;
       final int dot = compoundName.lastIndexOf('.');
@@ -86,12 +86,12 @@ class Registry {
       this.simpleName = canonicalCompoundName.substring(canonicalCompoundName.lastIndexOf('.') + 1);
       this.canonicalName = defaultPackage ? canonicalCompoundName : packageName + "." + canonicalCompoundName;
       this.superType = superType;
-      this.genericType = genericType;
+      this.genericTypes = genericTypes;
       qualifiedNameToType.put(toCanonicalString(), this);
     }
 
-    private Type(final Class<?> cls, final Type genericType) {
-      this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), null), genericType);
+    private Type(final Class<?> cls, final Type ... genericTypes) {
+      this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (Type[])null), genericTypes);
     }
 
     Type getSuperType() {
@@ -162,8 +162,13 @@ class Registry {
 
     String toCanonicalString() {
       final StringBuilder builder = new StringBuilder(canonicalName);
-      if (genericType != null)
-        builder.append('<').append(genericType.toCanonicalString()).append('>');
+      if (genericTypes != null) {
+        builder.append('<');
+        for (final Type genericType : genericTypes)
+          builder.append(genericType.toCanonicalString()).append(',');
+
+        builder.setCharAt(builder.length() - 1, '>');
+      }
 
       return builder.toString();
     }
@@ -187,8 +192,13 @@ class Registry {
     @Override
     public String toString() {
       final StringBuilder builder = new StringBuilder(name);
-      if (genericType != null)
-        builder.append('<').append(genericType.toString()).append('>');
+      if (genericTypes != null) {
+        builder.append('<');
+        for (final Type genericType : genericTypes)
+          builder.append(genericType.toString()).append(',');
+
+        builder.setCharAt(builder.length() - 1, '>');
+      }
 
       return builder.toString();
     }
@@ -209,32 +219,40 @@ class Registry {
   Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
     final StringBuilder className = new StringBuilder();
     if (packageName.length() > 0)
-      className.append(packageName).append(".");
+      className.append(packageName).append('.');
 
     className.append(compoundName);
     if (genericType != null)
       className.append('<').append(genericType.toCanonicalString()).append('>');
 
     final Type type = qualifiedNameToType.get(className.toString());
-    return type != null ? type : new Type(kind, packageName, compoundName, superCompoundName == null ? null : getType(Kind.CLASS, superPackageName, superCompoundName, null, null, null), genericType);
+    return type != null ? type : new Type(kind, packageName, compoundName, superCompoundName == null ? null : getType(Kind.CLASS, superPackageName, superCompoundName, null, null, null), genericType == null ? null : new Type[] {genericType});
   }
 
-  Type getType(final Class<?> cls, final Type genericType) {
-    final String name = cls.getName() + "<" + (genericType != null ? genericType.toCanonicalString() : Object.class.getName()) + ">";
-    final Type type = qualifiedNameToType.get(name);
-    return type != null ? type : new Type(cls, genericType);
+  Type getType(final Class<?> cls, final Type ... genericTypes) {
+    final StringBuilder builder = new StringBuilder(cls.getName());
+    if (genericTypes != null) {
+      builder.append('<');
+      for (final Type genericType : genericTypes)
+        builder.append(genericType.toCanonicalString());
+
+      builder.append('>');
+    }
+
+    final Type type = qualifiedNameToType.get(builder.toString());
+    return type != null ? type : new Type(cls, genericTypes);
   }
 
   Type getType(final Class<?> cls) {
     return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
   }
 
-  Type getType(final Class<?> ... generics) {
-    return getType(0, generics);
+  Type getType(final Class<?> ... genericClasses) {
+    return getType(0, genericClasses);
   }
 
-  private Type getType(final int index, final Class<?> ... generics) {
-    return index == generics.length - 1 ? getType(generics[index]) : getType(generics[index], getType(index + 1, generics));
+  private Type getType(final int index, final Class<?> ... genericClasses) {
+    return index == genericClasses.length - 1 ? getType(genericClasses[index]) : getType(genericClasses[index], getType(index + 1, genericClasses));
   }
 
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();

@@ -45,13 +45,13 @@
     <property name="booleanPropertyOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
     <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
     <property name="emptyArray" xsi:type="reference" type="rootArrayBool"/>
-    <property name="any1" xsi:type="any" types="rootNumberReal" use="optional"/>
+    <property match="any\d" xsi:type="any" types="rootNumberReal" use="optional"/>
   </objectType>
   <objectType name="simple-booleans">
     <property name="booleanRefDefault" xsi:type="reference" type="rootBoolean"/>
     <property name="booleanRefOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
     <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
-    <property name="any2" xsi:type="any" types="rootNumberInteger"/>
+    <property match="any\s" xsi:type="any" types="rootNumberInteger"/>
     <property name="booleanDefault" xsi:type="boolean"/>
     <property name="booleanOptional" xsi:type="boolean" use="optional"/>
     <property name="booleanOptionalNotNullable" xsi:type="boolean" use="optional" nullable="false"/>
@@ -78,7 +78,7 @@
     <property name="numberRefDefault" xsi:type="reference" type="rootNumberInteger"/>
     <property name="numberRefOptional" xsi:type="reference" type="rootNumberInteger" use="optional"/>
     <property name="numberRefOptionalNotNullable" xsi:type="reference" type="rootNumberReal" use="optional" nullable="false"/>
-    <property name="any3" xsi:type="any" types="rootNumberInteger"/>
+    <property match="any[a-z]+" xsi:type="any" types="rootNumberInteger"/>
     <property name="numberDefault" xsi:type="number"/>
     <property name="numberOptional" xsi:type="number" use="optional"/>
     <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
@@ -271,8 +271,8 @@
     <property name="stringRefOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
     <property name="stringDefault" xsi:type="string"/>
     <property name="stringOptional" xsi:type="string" use="optional"/>
-    <property name="any4" xsi:type="any"/>
-    <property name="any5" xsi:type="any"/>
+    <property match="any[0-9a-f]+" xsi:type="any"/>
+    <property match="any\\d" xsi:type="any"/>
     <property name="stringOptionalNotNullable" xsi:type="string" use="optional" nullable="false"/>
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
     <property name="stringUrlDecode" xsi:type="string"/>
@@ -318,9 +318,9 @@
       <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
       <property name="objectNumberOptional" xsi:type="number" use="optional"/>
       <property name="objectNumberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
-      <property name="any6" xsi:type="any"/>
-      <property name="any7" xsi:type="any"/>
-      <property name="any8" xsi:type="any"/>
+      <property match=".*any6" xsi:type="any"/>
+      <property match="an\+y7" xsi:type="any"/>
+      <property match="a+ny8" xsi:type="any"/>
       <property name="objectExtendsBooleans" xsi:type="object" extends="simple-booleans"/>
       <property name="objectExtendsBooleansOptional2" xsi:type="object" extends="simple-booleans" use="optional"/>
       <property name="objectExtendsBooleansOptionalNullable2" xsi:type="object" extends="simple-booleans" use="optional"/>

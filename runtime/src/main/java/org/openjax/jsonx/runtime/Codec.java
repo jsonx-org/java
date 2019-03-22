@@ -39,7 +39,7 @@ abstract class Codec {
     this.name = JxUtil.getName(name, field);
     this.setMethod = JxUtil.getSetMethod(field, this.name);
     this.optional = Optional.class.isAssignableFrom(field.getType());
-    this.genericType = optional ? Classes.getGenericTypes(field)[0] : null;
+    this.genericType = optional ? Classes.getGenericClasses(field)[0] : null;
     this.nullable = nullable;
     this.use = use;
     if (nullable && use == Use.OPTIONAL && !optional)

@@ -77,10 +77,10 @@
       <number nullable="false" maxOccurs="3"/>
     </property>
     <property name="arrayOne" xsi:type="reference" type="bar-rootArray1" use="optional"/>
-    <property name="any1" xsi:type="any" types="rootString rootNumber" use="optional"/>
+    <property match="any1" xsi:type="any" types="rootString rootNumber" use="optional"/>
     <property name="arrayTwo" xsi:type="reference" type="bar-rootArray2"/>
     <property name="arrayThree" xsi:type="reference" type="rootArray3"/>
-    <property name="any2" xsi:type="any" nullable="false"/>
+    <property match="any2" xsi:type="any" nullable="false"/>
     <property name="arrayFour" xsi:type="reference" type="rootArray4" use="optional"/>
   </objectType>
 </schema>

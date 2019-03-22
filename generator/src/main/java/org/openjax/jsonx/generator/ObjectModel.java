@@ -123,7 +123,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
-    if (!isAssignable(field, JxObject.class, property.nullable(), property.use()))
+    if (!isAssignable(field, JxObject.class, false, property.nullable(), property.use()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ObjectProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of JxObject type, or optional and nullable fields of Optional<? extends JxObject> type");
 
     final Id id = Id.named(getRealType(field));
@@ -209,7 +209,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       final xL4gluGCXYYJc.$Member member = (xL4gluGCXYYJc.$Member)iterator.next();
       if (member instanceof xL4gluGCXYYJc.$Any) {
         final xL4gluGCXYYJc.$Any any = (xL4gluGCXYYJc.$Any)member;
-        members.put(any.getName$().text(), AnyModel.reference(registry, objectModel, any));
+        members.put(any.getMatch$().text(), AnyModel.reference(registry, objectModel, any));
       }
       else if (member instanceof xL4gluGCXYYJc.$Array) {
         final xL4gluGCXYYJc.$Array array = (xL4gluGCXYYJc.$Array)member;
@@ -251,7 +251,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private static Class<?> getRealType(final Field field) {
-    return Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericTypes(field)[0] : field.getType();
+    return Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType();
   }
 
   final Map<String,Member> members;
@@ -418,11 +418,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     final Registry.Type type = classType();
-    builder.append("\n\n@").append(Override.class.getName());
+    if (members.size() > 0)
+      builder.append("\n\n");
+
+    builder.append('@').append(Override.class.getName());
     builder.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
     builder.append("\n  if (obj == this)");
     builder.append("\n    return true;");
-    builder.append("\n\n  if (!(obj instanceof ").append(type.getCanonicalName()).append(")").append((type.getSuperType() != null ? " || !super.equals(obj)" : "")).append(")");
+    builder.append("\n\n  if (!(obj instanceof ").append(type.getCanonicalName()).append(')').append((type.getSuperType() != null ? " || !super.equals(obj)" : "")).append(')');
     builder.append("\n    return false;\n");
     if (members != null && members.size() > 0) {
       builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
@@ -438,7 +441,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     builder.append("\n\n@").append(Override.class.getName());
     builder.append("\npublic int hashCode() {");
     if (members != null && members.size() > 0) {
-      builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(";");
+      builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
       for (final Member member : members.values()) {
         final String instanceName = member.toInstanceName();
         builder.append("\n  hashCode = 31 * hashCode + (").append(instanceName).append(" == null ? 0 : ").append(instanceName).append(".hashCode());");
@@ -447,13 +450,13 @@ final class ObjectModel extends Referrer<ObjectModel> {
       builder.append("\n  return hashCode;");
     }
     else {
-      builder.append("\n  return ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(";");
+      builder.append("\n  return ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
     }
     builder.append("\n}");
 
     builder.append("\n\n@").append(Override.class.getName());
     builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
-    builder.append("\n  return new ").append(JxEncoder.class.getName()).append("(").append(settings.getToStringIndent()).append(").marshal(this);");
+    builder.append("\n  return new ").append(JxEncoder.class.getName()).append('(').append(settings.getToStringIndent()).append(").marshal(this);");
     builder.append("\n}");
 
     return builder.toString();

@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -161,7 +160,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty arrayProperty, final Field field) {
-    if (!isAssignable(field, List.class, arrayProperty.nullable(), arrayProperty.use()))
+    if (!isAssignable(field, List.class, isRegex(JxUtil.getName(field)), arrayProperty.nullable(), arrayProperty.use()))
       throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of List<?> types, or optional and nullable fields of Optional<? extends List<?>> type");
 
     if (ArrayType.class.equals(arrayProperty.type())) {
@@ -207,56 +206,6 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
-  }
-
-  private static final ThreadLocal<Integer> count = new ThreadLocal<Integer>() {
-    @Override
-    protected Integer initialValue() {
-      return 0;
-    }
-  };
-
-  private static final ThreadLocal<Set<Member>> exclude = new ThreadLocal<Set<Member>>() {
-    @Override
-    protected Set<Member> initialValue() {
-      return new HashSet<>();
-    }
-  };
-
-  static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Member> members) {
-    if (members.size() == 0)
-      throw new IllegalArgumentException("members.size() == 0");
-
-    try {
-      count.set(count.get() + 1);
-      int start = 0;
-      if (exclude.get().contains(members.get(0)))
-        start = 1;
-      else
-        exclude.get().add(members.get(0));
-
-      if (members.size() == start)
-        return null;
-
-      if (members.size() == start + 1)
-        return registry.getType(List.class, members.get(start).type());
-
-      Registry.Type gct = members.get(start).type();
-      for (int i = start + 1; i < members.size() && gct != null; ++i) {
-        final Member member = members.get(i);
-        if (!exclude.get().contains(member)) {
-          exclude.get().add(member);
-          gct = gct.getGreatestCommonSuperType(member.type());
-        }
-      }
-
-      return registry.getType(List.class, gct);
-    }
-    finally {
-      count.set(count.get() - 1);
-      if (count.get() == 0)
-        exclude.get().clear();
-    }
   }
 
   private void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
@@ -427,7 +376,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   @Override
   Registry.Type type() {
-    return getGreatestCommonSuperType(registry, members);
+    // type can be null if there is a loop in the type graph
+    final Registry.Type type = getGreatestCommonSuperType(registry, members);
+    return type != null ? type : registry.getType(List.class, Object.class);
   }
 
   @Override

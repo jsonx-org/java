@@ -91,7 +91,7 @@ public class ArrayValidator {
         builder.append(relation).append(", ");
 
       builder.setLength(builder.length() - 2);
-      return builder.append("]").toString();
+      return builder.append(']').toString();
     }
   }
 

@@ -87,7 +87,7 @@
   <stringType name="strPatternDecEnc" pattern="[%0-9a-z]+"/>
   <stringType name="strPatternEnc" pattern="[%0-9a-z]+"/>
   <objectType name="objArr">
-    <property name="any" xsi:type="any" nullable="false"/>
+    <property match=".*" xsi:type="any" nullable="false"/>
     <property name="arrayBool" xsi:type="reference" type="arrayBool"/>
     <property name="arrayBoolOptional" xsi:type="reference" type="arrayBool" use="optional"/>
     <property name="arrayBoolOptionalNotNullable" xsi:type="reference" type="arrayBool" use="optional" nullable="false"/>
@@ -97,20 +97,20 @@
     <property name="arrayStr" xsi:type="reference" type="arrayStr"/>
     <property name="arrayStrOptional" xsi:type="reference" type="arrayStr" use="optional"/>
     <property name="arrayStrOptionalNotNullable" xsi:type="reference" type="arrayStr" use="optional" nullable="false"/>
-    <property name="anyNumStr" types="num str" xsi:type="any" use="optional"/>
+    <property match="anyNumStr" types="num str" xsi:type="any" use="optional"/>
   </objectType>
   <objectType name="objBool">
-    <property name="bool" xsi:type="reference" type="bool"/>
-    <property name="any" xsi:type="any" types="bool num" nullable="false"/>
-    <property name="boolOptional" xsi:type="reference" type="bool" use="optional"/>
+    <property name="bo+l" xsi:type="reference" type="bool" nullable="false"/>
+    <property match=".*" xsi:type="any" types="bool num"/>
+    <property name="bo+lOptional" xsi:type="reference" type="bool" use="optional"/>
     <property name="boolOptionalNotNullable" xsi:type="reference" type="bool" use="optional" nullable="false"/>
   </objectType>
   <objectType name="objNum">
-    <property name="num" xsi:type="reference" type="num"/>
+    <property name="num.+" xsi:type="reference" type="num"/>
     <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
     <property name="numOptionalNotNullable" xsi:type="reference" type="num" use="optional" nullable="false"/>
     <property name="numInt" xsi:type="reference" type="numInt"/>
-    <property name="any" xsi:type="any" types="bool num" nullable="false"/>
+    <property match="any" xsi:type="any" types="bool num" nullable="false"/>
     <property name="numIntOptional" xsi:type="reference" type="numInt" use="optional"/>
     <property name="numIntOptionalNotNullable" xsi:type="reference" type="numInt" use="optional" nullable="false"/>
     <property name="numIntRange1" xsi:type="reference" type="numIntRange1"/>

@@ -17,6 +17,8 @@
 package org.openjax.jsonx.generator;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -31,14 +33,37 @@ import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Model extends Member implements Comparable<Model> {
-  static boolean isAssignable(final Field field, final Class<?> cls, final boolean nullable, final Use use) {
+  static boolean isAssignable(final Field field, final Class<?> cls, final boolean isRegex, final boolean nullable, final Use use) {
+    if (isRegex) {
+      if (!Map.class.isAssignableFrom(field.getType()))
+        return false;
+
+      final Type genericType = field.getGenericType();
+      if (!(genericType instanceof ParameterizedType))
+        return false;
+
+      final Type[] genericTypes = ((ParameterizedType)genericType).getActualTypeArguments();
+      if (genericTypes.length != 2)
+        return false;
+
+      if (!(genericTypes[1] instanceof ParameterizedType))
+        return !nullable && cls.isAssignableFrom((Class<?>)genericTypes[1]);
+
+      final Class<?> valueType = (Class<?>)((ParameterizedType)genericTypes[1]).getRawType();
+      if (!Optional.class.isAssignableFrom(valueType))
+        return false;
+
+      final Type[] args = ((ParameterizedType)genericTypes[1]).getActualTypeArguments();
+      return args.length == 1 && cls.isAssignableFrom(args[0] instanceof ParameterizedType ? (Class<?>)((ParameterizedType)args[0]).getRawType() : (Class<?>)args[0]);
+    }
+
     if (use != Use.OPTIONAL || !nullable)
       return cls.isAssignableFrom(field.getType());
 
     if (!Optional.class.isAssignableFrom(field.getType()))
       return false;
 
-    final Class<?>[] genericTypes = Classes.getGenericTypes(field);
+    final Class<?>[] genericTypes = Classes.getGenericClasses(field);
     if (genericTypes.length == 0 || genericTypes[0] == null)
       return false;
 

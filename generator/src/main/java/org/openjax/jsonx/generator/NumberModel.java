@@ -195,7 +195,7 @@ final class NumberModel extends Model {
 
   private NumberModel(final Registry registry, final NumberProperty property, final Field field) {
     super(registry, Id.hashed("n", parseForm(property.form()), parseRange(property.range())), property.nullable(), property.use());
-    if (!isAssignable(field, Number.class, property.nullable(), property.use()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
+    if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Number subtype, or non-nullable fields of primitive numeric type, or optional and nullable fields of Optional<? extends Number> type");
 
     this.form = parseForm(property.form());

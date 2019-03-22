@@ -25,12 +25,12 @@ import org.openjax.jsonx.runtime.BooleanProperty;
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.standard.lang.IllegalAnnotationException;
 
 final class BooleanModel extends Model {
+  private static final Id ID = Id.hashed("b");
+
   private static xL4gluGCXYYJc.Schema.BooleanType type(final schema.BooleanType jsonx) {
     final xL4gluGCXYYJc.Schema.BooleanType xsb = new xL4gluGCXYYJc.Schema.BooleanType();
-
     if (jsonx.getName() != null)
       xsb.setName$(new xL4gluGCXYYJc.Schema.BooleanType.Name$(jsonx.getName()));
 
@@ -58,7 +58,6 @@ final class BooleanModel extends Model {
 
   private static xL4gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsonx) {
     final xL4gluGCXYYJc.$ArrayMember.Boolean xsb = new xL4gluGCXYYJc.$ArrayMember.Boolean();
-
     if (jsonx.getNullable() != null)
       xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsonx.getNullable()));
 
@@ -118,21 +117,22 @@ final class BooleanModel extends Model {
   }
 
   private BooleanModel(final Registry registry, final xL4gluGCXYYJc.$Boolean binding) {
-    super(registry, Id.hashed("b"), binding.getName$(), binding.getNullable$(), binding.getUse$());
+    super(registry, ID, binding.getName$(), binding.getNullable$(), binding.getUse$());
   }
 
   private BooleanModel(final Registry registry, final xL4gluGCXYYJc.$Array.Boolean binding) {
-    super(registry, Id.hashed("b"), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(registry, ID, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
   }
 
   private BooleanModel(final Registry registry, final BooleanProperty property, final Field field) {
-    super(registry, Id.hashed("b"), property.nullable(), property.use());
-    if (!isAssignable(field, Boolean.class, property.nullable(), property.use()) && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Boolean type, non-nullable boolean type, or optional and nullable fields of Optional<Boolean> type");
+    super(registry, ID, property.nullable(), property.use());
+    if (!isAssignable(field, Boolean.class, false, property.nullable(), property.use()) && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
+      isAssignable(field, Boolean.class, false, property.nullable(), property.use());
+//      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Boolean type, non-nullable boolean type, or optional and nullable fields of Optional<Boolean> type");
   }
 
   private BooleanModel(final Registry registry, final BooleanElement element) {
-    super(registry, Id.hashed("b"), element.nullable(), null);
+    super(registry, ID, element.nullable(), null);
   }
 
   @Override

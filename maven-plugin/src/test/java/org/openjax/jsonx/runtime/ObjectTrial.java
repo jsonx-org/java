@@ -82,7 +82,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final ObjectProperty objectProperty = field.getAnnotation(ObjectProperty.class);
         if (objectProperty != null) {
           if (objectProperty.use() == Use.REQUIRED || Math.random() < 0.4)
-            setField(field, object, ObjectTrial.createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericTypes(field)[0] : field.getType()));
+            setField(field, object, ObjectTrial.createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()));
 
           continue;
         }
@@ -104,7 +104,7 @@ class ObjectTrial extends PropertyTrial<Object> {
   }
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final ObjectProperty property) {
-    trials.add(new ObjectTrial(ValidCase.CASE, field, object, createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericTypes(field)[0] : field.getType()), property));
+    trials.add(new ObjectTrial(ValidCase.CASE, field, object, createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()), property));
     if (property.use() == Use.REQUIRED) {
       trials.add(new ObjectTrial(getNullableCase(property.nullable()), field, object, null, property));
     }

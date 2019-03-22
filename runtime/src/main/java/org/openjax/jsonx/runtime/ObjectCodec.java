@@ -171,7 +171,7 @@ class ObjectCodec extends Codec {
   @SuppressWarnings("unchecked")
   ObjectCodec(final ObjectProperty property, final Field field) {
     super(field, property.name(), property.nullable(), property.use());
-    this.type = (Class<? extends JxObject>)(optional ? Classes.getGenericTypes(field)[0] : field.getType());
+    this.type = (Class<? extends JxObject>)(optional ? Classes.getGenericClasses(field)[0] : field.getType());
   }
 
   @Override

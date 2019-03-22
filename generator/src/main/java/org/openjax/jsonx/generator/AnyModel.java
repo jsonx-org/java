@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.openjax.jsonx.runtime.AnyType;
 import org.openjax.jsonx.runtime.AnyElement;
 import org.openjax.jsonx.runtime.AnyProperty;
+import org.openjax.jsonx.runtime.AnyType;
 import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.JxUtil;
@@ -108,18 +108,6 @@ final class AnyModel extends Referrer<AnyModel> {
     return registry.reference(new AnyModel(registry, binding), referrer);
   }
 
-  private final List<Member> types;
-
-  private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Any binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$(), null);
-    this.types = getTypes(binding.getTypes$());
-  }
-
-  private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Array.Any binding) {
-    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
-    this.types = getTypes(binding.getTypes$());
-  }
-
   private static final xL4gluGCXYYJc.$Reference anonymousReference = new xL4gluGCXYYJc.$Reference() {
     private static final long serialVersionUID = 7585066984559415750L;
     private final Name$ name = new Name$("");
@@ -144,6 +132,28 @@ final class AnyModel extends Referrer<AnyModel> {
       return null;
     }
   };
+
+  private final List<Member> types;
+
+  private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Any binding) {
+    super(registry, binding.getMatch$(), binding.getNullable$(), binding.getUse$(), null);
+    this.types = getTypes(binding.getTypes$());
+  }
+
+  private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Array.Any binding) {
+    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
+    this.types = getTypes(binding.getTypes$());
+  }
+
+  private AnyModel(final Registry registry, final AnyProperty property) {
+    super(registry, property.nullable(), property.use(), null);
+    this.types = getTypes(property.types());
+  }
+
+  private AnyModel(final Registry registry, final AnyElement element) {
+    super(registry, element.nullable(), null, null);
+    this.types = getTypes(element.types());
+  }
 
   private List<Member> getTypes(final yAA.$IDREFS refs) {
     final List<String> idrefs;
@@ -299,19 +309,14 @@ final class AnyModel extends Referrer<AnyModel> {
     return members;
   }
 
-  private AnyModel(final Registry registry, final AnyProperty property) {
-    super(registry, property.nullable(), property.use(), null);
-    this.types = getTypes(property.types());
-  }
-
-  private AnyModel(final Registry registry, final AnyElement element) {
-    super(registry, element.nullable(), null, null);
-    this.types = getTypes(element.types());
+  @Override
+  Registry.Type type() {
+    return this.types == null ? registry.getType(Object.class) : getGreatestCommonSuperType(registry, this.types);
   }
 
   @Override
-  Registry.Type type() {
-    return registry.getType(Object.class);
+  String nameName() {
+    return "match";
   }
 
   @Override
