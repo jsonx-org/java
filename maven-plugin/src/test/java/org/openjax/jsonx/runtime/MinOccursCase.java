@@ -23,13 +23,13 @@ class MinOccursCase extends FailureCase<ArrayTrial<Object>> {
 
   @Override
   void onEncode(final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
-//    e.printStackTrace();
     assertTrue(trial.name, e.getMessage().endsWith("Content is not complete"));
   }
 
   @Override
-  void onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
+  boolean onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().contains("Content is not complete"));
+    return true;
   }
 
   private MinOccursCase() {

@@ -27,8 +27,9 @@ class MaxOccursCase extends FailureCase<ArrayTrial<Object>> {
   }
 
   @Override
-  void onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
+  boolean onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().contains("Content is not complete"));
+    return true;
   }
 
   private MaxOccursCase() {

@@ -142,10 +142,10 @@ public class TypeTest {
 
     assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0))));
 
-    assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type2))));
-    assertEquals(registry.getType(List.class, registry.getType(Object.class)), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type2))));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
 
-    assertEquals(registry.getType(List.class, type1), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type1), toElement(type3))));
-    assertEquals(registry.getType(List.class, registry.getType(Object.class)), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
+    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type1), toElement(type3))));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
   }
 }

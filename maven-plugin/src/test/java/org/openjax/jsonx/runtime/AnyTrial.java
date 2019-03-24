@@ -19,9 +19,26 @@ package org.openjax.jsonx.runtime;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Optional;
+
+import org.openjax.standard.util.Characters;
+import org.openjax.standard.util.Strings;
 
 class AnyTrial extends PropertyTrial<Object> {
+  private static String filterPrintable(final String string) {
+    final StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < string.length(); ++i) {
+      final char ch = string.charAt(i);
+      if (ch != '"' && ch != '\\' && ch != '\n' && ch != '\r' && Characters.isPrintable(ch))
+        builder.append(ch);
+    }
+
+    return builder.toString();
+  }
+
+  static String createName(final AnyProperty property) {
+    return Strings.isRegex(property.name()) ? filterPrintable(StringTrial.createValid(property.name())) : property.name();
+  }
+
   static Object createValid(final AnyProperty property) {
     return createValid(property, property.types());
   }
@@ -55,19 +72,15 @@ class AnyTrial extends PropertyTrial<Object> {
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final AnyProperty property) {
     trials.add(new AnyTrial(ValidCase.CASE, field, object, createValid(property), property));
-    if (property.use() == Use.REQUIRED) {
-      trials.add(new AnyTrial(getNullableCase(property.nullable()), field, object, null, property));
-    }
-    else if (property.nullable()) {
+    if (property.nullable()) {
       trials.add(new AnyTrial(OptionalNullableCase.CASE, field, object, null, property));
-      trials.add(new AnyTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
     }
-    else {
+    else if (property.use() == Use.OPTIONAL) {
       trials.add(new AnyTrial(OptionalNotNullableCase.CASE, field, object, null, property));
     }
   }
 
   private AnyTrial(final Case<? extends PropertyTrial<? super Object>> kase, final Field field, final Object object, final Object value, final AnyProperty property) {
-    super(kase, field, object, value, property.name(), property.use());
+    super(kase, field, object, value, createName(property), property.use());
   }
 }

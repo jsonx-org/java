@@ -27,8 +27,9 @@ class NullableCase extends FailureCase<ArrayTrial<Object>> {
   }
 
   @Override
-  void onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
+  boolean onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
     assertTrue(e.getMessage(), e.getMessage().contains("Illegal value: null"));
+    return true;
   }
 
   private NullableCase() {

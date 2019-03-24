@@ -27,8 +27,9 @@ class PatternCase extends FailureCase<StringTrial> {
   }
 
   @Override
-  void onDecode(final StringTrial trial, final DecodeException e) throws Exception {
+  boolean onDecode(final StringTrial trial, final DecodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().startsWith("Pattern (" + trial.pattern + ") is not matched: "));
+    return true;
   }
 
   private PatternCase() {

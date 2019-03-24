@@ -18,5 +18,5 @@ package org.openjax.jsonx.runtime;
 
 abstract class FailureCase<T extends PropertyTrial<?>> extends Case<T> {
   abstract void onEncode(T trial, EncodeException e) throws Exception;
-  abstract void onDecode(T trial, DecodeException e) throws Exception;
+  abstract boolean onDecode(T trial, DecodeException e) throws Exception;
 }

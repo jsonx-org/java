@@ -23,15 +23,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import org.openjax.jsonx.runtime.JxUtil;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.util.FastCollections;
-import org.openjax.standard.util.Identifiers;
 import org.openjax.standard.util.Strings;
 import org.openjax.xsb.runtime.Attribute;
 import org.openjax.xsb.runtime.Binding;
@@ -84,38 +81,6 @@ abstract class Member extends Element {
       throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
 
     return max == dflt ? null : max;
-  }
-
-  static boolean isRegex(final String name) {
-    if (name == null)
-      return false;
-
-    try {
-      Pattern.compile(name);
-    }
-    catch (final PatternSyntaxException e) {
-      return false;
-    }
-
-    final int len = name.length();
-    char prev = '\0';
-    for (int i = 0; i < len; ++i) {
-      final char ch = name.charAt(i);
-      if (i == 0 && ch == '^' || i == len - 1 && ch == '$')
-        return true;
-
-      if (prev == '\\') {
-        if (ch == 'd' || ch == 'D' || ch == 's' || ch == 'S' || ch == 'w' || ch == 'W' || ch == 'b' || ch == 'B' || ch == 'b' || ch == 'A' || ch == 'G' || ch == 'Z' || ch == 'z' || ch == 'Q' || ch == 'E')
-          return true;
-      }
-      else if (ch == '?' || ch == '*' || ch == '+' || ch == '*' || ch == '{' || ch == '[' || ch == '(' || ch == '|') {
-        return true;
-      }
-
-      prev = ch;
-    }
-
-    return false;
   }
 
   private static void checkMinMaxOccurs(final String source, final Integer minOccurs, final Integer maxOccurs) {
@@ -197,27 +162,6 @@ abstract class Member extends Element {
       attributes.put("maxOccurs", String.valueOf(maxOccurs));
   }
 
-  private static final char prefix = '\0';
-  private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
-
-  final String toInstanceName() {
-    return Identifiers.toInstanceCase(name, prefix, substitutions);
-  }
-
-  /**
-   * @param instanceCase Whether to return instance-case (true) or class-case
-   *          (false).
-   * @return The name of this member as a valid Java Identifier in:
-   *         <ul>
-   *         <li>Instance-Case: lower-camelCase</li>
-   *         <li>Class-Case: upper-camelCase</li>
-   *         <li>{@code name.length() == 0}: "_$"</li>
-   *         </ul>
-   */
-  private String toIdentifier(final boolean instanceCase) {
-    return name.length() == 0 ? "_$" : instanceCase ? Identifiers.toInstanceCase(name, prefix, substitutions) : Identifiers.toClassCase(name, prefix, substitutions);
-  }
-
   final String toField() {
     final StringBuilder builder = new StringBuilder();
     final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
@@ -226,19 +170,19 @@ abstract class Member extends Element {
 
     final AttributeMap attributes = new AttributeMap();
     toAnnotationAttributes(attributes, this);
-    final String instanceName = toIdentifier(true);
+    final String instanceName = JxUtil.toInstanceName(name);
     if (!name.equals(instanceName) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + Strings.escapeForJava(name) + "\"");
 
-    final boolean isRegex = this instanceof AnyModel && isRegex(name);
+    final boolean isRegex = this instanceof AnyModel && Strings.isRegex(name);
     final Registry.Type type;
     if (isRegex)
-      type = registry.getType(LinkedHashMap.class, registry.getType(String.class), nullable == null ? registry.getType(Optional.class, type()) : type());
+      type = registry.getType(LinkedHashMap.class, registry.getType(String.class), type());
     else
       type = nullable == null && use == Use.OPTIONAL ? registry.getType(Optional.class, type()) : type();
 
     final String typeName = type.toCanonicalString();
-    final String classCase = JxUtil.fixReserved(toIdentifier(false));
+    final String classCase = JxUtil.fixReserved(JxUtil.toClassName(name));
     builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
     if (isRegex) {
       builder.append("\npublic final ").append(typeName).append(' ').append(instanceName).append(" = new ").append(LinkedHashMap.class.getName()).append("<>();");

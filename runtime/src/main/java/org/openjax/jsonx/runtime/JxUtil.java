@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.openjax.standard.util.Annotations;
 import org.openjax.standard.util.FixedOrderComparator;
@@ -29,6 +30,30 @@ import org.openjax.standard.util.Strings;
 
 public final class JxUtil {
   public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
+  private static final char prefix = '\0';
+  private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
+
+  /**
+   * @param instanceCase Whether to return instance-case (true) or class-case
+   *          (false).
+   * @return The name of this member as a valid Java Identifier in:
+   *         <ul>
+   *         <li>Instance-Case: lower-camelCase</li>
+   *         <li>Class-Case: upper-camelCase</li>
+   *         <li>{@code name.length() == 0}: "_$"</li>
+   *         </ul>
+   */
+  private static String toIdentifier(final String name, final boolean instanceCase) {
+    return name.length() == 0 ? "_$" : instanceCase ? Identifiers.toInstanceCase(name, prefix, substitutions) : Identifiers.toClassCase(name, prefix, substitutions);
+  }
+
+  public static String toInstanceName(final String name) {
+    return toIdentifier(name, true);
+  }
+
+  public static String toClassName(final String name) {
+    return toIdentifier(name, false);
+  }
 
   public static String flipName(String name) {
     int i = name.lastIndexOf('$');
@@ -56,7 +81,7 @@ public final class JxUtil {
 
   private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
     try {
-      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(Identifiers.toClassCase(propertyName)), parameterType == null ? null : new Class<?> [] {parameterType});
+      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(toClassName(propertyName)), parameterType == null ? null : new Class<?> [] {parameterType});
     }
     catch (final NoSuchMethodException e) {
       return null;

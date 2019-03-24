@@ -86,12 +86,11 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
     }
 
     if (!expected.equals(actual))
-      System.out.println();
-    assertEquals(expected, actual);
+      assertEquals(expected, actual);
   }
 
   @Override
-  void onDecode(final PropertyTrial<T> trial, final Relations relations, final Object value) {
+  boolean onDecode(final PropertyTrial<T> trial, final Relations relations, final Object value) {
     final Object expected;
     if (trial.value() == null)
       expected = null;
@@ -101,8 +100,10 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = trial.value();
 
     if (!expected.equals(value))
-      System.out.println();
+      return false;
+
     assertEquals(expected, value);
+    return true;
   }
 
   private ValidCase() {

@@ -430,7 +430,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (members != null && members.size() > 0) {
       builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
       for (final Member member : members.values()) {
-        final String instanceName = member.toInstanceName();
+        final String instanceName = JxUtil.toInstanceName(member.name);
         builder.append("\n  if (that.").append(instanceName).append(" != null ? !that.").append(instanceName).append(".equals(").append(instanceName).append(") : ").append(instanceName).append(" != null)");
         builder.append("\n    return false;\n");
       }
@@ -443,7 +443,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (members != null && members.size() > 0) {
       builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
       for (final Member member : members.values()) {
-        final String instanceName = member.toInstanceName();
+        final String instanceName = JxUtil.toInstanceName(member.name);
         builder.append("\n  hashCode = 31 * hashCode + (").append(instanceName).append(" == null ? 0 : ").append(instanceName).append(".hashCode());");
       }
 

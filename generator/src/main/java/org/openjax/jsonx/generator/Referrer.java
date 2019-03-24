@@ -69,7 +69,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
         }
       }
 
-      return registry.getType(List.class, gct);
+      return gct;
     }
     finally {
       count.set(count.get() - 1);

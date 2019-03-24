@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
@@ -58,6 +57,6 @@ public class ArrayModelTest {
     number2.setForm$(new $Number.Form$($Number.Form$.integer));
     final NumberModel model2 = NumberModel.reference(registry, null, number2);
 
-    assertEquals(registry.getType(List.class, BigInteger.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(model1, model2)));
+    assertEquals(registry.getType(BigInteger.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(model1, model2)));
   }
 }

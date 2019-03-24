@@ -27,8 +27,17 @@ class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Object>>
   }
 
   @Override
-  void onDecode(final PropertyTrial<? super Object> trial, final DecodeException e) throws Exception {
-    assertTrue(e.getMessage(), e.getMessage().contains("Property \"" + trial.name + "\" is required"));
+  boolean onDecode(final PropertyTrial<? super Object> trial, final DecodeException e) throws Exception {
+    final String message = e.getMessage();
+    final int q1 = message.indexOf('"');
+    assertNotEquals(-1, q1);
+
+    final int q2 = message.indexOf('"', q1 + 1);
+    assertNotEquals(-1, q2);
+
+    final String propertyName = message.substring(q1 + 1, q2);
+    assertTrue((trial.name.equals(propertyName) || trial.name.matches(propertyName)) && message.contains("\" is required: "));
+    return true;
   }
 
   private RequiredNotNullableCase() {

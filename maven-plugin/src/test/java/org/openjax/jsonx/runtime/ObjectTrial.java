@@ -24,10 +24,6 @@ import java.util.Optional;
 import org.openjax.standard.util.Classes;
 
 class ObjectTrial extends PropertyTrial<Object> {
-  private static void setField(final Field field, final Object object, final Object value) throws IllegalAccessException {
-    field.set(object, Optional.class.isAssignableFrom(field.getType()) ? Optional.ofNullable(value) : value);
-  }
-
   static Object createValid(final Class<?> type) {
     try {
       final Object object = type.getDeclaredConstructor().newInstance();
@@ -38,11 +34,12 @@ class ObjectTrial extends PropertyTrial<Object> {
         final AnyProperty anyProperty = field.getAnnotation(AnyProperty.class);
         if (anyProperty != null) {
           if (anyProperty.use() == Use.REQUIRED || Math.random() < 0.4)
-            setField(field, object, AnyTrial.createValid(anyProperty));
+            setField(field, object, AnyTrial.createName(anyProperty), AnyTrial.createValid(anyProperty));
 
           continue;
         }
 
+        final String name = JxUtil.getName(field);
         final ArrayProperty arrayProperty = field.getAnnotation(ArrayProperty.class);
         if (arrayProperty != null) {
           if (arrayProperty.use() == Use.REQUIRED || Math.random() < 0.4) {
@@ -57,7 +54,7 @@ class ObjectTrial extends PropertyTrial<Object> {
               elementIds = null;
             }
 
-            setField(field, object, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.minIterate(), arrayProperty.maxIterate(), elementIds, idToElement));
+            setField(field, object, name, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.minIterate(), arrayProperty.maxIterate(), elementIds, idToElement));
           }
 
           continue;
@@ -66,7 +63,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final BooleanProperty booleanProperty = field.getAnnotation(BooleanProperty.class);
         if (booleanProperty != null) {
           if (booleanProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, BooleanTrial.createValid());
+            setField(field, object, name, BooleanTrial.createValid());
 
           continue;
         }
@@ -74,7 +71,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final NumberProperty numberProperty = field.getAnnotation(NumberProperty.class);
         if (numberProperty != null) {
           if (numberProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, NumberTrial.createValid(field, numberProperty.range(), numberProperty.form()));
+            setField(field, object, name, NumberTrial.createValid(field, numberProperty.range(), numberProperty.form()));
 
           continue;
         }
@@ -82,7 +79,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final ObjectProperty objectProperty = field.getAnnotation(ObjectProperty.class);
         if (objectProperty != null) {
           if (objectProperty.use() == Use.REQUIRED || Math.random() < 0.4)
-            setField(field, object, ObjectTrial.createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()));
+            setField(field, object, name, ObjectTrial.createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()));
 
           continue;
         }
@@ -90,7 +87,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final StringProperty stringProperty = field.getAnnotation(StringProperty.class);
         if (stringProperty != null) {
           if (stringProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, StringTrial.createValid(stringProperty.pattern()));
+            setField(field, object, name, StringTrial.createValid(stringProperty.pattern()));
 
           continue;
         }

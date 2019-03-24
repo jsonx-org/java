@@ -21,14 +21,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.openjax.jsonx.runtime.ArrayValidator.Relation;
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.util.Classes;
 import org.openjax.standard.util.FastArrays;
-import org.openjax.standard.util.Identifiers;
-import org.openjax.standard.util.function.BiObjBiIntConsumer;
+import org.openjax.standard.util.function.TriObjBiIntConsumer;
 
 public class JxEncoder {
   private final int indent;
@@ -60,13 +60,35 @@ public class JxEncoder {
     }
   }
 
-  private static Object getValue(final Object object, final String propertyName) {
+  private static Object getValue(final Object object, final String propertyName, final Use use) {
     final Method method = JxUtil.getGetMethod(object.getClass(), propertyName);
     try {
-      if (method == null)
-        throw new ValidationException("Method get" + Identifiers.toClassCase(propertyName) + "() does not exist for " + object.getClass().getSimpleName() + "." + propertyName);
+      if (method != null)
+        return method.invoke(object);
 
-      return method.invoke(object);
+      Map<?,?> optionalMap = null;
+      Map<?,?> map = null;
+      for (final Field field : object.getClass().getFields()) {
+        if (!Map.class.isAssignableFrom(field.getType()))
+          continue;
+
+        final AnyProperty property = field.getAnnotation(AnyProperty.class);
+        if (property == null)
+          continue;
+
+        if (!propertyName.equals(property.name()))
+          continue;
+
+        map = (Map<?,?>)field.get(object);
+        for (final Map.Entry<?,?> entry : map.entrySet())
+          if (entry.getKey() instanceof String && ((String)entry.getKey()).matches(propertyName))
+            return map;
+
+        if (use == Use.OPTIONAL)
+          optionalMap = map;
+      }
+
+      return optionalMap;
     }
     catch (final IllegalAccessException | InvocationTargetException e) {
       throw new IllegalStateException(e);
@@ -136,7 +158,7 @@ public class JxEncoder {
   }
 
   @SuppressWarnings("unchecked")
-  private Error encodeProperty(final Field field, final Annotation annotation, final Object object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
+  private Error encodeProperty(final Field field, final Annotation annotation, final String name, final Object object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
     try {
       if (annotation instanceof ArrayProperty) {
         final Object encoded = ArrayCodec.encodeObject(field, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
@@ -145,7 +167,7 @@ public class JxEncoder {
 
         final Relations relations = (Relations)encoded;
         if (onFieldEncode != null)
-          onFieldEncode.accept(field, relations, -1, -1);
+          onFieldEncode.accept(field, name, relations, -1, -1);
 
         final Error error = encodeArray(relations, builder, depth);
         if (error != null)
@@ -159,7 +181,7 @@ public class JxEncoder {
         if (encoded instanceof Relations) {
           final Relations relations = (Relations)encoded;
           if (onFieldEncode != null)
-            onFieldEncode.accept(field, relations, -1, -1);
+            onFieldEncode.accept(field, name, relations, -1, -1);
 
           final Error error = encodeArray(relations, builder, depth);
           if (error != null)
@@ -221,7 +243,7 @@ public class JxEncoder {
     return null;
   }
 
-  Error marshal(final JxObject object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
+  Error marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
     final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
@@ -289,35 +311,40 @@ public class JxEncoder {
       if (name == null)
         continue;
 
-      final Object value = getValue(object, name);
+      final Object value = getValue(object, name, use);
       if (value != null || nullable && use == Use.REQUIRED) {
-        if (hasProperties)
-          builder.append(',');
+        if (value instanceof Map) {
+          final Map<?,?> map = (Map<?,?>)value;
+          for (final Map.Entry<?,?> entry : map.entrySet()) {
+            if (validate && !nullable && use == Use.OPTIONAL && entry.getValue() == null)
+              return Error.PROPERTY_NOT_NULLABLE((String)entry.getKey(), annotation);
 
-        if (indent > 0)
-          builder.append('\n').append(FastArrays.createRepeat(' ', depth * 2));
+            if (hasProperties)
+              builder.append(',');
 
-        builder.append('"').append(name).append('"').append(colon);
-        final int start = builder.length();
-        if (value == null || Optional.empty().equals(value)) {
-          builder.append("null");
+            final Error error = appendValue(builder, (String)entry.getKey(), entry.getValue(), field, annotation, onFieldEncode, depth);
+            if (error != null)
+              return error;
+
+            hasProperties = true;
+          }
         }
         else {
-          final Error error = encodeProperty(field, annotation, value, onFieldEncode, builder, depth);
+          if (hasProperties)
+            builder.append(',');
+
+          final Error error = appendValue(builder, name, value, field, annotation, onFieldEncode, depth);
           if (error != null)
             return error;
+
+          hasProperties = true;
         }
-
-        if (onFieldEncode != null)
-          onFieldEncode.accept(field, null, start, builder.length());
-
-        hasProperties = true;
       }
       else if (validate && use == Use.REQUIRED) {
         return Error.PROPERTY_REQUIRED(name, field);
       }
       else if (onFieldEncode != null) {
-        onFieldEncode.accept(field, null, -1, -1);
+        onFieldEncode.accept(field, null, null, -1, -1);
       }
     }
 
@@ -325,6 +352,27 @@ public class JxEncoder {
       builder.append('\n').append(FastArrays.createRepeat(' ', (depth - 1) * 2));
 
     builder.append('}');
+    return null;
+  }
+
+  private Error appendValue(final StringBuilder builder, final String name, final Object value, final Field field, final Annotation annotation, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final int depth) {
+    if (indent > 0)
+      builder.append('\n').append(FastArrays.createRepeat(' ', depth * 2));
+
+    builder.append('"').append(name).append('"').append(colon);
+    final int start = builder.length();
+    if (value == null || Optional.empty().equals(value)) {
+      builder.append("null");
+    }
+    else {
+      final Error error = encodeProperty(field, annotation, name, value, onFieldEncode, builder, depth);
+      if (error != null)
+        return error;
+    }
+
+    if (onFieldEncode != null)
+      onFieldEncode.accept(field, name, null, start, builder.length());
+
     return null;
   }
 
@@ -339,10 +387,10 @@ public class JxEncoder {
     return builder.toString();
   }
 
-  String marshal(final JxObject object, final BiObjBiIntConsumer<Field,Relations> onFieldEncode) {
+  String marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode) {
     final StringBuilder builder = new StringBuilder();
     final Error error = marshal(object, onFieldEncode, builder, 1);
-    if (error != null)
+    if (validate && error != null)
       throw new EncodeException(error.toString());
 
     return builder.toString();

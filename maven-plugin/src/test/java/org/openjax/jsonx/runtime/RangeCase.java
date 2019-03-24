@@ -27,8 +27,9 @@ class RangeCase extends FailureCase<NumberTrial> {
   }
 
   @Override
-  void onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
+  boolean onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " is not matched: "));
+    return true;
   }
 
   private RangeCase() {

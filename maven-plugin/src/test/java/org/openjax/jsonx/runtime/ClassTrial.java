@@ -91,7 +91,7 @@ class ClassTrial {
     int count = 0;
     for (final PropertyTrial<?> trial : trials)
       if (trial.kase instanceof ValidCase)
-        trial.setField(trial.rawValue());
+        PropertyTrial.setField(trial.field, trial.object, trial.name, trial.rawValue());
 
     for (final PropertyTrial<?> trial : trials)
       count += invoke(trial);
@@ -102,7 +102,7 @@ class ClassTrial {
   private int invoke(final PropertyTrial<?> trial) throws Exception {
     int count = 0;
     final Object before = trial.field.get(trial.object);
-    trial.setField(trial.rawValue());
+    PropertyTrial.setField(trial.field, trial.object, trial.name, trial.rawValue());
 
     String json = null;
     String value = null;
@@ -110,8 +110,8 @@ class ClassTrial {
     final Relations[] relations = {null};
     try {
       final int[] bounds = {-1, -1};
-      json = validEncoder.marshal(binding, (f,r,s,e) -> {
-        if (f.equals(trial.field)) {
+      json = validEncoder.marshal(binding, (f,n,r,s,e) -> {
+        if (f.equals(trial.field) && trial.name.equals(n)) {
           if (bounds[0] != -1)
             throw new IllegalStateException();
 
@@ -134,6 +134,8 @@ class ClassTrial {
       json = invalidEncoder.marshal(binding);
     }
 
+    assertFalse(value != null && value.startsWith("[") && relations[0] == null);
+
     try {
       onEncode(trial, relations[0], value, exception);
       ++count;
@@ -149,15 +151,16 @@ class ClassTrial {
     final Object[] object = {null};
     exception = null;
     try {
-      JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,p,v) -> {
-        if (p.equals(trial.name)) {
+      JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,n,v) -> {
+        if (n.equals(trial.name)) {
           if (object[0] != null)
             throw new IllegalStateException();
 
           object[0] = v;
+          return true;
         }
 
-        return true;
+        return false;
       });
     }
     catch (final Exception e) {
@@ -165,7 +168,9 @@ class ClassTrial {
     }
 
     try {
-      onDecode(trial, relations[0], object[0], exception);
+      if (!onDecode(trial, relations[0], object[0], exception))
+        for (int i = 0; i < 10; ++i)
+          invoke(trial);
       ++count;
     }
     catch (final Throwable t) {
@@ -189,7 +194,9 @@ class ClassTrial {
       ((SuccessCase<PropertyTrial<T>>)trial.kase).onEncode(trial, relations, value);
     }
     else if (trial.kase instanceof FailureCase) {
-      assertNotNull(trial.getClass().getSimpleName(), e);
+      if (e == null)
+        assertNotNull(trial.getClass().getSimpleName(), e);
+
       if (!(e instanceof EncodeException))
         throw e;
 
@@ -201,19 +208,19 @@ class ClassTrial {
   }
 
   @SuppressWarnings("unchecked")
-  private static <T>void onDecode(final PropertyTrial<T> trial, final Relations relations, final Object value, final Exception e) throws Exception {
+  private static <T>boolean onDecode(final PropertyTrial<T> trial, final Relations relations, final Object value, final Exception e) throws Exception {
     if (trial.kase instanceof SuccessCase) {
       if (e != null)
         throw e;
 
-      ((SuccessCase<PropertyTrial<T>>)trial.kase).onDecode(trial, relations, value);
+      return ((SuccessCase<PropertyTrial<T>>)trial.kase).onDecode(trial, relations, value);
     }
     else if (trial.kase instanceof FailureCase) {
       assertNotNull(e);
       if (!(e instanceof DecodeException))
         throw e;
 
-      ((FailureCase<PropertyTrial<T>>)trial.kase).onDecode(trial, (DecodeException)e);
+      return ((FailureCase<PropertyTrial<T>>)trial.kase).onDecode(trial, (DecodeException)e);
     }
     else {
       throw new UnsupportedOperationException("Unsupported " + Case.class.getSimpleName() + " type: " + trial.kase.getClass().getName());

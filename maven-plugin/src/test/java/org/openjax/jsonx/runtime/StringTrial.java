@@ -32,9 +32,11 @@ class StringTrial extends PropertyTrial<String> {
   }
 
   private static class StringGen {
+    private final String pattern;
     private final Generex generex;
 
     private StringGen(final String pattern) {
+      this.pattern = pattern;
       if (pattern.length() == 0)
         this.generex = null;
       else if (!Generex.isValidPattern(pattern))
@@ -44,7 +46,14 @@ class StringTrial extends PropertyTrial<String> {
     }
 
     String random() {
-      return generex == null ? randomString(stringLength) : generex.random(stringLength);
+      if (generex == null)
+        return randomString(stringLength);
+
+      while (true) {
+        final String string = generex.random(stringLength);
+        if (string.matches(pattern))
+          return string;
+      }
     }
   }
 

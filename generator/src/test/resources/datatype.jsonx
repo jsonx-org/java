@@ -110,7 +110,7 @@
     <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
     <property name="numOptionalNotNullable" xsi:type="reference" type="num" use="optional" nullable="false"/>
     <property name="numInt" xsi:type="reference" type="numInt"/>
-    <property match="any" xsi:type="any" types="bool num" nullable="false"/>
+    <property match="any" xsi:type="any" types="num str" nullable="false"/>
     <property name="numIntOptional" xsi:type="reference" type="numInt" use="optional"/>
     <property name="numIntOptionalNotNullable" xsi:type="reference" type="numInt" use="optional" nullable="false"/>
     <property name="numIntRange1" xsi:type="reference" type="numIntRange1"/>
@@ -128,7 +128,7 @@
   </objectType>
   <objectType name="objObj">
     <property name="objOptional" xsi:type="reference" type="objBool" use="optional"/>
-    <property name="objOptionalNotNullable" xsi:type="reference" type="objBool" use="optional" nullable="false"/>
+    <property name="objOptionalNotNullable" xsi:type="reference" type="objNum" use="optional" nullable="false"/>
     <property name="objExtends1" xsi:type="object" extends="objObj" use="optional">
       <property name="objExtends2" xsi:type="object" extends="objObj" use="optional">
         <property name="objExtends3" xsi:type="object" extends="objObj" use="optional">

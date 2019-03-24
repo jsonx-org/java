@@ -46,7 +46,7 @@ class ObjectCodec extends Codec {
 
         final String propertyName = token.substring(1, token.length() - 1);
         token = reader.readToken();
-        final Codec codec = getPropertyCodec(type).nameToCodec.get(propertyName);
+        final Codec codec = getPropertyCodec(object).get(propertyName);
         if (codec == null) {
           if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
             continue;
@@ -73,6 +73,7 @@ class ObjectCodec extends Codec {
         else {
           if (codec instanceof AnyCodec) {
             final AnyCodec anyCodec = (AnyCodec)codec;
+            getPropertyCodec(object).get(propertyName);
             value = AnyCodec.decode(anyCodec.property, token, reader, null);
           }
           else {
@@ -102,13 +103,13 @@ class ObjectCodec extends Codec {
         }
 
         if (value != null)
-          codec.set(object, value, onPropertyDecode);
+          codec.set(object, propertyName, value, onPropertyDecode);
       }
 
       for (final Field field : Classes.getDeclaredFieldsDeep(object.getClass())) {
         field.setAccessible(true);
         if (field.get(object) == null) {
-          final Codec codec = getPropertyCodec(type).fieldToCodec.get(field);
+          final Codec codec = getPropertyCodec(object).fieldToCodec.get(field);
           if (codec == null)
             throw new IllegalStateException("Missing codec for field : " + type.getName() + "#" + field.getName());
 
@@ -135,7 +136,8 @@ class ObjectCodec extends Codec {
 
   private static final Map<Class<?>,PropertyToCodec> typeToCodecs = new HashMap<>();
 
-  private static PropertyToCodec getPropertyCodec(final Class<?> cls) {
+  private static PropertyToCodec getPropertyCodec(final JxObject object) {
+    final Class<?> cls = object.getClass();
     PropertyToCodec propertyToCodec = typeToCodecs.get(cls);
     if (propertyToCodec != null)
       return propertyToCodec;

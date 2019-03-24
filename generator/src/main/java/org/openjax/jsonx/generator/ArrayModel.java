@@ -44,6 +44,7 @@ import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.FastArrays;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.Iterators;
+import org.openjax.standard.util.Strings;
 import org.openjax.standard.xml.api.XmlElement;
 import org.openjax.xsb.runtime.Bindings;
 
@@ -160,7 +161,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty arrayProperty, final Field field) {
-    if (!isAssignable(field, List.class, isRegex(JxUtil.getName(field)), arrayProperty.nullable(), arrayProperty.use()))
+    if (!isAssignable(field, List.class, Strings.isRegex(JxUtil.getName(field)), arrayProperty.nullable(), arrayProperty.use()))
       throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of List<?> types, or optional and nullable fields of Optional<? extends List<?>> type");
 
     if (ArrayType.class.equals(arrayProperty.type())) {
@@ -378,7 +379,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   Registry.Type type() {
     // type can be null if there is a loop in the type graph
     final Registry.Type type = getGreatestCommonSuperType(registry, members);
-    return type != null ? type : registry.getType(List.class, Object.class);
+    return registry.getType(List.class, type != null ? type : registry.OBJECT);
   }
 
   @Override

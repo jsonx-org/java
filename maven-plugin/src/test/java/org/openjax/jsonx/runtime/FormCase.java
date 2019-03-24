@@ -27,8 +27,9 @@ class FormCase extends FailureCase<NumberTrial> {
   }
 
   @Override
-  void onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
+  boolean onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().contains("...does not match form..."));
+    return true;
   }
 
   private FormCase() {

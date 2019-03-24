@@ -18,6 +18,7 @@ package org.openjax.jsonx.runtime;
 
 import static org.junit.Assert.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
@@ -27,20 +28,21 @@ class OptionalNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
 
   @Override
   void onEncode(final PropertyTrial<? super Object> trial, final Relations relations, final String value) throws Exception {
-    if (trial.rawValue() == null)
-      assertNull(value);
-    else if (trial.rawValue() instanceof Optional)
+    if (Map.class.isAssignableFrom(trial.field.getType()) || trial.rawValue() instanceof Optional)
       assertEquals("null", value);
+    else if (trial.rawValue() == null)
+      assertNull(value);
     else
       throw new IllegalStateException(OptionalNullableCase.class.getSimpleName() + " must be used with null or Optional.empty() value");
   }
 
   @Override
-  void onDecode(final PropertyTrial<? super Object> trial, final Relations relations, final Object value) throws Exception {
+  boolean onDecode(final PropertyTrial<? super Object> trial, final Relations relations, final Object value) throws Exception {
     if (trial.value() != null)
       throw new IllegalStateException(OptionalNullableCase.class.getSimpleName() + " must be used with null or Optional.empty() value");
 
     assertEquals(trial.rawValue(), value);
+    return true;
   }
 
   private OptionalNullableCase() {

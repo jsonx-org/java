@@ -64,6 +64,10 @@ final class Error {
     return new Error("Not a valid boolean token: %s", token);
   }
 
+  static Error PROPERTY_NOT_NULLABLE(final String name, final Annotation annotation) {
+    return new Error("Property \"%s\" is not nullable: %s", name, annotation);
+  }
+
   static Error MEMBER_NOT_NULLABLE(final Annotation annotation) {
     return new Error("Member is not nullable: %s", annotation);
   }

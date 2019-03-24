@@ -89,8 +89,6 @@ class ArrayCreateIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
     }
 
-    if (current instanceof ArrayValidator.Relation)
-      System.out.println();
     relations.set(index, currentRelate(annotation));
     return null;
   }

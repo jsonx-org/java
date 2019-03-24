@@ -17,10 +17,26 @@
 package org.openjax.jsonx.runtime;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
+import java.util.Map;
 import java.util.Optional;
 
 abstract class PropertyTrial<T> {
+  static void setField(final Field field, final Object object, final String name, final Object value) {
+    try {
+      if (Map.class.isAssignableFrom(field.getType()))
+        field.getType().getMethod("put", Object.class, Object.class).invoke(field.get(object), name, value);
+      else if (Optional.class.equals(field.getType()) && value != null && !(value instanceof Optional))
+        field.set(object, Optional.ofNullable(value));
+      else
+        field.set(object, value);
+    }
+    catch (final IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
   static Case<? extends PropertyTrial<? super Object>> getNullableCase(final boolean nullable) {
     return nullable ? RequiredNullableCase.CASE : RequiredNotNullableCase.CASE;
   }
@@ -45,16 +61,12 @@ abstract class PropertyTrial<T> {
     field.setAccessible(true);
   }
 
-  void setField(final Object value) throws IllegalAccessException {
-    field.set(object, Optional.class.equals(field.getType()) && value != null && !(value instanceof Optional) ? Optional.ofNullable(value) : value);
-  }
-
-  Object rawValue() {
+  final Object rawValue() {
     return value;
   }
 
   @SuppressWarnings("unchecked")
-  T value() {
+  final T value() {
     return (T)(value instanceof Optional ? ((Optional<T>)value).orElse(null) : value);
   }
 }

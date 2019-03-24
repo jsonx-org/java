@@ -32,11 +32,12 @@ class OptionalNotNullableCase extends SuccessCase<PropertyTrial<? super Object>>
   }
 
   @Override
-  void onDecode(final PropertyTrial<? super Object> trial, final Relations relations, final Object value) throws Exception {
+  boolean onDecode(final PropertyTrial<? super Object> trial, final Relations relations, final Object value) throws Exception {
     if (trial.rawValue() != null)
       throw new IllegalStateException(OptionalNotNullableCase.class.getSimpleName() + " must be used with null value");
 
     assertNull(value);
+    return true;
   }
 
   private OptionalNotNullableCase() {

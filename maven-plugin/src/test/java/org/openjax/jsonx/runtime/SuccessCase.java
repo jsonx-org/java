@@ -20,5 +20,5 @@ import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 
 abstract class SuccessCase<T extends PropertyTrial<?>> extends Case<T> {
   abstract void onEncode(T trial, Relations relations, String value) throws Exception;
-  abstract void onDecode(T trial, Relations relations, Object value) throws Exception;
+  abstract boolean onDecode(T trial, Relations relations, Object value) throws Exception;
 }
