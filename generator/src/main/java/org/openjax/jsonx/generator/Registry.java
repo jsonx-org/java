@@ -269,7 +269,7 @@ class Registry {
         this.classPrefix = "";
       }
       else {
-        final int index = prefix.lastIndexOf(".", prefix.length() - 1);
+        final int index = prefix.lastIndexOf('.', prefix.length() - 1);
         this.packageName = prefix.substring(0, index);
         this.classPrefix = prefix.substring(index + 1);
       }

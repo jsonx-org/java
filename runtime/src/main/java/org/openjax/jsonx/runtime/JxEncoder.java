@@ -31,26 +31,61 @@ import org.openjax.standard.util.Classes;
 import org.openjax.standard.util.FastArrays;
 import org.openjax.standard.util.function.TriObjBiIntConsumer;
 
+/**
+ * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx
+ * arrays (with a provided annotation class that declares an @{@link ArrayType}
+ * annotation) to JSON documents.
+ */
 public class JxEncoder {
   private static final HashMap<Integer,JxEncoder> instances = new HashMap<>();
 
+  /** {@code JxEncoder} that does not indent JSON values */
   public static final JxEncoder _0 = get(0);
+
+  /** {@code JxEncoder} that indents JSON values with 1 space */
   public static final JxEncoder _1 = get(1);
+
+  /** {@code JxEncoder} that indents JSON values with 2 spaces */
   public static final JxEncoder _2 = get(2);
+
+  /** {@code JxEncoder} that indents JSON values with 3 spaces */
   public static final JxEncoder _3 = get(3);
+
+  /** {@code JxEncoder} that indents JSON values with 4 spaces */
   public static final JxEncoder _4 = get(4);
+
+  /** {@code JxEncoder} that indents JSON values with 8 spaces */
   public static final JxEncoder _8 = get(8);
 
   private static JxEncoder global = _0;
 
-  public static JxEncoder get() {
-    return global;
-  }
-
+  /**
+   * Set the global {@code JxEncoder}.
+   *
+   * @param encoder The {@code JxEncoder}.
+   * @see #get()
+   */
   public static void set(final JxEncoder encoder) {
     global = encoder;
   }
 
+  /**
+   * @return The global {@code JxEncoder}.
+   * @see #set(JxEncoder)
+   */
+  public static JxEncoder get() {
+    return global;
+  }
+
+  /**
+   * Returns the {@code JxEncoder} for the specified number of spaces to be used
+   * when indenting values during serialization to JSON documents.
+   *
+   * @param indent The number of spaces to be used when indenting values during
+   *          serialization to JSON documents.
+   * @return The {@code JxEncoder} for the specified number of spaces to be used
+   *         when indenting values during serialization to JSON documents.
+   */
   public static JxEncoder get(final int indent) {
     JxEncoder encoder = instances.get(indent);
     if (encoder == null)
@@ -400,7 +435,25 @@ public class JxEncoder {
     return null;
   }
 
-  String encode(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
+  String marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode) {
+    final StringBuilder builder = new StringBuilder();
+    final Error error = marshal(object, onFieldEncode, builder, 1);
+    if (validate && error != null)
+      throw new EncodeException(error.toString());
+
+    return builder.toString();
+  }
+
+  /**
+   * Marshals the supplied {@code list} to the specification of the provided
+   * annotation type.
+   *
+   * @param list The {@code List}.
+   * @param arrayAnnotationType The annotation type that declares
+   *          an @{@link ArrayType} annotation.
+   * @return A JSON document from the marshaled {@code list}.
+   */
+  public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
     final StringBuilder builder = new StringBuilder();
     final Relations relations = new Relations();
     final Error error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
@@ -411,19 +464,12 @@ public class JxEncoder {
     return builder.toString();
   }
 
-  String marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode) {
-    final StringBuilder builder = new StringBuilder();
-    final Error error = marshal(object, onFieldEncode, builder, 1);
-    if (validate && error != null)
-      throw new EncodeException(error.toString());
-
-    return builder.toString();
-  }
-
-  public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
-    return encode(list, arrayAnnotationType);
-  }
-
+  /**
+   * Marshals the supplied Jx {@code object}.
+   *
+   * @param object The Jx object.
+   * @return A JSON document from the marshaled {@code object}.
+   */
   public String marshal(final JxObject object) {
     return marshal(object, null);
   }
