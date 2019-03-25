@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.AnyElement;
 import org.openjax.jsonx.runtime.AnyProperty;
 import org.openjax.jsonx.runtime.AnyType;
@@ -35,54 +36,64 @@ import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.runtime.t;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
 import org.w3.www._2001.XMLSchema.yAA;
 
 final class AnyModel extends Referrer<AnyModel> {
-//  private static xL4gluGCXYYJc.$Any property(final schema.AnyProperty jsonx) {
-//    final xL4gluGCXYYJc.$Any xsb = new xL4gluGCXYYJc.$Any() {
-//      private static final long serialVersionUID = 650722913732574568L;
-//
-//      @Override
-//      protected $Member inherits() {
-//        return new xL4gluGCXYYJc.$ObjectMember.Property();
-//      }
-//    };
-//
-//    if (jsonx.getName() != null)
-//      xsb.setName$(new xL4gluGCXYYJc.$Any.Name$(jsonx.getName()));
-//
-//    if (jsonx.getUse() != null)
-//      xsb.setUse$(new xL4gluGCXYYJc.$Any.Use$(xL4gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getUse())));
-//
-//    return xsb;
-//  }
-//
-//  private static xL4gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsonx) {
-//    final xL4gluGCXYYJc.$ArrayMember.Any xsb = new xL4gluGCXYYJc.$ArrayMember.Any();
-//
-//    if (jsonx.getNullable() != null)
-//      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsonx.getNullable()));
-//
-//    if (jsonx.getMinOccurs() != null)
-//      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
-//
-//    if (jsonx.getMaxOccurs() != null)
-//      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsonx.getMaxOccurs()));
-//
-//    return xsb;
-//  }
-//
-//  static xL4gluGCXYYJc.$AnyMember jsonxToXsb(final schema.Any jsonx) {
-//    final xL4gluGCXYYJc.$AnyMember xsb;
-//    if (jsonx instanceof schema.AnyProperty)
-//      xsb = property((schema.AnyProperty)jsonx);
-//    else if (jsonx instanceof schema.AnyElement)
-//      xsb = element((schema.AnyElement)jsonx);
-//    else
-//      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
-//
-//    return xsb;
-//  }
+  private static xL4gluGCXYYJc.$Any property(final schema.AnyProperty jsonx, final String name) {
+    final xL4gluGCXYYJc.$Any xsb = new xL4gluGCXYYJc.$Any() {
+      private static final long serialVersionUID = 650722913732574568L;
+
+      @Override
+      protected $Member inherits() {
+        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      }
+    };
+
+    if (name != null)
+      xsb.setNames$(new xL4gluGCXYYJc.$Any.Names$(name));
+
+    if (jsonx.getTypes() != null)
+      xsb.setTypes$(new xL4gluGCXYYJc.$Any.Types$(jsonx.getTypes().split(" ")));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Any.Nullable$(jsonx.getNullable()));
+
+    if (jsonx.getUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Any.Use$(xL4gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getUse())));
+
+    return xsb;
+  }
+
+  private static xL4gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsonx) {
+    final xL4gluGCXYYJc.$ArrayMember.Any xsb = new xL4gluGCXYYJc.$ArrayMember.Any();
+
+    if (jsonx.getTypes() != null)
+      xsb.setTypes$(new xL4gluGCXYYJc.$ArrayMember.Any.Types$(jsonx.getTypes().split(" ")));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsonx.getNullable()));
+
+    if (jsonx.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+
+    if (jsonx.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsonx.getMaxOccurs()));
+
+    return xsb;
+  }
+
+  static xL4gluGCXYYJc.$AnyMember jsonxToXsb(final schema.Any jsonx, final String name) {
+    final xL4gluGCXYYJc.$AnyMember xsb;
+    if (jsonx instanceof schema.AnyProperty)
+      xsb = property((schema.AnyProperty)jsonx, name);
+    else if (jsonx instanceof schema.AnyElement)
+      xsb = element((schema.AnyElement)jsonx);
+    else
+      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+
+    return xsb;
+  }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Field field) {
     final AnyModel model = new AnyModel(registry, property);
@@ -343,7 +354,7 @@ final class AnyModel extends Referrer<AnyModel> {
         builder.append(Registry.getSubName(type.id.toString(), packageName)).append(' ');
 
       builder.setLength(builder.length() - 1);
-      attributes.put("types", builder);
+      attributes.put("types", builder.toString());
     }
 
     return attributes;

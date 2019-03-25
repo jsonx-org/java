@@ -49,7 +49,7 @@ final class Reference extends Member {
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Reference property(final schema.ReferenceProperty jsonx) {
+  private static xL4gluGCXYYJc.$Reference property(final schema.ReferenceProperty jsonx, final String name) {
     final xL4gluGCXYYJc.$Reference xsb = new xL4gluGCXYYJc.$Reference() {
       private static final long serialVersionUID = 9188863837584292929L;
 
@@ -59,8 +59,11 @@ final class Reference extends Member {
       }
     };
 
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Reference.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.$Reference.Name$(name));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Reference.Nullable$(jsonx.getNullable()));
 
     if (jsonx.getUse() != null)
       xsb.setUse$(new xL4gluGCXYYJc.$Reference.Use$(xL4gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsonx.getUse())));
@@ -68,12 +71,12 @@ final class Reference extends Member {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ReferenceMember jsonxToXsb(final schema.Reference jsonx) {
+  static xL4gluGCXYYJc.$ReferenceMember jsonxToXsb(final schema.Reference jsonx, final String name) {
     final xL4gluGCXYYJc.$ReferenceMember xsb;
     if (jsonx instanceof schema.ReferenceElement)
       xsb = element((schema.ReferenceElement)jsonx);
     else if (jsonx instanceof schema.ReferenceProperty)
-      xsb = property((schema.ReferenceProperty)jsonx);
+      xsb = property((schema.ReferenceProperty)jsonx, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
@@ -190,6 +193,7 @@ final class Reference extends Member {
     properties.put("class", elementName());
 
     final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
+    attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);

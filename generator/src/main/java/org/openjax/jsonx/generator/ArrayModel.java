@@ -49,16 +49,15 @@ import org.openjax.standard.xml.api.XmlElement;
 import org.openjax.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
-  private static xL4gluGCXYYJc.Schema.ArrayType type(final schema.ArrayType jsonx) {
+  private static xL4gluGCXYYJc.Schema.ArrayType type(final String name) {
     final xL4gluGCXYYJc.Schema.ArrayType xsb = new xL4gluGCXYYJc.Schema.ArrayType();
-
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.ArrayType.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.Schema.ArrayType.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Array property(final schema.ArrayProperty jsonx) {
+  private static xL4gluGCXYYJc.$Array property(final schema.ArrayProperty jsonx, final String name) {
     final xL4gluGCXYYJc.$Array xsb = new xL4gluGCXYYJc.$Array() {
       private static final long serialVersionUID = 3936180512257992902L;
 
@@ -68,8 +67,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
       }
     };
 
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Array.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.$Array.Name$(name));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Array.Nullable$(jsonx.getNullable()));
 
     if (jsonx.getUse() != null)
       xsb.setUse$(new xL4gluGCXYYJc.$Array.Use$(xL4gluGCXYYJc.$Array.Use$.Enum.valueOf(jsonx.getUse())));
@@ -92,12 +94,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ArrayMember jsonxToXsb(final schema.Array jsonx) {
+  static xL4gluGCXYYJc.$ArrayMember jsonxToXsb(final schema.Array jsonx, final String name) {
     final xL4gluGCXYYJc.$ArrayMember xsb;
     if (jsonx instanceof schema.ArrayType)
-      xsb = type((schema.ArrayType)jsonx);
+      xsb = type(name);
     else if (jsonx instanceof schema.ArrayProperty)
-      xsb = property((schema.ArrayProperty)jsonx);
+      xsb = property((schema.ArrayProperty)jsonx, name);
     else if (jsonx instanceof schema.ArrayElement)
       xsb = element((schema.ArrayElement)jsonx);
     else
@@ -110,19 +112,20 @@ final class ArrayModel extends Referrer<ArrayModel> {
       xsb.setMaxIterate$(new xL4gluGCXYYJc.$ArrayMember.MaxIterate$(jsonx.getMaxIterate()));
 
     for (final Object element : jsonx.getElements()) {
-      if (element instanceof schema.ArrayElement)
-        xsb.addArray((xL4gluGCXYYJc.$ArrayMember.Array)ArrayModel.jsonxToXsb((schema.ArrayElement)element));
+      if (element instanceof schema.AnyElement)
+        xsb.addAny((xL4gluGCXYYJc.$ArrayMember.Any)AnyModel.jsonxToXsb((schema.AnyElement)element, null));
+      else if (element instanceof schema.ArrayElement)
+        xsb.addArray((xL4gluGCXYYJc.$ArrayMember.Array)ArrayModel.jsonxToXsb((schema.ArrayElement)element, null));
       else if (element instanceof schema.BooleanElement)
-        xsb.addBoolean((xL4gluGCXYYJc.$ArrayMember.Boolean)BooleanModel.jsonxToXsb((schema.BooleanElement)element));
+        xsb.addBoolean((xL4gluGCXYYJc.$ArrayMember.Boolean)BooleanModel.jsonxToXsb((schema.BooleanElement)element, null));
       else if (element instanceof schema.NumberElement)
-        xsb.addNumber((xL4gluGCXYYJc.$ArrayMember.Number)NumberModel.jsonxToXsb((schema.NumberElement)element));
+        xsb.addNumber((xL4gluGCXYYJc.$ArrayMember.Number)NumberModel.jsonxToXsb((schema.NumberElement)element, null));
       else if (element instanceof schema.ReferenceElement)
-        xsb.addReference((xL4gluGCXYYJc.$ArrayMember.Reference)Reference.jsonxToXsb((schema.ReferenceElement)element));
+        xsb.addReference((xL4gluGCXYYJc.$ArrayMember.Reference)Reference.jsonxToXsb((schema.ReferenceElement)element, null));
       else if (element instanceof schema.StringElement)
-        xsb.addString((xL4gluGCXYYJc.$ArrayMember.String)StringModel.jsonxToXsb((schema.StringElement)element));
-      else {
+        xsb.addString((xL4gluGCXYYJc.$ArrayMember.String)StringModel.jsonxToXsb((schema.StringElement)element, null));
+      else
         throw new UnsupportedOperationException("Unsupported JSONx type: " + element.getClass().getName());
-      }
     }
 
     return xsb;

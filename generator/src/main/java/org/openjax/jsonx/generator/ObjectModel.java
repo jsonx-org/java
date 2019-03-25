@@ -48,11 +48,10 @@ import org.openjax.standard.util.Strings;
 import org.openjax.standard.xml.api.XmlElement;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  private static xL4gluGCXYYJc.Schema.ObjectType type(final schema.ObjectType jsonx) {
+  private static xL4gluGCXYYJc.Schema.ObjectType type(final schema.ObjectType jsonx, final String name) {
     final xL4gluGCXYYJc.Schema.ObjectType xsb = new xL4gluGCXYYJc.Schema.ObjectType();
-
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.ObjectType.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.Schema.ObjectType.Name$(name));
 
     if (jsonx.getAbstract() != null)
       xsb.setAbstract$(new xL4gluGCXYYJc.Schema.ObjectType.Abstract$(jsonx.getAbstract()));
@@ -60,7 +59,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Object property(final schema.ObjectProperty jsonx) {
+  private static xL4gluGCXYYJc.$Object property(final schema.ObjectProperty jsonx, final String name) {
     final xL4gluGCXYYJc.$Object xsb = new xL4gluGCXYYJc.$Object() {
       private static final long serialVersionUID = 5201562440101597524L;
 
@@ -70,8 +69,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
     };
 
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Object.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.$Object.Name$(name));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Object.Nullable$(jsonx.getNullable()));
 
     if (jsonx.getUse() != null)
       xsb.setUse$(new xL4gluGCXYYJc.$Object.Use$(xL4gluGCXYYJc.$Object.Use$.Enum.valueOf(jsonx.getUse())));
@@ -82,34 +84,38 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ObjectMember jsonxToXsb(final schema.Object jsonx) {
+  static xL4gluGCXYYJc.$ObjectMember jsonxToXsb(final schema.Object jsonx, final String name) {
     final xL4gluGCXYYJc.$ObjectMember xsb;
     if (jsonx instanceof schema.ObjectType)
-      xsb = type((schema.ObjectType)jsonx);
+      xsb = type((schema.ObjectType)jsonx, name);
     else if (jsonx instanceof schema.ObjectProperty)
-      xsb = property((schema.ObjectProperty)jsonx);
+      xsb = property((schema.ObjectProperty)jsonx, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
     if (jsonx.getExtends() != null)
       xsb.setExtends$(new xL4gluGCXYYJc.$ObjectMember.Extends$(jsonx.getExtends()));
 
-//    for (final Object property : jsonx.getProperties()) {
-//      if (property instanceof schema.ArrayProperty)
-//        xsb.addProperty(ArrayModel.jsonxToXsb((schema.ArrayElement)property));
-//      else if (property instanceof schema.BooleanProperty)
-//        xsb.addProperty(BooleanModel.jsonxToXsb((schema.BooleanProperty)property));
-//      else if (property instanceof schema.NumberProperty)
-//        xsb.addProperty(NumberModel.jsonxToXsb((schema.NumberProperty)property));
-//      else if (property instanceof schema.ReferenceProperty)
-//        xsb.addProperty(Reference.jsonxToXsb((schema.ReferenceProperty)property));
-//      else if (property instanceof schema.StringProperty)
-//        xsb.addProperty(StringModel.jsonxToXsb((schema.StringProperty)property));
-//      else if (property instanceof schema.ObjectProperty)
-//        xsb.addProperty(ObjectModel.jsonxToXsb((schema.ObjectProperty)property));
-//      else
-//        throw new UnsupportedOperationException("Unsupported JSONx type: " + property.getClass().getName());
-//    }
+    if (jsonx.getProperties() != null) {
+      for (final Map.Entry<String,Object> property : jsonx.getProperties()._2e_2a.entrySet()) {
+        if (property.getValue() instanceof schema.AnyProperty)
+          xsb.addProperty(AnyModel.jsonxToXsb((schema.AnyProperty)property.getValue(), property.getKey()));
+        else if (property.getValue() instanceof schema.ArrayProperty)
+          xsb.addProperty(ArrayModel.jsonxToXsb((schema.ArrayProperty)property.getValue(), property.getKey()));
+        else if (property.getValue() instanceof schema.BooleanProperty)
+          xsb.addProperty(BooleanModel.jsonxToXsb((schema.BooleanProperty)property.getValue(), property.getKey()));
+        else if (property.getValue() instanceof schema.NumberProperty)
+          xsb.addProperty(NumberModel.jsonxToXsb((schema.NumberProperty)property.getValue(), property.getKey()));
+        else if (property.getValue() instanceof schema.ReferenceProperty)
+          xsb.addProperty(Reference.jsonxToXsb((schema.ReferenceProperty)property.getValue(), property.getKey()));
+        else if (property.getValue() instanceof schema.StringProperty)
+          xsb.addProperty(StringModel.jsonxToXsb((schema.StringProperty)property.getValue(), property.getKey()));
+        else if (property.getValue() instanceof schema.ObjectProperty)
+          xsb.addProperty(ObjectModel.jsonxToXsb((schema.ObjectProperty)property.getValue(), property.getKey()));
+        else
+          throw new UnsupportedOperationException("Unsupported JSONx type: " + property.getValue().getClass().getName());
+      }
+    }
 
     return xsb;
   }
@@ -384,9 +390,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (members == null || members.size() == 0)
       return element;
 
-    final List<Object> properties = new ArrayList<>();
+    final Map<String,Object> properties = new LinkedHashMap<>();
     for (final Member member : members.values())
-      properties.add(member.toJson(settings, this, packageName));
+      properties.put(member.name, member.toJson(settings, this, packageName));
 
     element.put("properties", properties);
     return element;

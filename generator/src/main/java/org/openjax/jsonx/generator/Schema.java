@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -45,25 +46,24 @@ import org.openjax.standard.util.Iterators;
 import org.openjax.standard.xml.api.XmlElement;
 
 /**
- * The {@code Schema} is the root {@code Element} of a JSONX Schema Document.
+ * The {@code Schema} is the root {@code Element} of a JSONx Schema Document.
  */
 public final class Schema extends Element {
-  private static xL4gluGCXYYJc.Schema jsonxToXsb(final List<schema.Member> jsonx) {
+  private static xL4gluGCXYYJc.Schema jsonxToXsb(final schema.Schema jsonx) {
     final xL4gluGCXYYJc.Schema schema = new xL4gluGCXYYJc.Schema();
-
-    for (final schema.Member member : jsonx) {
-      if (member instanceof schema.ArrayType)
-        schema.addArrayType((xL4gluGCXYYJc.Schema.ArrayType)ArrayModel.jsonxToXsb((schema.ArrayType)member));
-      else if (member instanceof schema.BooleanType)
-        schema.addBooleanType((xL4gluGCXYYJc.Schema.BooleanType)BooleanModel.jsonxToXsb((schema.BooleanType)member));
-      else if (member instanceof schema.NumberType)
-        schema.addNumberType((xL4gluGCXYYJc.Schema.NumberType)NumberModel.jsonxToXsb((schema.NumberType)member));
-      else if (member instanceof schema.ObjectType)
-        schema.addObjectType((xL4gluGCXYYJc.Schema.ObjectType)ObjectModel.jsonxToXsb((schema.ObjectType)member));
-      else if (member instanceof schema.StringType)
-        schema.addStringType((xL4gluGCXYYJc.Schema.StringType)StringModel.jsonxToXsb((schema.StringType)member));
+    for (final Map.Entry<java.lang.String,java.lang.Object> entry : jsonx._2e_2a.entrySet()) {
+      if (entry.getValue() instanceof schema.ArrayType)
+        schema.addArrayType((xL4gluGCXYYJc.Schema.ArrayType)ArrayModel.jsonxToXsb((schema.ArrayType)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.BooleanType)
+        schema.addBooleanType((xL4gluGCXYYJc.Schema.BooleanType)BooleanModel.jsonxToXsb((schema.BooleanType)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.NumberType)
+        schema.addNumberType((xL4gluGCXYYJc.Schema.NumberType)NumberModel.jsonxToXsb((schema.NumberType)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.ObjectType)
+        schema.addObjectType((xL4gluGCXYYJc.Schema.ObjectType)ObjectModel.jsonxToXsb((schema.ObjectType)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.StringType)
+        schema.addStringType((xL4gluGCXYYJc.Schema.StringType)StringModel.jsonxToXsb((schema.StringType)entry.getValue(), entry.getKey()));
       else
-        throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
+        throw new UnsupportedOperationException("Unsupported type: " + entry.getValue().getClass().getName());
     }
 
     return schema;
@@ -77,7 +77,7 @@ public final class Schema extends Element {
    *
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of
-   *          generated JSONX bindings.
+   *          generated JSONx bindings.
    */
   public Schema(final xL4gluGCXYYJc.Schema schema, final String prefix) {
     this.registry = new Registry(prefix);
@@ -150,9 +150,9 @@ public final class Schema extends Element {
    *
    * @param schema The XML binding (JSONx).
    * @param prefix The class name prefix to be prepended to the names of
-   *          generated JSONX bindings.
+   *          generated JSONx bindings.
    */
-  public Schema(final List<schema.Member> schema, final String prefix) {
+  public Schema(final schema.Schema schema, final String prefix) {
     this(jsonxToXsb(schema), prefix);
   }
 
@@ -174,7 +174,7 @@ public final class Schema extends Element {
    * Creates a new {@code Schema} by scanning the specified package in the
    * provided class loader, filtered with the given class predicate.
    *
-   * @param pkg The package to be scanned for JSONX bindings.
+   * @param pkg The package to be scanned for JSONx bindings.
    * @param classLoader The {@code ClassLoader} containing the defined package.
    * @param filter The class {@code Predicate} allowing filtration of scanned
    *          classes.
@@ -195,7 +195,7 @@ public final class Schema extends Element {
    * {@code new Schema(pkg, classLoader, null)}
    * </blockquote>
    *
-   * @param pkg The package to be scanned for JSONX bindings.
+   * @param pkg The package to be scanned for JSONx bindings.
    * @param classLoader The {@code ClassLoader} containing the defined package.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
@@ -214,7 +214,7 @@ public final class Schema extends Element {
    * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), filter)}
    * </blockquote>
    *
-   * @param pkg The package to be scanned for JSONX bindings.
+   * @param pkg The package to be scanned for JSONx bindings.
    * @param filter The class {@code Predicate} allowing filtration of scanned
    *          classes.
    * @throws IOException If an I/O error has occurred.
@@ -233,7 +233,7 @@ public final class Schema extends Element {
    * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), null)}
    * </blockquote>
    *
-   * @param pkg The package to be scanned for JSONX bindings.
+   * @param pkg The package to be scanned for JSONx bindings.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
@@ -306,13 +306,15 @@ public final class Schema extends Element {
   }
 
   @Override
-  List<Map<String,Object>> toJson(final Settings settings, final Element owner, final String packageName) {
-    final List<Map<String,Object>> types;
+  Map<String,Map<String,Object>> toJson(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Map<String,Object>> types;
     final List<Model> members = rootMembers(settings);
     if (members.size() > 0) {
-      types = new ArrayList<>();
-      for (final Model member : members)
-        types.add(member.toJson(settings, this, packageName));
+      types = new LinkedHashMap<>();
+      for (final Model member : members) {
+        final String name = member.id.toString();
+        types.put(name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name, member.toJson(settings, this, packageName));
+      }
     }
     else {
       types = null;
@@ -321,11 +323,11 @@ public final class Schema extends Element {
     return types;
   }
 
-  public List<Map<String,Object>> toJson() {
+  public Map<String,Map<String,Object>> toJson() {
     return toJson(null);
   }
 
-  public List<Map<String,Object>> toJson(final Settings settings) {
+  public Map<String,Map<String,Object>> toJson(final Settings settings) {
     return toJson(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
   }
 

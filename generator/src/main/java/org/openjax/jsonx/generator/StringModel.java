@@ -29,16 +29,15 @@ import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.Strings;
 
 final class StringModel extends Model {
-  private static xL4gluGCXYYJc.Schema.StringType type(final schema.StringType jsonx) {
+  private static xL4gluGCXYYJc.Schema.StringType type(final String name) {
     final xL4gluGCXYYJc.Schema.StringType xsb = new xL4gluGCXYYJc.Schema.StringType();
-
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.StringType.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.Schema.StringType.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$String property(final schema.StringProperty jsonx) {
+  private static xL4gluGCXYYJc.$String property(final schema.StringProperty jsonx, final String name) {
     final xL4gluGCXYYJc.$String xsb = new xL4gluGCXYYJc.$String() {
       private static final long serialVersionUID = -8328022363685261988L;
 
@@ -48,8 +47,11 @@ final class StringModel extends Model {
       }
     };
 
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.$String.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.$String.Name$(name));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$String.Nullable$(jsonx.getNullable()));
 
     if (jsonx.getUse() != null)
       xsb.setUse$(new xL4gluGCXYYJc.$String.Use$(xL4gluGCXYYJc.$String.Use$.Enum.valueOf(jsonx.getUse())));
@@ -72,12 +74,12 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsonx) {
+  static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsonx, final String name) {
     final xL4gluGCXYYJc.$StringMember xsb;
     if (jsonx instanceof schema.StringType)
-      xsb  = type((schema.StringType)jsonx);
+      xsb  = type(name);
     else if (jsonx instanceof schema.StringProperty)
-      xsb  = property((schema.StringProperty)jsonx);
+      xsb  = property((schema.StringProperty)jsonx, name);
     else if (jsonx instanceof schema.StringElement)
       xsb  = element((schema.StringElement)jsonx);
     else

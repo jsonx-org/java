@@ -35,6 +35,7 @@ class ObjectCodec extends Codec {
   }
 
   static Object decodeObject(final Class<? extends JxObject> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+    final int i = reader.getIndex();
     try {
       final JxObject object = type.getConstructor().newInstance();
       for (String token; !"}".equals(token = reader.readToken());) {
@@ -42,7 +43,7 @@ class ObjectCodec extends Codec {
           token = reader.readToken();
 
         if (!":".equals(reader.readToken()))
-          throw new IllegalStateException("Should have been caught by JsonReader");
+          throw new IllegalStateException("Should have been caught by JsonReader: " + token);
 
         final String propertyName = token.substring(1, token.length() - 1);
         token = reader.readToken();
@@ -51,14 +52,14 @@ class ObjectCodec extends Codec {
           if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
             continue;
 
-          return Error.UNKNOWN_PROPERTY(propertyName);
+          return abort(Error.UNKNOWN_PROPERTY(propertyName), reader, i);
         }
 
         final Object value;
         if ("null".equals(token)) {
           final Error error = codec.validateUse(null);
           if (error != null)
-            return error;
+            return abort(error, reader, i);
 
           value = codec.toNull();
         }
@@ -66,35 +67,36 @@ class ObjectCodec extends Codec {
           final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
           final Error error = primitiveCodec.matches(token);
           if (error != null)
-            return error;
+            return abort(error, reader, i);
 
           value = primitiveCodec.parse(token);
         }
         else {
           if (codec instanceof AnyCodec) {
             final AnyCodec anyCodec = (AnyCodec)codec;
-            getPropertyCodec(object).get(propertyName);
             value = AnyCodec.decode(anyCodec.property, token, reader, null);
+            if (value instanceof Error)
+              return abort((Error)value, reader, i);
           }
           else {
             final char firstChar = token.charAt(0);
             if (codec instanceof ObjectCodec) {
               if (firstChar != '{')
-                return Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token), reader, i);
 
               final ObjectCodec objectCodec = (ObjectCodec)codec;
               value = decodeObject(objectCodec.type, reader, null);
               if (value instanceof Error)
-                return value;
+                return abort((Error)value, reader, i);
             }
             else if (codec instanceof ArrayCodec) {
               if (firstChar != '[')
-                return Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token), reader, i);
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
               value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, onPropertyDecode);
               if (value instanceof Error)
-                return value;
+                return abort((Error)value, reader, i);
             }
             else {
               throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
@@ -115,7 +117,7 @@ class ObjectCodec extends Codec {
 
           final Error error = codec.validateUse(null);
           if (error != null)
-            return error;
+            return abort(error, reader, i);
         }
       }
 
@@ -124,6 +126,11 @@ class ObjectCodec extends Codec {
     catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
       throw new IllegalStateException(e);
     }
+  }
+
+  private static Error abort(final Error error, final JsonReader reader, final int index) {
+    reader.setIndex(index);
+    return error;
   }
 
   static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {

@@ -116,6 +116,7 @@ abstract class Model extends Member implements Comparable<Model> {
     properties.put("class", elementName());
 
     final Map<String,Object> attributes = toAttributes(owner, packageName);
+    attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);

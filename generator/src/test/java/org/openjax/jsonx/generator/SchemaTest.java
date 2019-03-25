@@ -219,21 +219,19 @@ public class SchemaTest {
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
 
-//      testJson(controlBinding, packageName);
+      testJson(controlBinding, packageName);
     }
   }
 
-  @SuppressWarnings("unchecked")
   private static void testJson(final xL4gluGCXYYJc.Schema controlBinding, final String packageName) throws DecodeException, IOException, ValidationException {
     final Schema controlSchema = new Schema(controlBinding, packageName + ".");
     logger.info("     testJson...");
     logger.info("      a) Schema -> JSON");
     final String json = JSON.toString(controlSchema.toJson());
     logger.info("      b) JSON -> Schema");
-    System.err.println(json);
     final Schema schema;
     try (final JsonReader reader = new JsonReader(new StringReader(json))) {
-      schema = new Schema((List<schema.Member>)JxDecoder.parseObject(schema.Schema.class, reader), packageName);
+      schema = new Schema(JxDecoder.parseObject(schema.Schema.class, reader), packageName + ".");
     }
 
     logger.info("      c) Schema -> XML(3)");

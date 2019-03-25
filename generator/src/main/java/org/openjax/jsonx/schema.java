@@ -1,7 +1,7 @@
 package org.openjax.jsonx;
 
 public class schema {
-  public static abstract class Any extends org.openjax.jsonx.schema.Member {
+  public static class Any extends org.openjax.jsonx.schema.Member {
     @org.openjax.jsonx.runtime.StringProperty(name="class", pattern="any", nullable=false)
     private java.lang.String _class;
     
@@ -11,6 +11,17 @@ public class schema {
     
     public java.lang.String get0lass() {
       return _class;
+    }
+    
+    @org.openjax.jsonx.runtime.StringProperty(pattern="\\S+( \\S+)*", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.String types;
+    
+    public void setTypes(final java.lang.String types) {
+      this.types = types;
+    }
+    
+    public java.lang.String getTypes() {
+      return types;
     }
     
     @java.lang.Override
@@ -25,6 +36,9 @@ public class schema {
       if (that._class != null ? !that._class.equals(_class) : _class != null)
         return false;
     
+      if (that.types != null ? !that.types.equals(types) : types != null)
+        return false;
+    
       return true;
     }
     
@@ -32,6 +46,7 @@ public class schema {
     public int hashCode() {
       int hashCode = -1859646040 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (_class == null ? 0 : _class.hashCode());
+      hashCode = 31 * hashCode + (types == null ? 0 : types.hashCode());
       return hashCode;
     }
     
@@ -112,15 +127,15 @@ public class schema {
   }
 
   public static class AnyProperty extends org.openjax.jsonx.schema.Any {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
     
-    public void setName(final java.lang.String name) {
-      this.name = name;
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
     }
     
-    public java.lang.String getName() {
-      return name;
+    public java.lang.Boolean getNullable() {
+      return nullable;
     }
     
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
@@ -143,7 +158,7 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.AnyProperty that = (org.openjax.jsonx.schema.AnyProperty)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
         return false;
     
       if (that.use != null ? !that.use.equals(use) : use != null)
@@ -155,7 +170,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 2019305373 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -200,13 +215,14 @@ public class schema {
       return maxIterate;
     }
     
-    @org.openjax.jsonx.runtime.ObjectElement(id=5, type=org.openjax.jsonx.schema.ObjectElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.runtime.ObjectElement(id=4, type=org.openjax.jsonx.schema.StringElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.runtime.ObjectElement(id=3, type=org.openjax.jsonx.schema.ReferenceElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.runtime.ObjectElement(id=2, type=org.openjax.jsonx.schema.NumberElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.runtime.ObjectElement(id=1, type=org.openjax.jsonx.schema.BooleanElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.runtime.ObjectElement(id=0, type=org.openjax.jsonx.schema.ArrayElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.runtime.ArrayProperty(elementIds={0, 1, 2, 3, 4, 5}, maxIterate=2147483647, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=6, type=org.openjax.jsonx.schema.ObjectElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=5, type=org.openjax.jsonx.schema.StringElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=4, type=org.openjax.jsonx.schema.ReferenceElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=3, type=org.openjax.jsonx.schema.NumberElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=2, type=org.openjax.jsonx.schema.BooleanElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=1, type=org.openjax.jsonx.schema.ArrayElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ObjectElement(id=0, type=org.openjax.jsonx.schema.AnyElement.class, minOccurs=0, nullable=false)
+    @org.openjax.jsonx.runtime.ArrayProperty(elementIds={0, 1, 2, 3, 4, 5, 6}, maxIterate=2147483647, nullable=false)
     private java.util.List<java.lang.Object> elements;
     
     public void setElements(final java.util.List<java.lang.Object> elements) {
@@ -327,7 +343,18 @@ public class schema {
     }
   }
 
-  public static class ArrayProperty extends org.openjax.jsonx.schema.ArrayType {
+  public static class ArrayProperty extends org.openjax.jsonx.schema.Array {
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
+    
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
+    }
+    
+    public java.lang.Boolean getNullable() {
+      return nullable;
+    }
+    
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String use;
     
@@ -348,6 +375,9 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.ArrayProperty that = (org.openjax.jsonx.schema.ArrayProperty)obj;
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
+        return false;
+    
       if (that.use != null ? !that.use.equals(use) : use != null)
         return false;
     
@@ -357,6 +387,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 195781642 * 31 + super.hashCode();
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -368,17 +399,6 @@ public class schema {
   }
 
   public static class ArrayType extends org.openjax.jsonx.schema.Array {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
-    
-    public void setName(final java.lang.String name) {
-      this.name = name;
-    }
-    
-    public java.lang.String getName() {
-      return name;
-    }
-    
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -387,18 +407,12 @@ public class schema {
       if (!(obj instanceof org.openjax.jsonx.schema.ArrayType) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ArrayType that = (org.openjax.jsonx.schema.ArrayType)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
-        return false;
-    
       return true;
     }
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1423013871 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
-      return hashCode;
+      return 1423013871 * 31 + super.hashCode();
     }
     
     @java.lang.Override
@@ -517,7 +531,18 @@ public class schema {
     }
   }
 
-  public static class BooleanProperty extends org.openjax.jsonx.schema.BooleanType {
+  public static class BooleanProperty extends org.openjax.jsonx.schema.Boolean {
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
+    
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
+    }
+    
+    public java.lang.Boolean getNullable() {
+      return nullable;
+    }
+    
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String use;
     
@@ -538,6 +563,9 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.BooleanProperty that = (org.openjax.jsonx.schema.BooleanProperty)obj;
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
+        return false;
+    
       if (that.use != null ? !that.use.equals(use) : use != null)
         return false;
     
@@ -547,6 +575,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 941875161 * 31 + super.hashCode();
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -558,17 +587,6 @@ public class schema {
   }
 
   public static class BooleanType extends org.openjax.jsonx.schema.Boolean {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
-    
-    public void setName(final java.lang.String name) {
-      this.name = name;
-    }
-    
-    public java.lang.String getName() {
-      return name;
-    }
-    
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -577,18 +595,12 @@ public class schema {
       if (!(obj instanceof org.openjax.jsonx.schema.BooleanType) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.BooleanType that = (org.openjax.jsonx.schema.BooleanType)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
-        return false;
-    
       return true;
     }
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -876203202 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
-      return hashCode;
+      return -876203202 * 31 + super.hashCode();
     }
     
     @java.lang.Override
@@ -760,7 +772,18 @@ public class schema {
     }
   }
 
-  public static class NumberProperty extends org.openjax.jsonx.schema.NumberType {
+  public static class NumberProperty extends org.openjax.jsonx.schema.Number {
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
+    
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
+    }
+    
+    public java.lang.Boolean getNullable() {
+      return nullable;
+    }
+    
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String use;
     
@@ -781,6 +804,9 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.NumberProperty that = (org.openjax.jsonx.schema.NumberProperty)obj;
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
+        return false;
+    
       if (that.use != null ? !that.use.equals(use) : use != null)
         return false;
     
@@ -790,6 +816,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1996569854 * 31 + super.hashCode();
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -801,17 +828,6 @@ public class schema {
   }
 
   public static class NumberType extends org.openjax.jsonx.schema.Number {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
-    
-    public void setName(final java.lang.String name) {
-      this.name = name;
-    }
-    
-    public java.lang.String getName() {
-      return name;
-    }
-    
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -820,18 +836,12 @@ public class schema {
       if (!(obj instanceof org.openjax.jsonx.schema.NumberType) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.NumberType that = (org.openjax.jsonx.schema.NumberType)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
-        return false;
-    
       return true;
     }
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1994068711 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
-      return hashCode;
+      return 1994068711 * 31 + super.hashCode();
     }
     
     @java.lang.Override
@@ -842,7 +852,7 @@ public class schema {
 
   public static abstract class Object extends org.openjax.jsonx.schema.Member {
     public static class Properties implements org.openjax.jsonx.runtime.JxObject {
-      @org.openjax.jsonx.runtime.AnyProperty(name=".*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ArrayProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.BooleanProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.NumberProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ReferenceProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.StringProperty.class)}, nullable=false)
+      @org.openjax.jsonx.runtime.AnyProperty(name=".*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.AnyProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ArrayProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.BooleanProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.NumberProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ReferenceProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.StringProperty.class)}, nullable=false)
       public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
       
       @java.lang.Override
@@ -883,7 +893,7 @@ public class schema {
       return _class;
     }
     
-    @org.openjax.jsonx.runtime.StringProperty(name="extends", pattern=".*", nullable=false)
+    @org.openjax.jsonx.runtime.StringProperty(name="extends", pattern=".*", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String _extends;
     
     public void setExtends(final java.lang.String _extends) {
@@ -894,7 +904,7 @@ public class schema {
       return _extends;
     }
     
-    @org.openjax.jsonx.runtime.ObjectProperty(nullable=false)
+    @org.openjax.jsonx.runtime.ObjectProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private org.openjax.jsonx.schema.Object.Properties properties;
     
     public void setProperties(final org.openjax.jsonx.schema.Object.Properties properties) {
@@ -1012,15 +1022,15 @@ public class schema {
   }
 
   public static class ObjectProperty extends org.openjax.jsonx.schema.Object {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
     
-    public void setName(final java.lang.String name) {
-      this.name = name;
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
     }
     
-    public java.lang.String getName() {
-      return name;
+    public java.lang.Boolean getNullable() {
+      return nullable;
     }
     
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
@@ -1043,7 +1053,7 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.ObjectProperty that = (org.openjax.jsonx.schema.ObjectProperty)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
         return false;
     
       if (that.use != null ? !that.use.equals(use) : use != null)
@@ -1055,7 +1065,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1632488200 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -1067,17 +1077,6 @@ public class schema {
   }
 
   public static class ObjectType extends org.openjax.jsonx.schema.Object {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
-    
-    public void setName(final java.lang.String name) {
-      this.name = name;
-    }
-    
-    public java.lang.String getName() {
-      return name;
-    }
-    
     @org.openjax.jsonx.runtime.BooleanProperty(name="abstract", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean _abstract;
     
@@ -1098,9 +1097,6 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.ObjectType that = (org.openjax.jsonx.schema.ObjectType)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
-        return false;
-    
       if (that._abstract != null ? !that._abstract.equals(_abstract) : _abstract != null)
         return false;
     
@@ -1110,7 +1106,6 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -841879587 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
       hashCode = 31 * hashCode + (_abstract == null ? 0 : _abstract.hashCode());
       return hashCode;
     }
@@ -1246,7 +1241,18 @@ public class schema {
     }
   }
 
-  public static class ReferenceProperty extends org.openjax.jsonx.schema.ReferenceType {
+  public static class ReferenceProperty extends org.openjax.jsonx.schema.Reference {
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
+    
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
+    }
+    
+    public java.lang.Boolean getNullable() {
+      return nullable;
+    }
+    
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String use;
     
@@ -1267,6 +1273,9 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.ReferenceProperty that = (org.openjax.jsonx.schema.ReferenceProperty)obj;
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
+        return false;
+    
       if (that.use != null ? !that.use.equals(use) : use != null)
         return false;
     
@@ -1276,6 +1285,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1605132540 * 31 + super.hashCode();
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -1287,17 +1297,6 @@ public class schema {
   }
 
   public static abstract class ReferenceType extends org.openjax.jsonx.schema.Reference {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
-    
-    public void setName(final java.lang.String name) {
-      this.name = name;
-    }
-    
-    public java.lang.String getName() {
-      return name;
-    }
-    
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1306,18 +1305,12 @@ public class schema {
       if (!(obj instanceof org.openjax.jsonx.schema.ReferenceType) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ReferenceType that = (org.openjax.jsonx.schema.ReferenceType)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
-        return false;
-    
       return true;
     }
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -475349535 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
-      return hashCode;
+      return -475349535 * 31 + super.hashCode();
     }
     
     @java.lang.Override
@@ -1483,7 +1476,18 @@ public class schema {
     }
   }
 
-  public static class StringProperty extends org.openjax.jsonx.schema.StringType {
+  public static class StringProperty extends org.openjax.jsonx.schema.String {
+    @org.openjax.jsonx.runtime.BooleanProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.Boolean nullable;
+    
+    public void setNullable(final java.lang.Boolean nullable) {
+      this.nullable = nullable;
+    }
+    
+    public java.lang.Boolean getNullable() {
+      return nullable;
+    }
+    
     @org.openjax.jsonx.runtime.StringProperty(pattern="(required|optional)", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String use;
     
@@ -1504,6 +1508,9 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.StringProperty that = (org.openjax.jsonx.schema.StringProperty)obj;
+      if (that.nullable != null ? !that.nullable.equals(nullable) : nullable != null)
+        return false;
+    
       if (that.use != null ? !that.use.equals(use) : use != null)
         return false;
     
@@ -1513,6 +1520,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1949171658 * 31 + super.hashCode();
+      hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
     }
@@ -1524,17 +1532,6 @@ public class schema {
   }
 
   public static class StringType extends org.openjax.jsonx.schema.String {
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
-    private java.lang.String name;
-    
-    public void setName(final java.lang.String name) {
-      this.name = name;
-    }
-    
-    public java.lang.String getName() {
-      return name;
-    }
-    
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1543,18 +1540,12 @@ public class schema {
       if (!(obj instanceof org.openjax.jsonx.schema.StringType) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.StringType that = (org.openjax.jsonx.schema.StringType)obj;
-      if (that.name != null ? !that.name.equals(name) : name != null)
-        return false;
-    
       return true;
     }
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 813167535 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
-      return hashCode;
+      return 813167535 * 31 + super.hashCode();
     }
     
     @java.lang.Override

@@ -155,7 +155,7 @@ final class Error {
     }
 
     if (next == null)
-      return str;
+      return rendered = str;
 
     rendered = str + next.toString();
     next = null;

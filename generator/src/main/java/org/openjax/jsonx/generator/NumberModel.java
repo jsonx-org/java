@@ -38,16 +38,15 @@ import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
-  private static xL4gluGCXYYJc.Schema.NumberType type(final schema.NumberType jsonx) {
+  private static xL4gluGCXYYJc.Schema.NumberType type(final String name) {
     final xL4gluGCXYYJc.Schema.NumberType xsb = new xL4gluGCXYYJc.Schema.NumberType();
-
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.NumberType.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.Schema.NumberType.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Number property(final schema.NumberProperty jsonx) {
+  private static xL4gluGCXYYJc.$Number property(final schema.NumberProperty jsonx, final String name) {
     final xL4gluGCXYYJc.$Number xsb = new xL4gluGCXYYJc.$Number() {
       private static final long serialVersionUID = -346722555715286411L;
 
@@ -57,8 +56,11 @@ final class NumberModel extends Model {
       }
     };
 
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Number.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.$Number.Name$(name));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Number.Nullable$(jsonx.getNullable()));
 
     if (jsonx.getUse() != null)
       xsb.setUse$(new xL4gluGCXYYJc.$Number.Use$(xL4gluGCXYYJc.$Number.Use$.Enum.valueOf(jsonx.getUse())));
@@ -81,12 +83,12 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$NumberMember jsonxToXsb(final schema.Number jsonx) {
+  static xL4gluGCXYYJc.$NumberMember jsonxToXsb(final schema.Number jsonx, final String name) {
     final xL4gluGCXYYJc.$NumberMember xsb;
     if (jsonx instanceof schema.NumberType)
-      xsb = type((schema.NumberType)jsonx);
+      xsb = type(name);
     else if (jsonx instanceof schema.NumberProperty)
-      xsb = property((schema.NumberProperty)jsonx);
+      xsb = property((schema.NumberProperty)jsonx, name);
     else if (jsonx instanceof schema.NumberElement)
       xsb = element((schema.NumberElement)jsonx);
     else

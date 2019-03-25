@@ -29,15 +29,15 @@ import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 final class BooleanModel extends Model {
   private static final Id ID = Id.hashed("b");
 
-  private static xL4gluGCXYYJc.Schema.BooleanType type(final schema.BooleanType jsonx) {
+  private static xL4gluGCXYYJc.Schema.BooleanType type(final String name) {
     final xL4gluGCXYYJc.Schema.BooleanType xsb = new xL4gluGCXYYJc.Schema.BooleanType();
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.BooleanType.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.Schema.BooleanType.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Boolean property(final schema.BooleanProperty jsonx) {
+  private static xL4gluGCXYYJc.$Boolean property(final schema.BooleanProperty jsonx, final String name) {
     final xL4gluGCXYYJc.$Boolean xsb = new xL4gluGCXYYJc.$Boolean() {
       private static final long serialVersionUID = 650722913732574568L;
 
@@ -47,8 +47,11 @@ final class BooleanModel extends Model {
       }
     };
 
-    if (jsonx.getName() != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Boolean.Name$(jsonx.getName()));
+    if (name != null)
+      xsb.setName$(new xL4gluGCXYYJc.$Boolean.Name$(name));
+
+    if (jsonx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Boolean.Nullable$(jsonx.getNullable()));
 
     if (jsonx.getUse() != null)
       xsb.setUse$(new xL4gluGCXYYJc.$Boolean.Use$(xL4gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsonx.getUse())));
@@ -70,12 +73,12 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$BooleanMember jsonxToXsb(final schema.Boolean jsonx) {
+  static xL4gluGCXYYJc.$BooleanMember jsonxToXsb(final schema.Boolean jsonx, final String name) {
     final xL4gluGCXYYJc.$BooleanMember xsb;
     if (jsonx instanceof schema.BooleanType)
-      xsb = type((schema.BooleanType)jsonx);
+      xsb = type(name);
     else if (jsonx instanceof schema.BooleanProperty)
-      xsb = property((schema.BooleanProperty)jsonx);
+      xsb = property((schema.BooleanProperty)jsonx, name);
     else if (jsonx instanceof schema.BooleanElement)
       xsb = element((schema.BooleanElement)jsonx);
     else
