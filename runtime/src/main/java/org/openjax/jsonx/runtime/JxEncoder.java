@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,17 +32,40 @@ import org.openjax.standard.util.FastArrays;
 import org.openjax.standard.util.function.TriObjBiIntConsumer;
 
 public class JxEncoder {
-  private final int indent;
+  private static final HashMap<Integer,JxEncoder> instances = new HashMap<>();
+
+  public static final JxEncoder _0 = get(0);
+  public static final JxEncoder _1 = get(1);
+  public static final JxEncoder _2 = get(2);
+  public static final JxEncoder _3 = get(3);
+  public static final JxEncoder _4 = get(4);
+  public static final JxEncoder _8 = get(8);
+
+  private static JxEncoder global = _0;
+
+  public static JxEncoder get() {
+    return global;
+  }
+
+  public static void set(final JxEncoder encoder) {
+    global = encoder;
+  }
+
+  public static JxEncoder get(final int indent) {
+    JxEncoder encoder = instances.get(indent);
+    if (encoder == null)
+      instances.put(indent, encoder = new JxEncoder(indent));
+
+    return encoder;
+  }
+
+  final int indent;
   private final String comma;
   private final String colon;
   private final boolean validate;
 
-  public JxEncoder(final int indent) {
+  protected JxEncoder(final int indent) {
     this(indent, true);
-  }
-
-  public JxEncoder() {
-    this(0, true);
   }
 
   JxEncoder(final int indent, final boolean validate) {

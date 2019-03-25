@@ -74,9 +74,9 @@ public class SchemaTest {
     }
 
     for (int i = 0; i < 10; ++i)
-      settings.add(new Settings(i, 2));
+      settings.add(new Settings(i));
 
-    settings.add(new Settings(Integer.MAX_VALUE, 2));
+    settings.add(new Settings(Integer.MAX_VALUE));
   }
 
   private static xL4gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, ValidationException {

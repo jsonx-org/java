@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 OpenJAX
+/* Copyright (c) 2019 OpenJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,33 +16,7 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.math.BigInteger;
-
-public class Publishing implements JxObject {
-  @NumberProperty(form=Form.INTEGER)
-  private BigInteger year;
-
-  public BigInteger getYear() {
-    return this.year;
-  }
-
-  public void setYear(final BigInteger year) {
-    this.year = year;
-  }
-
-  @StringProperty(pattern="\\S+ \\S+")
-  private String publisher;
-
-  public String getPublisher() {
-    return this.publisher;
-  }
-
-  public void setPublisher(final String publisher) {
-    this.publisher = publisher;
-  }
-
-  @Override
-  public String toString() {
-    return JxEncoder._2.marshal(this);
-  }
+@AnyElement(id=0, types={@t(arrays=AnyArray.class), @t(booleans=true), @t(numbers=@NumberType), @t(objects=AnyObject.class), @t(strings=".*")}, minOccurs=0)
+@ArrayType(elementIds={0})
+public @interface AnyArray {
 }

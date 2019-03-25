@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
 class ClassTrial {
   private static final Logger logger = LoggerFactory.getLogger(ClassTrial.class);
 
-  private static final JxEncoder validEncoder = new JxEncoder(2, true);
-  private static final JxEncoder invalidEncoder = new JxEncoder(2, false);
+  private static final JxEncoder validEncoder = JxEncoder.get();
+  private static final JxEncoder invalidEncoder = new JxEncoder(validEncoder.indent, false);
 
   private final JxObject binding;
   private final List<PropertyTrial<?>> trials = new ArrayList<>();

@@ -21,19 +21,14 @@ import java.io.Serializable;
 public class Settings implements Serializable {
   private static final long serialVersionUID = -9151836587381478204L;
 
-  public static final Settings DEFAULT = new Settings(1, 2);
+  public static final Settings DEFAULT = new Settings(1);
 
   private final int templateThreshold;
-  private final int toStringIndent;
 
-  public Settings(final int templateThreshold, final int toStringIndent) {
+  public Settings(final int templateThreshold) {
     this.templateThreshold = templateThreshold;
     if (templateThreshold < 0)
       throw new IllegalArgumentException("templateThreshold < 0: " + templateThreshold);
-
-    this.toStringIndent = toStringIndent;
-    if (toStringIndent < -1)
-      throw new IllegalArgumentException("toStringIndent < -1: " + templateThreshold);
   }
 
   /**
@@ -42,15 +37,5 @@ public class Settings implements Serializable {
    */
   public int getTemplateThreshold() {
     return this.templateThreshold;
-  }
-
-  /**
-   * @return The indent in spaces in the JSON representation of binding
-   *         instances as returned by {@link Object#toString()}. A value of
-   *         {@code -1} will result in the {@code toString()} method override to
-   *         be omitted.
-   */
-  public int getToStringIndent() {
-    return this.toStringIndent;
   }
 }

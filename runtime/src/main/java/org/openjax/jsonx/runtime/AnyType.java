@@ -22,12 +22,6 @@ import java.util.List;
 import org.openjax.standard.util.Numbers;
 
 public final class AnyType {
-  // FIXME: object=JxObject.class
-  @AnyElement(id=0, types={@t(arrays=AnyArray.class), @t(booleans=true), @t(numbers=@NumberType), @t(objects=JxObject.class), @t(strings=".*")}, minOccurs=0)
-  @ArrayType(elementIds={0})
-  private @interface AnyArray {
-  }
-
   public static boolean isEnabled(final Class<?> annotation) {
     return annotation != JxObject.class && annotation != Annotation.class;
   }
@@ -64,7 +58,7 @@ public final class AnyType {
       return numbers;
 
     if (obj instanceof JxObject)
-      throw new UnsupportedOperationException("Implement this!");
+      return objects;
 
     if (obj instanceof String)
       return strings;
@@ -230,8 +224,7 @@ public final class AnyType {
 
     @Override
     public Class<? extends JxObject> objects() {
-      // FIXME:!
-      return null;
+      return AnyObject.class;
     }
   };
 
@@ -271,7 +264,7 @@ public final class AnyType {
     arrays,
     booleans,
     numbers,
-//    objects,
+    objects,
     strings
   };
 

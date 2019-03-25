@@ -36,7 +36,7 @@ import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.StringProperty;
 
 public class JxObjectProviderTest {
-  private static final JxObjectProvider provider = new JxObjectProvider(new JxEncoder(0));
+  private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder._0);
 
   public static class Foo implements JxObject {
     @StringProperty

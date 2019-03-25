@@ -209,7 +209,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       final xL4gluGCXYYJc.$Member member = (xL4gluGCXYYJc.$Member)iterator.next();
       if (member instanceof xL4gluGCXYYJc.$Any) {
         final xL4gluGCXYYJc.$Any any = (xL4gluGCXYYJc.$Any)member;
-        members.put(any.getMatch$().text(), AnyModel.reference(registry, objectModel, any));
+        members.put(any.getNames$().text(), AnyModel.reference(registry, objectModel, any));
       }
       else if (member instanceof xL4gluGCXYYJc.$Array) {
         final xL4gluGCXYYJc.$Array array = (xL4gluGCXYYJc.$Array)member;
@@ -456,7 +456,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     builder.append("\n\n@").append(Override.class.getName());
     builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
-    builder.append("\n  return new ").append(JxEncoder.class.getName()).append('(').append(settings.getToStringIndent()).append(").marshal(this);");
+    builder.append("\n  return ").append(JxEncoder.class.getName()).append(".get().marshal(this);");
     builder.append("\n}");
 
     return builder.toString();

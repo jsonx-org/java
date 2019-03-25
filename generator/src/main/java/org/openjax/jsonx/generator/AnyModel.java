@@ -136,7 +136,7 @@ final class AnyModel extends Referrer<AnyModel> {
   private final List<Member> types;
 
   private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Any binding) {
-    super(registry, binding.getMatch$(), binding.getNullable$(), binding.getUse$(), null);
+    super(registry, binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
     this.types = getTypes(binding.getTypes$());
   }
 
@@ -316,7 +316,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
   @Override
   String nameName() {
-    return "match";
+    return "names";
   }
 
   @Override

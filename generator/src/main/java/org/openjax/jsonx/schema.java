@@ -37,7 +37,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -107,7 +107,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -162,7 +162,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -253,7 +253,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -323,7 +323,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -363,7 +363,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -403,7 +403,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -443,7 +443,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -513,7 +513,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -553,7 +553,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -593,7 +593,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -616,7 +616,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -686,7 +686,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -756,7 +756,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -796,7 +796,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -836,14 +836,14 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
   public static abstract class Object extends org.openjax.jsonx.schema.Member {
     public static class Properties implements org.openjax.jsonx.runtime.JxObject {
       @org.openjax.jsonx.runtime.AnyProperty(name=".*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ArrayProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.BooleanProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.NumberProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ReferenceProperty.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.StringProperty.class)}, nullable=false)
-      public final java.util.LinkedHashMap<java.lang.String,java.util.List<java.lang.Object>> _2e_2a = new java.util.LinkedHashMap<>();
+      public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
       
       @java.lang.Override
       public boolean equals(final java.lang.Object obj) {
@@ -869,7 +869,7 @@ public class schema {
       
       @java.lang.Override
       public java.lang.String toString() {
-        return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+        return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
       }
     }
     @org.openjax.jsonx.runtime.StringProperty(name="class", pattern="object", nullable=false)
@@ -937,7 +937,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1007,7 +1007,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1062,7 +1062,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1117,7 +1117,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1172,7 +1172,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1242,7 +1242,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1282,7 +1282,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1322,13 +1322,13 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
   public static class Schema implements org.openjax.jsonx.runtime.JxObject {
     @org.openjax.jsonx.runtime.AnyProperty(name=".*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ArrayType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.BooleanType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.NumberType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.StringType.class)}, nullable=false)
-    public final java.util.LinkedHashMap<java.lang.String,java.util.List<java.lang.Object>> _2e_2a = new java.util.LinkedHashMap<>();
+    public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
     
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1354,7 +1354,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1409,7 +1409,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1479,7 +1479,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1519,7 +1519,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 
@@ -1559,7 +1559,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return new org.openjax.jsonx.runtime.JxEncoder(2).marshal(this);
+      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
     }
   }
 }

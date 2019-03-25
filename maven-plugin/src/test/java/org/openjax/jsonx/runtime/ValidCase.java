@@ -23,11 +23,13 @@ import java.util.List;
 
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonStrings;
+import org.openjax.standard.util.FastCollections;
 
 import com.google.common.base.Strings;
 
 class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   static final ValidCase<Object> CASE = new ValidCase<>();
+  private static final String listDelimiter = "," + Strings.repeat(" ", JxEncoder.get().indent);
 
   private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
     final List<Object> out = new ArrayList<>(list.size());
@@ -60,7 +62,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
     }
     else if (trial.value() instanceof List) {
       final List<Object> list = format((List<?>)trial.value(), relations, true);
-      expected = list.toString();
+      expected = "[" + FastCollections.toString(list, listDelimiter) + "]";
     }
     else if (trial instanceof StringTrial || trial instanceof AnyTrial && trial.value() instanceof String) {
       expected = StringCodec.encodeObject((String)trial.value()).toString();

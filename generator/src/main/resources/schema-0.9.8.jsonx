@@ -53,7 +53,7 @@
     <property xsi:type="string" name="class" pattern="object" nullable="false"/>
     <property xsi:type="string" name="extends" pattern=".*" nullable="false"/>
     <property xsi:type="object" name="properties" nullable="false">
-      <property xsi:type="any" match=".*" types="arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty" nullable="false"/>
+      <property xsi:type="any" names=".*" types="arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty" nullable="false"/>
     </property>
   </objectType>
   <objectType name="reference" abstract="true" extends="member">
@@ -146,7 +146,7 @@
   </objectType>
   
   <objectType name="schema">
-    <property xsi:type="any" match=".*" types="arrayType booleanType numberType objectType stringType" nullable="false"/>
+    <property xsi:type="any" names=".*" types="arrayType booleanType numberType objectType stringType" nullable="false"/>
   </objectType>
   
 </schema>
