@@ -70,7 +70,6 @@
   <objectType name="arrayType" extends="array"/>
   <objectType name="booleanType" extends="boolean"/>
   <objectType name="numberType" extends="number"/>
-  <objectType name="referenceType" abstract="true" extends="reference"/>
   <objectType name="stringType" extends="string"/>
   <objectType name="objectType" extends="object">
     <property xsi:type="boolean" name="abstract" nullable="false" use="optional"/>

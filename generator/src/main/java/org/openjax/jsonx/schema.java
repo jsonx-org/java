@@ -1296,29 +1296,6 @@ public class schema {
     }
   }
 
-  public static abstract class ReferenceType extends org.openjax.jsonx.schema.Reference {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-    
-      if (!(obj instanceof org.openjax.jsonx.schema.ReferenceType) || !super.equals(obj))
-        return false;
-    
-      return true;
-    }
-    
-    @java.lang.Override
-    public int hashCode() {
-      return -475349535 * 31 + super.hashCode();
-    }
-    
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
-    }
-  }
-
   public static class Schema implements org.openjax.jsonx.runtime.JxObject {
     @org.openjax.jsonx.runtime.AnyProperty(name=".*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ArrayType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.BooleanType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.NumberType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.StringType.class)}, nullable=false)
     public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
