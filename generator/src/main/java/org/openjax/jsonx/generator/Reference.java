@@ -25,10 +25,6 @@ import java.util.function.Supplier;
 import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Array;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Reference;
 import org.openjax.standard.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -54,7 +50,7 @@ final class Reference extends Member {
       private static final long serialVersionUID = 9188863837584292929L;
 
       @Override
-      protected $Member inherits() {
+      protected xL4gluGCXYYJc.$Member inherits() {
         return new xL4gluGCXYYJc.$ObjectMember.Property();
       }
     };
@@ -88,29 +84,29 @@ final class Reference extends Member {
 
   final Model model;
 
-  static Deferred<Reference> defer(final Registry registry, final $Array.Reference binding, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final xL4gluGCXYYJc.$Array.Reference binding, final Supplier<Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, binding, model.get()));
   }
 
-  private Reference(final Registry registry, final $Array.Reference binding, final Model model) {
+  private Reference(final Registry registry, final xL4gluGCXYYJc.$Array.Reference binding, final Model model) {
     super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final $Reference binding, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final xL4gluGCXYYJc.$Reference binding, final Supplier<Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, binding, model.get()));
   }
 
-  private Reference(final Registry registry, final $Reference binding, final Model model) {
+  private Reference(final Registry registry, final xL4gluGCXYYJc.$Reference binding, final Model model) {
     super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL4gluGCXYYJc.$MaxOccurs maxOccurs, final Supplier<Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
   }
 
-  private Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Model model) {
+  private Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL4gluGCXYYJc.$MaxOccurs maxOccurs, final Model model) {
     super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), nullable, minOccurs, maxOccurs);
     this.model = model;
   }

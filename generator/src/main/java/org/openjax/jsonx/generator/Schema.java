@@ -37,7 +37,6 @@ import org.openjax.jsonx.runtime.ArrayType;
 import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
 import org.openjax.standard.lang.PackageLoader;
 import org.openjax.standard.lang.PackageNotFoundException;
 import org.openjax.standard.util.FastCollections;
@@ -51,17 +50,17 @@ import org.openjax.standard.xml.api.XmlElement;
 public final class Schema extends Element {
   private static xL4gluGCXYYJc.Schema jsonxToXsb(final schema.Schema jsonx) {
     final xL4gluGCXYYJc.Schema schema = new xL4gluGCXYYJc.Schema();
-    for (final Map.Entry<java.lang.String,java.lang.Object> entry : jsonx._2e_2a.entrySet()) {
-      if (entry.getValue() instanceof schema.ArrayType)
-        schema.addArrayType((xL4gluGCXYYJc.Schema.ArrayType)ArrayModel.jsonxToXsb((schema.ArrayType)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.BooleanType)
-        schema.addBooleanType((xL4gluGCXYYJc.Schema.BooleanType)BooleanModel.jsonxToXsb((schema.BooleanType)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.NumberType)
-        schema.addNumberType((xL4gluGCXYYJc.Schema.NumberType)NumberModel.jsonxToXsb((schema.NumberType)entry.getValue(), entry.getKey()));
+    for (final Map.Entry<java.lang.String,java.lang.Object> entry : jsonx._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
+      if (entry.getValue() instanceof schema.Array)
+        schema.addArray((xL4gluGCXYYJc.Schema.Array)ArrayModel.jsonxToXsb((schema.Array)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.Boolean)
+        schema.addBoolean((xL4gluGCXYYJc.Schema.Boolean)BooleanModel.jsonxToXsb((schema.Boolean)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.Number)
+        schema.addNumber((xL4gluGCXYYJc.Schema.Number)NumberModel.jsonxToXsb((schema.Number)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.ObjectType)
-        schema.addObjectType((xL4gluGCXYYJc.Schema.ObjectType)ObjectModel.jsonxToXsb((schema.ObjectType)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.StringType)
-        schema.addStringType((xL4gluGCXYYJc.Schema.StringType)StringModel.jsonxToXsb((schema.StringType)entry.getValue(), entry.getKey()));
+        schema.addObject((xL4gluGCXYYJc.Schema.Object)ObjectModel.jsonxToXsb((schema.Object)entry.getValue(), entry.getKey()));
+      else if (entry.getValue() instanceof schema.String)
+        schema.addString((xL4gluGCXYYJc.Schema.String)StringModel.jsonxToXsb((schema.String)entry.getValue(), entry.getKey()));
       else
         throw new UnsupportedOperationException("Unsupported type: " + entry.getValue().getClass().getName());
     }
@@ -82,30 +81,30 @@ public final class Schema extends Element {
   public Schema(final xL4gluGCXYYJc.Schema schema, final String prefix) {
     this.registry = new Registry(prefix);
 
-    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
-      if (obj instanceof xL4gluGCXYYJc.Schema.ArrayType)
-        return ((xL4gluGCXYYJc.Schema.ArrayType)obj).getName$().text();
+    final StrictRefDigraph<xL4gluGCXYYJc.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
+      if (obj instanceof xL4gluGCXYYJc.Schema.Array)
+        return ((xL4gluGCXYYJc.Schema.Array)obj).getName$().text();
 
-      if (obj instanceof xL4gluGCXYYJc.Schema.BooleanType)
-        return ((xL4gluGCXYYJc.Schema.BooleanType)obj).getName$().text();
+      if (obj instanceof xL4gluGCXYYJc.Schema.Boolean)
+        return ((xL4gluGCXYYJc.Schema.Boolean)obj).getName$().text();
 
-      if (obj instanceof xL4gluGCXYYJc.Schema.NumberType)
-        return ((xL4gluGCXYYJc.Schema.NumberType)obj).getName$().text();
+      if (obj instanceof xL4gluGCXYYJc.Schema.Number)
+        return ((xL4gluGCXYYJc.Schema.Number)obj).getName$().text();
 
-      if (obj instanceof xL4gluGCXYYJc.Schema.StringType)
-        return ((xL4gluGCXYYJc.Schema.StringType)obj).getName$().text();
+      if (obj instanceof xL4gluGCXYYJc.Schema.String)
+        return ((xL4gluGCXYYJc.Schema.String)obj).getName$().text();
 
-      if (obj instanceof xL4gluGCXYYJc.Schema.ObjectType)
-        return ((xL4gluGCXYYJc.Schema.ObjectType)obj).getName$().text();
+      if (obj instanceof xL4gluGCXYYJc.Schema.Object)
+        return ((xL4gluGCXYYJc.Schema.Object)obj).getName$().text();
 
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
     });
 
-    final Iterator<? super $Member> iterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
+    final Iterator<? super xL4gluGCXYYJc.$Member> iterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL4gluGCXYYJc.$Member);
     while (iterator.hasNext()) {
-      final $Member member = ($Member)iterator.next();
-      if (member instanceof xL4gluGCXYYJc.Schema.ObjectType) {
-        final xL4gluGCXYYJc.Schema.ObjectType object = (xL4gluGCXYYJc.Schema.ObjectType)member;
+      final xL4gluGCXYYJc.$Member member = (xL4gluGCXYYJc.$Member)iterator.next();
+      if (member instanceof xL4gluGCXYYJc.Schema.Object) {
+        final xL4gluGCXYYJc.Schema.Object object = (xL4gluGCXYYJc.Schema.Object)member;
         if (object.getExtends$() != null)
           digraph.addEdgeRef(object, object.getExtends$().text());
         else
@@ -120,19 +119,19 @@ public final class Schema extends Element {
     if (cycle != null)
       throw new ValidationException("Cycle detected in object hierarchy: " + FastCollections.toString(cycle, " -> "));
 
-    final ListIterator<$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
+    final ListIterator<xL4gluGCXYYJc.$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious()) {
-      final $Member member = topologicalOrder.previous();
-      if (member instanceof xL4gluGCXYYJc.Schema.ArrayType)
-        ArrayModel.declare(registry, (xL4gluGCXYYJc.Schema.ArrayType)member);
-      else if (member instanceof xL4gluGCXYYJc.Schema.BooleanType)
-        BooleanModel.declare(registry, (xL4gluGCXYYJc.Schema.BooleanType)member);
-      else if (member instanceof xL4gluGCXYYJc.Schema.NumberType)
-        NumberModel.declare(registry, (xL4gluGCXYYJc.Schema.NumberType)member);
-      else if (member instanceof xL4gluGCXYYJc.Schema.StringType)
-        StringModel.declare(registry, (xL4gluGCXYYJc.Schema.StringType)member);
-      else if (member instanceof xL4gluGCXYYJc.Schema.ObjectType)
-        ObjectModel.declare(registry, (xL4gluGCXYYJc.Schema.ObjectType)member);
+      final xL4gluGCXYYJc.$Member member = topologicalOrder.previous();
+      if (member instanceof xL4gluGCXYYJc.Schema.Array)
+        ArrayModel.declare(registry, (xL4gluGCXYYJc.Schema.Array)member);
+      else if (member instanceof xL4gluGCXYYJc.Schema.Boolean)
+        BooleanModel.declare(registry, (xL4gluGCXYYJc.Schema.Boolean)member);
+      else if (member instanceof xL4gluGCXYYJc.Schema.Number)
+        NumberModel.declare(registry, (xL4gluGCXYYJc.Schema.Number)member);
+      else if (member instanceof xL4gluGCXYYJc.Schema.String)
+        StringModel.declare(registry, (xL4gluGCXYYJc.Schema.String)member);
+      else if (member instanceof xL4gluGCXYYJc.Schema.Object)
+        ObjectModel.declare(registry, (xL4gluGCXYYJc.Schema.Object)member);
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }

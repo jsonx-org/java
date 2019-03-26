@@ -181,7 +181,7 @@ public class schema {
     }
   }
 
-  public static abstract class Array extends org.openjax.jsonx.schema.Member {
+  public static class Array extends org.openjax.jsonx.schema.Member {
     @org.openjax.jsonx.runtime.StringProperty(name="class", pattern="array", nullable=false)
     private java.lang.String _class;
     
@@ -398,30 +398,7 @@ public class schema {
     }
   }
 
-  public static class ArrayType extends org.openjax.jsonx.schema.Array {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-    
-      if (!(obj instanceof org.openjax.jsonx.schema.ArrayType) || !super.equals(obj))
-        return false;
-    
-      return true;
-    }
-    
-    @java.lang.Override
-    public int hashCode() {
-      return 1423013871 * 31 + super.hashCode();
-    }
-    
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
-    }
-  }
-
-  public static abstract class Boolean extends org.openjax.jsonx.schema.Member {
+  public static class Boolean extends org.openjax.jsonx.schema.Member {
     @org.openjax.jsonx.runtime.StringProperty(name="class", pattern="boolean", nullable=false)
     private java.lang.String _class;
     
@@ -586,29 +563,6 @@ public class schema {
     }
   }
 
-  public static class BooleanType extends org.openjax.jsonx.schema.Boolean {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-    
-      if (!(obj instanceof org.openjax.jsonx.schema.BooleanType) || !super.equals(obj))
-        return false;
-    
-      return true;
-    }
-    
-    @java.lang.Override
-    public int hashCode() {
-      return -876203202 * 31 + super.hashCode();
-    }
-    
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
-    }
-  }
-
   public static abstract class Member implements org.openjax.jsonx.runtime.JxObject {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -632,7 +586,7 @@ public class schema {
     }
   }
 
-  public static abstract class Number extends org.openjax.jsonx.schema.Member {
+  public static class Number extends org.openjax.jsonx.schema.Member {
     @org.openjax.jsonx.runtime.StringProperty(name="class", pattern="number", nullable=false)
     private java.lang.String _class;
     
@@ -819,29 +773,6 @@ public class schema {
       hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
-    }
-    
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
-    }
-  }
-
-  public static class NumberType extends org.openjax.jsonx.schema.Number {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-    
-      if (!(obj instanceof org.openjax.jsonx.schema.NumberType) || !super.equals(obj))
-        return false;
-    
-      return true;
-    }
-    
-    @java.lang.Override
-    public int hashCode() {
-      return 1994068711 * 31 + super.hashCode();
     }
     
     @java.lang.Override
@@ -1297,8 +1228,8 @@ public class schema {
   }
 
   public static class Schema implements org.openjax.jsonx.runtime.JxObject {
-    @org.openjax.jsonx.runtime.AnyProperty(name=".*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ArrayType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.BooleanType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.NumberType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.StringType.class)}, nullable=false)
-    public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
+    @org.openjax.jsonx.runtime.AnyProperty(name="[a-zA-Z_$][-a-zA-Z\\d_$]*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.Array.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.Boolean.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.Number.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.String.class)}, nullable=false)
+    public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a = new java.util.LinkedHashMap<>();
     
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1309,7 +1240,7 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.Schema that = (org.openjax.jsonx.schema.Schema)obj;
-      if (that._2e_2a != null ? !that._2e_2a.equals(_2e_2a) : _2e_2a != null)
+      if (that._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a != null ? !that._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.equals(_5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a) : _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a != null)
         return false;
     
       return true;
@@ -1318,7 +1249,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 572733541;
-      hashCode = 31 * hashCode + (_2e_2a == null ? 0 : _2e_2a.hashCode());
+      hashCode = 31 * hashCode + (_5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a == null ? 0 : _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.hashCode());
       return hashCode;
     }
     
@@ -1328,7 +1259,7 @@ public class schema {
     }
   }
 
-  public static abstract class String extends org.openjax.jsonx.schema.Member {
+  public static class String extends org.openjax.jsonx.schema.Member {
     @org.openjax.jsonx.runtime.StringProperty(name="class", pattern="string", nullable=false)
     private java.lang.String _class;
     
@@ -1500,29 +1431,6 @@ public class schema {
       hashCode = 31 * hashCode + (nullable == null ? 0 : nullable.hashCode());
       hashCode = 31 * hashCode + (use == null ? 0 : use.hashCode());
       return hashCode;
-    }
-    
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.openjax.jsonx.runtime.JxEncoder.get().marshal(this);
-    }
-  }
-
-  public static class StringType extends org.openjax.jsonx.schema.String {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-    
-      if (!(obj instanceof org.openjax.jsonx.schema.StringType) || !super.equals(obj))
-        return false;
-    
-      return true;
-    }
-    
-    @java.lang.Override
-    public int hashCode() {
-      return 813167535 * 31 + super.hashCode();
     }
     
     @java.lang.Override

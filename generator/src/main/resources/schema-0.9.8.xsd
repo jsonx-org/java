@@ -354,7 +354,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="booleanType">
+          <xs:element name="boolean">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:booleanMember">
@@ -363,7 +363,7 @@
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="numberType">
+          <xs:element name="number">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:numberMember">
@@ -372,7 +372,7 @@
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="stringType">
+          <xs:element name="string">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:stringMember">
@@ -381,7 +381,7 @@
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="arrayType">
+          <xs:element name="array">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:arrayMember">
@@ -390,7 +390,7 @@
               </xs:complexContent>
             </xs:complexType>
           </xs:element>
-          <xs:element name="objectType">
+          <xs:element name="object">
             <xs:complexType>
               <xs:complexContent>
                 <xs:extension base="jx:objectMember">

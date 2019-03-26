@@ -29,10 +29,10 @@ import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 final class BooleanModel extends Model {
   private static final Id ID = Id.hashed("b");
 
-  private static xL4gluGCXYYJc.Schema.BooleanType type(final String name) {
-    final xL4gluGCXYYJc.Schema.BooleanType xsb = new xL4gluGCXYYJc.Schema.BooleanType();
+  private static xL4gluGCXYYJc.Schema.Boolean type(final String name) {
+    final xL4gluGCXYYJc.Schema.Boolean xsb = new xL4gluGCXYYJc.Schema.Boolean();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.BooleanType.Name$(name));
+      xsb.setName$(new xL4gluGCXYYJc.Schema.Boolean.Name$(name));
 
     return xsb;
   }
@@ -75,19 +75,19 @@ final class BooleanModel extends Model {
 
   static xL4gluGCXYYJc.$BooleanMember jsonxToXsb(final schema.Boolean jsonx, final String name) {
     final xL4gluGCXYYJc.$BooleanMember xsb;
-    if (jsonx instanceof schema.BooleanType)
-      xsb = type(name);
-    else if (jsonx instanceof schema.BooleanProperty)
+    if (jsonx instanceof schema.BooleanProperty)
       xsb = property((schema.BooleanProperty)jsonx, name);
     else if (jsonx instanceof schema.BooleanElement)
       xsb = element((schema.BooleanElement)jsonx);
+    else if (name != null)
+      xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.BooleanType binding) {
+  static BooleanModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Boolean binding) {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
@@ -115,7 +115,7 @@ final class BooleanModel extends Model {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
-  private BooleanModel(final Registry registry, final xL4gluGCXYYJc.Schema.BooleanType binding) {
+  private BooleanModel(final Registry registry, final xL4gluGCXYYJc.Schema.Boolean binding) {
     super(registry, Id.named(binding.getName$()));
   }
 

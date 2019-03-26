@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Object;
 import org.openjax.standard.util.Classes;
 import org.openjax.standard.util.Strings;
 
@@ -328,23 +327,23 @@ class Registry {
   private final ArrayList<Runnable> deferredReferences = new ArrayList<>();
   final Type OBJECT = getType(Object.class);
 
-  Value declare(final xL4gluGCXYYJc.Schema.BooleanType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.Boolean binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.NumberType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.Number binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.StringType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.String binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.ArrayType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.Array binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.ObjectType binding) {
+  Value declare(final xL4gluGCXYYJc.Schema.Object binding) {
     return new Value(binding.getName$().text());
   }
 
@@ -352,7 +351,7 @@ class Registry {
     return new Value(id.toString());
   }
 
-  Value declare(final $Object binding) {
+  Value declare(final xL4gluGCXYYJc.$Object binding) {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 

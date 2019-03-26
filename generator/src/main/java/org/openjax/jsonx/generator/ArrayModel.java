@@ -49,10 +49,10 @@ import org.openjax.standard.xml.api.XmlElement;
 import org.openjax.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
-  private static xL4gluGCXYYJc.Schema.ArrayType type(final String name) {
-    final xL4gluGCXYYJc.Schema.ArrayType xsb = new xL4gluGCXYYJc.Schema.ArrayType();
+  private static xL4gluGCXYYJc.Schema.Array type(final String name) {
+    final xL4gluGCXYYJc.Schema.Array xsb = new xL4gluGCXYYJc.Schema.Array();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.ArrayType.Name$(name));
+      xsb.setName$(new xL4gluGCXYYJc.Schema.Array.Name$(name));
 
     return xsb;
   }
@@ -96,12 +96,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   static xL4gluGCXYYJc.$ArrayMember jsonxToXsb(final schema.Array jsonx, final String name) {
     final xL4gluGCXYYJc.$ArrayMember xsb;
-    if (jsonx instanceof schema.ArrayType)
-      xsb = type(name);
-    else if (jsonx instanceof schema.ArrayProperty)
+    if (jsonx instanceof schema.ArrayProperty)
       xsb = property((schema.ArrayProperty)jsonx, name);
     else if (jsonx instanceof schema.ArrayElement)
       xsb = element((schema.ArrayElement)jsonx);
+    else if (name != null)
+      xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
@@ -131,7 +131,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return xsb;
   }
 
-  static ArrayModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.ArrayType binding) {
+  static ArrayModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Array binding) {
     return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
@@ -289,7 +289,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return minIterate == null || minIterate == 1 ? null : minIterate;
   }
 
-  private ArrayModel(final Registry registry, final xL4gluGCXYYJc.Schema.ArrayType binding) {
+  private ArrayModel(final Registry registry, final xL4gluGCXYYJc.Schema.Array binding) {
     super(registry, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text())));
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
@@ -301,7 +301,6 @@ final class ArrayModel extends Referrer<ArrayModel> {
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
-//    this.id = new Id(this);
   }
 
   private ArrayModel(final Registry registry, final xL4gluGCXYYJc.$Array.Array binding) {
@@ -312,7 +311,6 @@ final class ArrayModel extends Referrer<ArrayModel> {
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
-//    this.id = new Id(this);
   }
 
   private ArrayModel(final Registry registry, final Annotation arrayAnnotation, final int minIterate, final int maxIterate, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {

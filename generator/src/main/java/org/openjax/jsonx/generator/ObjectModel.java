@@ -48,13 +48,13 @@ import org.openjax.standard.util.Strings;
 import org.openjax.standard.xml.api.XmlElement;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  private static xL4gluGCXYYJc.Schema.ObjectType type(final schema.ObjectType jsonx, final String name) {
-    final xL4gluGCXYYJc.Schema.ObjectType xsb = new xL4gluGCXYYJc.Schema.ObjectType();
+  private static xL4gluGCXYYJc.Schema.Object type(final schema.ObjectType jsonx, final String name) {
+    final xL4gluGCXYYJc.Schema.Object xsb = new xL4gluGCXYYJc.Schema.Object();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.ObjectType.Name$(name));
+      xsb.setName$(new xL4gluGCXYYJc.Schema.Object.Name$(name));
 
     if (jsonx.getAbstract() != null)
-      xsb.setAbstract$(new xL4gluGCXYYJc.Schema.ObjectType.Abstract$(jsonx.getAbstract()));
+      xsb.setAbstract$(new xL4gluGCXYYJc.Schema.Object.Abstract$(jsonx.getAbstract()));
 
     return xsb;
   }
@@ -120,7 +120,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static ObjectModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.ObjectType binding) {
+  static ObjectModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Object binding) {
     return registry.declare(binding).value(new ObjectModel(registry, binding), null);
   }
 
@@ -165,7 +165,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     do
       builder.insert(0, '$').insert(1, Strings.flipFirstCap(owner.getName$().text()));
     while (owner.owner() instanceof xL4gluGCXYYJc.$Object && (owner = (xL4gluGCXYYJc.$Object)owner.owner()) != null);
-    return builder.insert(0, JxUtil.flipName(((xL4gluGCXYYJc.Schema.ObjectType)owner.owner()).getName$().text())).toString();
+    return builder.insert(0, JxUtil.flipName(((xL4gluGCXYYJc.Schema.Object)owner.owner()).getName$().text())).toString();
   }
 
   private static Member getReference(final Registry registry, final Referrer<?> referrer, final Field field) {
@@ -264,7 +264,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private Member superObject;
   final boolean isAbstract;
 
-  private ObjectModel(final Registry registry, final xL4gluGCXYYJc.Schema.ObjectType binding) {
+  private ObjectModel(final Registry registry, final xL4gluGCXYYJc.Schema.Object binding) {
     super(registry, registry.getType(registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null));
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());

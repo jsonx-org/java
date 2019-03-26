@@ -18,10 +18,10 @@
   xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
-  <arrayType name="rootArrayBool">
+  <array name="rootArrayBool">
     <boolean/>
-  </arrayType>
-  <arrayType name="rootMultiArray" maxIterate="3">
+  </array>
+  <array name="rootMultiArray" maxIterate="3">
     <array minOccurs="1" maxOccurs="1" maxIterate="2">
       <array maxOccurs="14" maxIterate="5">
         <boolean nullable="false"/>
@@ -33,21 +33,21 @@
         <reference type="rootBoolean" maxOccurs="15"/>
       </array>
     </array>
-  </arrayType>
-  <arrayType name="simple-rootBooleanArray">
+  </array>
+  <array name="simple-rootBooleanArray">
     <reference type="simple-rootBooleanArray" maxOccurs="3"/>
-  </arrayType>
-  <booleanType name="rootBoolean"/>
-  <numberType name="rootNumberInteger" form="integer" range="(2,9)"/>
-  <numberType name="rootNumberReal" range="[2.3392,9.87832)"/>
-  <stringType name="rootString" pattern="[a-z]+"/>
-  <objectType name="cls-abstractObject" abstract="true">
+  </array>
+  <boolean name="rootBoolean"/>
+  <number name="rootNumberInteger" form="integer" range="(2,9)"/>
+  <number name="rootNumberReal" range="[2.3392,9.87832)"/>
+  <string name="rootString" pattern="[a-z]+"/>
+  <object name="cls-abstractObject" abstract="true">
     <property name="booleanPropertyOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
     <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
     <property name="emptyArray" xsi:type="reference" type="rootArrayBool"/>
     <property names="any\d" xsi:type="any" types="rootNumberReal" use="optional"/>
-  </objectType>
-  <objectType name="simple-booleans">
+  </object>
+  <object name="simple-booleans">
     <property name="booleanRefDefault" xsi:type="reference" type="rootBoolean"/>
     <property name="booleanRefOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
     <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
@@ -55,8 +55,8 @@
     <property name="booleanDefault" xsi:type="boolean"/>
     <property name="booleanOptional" xsi:type="boolean" use="optional"/>
     <property name="booleanOptionalNotNullable" xsi:type="boolean" use="optional" nullable="false"/>
-  </objectType>
-  <objectType name="simple-booleansArray">
+  </object>
+  <object name="simple-booleansArray">
     <property name="booleanRefArrayDefault" xsi:type="reference" type="simple-rootBooleanArray"/>
     <property name="booleanRefArrayOptional" xsi:type="reference" type="simple-rootBooleanArray" use="optional"/>
     <property name="booleanRefArrayOptionalNotNullable" xsi:type="reference" type="simple-rootBooleanArray" use="optional" nullable="false"/>
@@ -73,8 +73,8 @@
     <property name="booleanArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <boolean/>
     </property>
-  </objectType>
-  <objectType name="simple-numbers">
+  </object>
+  <object name="simple-numbers">
     <property name="numberRefDefault" xsi:type="reference" type="rootNumberInteger"/>
     <property name="numberRefOptional" xsi:type="reference" type="rootNumberInteger" use="optional"/>
     <property name="numberRefOptionalNotNullable" xsi:type="reference" type="rootNumberReal" use="optional" nullable="false"/>
@@ -85,8 +85,8 @@
     <property name="numberMin" xsi:type="number" range="[0,]"/>
     <property name="numberMax" xsi:type="number" range="[,0]"/>
     <property name="numberInteger" xsi:type="number" form="integer"/>
-  </objectType>
-  <objectType name="simple-numbersArray">
+  </object>
+  <object name="simple-numbersArray">
     <property name="numberArrayRefDefault" xsi:type="array">
       <reference type="rootNumberInteger" maxOccurs="3"/>
     </property>
@@ -264,8 +264,8 @@
       <string/>
       <boolean nullable="false"/>
     </property>
-  </objectType>
-  <objectType name="simple-strings">
+  </object>
+  <object name="simple-strings">
     <property name="stringRefDefault" xsi:type="reference" type="rootString"/>
     <property name="stringRefOptional" xsi:type="reference" type="rootString" use="optional"/>
     <property name="stringRefOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
@@ -277,8 +277,8 @@
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
     <property name="stringUrlDecode" xsi:type="string"/>
     <property name="stringUrlEncode" xsi:type="string"/>
-  </objectType>
-  <objectType name="simple-stringsArray">
+  </object>
+  <object name="simple-stringsArray">
     <property name="stringArrayRefDefault" xsi:type="array">
       <reference type="rootMultiArray"/>
     </property>
@@ -306,8 +306,8 @@
       <string maxOccurs="1"/>
       <string maxOccurs="1"/>
     </property>
-  </objectType>
-  <objectType name="xyz-objects">
+  </object>
+  <object name="xyz-objects">
     <property name="objectDefault" xsi:type="object"/>
     <property name="objectOptional" xsi:type="object" use="optional"/>
     <property name="objectOptionalNotNullable" xsi:type="object" use="optional" nullable="false"/>
@@ -337,8 +337,8 @@
     <property name="objectExtendsStrings" xsi:type="object" extends="simple-strings">
       <property name="additionalString" xsi:type="string"/>
     </property>
-  </objectType>
-  <objectType name="xyz-objectsArray" extends="cls-abstractObject">
+  </object>
+  <object name="xyz-objectsArray" extends="cls-abstractObject">
     <property name="objectArrayDefault" xsi:type="array">
       <reference type="simple-booleans" minOccurs="1" maxOccurs="6" nullable="false"/>
     </property>
@@ -351,5 +351,5 @@
     <property name="objectArrayPropertiesSkipUnknown" xsi:type="array">
       <reference type="simple-numbers"/>
     </property>
-  </objectType>
+  </object>
 </schema>

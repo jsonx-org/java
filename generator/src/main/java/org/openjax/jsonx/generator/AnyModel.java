@@ -36,8 +36,7 @@ import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.runtime.t;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
-import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
   private static xL4gluGCXYYJc.$Any property(final schema.AnyProperty jsonx, final String name) {
@@ -45,7 +44,7 @@ final class AnyModel extends Referrer<AnyModel> {
       private static final long serialVersionUID = 650722913732574568L;
 
       @Override
-      protected $Member inherits() {
+      protected xL4gluGCXYYJc.$Member inherits() {
         return new xL4gluGCXYYJc.$ObjectMember.Property();
       }
     };
@@ -166,7 +165,7 @@ final class AnyModel extends Referrer<AnyModel> {
     this.types = getTypes(element.types());
   }
 
-  private List<Member> getTypes(final yAA.$IDREFS refs) {
+  private List<Member> getTypes(final $IDREFS refs) {
     final List<String> idrefs;
     if (refs == null || (idrefs = refs.text()).size() == 0)
       return null;

@@ -27,7 +27,7 @@ import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$MaxOccurs;
 import org.openjax.standard.util.Classes;
 import org.openjax.standard.xml.api.XmlElement;
-import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
@@ -70,7 +70,7 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final Id id, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use) {
+  Model(final Registry registry, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
     super(registry, id, name, nullable, use);
   }
 
@@ -107,7 +107,7 @@ abstract class Model extends Member implements Comparable<Model> {
   @Override
   XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
     final Map<String,Object> attributes = toAttributes(owner, packageName);
-    return new XmlElement(owner instanceof ObjectModel ? "property" : owner instanceof ArrayModel ? elementName() : (elementName() + "Type"), attributes, null);
+    return new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
   }
 
   @Override

@@ -29,10 +29,10 @@ import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.Strings;
 
 final class StringModel extends Model {
-  private static xL4gluGCXYYJc.Schema.StringType type(final String name) {
-    final xL4gluGCXYYJc.Schema.StringType xsb = new xL4gluGCXYYJc.Schema.StringType();
+  private static xL4gluGCXYYJc.Schema.String type(final String name) {
+    final xL4gluGCXYYJc.Schema.String xsb = new xL4gluGCXYYJc.Schema.String();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.StringType.Name$(name));
+      xsb.setName$(new xL4gluGCXYYJc.Schema.String.Name$(name));
 
     return xsb;
   }
@@ -76,12 +76,12 @@ final class StringModel extends Model {
 
   static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsonx, final String name) {
     final xL4gluGCXYYJc.$StringMember xsb;
-    if (jsonx instanceof schema.StringType)
-      xsb  = type(name);
-    else if (jsonx instanceof schema.StringProperty)
+    if (jsonx instanceof schema.StringProperty)
       xsb  = property((schema.StringProperty)jsonx, name);
     else if (jsonx instanceof schema.StringElement)
       xsb  = element((schema.StringElement)jsonx);
+    else if (name != null)
+      xsb  = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
@@ -91,11 +91,11 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static StringModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.StringType binding) {
+  static StringModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.String binding) {
     return registry.declare(binding).value(new StringModel(registry, binding), null);
   }
 
-  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.Schema.StringType binding) {
+  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.Schema.String binding) {
     final StringModel model = new StringModel(registry, binding);
     final Id id = model.id;
 
@@ -137,7 +137,7 @@ final class StringModel extends Model {
 
   final String pattern;
 
-  private StringModel(final Registry registry, final xL4gluGCXYYJc.Schema.StringType binding) {
+  private StringModel(final Registry registry, final xL4gluGCXYYJc.Schema.String binding) {
     super(registry, Id.named(binding.getName$()));
     this.pattern = parsePattern(binding.getPattern$());
   }

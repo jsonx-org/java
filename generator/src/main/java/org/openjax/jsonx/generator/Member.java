@@ -33,7 +33,10 @@ import org.openjax.standard.util.Strings;
 import org.openjax.xsb.runtime.Attribute;
 import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
-import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
+import org.w3.www._2001.XMLSchema.yAA.$Boolean;
+import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
+import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Member extends Element {
   static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
@@ -52,16 +55,16 @@ abstract class Member extends Element {
         name = ((xL4gluGCXYYJc.$String)t).getName$().text();
       else if (t instanceof xL4gluGCXYYJc.$Reference)
         name = ((xL4gluGCXYYJc.$Reference)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.ArrayType)
-        name = ((xL4gluGCXYYJc.Schema.ArrayType)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.BooleanType)
-        name = ((xL4gluGCXYYJc.Schema.BooleanType)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.NumberType)
-        name = ((xL4gluGCXYYJc.Schema.NumberType)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.ObjectType)
-        name = ((xL4gluGCXYYJc.Schema.ObjectType)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.StringType)
-        name = ((xL4gluGCXYYJc.Schema.StringType)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.Array)
+        name = ((xL4gluGCXYYJc.Schema.Array)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.Boolean)
+        name = ((xL4gluGCXYYJc.Schema.Boolean)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.Number)
+        name = ((xL4gluGCXYYJc.Schema.Number)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.Object)
+        name = ((xL4gluGCXYYJc.Schema.Object)t).getName$().text();
+      else if (t instanceof xL4gluGCXYYJc.Schema.String)
+        name = ((xL4gluGCXYYJc.Schema.String)t).getName$().text();
       else
         name = null;
 
@@ -107,11 +110,11 @@ abstract class Member extends Element {
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
-  Member(final Registry registry, final Id id, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final xL4gluGCXYYJc.$MaxOccurs maxOccurs) {
+  Member(final Registry registry, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL4gluGCXYYJc.$MaxOccurs maxOccurs) {
     this(registry, id, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
   }
 
-  Member(final Registry registry, final Id id, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final yAA.$String use) {
+  Member(final Registry registry, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
     this(registry, id, (String)name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
   }
 

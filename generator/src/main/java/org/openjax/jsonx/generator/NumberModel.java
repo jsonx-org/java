@@ -38,10 +38,10 @@ import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
-  private static xL4gluGCXYYJc.Schema.NumberType type(final String name) {
-    final xL4gluGCXYYJc.Schema.NumberType xsb = new xL4gluGCXYYJc.Schema.NumberType();
+  private static xL4gluGCXYYJc.Schema.Number type(final String name) {
+    final xL4gluGCXYYJc.Schema.Number xsb = new xL4gluGCXYYJc.Schema.Number();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.NumberType.Name$(name));
+      xsb.setName$(new xL4gluGCXYYJc.Schema.Number.Name$(name));
 
     return xsb;
   }
@@ -85,12 +85,12 @@ final class NumberModel extends Model {
 
   static xL4gluGCXYYJc.$NumberMember jsonxToXsb(final schema.Number jsonx, final String name) {
     final xL4gluGCXYYJc.$NumberMember xsb;
-    if (jsonx instanceof schema.NumberType)
-      xsb = type(name);
-    else if (jsonx instanceof schema.NumberProperty)
+    if (jsonx instanceof schema.NumberProperty)
       xsb = property((schema.NumberProperty)jsonx, name);
     else if (jsonx instanceof schema.NumberElement)
       xsb = element((schema.NumberElement)jsonx);
+    else if (name != null)
+      xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
@@ -103,7 +103,7 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.NumberType binding) {
+  static NumberModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Number binding) {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
@@ -162,7 +162,7 @@ final class NumberModel extends Model {
   final Form form;
   final Range range;
 
-  private NumberModel(final Registry registry, final xL4gluGCXYYJc.Schema.NumberType binding) {
+  private NumberModel(final Registry registry, final xL4gluGCXYYJc.Schema.Number binding) {
     super(registry, Id.named(binding.getName$()));
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {

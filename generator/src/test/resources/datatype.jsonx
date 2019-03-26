@@ -18,7 +18,7 @@
   xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
-  <arrayType name="arrayArr">
+  <array name="arrayArr">
     <reference type="arrayBool" maxOccurs="1"/>
     <reference type="arrayNum" maxOccurs="1"/>
     <reference type="arrayObj" maxOccurs="1"/>
@@ -27,12 +27,12 @@
     <reference type="arrayStr" maxOccurs="1"/>
     <any types="bool num" minOccurs="0" maxOccurs="1"/>
     <any maxOccurs="1"/>
-  </arrayType>
-  <arrayType name="arrayBool">
+  </array>
+  <array name="arrayBool">
     <reference type="bool" minOccurs="1" maxOccurs="1"/>
     <reference type="bool" minOccurs="0" maxOccurs="1" nullable="false"/>
-  </arrayType>
-  <arrayType name="arrayNum">
+  </array>
+  <array name="arrayNum">
     <reference type="num" minOccurs="1" maxOccurs="1"/>
     <reference type="num" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="numInt" minOccurs="1" maxOccurs="1"/>
@@ -45,15 +45,15 @@
     <reference type="numRange1" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="numRange2" minOccurs="1" maxOccurs="1"/>
     <reference type="numRange2" minOccurs="0" maxOccurs="1" nullable="false"/>
-  </arrayType>
-  <arrayType name="arrayObj">
+  </array>
+  <array name="arrayObj">
     <reference type="objArr" maxOccurs="1"/>
     <reference type="objBool" maxOccurs="1"/>
     <reference type="objNum" maxOccurs="1"/>
     <reference type="objObj" maxOccurs="1"/>
     <reference type="objStr" maxOccurs="1"/>
-  </arrayType>
-  <arrayType name="arrayStr">
+  </array>
+  <array name="arrayStr">
     <reference type="str" minOccurs="1" maxOccurs="1"/>
     <reference type="str" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="strDec" minOccurs="1" maxOccurs="1"/>
@@ -70,23 +70,23 @@
     <reference type="strPatternDecEnc" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="strPatternEnc" minOccurs="1" maxOccurs="1"/>
     <reference type="strPatternEnc" minOccurs="0" maxOccurs="1" nullable="false"/>
-  </arrayType>
-  <booleanType name="bool"/>
-  <numberType name="num"/>
-  <numberType name="numInt" form="integer"/>
-  <numberType name="numIntRange1" form="integer" range="[1,]"/>
-  <numberType name="numIntRange2" form="integer" range="[,4]"/>
-  <numberType name="numRange1" range="[1,]"/>
-  <numberType name="numRange2" range="[,4]"/>
-  <stringType name="str"/>
-  <stringType name="strDec"/>
-  <stringType name="strDecEnc"/>
-  <stringType name="strEnc"/>
-  <stringType name="strPattern" pattern="[a-z]+"/>
-  <stringType name="strPatternDec" pattern="[%0-9a-z]+"/>
-  <stringType name="strPatternDecEnc" pattern="[%0-9a-z]+"/>
-  <stringType name="strPatternEnc" pattern="[%0-9a-z]+"/>
-  <objectType name="objArr">
+  </array>
+  <boolean name="bool"/>
+  <number name="num"/>
+  <number name="numInt" form="integer"/>
+  <number name="numIntRange1" form="integer" range="[1,]"/>
+  <number name="numIntRange2" form="integer" range="[,4]"/>
+  <number name="numRange1" range="[1,]"/>
+  <number name="numRange2" range="[,4]"/>
+  <string name="str"/>
+  <string name="strDec"/>
+  <string name="strDecEnc"/>
+  <string name="strEnc"/>
+  <string name="strPattern" pattern="[a-z]+"/>
+  <string name="strPatternDec" pattern="[%0-9a-z]+"/>
+  <string name="strPatternDecEnc" pattern="[%0-9a-z]+"/>
+  <string name="strPatternEnc" pattern="[%0-9a-z]+"/>
+  <object name="objArr">
     <property names=".*" xsi:type="any" nullable="false"/>
     <property name="arrayBool" xsi:type="reference" type="arrayBool"/>
     <property name="arrayBoolOptional" xsi:type="reference" type="arrayBool" use="optional"/>
@@ -98,14 +98,14 @@
     <property name="arrayStrOptional" xsi:type="reference" type="arrayStr" use="optional"/>
     <property name="arrayStrOptionalNotNullable" xsi:type="reference" type="arrayStr" use="optional" nullable="false"/>
     <property names="anyNumStr" types="num str" xsi:type="any" use="optional"/>
-  </objectType>
-  <objectType name="objBool">
+  </object>
+  <object name="objBool">
     <property name="bo+l" xsi:type="reference" type="bool" nullable="false"/>
     <property names=".*" xsi:type="any" types="bool num"/>
     <property name="bo+lOptional" xsi:type="reference" type="bool" use="optional"/>
     <property name="boolOptionalNotNullable" xsi:type="reference" type="bool" use="optional" nullable="false"/>
-  </objectType>
-  <objectType name="objNum">
+  </object>
+  <object name="objNum">
     <property name="num.+" xsi:type="reference" type="num"/>
     <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
     <property name="numOptionalNotNullable" xsi:type="reference" type="num" use="optional" nullable="false"/>
@@ -125,8 +125,8 @@
     <property name="numRange2" xsi:type="reference" type="numRange2"/>
     <property name="numRange2Optional" xsi:type="reference" type="numRange2" use="optional"/>
     <property name="numRange2OptionalNotNullable" xsi:type="reference" type="numRange2" use="optional" nullable="false"/>
-  </objectType>
-  <objectType name="objObj">
+  </object>
+  <object name="objObj">
     <property name="objOptional" xsi:type="reference" type="objBool" use="optional"/>
     <property name="objOptionalNotNullable" xsi:type="reference" type="objNum" use="optional" nullable="false"/>
     <property name="objExtends1" xsi:type="object" extends="objObj" use="optional">
@@ -144,8 +144,8 @@
     <property name="objExtendsOptionalNotNullable" xsi:type="object" extends="objBool" use="optional" nullable="false">
       <property name="num" xsi:type="reference" type="num"/>
     </property>
-  </objectType>
-  <objectType name="objStr">
+  </object>
+  <object name="objStr">
     <property name="str" xsi:type="reference" type="str"/>
     <property name="strOptional" xsi:type="reference" type="str" use="optional"/>
     <property name="strOptionalNotNullable" xsi:type="reference" type="str" use="optional" nullable="false"/>
@@ -170,5 +170,5 @@
     <property name="strPatternEnc" xsi:type="reference" type="strPatternEnc"/>
     <property name="strPatternEncOptional" xsi:type="reference" type="strPatternEnc" use="optional"/>
     <property name="strPatternEncOptionalNotNullable" xsi:type="reference" type="strPatternEnc" use="optional" nullable="false"/>
-  </objectType>
+  </object>
 </schema>

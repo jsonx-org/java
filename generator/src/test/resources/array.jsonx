@@ -18,30 +18,30 @@
   xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
-  <arrayType name="bar-rootArray1">
+  <array name="bar-rootArray1">
     <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
-  </arrayType>
-  <arrayType name="bar-rootArray2" maxIterate="21">
+  </array>
+  <array name="bar-rootArray2" maxIterate="21">
     <reference type="bar-rootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
     <reference type="rootBoolean"/>
-  </arrayType>
-  <arrayType name="rootArray3" minIterate="2" maxIterate="unbounded">
+  </array>
+  <array name="rootArray3" minIterate="2" maxIterate="unbounded">
     <reference type="bar-rootArray2" minOccurs="3" maxOccurs="4"/>
     <reference type="rootNumber" nullable="false"/>
     <reference type="rootString"/>
     <reference type="rootArray3" minOccurs="3" maxOccurs="4"/>
-  </arrayType>
-  <arrayType name="rootArray4" minIterate="4" maxIterate="11">
+  </array>
+  <array name="rootArray4" minIterate="4" maxIterate="11">
     <reference type="rootArray3" minOccurs="9" maxOccurs="10"/>
     <reference type="bar-rootArray2" minOccurs="7" maxOccurs="8"/>
     <any types="rootBoolean rootNumber rootArray4" minOccurs="2" maxOccurs="3"/>
     <reference type="rootArray4"/>
     <reference type="rootBoolean" nullable="false"/>
-  </arrayType>
-  <booleanType name="rootBoolean"/>
-  <numberType name="rootNumber" form="integer" range="[2,9]"/>
-  <stringType name="rootString" pattern="[a-z]+"/>
-  <objectType name="objectWithArray">
+  </array>
+  <boolean name="rootBoolean"/>
+  <number name="rootNumber" form="integer" range="[2,9]"/>
+  <string name="rootString" pattern="[a-z]+"/>
+  <object name="objectWithArray">
     <property name="arrayArray" xsi:type="array" minIterate="4" maxIterate="7">
       <array minIterate="2" maxIterate="9" nullable="false">
         <string maxOccurs="3" nullable="false"/>
@@ -82,5 +82,5 @@
     <property name="arrayThree" xsi:type="reference" type="rootArray3"/>
     <property names="any2" xsi:type="any" nullable="false"/>
     <property name="arrayFour" xsi:type="reference" type="rootArray4" use="optional"/>
-  </objectType>
+  </object>
 </schema>
