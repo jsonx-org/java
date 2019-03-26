@@ -68,7 +68,7 @@
     <property xsi:type="string" name="pattern" pattern=".*" nullable="false" use="optional"/>
   </object>
   
-  <object name="object" extends="object">
+  <object name="objectType" extends="object">
     <property xsi:type="boolean" name="abstract" nullable="false" use="optional"/>
   </object>
   
@@ -138,7 +138,7 @@
   </object>
   
   <object name="schema">
-    <property xsi:type="any" names="[a-zA-Z_$][-a-zA-Z\d_$]*" types="array boolean number object string" nullable="false"/>
+    <property xsi:type="any" names="[a-zA-Z_$][-a-zA-Z\d_$]*" types="array boolean number objectType string" nullable="false"/>
   </object>
   
 </schema>
