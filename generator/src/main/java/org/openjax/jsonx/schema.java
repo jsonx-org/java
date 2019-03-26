@@ -824,7 +824,7 @@ public class schema {
       return _class;
     }
     
-    @org.openjax.jsonx.runtime.StringProperty(name="extends", pattern=".*", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    @org.openjax.jsonx.runtime.StringProperty(name="extends", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String _extends;
     
     public void setExtends(final java.lang.String _extends) {
@@ -1059,7 +1059,7 @@ public class schema {
       return _class;
     }
     
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", nullable=false)
+    @org.openjax.jsonx.runtime.StringProperty(nullable=false)
     private java.lang.String type;
     
     public void setType(final java.lang.String type) {
@@ -1271,7 +1271,7 @@ public class schema {
       return _class;
     }
     
-    @org.openjax.jsonx.runtime.StringProperty(pattern=".*", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    @org.openjax.jsonx.runtime.StringProperty(use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
     private java.lang.String pattern;
     
     public void setPattern(final java.lang.String pattern) {

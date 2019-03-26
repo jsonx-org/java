@@ -19,10 +19,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd schema-0.9.8.xsd">
   
-  <string name="name" pattern=".*"/>
-  <string name="use" pattern="(required|optional)"/>
   <string name="min" pattern="[\d]+"/>
   <string name="max" pattern="([\d]+|unbounded)"/>
+  <string name="use" pattern="(required|optional)"/>
   
   <object name="member" abstract="true"/>
   
@@ -54,18 +53,18 @@
   </object>
   <object name="object" abstract="true" extends="member">
     <property xsi:type="string" name="class" pattern="object" nullable="false"/>
-    <property xsi:type="string" name="extends" pattern=".*" nullable="false" use="optional"/>
+    <property xsi:type="string" name="extends" nullable="false" use="optional"/>
     <property xsi:type="object" name="properties" nullable="false" use="optional">
       <property xsi:type="any" names=".*" types="anyProperty arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty" nullable="false"/>
     </property>
   </object>
   <object name="reference" abstract="true" extends="member">
     <property xsi:type="string" name="class" pattern="reference" nullable="false"/>
-    <property xsi:type="reference" name="type" type="name" nullable="false"/>
+    <property xsi:type="string" name="type" nullable="false"/>
   </object>
   <object name="string" extends="member">
     <property xsi:type="string" name="class" pattern="string" nullable="false"/>
-    <property xsi:type="string" name="pattern" pattern=".*" nullable="false" use="optional"/>
+    <property xsi:type="string" name="pattern" nullable="false" use="optional"/>
   </object>
   
   <object name="objectType" extends="object">
@@ -88,15 +87,15 @@
     <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
     <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
   </object>
+  <object name="objectProperty" extends="object">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+  </object>
   <object name="referenceProperty" extends="reference">
     <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
     <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
   </object>
   <object name="stringProperty" extends="string">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
-  </object>
-  <object name="objectProperty" extends="object">
     <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
     <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
   </object>
@@ -121,17 +120,17 @@
     <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
     <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
   </object>
+  <object name="objectElement" extends="object">
+    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
+    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+  </object>
   <object name="referenceElement" extends="reference">
     <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
     <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
     <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
   </object>
   <object name="stringElement" extends="string">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
-  </object>
-  <object name="objectElement" extends="object">
     <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
     <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
     <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
