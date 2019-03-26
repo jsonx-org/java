@@ -87,7 +87,7 @@ class ArrayDecodeIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
 
     if (value == null)
-      return Error.CONTENT_NOT_EXPECTED(token);
+      return Error.CONTENT_NOT_EXPECTED(token, -1);
 
     if (value instanceof Error)
       return (Error)value;

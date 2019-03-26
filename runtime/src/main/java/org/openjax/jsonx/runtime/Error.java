@@ -32,36 +32,36 @@ final class Error {
     return new Error("%s: %s", field, error);
   }
 
-  static Error EXPECTED_ARRAY(final String token) {
-    return new Error("Expected ']', but got '%s'", token);
+  static Error EXPECTED_ARRAY(final String token, final int offset) {
+    return new Error(offset, "Expected ']', but got '%s'", token);
   }
 
-  static Error CONTENT_NOT_EXPECTED(final Object content) {
-    return new Error("Content is not expected: %s", content);
+  static Error CONTENT_NOT_EXPECTED(final Object content, final int offset) {
+    return new Error(offset, "Content is not expected: %s", content);
   }
 
-  static Error EXPECTED_TYPE(final String name, final String elementName, final String token) {
-    return new Error("Expected \"%s\" to be a \"%s\", but got: %s", name, elementName, token);
+  static Error EXPECTED_TYPE(final String name, final String elementName, final String token, final int offset) {
+    return new Error(offset, "Expected \"%s\" to be a \"%s\", but got: %s", name, elementName, token);
   }
 
-  static Error EXPECTED_TOKEN(final String name, final String elementName, final String token) {
-    return new Error("Expected \"%s\" to be a \"%s\", but got token: \"%s\"", name, elementName, token);
+  static Error EXPECTED_TOKEN(final String name, final String elementName, final String token, final int offset) {
+    return new Error(offset, "Expected \"%s\" to be a \"%s\", but got token: \"%s\"", name, elementName, token);
   }
 
-  static Error UNKNOWN_PROPERTY(final String propertyName) {
-    return new Error("Unknown property: \"%s\"", propertyName);
+  static Error UNKNOWN_PROPERTY(final String propertyName, final int offset) {
+    return new Error(offset, "Unknown property: \"%s\"", propertyName);
   }
 
-  static Error RANGE_NOT_MATCHED(final Object range, final Object object) {
-    return new Error("Range %s is not matched: %s", range, object);
+  static Error RANGE_NOT_MATCHED(final Object range, final Object object, final int offset) {
+    return new Error(offset, "Range %s does not match: %s", range, object);
   }
 
-  static Error INTEGER_NOT_VALID(final Class<?> type, final Object object) {
-    return new Error("Illegal %s .INTEGER value: %s", type, object);
+  static Error INTEGER_NOT_VALID(final Class<?> type, final Object object, final int offset) {
+    return new Error(offset, "Illegal %s .INTEGER value: %s", type, object);
   }
 
-  static Error BOOLEAN_NOT_VALID(final String token) {
-    return new Error("Not a valid boolean token: %s", token);
+  static Error BOOLEAN_NOT_VALID(final String token, final int offset) {
+    return new Error(offset, "Not a valid boolean token: %s", token);
   }
 
   static Error PROPERTY_NOT_NULLABLE(final String name, final Annotation annotation) {
@@ -76,12 +76,12 @@ final class Error {
     return new Error("Property \"%s\" is required: %s", name, value);
   }
 
-  static Error PATTERN_NOT_MATCHED(final String pattern, final String string) {
-    return new Error("Pattern (%s) is not matched: \"%s\"", pattern, string);
+  static Error PATTERN_NOT_MATCHED(final String pattern, final String string, final int offset) {
+    return new Error(offset, "Pattern \"%s\" does not match: \"%s\"", pattern, string);
   }
 
   static Error PATTERN_NOT_MATCHED_ANNOTATION(final Annotation annotation, final String string) {
-    return new Error("%s: Pattern is not matched: \"%s\"", annotation, string);
+    return new Error("%s: Pattern does not match: \"%s\"", annotation, string);
   }
 
   static Error INVALID_CONTENT_WAS_FOUND(final int index, final Annotation annotation) {
@@ -102,15 +102,24 @@ final class Error {
 
   private final Object[] args;
   private final String message;
+  final int offset;
   private Error next;
   private String rendered;
 
   private Error(final String message) {
+    this.offset = -1;
     this.message = message;
     this.args = null;
   }
 
+  private Error(final int offset, final String message, final Object ... args) {
+    this.offset = offset;
+    this.message = message;
+    this.args = args;
+  }
+
   private Error(final String message, final Object ... args) {
+    this.offset = -1;
     this.message = message;
     this.args = args;
   }

@@ -29,7 +29,7 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
 
   static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof Boolean))
-      return Error.CONTENT_NOT_EXPECTED(object);
+      return Error.CONTENT_NOT_EXPECTED(object, -1);
 
     relations.set(index, new Relation(object, annotation));
     return null;
@@ -49,8 +49,8 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
   }
 
   @Override
-  Error validate(final String json) {
-    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json) : null;
+  Error validate(final String json, final int offset) {
+    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json, offset) : null;
   }
 
   @Override

@@ -49,10 +49,9 @@ public final class JxDecoder {
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
-    final int position = reader.getPosition();
     final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, null);
     if (array instanceof Error)
-      throw new DecodeException((Error)array, position);
+      throw new DecodeException((Error)array);
 
     return (List<?>)array;
   }
@@ -84,11 +83,11 @@ public final class JxDecoder {
     if (!"{".equals(token))
       throw new DecodeException("Expected '{', but got '" + token + "'", reader.getPosition() - 1);
 
-    // FIXME: This position is incorrect for the DecodeException
-    final int position = reader.getPosition();
     final Object object = ObjectCodec.decodeObject(type, reader, onPropertyDecode);
-    if (object instanceof Error)
-      throw new DecodeException((Error)object, position);
+    if (object instanceof Error) {
+      final Error error = (Error)object;
+      throw new DecodeException(error);
+    }
 
     return (T)object;
   }

@@ -60,14 +60,14 @@ class ArrayCodec extends Codec {
 
     final String token = reader.readToken();
     if (!"]".equals(token))
-      return Error.EXPECTED_ARRAY(token);
+      return Error.EXPECTED_ARRAY(token, reader.getPosition());
 
     return relations.deflate();
   }
 
   static Error encodeArray(final Annotation annotation, final Class<? extends Annotation> type, final Object object, final int index, final Relations relations, IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (!(object instanceof List))
-      return Error.CONTENT_NOT_EXPECTED(object);
+      return Error.CONTENT_NOT_EXPECTED(object, -1);
 
     final int[] elementIds;
     if (type == ArrayType.class) {

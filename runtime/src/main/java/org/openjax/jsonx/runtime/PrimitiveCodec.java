@@ -23,11 +23,11 @@ abstract class PrimitiveCodec<T> extends Codec {
     super(field, name, property, use);
   }
 
-  final Error matches(final String json) {
-    return test(json.charAt(0)) ? validate(json) : Error.EXPECTED_TYPE(name, elementName(), json);
+  final Error matches(final String json, final int offset) {
+    return test(json.charAt(0)) ? validate(json, offset) : Error.EXPECTED_TYPE(name, elementName(), json, offset);
   }
 
   abstract boolean test(char firstChar);
-  abstract Error validate(String json);
+  abstract Error validate(String json, int offset);
   abstract T parse(String json);
 }

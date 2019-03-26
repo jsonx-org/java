@@ -23,12 +23,12 @@ class PatternCase extends FailureCase<StringTrial> {
 
   @Override
   void onEncode(final StringTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name + " " + e.getMessage(), e.getMessage().contains(" Pattern is not matched: "));
+    assertTrue(trial.name + " " + e.getMessage(), e.getMessage().contains(" Pattern does not match: "));
   }
 
   @Override
   boolean onDecode(final StringTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Pattern (" + trial.pattern + ") is not matched: "));
+    assertTrue(trial.name, e.getMessage().startsWith("Pattern \"" + trial.pattern + "\" does not match: "));
     return true;
   }
 

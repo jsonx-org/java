@@ -91,10 +91,10 @@ public class SchemaTest {
     return xml;
   }
 
-  private static Schema testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String packageName) throws IOException, SAXException {
+  private static Schema testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> Schema");
-    final Schema controlSchema = new Schema(controlBinding, packageName + ".");
+    final Schema controlSchema = new Schema(controlBinding, prefix);
     logger.info("    b) Schema -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
     final xL4gluGCXYYJc.Schema testBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(xml);
@@ -160,14 +160,14 @@ public class SchemaTest {
   }
 
   public static void test(final String fileName, final String packageName) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+    final String prefix = packageName + ".";
+
     logger.info(fileName + "...");
     final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
-    final Schema controlSchema = testParseSchema(controlBinding, packageName);
-//    System.out.println(controlSchema.toJson());
-//    if (true)
-//      return;
+    testJson(controlBinding, prefix);
 
     logger.info("  4) Schema -> Java(1)");
+    final Schema controlSchema = testParseSchema(controlBinding, prefix);
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
     for (final Map.Entry<String,String> entry : test1Sources.entrySet())
@@ -189,7 +189,7 @@ public class SchemaTest {
       throw e;
     }
 
-    final Schema test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), packageName);
+    final Schema test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), prefix);
     logger.info("  8) Schema -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
@@ -200,9 +200,11 @@ public class SchemaTest {
 
   private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, ValidationException {
     for (final Settings settings : SchemaTest.settings) {
+      final String prefix = packageName + ".";
+
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
-      final Schema controlSchema = new Schema(controlBinding, packageName + ".");
+      final Schema controlSchema = new Schema(controlBinding, prefix);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -215,26 +217,26 @@ public class SchemaTest {
       final Schema test1Schema = newSchema(classLoader, packageName);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema test2Schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(schema), packageName + ".");
+      final Schema test2Schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
 
-      testJson(controlBinding, packageName);
+      testJson(controlBinding, prefix);
     }
   }
 
-  private static void testJson(final xL4gluGCXYYJc.Schema controlBinding, final String packageName) throws DecodeException, IOException, ValidationException {
-    final Schema controlSchema = new Schema(controlBinding, packageName + ".");
+  private static void testJson(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
+    final Schema controlSchema = new Schema(controlBinding, prefix);
     logger.info("     testJson...");
-    logger.info("      a) Schema -> JSON");
+    logger.info("       a) Schema -> JSON");
     final String json = JSON.toString(controlSchema.toJson());
-    logger.info("      b) JSON -> Schema");
+    logger.info("       b) JSON -> Schema");
     final Schema schema;
     try (final JsonReader reader = new JsonReader(new StringReader(json))) {
-      schema = new Schema(JxDecoder.parseObject(schema.Schema.class, reader), packageName + ".");
+      schema = new Schema(JxDecoder.parseObject(schema.Schema.class, reader), prefix);
     }
 
-    logger.info("      c) Schema -> XML(3)");
+    logger.info("       c) Schema -> XML(3)");
     final String jsonXml = toXml(schema, Settings.DEFAULT).toString();
     final xL4gluGCXYYJc.Schema jsonBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(jsonXml);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);

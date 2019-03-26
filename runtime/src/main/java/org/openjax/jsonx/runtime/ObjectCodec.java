@@ -35,7 +35,7 @@ class ObjectCodec extends Codec {
   }
 
   static Object decodeObject(final Class<? extends JxObject> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final int i = reader.getIndex();
+    final int index = reader.getIndex();
     try {
       final JxObject object = type.getConstructor().newInstance();
       for (String token; !"}".equals(token = reader.readToken());) {
@@ -52,22 +52,22 @@ class ObjectCodec extends Codec {
           if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
             continue;
 
-          return abort(Error.UNKNOWN_PROPERTY(propertyName), reader, i);
+          return abort(Error.UNKNOWN_PROPERTY(propertyName, reader.getPosition()), reader, index);
         }
 
         final Object value;
         if ("null".equals(token)) {
           final Error error = codec.validateUse(null);
           if (error != null)
-            return abort(error, reader, i);
+            return abort(error, reader, index);
 
           value = codec.toNull();
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
-          final Error error = primitiveCodec.matches(token);
+          final Error error = primitiveCodec.matches(token, reader.getPosition());
           if (error != null)
-            return abort(error, reader, i);
+            return abort(error, reader, index);
 
           value = primitiveCodec.parse(token);
         }
@@ -76,27 +76,27 @@ class ObjectCodec extends Codec {
             final AnyCodec anyCodec = (AnyCodec)codec;
             value = AnyCodec.decode(anyCodec.property, token, reader, null);
             if (value instanceof Error)
-              return abort((Error)value, reader, i);
+              return abort((Error)value, reader, index);
           }
           else {
             final char firstChar = token.charAt(0);
             if (codec instanceof ObjectCodec) {
               if (firstChar != '{')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token), reader, i);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader.getPosition()), reader, index);
 
               final ObjectCodec objectCodec = (ObjectCodec)codec;
               value = decodeObject(objectCodec.type, reader, null);
               if (value instanceof Error)
-                return abort((Error)value, reader, i);
+                return abort((Error)value, reader, index);
             }
             else if (codec instanceof ArrayCodec) {
               if (firstChar != '[')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token), reader, i);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader.getPosition()), reader, index);
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
               value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, onPropertyDecode);
               if (value instanceof Error)
-                return abort((Error)value, reader, i);
+                return abort((Error)value, reader, index);
             }
             else {
               throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
@@ -117,7 +117,7 @@ class ObjectCodec extends Codec {
 
           final Error error = codec.validateUse(null);
           if (error != null)
-            return abort(error, reader, i);
+            return abort(error, reader, index);
         }
       }
 
@@ -135,7 +135,7 @@ class ObjectCodec extends Codec {
 
   static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof JxObject))
-      return Error.CONTENT_NOT_EXPECTED(object);
+      return Error.CONTENT_NOT_EXPECTED(object, -1);
 
     relations.set(index, new Relation(object, annotation));
     return null;

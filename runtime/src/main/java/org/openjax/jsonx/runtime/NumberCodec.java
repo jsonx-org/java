@@ -45,7 +45,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   static Error encodeArray(final Annotation annotation, final Form form, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!(object instanceof Number))
-      return Error.CONTENT_NOT_EXPECTED(object);
+      return Error.CONTENT_NOT_EXPECTED(object, -1);
 
     if (validate) {
       final Error error = NumberCodec.validate(annotation, (Number)object, form, range);
@@ -69,12 +69,12 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   static Error validate(final Annotation annotation, final Number object, final Form form, final String range) {
     if (form == Form.INTEGER && object.longValue() != object.doubleValue())
-      return Error.INTEGER_NOT_VALID(Form.class, object);
+      return Error.INTEGER_NOT_VALID(Form.class, object, -1);
 
     if (range.length() > 0) {
       try {
         if (!new Range(range).isValid(object))
-          return Error.RANGE_NOT_MATCHED(range, object);
+          return Error.RANGE_NOT_MATCHED(range, object, -1);
       }
       catch (final ParseException e) {
         throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES), e);
@@ -109,15 +109,15 @@ class NumberCodec extends PrimitiveCodec<Number> {
   }
 
   @Override
-  Error validate(final String json) {
+  Error validate(final String json, final int offset) {
     if (form != Form.REAL) {
       final int dot = json.indexOf('.');
       if (dot != -1)
-        return Error.INTEGER_NOT_VALID(Form.class, json);
+        return Error.INTEGER_NOT_VALID(Form.class, json, offset);
     }
 
     // FIXME: decode() is done here and in the caller's scope
-    return range != null && !range.isValid(parse(json)) ? Error.RANGE_NOT_MATCHED(range, json) : null;
+    return range != null && !range.isValid(parse(json)) ? Error.RANGE_NOT_MATCHED(range, json, offset) : null;
   }
 
   @Override

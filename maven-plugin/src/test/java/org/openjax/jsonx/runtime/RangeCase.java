@@ -23,12 +23,12 @@ class RangeCase extends FailureCase<NumberTrial> {
 
   @Override
   void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " is not matched: "));
+    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " does not match: "));
   }
 
   @Override
   boolean onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " is not matched: "));
+    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " does not match: "));
     return true;
   }
 

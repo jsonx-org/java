@@ -47,13 +47,11 @@ class StringCodec extends PrimitiveCodec<String> {
 
   static Error encodeArray(final Annotation annotation, final String pattern, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!(object instanceof String))
-      return Error.CONTENT_NOT_EXPECTED(object);
+      return Error.CONTENT_NOT_EXPECTED(object, -1);
 
     final String string = (String)object;
-    if (validate) {
-      if (pattern.length() != 0 && !string.matches(pattern))
-        return Error.PATTERN_NOT_MATCHED(pattern, string);
-    }
+    if (validate && pattern.length() != 0 && !string.matches(pattern))
+      return Error.PATTERN_NOT_MATCHED(pattern, string, -1);
 
     relations.set(index, new Relation(false ? StringCodec.decodeObject("\"" + string + "\"") : object, annotation));
     return null;
@@ -93,15 +91,15 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   @Override
-  Error validate(final String token) {
-    if ((token.charAt(0) != '"' || token.charAt(token.length() - 1) != '"') && (token.charAt(0) != '\'' || token.charAt(token.length() - 1) != '\''))
+  Error validate(final String json, final int offset) {
+    if ((json.charAt(0) != '"' || json.charAt(json.length() - 1) != '"') && (json.charAt(0) != '\'' || json.charAt(json.length() - 1) != '\''))
       return Error.NOT_A_STRING;
 
-    final String value = token.substring(1, token.length() - 1);
+    final String value = json.substring(1, json.length() - 1);
     if (pattern != null) {
       try {
         if (!value.matches(pattern))
-          return Error.PATTERN_NOT_MATCHED(pattern, token);
+          return Error.PATTERN_NOT_MATCHED(pattern, value, offset);
       }
       catch (final PatternSyntaxException e) {
         throw new ValidationException("Malformed pattern: " + pattern);

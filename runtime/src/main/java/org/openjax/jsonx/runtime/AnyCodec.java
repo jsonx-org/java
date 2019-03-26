@@ -29,12 +29,16 @@ class AnyCodec extends Codec {
   static Object decode(final Annotation annotation, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final t[] types = annotation.annotationType() == AnyElement.class ? ((AnyElement)annotation).types() : annotation.annotationType() == AnyProperty.class ? ((AnyProperty)annotation).types() : null;
     final char firstChar = token.charAt(0);
+    Error error = null;
     if (firstChar == '[') {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.arrays}) {
         if (AnyType.isEnabled(type.arrays())) {
           final Object value = ArrayCodec.decodeArray(null, type.arrays(), token, reader, null, onPropertyDecode);
           if (!(value instanceof Error))
             return value;
+
+          if (error == null || error.offset < ((Error)value).offset)
+            error = (Error)value;
         }
       }
     }
@@ -44,30 +48,33 @@ class AnyCodec extends Codec {
           final Object value = ObjectCodec.decodeArray(type.objects(), token, reader, onPropertyDecode);
           if (!(value instanceof Error))
             return value;
+
+          if (error == null || error.offset < ((Error)value).offset)
+            error = (Error)value;
         }
       }
     }
     else {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.fromToken(token)}) {
         if (type.booleans()) {
-          final Object value = BooleanCodec.decodeArray(token);
-          if (value != null && !(value instanceof Error))
+          final Boolean value = BooleanCodec.decodeArray(token);
+          if (value != null)
             return value;
         }
         else if (AnyType.isEnabled(type.numbers())) {
-          final Object value = NumberCodec.decodeArray(type.numbers().form(), token);
-          if (value != null && !(value instanceof Error))
+          final Number value = NumberCodec.decodeArray(type.numbers().form(), token);
+          if (value != null)
             return value;
         }
         else if (AnyType.isEnabled(type.strings())) {
-          final Object value = StringCodec.decodeArray(token);
-          if (value != null && !(value instanceof Error))
+          final String value = StringCodec.decodeArray(token);
+          if (value != null)
             return value;
         }
       }
     }
 
-    return Error.CONTENT_NOT_EXPECTED(token);
+    return error != null ? error : Error.CONTENT_NOT_EXPECTED(token, reader.getPosition());
   }
 
   static Error encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
