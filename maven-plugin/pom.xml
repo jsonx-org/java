@@ -83,7 +83,7 @@
                   <arguments>
                     <argument>-classpath</argument> 
                     <classpath/>
-                    <argument>org.openjax.jsonx.generator.Generator</argument>  
+                    <argument>org.openjax.jsonx.Generator</argument>  
                     <argument>--prefix</argument>
                     <argument>org.openjax.jsonx.schema_0_9_8.</argument>
                     <argument>-d</argument>
@@ -104,7 +104,7 @@
                   <arguments>
                     <argument>-classpath</argument> 
                     <classpath/>
-                    <argument>org.openjax.jsonx.generator.Converter</argument>  
+                    <argument>org.openjax.jsonx.Converter</argument>  
                     <argument>../schema/src/main/resources/schema-0.9.8.jsdx</argument>
                     <argument>../schema/src/main/resources/schema-0.9.8.jsd</argument>
                   </arguments>
@@ -178,6 +178,11 @@
       <groupId>org.openjax.standard.maven</groupId>
       <artifactId>maven-mojo</artifactId>
       <version>0.3.5-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjax.jsonx</groupId>
+      <artifactId>jsonx-json</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjax.jsonx</groupId>

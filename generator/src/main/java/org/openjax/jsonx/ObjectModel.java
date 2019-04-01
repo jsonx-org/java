@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -27,19 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.AnyProperty;
-import org.openjax.jsonx.runtime.ArrayProperty;
-import org.openjax.jsonx.runtime.BooleanProperty;
-import org.openjax.jsonx.runtime.JxEncoder;
-import org.openjax.jsonx.runtime.JxObject;
-import org.openjax.jsonx.runtime.JsdUtil;
-import org.openjax.jsonx.runtime.NumberProperty;
-import org.openjax.jsonx.runtime.ObjectElement;
-import org.openjax.jsonx.runtime.ObjectProperty;
-import org.openjax.jsonx.runtime.StringProperty;
-import org.openjax.jsonx.runtime.Use;
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.Classes;

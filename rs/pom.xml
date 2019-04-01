@@ -46,7 +46,7 @@
     </dependency>
     <dependency>
       <groupId>org.openjax.jsonx</groupId>
-      <artifactId>jsonx-runtime</artifactId>
+      <artifactId>jsonx-binding</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

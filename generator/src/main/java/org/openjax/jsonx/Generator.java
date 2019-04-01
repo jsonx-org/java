@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,9 +52,9 @@ public class Generator {
         schemaFile = new File(args[i]).getAbsoluteFile();
     }
 
-    final Schema schema;
+    final SchemaElement schema;
     try (final InputStream in = schemaFile.toURI().toURL().openStream()) {
-      schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
+      schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
     }
 
     schema.toSource(destDir);

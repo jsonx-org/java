@@ -14,14 +14,13 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.standard.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 

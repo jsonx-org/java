@@ -14,14 +14,14 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relation;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relation;
+import org.openjax.jsonx.ArrayValidator.Relations;
 import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayEncodeIterator extends ArrayIterator {

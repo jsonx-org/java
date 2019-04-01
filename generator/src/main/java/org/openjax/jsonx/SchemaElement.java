@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,10 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.ArrayType;
-import org.openjax.jsonx.runtime.JxObject;
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.lang.PackageLoader;
 import org.openjax.standard.lang.PackageNotFoundException;
@@ -48,7 +44,7 @@ import org.openjax.xsb.runtime.QName;
 /**
  * The {@code Schema} is the root {@code Element} of a JSONx Schema Document.
  */
-public final class Schema extends Element {
+public final class SchemaElement extends Element {
   private static xL4gluGCXYYJc.Schema jsonxToXsb(final schema.Schema jsonx) {
     final xL4gluGCXYYJc.Schema schema = new xL4gluGCXYYJc.Schema();
     for (final Map.Entry<java.lang.String,java.lang.Object> entry : jsonx._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
@@ -81,7 +77,7 @@ public final class Schema extends Element {
    *          generated JSONx bindings.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
-  public Schema(final xL4gluGCXYYJc.Schema schema, final String prefix) {
+  public SchemaElement(final xL4gluGCXYYJc.Schema schema, final String prefix) {
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
@@ -156,7 +152,7 @@ public final class Schema extends Element {
    *          generated JSONx bindings.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
-  public Schema(final schema.Schema schema, final String prefix) {
+  public SchemaElement(final schema.Schema schema, final String prefix) {
     this(jsonxToXsb(schema), prefix);
   }
 
@@ -185,7 +181,7 @@ public final class Schema extends Element {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
-  public Schema(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
+  public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
   }
 
@@ -204,7 +200,7 @@ public final class Schema extends Element {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
-  public Schema(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
+  public SchemaElement(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, null));
   }
 
@@ -224,7 +220,7 @@ public final class Schema extends Element {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
-  public Schema(final Package pkg, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
+  public SchemaElement(final Package pkg, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     this(pkg, Thread.currentThread().getContextClassLoader(), filter);
   }
 
@@ -241,7 +237,7 @@ public final class Schema extends Element {
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
-  public Schema(final Package pkg) throws IOException, PackageNotFoundException {
+  public SchemaElement(final Package pkg) throws IOException, PackageNotFoundException {
     this(pkg, Thread.currentThread().getContextClassLoader(), null);
   }
 
@@ -250,7 +246,7 @@ public final class Schema extends Element {
    *
    * @param classes The classes to scan.
    */
-  public Schema(final Class<?> ... classes) {
+  public SchemaElement(final Class<?> ... classes) {
     this(FastCollections.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
   }
 
@@ -259,7 +255,7 @@ public final class Schema extends Element {
    *
    * @param classes The classes to scan.
    */
-  public Schema(final Collection<Class<?>> classes) {
+  public SchemaElement(final Collection<Class<?>> classes) {
     final Registry registry = new Registry(classes);
     this.registry = registry;
     final QName name = xL4gluGCXYYJc.Schema.class.getAnnotation(QName.class);

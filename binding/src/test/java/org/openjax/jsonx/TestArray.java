@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.util.List;
 import java.util.Optional;

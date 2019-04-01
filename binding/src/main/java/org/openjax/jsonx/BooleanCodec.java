@@ -14,13 +14,13 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relation;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relation;
+import org.openjax.jsonx.ArrayValidator.Relations;
 
 class BooleanCodec extends PrimitiveCodec<Boolean> {
   static Boolean decodeArray(final String token) {

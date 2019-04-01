@@ -14,14 +14,14 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.util.function.TriPredicate;
 

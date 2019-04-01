@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ class PropertyToCodec {
   private final Map<String,Codec> nameToCodec = new HashMap<>();
   final Map<Field,Codec> fieldToCodec = new HashMap<>();
 
-  public void add(final Codec codec) {
+  void add(final Codec codec) {
     (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(JsdUtil.getName(codec.name, codec.field), codec);
     fieldToCodec.put(codec.field, codec);
   }

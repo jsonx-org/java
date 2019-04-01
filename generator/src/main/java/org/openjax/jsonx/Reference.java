@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashMap;
@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;

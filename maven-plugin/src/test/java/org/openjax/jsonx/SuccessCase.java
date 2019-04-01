@@ -14,9 +14,9 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relations;
 
 abstract class SuccessCase<T extends PropertyTrial<?>> extends Case<T> {
   abstract void onEncode(T trial, Relations relations, String value) throws Exception;

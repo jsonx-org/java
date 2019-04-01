@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.rs;
+package org.openjax.jsonx;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,12 +33,6 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.openjax.jsonx.runtime.ArrayProperty;
-import org.openjax.jsonx.runtime.ArrayType;
-import org.openjax.jsonx.runtime.DecodeException;
-import org.openjax.jsonx.runtime.JxDecoder;
-import org.openjax.jsonx.runtime.JxEncoder;
-import org.openjax.jsonx.runtime.JxObject;
 import org.openjax.standard.json.JsonReader;
 
 @Provider

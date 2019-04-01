@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +22,7 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.openjax.jsonx.generator.Registry.Kind;
+import org.openjax.jsonx.Registry.Kind;
 import org.openjax.standard.json.JSON;
 import org.openjax.standard.xml.api.XmlElement;
 

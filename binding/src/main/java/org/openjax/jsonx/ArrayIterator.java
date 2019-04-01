@@ -14,35 +14,35 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relation;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relation;
+import org.openjax.jsonx.ArrayValidator.Relations;
 import org.openjax.standard.util.Strings;
 import org.openjax.standard.util.function.TriPredicate;
 
-public abstract class ArrayIterator {
+abstract class ArrayIterator {
   static String preview(final Object current) {
     return Strings.truncate(String.valueOf(current), 16);
   }
 
-  protected Object current;
+  Object current;
 
-  protected final Relation currentRelate(final Annotation annotation) {
+  final Relation currentRelate(final Annotation annotation) {
     return new Relation(current, annotation);
   }
 
-  protected final boolean nextIsNull() throws IOException {
+  final boolean nextIsNull() throws IOException {
     next();
     return current == null;
   }
 
-  protected abstract boolean hasNext() throws IOException;
-  protected abstract void next() throws IOException;
-  protected abstract void previous();
-  protected abstract int nextIndex() throws IOException;
-  protected abstract Error validate(Annotation annotation, int index, Relations relations, IdToElement idToElement, Class<? extends Codec> codecType, boolean validate, TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
+  abstract boolean hasNext() throws IOException;
+  abstract void next() throws IOException;
+  abstract void previous();
+  abstract int nextIndex() throws IOException;
+  abstract Error validate(Annotation annotation, int index, Relations relations, IdToElement idToElement, Class<? extends Codec> codecType, boolean validate, TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
 }

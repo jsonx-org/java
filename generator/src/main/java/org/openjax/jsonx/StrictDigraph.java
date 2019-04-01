@@ -14,9 +14,8 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.standard.util.Digraph;
 
 class StrictDigraph<T> extends Digraph<T> {

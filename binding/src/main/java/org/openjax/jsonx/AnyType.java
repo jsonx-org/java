@@ -14,23 +14,23 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.openjax.standard.util.Numbers;
 
-public final class AnyType {
-  public static boolean isEnabled(final Class<?> annotation) {
+final class AnyType {
+  static boolean isEnabled(final Class<?> annotation) {
     return annotation != JxObject.class && annotation != Annotation.class;
   }
 
-  public static boolean isEnabled(final NumberType number) {
+  static boolean isEnabled(final NumberType number) {
     return !"\0".equals(number.range());
   }
 
-  public static boolean isEnabled(final String pattern) {
+  static boolean isEnabled(final String pattern) {
     return !"\0".equals(pattern);
   }
 

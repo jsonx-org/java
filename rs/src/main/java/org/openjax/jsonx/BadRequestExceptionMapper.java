@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.rs;
+package org.openjax.jsonx;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
@@ -22,7 +22,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import org.openjax.standard.util.Strings;
-import org.openjax.jsonx.runtime.DecodeException;
 
 @Provider
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {

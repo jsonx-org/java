@@ -14,11 +14,10 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.util.TreeMap;
 
-import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.standard.util.ObservableMap;
 
 class AttributeMap extends ObservableMap<String,Object> {

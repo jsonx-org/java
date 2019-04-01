@@ -14,16 +14,11 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.BooleanElement;
-import org.openjax.jsonx.runtime.BooleanProperty;
-import org.openjax.jsonx.runtime.JsdUtil;
-import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 
 final class BooleanModel extends Model {

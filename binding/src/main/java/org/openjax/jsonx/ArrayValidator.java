@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -28,7 +28,7 @@ import org.openjax.standard.util.DelegateList;
 import org.openjax.standard.util.Numbers;
 import org.openjax.standard.util.function.TriPredicate;
 
-public class ArrayValidator {
+class ArrayValidator {
   static class Relation {
     final Object member;
     final Annotation annotation;
@@ -49,7 +49,7 @@ public class ArrayValidator {
   }
 
   static class Relations extends DelegateList<Relation> {
-    public Relations() {
+    Relations() {
       super(new ArrayList<Relation>());
     }
 

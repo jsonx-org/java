@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 public class DecodeException extends Exception {
   private static final long serialVersionUID = 7087309932016830988L;

@@ -14,34 +14,34 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 
 import org.openjax.standard.util.ObservableMap;
 
-public class IdToElement extends ObservableMap<Integer,Annotation> {
+class IdToElement extends ObservableMap<Integer,Annotation> {
   private int minIterate;
   private int maxIterate;
 
-  public IdToElement() {
+  IdToElement() {
     super(new HashMap<>());
   }
 
-  public int getMinIterate() {
+  int getMinIterate() {
     return this.minIterate;
   }
 
-  public void setMinIterate(final int minIterate) {
+  void setMinIterate(final int minIterate) {
     this.minIterate = minIterate;
   }
 
-  public int getMaxIterate() {
+  int getMaxIterate() {
     return this.maxIterate;
   }
 
-  public void setMaxIterate(final int maxIterate) {
+  void setMaxIterate(final int maxIterate) {
     this.maxIterate = maxIterate;
   }
 
@@ -53,7 +53,7 @@ public class IdToElement extends ObservableMap<Integer,Annotation> {
     return true;
   }
 
-  public Annotation[] get(final int[] ids) {
+  Annotation[] get(final int[] ids) {
     final Annotation[] annotations = new Annotation[ids.length];
     for (int i = 0; i < ids.length; ++i) {
       annotations[i] = get(ids[i]);

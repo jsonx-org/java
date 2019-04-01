@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -22,16 +22,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.Form;
-import org.openjax.jsonx.runtime.JsdUtil;
-import org.openjax.jsonx.runtime.NumberElement;
-import org.openjax.jsonx.runtime.NumberProperty;
-import org.openjax.jsonx.runtime.NumberType;
-import org.openjax.jsonx.runtime.ParseException;
-import org.openjax.jsonx.runtime.Range;
-import org.openjax.jsonx.runtime.Use;
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.xsb.runtime.Binding;

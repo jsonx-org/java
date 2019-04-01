@@ -24,18 +24,13 @@
     <artifactId>jsonx</artifactId>
     <version>0.9.8-SNAPSHOT</version>
   </parent>
-  <artifactId>jsonx-runtime</artifactId>
+  <artifactId>jsonx-binding</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
   <dependencies>
     <dependency>
       <groupId>org.openjax.standard</groupId>
       <artifactId>standard-math</artifactId>
       <version>0.6.4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjax.standard.xml</groupId>
-      <artifactId>xml-sax</artifactId>
-      <version>0.9.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.openjax.standard</groupId>

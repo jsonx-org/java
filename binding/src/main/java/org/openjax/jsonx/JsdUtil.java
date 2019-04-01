@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -28,8 +28,8 @@ import org.openjax.standard.util.FixedOrderComparator;
 import org.openjax.standard.util.Identifiers;
 import org.openjax.standard.util.Strings;
 
-public final class JsdUtil {
-  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
+final class JsdUtil {
+  static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
   private static final char prefix = '\0';
   private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
 
@@ -47,15 +47,15 @@ public final class JsdUtil {
     return name.length() == 0 ? "_$" : instanceCase ? Identifiers.toInstanceCase(name, prefix, substitutions) : Identifiers.toClassCase(name, prefix, substitutions);
   }
 
-  public static String toInstanceName(final String name) {
+  static String toInstanceName(final String name) {
     return toIdentifier(name, true);
   }
 
-  public static String toClassName(final String name) {
+  static String toClassName(final String name) {
     return toIdentifier(name, false);
   }
 
-  public static String flipName(String name) {
+  static String flipName(String name) {
     int i = name.lastIndexOf('$');
     if (i != -1)
       name = name.replace('$', '-');
@@ -67,15 +67,15 @@ public final class JsdUtil {
     return i == -1 ? Strings.flipFirstCap(name) : name.substring(0, i + 1) + Strings.flipFirstCap(name.substring(i + 1));
   }
 
-  public static Method getGetMethod(final Class<?> cls, final String propertyName) {
+  static Method getGetMethod(final Class<?> cls, final String propertyName) {
     return getMethod(cls, propertyName, null);
   }
 
-  public static Method getSetMethod(final Field field, final String propertyName) {
+  static Method getSetMethod(final Field field, final String propertyName) {
     return getMethod(field.getDeclaringClass(), propertyName, field.getType());
   }
 
-  public static String fixReserved(final String name) {
+  static String fixReserved(final String name) {
     return "Class".equalsIgnoreCase(name) ? "0lass" : name;
   }
 
@@ -88,7 +88,7 @@ public final class JsdUtil {
     }
   }
 
-  public static List<Class<?>> getDeclaredObjectTypes(final Field field) {
+  static List<Class<?>> getDeclaredObjectTypes(final Field field) {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(field, idToElement);
     final Annotation[] annotations = idToElement.get(elementIds);
@@ -110,11 +110,11 @@ public final class JsdUtil {
     }
   }
 
-  public static String getFullyQualifiedFieldName(final Field field) {
+  static String getFullyQualifiedFieldName(final Field field) {
     return field.getDeclaringClass().getName() + "#" + field.getName();
   }
 
-  public static int[] digest(final Field field, final IdToElement idToElement) {
+  static int[] digest(final Field field, final IdToElement idToElement) {
     final ArrayProperty property = field.getAnnotation(ArrayProperty.class);
     if (property == null)
       throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedFieldName(field));
@@ -125,7 +125,7 @@ public final class JsdUtil {
     return digest(field.getAnnotations(), getFullyQualifiedFieldName(field), idToElement);
   }
 
-  public static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
+  static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
     annotations = JsdUtil.flatten(annotations);
     JsdUtil.fillIdToElement(idToElement, annotations);
     Annotation annotation = null;
@@ -159,7 +159,7 @@ public final class JsdUtil {
     return elementIds;
   }
 
-  public static boolean isNullable(final Annotation annotation) {
+  static boolean isNullable(final Annotation annotation) {
     if (annotation instanceof AnyElement)
       return ((AnyElement)annotation).nullable();
 
@@ -181,7 +181,7 @@ public final class JsdUtil {
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
-  public static int getMinOccurs(final Annotation annotation) {
+  static int getMinOccurs(final Annotation annotation) {
     if (annotation instanceof AnyElement)
       return ((AnyElement)annotation).minOccurs();
 
@@ -203,7 +203,7 @@ public final class JsdUtil {
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
-  public static int getId(final Annotation annotation) {
+  static int getId(final Annotation annotation) {
     if (annotation instanceof AnyElement)
       return ((AnyElement)annotation).id();
 
@@ -225,7 +225,7 @@ public final class JsdUtil {
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
-  public static int getMaxOccurs(final Annotation annotation) {
+  static int getMaxOccurs(final Annotation annotation) {
     if (annotation instanceof AnyElement)
       return ((AnyElement)annotation).maxOccurs();
 
@@ -247,7 +247,7 @@ public final class JsdUtil {
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
-  public static String getName(final Field field) {
+  static String getName(final Field field) {
     for (final Annotation annotation : field.getAnnotations()) {
       if (annotation instanceof AnyProperty)
         return getName(((AnyProperty)annotation).name(), field);
@@ -271,11 +271,11 @@ public final class JsdUtil {
     return null;
   }
 
-  public static String getName(final String name, final Field field) {
+  static String getName(final String name, final Field field) {
     return name.length() > 0 ? name : field.getName();
   }
 
-  public static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
+  static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
     annotations = JsdUtil.flatten(annotations);
     for (final Annotation annotation : annotations) {
       if (annotation instanceof AnyElement)
@@ -293,7 +293,7 @@ public final class JsdUtil {
     }
   }
 
-  public static Annotation[] flatten(final Annotation[] annotations) {
+  static Annotation[] flatten(final Annotation[] annotations) {
     return flatten(annotations, 0, 0);
   }
 

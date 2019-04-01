@@ -14,14 +14,14 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import static org.junit.Assert.*;
 
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relations;
 
 class OptionalNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
   static final OptionalNullableCase CASE = new OptionalNullableCase();

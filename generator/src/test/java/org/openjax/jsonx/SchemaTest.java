@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -36,9 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.DecodeException;
-import org.openjax.jsonx.runtime.JxDecoder;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.jci.CompilationException;
 import org.openjax.standard.jci.InMemoryCompiler;
@@ -85,16 +82,16 @@ public class SchemaTest {
     }
   }
 
-  private static XmlElement toXml(final Schema schema, final Settings settings) {
+  private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
     final XmlElement xml = schema.toXml(settings);
     xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd " + schemaXsd);
     return xml;
   }
 
-  private static Schema testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> Schema");
-    final Schema controlSchema = new Schema(controlBinding, prefix);
+    final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("    b) Schema -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
     final xL4gluGCXYYJc.Schema testBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(xml);
@@ -134,8 +131,8 @@ public class SchemaTest {
     }
   }
 
-  private static Schema newSchema(final ClassLoader classLoader, final String packageName) throws IOException, PackageNotFoundException {
-    return new Schema(getPackage(classLoader, packageName), classLoader, c -> c.getClassLoader() == classLoader);
+  private static SchemaElement newSchema(final ClassLoader classLoader, final String packageName) throws IOException, PackageNotFoundException {
+    return new SchemaElement(getPackage(classLoader, packageName), classLoader, c -> c.getClassLoader() == classLoader);
   }
 
   private static void assertSources(final Map<String,String> expected, final Map<String,String> actual) {
@@ -167,7 +164,7 @@ public class SchemaTest {
     testJson(controlBinding, prefix);
 
     logger.info("  4) Schema -> Java(1)");
-    final Schema controlSchema = testParseSchema(controlBinding, prefix);
+    final SchemaElement controlSchema = testParseSchema(controlBinding, prefix);
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
     for (final Map.Entry<String,String> entry : test1Sources.entrySet())
@@ -177,7 +174,7 @@ public class SchemaTest {
     final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
     logger.info("  6) Java(1) -> Schema");
-    final Schema test1Schema = newSchema(classLoader, packageName);
+    final SchemaElement test1Schema = newSchema(classLoader, packageName);
     final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
     logger.info("  7) Validate XML");
     writeFile("out-" + fileName, xml);
@@ -189,7 +186,7 @@ public class SchemaTest {
       throw e;
     }
 
-    final Schema test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), prefix);
+    final SchemaElement test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), prefix);
     logger.info("  8) Schema -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
@@ -204,7 +201,7 @@ public class SchemaTest {
 
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
       final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
-      final Schema controlSchema = new Schema(controlBinding, prefix);
+      final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -214,10 +211,10 @@ public class SchemaTest {
       assertSources(originalSources, test1Sources);
 
       final ClassLoader classLoader = compiler.compile();
-      final Schema test1Schema = newSchema(classLoader, packageName);
+      final SchemaElement test1Schema = newSchema(classLoader, packageName);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final Schema test2Schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
+      final SchemaElement test2Schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
 
@@ -226,14 +223,14 @@ public class SchemaTest {
   }
 
   private static void testJson(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
-    final Schema controlSchema = new Schema(controlBinding, prefix);
+    final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
     final String json = JSON.toString(controlSchema.toJson());
     logger.info("       b) JSON -> Schema");
-    final Schema schema;
+    final SchemaElement schema;
     try (final JsonReader reader = new JsonReader(new StringReader(json))) {
-      schema = new Schema(JxDecoder.parseObject(schema.Schema.class, reader), prefix);
+      schema = new SchemaElement(JxDecoder.parseObject(schema.Schema.class, reader), prefix);
     }
 
     logger.info("       c) Schema -> XML(3)");

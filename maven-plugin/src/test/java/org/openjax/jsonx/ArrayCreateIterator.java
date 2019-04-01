@@ -14,13 +14,13 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.openjax.jsonx.runtime.ArrayTrial.TrialType;
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayTrial.TrialType;
+import org.openjax.jsonx.ArrayValidator.Relations;
 import org.openjax.standard.util.function.TriPredicate;
 
 class ArrayCreateIterator extends ArrayIterator {

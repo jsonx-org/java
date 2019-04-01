@@ -14,11 +14,10 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.util.function.Function;
 
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.standard.util.RefDigraph;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {

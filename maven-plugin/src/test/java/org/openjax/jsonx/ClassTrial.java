@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openjax.jsonx.runtime.ArrayValidator.Relations;
+import org.openjax.jsonx.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.net.MemoryURLStreamHandler;
 import org.slf4j.Logger;

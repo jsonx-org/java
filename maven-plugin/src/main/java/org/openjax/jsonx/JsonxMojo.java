@@ -27,7 +27,6 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.openjax.jsonx.generator.Schema;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.maven.mojo.GeneratorMojo;
 import org.openjax.standard.maven.mojo.SourceInput;
@@ -54,7 +53,7 @@ public class JsonxMojo extends GeneratorMojo {
     try {
       for (final URL resource : configuration.getSourceInputs("schemas")) {
         try (final InputStream in = resource.openStream()) {
-          final Schema schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
+          final SchemaElement schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
           schema.toSource(configuration.getDestDir());
         }
       }

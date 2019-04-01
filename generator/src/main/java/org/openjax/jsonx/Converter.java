@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.DecodeException;
-import org.openjax.jsonx.runtime.JxDecoder;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.json.JSON;
 import org.openjax.standard.json.JsonReader;
@@ -70,12 +67,12 @@ public class Converter {
       Files.copy(inFile.toPath(), outFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
     else {
-      final Schema schema;
+      final SchemaElement schema;
       try (final InputStream in = inFile.toURI().toURL().openStream()) {
         if (inType == Type.JSDX)
-          schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(in), "");
+          schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(in), "");
         else
-          schema = new Schema(JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in))), "");
+          schema = new SchemaElement(JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in))), "");
       }
 
       final String out;

@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -27,17 +27,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.AnyElement;
-import org.openjax.jsonx.runtime.ArrayElement;
-import org.openjax.jsonx.runtime.ArrayProperty;
-import org.openjax.jsonx.runtime.ArrayType;
-import org.openjax.jsonx.runtime.BooleanElement;
-import org.openjax.jsonx.runtime.JsdUtil;
-import org.openjax.jsonx.runtime.NumberElement;
-import org.openjax.jsonx.runtime.ObjectElement;
-import org.openjax.jsonx.runtime.StringElement;
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.lang.AnnotationParameterException;
 import org.openjax.standard.lang.IllegalAnnotationException;
@@ -428,7 +417,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   Map<String,Object> toAttributes(final Element owner, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, packageName);
-    if (owner instanceof Schema)
+    if (owner instanceof SchemaElement)
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id.toString());
 
     if (minIterate != null)

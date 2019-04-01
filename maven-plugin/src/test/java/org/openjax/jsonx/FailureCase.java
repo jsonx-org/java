@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.runtime;
+package org.openjax.jsonx;
 
 abstract class FailureCase<T extends PropertyTrial<?>> extends Case<T> {
   abstract void onEncode(T trial, EncodeException e) throws Exception;

@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.generator;
+package org.openjax.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashMap;
@@ -24,9 +24,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.openjax.jsonx.runtime.JsdUtil;
-import org.openjax.jsonx.runtime.Use;
-import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.Strings;
@@ -123,10 +120,10 @@ abstract class Member extends Element {
     final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (name != null)
       attributes.put(nameName(), name);
-    else if (owner instanceof Schema && !(this instanceof Referrer))
+    else if (owner instanceof SchemaElement && !(this instanceof Referrer))
       attributes.put(nameName(), id.toString());
 
-    if (!(owner instanceof Schema)) {
+    if (!(owner instanceof SchemaElement)) {
       if (nullable != null)
         attributes.put("nullable", nullable);
 

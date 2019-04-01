@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx.rs;
+package org.openjax.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -29,11 +29,6 @@ import java.util.List;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.junit.Test;
-import org.openjax.jsonx.runtime.ArrayType;
-import org.openjax.jsonx.runtime.JxEncoder;
-import org.openjax.jsonx.runtime.JxObject;
-import org.openjax.jsonx.runtime.ObjectElement;
-import org.openjax.jsonx.runtime.StringProperty;
 
 public class JxObjectProviderTest {
   private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder._0);
