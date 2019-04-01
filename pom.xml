@@ -32,8 +32,8 @@
   <url>https://jsonx.openjax.org/</url>
   <modules>
     <module>schema</module>
-    <module>generator</module>
     <module>runtime</module>
+    <module>generator</module>
     <module>maven-plugin</module>
     <module>rs</module>
   </modules>
