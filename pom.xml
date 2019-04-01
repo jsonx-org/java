@@ -31,6 +31,7 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://jsonx.openjax.org/</url>
   <modules>
+    <module>schema</module>
     <module>generator</module>
     <module>runtime</module>
     <module>maven-plugin</module>

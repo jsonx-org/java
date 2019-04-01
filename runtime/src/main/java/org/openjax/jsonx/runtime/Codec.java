@@ -41,7 +41,7 @@ abstract class Codec {
   @SuppressWarnings("unchecked")
   Codec(final Field field, final String name, final boolean nullable, final Use use) {
     this.field = field;
-    this.name = JxUtil.getName(name, field);
+    this.name = JsdUtil.getName(name, field);
     if (Map.class.isAssignableFrom(field.getType())) {
       this.setMethod = null;
       this.putMethod = Throwing.rethrow((o,n,v) -> {
@@ -51,7 +51,7 @@ abstract class Codec {
       this.genericType = Classes.getGenericClasses(field)[1];
     }
     else {
-      this.setMethod = JxUtil.getSetMethod(field, this.name);
+      this.setMethod = JsdUtil.getSetMethod(field, this.name);
       this.putMethod = null;
       this.optional = Optional.class.isAssignableFrom(field.getType());
       this.genericType = optional ? Classes.getGenericClasses(field)[0] : null;
@@ -60,7 +60,7 @@ abstract class Codec {
     this.nullable = nullable;
     this.use = use;
     if (nullable && use == Use.OPTIONAL && !optional)
-      throw new ValidationException("Invalid field: " + JxUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
+      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
   }
 
   abstract String elementName();

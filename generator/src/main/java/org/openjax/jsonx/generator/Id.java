@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.standard.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
@@ -38,11 +38,11 @@ class Id {
   }
 
   static Id named(final Registry.Type type) {
-    return new Id(type != null ? JxUtil.flipName(type.getName()) : Strings.getRandomAlphaNumeric(6));
+    return new Id(type != null ? JsdUtil.flipName(type.getName()) : Strings.getRandomAlphaNumeric(6));
   }
 
   static Id named(final Class<?> type) {
-    return new Id(JxUtil.flipName(type.getName()));
+    return new Id(JsdUtil.flipName(type.getName()));
   }
 
   static Id named(final $String name) {

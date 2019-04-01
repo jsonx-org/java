@@ -26,35 +26,6 @@
   </parent>
   <artifactId>jsonx-generator</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <sourcepath>${project.build.directory}/generated-sources/xsb</sourcepath>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.openjax.xsb</groupId>
-        <artifactId>xsb-maven-plugin</artifactId>
-        <version>2.1.4-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <destDir>${project.build.directory}/generated-sources/xsb</destDir>
-              <schemas>
-                <schema>src/main/resources/schema.xsd</schema>
-              </schemas>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>org.openjax.standard</groupId>
@@ -63,20 +34,27 @@
     </dependency>
     <dependency>
       <groupId>org.openjax.jsonx</groupId>
-      <artifactId>jsonx-runtime</artifactId>
-      <version>0.9.8-SNAPSHOT</version>
+      <artifactId>jsonx-schema</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.openjax.jsonx</groupId>
-      <artifactId>jsonx-runtime</artifactId>
-      <version>0.9.8-SNAPSHOT</version>
+      <artifactId>jsonx-schema</artifactId>
+      <version>${project.version}</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.openjax.xsb</groupId>
-      <artifactId>xsb-runtime</artifactId>
-      <version>2.1.4-SNAPSHOT</version>
+      <groupId>org.openjax.jsonx</groupId>
+      <artifactId>jsonx-runtime</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjax.jsonx</groupId>
+      <artifactId>jsonx-runtime</artifactId>
+      <version>${project.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

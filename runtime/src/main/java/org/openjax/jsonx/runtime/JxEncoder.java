@@ -120,7 +120,7 @@ public class JxEncoder {
   }
 
   private static Object getValue(final Object object, final String propertyName, final Use use) {
-    final Method method = JxUtil.getGetMethod(object.getClass(), propertyName);
+    final Method method = JsdUtil.getGetMethod(object.getClass(), propertyName);
     try {
       if (method != null)
         return method.invoke(object);
@@ -156,7 +156,7 @@ public class JxEncoder {
 
   private Error encodeNonArray(final boolean isProperty, final Field field, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
     if (field == null && object == null) {
-      if (validate && !JxUtil.isNullable(annotation))
+      if (validate && !JsdUtil.isNullable(annotation))
         return Error.MEMBER_NOT_NULLABLE(annotation);
 
       builder.append("null");
@@ -260,7 +260,7 @@ public class JxEncoder {
       throw e;
     }
     catch (final Exception e) {
-      throw new ValidationException("Invalid field: " + JxUtil.getFullyQualifiedFieldName(field), e);
+      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(field), e);
     }
 
     return null;
@@ -317,7 +317,7 @@ public class JxEncoder {
         annotation = annotations[j];
         if (annotation instanceof AnyProperty) {
           final AnyProperty property = (AnyProperty)annotation;
-          name = JxUtil.getName(property.name(), field);
+          name = JsdUtil.getName(property.name(), field);
           nullable = property.nullable();
           use = property.use();
           break;
@@ -325,7 +325,7 @@ public class JxEncoder {
 
         if (annotation instanceof ArrayProperty) {
           final ArrayProperty property = (ArrayProperty)annotation;
-          name = JxUtil.getName(property.name(), field);
+          name = JsdUtil.getName(property.name(), field);
           nullable = property.nullable();
           use = property.use();
           break;
@@ -333,7 +333,7 @@ public class JxEncoder {
 
         if (annotation instanceof ObjectProperty) {
           final ObjectProperty property = (ObjectProperty)annotation;
-          name = JxUtil.getName(property.name(), field);
+          name = JsdUtil.getName(property.name(), field);
           nullable = property.nullable();
           use = property.use();
           break;
@@ -341,7 +341,7 @@ public class JxEncoder {
 
         if (annotation instanceof BooleanProperty) {
           final BooleanProperty property = (BooleanProperty)annotation;
-          name = JxUtil.getName(property.name(), field);
+          name = JsdUtil.getName(property.name(), field);
           nullable = property.nullable();
           use = property.use();
           break;
@@ -349,7 +349,7 @@ public class JxEncoder {
 
         if (annotation instanceof NumberProperty) {
           final NumberProperty property = (NumberProperty)annotation;
-          name = JxUtil.getName(property.name(), field);
+          name = JsdUtil.getName(property.name(), field);
           nullable = property.nullable();
           use = property.use();
           break;
@@ -357,7 +357,7 @@ public class JxEncoder {
 
         if (annotation instanceof StringProperty) {
           final StringProperty property = (StringProperty)annotation;
-          name = JxUtil.getName(property.name(), field);
+          name = JsdUtil.getName(property.name(), field);
           nullable = property.nullable();
           use = property.use();
           break;
@@ -365,7 +365,7 @@ public class JxEncoder {
       }
 
       if (nullable && use == Use.OPTIONAL && !Optional.class.equals(field.getType()))
-        throw new ValidationException("Invalid field: " + JxUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
+        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
 
       if (name == null)
         continue;

@@ -28,7 +28,7 @@ class ArrayEncodeIterator extends ArrayIterator {
   static <T>Error validateArray(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final int[] elementIds;
     if (element.type() != ArrayType.class) {
-      elementIds = JxUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
+      elementIds = JsdUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
     }
     else {
       elementIds = element.elementIds();

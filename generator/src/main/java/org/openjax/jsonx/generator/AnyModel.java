@@ -29,7 +29,7 @@ import org.openjax.jsonx.runtime.AnyProperty;
 import org.openjax.jsonx.runtime.AnyType;
 import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.JxObject;
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.jsonx.runtime.NumberType;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.StringElement;
@@ -64,20 +64,20 @@ final class AnyModel extends Referrer<AnyModel> {
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsonx) {
+  private static xL4gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsdx) {
     final xL4gluGCXYYJc.$ArrayMember.Any xsb = new xL4gluGCXYYJc.$ArrayMember.Any();
 
-    if (jsonx.getTypes() != null)
-      xsb.setTypes$(new xL4gluGCXYYJc.$ArrayMember.Any.Types$(jsonx.getTypes().split(" ")));
+    if (jsdx.getTypes() != null)
+      xsb.setTypes$(new xL4gluGCXYYJc.$ArrayMember.Any.Types$(jsdx.getTypes().split(" ")));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsonx.getNullable()));
+    if (jsdx.getNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsdx.getNullable()));
 
-    if (jsonx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+    if (jsdx.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsdx.getMinOccurs())));
 
-    if (jsonx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsonx.getMaxOccurs()));
+    if (jsdx.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsdx.getMaxOccurs()));
 
     return xsb;
   }
@@ -99,7 +99,7 @@ final class AnyModel extends Referrer<AnyModel> {
     final Id id = model.id;
 
     final AnyModel registered = (AnyModel)registry.getModel(id);
-    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyElement element) {
@@ -321,7 +321,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
   @Override
   Registry.Type type() {
-    return this.types == null ? registry.getType(Object.class) : getGreatestCommonSuperType(registry, this.types);
+    return this.types == null ? registry.getType(Object.class) : getGreatestCommonSuperType(this.types);
   }
 
   @Override

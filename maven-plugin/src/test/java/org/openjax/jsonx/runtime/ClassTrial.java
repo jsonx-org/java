@@ -18,17 +18,21 @@ package org.openjax.jsonx.runtime;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openjax.jsonx.runtime.ArrayValidator.Relations;
 import org.openjax.standard.json.JsonReader;
+import org.openjax.standard.net.MemoryURLStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 class ClassTrial {
   private static final Logger logger = LoggerFactory.getLogger(ClassTrial.class);
@@ -99,6 +103,19 @@ class ClassTrial {
     return count;
   }
 
+  private static void testJsonx(final String json) throws IOException, SAXException {
+    final String jsonx = JxUtil.jsonToJsonx(new JsonReader(new StringReader(json)));
+    final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
+    try {
+      final String json2 = JxUtil.jsonxToJson(url, false);
+      assertEquals(json, json2);
+    }
+    catch (final SAXException e) {
+      System.err.println(jsonx);
+      throw e;
+    }
+  }
+
   private int invoke(final PropertyTrial<?> trial) throws Exception {
     int count = 0;
     final Object before = trial.field.get(trial.object);
@@ -126,6 +143,8 @@ class ClassTrial {
           bounds[1] = e;
         }
       });
+
+      testJsonx(json);
 
       value = bounds[0] == -1 && bounds[1] == -1 ? null : json.substring(bounds[0], bounds[1]);
     }

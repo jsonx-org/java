@@ -42,7 +42,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
     }
   };
 
-  static Registry.Type getGreatestCommonSuperType(final Registry registry, final List<Member> members) {
+  static Registry.Type getGreatestCommonSuperType(final List<Member> members) {
     if (members.size() == 0)
       throw new IllegalArgumentException("members.size() == 0");
 
@@ -58,7 +58,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
         return null;
 
       if (members.size() == start + 1)
-        return registry.getType(List.class, members.get(start).type());
+        return members.get(start).type();
 
       Registry.Type gct = members.get(start).type();
       for (int i = start + 1; i < members.size() && gct != null; ++i) {

@@ -47,7 +47,7 @@
     <dependency>
       <groupId>org.openjax.jsonx</groupId>
       <artifactId>jsonx-runtime</artifactId>
-      <version>0.9.8-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 </project>

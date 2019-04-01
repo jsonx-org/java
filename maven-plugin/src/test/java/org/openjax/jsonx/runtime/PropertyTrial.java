@@ -55,7 +55,7 @@ abstract class PropertyTrial<T> {
     this.field = field;
     this.object = object;
     this.value = value;
-    this.name = JxUtil.getName(name, field);
+    this.name = JsdUtil.getName(name, field);
     this.use = use;
 
     field.setAccessible(true);

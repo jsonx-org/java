@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.openjax.jsonx.schema;
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.jsonx.runtime.StringElement;
 import org.openjax.jsonx.runtime.StringProperty;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
@@ -74,19 +74,19 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsonx, final String name) {
+  static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsdx, final String name) {
     final xL4gluGCXYYJc.$StringMember xsb;
-    if (jsonx instanceof schema.StringProperty)
-      xsb  = property((schema.StringProperty)jsonx, name);
-    else if (jsonx instanceof schema.StringElement)
-      xsb  = element((schema.StringElement)jsonx);
+    if (jsdx instanceof schema.StringProperty)
+      xsb  = property((schema.StringProperty)jsdx, name);
+    else if (jsdx instanceof schema.StringElement)
+      xsb  = element((schema.StringElement)jsdx);
     else if (name != null)
       xsb  = type(name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsdx.getClass().getName());
 
-    if (jsonx.getPattern() != null)
-      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsonx.getPattern()));
+    if (jsdx.getPattern() != null)
+      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsdx.getPattern()));
 
     return xsb;
   }
@@ -108,7 +108,7 @@ final class StringModel extends Model {
     final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {

@@ -26,7 +26,7 @@ class PropertyToCodec {
   final Map<Field,Codec> fieldToCodec = new HashMap<>();
 
   public void add(final Codec codec) {
-    (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(JxUtil.getName(codec.name, codec.field), codec);
+    (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(JsdUtil.getName(codec.name, codec.field), codec);
     fieldToCodec.put(codec.field, codec);
   }
 

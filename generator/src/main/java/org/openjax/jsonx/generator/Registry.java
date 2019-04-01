@@ -204,7 +204,7 @@ class Registry {
   }
 
   static String getSubName(final String name, final String superName) {
-    return superName != null && name.startsWith(superName) ? name.substring(superName.length() + 1) : name;
+    return superName != null && superName.length() > 0 && name.startsWith(superName) ? name.substring(superName.length() + 1) : name;
   }
 
   Type getType(final Kind kind, final String packageName, final String compoundName) {

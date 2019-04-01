@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 OpenJAX
+/* Copyright (c) 2019 OpenJAX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,319 +16,345 @@
 
 package org.openjax.jsonx.runtime;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.openjax.standard.util.Annotations;
-import org.openjax.standard.util.FixedOrderComparator;
-import org.openjax.standard.util.Identifiers;
+import javax.xml.parsers.SAXParser;
+
+import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.util.Strings;
+import org.openjax.standard.xml.api.CharacterDatas;
+import org.openjax.standard.xml.sax.Parsers;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 public final class JxUtil {
-  public static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
-  private static final char prefix = '\0';
-  private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
+  @SuppressWarnings("unchecked")
+  private static final ThreadLocal<WeakReference<SAXParser>>[] weakParsers = new ThreadLocal[2];
+  private static final Pattern pattern = Pattern.compile("(?<value>null|false|true|-?(([0-9])|([1-9][0-9]+))(\\.[\\.0-9]+)?([eE][+-]?(([0-9])|([1-9][0-9]+)))?|\"(\\\\.|[^\"])*\")(?<ws>\\s+|$)");
 
-  /**
-   * @param instanceCase Whether to return instance-case (true) or class-case
-   *          (false).
-   * @return The name of this member as a valid Java Identifier in:
-   *         <ul>
-   *         <li>Instance-Case: lower-camelCase</li>
-   *         <li>Class-Case: upper-camelCase</li>
-   *         <li>{@code name.length() == 0}: "_$"</li>
-   *         </ul>
-   */
-  private static String toIdentifier(final String name, final boolean instanceCase) {
-    return name.length() == 0 ? "_$" : instanceCase ? Identifiers.toInstanceCase(name, prefix, substitutions) : Identifiers.toClassCase(name, prefix, substitutions);
+  private static SAXParser getParser(final boolean validating) throws SAXException {
+    final ThreadLocal<WeakReference<SAXParser>> threadLocal = weakParsers[validating ? 0 : 1];
+    final WeakReference<SAXParser> reference = threadLocal == null ? null : threadLocal.get();
+    SAXParser parser = reference == null ? null : reference.get();
+    if (parser == null) {
+      parser = Parsers.newParser(validating);
+      final WeakReference<SAXParser> newReference = new WeakReference<>(parser);
+      if (threadLocal != null) {
+        threadLocal.set(newReference);
+      }
+      else {
+        weakParsers[validating ? 0 : 1] = new ThreadLocal<WeakReference<SAXParser>>() {
+          @Override
+          protected WeakReference<SAXParser> initialValue() {
+            return newReference;
+          }
+        };
+      }
+    }
+
+    parser.reset();
+    return parser;
   }
 
-  public static String toInstanceName(final String name) {
-    return toIdentifier(name, true);
+  public static String jsonxToJson(final URL url, final boolean validate) throws IOException, SAXException {
+    final SAXParser parser = getParser(validate);
+    final StringBuilder builder = new StringBuilder();
+    parser.parse(url.openStream(), new DefaultHandler() {
+      private final Stack<String> stack = new Stack<>();
+      private StringBuilder characters = null;
+      private StringBuilder prevWs = null;
+      private String prevElem = null;
+
+      @Override
+      public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
+        final boolean hasMembers = processCharacters(true);
+        stack.push(localName);
+        if (!hasMembers && "m".equals(prevElem) || "p".equals(prevElem)) {
+          builder.append(',');
+          prevElem = null;
+        }
+
+        if (prevWs != null) {
+          builder.append(prevWs);
+          prevWs = null;
+        }
+
+        if ("o".equals(localName)) {
+          builder.append('{');
+        }
+        else if ("a".equals(localName)) {
+          builder.append('[');
+        }
+        else if ("p".equals(localName)) {
+          final int index = attributes.getIndex("name");
+          if (index == -1)
+            throw new SAXException("Missing attribute: \"name\"");
+
+          builder.append('"').append(CharacterDatas.unescapeFromAttr(attributes.getValue(index), '"')).append("\":");
+        }
+        else {
+          throw new SAXException("Unexpected element: " + qName);
+        }
+      }
+
+      @Override
+      public void endElement(final String uri, final String localName, final String qName) throws SAXException {
+        processCharacters(false);
+        stack.pop();
+        if (prevWs != null) {
+          builder.append(prevWs);
+          prevWs = null;
+        }
+
+        prevElem = !stack.empty() && "a".equals(stack.peek()) ? "m" : localName;
+        if ("o".equals(localName)) {
+          builder.append('}');
+        }
+        else if ("a".equals(localName)) {
+          builder.append(']');
+        }
+      }
+
+      @Override
+      public void characters(final char[] ch, final int start, final int length) throws SAXException {
+        final String value = new String(ch, start, length);
+        if (characters == null)
+          characters = new StringBuilder(value);
+        else
+          characters.append(value);
+      }
+
+      private boolean processCharacters(final boolean hasMore) {
+        if (characters == null)
+          return false;
+
+        try {
+          if (Strings.isWhitespace(characters)) {
+            prevWs = characters;
+            return false;
+          }
+
+          if ("m".equals(prevElem) || "p".equals(prevElem)) {
+            builder.append(',');
+            prevElem = null;
+          }
+
+          if (prevWs != null) {
+            builder.append(prevWs);
+            prevWs = null;
+          }
+
+          if ("a".equals(stack.peek())) {
+            final Matcher matcher = pattern.matcher(characters);
+            String lastWs = null;
+            int i = 0;
+            for (; matcher.find(); ++i) {
+              if (i > 0) {
+                builder.append(',');
+              }
+              else {
+                final int len = characters.length();
+                for (int j = 0; i < len; ++j) {
+                  final char c = characters.charAt(j);
+                  if (Character.isWhitespace(c))
+                    builder.append(c);
+                  else
+                    break;
+                }
+              }
+
+              if (lastWs != null) {
+                builder.append(lastWs.substring(1));
+                lastWs = null;
+              }
+
+              prevElem = "m";
+              final String value = matcher.group("value");
+              if (value != null)
+                builder.append(CharacterDatas.unescapeFromElem(value));
+
+              final String ws = matcher.group("ws");
+              if (ws != null)
+                lastWs = ws;
+            }
+
+            if (i == 0) {
+              builder.append(characters);
+            }
+            else if (lastWs != null) {
+              if (hasMore) {
+                builder.append(',').append(lastWs.substring(1));
+              }
+              else {
+                builder.append(lastWs);
+              }
+
+              return true;
+            }
+          }
+          else {
+            builder.append(characters);
+          }
+
+          return false;
+        }
+        finally {
+          characters = null;
+        }
+      }
+    });
+
+    return builder.toString();
   }
 
-  public static String toClassName(final String name) {
-    return toIdentifier(name, false);
+  public static String jsonToJsonx(final JsonReader reader) throws IOException {
+    return jsonToJsonx(reader, false);
   }
 
-  public static String flipName(String name) {
-    int i = name.lastIndexOf('$');
-    if (i != -1)
-      name = name.replace('$', '-');
-    else if ((i = name.lastIndexOf('-')) != -1)
-      name = name.replace('-', '$');
+  public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
+    final StringBuilder builder = new StringBuilder();
+    for (String token; (token = reader.readToken()) != null;) {
+      final char ch = token.charAt(0);
+      if (Character.isWhitespace(ch))
+        builder.append(token);
+      else if ("{".equals(token))
+        appendObject(reader, declareNamespace, builder);
+      else if ("[".equals(token))
+        appendArray(reader, builder);
+      else
+        throw new IllegalStateException("Illegal token: " + token);
+    }
+
+    return builder.toString();
+  }
+
+  private static void appendValue(final JsonReader reader, final String token, final StringBuilder builder) throws IOException {
+    final char ch = token.charAt(0);
+    if (ch == '{')
+      appendObject(reader, false, builder);
+    else if (ch == '[')
+      appendArray(reader, builder);
     else
-      i = name.lastIndexOf('.');
-
-    return i == -1 ? Strings.flipFirstCap(name) : name.substring(0, i + 1) + Strings.flipFirstCap(name.substring(i + 1));
+      builder.append(CharacterDatas.escapeForElem(token));
   }
 
-  public static Method getGetMethod(final Class<?> cls, final String propertyName) {
-    return getMethod(cls, propertyName, null);
-  }
-
-  public static Method getSetMethod(final Field field, final String propertyName) {
-    return getMethod(field.getDeclaringClass(), propertyName, field.getType());
-  }
-
-  public static String fixReserved(final String name) {
-    return "Class".equalsIgnoreCase(name) ? "0lass" : name;
-  }
-
-  private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
-    try {
-      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(toClassName(propertyName)), parameterType == null ? null : new Class<?> [] {parameterType});
-    }
-    catch (final NoSuchMethodException e) {
-      return null;
-    }
-  }
-
-  public static List<Class<?>> getDeclaredObjectTypes(final Field field) {
-    final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JxUtil.digest(field, idToElement);
-    final Annotation[] annotations = idToElement.get(elementIds);
-    final List<Class<?>> types = new ArrayList<>();
-    getDeclaredObjectTypes(annotations, types);
-    return types;
-  }
-
-  private static void getDeclaredObjectTypes(final Annotation[] annotations, final List<Class<?>> types) {
-    for (final Annotation annotation : annotations) {
-      if (annotation instanceof ArrayElement) {
-        final ArrayElement element = (ArrayElement)annotation;
-        if (element.type() != ArrayType.class)
-          getDeclaredObjectTypes(element.type().getAnnotations(), types);
+  private static void appendArray(final JsonReader reader, final StringBuilder builder) throws IOException {
+    builder.append("<a>");
+    String last = null;
+    for (String token = null; (token == null ? token = reader.readToken() : token) != null;) {
+      final char ch = token.charAt(0);
+      if (Character.isWhitespace(ch)) {
+        builder.append(token);
+        token = null;
       }
-      else if (annotation instanceof ObjectElement) {
-        types.add(((ObjectElement)annotation).type());
-      }
-    }
-  }
-
-  public static String getFullyQualifiedFieldName(final Field field) {
-    return field.getDeclaringClass().getName() + "#" + field.getName();
-  }
-
-  public static int[] digest(final Field field, final IdToElement idToElement) {
-    final ArrayProperty property = field.getAnnotation(ArrayProperty.class);
-    if (property == null)
-      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedFieldName(field));
-
-    if (property.type() != ArrayType.class)
-      return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
-
-    return digest(field.getAnnotations(), getFullyQualifiedFieldName(field), idToElement);
-  }
-
-  public static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
-    annotations = JxUtil.flatten(annotations);
-    JxUtil.fillIdToElement(idToElement, annotations);
-    Annotation annotation = null;
-    int[] elementIds = null;
-    for (int i = 0; i < annotations.length; ++i) {
-      if (annotations[i] instanceof ArrayType) {
-        final ArrayType arrayType = (ArrayType)annotations[i];
-        elementIds = arrayType.elementIds();
-        idToElement.setMinIterate(arrayType.minIterate());
-        idToElement.setMaxIterate(arrayType.maxIterate());
-        annotation = arrayType;
+      else if ("]".equals(token)) {
         break;
       }
+      else if ("{".equals(token)) {
+        appendObject(reader, false, builder);
+        last = token;
+        token = null;
+      }
+      else if ("[".equals(token)) {
+        appendArray(reader, builder);
+        last = token;
+        token = null;
+      }
+      else if (",".equals(token)) {
+        token = reader.readToken();
+        String ws = null;
+        if (Character.isWhitespace(token.charAt(0))) {
+          ws = token;
+          token = reader.readToken();
+        }
 
-      if (annotations[i] instanceof ArrayProperty) {
-        final ArrayProperty arrayProperty = (ArrayProperty)annotations[i];
-        elementIds = arrayProperty.elementIds();
-        idToElement.setMinIterate(arrayProperty.minIterate());
-        idToElement.setMaxIterate(arrayProperty.maxIterate());
-        annotation = arrayProperty;
-        break;
+        final char c = token.charAt(0);
+        if (!"{".equals(last) && !"[".equals(last) || c != '{' && c != '[')
+          builder.append(' ');
+
+        if (ws != null)
+          builder.append(ws);
+      }
+      else {
+        appendValue(reader, token, builder);
+        last = token;
+        token = null;
       }
     }
 
-    if (annotation == null)
-      throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
-
-    if (elementIds.length == 0)
-      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES));
-
-    return elementIds;
+    builder.append("</a>");
   }
 
-  public static boolean isNullable(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).nullable();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).nullable();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).nullable();
-
-    if (annotation instanceof NumberElement)
-      return ((NumberElement)annotation).nullable();
-
-    if (annotation instanceof ObjectElement)
-      return ((ObjectElement)annotation).nullable();
-
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).nullable();
-
-    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
-  }
-
-  public static int getMinOccurs(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).minOccurs();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).minOccurs();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).minOccurs();
-
-    if (annotation instanceof NumberElement)
-      return ((NumberElement)annotation).minOccurs();
-
-    if (annotation instanceof ObjectElement)
-      return ((ObjectElement)annotation).minOccurs();
-
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).minOccurs();
-
-    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
-  }
-
-  public static int getId(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).id();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).id();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).id();
-
-    if (annotation instanceof NumberElement)
-      return ((NumberElement)annotation).id();
-
-    if (annotation instanceof ObjectElement)
-      return ((ObjectElement)annotation).id();
-
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).id();
-
-    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
-  }
-
-  public static int getMaxOccurs(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).maxOccurs();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).maxOccurs();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).maxOccurs();
-
-    if (annotation instanceof NumberElement)
-      return ((NumberElement)annotation).maxOccurs();
-
-    if (annotation instanceof ObjectElement)
-      return ((ObjectElement)annotation).maxOccurs();
-
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).maxOccurs();
-
-    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
-  }
-
-  public static String getName(final Field field) {
-    for (final Annotation annotation : field.getAnnotations()) {
-      if (annotation instanceof AnyProperty)
-        return getName(((AnyProperty)annotation).name(), field);
-
-      if (annotation instanceof ArrayProperty)
-        return getName(((ArrayProperty)annotation).name(), field);
-
-      if (annotation instanceof BooleanProperty)
-        return getName(((BooleanProperty)annotation).name(), field);
-
-      if (annotation instanceof NumberProperty)
-        return getName(((NumberProperty)annotation).name(), field);
-
-      if (annotation instanceof ObjectProperty)
-        return getName(((ObjectProperty)annotation).name(), field);
-
-      if (annotation instanceof StringProperty)
-        return getName(((StringProperty)annotation).name(), field);
+  private static void appendObject(final JsonReader reader, final boolean declareNamespace, final StringBuilder builder) throws IOException {
+    builder.append("<o");
+    if (declareNamespace) {
+      builder.append(" xmlns=\"http://jsonx.openjax.org/jsonx-0.9.8.xsd\"");
+      builder.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+      builder.append(" xsi:schemaLocation=\"http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx-0.9.8.xsd\"");
     }
 
-    return null;
-  }
+    builder.append('>');
+    Boolean nextName = true;
+    for (String token = null; (token == null ? token = reader.readToken() : token) != null;) {
+      final char ch = token.charAt(0);
+      if (Character.isWhitespace(ch)) {
+        builder.append(token);
+        token = null;
+      }
+      else if ("}".equals(token)) {
+        break;
+      }
+      else if (nextName != null && nextName) {
+        if (":".equals(token)) {
+          nextName = false;
+          token = null;
+        }
+        else {
+          builder.append("<p name=").append(CharacterDatas.escapeForAttr(token, '"', 1, token.length() - 1));
+          token = reader.readToken();
+          if (Character.isWhitespace(token.charAt(0))) {
+            builder.append(token);
+            token = null;
+          }
 
-  public static String getName(final String name, final Field field) {
-    return name.length() > 0 ? name : field.getName();
-  }
+          builder.append('>');
+        }
+      }
+      else if (nextName != null && !nextName) {
+        appendValue(reader, token, builder);
+        token = reader.readToken();
+        if (Character.isWhitespace(token.charAt(0))) {
+          builder.append(token);
+          token = null;
+        }
 
-  public static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
-    annotations = JxUtil.flatten(annotations);
-    for (final Annotation annotation : annotations) {
-      if (annotation instanceof AnyElement)
-        idToElement.put(((AnyElement)annotation).id(), annotation);
-      else if (annotation instanceof ArrayElement)
-        idToElement.put(((ArrayElement)annotation).id(), annotation);
-      else if (annotation instanceof BooleanElement)
-        idToElement.put(((BooleanElement)annotation).id(), annotation);
-      else if (annotation instanceof NumberElement)
-        idToElement.put(((NumberElement)annotation).id(), annotation);
-      else if (annotation instanceof ObjectElement)
-        idToElement.put(((ObjectElement)annotation).id(), annotation);
-      else if (annotation instanceof StringElement)
-        idToElement.put(((StringElement)annotation).id(), annotation);
+        builder.append("</p>");
+        nextName = null;
+      }
+      else if (",".equals(token)) {
+        nextName = true;
+        token = null;
+      }
+      else if ("{".equals(token)) {
+        appendObject(reader, false, builder);
+        token = null;
+      }
+      else if ("[".equals(token)) {
+        appendArray(reader, builder);
+        token = null;
+      }
+      else {
+        throw new IllegalStateException("Unexpected token: " + token);
+      }
     }
-  }
 
-  public static Annotation[] flatten(final Annotation[] annotations) {
-    return flatten(annotations, 0, 0);
-  }
-
-  private static Annotation[] flatten(final Annotation[] annotations, final int index, final int depth) {
-    if (index == annotations.length)
-      return new Annotation[depth];
-
-    final Annotation annotation = annotations[index];
-    final Annotation[] repeatable;
-    if (AnyElements.class.equals(annotation.annotationType()))
-      repeatable = ((AnyElements)annotation).value();
-    else if (ArrayElements.class.equals(annotation.annotationType()))
-      repeatable = ((ArrayElements)annotation).value();
-    else if (BooleanElements.class.equals(annotation.annotationType()))
-      repeatable = ((BooleanElements)annotation).value();
-    else if (NumberElements.class.equals(annotation.annotationType()))
-      repeatable = ((NumberElements)annotation).value();
-    else if (ObjectElements.class.equals(annotation.annotationType()))
-      repeatable = ((ObjectElements)annotation).value();
-    else if (StringElements.class.equals(annotation.annotationType()))
-      repeatable = ((StringElements)annotation).value();
-    else
-      repeatable = null;
-
-    if (repeatable == null) {
-      final Annotation[] flattened = flatten(annotations, index + 1, depth + 1);
-      flattened[depth] = annotation;
-      return flattened;
-    }
-
-    final Annotation[] flattened = flatten(annotations, index + 1, depth + repeatable.length);
-    for (int i = 0; i < repeatable.length; ++i)
-      flattened[depth + i] = repeatable[i];
-
-    return flattened;
+    builder.append("</o>");
   }
 
   private JxUtil() {

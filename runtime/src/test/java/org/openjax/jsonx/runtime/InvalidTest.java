@@ -91,7 +91,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -114,7 +114,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {
@@ -139,7 +139,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -162,7 +162,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {
@@ -235,7 +235,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -258,7 +258,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {
@@ -281,7 +281,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidPattern")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidPattern")), e.getMessage());
       }
 
       try {
@@ -306,7 +306,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidType")), e.getMessage());
       }
 
       try {
@@ -329,7 +329,7 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JxUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidAnnotation")), e.getMessage());
       }
 
       try {

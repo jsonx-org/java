@@ -117,7 +117,7 @@ class AnyCodec extends Codec {
   static Object encodeObject(final Annotation annotation, final t[] types, final Object object, final JxEncoder jxEncoder, final int depth, final boolean validate) throws EncodeException, ValidationException {
     Error error = null;
     if (object == null)
-      return JxUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL;
+      return JsdUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL;
 
     for (final t type : types.length > 0 ? types : new t[] {AnyType.fromObject(object)}) {
       if (object instanceof List && AnyType.isEnabled(type.arrays())) {

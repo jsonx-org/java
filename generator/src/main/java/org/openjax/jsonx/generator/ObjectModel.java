@@ -33,7 +33,7 @@ import org.openjax.jsonx.runtime.ArrayProperty;
 import org.openjax.jsonx.runtime.BooleanProperty;
 import org.openjax.jsonx.runtime.JxEncoder;
 import org.openjax.jsonx.runtime.JxObject;
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.jsonx.runtime.NumberProperty;
 import org.openjax.jsonx.runtime.ObjectElement;
 import org.openjax.jsonx.runtime.ObjectProperty;
@@ -134,10 +134,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     final Id id = Id.named(getRealType(field));
     if (registry.isPending(id))
-      return Reference.defer(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), () -> registry.reference(registry.getModel(id), referrer));
+      return Reference.defer(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), () -> registry.reference(registry.getModel(id), referrer));
 
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, field, property), referrer) : registry.reference(model, referrer));
+    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, field, property), referrer) : registry.reference(model, referrer));
   }
 
   static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
@@ -165,7 +165,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     do
       builder.insert(0, '$').insert(1, Strings.flipFirstCap(owner.getName$().text()));
     while (owner.owner() instanceof xL4gluGCXYYJc.$Object && (owner = (xL4gluGCXYYJc.$Object)owner.owner()) != null);
-    return builder.insert(0, JxUtil.flipName(((xL4gluGCXYYJc.Schema.Object)owner.owner()).getName$().text())).toString();
+    return builder.insert(0, JsdUtil.flipName(((xL4gluGCXYYJc.Schema.Object)owner.owner()).getName$().text())).toString();
   }
 
   private static Member getReference(final Registry registry, final Referrer<?> referrer, final Field field) {
@@ -265,7 +265,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   final boolean isAbstract;
 
   private ObjectModel(final Registry registry, final xL4gluGCXYYJc.Schema.Object binding) {
-    super(registry, registry.getType(registry.packageName, registry.classPrefix + JxUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null));
+    super(registry, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());
     this.members = parseMembers(binding, this);
@@ -280,7 +280,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private ObjectModel(final Registry registry, final xL4gluGCXYYJc.$Object binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JxUtil.flipName(binding.getExtends$().text()) : null));
+    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
     this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;
     this.members = parseMembers(binding, this);
@@ -359,10 +359,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   Map<String,Object> toAttributes(final Element owner, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, packageName);
-    attributes.put(owner instanceof ArrayModel ? "type" : "name", JxUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
+    attributes.put(owner instanceof ArrayModel ? "type" : "name", JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
-      attributes.put("extends", JxUtil.flipName(superObject.type().getRelativeName(packageName)));
+      attributes.put("extends", JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
 
     if (isAbstract)
       attributes.put("abstract", isAbstract);
@@ -436,7 +436,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (members != null && members.size() > 0) {
       builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
       for (final Member member : members.values()) {
-        final String instanceName = JxUtil.toInstanceName(member.name);
+        final String instanceName = JsdUtil.toInstanceName(member.name);
         builder.append("\n  if (that.").append(instanceName).append(" != null ? !that.").append(instanceName).append(".equals(").append(instanceName).append(") : ").append(instanceName).append(" != null)");
         builder.append("\n    return false;\n");
       }
@@ -449,7 +449,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (members != null && members.size() > 0) {
       builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
       for (final Member member : members.values()) {
-        final String instanceName = JxUtil.toInstanceName(member.name);
+        final String instanceName = JsdUtil.toInstanceName(member.name);
         builder.append("\n  hashCode = 31 * hashCode + (").append(instanceName).append(" == null ? 0 : ").append(instanceName).append(".hashCode());");
       }
 

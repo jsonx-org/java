@@ -53,7 +53,7 @@ class StringCodec extends PrimitiveCodec<String> {
     if (validate && pattern.length() != 0 && !string.matches(pattern))
       return Error.PATTERN_NOT_MATCHED(pattern, string, -1);
 
-    relations.set(index, new Relation(false ? StringCodec.decodeObject("\"" + string + "\"") : object, annotation));
+    relations.set(index, new Relation(object, annotation));
     return null;
   }
 
@@ -72,10 +72,7 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   private static Error validate(final Annotation annotation, final String object, final String pattern) {
-    if (pattern.length() > 0 && !object.matches(pattern))
-      return Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, object);
-
-    return null;
+    return pattern.length() > 0 && !object.matches(pattern) ? Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, object) : null;
   }
 
   private final String pattern;

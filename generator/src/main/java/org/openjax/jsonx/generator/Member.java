@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.runtime.ValidationException;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
@@ -173,7 +173,7 @@ abstract class Member extends Element {
 
     final AttributeMap attributes = new AttributeMap();
     toAnnotationAttributes(attributes, this);
-    final String instanceName = JxUtil.toInstanceName(name);
+    final String instanceName = JsdUtil.toInstanceName(name);
     if (!name.equals(instanceName) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + Strings.escapeForJava(name) + "\"");
 
@@ -185,7 +185,7 @@ abstract class Member extends Element {
       type = nullable == null && use == Use.OPTIONAL ? registry.getType(Optional.class, type()) : type();
 
     final String typeName = type.toCanonicalString();
-    final String classCase = JxUtil.fixReserved(JxUtil.toClassName(name));
+    final String classCase = JsdUtil.fixReserved(JsdUtil.toClassName(name));
     builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
     if (isRegex) {
       builder.append("\npublic final ").append(typeName).append(' ').append(instanceName).append(" = new ").append(LinkedHashMap.class.getName()).append("<>();");

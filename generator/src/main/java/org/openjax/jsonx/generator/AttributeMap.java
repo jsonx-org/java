@@ -18,12 +18,12 @@ package org.openjax.jsonx.generator;
 
 import java.util.TreeMap;
 
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.standard.util.ObservableMap;
 
 class AttributeMap extends ObservableMap<String,Object> {
   AttributeMap() {
-    super(new TreeMap<>(JxUtil.ATTRIBUTES));
+    super(new TreeMap<>(JsdUtil.ATTRIBUTES));
   }
 
   @Override

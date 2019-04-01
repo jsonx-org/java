@@ -44,7 +44,7 @@ public class ArrayValidator {
 
     @Override
     public String toString() {
-      return String.valueOf(JxUtil.getId(annotation));
+      return String.valueOf(JsdUtil.getId(annotation));
     }
   }
 
@@ -98,7 +98,7 @@ public class ArrayValidator {
   private static int getNextRequiredElement(final Annotation[] annotations, final int a, int occurrence) {
     for (int i = a; i < annotations.length; ++i) {
       final Annotation annotation = annotations[i];
-      final int minOccurs = JxUtil.getMinOccurs(annotation);
+      final int minOccurs = JsdUtil.getMinOccurs(annotation);
       if (occurrence <= minOccurs)
         return i;
 
@@ -211,10 +211,10 @@ public class ArrayValidator {
     }
 
     if (minOccurs < 0)
-      throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES));
+      throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES));
 
     if (maxOccurs < minOccurs)
-      throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, JxUtil.ATTRIBUTES));
+      throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES));
 
     Error error;
     if (iterator.nextIsNull()) {
@@ -294,7 +294,7 @@ public class ArrayValidator {
 
   static Error validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JxUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
+    final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     return validate(members, idToElement, elementIds, relations, validate, onPropertyDecode);
   }
 

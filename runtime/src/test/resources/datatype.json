@@ -1,0 +1,673 @@
+{ "jsns":   "http://jsonx.openjax.org/schema-0.9.8.jsd",
+  "schemaLocation":   "http://jsonx.openjax.org/schema-0.9.8.jsd http://jsonx.openjax.org/schema-0.9.8.jsd",
+  "arrayArr": {
+    "class":    "array",
+    "random":   [
+      "hello",   
+        false,
+      {  },
+      [  ],
+           {
+          "foo":   "bar",
+        "my": false,
+        "your": [  4,  7,   false,  null ]
+            }
+    ],
+    "elements": [{
+      "class": "reference",
+      "type": "arrayBool",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "arrayNum",
+      "maxOccurs": "1"
+    }, {
+        "class": "reference",
+      "type": "arrayObj",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "arrayObj",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "arrayStr",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "arrayStr",
+      "maxOccurs": "1"
+    }, {
+      "class": "any",
+      "types": "bool num",
+      "minOccurs": "0",
+      "maxOccurs": "1"
+    }, {
+      "class": "any",
+      "maxOccurs": "1"
+    }]
+  },
+  "arrayBool": {
+    "class": "array",
+    "elements": [{
+      "class": "reference",
+      "type": "bool",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "bool",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }]
+  },
+  "arrayNum": {
+    "class": "array",
+    "elements": [{
+      "class": "reference",
+      "type": "num",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "num",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "numInt",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "numInt",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "numIntRange1",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "numIntRange1",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "numIntRange2",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "numIntRange2",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "numRange1",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "numRange1",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "numRange2",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "numRange2",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }]
+  },
+  "arrayObj": {
+    "class": "array",
+    "elements": [{
+      "class": "reference",
+      "type": "objArr",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "objBool",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "objNum",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "objObj",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "objStr",
+      "maxOccurs": "1"
+    }]
+  },
+  "arrayStr": {
+    "class": "array",
+    "elements": [{
+      "class": "reference",
+      "type": "str",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "str",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strDec",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strDec",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strDecEnc",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strDecEnc",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strEnc",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strEnc",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strPattern",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strPattern",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strPatternDec",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strPatternDec",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strPatternDecEnc",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strPatternDecEnc",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }, {
+      "class": "reference",
+      "type": "strPatternEnc",
+      "maxOccurs": "1"
+    }, {
+      "class": "reference",
+      "type": "strPatternEnc",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "nullable": false
+    }]
+  },
+  "bool": {
+    "class": "boolean"
+  },
+  "num": {
+    "class": "number"
+  },
+  "numInt": {
+    "class": "number",
+    "form": "integer"
+  },
+  "numIntRange1": {
+    "class": "number",
+    "form": "integer",
+    "range": "[1,]"
+  },
+  "numIntRange2": {
+    "class": "number",
+    "form": "integer",
+    "range": "[,4]"
+  },
+  "numRange1": {
+    "class": "number",
+    "range": "[1,]"
+  },
+  "numRange2": {
+    "class": "number",
+    "range": "[,4]"
+  },
+  "str": {
+    "class": "string"
+  },
+  "strDec": {
+    "class": "string"
+  },
+  "strDecEnc": {
+    "class": "string"
+  },
+  "strEnc": {
+    "class": "string"
+  },
+  "strPattern": {
+    "class": "string",
+    "pattern": "[a-z]+"
+  },
+  "strPatternDec": {
+    "class": "string",
+    "pattern": "[%0-9a-z]+"
+  },
+  "strPatternDecEnc": {
+    "class": "string",
+    "pattern": "[%0-9a-z]+"
+  },
+  "strPatternEnc": {
+    "class": "string",
+    "pattern": "[%0-9a-z]+"
+  },
+  "objArr": {
+    "class": "object",
+    "properties": {
+      ".*": {
+        "class": "any",
+        "nullable": false
+      },
+      "arrayBool": {
+        "class": "reference",
+        "type": "arrayBool"
+      },
+      "arrayBoolOptional": {
+        "class": "reference",
+        "type": "arrayBool",
+        "use": "optional"
+      },
+      "arrayBoolOptionalNotNullable": {
+        "class": "reference",
+        "type": "arrayBool",
+        "use": "optional",
+        "nullable": false
+      },
+      "arrayNum": {
+        "class": "reference",
+        "type": "arrayNum"
+      },
+      "arrayNumOptional": {
+        "class": "reference",
+        "type": "arrayNum",
+        "use": "optional"
+      },
+      "arrayNumOptionalNotNullable": {
+        "class": "reference",
+        "type": "arrayNum",
+        "use": "optional",
+        "nullable": false
+      },
+      "arrayStr": {
+        "class": "reference",
+        "type": "arrayStr"
+      },
+      "arrayStrOptional": {
+        "class": "reference",
+        "type": "arrayStr",
+        "use": "optional"
+      },
+      "arrayStrOptionalNotNullable": {
+        "class": "reference",
+        "type": "arrayStr",
+        "use": "optional",
+        "nullable": false
+      },
+      "anyNumStr": {
+        "class": "any",
+        "types": "num str",
+        "use": "optional"
+      }
+    }
+  },
+  "objBool": {
+    "class": "object",
+    "properties": {
+      "bo+l": {
+        "class": "reference",
+        "type": "bool",
+        "nullable": false
+      },
+      ".*": {
+        "class": "any",
+        "types": "bool num"
+      },
+      "bo+lOptional": {
+        "class": "reference",
+        "type": "bool",
+        "use": "optional"
+      },
+      "boolOptionalNotNullable": {
+        "class": "reference",
+        "type": "bool",
+        "use": "optional",
+        "nullable": false
+      }
+    }
+  },
+  "objNum": {
+    "class": "object",
+    "properties": {
+      "num.+": {
+        "class": "reference",
+        "type": "num"
+      },
+      "numOptional": {
+        "class": "reference",
+        "type": "num",
+        "use": "optional"
+      },
+      "numOptionalNotNullable": {
+        "class": "reference",
+        "type": "num",
+        "use": "optional",
+        "nullable": false
+      },
+      "numInt": {
+        "class": "reference",
+        "type": "numInt"
+      },
+      "any": {
+        "class": "any",
+        "types": "num str",
+        "nullable": false
+      },
+      "numIntOptional": {
+        "class": "reference",
+        "type": "numInt",
+        "use": "optional"
+      },
+      "numIntOptionalNotNullable": {
+        "class": "reference",
+        "type": "numInt",
+        "use": "optional",
+        "nullable": false
+      },
+      "numIntRange1": {
+        "class": "reference",
+        "type": "numIntRange1"
+      },
+      "numIntRange1Optional": {
+        "class": "reference",
+        "type": "numIntRange1",
+        "use": "optional"
+      },
+      "numIntRange1OptionalNotNullable": {
+        "class": "reference",
+        "type": "numIntRange1",
+        "use": "optional",
+        "nullable": false
+      },
+      "numIntRange2": {
+        "class": "reference",
+        "type": "numIntRange2"
+      },
+      "numIntRange2Optional": {
+        "class": "reference",
+        "type": "numIntRange2",
+        "use": "optional"
+      },
+      "numIntRange2OptionalNotNullable": {
+        "class": "reference",
+        "type": "numIntRange2",
+        "use": "optional",
+        "nullable": false
+      },
+      "numRange1": {
+        "class": "reference",
+        "type": "numRange1"
+      },
+      "numRange1Optional": {
+        "class": "reference",
+        "type": "numRange1",
+        "use": "optional"
+      },
+      "numRange1OptionalNotNullable": {
+        "class": "reference",
+        "type": "numRange1",
+        "use": "optional",
+        "nullable": false
+      },
+      "numRange2": {
+        "class": "reference",
+        "type": "numRange2"
+      },
+      "numRange2Optional": {
+        "class": "reference",
+        "type": "numRange2",
+        "use": "optional"
+      },
+      "numRange2OptionalNotNullable": {
+        "class": "reference",
+        "type": "numRange2",
+        "use": "optional",
+        "nullable": false
+      }
+    }
+  },
+  "objObj": {
+    "class": "object",
+    "properties": {
+      "objOptional": {
+        "class": "reference",
+        "type": "objBool",
+        "use": "optional"
+      },
+      "objOptionalNotNullable": {
+        "class": "reference",
+        "type": "objNum",
+        "use": "optional",
+        "nullable": false
+      },
+      "objExtends1": {
+        "class": "object",
+        "extends": "objObj",
+        "use": "optional",
+        "properties": {
+          "objExtends2": {
+            "class": "object",
+            "extends": "objObj",
+            "use": "optional",
+            "properties": {
+              "objExtends3": {
+                "class": "object",
+                "extends": "objObj",
+                "use": "optional",
+                "properties": {
+                  "objExtends4": {
+                    "class": "object",
+                    "extends": "objObj",
+                    "use": "optional",
+                    "properties": {
+                      "num": {
+                        "class": "reference",
+                        "type": "num",
+                        "use": "optional"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "objExtendsOptional": {
+        "class": "object",
+        "extends": "objBool",
+        "use": "optional",
+        "properties": {
+          "num": {
+            "class": "reference",
+            "type": "num"
+          }
+        }
+      },
+      "objExtendsOptionalNotNullable": {
+        "class": "object",
+        "extends": "objBool",
+        "use": "optional",
+        "nullable": false,
+        "properties": {
+          "num": {
+            "class": "reference",
+            "type": "num"
+          }
+        }
+      }
+    }
+  },
+  "objStr": {
+    "class": "object",
+    "properties": {
+      "str": {
+        "class": "reference",
+        "type": "str"
+      },
+      "strOptional": {
+        "class": "reference",
+        "type": "str",
+        "use": "optional"
+      },
+      "strOptionalNotNullable": {
+        "class": "reference",
+        "type": "str",
+        "use": "optional",
+        "nullable": false
+      },
+      "strDec": {
+        "class": "reference",
+        "type": "strDec"
+      },
+      "strDecOptional": {
+        "class": "reference",
+        "type": "strDec",
+        "use": "optional"
+      },
+      "strDecOptionalNotNullable": {
+        "class": "reference",
+        "type": "strDec",
+        "use": "optional",
+        "nullable": false
+      },
+      "strDecEnc": {
+        "class": "reference",
+        "type": "strDecEnc"
+      },
+      "strDecEncOptional": {
+        "class": "reference",
+        "type": "strDecEnc",
+        "use": "optional"
+      },
+      "strDecEncOptionalNotNullable": {
+        "class": "reference",
+        "type": "strDecEnc",
+        "use": "optional",
+        "nullable": false
+      },
+      "strEnc": {
+        "class": "reference",
+        "type": "strEnc"
+      },
+      "strEncOptional": {
+        "class": "reference",
+        "type": "strEnc",
+        "use": "optional"
+      },
+      "strEncOptionalNotNullable": {
+        "class": "reference",
+        "type": "strEnc",
+        "use": "optional",
+        "nullable": false
+      },
+      "strPattern": {
+        "class": "reference",
+        "type": "strPattern"
+      },
+      "strPatternOptional": {
+        "class": "reference",
+        "type": "strPattern",
+        "use": "optional"
+      },
+      "strPatternOptionalNotNullable": {
+        "class": "reference",
+        "type": "strPattern",
+        "use": "optional",
+        "nullable": false
+      },
+      "strPatternDec": {
+        "class": "reference",
+        "type": "strPatternDec"
+      },
+      "strPatternDecOptional": {
+        "class": "reference",
+        "type": "strPatternDec",
+        "use": "optional"
+      },
+      "strPatternDecOptionalNotNullable": {
+        "class": "reference",
+        "type": "strPatternDec",
+        "use": "optional",
+        "nullable": false
+      },
+      "strPatternDecEnc": {
+        "class": "reference",
+        "type": "strPatternDecEnc"
+      },
+      "strPatternDecEncOptional": {
+        "class": "reference",
+        "type": "strPatternDecEnc",
+        "use": "optional"
+      },
+      "strPatternDecEncOptionalNotNullable": {
+        "class": "reference",
+        "type": "strPatternDecEnc",
+        "use": "optional",
+        "nullable": false
+      },
+      "strPatternEnc": {
+        "class": "reference",
+        "type": "strPatternEnc"
+      },
+      "strPatternEncOptional": {
+        "class": "reference",
+        "type": "strPatternEnc",
+        "use": "optional"
+      },
+      "strPatternEncOptionalNotNullable": {
+        "class": "reference",
+        "type": "strPatternEnc",
+        "use": "optional",
+        "nullable": false
+      }
+    }
+  }
+}

@@ -20,23 +20,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.openjax.standard.util.Characters;
 import org.openjax.standard.util.Strings;
 
 class AnyTrial extends PropertyTrial<Object> {
-  private static String filterPrintable(final String string) {
-    final StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < string.length(); ++i) {
-      final char ch = string.charAt(i);
-      if (ch != '"' && ch != '\\' && ch != '\n' && ch != '\r' && Characters.isPrintable(ch))
-        builder.append(ch);
-    }
-
-    return builder.toString();
-  }
-
   static String createName(final AnyProperty property) {
-    return Strings.isRegex(property.name()) ? filterPrintable(StringTrial.createValid(property.name())) : property.name();
+    return Strings.isRegex(property.name()) ? StringTrial.createValid(property.name()) : property.name();
   }
 
   static Object createValid(final AnyProperty property) {

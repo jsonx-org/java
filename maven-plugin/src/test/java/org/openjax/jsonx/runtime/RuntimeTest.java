@@ -28,17 +28,16 @@ import org.slf4j.LoggerFactory;
 
 public class RuntimeTest {
   private static final Logger logger = LoggerFactory.getLogger(RuntimeTest.class);
-
   private static int count;
+
+  private static void test(final Class<? extends JxObject> cls) throws Exception {
+    for (int i = 0; i < 1000; ++i)
+      count += new ClassTrial(cls).run();
+  }
 
   @AfterClass
   public static void afterClass() {
     logger.info("Successful tests: " + count);
-  }
-
-  public void test(final Class<? extends JxObject> cls) throws Exception {
-    for (int i = 0; i < 1000; ++i)
-      count += new ClassTrial(cls).run();
   }
 
   @Test

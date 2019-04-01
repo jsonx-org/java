@@ -1228,6 +1228,28 @@ public class schema {
   }
 
   public static class Schema implements org.openjax.jsonx.runtime.JxObject {
+    @org.openjax.jsonx.runtime.StringProperty(pattern="http://jsonx.openjax.org/schema-0.9.8.jsd", nullable=false)
+    private java.lang.String jsns;
+    
+    public void setJsns(final java.lang.String jsns) {
+      this.jsns = jsns;
+    }
+    
+    public java.lang.String getJsns() {
+      return jsns;
+    }
+    
+    @org.openjax.jsonx.runtime.StringProperty(pattern="http://jsonx.openjax.org/schema-0.9.8.jsd [^ ]+", use=org.openjax.jsonx.runtime.Use.OPTIONAL, nullable=false)
+    private java.lang.String schemaLocation;
+    
+    public void setSchemaLocation(final java.lang.String schemaLocation) {
+      this.schemaLocation = schemaLocation;
+    }
+    
+    public java.lang.String getSchemaLocation() {
+      return schemaLocation;
+    }
+    
     @org.openjax.jsonx.runtime.AnyProperty(name="[a-zA-Z_$][-a-zA-Z\\d_$]*", types={@org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.Array.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.Boolean.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.Number.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.ObjectType.class), @org.openjax.jsonx.runtime.t(objects=org.openjax.jsonx.schema.String.class)}, nullable=false)
     public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a = new java.util.LinkedHashMap<>();
     
@@ -1240,6 +1262,12 @@ public class schema {
         return false;
     
       final org.openjax.jsonx.schema.Schema that = (org.openjax.jsonx.schema.Schema)obj;
+      if (that.jsns != null ? !that.jsns.equals(jsns) : jsns != null)
+        return false;
+    
+      if (that.schemaLocation != null ? !that.schemaLocation.equals(schemaLocation) : schemaLocation != null)
+        return false;
+    
       if (that._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a != null ? !that._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.equals(_5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a) : _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a != null)
         return false;
     
@@ -1249,6 +1277,8 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 572733541;
+      hashCode = 31 * hashCode + (jsns == null ? 0 : jsns.hashCode());
+      hashCode = 31 * hashCode + (schemaLocation == null ? 0 : schemaLocation.hashCode());
       hashCode = 31 * hashCode + (_5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a == null ? 0 : _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.hashCode());
       return hashCode;
     }

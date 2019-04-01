@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.BooleanElement;
 import org.openjax.jsonx.runtime.BooleanProperty;
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.jsonx.runtime.Use;
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 
@@ -96,7 +96,7 @@ final class BooleanModel extends Model {
     final Id id = model.id;
 
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
-    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {

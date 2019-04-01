@@ -244,31 +244,31 @@ public class SchemaTest {
 
   @Test
   public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("array.jsonx", "org.openjax.jsonx.generator");
+    test("array.jsdx", "org.openjax.jsonx.generator");
   }
 
   @Test
   public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("datatype.jsonx", "org.openjax.jsonx.generator.datatype");
+    test("datatype.jsdx", "org.openjax.jsonx.generator.datatype");
   }
 
   @Test
   public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("template.jsonx", "org.openjax.jsonx.generator");
+    test("template.jsdx", "org.openjax.jsonx.generator");
   }
 
   @Test
   public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reference.jsonx", "org.openjax.jsonx.generator.reference");
+    test("reference.jsdx", "org.openjax.jsonx.generator.reference");
   }
 
   @Test
   public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reserved.jsonx", "org.openjax.jsonx.generator.reserved");
+    test("reserved.jsdx", "org.openjax.jsonx.generator.reserved");
   }
 
   @Test
   public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("complete.jsonx", "org.openjax.jsonx.generator.complete");
+    test("complete.jsdx", "org.openjax.jsonx.generator.complete");
   }
 }

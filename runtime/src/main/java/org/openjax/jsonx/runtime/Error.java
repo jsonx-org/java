@@ -142,7 +142,7 @@ final class Error {
         if (arg instanceof Number || arg instanceof Boolean)
           obj = arg;
         else if (arg instanceof Annotation)
-          obj = Annotations.toSortedString((Annotation)arg, JxUtil.ATTRIBUTES);
+          obj = Annotations.toSortedString((Annotation)arg, JsdUtil.ATTRIBUTES);
         else if (arg instanceof Field)
           obj = ((Field)arg).getDeclaringClass().getName() + "#" + ((Field)arg).getName();
         else if (arg instanceof Class)

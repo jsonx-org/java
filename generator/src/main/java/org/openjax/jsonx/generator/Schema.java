@@ -43,6 +43,7 @@ import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.IdentityHashSet;
 import org.openjax.standard.util.Iterators;
 import org.openjax.standard.xml.api.XmlElement;
+import org.openjax.xsb.runtime.QName;
 
 /**
  * The {@code Schema} is the root {@code Element} of a JSONx Schema Document.
@@ -69,6 +70,7 @@ public final class Schema extends Element {
   }
 
   private final Registry registry;
+  private final String version;
 
   /**
    * Creates a new {@code Schema} from the specified XML binding, and with the
@@ -77,9 +79,11 @@ public final class Schema extends Element {
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSONx bindings.
+   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public Schema(final xL4gluGCXYYJc.Schema schema, final String prefix) {
     this.registry = new Registry(prefix);
+    this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     final StrictRefDigraph<xL4gluGCXYYJc.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
       if (obj instanceof xL4gluGCXYYJc.Schema.Array)
@@ -150,6 +154,7 @@ public final class Schema extends Element {
    * @param schema The XML binding (JSONx).
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSONx bindings.
+   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public Schema(final schema.Schema schema, final String prefix) {
     this(jsonxToXsb(schema), prefix);
@@ -257,6 +262,8 @@ public final class Schema extends Element {
   public Schema(final Collection<Class<?>> classes) {
     final Registry registry = new Registry(classes);
     this.registry = registry;
+    final QName name = xL4gluGCXYYJc.Schema.class.getAnnotation(QName.class);
+    this.version = name.namespaceURI().substring(0, name.namespaceURI().lastIndexOf('.'));
     registry.resolveReferences();
   }
 
@@ -290,9 +297,9 @@ public final class Schema extends Element {
     }
 
     final Map<String,Object> attributes = super.toAttributes(owner, packageName);
-    attributes.put("xmlns", "http://jsonx.openjax.org/schema-0.9.8.xsd");
+    attributes.put("xmlns", version + ".xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    attributes.put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd");
+    attributes.put("xsi:schemaLocation", version + ".xsd " + version + ".xsd");
     return new XmlElement("schema", attributes, elements);
   }
 
@@ -305,28 +312,27 @@ public final class Schema extends Element {
   }
 
   @Override
-  Map<String,Map<String,Object>> toJson(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,Map<String,Object>> types;
+  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final List<Model> members = rootMembers(settings);
-    if (members.size() > 0) {
-      types = new LinkedHashMap<>();
-      for (final Model member : members) {
-        final String name = member.id.toString();
-        types.put(name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name, member.toJson(settings, this, packageName));
-      }
-    }
-    else {
-      types = null;
+    if (members.size() == 0)
+      return null;
+
+    final Map<String,Object> properties = new LinkedHashMap<>();
+    properties.put("jsns", version + ".jsd");
+    properties.put("schemaLocation", version + ".jsd " + version + ".jsd");
+    for (final Model member : members) {
+      final String name = member.id.toString();
+      properties.put(packageName.length() > 0 && name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name, member.toJson(settings, this, packageName));
     }
 
-    return types;
+    return properties;
   }
 
-  public Map<String,Map<String,Object>> toJson() {
+  public Map<String,Object> toJson() {
     return toJson(null);
   }
 
-  public Map<String,Map<String,Object>> toJson(final Settings settings) {
+  public Map<String,Object> toJson(final Settings settings) {
     return toJson(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
   }
 

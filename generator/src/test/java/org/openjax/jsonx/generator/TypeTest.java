@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 import org.openjax.jsonx.generator.Registry.Kind;
@@ -140,12 +139,11 @@ public class TypeTest {
 
     assertEquals(registry.OBJECT, type2.getGreatestCommonSuperType(type3));
 
-    assertEquals(registry.getType(List.class, type0), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0))));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0))));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0), toElement(type2))));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
 
-    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type2))));
-    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
-
-    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type1), toElement(type3))));
-    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
+    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type1), toElement(type3))));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
   }
 }

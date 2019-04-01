@@ -98,7 +98,7 @@ public class ArrayCodecTest {
     IdToElement idToElement = classToIdToElement.get(annotationType);
     if (idToElement == null) {
       idToElement = new IdToElement();
-      JxUtil.fillIdToElement(idToElement, annotationType.getAnnotations());
+      JsdUtil.fillIdToElement(idToElement, annotationType.getAnnotations());
       classToIdToElement.put(annotationType, idToElement);
     }
 

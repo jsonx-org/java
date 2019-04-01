@@ -19,19 +19,12 @@ package org.openjax.jsonx.generator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.xml.api.ValidationException;
 import org.openjax.xsb.runtime.Bindings;
 
 public class Generator {
-  public static Schema parse(final URL xmlUrl, final String prefix) throws IOException, ValidationException {
-    try (final InputStream in = xmlUrl.openStream()) {
-      return new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
-    }
-  }
-
   private static void trapPrintUsage() {
     System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_XML>");
     System.err.println();
@@ -59,7 +52,11 @@ public class Generator {
         schemaFile = new File(args[i]).getAbsoluteFile();
     }
 
-    final Schema schema = parse(schemaFile.toURI().toURL(), prefix);
+    final Schema schema;
+    try (final InputStream in = schemaFile.toURI().toURL().openStream()) {
+      schema = new Schema((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
+    }
+
     schema.toSource(destDir);
   }
 }

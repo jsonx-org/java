@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.openjax.jsonx.schema;
 import org.openjax.jsonx.runtime.Form;
-import org.openjax.jsonx.runtime.JxUtil;
+import org.openjax.jsonx.runtime.JsdUtil;
 import org.openjax.jsonx.runtime.NumberElement;
 import org.openjax.jsonx.runtime.NumberProperty;
 import org.openjax.jsonx.runtime.NumberType;
@@ -120,7 +120,7 @@ final class NumberModel extends Model {
     final Id id = model.id;
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, JxUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {

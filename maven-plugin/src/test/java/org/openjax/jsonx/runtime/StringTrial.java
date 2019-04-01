@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
+import org.openjax.standard.util.Characters;
+
 import com.mifmif.common.regex.Generex;
 
 class StringTrial extends PropertyTrial<String> {
@@ -29,6 +31,17 @@ class StringTrial extends PropertyTrial<String> {
   static {
     for (int i = 0; i < ascii.length; ++i)
       ascii[i] = (char)(i + 32);
+  }
+
+  private static String filterPrintable(final String string) {
+    final StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < string.length(); ++i) {
+      final char ch = string.charAt(i);
+      if (ch < 32532 && ch != '"' && ch != '\\' && ch != '\n' && ch != '\r' && Characters.isPrintable(ch))
+        builder.append(ch);
+    }
+
+    return builder.toString();
   }
 
   private static class StringGen {
@@ -50,7 +63,7 @@ class StringTrial extends PropertyTrial<String> {
         return randomString(stringLength);
 
       while (true) {
-        final String string = generex.random(stringLength);
+        final String string = filterPrintable(generex.random(stringLength));
         if (string.matches(pattern))
           return string;
       }

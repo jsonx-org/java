@@ -7,7 +7,7 @@
 
 ## Introduction
 
-<ins>JSONx</ins> is a framework, providing the **JSON** E**x**tensible Schema Specification, supporting the following main features:
+<ins>JSONx</ins> is a framework that provides the **JSON** E**x**tensible Schema Specification. The supporting the following main features:
 
 1. [**<ins>JSONx</ins> Schema**](#jsonx-schema): Schema language in XML and in <ins>JSONx</ins> (can be converted from one to the other):
     1. [XML Schema Document][jsonx-xsd]: A <ins>JSONx</ins> Schema as an XSD, leveraging XML for schema validation.
@@ -225,30 +225,30 @@ The <ins>JSONx</ins> framework implements the `MessageBodyReader` and `MessageBo
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema.xsd">
 
-    <objectType name="id" abstract="true">
+    <object name="id" abstract="true">
       <property xsi:type="string" name="id" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" nullable="false"/>
-    </objectType>
+    </object>
 
-    <objectType name="idVersion" abstract="true" extends="id">
+    <object name="idVersion" abstract="true" extends="id">
       <property xsi:type="number" name="version" nullable="false"/>
-    </objectType>
+    </object>
 
-    <objectType name="ids">
+    <object name="ids">
       <property xsi:type="array" name="id" nullable="false">
         <string pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" nullable="false"/>
       </property>
-    </objectType>
+    </object>
 
-    <objectType name="credentials">
+    <object name="credentials">
       <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
       <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
-    </objectType>
+    </object>
 
-    <objectType name="account" extends="credentials">
+    <object name="account" extends="credentials">
       <property xsi:type="string" name="id" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" nullable="false" use="optional"/>
       <property xsi:type="string" name="firstName" nullable="false"/>
       <property xsi:type="string" name="lastName" nullable="false"/>
-    </objectType>
+    </object>
 
   </schema>
   ```

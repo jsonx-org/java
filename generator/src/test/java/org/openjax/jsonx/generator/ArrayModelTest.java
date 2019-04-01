@@ -57,6 +57,6 @@ public class ArrayModelTest {
     number2.setForm$(new $Number.Form$($Number.Form$.integer));
     final NumberModel model2 = NumberModel.reference(registry, null, number2);
 
-    assertEquals(registry.getType(BigInteger.class), ArrayModel.getGreatestCommonSuperType(registry, Arrays.asList(model1, model2)));
+    assertEquals(registry.getType(BigInteger.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));
   }
 }

@@ -42,7 +42,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
 
   private static Object createArray(final Class<? extends Annotation> arrayAnnotationType, int minIterate, int maxIterate, int[] elementIds, IdToElement idToElement, final TrialType trialType) {
     if (arrayAnnotationType != ArrayType.class) {
-      elementIds = JxUtil.digest(arrayAnnotationType.getAnnotations(), arrayAnnotationType.getName(), idToElement = new IdToElement());
+      elementIds = JsdUtil.digest(arrayAnnotationType.getAnnotations(), arrayAnnotationType.getName(), idToElement = new IdToElement());
       minIterate = idToElement.getMinIterate();
       maxIterate = idToElement.getMaxIterate();
     }
@@ -51,7 +51,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasMinOccurs = false;
       for (int i = 0; !hasMinOccurs && i < annotations.length; ++i)
-        hasMinOccurs = JxUtil.getMinOccurs(annotations[i]) > 0;
+        hasMinOccurs = JsdUtil.getMinOccurs(annotations[i]) > 0;
 
       return hasMinOccurs ? new ArrayList<>() : null;
     }
@@ -60,7 +60,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasNullable = false;
       for (int i = 0; !hasNullable && i < annotations.length; ++i)
-        hasNullable = !JxUtil.isNullable(annotations[i]);
+        hasNullable = !JsdUtil.isNullable(annotations[i]);
 
       if (!hasNullable)
         return null;
@@ -69,7 +69,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasMaxOccurs = false;
       for (int i = 0; !hasMaxOccurs && i < annotations.length; ++i)
-        hasMaxOccurs = JxUtil.getMaxOccurs(annotations[i]) < Integer.MAX_VALUE;
+        hasMaxOccurs = JsdUtil.getMaxOccurs(annotations[i]) < Integer.MAX_VALUE;
 
       if (!hasMaxOccurs)
         return null;
@@ -96,7 +96,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       while (iterator.hasNext()) {
         final Relation relation = iterator.next();
         final Integer count = annotationToCount.get(relation.annotation);
-        final int maxOccurs = JxUtil.getMaxOccurs(relation.annotation);
+        final int maxOccurs = JsdUtil.getMaxOccurs(relation.annotation);
         if (count >= maxOccurs) {
           iterator.remove();
           annotationToCount.put(relation.annotation, count - 1);

@@ -39,7 +39,7 @@ class ObjectTrial extends PropertyTrial<Object> {
           continue;
         }
 
-        final String name = JxUtil.getName(field);
+        final String name = JsdUtil.getName(field);
         final ArrayProperty arrayProperty = field.getAnnotation(ArrayProperty.class);
         if (arrayProperty != null) {
           if (arrayProperty.use() == Use.REQUIRED || Math.random() < 0.4) {
@@ -47,7 +47,7 @@ class ObjectTrial extends PropertyTrial<Object> {
             final int[] elementIds;
             if (arrayProperty.type() == ArrayType.class) {
               idToElement = new IdToElement();
-              elementIds = JxUtil.digest(field, idToElement);
+              elementIds = JsdUtil.digest(field, idToElement);
             }
             else {
               idToElement = null;

@@ -35,7 +35,7 @@ class ArrayCodec extends Codec {
     final int minIterate;
     final int maxIterate;
     if (type != ArrayType.class) {
-      elementIds = JxUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
+      elementIds = JsdUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
       minIterate = idToElement.getMinIterate();
       maxIterate = idToElement.getMaxIterate();
     }
@@ -77,7 +77,7 @@ class ArrayCodec extends Codec {
       idToElement.setMaxIterate(element.maxIterate());
     }
     else {
-      elementIds = JxUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
+      elementIds = JsdUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
     }
 
     final Relations subRelations = new Relations();
@@ -96,7 +96,7 @@ class ArrayCodec extends Codec {
   static Object encodeObject(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
     final Relations relations = new Relations();
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JxUtil.digest(field, idToElement);
+    final int[] elementIds = JsdUtil.digest(field, idToElement);
     final Error error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
     if (validate && error != null)
       return Error.INVALID_FIELD(field, error);
@@ -109,7 +109,7 @@ class ArrayCodec extends Codec {
 
   ArrayCodec(final ArrayProperty property, final Field field) {
     super(field, property.name(), property.nullable(), property.use());
-    final int[] elementIds = JxUtil.digest(field, idToElement);
+    final int[] elementIds = JsdUtil.digest(field, idToElement);
     this.annotations = idToElement.get(elementIds);
   }
 
