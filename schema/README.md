@@ -70,8 +70,8 @@ The JSD is comprised of 5 structural abstractions:
 The <samp>**schema**</samp> is the root object of the JSD, and contains [type](#type) definitions.
 
 | | **Name** | **Value** |
-|-|-|-|
-| <samp>( **schema** )&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema_<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_[Type Declaration](#type)_<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
+|:-|:-|:-|
+| <samp>( **schema** )&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema_<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_[Type Declaration](#type)_<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
 
 1. <ins>Example</ins>: `jsd`
    ```json
@@ -91,15 +91,13 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type](#
 
 The <samp>**model**</samp> objects define the constraint properties of the five JSON value classes: <samp>**boolean**</samp>, <samp>**number**</samp>, <samp>**string**</samp>, <samp>**object**</samp>, and <samp>**array**</samp>. The <ins>JSON Schema Definition Language</ins> defines two additional meta value classes named <samp>**any**</samp> and <samp>**reference**</samp>.
 
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
-|-|-|-|
-
 #### 2.2.1 `boolean` Model
 
 The <samp>**boolean**</samp> model is the only model that lacks validation constraints.
 
-| <samp>( **boolean** )&nbsp;&nbsp;</samp> | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | <samp>boolean&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <samp>( **boolean** )&nbsp;&nbsp;</samp> | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | <samp>boolean&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
@@ -120,8 +118,9 @@ The <samp>**boolean**</samp> model is the only model that lacks validation const
 
 The <samp>**number**</samp> model defines two validation constraints for <samp>**number**</samp> JSON value types: <samp>form</samp>, and <samp>range</samp>.
 
-| <samp>( **number** )&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>jsd:form</samp><br>&nbsp;<br><samp>jsd:range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(integer\|**real**)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Specifies whether a decimal character is allowed. <br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <samp>( **number** )&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>jsd:form</samp><br>&nbsp;<br><samp>jsd:range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(integer\|**real**)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Specifies whether a decimal character is allowed. <br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
@@ -142,8 +141,9 @@ The <samp>**number**</samp> model defines two validation constraints for <samp>*
 
 The <samp>**string**</samp> model defines one validation constraint for <samp>**string**</samp> JSON value types: <samp>pattern</samp>.
 
-| <samp>( **string** )&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:pattern&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp; | <samp>string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>_Regular expression_<br>&nbsp;&nbsp;Specifies the regular expression. |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <samp>( **string** )&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:pattern&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp; | <samp>string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>_Regular expression_<br>&nbsp;&nbsp;Specifies the regular expression. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
@@ -164,8 +164,9 @@ The <samp>**string**</samp> model defines one validation constraint for <samp>**
 
 The <samp>**object**</samp> model defines three validation constraints for <samp>**object**</samp> JSON value types: <samp>abstract</samp>, <samp>extends</samp>, and named <samp>properties</samp>.
 
-| <a name="objecttype"><samp>( **object** )&nbsp;&nbsp;&nbsp;</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:abstract&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br><samp>jsd:extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying object<br>&nbsp;&nbsp;inheritence.<br>_[Property declaration](#properties)_<br>&nbsp;&nbsp;Declaration of object property. |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <a name="objecttype"><samp>( **object** )&nbsp;&nbsp;&nbsp;</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:abstract&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br><samp>jsd:extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying object<br>&nbsp;&nbsp;inheritence.<br>_[Property declaration](#properties)_<br>&nbsp;&nbsp;Declaration of object property. |
 
 
 ##### 2.2.4.1 Property Names
@@ -227,8 +228,9 @@ Names of object properties are considered as regular expressions. If an object d
 
 The <samp>**array**</samp> model defines three validation constraints for <samp>**array**</samp> JSON value types: <samp>minIterate</samp>, <samp>maxIterate</samp>, and member <samp>elements</samp>.
 
-| <a name="arraytype"><samp>( **array** )&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | <samp>jsd:class</samp><br><samp>jsd:minIterate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:maxIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:elements</samp><br>&nbsp; | <samp>array</samp><br><samp>(**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of iterations of child<br>&nbsp;&nbsp;members.<br><samp>(**1**\|2\|...\|unbounded)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of iterations of child<br>&nbsp;&nbsp;members.<br><samp>\[</samp> [Element declaration](#elements)<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of member element declarations. |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <a name="arraytype"><samp>( **array** )&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | <samp>jsd:class</samp><br><samp>jsd:minIterate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:maxIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:elements</samp><br>&nbsp; | <samp>array</samp><br><samp>(**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of iterations of child<br>&nbsp;&nbsp;members.<br><samp>(**1**\|2\|...\|unbounded)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of iterations of child<br>&nbsp;&nbsp;members.<br><samp>\[</samp> [Element declaration](#elements)<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of member element declarations. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
@@ -277,8 +279,9 @@ The <samp>**array**</samp> model defines three validation constraints for <samp>
 
 The <samp>**any**</samp> model defines one validation constraint: <samp>types</samp>.
 
-| <samp>( **any** )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>jsd:types</samp><br>&nbsp; | <samp>any&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>\[</samp> Name of [type declaration](#elements)<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of type declarations. |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <samp>( **any** )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>jsd:types</samp><br>&nbsp; | <samp>any&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>\[</samp> Name of [type declaration](#elements)<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of type declarations. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
@@ -299,8 +302,9 @@ The <samp>**any**</samp> model defines one validation constraint: <samp>types</s
 
 The <samp>**reference**</samp> model defines one validation constraint: <samp>type</samp>.
 
-| <samp>( **reference** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>jsd:type</samp><br>&nbsp; | <samp>reference&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>_Name of [type declaration](#type)_<br>&nbsp;&nbsp;Name of root-level type declaration to reference. |
-|-|-|-|
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <samp>( **reference** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br><samp>jsd:type</samp><br>&nbsp; | <samp>reference&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>_Name of [type declaration](#type)_<br>&nbsp;&nbsp;Name of root-level type declaration to reference. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
@@ -322,7 +326,7 @@ The <samp>**reference**</samp> model defines one validation constraint: <samp>ty
 The <samp>**type**</samp> objects are immediate children of the <samp>[**schema**](#schema)</samp> object, and represent type definitions that are referenceable throughout the schema, via `any.types`, `object.extends`, `array.elements.reference`, and `object.properties.reference`. The <samp>**type**</samp> objects inherit constraint properties from <samp>[**model**](#model)</samp> definitions with the following extensions: (Note that the <samp>**any**</samp> and <samp>**reference**</samp> models are not available as a declarative <samp>**type**s</samp>).
 
 | | **Name** | **Value** |
-|-|-|-|
+|:-|:-|:-|
 | <samp>( **boolean** \|&nbsp;&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;~~any~~ \|</samp><br><samp>&nbsp;&nbsp;~~reference~~ )</samp> | <samp>jsd:name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | _Name of declared type_<br>&nbsp;&nbsp;Name of type declaration to be used as reference throuthout<br>&nbsp;&nbsp;the JSD.<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; |
 
 1. <ins>Example</ins>: `jsd`
@@ -362,7 +366,7 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 The <samp>**property**</samp> objects define properties for the declarative objects that belong to an <samp>**[object](#objecttype)**</samp>. The <samp>**property**</samp> objects inherit constraint properties from <samp>[**model**](#model)</samp> definitions with the following extensions:
 
 | | **Name** | **Value** |
-|-|-|-|
+|:-|:-|:-|
 | <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp> | <samp>jsd:use</samp><br>&nbsp;<br><samp>jsd:nullable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>(**required**\|optional)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Specifies whether the property use is required or optional.<br><samp>(**true**\|false)</samp><br>&nbsp;&nbsp;Specifies whether the property is nullable.<br>&nbsp;<br>&nbsp;<br>&nbsp; |
 
 1. <ins>Example</ins>: `jsd`
@@ -412,7 +416,7 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 The <samp>**element**</samp> objects define properties for the declarative objects that belong to an <samp>**[array](#arraytype)**</samp>. The <samp>**element**</samp> objects inherit constraint properties from <samp>[**model**](#model)</samp> definitions with the following extensions:
 
 | | **Name** | **Value** |
-|-|-|-|
+|:-|:-|:-|
 | <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp><br>&nbsp; | <samp>jsd:nullable</samp><br>&nbsp;<br><samp>jsd:minOccurs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:maxOccurs</samp><br>&nbsp;<br>&nbsp; | <samp>(**true**\|false)</samp><br>&nbsp;&nbsp;Specifies whether the property is nullable.<br><samp>(0\|**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of occurrence of<br>&nbsp;&nbsp;the member.<br><samp>(0\|1\|2\|...\|**unbounded**)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of occurrence of<br>&nbsp;&nbsp;the member. |
 
 1. <ins>Example</ins>: `jsd`
