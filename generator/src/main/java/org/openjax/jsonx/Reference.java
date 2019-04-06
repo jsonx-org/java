@@ -31,14 +31,14 @@ final class Reference extends Member {
   private static xL4gluGCXYYJc.$ArrayMember.Reference element(final schema.ReferenceElement jsonx) {
     final xL4gluGCXYYJc.$ArrayMember.Reference xsb = new xL4gluGCXYYJc.$ArrayMember.Reference();
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+    if (jsonx.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
-    if (jsonx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsonx.getMaxOccurs()));
+    if (jsonx.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -56,11 +56,11 @@ final class Reference extends Member {
     if (name != null)
       xsb.setName$(new xL4gluGCXYYJc.$Reference.Name$(name));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Reference.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Reference.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Reference.Use$(xL4gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsonx.getUse())));
+    if (jsonx.getJsd_3aUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Reference.Use$(xL4gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
@@ -74,8 +74,8 @@ final class Reference extends Member {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
-    if (jsonx.getType() != null)
-      xsb.setType$(new xL4gluGCXYYJc.$ReferenceMember.Type$(jsonx.getType()));
+    if (jsonx.getJsd_3aType() != null)
+      xsb.setType$(new xL4gluGCXYYJc.$ReferenceMember.Type$(jsonx.getJsd_3aType()));
 
     return xsb;
   }
@@ -153,25 +153,25 @@ final class Reference extends Member {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,Object> attributes = toAttributes(owner, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
+    final Map<String,Object> attributes = toAttributes(owner, prefix, packageName);
     if (!registry.isRootMember(model, settings)) {
-      final XmlElement element = model.toXml(settings, owner, packageName);
+      final XmlElement element = model.toXml(settings, owner, prefix, packageName);
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
-      element.getAttributes().remove("minOccurs");
-      element.getAttributes().remove("maxOccurs");
-      element.getAttributes().remove("nullable");
-      element.getAttributes().remove("use");
+      element.getAttributes().remove(prefix + "minOccurs");
+      element.getAttributes().remove(prefix + "maxOccurs");
+      element.getAttributes().remove(prefix + "nullable");
+      element.getAttributes().remove(prefix + "use");
       element.getAttributes().putAll(attributes);
       return element;
     }
 
     if (model != null) {
       final String subName = Registry.getSubName(model.id.toString(), packageName);
-      attributes.put("type", subName);
+      attributes.put(prefix + "type", subName);
     }
 
     if (!(owner instanceof ObjectModel))
@@ -184,9 +184,9 @@ final class Reference extends Member {
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final Map<String,Object> properties = new LinkedHashMap<>();
-    properties.put("class", elementName());
+    properties.put("jsd:class", elementName());
 
-    final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
+    final Map<String,Object> attributes = toXml(settings, owner, "jsd:", packageName).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

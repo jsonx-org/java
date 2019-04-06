@@ -40,14 +40,14 @@ final class AnyModel extends Referrer<AnyModel> {
     if (name != null)
       xsb.setNames$(new xL4gluGCXYYJc.$Any.Names$(name));
 
-    if (jsonx.getTypes() != null)
-      xsb.setTypes$(new xL4gluGCXYYJc.$Any.Types$(jsonx.getTypes().split(" ")));
+    if (jsonx.getJsd_3aTypes() != null)
+      xsb.setTypes$(new xL4gluGCXYYJc.$Any.Types$(jsonx.getJsd_3aTypes().split(" ")));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Any.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Any.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Any.Use$(xL4gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getUse())));
+    if (jsonx.getJsd_3aUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Any.Use$(xL4gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
@@ -55,17 +55,17 @@ final class AnyModel extends Referrer<AnyModel> {
   private static xL4gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsdx) {
     final xL4gluGCXYYJc.$ArrayMember.Any xsb = new xL4gluGCXYYJc.$ArrayMember.Any();
 
-    if (jsdx.getTypes() != null)
-      xsb.setTypes$(new xL4gluGCXYYJc.$ArrayMember.Any.Types$(jsdx.getTypes().split(" ")));
+    if (jsdx.getJsd_3aTypes() != null)
+      xsb.setTypes$(new xL4gluGCXYYJc.$ArrayMember.Any.Types$(jsdx.getJsd_3aTypes().split(" ")));
 
-    if (jsdx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsdx.getNullable()));
+    if (jsdx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsdx.getJsd_3aNullable()));
 
-    if (jsdx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsdx.getMinOccurs())));
+    if (jsdx.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsdx.getJsd_3aMinOccurs())));
 
-    if (jsdx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsdx.getMaxOccurs()));
+    if (jsdx.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsdx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -164,7 +164,7 @@ final class AnyModel extends Referrer<AnyModel> {
       types.add(Reference.defer(registry, anonymousReference, () -> {
         final Member model = registry.getModel(id);
         if (model == null)
-          throw new IllegalStateException("Type=\"" + id + "\" in any not found");
+          throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
 
         return (Model)registry.reference(model, this);
       }));
@@ -333,15 +333,15 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (types != null) {
       final StringBuilder builder = new StringBuilder();
       for (final Member type : types)
         builder.append(Registry.getSubName(type.id.toString(), packageName)).append(' ');
 
       builder.setLength(builder.length() - 1);
-      attributes.put("types", builder.toString());
+      attributes.put(prefix + "types", builder.toString());
     }
 
     return attributes;
@@ -410,17 +410,20 @@ final class AnyModel extends Referrer<AnyModel> {
     if (referencesResolved)
       return;
 
-    if (types != null) {
-      final ListIterator<Member> iterator = types.listIterator();
-      while (iterator.hasNext()) {
-        final Member model = iterator.next();
-        if (model instanceof Deferred) {
-          final Member member = ((Deferred<?>)model).resolve();
-          iterator.set(member instanceof Reference ? ((Reference)member).model : member);
-        }
-      }
-    }
-
     referencesResolved = true;
+    if (types == null)
+      return;
+
+    final ListIterator<Member> iterator = types.listIterator();
+    while (iterator.hasNext()) {
+      Member member = iterator.next();
+      if (member instanceof Deferred)
+        member = ((Deferred<?>)member).resolve();
+
+      if (member instanceof Reference)
+        member = ((Reference)member).model;
+
+      iterator.set(member);
+    }
   }
 }

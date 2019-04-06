@@ -280,19 +280,19 @@ public final class SchemaElement extends Element {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
     final List<XmlElement> elements;
     final List<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
       for (final Model member : members)
-        elements.add(member.toXml(settings, this, packageName));
+        elements.add(member.toXml(settings, this, prefix, packageName));
     }
     else {
       elements = null;
     }
 
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+    final Map<String,Object> attributes = super.toAttributes(owner, "", packageName);
     attributes.put("xmlns", version + ".xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", version + ".xsd " + version + ".xsd");
@@ -304,7 +304,7 @@ public final class SchemaElement extends Element {
   }
 
   public XmlElement toXml(final Settings settings) {
-    return toXml(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
+    return toXml(settings == null ? Settings.DEFAULT : settings, this, "", registry.packageName);
   }
 
   @Override
@@ -314,8 +314,8 @@ public final class SchemaElement extends Element {
       return null;
 
     final Map<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jsns", version + ".jsd");
-    properties.put("schemaLocation", version + ".jsd " + version + ".jsd");
+    properties.put("jsd:ns", version + ".jsd");
+    properties.put("jsd:schemaLocation", version + ".jsd " + version + ".jsd");
     for (final Model member : members) {
       final String name = member.id.toString();
       properties.put(packageName.length() > 0 && name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name, member.toJson(settings, this, packageName));

@@ -369,11 +369,7 @@ class Registry {
         referrers.add(referrer);
     };
 
-//    if (model.id == null)
-      deferredReferences.add(runnable);
-//    else
-//      runnable.run();
-
+    deferredReferences.add(runnable);
     return model;
   }
 

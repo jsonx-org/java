@@ -116,8 +116,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (name != null)
       attributes.put(nameName(), name);
     else if (owner instanceof SchemaElement && !(this instanceof Referrer))
@@ -125,17 +125,17 @@ abstract class Member extends Element {
 
     if (!(owner instanceof SchemaElement)) {
       if (nullable != null)
-        attributes.put("nullable", nullable);
+        attributes.put(prefix + "nullable", nullable);
 
       if (use != null)
-        attributes.put("use", use.toString().toLowerCase());
+        attributes.put(prefix + "use", use.toString().toLowerCase());
     }
 
     if (minOccurs != null)
-      attributes.put("minOccurs", String.valueOf(minOccurs));
+      attributes.put(prefix + "minOccurs", String.valueOf(minOccurs));
 
     if (maxOccurs != null)
-      attributes.put("maxOccurs", String.valueOf(maxOccurs));
+      attributes.put(prefix + "maxOccurs", String.valueOf(maxOccurs));
 
     return attributes;
   }

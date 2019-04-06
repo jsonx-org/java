@@ -30,27 +30,27 @@ public class TypeTest {
   private static Member toElement(final Registry.Type type) {
     return new Member(null, null, null, null, null, null, null) {
       @Override
-      protected Registry.Type type() {
+      Registry.Type type() {
         return type;
       }
 
       @Override
-      protected String elementName() {
+      String elementName() {
         return null;
       }
 
       @Override
-      protected Class<? extends Annotation> propertyAnnotation() {
+      Class<? extends Annotation> propertyAnnotation() {
         return null;
       }
 
       @Override
-      protected Class<? extends Annotation> elementAnnotation() {
+      Class<? extends Annotation> elementAnnotation() {
         return null;
       }
 
       @Override
-      protected XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+      XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
         return null;
       }
 

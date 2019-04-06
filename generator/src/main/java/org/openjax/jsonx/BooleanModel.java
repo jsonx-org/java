@@ -45,25 +45,25 @@ final class BooleanModel extends Model {
     if (name != null)
       xsb.setName$(new xL4gluGCXYYJc.$Boolean.Name$(name));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Boolean.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Boolean.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Boolean.Use$(xL4gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsonx.getUse())));
+    if (jsonx.getJsd_3aUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Boolean.Use$(xL4gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
 
   private static xL4gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsonx) {
     final xL4gluGCXYYJc.$ArrayMember.Boolean xsb = new xL4gluGCXYYJc.$ArrayMember.Boolean();
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+    if (jsonx.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
-    if (jsonx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsonx.getMaxOccurs()));
+    if (jsonx.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }

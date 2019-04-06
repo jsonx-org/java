@@ -20,9 +20,9 @@
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd schema-0.9.8.xsd">
   
   <object name="schema">
-    <property xsi:type="string" name="jsns" pattern="http://jsonx.openjax.org/schema-0.9.8.jsd" nullable="false"/>
-    <property xsi:type="string" name="schemaLocation" pattern="http://jsonx.openjax.org/schema-0.9.8.jsd [^ ]+" nullable="false" use="optional"/>
-    <property xsi:type="any" names="[a-zA-Z_$][-a-zA-Z\d_$]*" types="array boolean number objectType string" nullable="false"/>
+    <property name="jsd:ns" xsi:type="string" pattern="http://jsonx.openjax.org/schema-0.9.8.jsd" nullable="false"/>
+    <property name="jsd:schemaLocation" xsi:type="string" pattern="http://jsonx.openjax.org/schema-0.9.8.jsd [^ ]+" nullable="false" use="optional"/>
+    <property names="[a-zA-Z_$][-a-zA-Z\d_$]*" xsi:type="any" types="array boolean number objectType string" nullable="false"/>
   </object>
   
   <string name="min" pattern="[\d]+"/>
@@ -32,14 +32,14 @@
   <object name="member" abstract="true"/>
   
   <object name="any" extends="member">
-    <property xsi:type="string" name="class" pattern="any" nullable="false"/>
-    <property xsi:type="string" name="types" pattern="\S+( \S+)*" nullable="false" use="optional"/>
+    <property name="jsd:class" xsi:type="string" pattern="any" nullable="false"/>
+    <property name="jsd:types" xsi:type="string" pattern="\S+( \S+)*" nullable="false" use="optional"/>
   </object>
   <object name="array" extends="member">
-    <property xsi:type="string" name="class" pattern="array" nullable="false"/>
-    <property xsi:type="reference" name="minIterate" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxIterate" type="max" nullable="false" use="optional"/>
-    <property xsi:type="array" name="elements" nullable="false" maxIterate="unbounded">
+    <property name="jsd:class" xsi:type="string" pattern="array" nullable="false"/>
+    <property name="jsd:minIterate" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxIterate" xsi:type="reference" type="max" nullable="false" use="optional"/>
+    <property name="jsd:elements" xsi:type="array" nullable="false" maxIterate="unbounded">
       <reference type="anyElement" minOccurs="0" nullable="false"/>
       <reference type="arrayElement" minOccurs="0" nullable="false"/>
       <reference type="booleanElement" minOccurs="0" nullable="false"/>
@@ -50,96 +50,96 @@
     </property>
   </object>
   <object name="boolean" extends="member">
-    <property xsi:type="string" name="class" pattern="boolean" nullable="false"/>
+    <property name="jsd:class" xsi:type="string" pattern="boolean" nullable="false"/>
   </object>
   <object name="number" extends="member">
-    <property xsi:type="string" name="class" pattern="number" nullable="false"/>
-    <property xsi:type="string" name="form" pattern="(integer|real)" nullable="false" use="optional"/>
-    <property xsi:type="string" name="range" pattern="[\(\[](-?\d+(\.\d+)?)?,(-?\d+(\.\d+)?)?[\)\]]" nullable="false" use="optional"/>
+    <property name="jsd:class" xsi:type="string" pattern="number" nullable="false"/>
+    <property name="jsd:form" xsi:type="string" pattern="(integer|real)" nullable="false" use="optional"/>
+    <property name="jsd:range" xsi:type="string" pattern="[\(\[](-?\d+(\.\d+)?)?,(-?\d+(\.\d+)?)?[\)\]]" nullable="false" use="optional"/>
   </object>
   <object name="object" abstract="true" extends="member">
-    <property xsi:type="string" name="class" pattern="object" nullable="false"/>
-    <property xsi:type="string" name="extends" nullable="false" use="optional"/>
-    <property xsi:type="object" name="properties" nullable="false" use="optional">
-      <property xsi:type="any" names=".*" types="anyProperty arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty" nullable="false"/>
+    <property name="jsd:class" xsi:type="string" pattern="object" nullable="false"/>
+    <property name="jsd:extends" xsi:type="string" nullable="false" use="optional"/>
+    <property name="jsd:properties" xsi:type="object" nullable="false" use="optional">
+      <property names=".*" xsi:type="any" types="anyProperty arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty" nullable="false"/>
     </property>
   </object>
   <object name="reference" abstract="true" extends="member">
-    <property xsi:type="string" name="class" pattern="reference" nullable="false"/>
-    <property xsi:type="string" name="type" nullable="false"/>
+    <property name="jsd:class" xsi:type="string" pattern="reference" nullable="false"/>
+    <property name="jsd:type" xsi:type="string" nullable="false"/>
   </object>
   <object name="string" extends="member">
-    <property xsi:type="string" name="class" pattern="string" nullable="false"/>
-    <property xsi:type="string" name="pattern" nullable="false" use="optional"/>
+    <property name="jsd:class" xsi:type="string" pattern="string" nullable="false"/>
+    <property name="jsd:pattern" xsi:type="string" nullable="false" use="optional"/>
   </object>
   
   <object name="objectType" extends="object">
-    <property xsi:type="boolean" name="abstract" nullable="false" use="optional"/>
+    <property xsi:type="boolean" name="jsd:abstract" nullable="false" use="optional"/>
   </object>
   
   <object name="anyProperty" extends="any">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   <object name="arrayProperty" extends="array">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   <object name="booleanProperty" extends="boolean">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   <object name="numberProperty" extends="number">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   <object name="objectProperty" extends="object">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   <object name="referenceProperty" extends="reference">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   <object name="stringProperty" extends="string">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="use" type="use" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
   
   <object name="anyElement" extends="any">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   <object name="arrayElement" extends="array">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   <object name="booleanElement" extends="boolean">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   <object name="numberElement" extends="number">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   <object name="objectElement" extends="object">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   <object name="referenceElement" extends="reference">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   <object name="stringElement" extends="string">
-    <property xsi:type="boolean" name="nullable" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="minOccurs" type="min" nullable="false" use="optional"/>
-    <property xsi:type="reference" name="maxOccurs" type="max" nullable="false" use="optional"/>
+    <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
+    <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
+    <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
   
 </schema>

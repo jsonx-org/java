@@ -27,13 +27,14 @@ abstract class Element {
    * {@code this} element's {@code *Property} or {@code *Element} declaration.
    *
    * @param owner The {@code Element} that owns (contains) {@code this} element.
+   * @param prefix The prefix for key names.
    * @param packageName The package name declared in the schema element.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
     return new AttributeMap();
   }
 
-  abstract XmlElement toXml(Settings settings, Element owner, String packageName);
+  abstract XmlElement toXml(Settings settings, Element owner, final String prefix, String packageName);
   abstract Object toJson(Settings settings, Element owner, String packageName);
 }

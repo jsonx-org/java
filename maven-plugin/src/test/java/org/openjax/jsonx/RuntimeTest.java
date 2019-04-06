@@ -18,11 +18,11 @@ package org.openjax.jsonx;
 
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.openjax.jsonx.generator.datatype.ObjArr;
-import org.openjax.jsonx.generator.datatype.ObjBool;
-import org.openjax.jsonx.generator.datatype.ObjNum;
-import org.openjax.jsonx.generator.datatype.ObjObj;
-import org.openjax.jsonx.generator.datatype.ObjStr;
+import org.openjax.jsonx.datatype.ObjArr;
+import org.openjax.jsonx.datatype.ObjBool;
+import org.openjax.jsonx.datatype.ObjNum;
+import org.openjax.jsonx.datatype.ObjObj;
+import org.openjax.jsonx.datatype.ObjStr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

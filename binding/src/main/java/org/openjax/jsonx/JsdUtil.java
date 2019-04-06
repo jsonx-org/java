@@ -32,26 +32,31 @@ final class JsdUtil {
   static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
   private static final char prefix = '\0';
   private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
+  private static final Function<Character,String> substitutions2 = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? "_" + Integer.toHexString(c) : "__";
 
   /**
-   * @param instanceCase Whether to return instance-case (true) or class-case
-   *          (false).
+   * @param classCase Whether to return class-case (true), instance-case
+   *          (false), or with case unchanged (null).
    * @return The name of this member as a valid Java Identifier in:
    *         <ul>
+   *         <li>Class-Case: upper-CamelCase</li>
    *         <li>Instance-Case: lower-camelCase</li>
-   *         <li>Class-Case: upper-camelCase</li>
    *         <li>{@code name.length() == 0}: "_$"</li>
    *         </ul>
    */
-  private static String toIdentifier(final String name, final boolean instanceCase) {
-    return name.length() == 0 ? "_$" : instanceCase ? Identifiers.toInstanceCase(name, prefix, substitutions) : Identifiers.toClassCase(name, prefix, substitutions);
+  private static String toIdentifier(final String name, final Boolean classCase) {
+    return name.length() == 0 ? "_$" : classCase == null ? Identifiers.toCamelCase(name, prefix, substitutions2) : classCase ? Identifiers.toClassCase(name, prefix, substitutions) : Identifiers.toInstanceCase(name, prefix, substitutions);
   }
 
-  static String toInstanceName(final String name) {
-    return toIdentifier(name, true);
+  static String toIdentifier(final String name) {
+    return toIdentifier(name, null);
   }
 
   static String toClassName(final String name) {
+    return toIdentifier(name, true);
+  }
+
+  static String toInstanceName(final String name) {
     return toIdentifier(name, false);
   }
 

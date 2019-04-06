@@ -59,11 +59,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (name != null)
       xsb.setName$(new xL4gluGCXYYJc.$Array.Name$(name));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Array.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Array.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Array.Use$(xL4gluGCXYYJc.$Array.Use$.Enum.valueOf(jsonx.getUse())));
+    if (jsonx.getJsd_3aUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Array.Use$(xL4gluGCXYYJc.$Array.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
@@ -71,14 +71,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static xL4gluGCXYYJc.$ArrayMember.Array element(final schema.ArrayElement jsonx) {
     final xL4gluGCXYYJc.$ArrayMember.Array xsb = new xL4gluGCXYYJc.$ArrayMember.Array();
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Array.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Array.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+    if (jsonx.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
-    if (jsonx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsonx.getMaxOccurs()));
+    if (jsonx.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -94,13 +94,13 @@ final class ArrayModel extends Referrer<ArrayModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
-    if (jsonx.getMinIterate() != null)
-      xsb.setMinIterate$(new xL4gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsonx.getMinIterate())));
+    if (jsonx.getJsd_3aMinIterate() != null)
+      xsb.setMinIterate$(new xL4gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsonx.getJsd_3aMinIterate())));
 
-    if (jsonx.getMaxIterate() != null)
-      xsb.setMaxIterate$(new xL4gluGCXYYJc.$ArrayMember.MaxIterate$(jsonx.getMaxIterate()));
+    if (jsonx.getJsd_3aMaxIterate() != null)
+      xsb.setMaxIterate$(new xL4gluGCXYYJc.$ArrayMember.MaxIterate$(jsonx.getJsd_3aMaxIterate()));
 
-    for (final Object element : jsonx.getElements()) {
+    for (final Object element : jsonx.getJsd_3aElements()) {
       if (element instanceof schema.AnyElement)
         xsb.addAny((xL4gluGCXYYJc.$ArrayMember.Any)AnyModel.jsonxToXsb((schema.AnyElement)element, null));
       else if (element instanceof schema.ArrayElement)
@@ -415,29 +415,29 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (owner instanceof SchemaElement)
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id.toString());
 
     if (minIterate != null)
-      attributes.put("minIterate", String.valueOf(minIterate));
+      attributes.put(prefix + "minIterate", String.valueOf(minIterate));
 
     if (maxIterate != null)
-      attributes.put("maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
+      attributes.put(prefix + "maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
 
     return attributes;
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
-    final XmlElement element = super.toXml(settings, owner, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
+    final XmlElement element = super.toXml(settings, owner, prefix, packageName);
     if (members.size() == 0)
       return element;
 
     final List<XmlElement> elements = new ArrayList<>();
     for (final Member member : members)
-      elements.add(member.toXml(settings, this, packageName));
+      elements.add(member.toXml(settings, this, prefix, packageName));
 
     element.setElements(elements);
     return element;
@@ -453,7 +453,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     for (final Member member : members)
       elements.add(member.toJson(settings, this, packageName));
 
-    element.put("elements", elements);
+    element.put("jsd:elements", elements);
     return element;
   }
 

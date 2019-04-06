@@ -49,11 +49,11 @@ final class NumberModel extends Model {
     if (name != null)
       xsb.setName$(new xL4gluGCXYYJc.$Number.Name$(name));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Number.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$Number.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Number.Use$(xL4gluGCXYYJc.$Number.Use$.Enum.valueOf(jsonx.getUse())));
+    if (jsonx.getJsd_3aUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$Number.Use$(xL4gluGCXYYJc.$Number.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
@@ -61,14 +61,14 @@ final class NumberModel extends Model {
   private static xL4gluGCXYYJc.$ArrayMember.Number element(final schema.NumberElement jsonx) {
     final xL4gluGCXYYJc.$ArrayMember.Number xsb = new xL4gluGCXYYJc.$ArrayMember.Number();
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Number.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Number.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+    if (jsonx.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
-    if (jsonx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsonx.getMaxOccurs()));
+    if (jsonx.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -84,11 +84,11 @@ final class NumberModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
 
-    if (jsonx.getForm() != null)
-      xsb.setForm$(new xL4gluGCXYYJc.$NumberMember.Form$(xL4gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsonx.getForm())));
+    if (jsonx.getJsd_3aForm() != null)
+      xsb.setForm$(new xL4gluGCXYYJc.$NumberMember.Form$(xL4gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsonx.getJsd_3aForm())));
 
-    if (jsonx.getRange() != null)
-      xsb.setRange$(new xL4gluGCXYYJc.$NumberMember.Range$(jsonx.getRange()));
+    if (jsonx.getJsd_3aRange() != null)
+      xsb.setRange$(new xL4gluGCXYYJc.$NumberMember.Range$(jsonx.getJsd_3aRange()));
 
     return xsb;
   }
@@ -231,13 +231,13 @@ final class NumberModel extends Model {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (form != null)
-      attributes.put("form", form.toString().toLowerCase());
+      attributes.put(prefix + "form", form.toString().toLowerCase());
 
     if (range != null)
-      attributes.put("range", range.toString());
+      attributes.put(prefix + "range", range.toString());
 
     return attributes;
   }

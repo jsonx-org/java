@@ -46,11 +46,11 @@ final class StringModel extends Model {
     if (name != null)
       xsb.setName$(new xL4gluGCXYYJc.$String.Name$(name));
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$String.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$String.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$String.Use$(xL4gluGCXYYJc.$String.Use$.Enum.valueOf(jsonx.getUse())));
+    if (jsonx.getJsd_3aUse() != null)
+      xsb.setUse$(new xL4gluGCXYYJc.$String.Use$(xL4gluGCXYYJc.$String.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
@@ -58,14 +58,14 @@ final class StringModel extends Model {
   private static xL4gluGCXYYJc.$ArrayMember.String element(final schema.StringElement jsonx) {
     final xL4gluGCXYYJc.$ArrayMember.String xsb = new xL4gluGCXYYJc.$ArrayMember.String();
 
-    if (jsonx.getNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.String.Nullable$(jsonx.getNullable()));
+    if (jsonx.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.String.Nullable$(jsonx.getJsd_3aNullable()));
 
-    if (jsonx.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsonx.getMinOccurs())));
+    if (jsonx.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
-    if (jsonx.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.String.MaxOccurs$(jsonx.getMaxOccurs()));
+    if (jsonx.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.String.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -81,8 +81,8 @@ final class StringModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsdx.getClass().getName());
 
-    if (jsdx.getPattern() != null)
-      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsdx.getPattern()));
+    if (jsdx.getJsd_3aPattern() != null)
+      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsdx.getJsd_3aPattern()));
 
     return xsb;
   }
@@ -182,10 +182,10 @@ final class StringModel extends Model {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (pattern != null)
-      attributes.put("pattern", pattern);
+      attributes.put(prefix + "pattern", pattern);
 
     return attributes;
   }

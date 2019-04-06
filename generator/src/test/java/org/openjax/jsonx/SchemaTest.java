@@ -241,31 +241,36 @@ public class SchemaTest {
 
   @Test
   public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("array.jsdx", "org.openjax.jsonx.generator");
+    test("array.jsdx", "org.openjax.jsonx");
   }
 
   @Test
   public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("datatype.jsdx", "org.openjax.jsonx.generator.datatype");
+    test("datatype.jsdx", "org.openjax.jsonx.datatype");
+  }
+
+  @Test
+  public void testStructure() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+    test("structure.jsdx", "org.openjax.jsonx.structure");
   }
 
   @Test
   public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("template.jsdx", "org.openjax.jsonx.generator");
+    test("template.jsdx", "org.openjax.jsonx");
   }
 
   @Test
   public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reference.jsdx", "org.openjax.jsonx.generator.reference");
+    test("reference.jsdx", "org.openjax.jsonx.reference");
   }
 
   @Test
   public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reserved.jsdx", "org.openjax.jsonx.generator.reserved");
+    test("reserved.jsdx", "org.openjax.jsonx.reserved");
   }
 
   @Test
   public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("complete.jsdx", "org.openjax.jsonx.generator.complete");
+    test("complete.jsdx", "org.openjax.jsonx.complete");
   }
 }
