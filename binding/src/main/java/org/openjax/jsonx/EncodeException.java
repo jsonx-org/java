@@ -16,6 +16,9 @@
 
 package org.openjax.jsonx;
 
+/**
+ * Signals that an error has occurred while encoding a JSON document.
+ */
 public class EncodeException extends RuntimeException {
   private static final long serialVersionUID = -5907473656780591942L;
 

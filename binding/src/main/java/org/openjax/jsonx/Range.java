@@ -26,7 +26,7 @@ public class Range implements Serializable {
 
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int index, final boolean commaOk) throws ParseException {
     try {
-      for (int i = index; i < string.length() - 1; i++) {
+      for (int i = index; i < string.length() - 1; ++i) {
         final char ch = string.charAt(i);
         if (ch == ',') {
           if (commaOk)

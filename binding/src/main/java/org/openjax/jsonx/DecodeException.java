@@ -16,6 +16,9 @@
 
 package org.openjax.jsonx;
 
+/**
+ * Signals that an error has occurred while decoding a JSON document.
+ */
 public class DecodeException extends Exception {
   private static final long serialVersionUID = 7087309932016830988L;
 

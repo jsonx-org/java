@@ -67,7 +67,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return String.valueOf(object);
   }
 
-  static Error validate(final Annotation annotation, final Number object, final Form form, final String range) {
+  private static Error validate(final Annotation annotation, final Number object, final Form form, final String range) {
     if (form == Form.INTEGER && object.longValue() != object.doubleValue())
       return Error.INTEGER_NOT_VALID(Form.class, object, -1);
 
