@@ -1,8 +1,8 @@
-# JAX-RS Support for <ins>JSON Schema Definition Language</ins>
+# JAX-RS Support for JSONX
 
 ## Abstract
 
-This document specifies the <ins>JAX-RS Support for JSON Schema Definition Language</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][api].
+This document specifies the <ins>JAX-RS Support for JSONX</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][api].
 
 ## Table of Contents
 
@@ -13,9 +13,9 @@ This document specifies the <ins>JAX-RS Support for JSON Schema Definition Langu
 
 ## 1 Introduction
 
-This document sets out the structural part of the <ins>JAX-RS Support for JSON Schema Definition Language</ins>. It also contains a directory of links to these related resources.
+This document sets out the structural part of the <ins>JAX-RS Support for JSONX</ins>. It also contains a directory of links to these related resources.
 
-<ins>JAX-RS Support for JSON Schema Definition Language</ins> is implemented to the specification of the JAX-RS API. <ins>JAX-RS Support for JSON Schema Definition Language</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
+<ins>JAX-RS Support for JSONX</ins> is implemented to the specification of the JAX-RS API. <ins>JAX-RS Support for JSONX</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
 
 ## 2 `JxObjectProvider`
 
