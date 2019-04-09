@@ -35,12 +35,23 @@ import javax.ws.rs.ext.Provider;
 
 import org.openjax.standard.json.JsonReader;
 
+/**
+ * A JAX-RS {@link Provider} that implements {@link MessageBodyReader} and
+ * {@link MessageBodyWriter} support for reading and writing JSON documents with
+ * the JSONX API.
+ */
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
   protected final JxEncoder encoder;
 
+  /**
+   * Creates a new {@code JxObjectProvider} with the specified {@code JxEncoder}
+   * instance to be used for encoding bindings to JSON documents.
+   *
+   * @param encoder The {@code JxEncoder} instance.
+   */
   public JxObjectProvider(final JxEncoder encoder) {
     this.encoder = encoder;
   }

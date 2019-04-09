@@ -23,6 +23,10 @@ import javax.ws.rs.ext.Provider;
 
 import org.openjax.standard.util.Strings;
 
+/**
+ * A JAX-RS {@link Provider} that implements an {@link ExceptionMapper} to
+ * present a JSON error body in case of a {@link BadRequestException}.
+ */
 @Provider
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
   @Override
