@@ -131,8 +131,10 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
           annotationType = arrayType == null ? null : annotation.annotationType();
         }
 
-        if (annotationType != null)
+        if (annotationType != null) {
           bytes = encoder.marshal((List<?>)t, annotationType).getBytes();
+          break;
+        }
       }
     }
 
