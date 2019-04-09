@@ -23,11 +23,15 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3 [Root Declarative Types][#types]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [Object Properties][#properties]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [Array Elements][#elements]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Sample Schemas][#samples]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [`structure.jsdx`][#structurejsdx]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [`structure.jsd`][#structurejsd]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [`datatype.jsdx`][#datatypejsdx]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [`datatype.jsd`][#datatypejsd]
+<samp>&nbsp;&nbsp;</samp>3 [Related Resources for JSON Schema][#resources]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [Schemas for JSON Schema][#json-schemas]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1.1 [JSON Schema 0.9.8][#schema-098]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1.2 [JSON Schema 0.9.7][#schema-097]<br>
+<samp>&nbsp;&nbsp;</samp>4 [Sample Schemas][#samples]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`structure.jsdx`][#structurejsdx]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`structure.jsd`][#structurejsd]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [`datatype.jsdx`][#datatypejsdx]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [`datatype.jsd`][#datatypejsd]
 
 ## 1 Introduction
 
@@ -39,7 +43,7 @@ Any application that consumes well-formed JSON can use the <ins>JSON Schema Defi
 
 ### 1.1 Dependencies on Other Specifications
 
-The definition of _JSON Schema: Structures_ depends on the following specifications: [\[RFC4627\]][rfc4627] and [\[XMLSchema\]][xmlschema].
+The definition of the <ins>JSON Schema Definition Language</ins> depends on the following specifications: [\[RFC4627\]][rfc4627] and [\[XMLSchema\]][xmlschema].
 
 ### 1.2 Conventions Used in This Document
 
@@ -457,11 +461,27 @@ The <samp>**element**</samp> objects define properties for the declarative objec
    </schema>
    ```
 
-### 3 Sample Schemas
+## 3 Related Resources for JSON Schema
+
+### 3.1 Schemas for JSON Schema
+
+#### 3.1.1 JSON Schema 0.9.8
+
+* A JSON Schema schema document XSD [schema-0.9.8.xsd](http://jsonx.openjax.org/schema-0.9.8.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
+
+* A JSON Schema schema document JSDX [schema-0.9.8.jsdx](http://jsonx.openjax.org/schema-0.9.8.jsdx) for JSON Schema documents.
+
+* A JSON Schema schema document JSD [schema-0.9.8.jsd](http://jsonx.openjax.org/schema-0.9.8.jsd) for JSON Schema documents.
+
+#### 3.1.2 JSON Schema 0.9.7
+
+* A JSON Schema schema document XSD [schema-0.9.7.xsd](http://jsonx.openjax.org/schema-0.9.7.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
+
+### 4 Sample Schemas
 
 This section provides a few sample schemas in both `jsdx` and `jsd` forms.
 
-#### 3.1 `structure.jsdx`
+#### 4.1 `structure.jsdx`
 
 ```xml
 <schema
@@ -526,7 +546,7 @@ This section provides a few sample schemas in both `jsdx` and `jsd` forms.
 </schema>
 ```
 
-#### 3.2 `structure.jsd`
+#### 4.2 `structure.jsd`
 
 ```json
 {
@@ -689,7 +709,7 @@ This section provides a few sample schemas in both `jsdx` and `jsd` forms.
 }
 ```
 
-#### 3.3 `datatypes.jsdx`
+#### 4.3 `datatypes.jsdx`
 
 ```xml
 <schema
@@ -852,7 +872,7 @@ This section provides a few sample schemas in both `jsdx` and `jsd` forms.
 </schema>
 ```
 
-#### 3.4 `datatypes.jsd`
+#### 4.4 `datatypes.jsd`
 
 ```json
 {
@@ -1552,6 +1572,10 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#properties]: #24-object-properties
 [#elements]: #25-array-elements
 [#samples]: #3-sample-schemas
+[#resources]: #3-related-resources-for-json-schema
+[#json-schemas]: #31-schemas-for-json-schema
+[#schema-098]: #311-json-schema-098
+[#schema-097]: #312-json-schema-097
 [#structurejsdx]: #31-structurejsdx
 [#structurejsd]: #32-structurejsd
 [#datatypejsdx]: #33-datatypejsdx
