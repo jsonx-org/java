@@ -479,7 +479,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 ### 4 Sample Schemas
 
-This section provides a few sample schemas in both `jsdx` and `jsd` forms.
+This section provides sample schemas in both `jsdx` and `jsd` forms.
 
 #### 4.1 `structure.jsdx`
 
