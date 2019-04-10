@@ -1,0 +1,33 @@
+{
+  "id": "WH-7YX49823S2290830K-0JE13296W68552352",
+  "event_version": "1.0",
+  "create_time": "2016-05-31T17:53:29Z",
+  "resource_type": "refund",
+  "event_type": "PAYMENT.SALE.REFUNDED",
+  "summary": "A $ 14.99 USD sale payment was refunded",
+  "resource": {
+    "id": "29B43325P49508437",
+    "state": "completed",
+    "amount": {
+      "total": "14.99",
+      "currency": "USD"
+    },
+    "refund_to_payer": {
+      "value": "14.99",
+      "currency": "USD"
+    },
+    "parent_payment": "PAY-9MX90473V8752831HK5G4RDI",
+    "sale_id": "02399573KS095945W",
+    "create_time": "2016-05-31T17:52:18Z",
+    "update_time": "2016-05-31T17:52:18Z",
+    "links": [
+      {"href": "https://api.paypal.com/v1/payments/refund/29B43325P49508437", "rel": "self", "method": "GET"},
+      {"href": "https://api.paypal.com/v1/payments/payment/PAY-9MX90473V8752831HK5G4RDI", "rel": "parent_payment", "method": "GET"},
+      {"href": "https://api.paypal.com/v1/payments/sale/02399573KS095945W", "rel": "sale", "method": "GET"}
+    ]
+  },
+  "links": [
+    {"href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-7YX49823S2290830K-0JE13296W68552352", "rel": "self", "method": "GET"},
+    {"href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-7YX49823S2290830K-0JE13296W68552352/resend", "rel": "resend", "method": "POST"}
+  ]
+}
