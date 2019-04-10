@@ -54,7 +54,7 @@ import org.xml.sax.SAXException;
 
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
-  private static final URL schemaXsd = Thread.currentThread().getContextClassLoader().getResource("schema.xsd");
+  private static final URL schemaXsd = ClassLoader.getSystemClassLoader().getResource("schema.xsd");
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
@@ -77,7 +77,7 @@ public class SchemaTest {
   }
 
   private static xL4gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, ValidationException {
-    try (final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
+    try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
       return (xL4gluGCXYYJc.Schema)Bindings.parse(in);
     }
   }

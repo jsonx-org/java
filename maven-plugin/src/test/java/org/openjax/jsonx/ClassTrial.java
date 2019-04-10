@@ -104,10 +104,10 @@ class ClassTrial {
   }
 
   private static void testJsonx(final String json) throws IOException, SAXException {
-    final String jsonx = JxUtil.jsonToJsonx(new JsonReader(new StringReader(json)));
+    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(json)));
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
     try {
-      final String json2 = JxUtil.jsonxToJson(url, false);
+      final String json2 = JxConverter.jsonxToJson(url.openStream(), false);
       assertEquals(json, json2);
     }
     catch (final SAXException e) {
