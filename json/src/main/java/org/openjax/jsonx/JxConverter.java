@@ -17,8 +17,9 @@
 package org.openjax.jsonx;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.net.URL;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +34,11 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public final class JxUtil {
+/**
+ * Utility class that provides functions to convert JSON document to JSONX
+ * documents, and vice versa.
+ */
+public final class JxConverter {
   @SuppressWarnings("unchecked")
   private static final ThreadLocal<WeakReference<SAXParser>>[] weakParsers = new ThreadLocal[2];
   private static final Pattern pattern = Pattern.compile("(?<value>null|false|true|-?(([0-9])|([1-9][0-9]+))(\\.[\\.0-9]+)?([eE][+-]?(([0-9])|([1-9][0-9]+)))?|\"(\\\\.|[^\"])*\")(?<ws>\\s+|$)");
@@ -62,10 +67,22 @@ public final class JxUtil {
     return parser;
   }
 
-  public static String jsonxToJson(final URL url, final boolean validate) throws IOException, SAXException {
+  /**
+   * Converts a JSONX document from the specified {@code InputStream} to a JSON
+   * document.
+   *
+   * @param in The {@code InputStream} for the JSONX document to be converted.
+   * @param validate If {@code true}, the JSONX document will be validated
+   *          during the conversion process.
+   * @return A JSON document equivalent of the JSONX document.
+   * @throws IOException If an I/O error has occurred.
+   * @throws SAXException If a SAX error has occurred.
+   * @throws NullPointerException If {@code in} is null.
+   */
+  public static String jsonxToJson(final InputStream in, final boolean validate) throws IOException, SAXException {
     final SAXParser parser = getParser(validate);
     final StringBuilder builder = new StringBuilder();
-    parser.parse(url.openStream(), new DefaultHandler() {
+    parser.parse(Objects.requireNonNull(in), new DefaultHandler() {
       private final Stack<String> stack = new Stack<>();
       private StringBuilder characters = null;
       private StringBuilder prevWs = null;
@@ -213,10 +230,39 @@ public final class JxUtil {
     return builder.toString();
   }
 
+  /**
+   * Converts a JSON document from the specified {@code JsonReader} to a JSONX
+   * document without declaring the XML namespace.
+   * <p>
+   * This method is equivalent to calling
+   * <p>
+   * <blockquote>
+   * {@code jsonToJsonx(reader, false)}
+   * </blockquote>
+   *
+   * @param reader The {@code JsonReader} for the JSON document to be converted.
+   *          declare the {@code xmlns} and {@code xsi:schemaLocation}
+   *          attributes in the root element.
+   * @return A JSONX document equivalent of the JSON document.
+   * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code reader} is null.
+   */
   public static String jsonToJsonx(final JsonReader reader) throws IOException {
     return jsonToJsonx(reader, false);
   }
 
+  /**
+   * Converts a JSON document from the specified {@code JsonReader} to a JSONX
+   * document.
+   *
+   * @param reader The {@code JsonReader} for the JSON document to be converted.
+   * @param declareNamespace If {@code true}, the resulting JSONX document will
+   *          declare the {@code xmlns} and {@code xsi:schemaLocation}
+   *          attributes in the root element.
+   * @return A JSONX document equivalent of the JSON document.
+   * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code reader} is null.
+   */
   public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
     final StringBuilder builder = new StringBuilder();
     for (String token; (token = reader.readToken()) != null;) {
@@ -357,6 +403,6 @@ public final class JxUtil {
     builder.append("</o>");
   }
 
-  private JxUtil() {
+  private JxConverter() {
   }
 }

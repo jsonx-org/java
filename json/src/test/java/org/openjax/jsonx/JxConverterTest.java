@@ -19,27 +19,35 @@ package org.openjax.jsonx;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 
 import org.junit.Test;
-import org.openjax.standard.io.Readers;
+import org.openjax.standard.io.Streams;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.net.MemoryURLStreamHandler;
 import org.xml.sax.SAXException;
 
-public class JxUtilTest {
-  @Test
-  public void testJsonJsonx() throws IOException, SAXException {
-    final String control = Readers.readFully(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("datatype.json")));
-    final String jsonx = JxUtil.jsonToJsonx(new JsonReader(new StringReader(control), false), true);
+public class JxConverterTest {
+  private static void test(final String fileName) throws IOException, SAXException {
+    final String control = new String(Streams.readBytes(ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)));
+    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(control), false), true);
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
-    final String test = JxUtil.jsonxToJson(url, true);
+    final String test = JxConverter.jsonxToJson(url.openStream(), true);
+    System.err.println(jsonx);
     if (!control.equals(test)) {
-      System.err.println(jsonx);
       System.out.println(test);
       assertEquals(control, test);
     }
+  }
+
+  @Test
+  public void testDataType() throws IOException, SAXException {
+    test("datatype.json");
+  }
+
+  @Test
+  public void testPayPal() throws IOException, SAXException {
+    test("paypal.json");
   }
 }
