@@ -68,4 +68,4 @@ Please make sure to update tests as appropriate.
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [mvn-plugin]: https://img.shields.io/badge/mvn-plugin-lightgrey.svg
-[jsonx]: /../../../..
+[jsonx]: /../..
