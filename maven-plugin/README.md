@@ -1,4 +1,4 @@
-# OpenJAX JSONX Maven Plugin
+# JSONX Maven Plugin
 
 > Maven Plugin for [JSONX][jsonx] framework
 
@@ -7,17 +7,17 @@
 
 ### Introduction
 
-The `jsonx-maven-plugin` plugin is used to generate JSON bindings with the [JSONX][jsonx] framework.
+The `jsonx-maven-plugin` plugin is used to generate JSONX and JSD bindings with the [JSONX][jsonx] framework.
 
 ### Goals Overview
 
-* [`jsonx:generate`](#jsonxgenerate) generates JSONX bindings.
+* [`jsonx:generate`](#jsonxgenerate) generates JSD bindings.
 
 ### Usage
 
 #### `jsonx:generate`
 
-The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used to generate JSONX bindings for JSONX documents in the `manifest`. To configure the generation of JSONX bindings for desired JSONX schemas, add a `manifest` element to the plugin's configuration.
+The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used to generate Java bindings for JSD schemas specified in the `configuration`. To configure the generation of JSD bindings for desired JSD schemas, add a `configuration` element to the plugin's specification.
 
 ##### Example
 
@@ -26,23 +26,32 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
   <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
   <version>0.9.8-SNAPSHOT</version>
-  <configuration>
-    <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-    <schemas>
-      <schema>src/main/resources/json.jsonx</schema>
-    </schemas>
-  </configuration>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <phase>generate-sources</phase>
+      <configuration>
+        <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+        <prefix>com.example.json.</prefix>
+        <schemas>
+          <schema>src/main/resources/json.jsd</schema>
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
 </plugin>
 ```
 
 #### Configuration Parameters
 
-| Name              | Type    | Use      | Description                                                                   |
-|:------------------|:--------|:---------|:------------------------------------------------------------------------------|
-| `/`               | Object  | Required | Manifest descriptor.                                                          |
-| `/destDir`        | String  | Required | Destination path of generated bindings.                                       |
-| `/schemas`        | List    | Required | List of `resource` elements.                                                  |
-| `/schemas/schema` | String  | Required | File path of XML Schema.                                                      |
+| Name                          | Type    | Use      | Description                                                               |
+|:------------------------------|:--------|:---------|:--------------------------------------------------------------------------|
+| <samp>/destDir¹</samp>        | String  | Required | Destination path of generated bindings.                                   |
+| <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;         | String<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
+| <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.                                     |
+| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of XML Schema.                                                  |
 
 ### JavaDocs
 
@@ -59,4 +68,4 @@ Please make sure to update tests as appropriate.
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [mvn-plugin]: https://img.shields.io/badge/mvn-plugin-lightgrey.svg
-[jsonx]: /
+[jsonx]: ..
