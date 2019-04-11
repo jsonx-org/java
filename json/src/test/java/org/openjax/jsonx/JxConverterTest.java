@@ -34,8 +34,8 @@ public class JxConverterTest {
     final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(control), false), true);
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
     final String test = JxConverter.jsonxToJson(url.openStream(), true);
-    System.err.println(jsonx);
     if (!control.equals(test)) {
+      System.err.println(jsonx);
       System.out.println(test);
       assertEquals(control, test);
     }

@@ -70,14 +70,14 @@ final class AnyModel extends Referrer<AnyModel> {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$AnyMember jsonxToXsb(final schema.Any jsonx, final String name) {
+  static xL4gluGCXYYJc.$AnyMember jsdToXsb(final schema.Any jsd, final String name) {
     final xL4gluGCXYYJc.$AnyMember xsb;
-    if (jsonx instanceof schema.AnyProperty)
-      xsb = property((schema.AnyProperty)jsonx, name);
-    else if (jsonx instanceof schema.AnyElement)
-      xsb = element((schema.AnyElement)jsonx);
+    if (jsd instanceof schema.AnyProperty)
+      xsb = property((schema.AnyProperty)jsd, name);
+    else if (jsd instanceof schema.AnyElement)
+      xsb = element((schema.AnyElement)jsd);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     return xsb;
   }

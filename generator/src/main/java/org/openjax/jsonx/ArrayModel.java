@@ -83,36 +83,36 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ArrayMember jsonxToXsb(final schema.Array jsonx, final String name) {
+  static xL4gluGCXYYJc.$ArrayMember jsdToXsb(final schema.Array jsd, final String name) {
     final xL4gluGCXYYJc.$ArrayMember xsb;
-    if (jsonx instanceof schema.ArrayProperty)
-      xsb = property((schema.ArrayProperty)jsonx, name);
-    else if (jsonx instanceof schema.ArrayElement)
-      xsb = element((schema.ArrayElement)jsonx);
+    if (jsd instanceof schema.ArrayProperty)
+      xsb = property((schema.ArrayProperty)jsd, name);
+    else if (jsd instanceof schema.ArrayElement)
+      xsb = element((schema.ArrayElement)jsd);
     else if (name != null)
       xsb = type(name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsonx.getJsd_3aMinIterate() != null)
-      xsb.setMinIterate$(new xL4gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsonx.getJsd_3aMinIterate())));
+    if (jsd.getJsd_3aMinIterate() != null)
+      xsb.setMinIterate$(new xL4gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getJsd_3aMinIterate())));
 
-    if (jsonx.getJsd_3aMaxIterate() != null)
-      xsb.setMaxIterate$(new xL4gluGCXYYJc.$ArrayMember.MaxIterate$(jsonx.getJsd_3aMaxIterate()));
+    if (jsd.getJsd_3aMaxIterate() != null)
+      xsb.setMaxIterate$(new xL4gluGCXYYJc.$ArrayMember.MaxIterate$(jsd.getJsd_3aMaxIterate()));
 
-    for (final Object element : jsonx.getJsd_3aElements()) {
+    for (final Object element : jsd.getJsd_3aElements()) {
       if (element instanceof schema.AnyElement)
-        xsb.addAny((xL4gluGCXYYJc.$ArrayMember.Any)AnyModel.jsonxToXsb((schema.AnyElement)element, null));
+        xsb.addAny((xL4gluGCXYYJc.$ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
       else if (element instanceof schema.ArrayElement)
-        xsb.addArray((xL4gluGCXYYJc.$ArrayMember.Array)ArrayModel.jsonxToXsb((schema.ArrayElement)element, null));
+        xsb.addArray((xL4gluGCXYYJc.$ArrayMember.Array)ArrayModel.jsdToXsb((schema.ArrayElement)element, null));
       else if (element instanceof schema.BooleanElement)
-        xsb.addBoolean((xL4gluGCXYYJc.$ArrayMember.Boolean)BooleanModel.jsonxToXsb((schema.BooleanElement)element, null));
+        xsb.addBoolean((xL4gluGCXYYJc.$ArrayMember.Boolean)BooleanModel.jsdToXsb((schema.BooleanElement)element, null));
       else if (element instanceof schema.NumberElement)
-        xsb.addNumber((xL4gluGCXYYJc.$ArrayMember.Number)NumberModel.jsonxToXsb((schema.NumberElement)element, null));
+        xsb.addNumber((xL4gluGCXYYJc.$ArrayMember.Number)NumberModel.jsdToXsb((schema.NumberElement)element, null));
       else if (element instanceof schema.ReferenceElement)
-        xsb.addReference((xL4gluGCXYYJc.$ArrayMember.Reference)Reference.jsonxToXsb((schema.ReferenceElement)element, null));
+        xsb.addReference((xL4gluGCXYYJc.$ArrayMember.Reference)Reference.jsdToXsb((schema.ReferenceElement)element, null));
       else if (element instanceof schema.StringElement)
-        xsb.addString((xL4gluGCXYYJc.$ArrayMember.String)StringModel.jsonxToXsb((schema.StringElement)element, null));
+        xsb.addString((xL4gluGCXYYJc.$ArrayMember.String)StringModel.jsdToXsb((schema.StringElement)element, null));
       else
         throw new UnsupportedOperationException("Unsupported JSONx type: " + element.getClass().getName());
     }

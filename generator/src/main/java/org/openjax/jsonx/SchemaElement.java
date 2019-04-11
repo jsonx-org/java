@@ -42,22 +42,22 @@ import org.openjax.standard.xml.api.XmlElement;
 import org.openjax.xsb.runtime.QName;
 
 /**
- * The {@code Schema} is the root {@code Element} of a JSONx Schema Document.
+ * The root {@link Element} of a JSON Schema Document.
  */
 public final class SchemaElement extends Element {
-  private static xL4gluGCXYYJc.Schema jsonxToXsb(final schema.Schema jsonx) {
+  private static xL4gluGCXYYJc.Schema jsdToXsb(final schema.Schema jsd) {
     final xL4gluGCXYYJc.Schema schema = new xL4gluGCXYYJc.Schema();
-    for (final Map.Entry<java.lang.String,java.lang.Object> entry : jsonx._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
+    for (final Map.Entry<String,Object> entry : jsd._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
       if (entry.getValue() instanceof schema.Array)
-        schema.addArray((xL4gluGCXYYJc.Schema.Array)ArrayModel.jsonxToXsb((schema.Array)entry.getValue(), entry.getKey()));
+        schema.addArray((xL4gluGCXYYJc.Schema.Array)ArrayModel.jsdToXsb((schema.Array)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.Boolean)
-        schema.addBoolean((xL4gluGCXYYJc.Schema.Boolean)BooleanModel.jsonxToXsb((schema.Boolean)entry.getValue(), entry.getKey()));
+        schema.addBoolean((xL4gluGCXYYJc.Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.Number)
-        schema.addNumber((xL4gluGCXYYJc.Schema.Number)NumberModel.jsonxToXsb((schema.Number)entry.getValue(), entry.getKey()));
+        schema.addNumber((xL4gluGCXYYJc.Schema.Number)NumberModel.jsdToXsb((schema.Number)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.ObjectType)
-        schema.addObject((xL4gluGCXYYJc.Schema.Object)ObjectModel.jsonxToXsb((schema.Object)entry.getValue(), entry.getKey()));
+        schema.addObject((xL4gluGCXYYJc.Schema.Object)ObjectModel.jsdToXsb((schema.Object)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.String)
-        schema.addString((xL4gluGCXYYJc.Schema.String)StringModel.jsonxToXsb((schema.String)entry.getValue(), entry.getKey()));
+        schema.addString((xL4gluGCXYYJc.Schema.String)StringModel.jsdToXsb((schema.String)entry.getValue(), entry.getKey()));
       else
         throw new UnsupportedOperationException("Unsupported type: " + entry.getValue().getClass().getName());
     }
@@ -69,12 +69,12 @@ public final class SchemaElement extends Element {
   private final String version;
 
   /**
-   * Creates a new {@code Schema} from the specified XML binding, and with the
+   * Creates a new {@code SchemaElement} from the specified XML binding, and with the
    * provided package / class name prefix string.
    *
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of
-   *          generated JSONx bindings.
+   *          generated JSD bindings.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final xL4gluGCXYYJc.Schema schema, final String prefix) {
@@ -144,16 +144,16 @@ public final class SchemaElement extends Element {
   }
 
   /**
-   * Creates a new {@code Schema} from the specified JSONx binding, and with the
+   * Creates a new {@code SchemaElement} from the specified JSD binding, and with the
    * provided package / class name prefix string.
    *
-   * @param schema The XML binding (JSONx).
+   * @param schema The JSD binding.
    * @param prefix The class name prefix to be prepended to the names of
-   *          generated JSONx bindings.
+   *          generated JSD bindings.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final schema.Schema schema, final String prefix) {
-    this(jsonxToXsb(schema), prefix);
+    this(jsdToXsb(schema), prefix);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -171,22 +171,23 @@ public final class SchemaElement extends Element {
   }
 
   /**
-   * Creates a new {@code Schema} by scanning the specified package in the
+   * Creates a new {@code SchemaElement} by scanning the specified package in the
    * provided class loader, filtered with the given class predicate.
    *
-   * @param pkg The package to be scanned for JSONx bindings.
+   * @param pkg The package to be scanned for JSD bindings.
    * @param classLoader The {@code ClassLoader} containing the defined package.
    * @param filter The class {@code Predicate} allowing filtration of scanned
    *          classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
+   * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
   }
 
   /**
-   * Creates a new {@code Schema} by scanning the specified package in the
+   * Creates a new {@code SchemaElement} by scanning the specified package in the
    * provided class loader.
    * <p>
    * This constructor is equivalent to calling:
@@ -195,7 +196,7 @@ public final class SchemaElement extends Element {
    * {@code new Schema(pkg, classLoader, null)}
    * </blockquote>
    *
-   * @param pkg The package to be scanned for JSONx bindings.
+   * @param pkg The package to be scanned for JSD bindings.
    * @param classLoader The {@code ClassLoader} containing the defined package.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
@@ -205,7 +206,7 @@ public final class SchemaElement extends Element {
   }
 
   /**
-   * Creates a new {@code Schema} by scanning the specified package, filtered
+   * Creates a new {@code SchemaElement} by scanning the specified package, filtered
    * with the given class predicate.
    * <p>
    * This constructor is equivalent to calling:
@@ -214,7 +215,7 @@ public final class SchemaElement extends Element {
    * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), filter)}
    * </blockquote>
    *
-   * @param pkg The package to be scanned for JSONx bindings.
+   * @param pkg The package to be scanned for JSD bindings.
    * @param filter The class {@code Predicate} allowing filtration of scanned
    *          classes.
    * @throws IOException If an I/O error has occurred.
@@ -225,7 +226,7 @@ public final class SchemaElement extends Element {
   }
 
   /**
-   * Creates a new {@code Schema} by scanning the specified package.
+   * Creates a new {@code SchemaElement} by scanning the specified package.
    * <p>
    * This constructor is equivalent to calling:
    * <p>
@@ -233,7 +234,7 @@ public final class SchemaElement extends Element {
    * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), null)}
    * </blockquote>
    *
-   * @param pkg The package to be scanned for JSONx bindings.
+   * @param pkg The package to be scanned for JSD bindings.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
@@ -242,7 +243,7 @@ public final class SchemaElement extends Element {
   }
 
   /**
-   * Creates a new {@code Schema} by scanning the specified classes.
+   * Creates a new {@code SchemaElement} by scanning the specified classes.
    *
    * @param classes The classes to scan.
    */
@@ -251,7 +252,7 @@ public final class SchemaElement extends Element {
   }
 
   /**
-   * Creates a new {@code Schema} by scanning the specified classes.
+   * Creates a new {@code SchemaElement} by scanning the specified classes.
    *
    * @param classes The classes to scan.
    */

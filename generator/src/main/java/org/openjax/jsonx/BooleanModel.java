@@ -68,16 +68,16 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$BooleanMember jsonxToXsb(final schema.Boolean jsonx, final String name) {
+  static xL4gluGCXYYJc.$BooleanMember jsdToXsb(final schema.Boolean jsd, final String name) {
     final xL4gluGCXYYJc.$BooleanMember xsb;
-    if (jsonx instanceof schema.BooleanProperty)
-      xsb = property((schema.BooleanProperty)jsonx, name);
-    else if (jsonx instanceof schema.BooleanElement)
-      xsb = element((schema.BooleanElement)jsonx);
+    if (jsd instanceof schema.BooleanProperty)
+      xsb = property((schema.BooleanProperty)jsd, name);
+    else if (jsd instanceof schema.BooleanElement)
+      xsb = element((schema.BooleanElement)jsd);
     else if (name != null)
       xsb = type(name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     return xsb;
   }

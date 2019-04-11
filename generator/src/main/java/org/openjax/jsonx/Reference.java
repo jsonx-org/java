@@ -65,17 +65,17 @@ final class Reference extends Member {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ReferenceMember jsonxToXsb(final schema.Reference jsonx, final String name) {
+  static xL4gluGCXYYJc.$ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
     final xL4gluGCXYYJc.$ReferenceMember xsb;
-    if (jsonx instanceof schema.ReferenceElement)
-      xsb = element((schema.ReferenceElement)jsonx);
-    else if (jsonx instanceof schema.ReferenceProperty)
-      xsb = property((schema.ReferenceProperty)jsonx, name);
+    if (jsd instanceof schema.ReferenceElement)
+      xsb = element((schema.ReferenceElement)jsd);
+    else if (jsd instanceof schema.ReferenceProperty)
+      xsb = property((schema.ReferenceProperty)jsd, name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsonx.getJsd_3aType() != null)
-      xsb.setType$(new xL4gluGCXYYJc.$ReferenceMember.Type$(jsonx.getJsd_3aType()));
+    if (jsd.getJsd_3aType() != null)
+      xsb.setType$(new xL4gluGCXYYJc.$ReferenceMember.Type$(jsd.getJsd_3aType()));
 
     return xsb;
   }

@@ -70,19 +70,19 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$StringMember jsonxToXsb(final schema.String jsdx, final String name) {
+  static xL4gluGCXYYJc.$StringMember jsdToXsb(final schema.String jsd, final String name) {
     final xL4gluGCXYYJc.$StringMember xsb;
-    if (jsdx instanceof schema.StringProperty)
-      xsb  = property((schema.StringProperty)jsdx, name);
-    else if (jsdx instanceof schema.StringElement)
-      xsb  = element((schema.StringElement)jsdx);
+    if (jsd instanceof schema.StringProperty)
+      xsb  = property((schema.StringProperty)jsd, name);
+    else if (jsd instanceof schema.StringElement)
+      xsb  = element((schema.StringElement)jsd);
     else if (name != null)
       xsb  = type(name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsdx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsdx.getJsd_3aPattern() != null)
-      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsdx.getJsd_3aPattern()));
+    if (jsd.getJsd_3aPattern() != null)
+      xsb.setPattern$(new xL4gluGCXYYJc.$StringMember.Pattern$(jsd.getJsd_3aPattern()));
 
     return xsb;
   }

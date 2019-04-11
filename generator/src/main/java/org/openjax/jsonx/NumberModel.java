@@ -73,22 +73,22 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$NumberMember jsonxToXsb(final schema.Number jsonx, final String name) {
+  static xL4gluGCXYYJc.$NumberMember jsdToXsb(final schema.Number jsd, final String name) {
     final xL4gluGCXYYJc.$NumberMember xsb;
-    if (jsonx instanceof schema.NumberProperty)
-      xsb = property((schema.NumberProperty)jsonx, name);
-    else if (jsonx instanceof schema.NumberElement)
-      xsb = element((schema.NumberElement)jsonx);
+    if (jsd instanceof schema.NumberProperty)
+      xsb = property((schema.NumberProperty)jsd, name);
+    else if (jsd instanceof schema.NumberElement)
+      xsb = element((schema.NumberElement)jsd);
     else if (name != null)
       xsb = type(name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsonx.getJsd_3aForm() != null)
-      xsb.setForm$(new xL4gluGCXYYJc.$NumberMember.Form$(xL4gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsonx.getJsd_3aForm())));
+    if (jsd.getJsd_3aForm() != null)
+      xsb.setForm$(new xL4gluGCXYYJc.$NumberMember.Form$(xL4gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsd.getJsd_3aForm())));
 
-    if (jsonx.getJsd_3aRange() != null)
-      xsb.setRange$(new xL4gluGCXYYJc.$NumberMember.Range$(jsonx.getJsd_3aRange()));
+    if (jsd.getJsd_3aRange() != null)
+      xsb.setRange$(new xL4gluGCXYYJc.$NumberMember.Range$(jsd.getJsd_3aRange()));
 
     return xsb;
   }

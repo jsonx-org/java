@@ -71,34 +71,34 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ObjectMember jsonxToXsb(final schema.Object jsonx, final String name) {
+  static xL4gluGCXYYJc.$ObjectMember jsdToXsb(final schema.Object jsd, final String name) {
     final xL4gluGCXYYJc.$ObjectMember xsb;
-    if (jsonx instanceof schema.ObjectType)
-      xsb = type((schema.ObjectType)jsonx, name);
-    else if (jsonx instanceof schema.ObjectProperty)
-      xsb = property((schema.ObjectProperty)jsonx, name);
+    if (jsd instanceof schema.ObjectType)
+      xsb = type((schema.ObjectType)jsd, name);
+    else if (jsd instanceof schema.ObjectProperty)
+      xsb = property((schema.ObjectProperty)jsd, name);
     else
-      throw new UnsupportedOperationException("Unsupported type: " + jsonx.getClass().getName());
+      throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsonx.getJsd_3aExtends() != null)
-      xsb.setExtends$(new xL4gluGCXYYJc.$ObjectMember.Extends$(jsonx.getJsd_3aExtends()));
+    if (jsd.getJsd_3aExtends() != null)
+      xsb.setExtends$(new xL4gluGCXYYJc.$ObjectMember.Extends$(jsd.getJsd_3aExtends()));
 
-    if (jsonx.getJsd_3aProperties() != null) {
-      for (final Map.Entry<String,Object> property : jsonx.getJsd_3aProperties()._2e_2a.entrySet()) {
+    if (jsd.getJsd_3aProperties() != null) {
+      for (final Map.Entry<String,Object> property : jsd.getJsd_3aProperties()._2e_2a.entrySet()) {
         if (property.getValue() instanceof schema.AnyProperty)
-          xsb.addProperty(AnyModel.jsonxToXsb((schema.AnyProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(AnyModel.jsdToXsb((schema.AnyProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.ArrayProperty)
-          xsb.addProperty(ArrayModel.jsonxToXsb((schema.ArrayProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(ArrayModel.jsdToXsb((schema.ArrayProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.BooleanProperty)
-          xsb.addProperty(BooleanModel.jsonxToXsb((schema.BooleanProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(BooleanModel.jsdToXsb((schema.BooleanProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.NumberProperty)
-          xsb.addProperty(NumberModel.jsonxToXsb((schema.NumberProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(NumberModel.jsdToXsb((schema.NumberProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.ReferenceProperty)
-          xsb.addProperty(Reference.jsonxToXsb((schema.ReferenceProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(Reference.jsdToXsb((schema.ReferenceProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.StringProperty)
-          xsb.addProperty(StringModel.jsonxToXsb((schema.StringProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(StringModel.jsdToXsb((schema.StringProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.ObjectProperty)
-          xsb.addProperty(ObjectModel.jsonxToXsb((schema.ObjectProperty)property.getValue(), property.getKey()));
+          xsb.addProperty(ObjectModel.jsdToXsb((schema.ObjectProperty)property.getValue(), property.getKey()));
         else
           throw new UnsupportedOperationException("Unsupported JSONx type: " + property.getValue().getClass().getName());
       }
