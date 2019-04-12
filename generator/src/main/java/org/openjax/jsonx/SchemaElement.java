@@ -18,6 +18,9 @@ package org.openjax.jsonx;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,12 +36,16 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.lang.PackageLoader;
 import org.openjax.standard.lang.PackageNotFoundException;
+import org.openjax.standard.net.URLs;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.IdentityHashSet;
 import org.openjax.standard.util.Iterators;
+import org.openjax.standard.xml.api.ValidationException;
 import org.openjax.standard.xml.api.XmlElement;
+import org.openjax.xsb.runtime.Bindings;
 import org.openjax.xsb.runtime.QName;
 
 /**
@@ -65,6 +72,88 @@ public final class SchemaElement extends Element {
     return schema;
   }
 
+  /**
+   * Creates a {@code SchemaElement} from the content of the specified file that
+   * is expected to be in JSD format.
+   *
+   * @param url The {@code URL} of the content to parse.
+   * @param prefix The class name prefix to be prepended to the names of
+   *          generated JSD bindings.
+   * @return The {@code SchemaElement} instance.
+   * @throws IOException If an I/O error has occurred.
+   * @throws DecodeException If a decode error has occurred.
+   * @throws ValidationException If a validation error has occurred.
+   */
+  public static SchemaElement parseJsd(final URL url, final String prefix) throws IOException, DecodeException, ValidationException {
+    try (final InputStream in = url.openStream()) {
+      final schema.Schema schema = JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in)));
+      return new SchemaElement(schema, prefix);
+    }
+  }
+
+  /**
+   * Creates a {@code SchemaElement} from the content of the specified file that
+   * is expected to be in JSDX format.
+   *
+   * @param url The {@code URL} of the content to parse.
+   * @param prefix The class name prefix to be prepended to the names of
+   *          generated JSD bindings.
+   * @return The {@code SchemaElement} instance.
+   * @throws IOException If an I/O error has occurred.
+   * @throws ValidationException If a validation error has occurred.
+   */
+  public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, ValidationException {
+    try (final InputStream in = url.openStream()) {
+      final xL4gluGCXYYJc.Schema schema = (xL4gluGCXYYJc.Schema)Bindings.parse(in);
+      return new SchemaElement(schema, prefix);
+    }
+  }
+
+  /**
+   * Creates a {@code SchemaElement} from the contents of the specified
+   * {@code file}. The supported content formats are JSDX and JSD. If the
+   * supplied file is not in one of the supported formats, an
+   * {@code IllegalArgumentException} is thrown.
+   *
+   * @param url The file from which to read the contents.
+   * @param prefix The class name prefix to be prepended to the names of
+   *          generated JSD bindings.
+   * @return A {@code SchemaElement} from the contents of the specified
+   *         {@code file}.
+   * @throws IllegalArgumentException If the format of the content of the
+   *           specified file is malformed, or is not JSDX or JSD.
+   * @throws IOException If an I/O error has occurred.
+   */
+  public static SchemaElement parse(final URL url, final String prefix) throws IOException {
+    if (URLs.getName(url).endsWith(".jsd")) {
+      try {
+        return parseJsd(url, prefix);
+      }
+      catch (final DecodeException | ValidationException de) {
+        try {
+          return parseJsdx(url, prefix);
+        }
+        catch (final Exception e) {
+          e.addSuppressed(de);
+          throw new IllegalArgumentException(e);
+        }
+      }
+    }
+
+    try {
+      return parseJsdx(url, prefix);
+    }
+    catch (final ValidationException de) {
+      try {
+        return parseJsd(url, prefix);
+      }
+      catch (final DecodeException | ValidationException e) {
+        e.addSuppressed(de);
+        throw new IllegalArgumentException(e);
+      }
+    }
+  }
+
   private final Registry registry;
   private final String version;
 
@@ -75,9 +164,10 @@ public final class SchemaElement extends Element {
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
+   * @throws ValidationException
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
-  public SchemaElement(final xL4gluGCXYYJc.Schema schema, final String prefix) {
+  public SchemaElement(final xL4gluGCXYYJc.Schema schema, final String prefix) throws ValidationException {
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
@@ -150,9 +240,10 @@ public final class SchemaElement extends Element {
    * @param schema The JSD binding.
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
+   * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
-  public SchemaElement(final schema.Schema schema, final String prefix) {
+  public SchemaElement(final schema.Schema schema, final String prefix) throws ValidationException {
     this(jsdToXsb(schema), prefix);
   }
 

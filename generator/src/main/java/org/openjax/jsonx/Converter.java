@@ -18,74 +18,104 @@ package org.openjax.jsonx;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
 import org.openjax.standard.json.JSON;
-import org.openjax.standard.json.JsonReader;
+import org.openjax.standard.net.URLs;
 import org.openjax.standard.xml.api.ValidationException;
 import org.openjax.standard.xml.api.XmlElement;
-import org.openjax.xsb.runtime.Bindings;
 
-public class Converter {
-  enum Type {
-    JSDX, JSD
-  }
-
+/**
+ * Utility for converting JSD files to JSDX, and vice versa.
+ */
+public final class Converter {
   private static void trapPrintUsage() {
-    System.err.println("Usage: Converter <IN> <OUT>");
+    System.err.println("Usage: Converter <SCHEMA_IN> [SCHEMA_OUT]");
     System.err.println();
-    System.err.println("Supported extensions:");
-    System.err.println("               <.jsd|.jsdx>");
+    System.err.println("Supported SCHEMA_IN|OUT formats:");
+    System.err.println("                 <JSD|JSDX>");
     System.exit(1);
   }
 
-  private static Type getType(final File file) {
-    if (file.getName().endsWith(".jsd"))
-      return Type.JSD;
-
-    if (file.getName().endsWith(".jsdx"))
-      return Type.JSDX;
-
-    throw new UnsupportedOperationException("Unsupported file extension: " + file.getName().substring(file.getName().lastIndexOf('.')));
-  }
-
-  public static void main(final String[] args) throws DecodeException, IOException, ValidationException {
-    if (args.length != 2)
+  public static void main(final String[] args) throws IOException {
+    if (args.length != 1 && args.length != 2)
       trapPrintUsage();
 
-    final File inFile = new File(args[0]).getAbsoluteFile();
-    final File outFile = new File(args[1]).getAbsoluteFile();
+    final String converted = convert(new File(args[0]).getAbsoluteFile().toURI().toURL());
+    if (args.length == 1)
+      System.out.println(converted);
+    else
+      Files.write(new File(args[1]).toPath(), converted.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+  }
 
-    final Type inType = getType(inFile);
-    final Type outType = getType(outFile);
-    if (inType == outType) {
-      Files.copy(inFile.toPath(), outFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+  /**
+   * Converts a JDS file to the JSDX format.
+   *
+   * @param url The {@code URL} of the content to convert.
+   * @return The converted file in JSDX format.
+   * @throws IOException If an I/O error has occurred.
+   * @throws DecodeException If a decode error has occurred.
+   * @throws ValidationException If a validation error has occurred.
+   */
+  public static String jsdToJsdx(final URL url) throws IOException, DecodeException, ValidationException {
+    final XmlElement xml = SchemaElement.parseJsd(url, "").toXml();
+    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd");
+    return xml.toString();
+  }
+
+  /**
+   * Converts a JDSX file to the JSD format.
+   *
+   * @param url The {@code URL} of the content to convert.
+   * @return The converted file in JSD format.
+   * @throws IOException If an I/O error has occurred.
+   * @throws ValidationException If a validation error has occurred.
+   */
+  public static String jsdxToJsd(final URL url) throws IOException, ValidationException {
+    return JSON.toString(SchemaElement.parseJsdx(url, "").toJson());
+  }
+
+  /**
+   * Converts a JDS or JSDX file to the other format.
+   *
+   * @param url The {@code URL} of the content to convert.
+   * @return The converted format.
+   * @throws IllegalArgumentException If the format of the content of the
+   *           specified file is malformed, or is not JSDX or JSD.
+   * @throws IOException If an I/O error has occurred.
+   */
+  public static String convert(final URL url) throws IOException {
+    if (URLs.getName(url).endsWith(".jsd")) {
+      try {
+        return jsdToJsdx(url);
+      }
+      catch (final DecodeException | ValidationException de) {
+        try {
+          return jsdxToJsd(url);
+        }
+        catch (final Exception e) {
+          e.addSuppressed(de);
+          throw new IllegalArgumentException(e);
+        }
+      }
     }
-    else {
-      final SchemaElement schema;
-      try (final InputStream in = inFile.toURI().toURL().openStream()) {
-        if (inType == Type.JSDX)
-          schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(in), "");
-        else
-          schema = new SchemaElement(JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in))), "");
-      }
 
-      final String out;
-      if (outType == Type.JSDX) {
-        final XmlElement xml = schema.toXml();
-        xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd");
-        out = xml.toString();
-      }
-      else {
-        out = JSON.toString(schema.toJson());
-      }
-
-      Files.write(outFile.toPath(), out.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    try {
+      return jsdxToJsd(url);
     }
+    catch (final ValidationException ve) {
+      try {
+        return jsdToJsdx(url);
+      }
+      catch (final DecodeException | ValidationException e) {
+        e.addSuppressed(ve);
+        throw new IllegalArgumentException(e);
+      }
+    }
+  }
+
+  private Converter() {
   }
 }

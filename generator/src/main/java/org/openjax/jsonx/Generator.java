@@ -18,25 +18,26 @@ package org.openjax.jsonx;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
-import org.openjax.standard.xml.api.ValidationException;
-import org.openjax.xsb.runtime.Bindings;
-
+/**
+ * Utility for generating Java source code from JSD or JSDX schema files.
+ */
 public class Generator {
   private static void trapPrintUsage() {
-    System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_XML>");
+    System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>");
     System.err.println();
     System.err.println("Mandatory arguments:");
     System.err.println("  -d <destDir>       Specify the destination directory.");
     System.err.println();
     System.err.println("Optional arguments:");
     System.err.println("  --prefix <PREFIX>  Package prefix for generated classes.");
+    System.err.println();
+    System.err.println("Supported SCHEMA_FILE formats:");
+    System.err.println("                 <JSD|JSDX>");
     System.exit(1);
   }
 
-  public static void main(final String[] args) throws IOException, ValidationException {
+  public static void main(final String[] args) throws IOException {
     if (args.length == 0 || args[0] == null || args[0].length() == 0)
       trapPrintUsage();
 
@@ -52,11 +53,6 @@ public class Generator {
         schemaFile = new File(args[i]).getAbsoluteFile();
     }
 
-    final SchemaElement schema;
-    try (final InputStream in = schemaFile.toURI().toURL().openStream()) {
-      schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(in), prefix);
-    }
-
-    schema.toSource(destDir);
+    SchemaElement.parse(schemaFile.toURI().toURL(), prefix).toSource(destDir);
   }
 }
