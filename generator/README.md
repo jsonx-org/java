@@ -27,7 +27,7 @@ A distinction has to be made between "normative scope" and "non-normative scope"
 
 The `Generator` is a utility class that can be used on the CLI to generate Java binding classes from a JSD schema. The `Generator` class has the following usage specification:
 
-```bash
+```
 Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>
 
 Mandatory arguments:
@@ -44,7 +44,7 @@ Supported SCHEMA_FILE formats:
 
 The `Converter` is a utility class that can be used on the CLI to convert JSD files to JSDX, and vice versa. The `Converter` class has the following usage specification:
 
-```bash
+```
 Usage: Converter <SCHEMA_IN> [SCHEMA_OUT]
 
 Supported SCHEMA_IN|OUT formats:
