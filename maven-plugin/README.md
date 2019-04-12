@@ -36,7 +36,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
         <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
         <prefix>com.example.json.</prefix>
         <schemas>
-          <schema>src/main/resources/json.jsd</schema>
+          <schema>src/main/resources/schema.jsd</schema>
         </schemas>
       </configuration>
     </execution>
@@ -51,7 +51,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 | <samp>/destDir¹</samp>        | String  | Required | Destination path of generated bindings.                                   |
 | <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;         | String<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.                                     |
-| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of XML Schema.                                                  |
+| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of JSD or JSDX schema.                                          |
 
 ### JavaDocs
 
