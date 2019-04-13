@@ -103,10 +103,28 @@ public class JxEncoder {
   private final String colon;
   private final boolean validate;
 
+  /**
+   * Creates a new {@code JxEncoder} for the specified number of spaces to be
+   * used when indenting values during serialization to JSON documents.
+   *
+   * @param indent The number of spaces to be used when indenting values during
+   *          serialization to JSON documents.
+   * @throws IllegalArgumentException If {@code indent < 0}.
+   */
   protected JxEncoder(final int indent) {
     this(indent, true);
   }
 
+  /**
+   * Creates a new {@code JxEncoder} for the specified number of spaces to be
+   * used when indenting values during serialization to JSON documents.
+   *
+   * @param indent The number of spaces to be used when indenting values during
+   *          serialization to JSON documents.
+   * @param validate If {@code true}, the produced JSON is validated; if
+   *          {@code false}, the produced JSON is not validated.
+   * @throws IllegalArgumentException If {@code indent < 0}.
+   */
   JxEncoder(final int indent, final boolean validate) {
     if (indent < 0)
       throw new IllegalArgumentException("Indent must be a non-negative: " + indent);
@@ -439,6 +457,16 @@ public class JxEncoder {
     return null;
   }
 
+  /**
+   * Marshals the specified {@code JxObject}, performing callbacks to the
+   * provided {@code TriObjBiIntConsumer} for each encoded field.
+   *
+   * @param object The {@code JxObject}.
+   * @param onFieldEncode The {@code TriObjBiIntConsumer} to be called for each
+   *          encoded field.
+   * @return A JSON document from the marshaled {@code JxObject}.
+   * @throws EncodeException If an encode error has occurred.
+   */
   String marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode) {
     final StringBuilder builder = new StringBuilder();
     final Error error = marshal(object, onFieldEncode, builder, 1);
@@ -452,7 +480,7 @@ public class JxEncoder {
    * Marshals the specified {@code JxObject}.
    *
    * @param object The {@code JxObject}.
-   * @return A JSON document from the marshaled {@code object}.
+   * @return A JSON document from the marshaled {@code JxObject}.
    * @throws EncodeException If an encode error has occurred.
    */
   public String marshal(final JxObject object) {
@@ -468,7 +496,7 @@ public class JxEncoder {
    * @param list The {@code List}.
    * @param arrayAnnotationType The annotation type that declares an
    *          {@link ArrayType} annotation.
-   * @return A JSON document from the marshaled {@code list}.
+   * @return A JSON document from the marshaled {@code List}.
    * @throws EncodeException If an encode error has occurred.
    */
   public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
