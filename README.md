@@ -1,208 +1,135 @@
-# OpenJAX JSONx
+# JSONX Framework
 
-> Java <-> JSON Binding
+> JSON Schema, Validation, Java Binding
 
 [![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
 
-## Introduction
+## Abstract
 
-<ins>JSONx</ins> is a framework that provides the **JSON** E**x**tensible Schema Specification. The supporting the following main features:
+The <ins>JSONX Framework</ins> is a collection of specifications and reference implementations based on the <ins>JSON Schema Definition Language</ins>. This document describes the <ins>JSONX Framework</ins>, and presents a directory of links to its constituent parts and related resources.
 
-1. [**<ins>JSONx</ins> Schema**](#jsonx-schema): Schema language in XML and in <ins>JSONx</ins> (can be converted from one to the other):
-    1. [XML Schema Document][jsonx-xsd]: A <ins>JSONx</ins> Schema as an XSD, leveraging XML for schema validation.
-    2. [JSONx Document][jsonx-jsonx]: A <ins>JSONx</ins> Schema as a JSON document, leveraging <ins>JSONx</ins> for schema validation.
-2. [**Binding Generator**](#binding-generator): Generate Java binding classes from a <ins>JSONx</ins> Schema. Generated classes are used to parse and marshal JSON documents to and from binding classes.
-3. [**Schema Generator**](#schema-generator): Generate a <ins>JSONx</ins> Schema from binding classes.
-4. [**Validation**](#validation): Validation of a JSON document against a <ins>JSONx</ins> Schema. Element validation includes:
-    1. **array**: Validation of declared elements and their order specified via: `minOccurs`, `maxOccurs`, `nullable`.
-    2. **boolean**: No properties to validate.
-    3. **number**: Validation of `form` (integer/real) and `range` (min/max inclusive/exclusive).
-    4. **object**: Validation of object inheritence hierarchy (`abstract`, `extends`), and declared properties, involving: `use` (optional/required), `nullable`.
-    5. **string**: Validation of `pattern` (regex pattern).
-5. [**JAX-RS Provider**](#jax-rs-provider): Content provider as MessageBodyReader and MessageBodyWriter.
+## Table of Contents
 
-## <ins>JSONx</ins> Schema
+## 1 Introduction
 
-The [JSONx Schema][jsonx-xsd] is the foundation of the <ins>JSONx</ins> Framework. The <ins>JSONx</ins> Schema defines [template](#templates) classes that are enforced by <ins>JSONx</ins> during validation (parsing or marshalling), both in the XML and <ins>JSONx</ins> forms of schema documents. The schema allows for the definition of [Types](#types), [Properties](#properties), and [Elements](#elements) representing the five JSON value classes: **string**, **number**, **boolean**, **array**, and **object**.
+The <ins>JSONX Framework</ins> helps developers work with JSON, offering functionalities intended to systematically reduce errors and pain-points commonly encountered when parsing, marshaling, asserting the correctness of JSON messages, and even developing software that interfaces with JSON in one way or another. The <ins>JSONX Framework</ins> leverages the <ins>JSON Schema Definition Language</ins> to represent the structure, usage, constraints and relationships of constituent parts of a JSON document. The <ins>JSONX Framework</ins> provides reference implementations of validation and Java class binding capabilities for JSON documents conforming to a respective schema document.
 
-### Templates
+### 1.1 Dependencies on Other Specifications
 
-The **template** _abstractions_ define the base properties for JSON values.
+The definition of the <ins>JSON Schema Definition Language</ins> depends on the following specifications: [\[RFC4627\]][rfc4627] and [\[XMLSchema\]][xmlschema].
 
-| **Type** | **Attributes** | **Children** |
-|----------|--|--|
-| **_boolean_**          |  | |
-| **_number_**<br>&nbsp; | <ins>form</ins>: &lt; integer \| **real** &gt; <br><ins>range</ins>: Numerical range ([interval notation][interval-notation]) | |
-| **_string_**           | <ins>pattern</ins>: Regular expression | |
-| **_object_**<br>&nbsp; | <ins>abstract</ins>: &lt; true \| **false** &gt;<br><ins>extends</ins>: Name of **object** [type](#types) | **[Properties](#properties)**<br>&nbsp; |
-| **_array_**<br>&nbsp;  | <ins>minIterate</ins>: &lt; **1** \| 2 \| ... &gt;<br><ins>maxIterate</ins>: &lt; **1** \| 2 \| ... \| unbounded &gt; | **[Elements](#elements)**<br>&nbsp; |
+### 1.2 Conventions Used in This Document
 
-### Schema
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
 
-The **schema** is root element of the Schema Document, and contains [type](#types) definitions.
+## 2 Purpose
 
-| **Type** | **Attributes** | **Children** |
-|----------|--|--|
-| **schema** | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | **[Types](#types)** |
+The <ins>JSONX Framework</ins> was created to help developers solve common problems related to various use-cases regarding JSON. The following list identifies several common problems for which the <ins>JSONX Framework</ins> provides solutions. The sub-lists define requirements related to the respective problem.
 
-### Types
+1. Provide a schema language to describe normative contracts between producer and consumer ends of a JSON document protocol.
+   
+   1. The schema language must constrain and document the meaning, usage, constraints and relationships of the constituent parts of a JSON document.
 
-The **type** definitions belong to a **[schema](#schema)**, and inherit from [Template](#templates) definitions with the following extensions:
+   1. The schema language must provide meaningful and useful constraint rules for the 5 JSON value types: boolean, number, string, object, and array.
 
-| **Type** | **Attributes** | **Children** |
-|----------|--|--|
-| **_\*\*all\*\*_** | <ins>name</ins>: Name of type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | |
+   1. The schema language must support schema descriptions for the full scope of variability of JSON documents, as defined in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
 
-### Properties
+   1. The schema language must be free of and agnostic to patterns specific to any particular programming languages.
 
-Properties belong to an **object**, and inherit from [type](#types) definitions with the following extensions:
+   1. The schema language must be able to describe itself.
 
-| **Type** | **Attributes** | **Children** |
-|----------|--|--|
-| **_\*\*all\*\*_**<br>&nbsp; | <ins>use</ins>: &lt; **required** \| optional &gt;<br><ins>nullable</ins>: &lt; **true** \| false &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | |
-| **reference** | <ins>type</ins>: Name of reference [type](#types) | |
+1. Provide a binding API for parsing and marshaling JSON documents to and from strongly-typed Java classes.
 
-### Elements
+   1. The binding API must be able to model the full scope of constraints defineable in the schema language.
 
-The **element** definitions belong to an **array**, and inherit from [Template](#templates) definitions with the following extensions:
+   1. The binding API must enforce (via validation) the constraint rules defined in the schema document.
 
-| **Type** | **Attributes** | **Children** |
-|----------|--|--|
-| **_\*\*all\*\*_**<br>&nbsp;<br>&nbsp; | <ins>nullable</ins>: &lt; **true** \| false &gt;<br><ins>minOccurs</ins>: &lt; 0 \| **1** \| 2 \| ... &gt;<br><ins>maxOccurs</ins>: &lt; 0 \| 1 \| 2 \| ... \| **unbounded** &gt;&nbsp;&nbsp; | |
-| **reference** | <ins>type</ins>: Name of reference [type](#types) | |
+   1. The binding API must constrain the 5 JSON value types to lightweight Java type bindings.
 
-## Bindings
+   1. The binding API must produce clear and useful error messages upon exception of schema document constraints during validation of JSON documents.
 
-The <ins>JSONx</ins> framework implements an API for the definition of binding rules between JSON and Java classes, providing the compile- and run-time equivalent version of the full scope of the <ins>JSONx</ins> Schema. <ins>JSONx</ins> bindings allow a class to parse and marshal JSON to and from their Java object representations. The binding API is expressed as Java annotations, allowing any class to bind to <ins>JSONx</ins> with light coupling.
+   1. The binding API must use light coupling, not imposing requirements for exclusionary patterns onto a class model.
 
-### Binding Generator
+   1. The binding API must offer easy patterns for manual description of binding relationships to schema documents.
 
-The <ins>JSONx</ins> framework implements a Java class generator that reads a <ins>JSONx</ins> Schema and writes `.java` files. The generated classes are strongly-typed, providing compile-time enforcement of the structural definitions of a <ins>JSONx</ins> Schema. The generated classes can be used to parse and marshal JSON to and from Java objects, providing runtime enforcement of the validation properties of elements of a <ins>JSONx</ins> Schema.
+   1. The binding API must be straightforward, intuitive, and resilient to potential human error.
 
-### Schema Generator
+1. Provide a code generation utility for automatic creation of binding classes from a schema document.
 
-The <ins>JSONx</ins> framework implements a <ins>JSONx</ins> Schema generator that reads `.class` files and writes <ins>JSONx</ins> Schemas. If <ins>JSONx</ins> bindings were used directly to implement a <ins>JSONx</ins> model in Java, the schema generator can be used to reverse engineer the schema from Java classes. This is effectively the inverse of the [Binding Generator](#binding-generator).
+   1. The binding generator must be able to consume a schema document and produce Java class definitions utilizing the binding API.
 
-### Validation
+   1. The binding generator must be able to consume Java class definitions utilizing the binding API and produce a schema document.
 
-The <ins>JSONx</ins> framework implements a validation engine that enforces the definitions in a <ins>JSONx</ins> Schema. Validation attributes are defined for each element class in the [**<ins>JSONx</ins> Schema**](#jsonx-schema):
+   1. The binding generator must create Java classes that encode the full normative scope of the schema document.
 
-1. **array**
+   1. The binding generator must be able to validate a schema document.
 
-    Array classes define the spec of member elements that are allowed to appear in the array. Elements specify the folliwng attributes to define validation rules:
+1. Provide an analogous encoding of JSON documents in XML semantics, named JSONX.
 
-    * `minOccurs`: Minimum (inclusive) number of occurrences expected of the member element.
-    * `maxOccurs`: Maximum (inclusive) number of occurrences allowed of the member element.
-    * `nullable`: Whether the member element can be represented as `null`.
+   1. The JSONX documents must be able to support the full scope of variability of JSON documents, as defined in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
 
-    Additionally, the array class defines the following validation rules:
+   1. The JSONX documents must be translatable to JSON document and back, preserving all normative and non-normative features of the original document.
 
-    * `minIterate`: Minimum (inclusive) number of iterations expected of the member element spec.
-    * `maxIterate`: Maximum (inclusive) number of iterations allowed of the member element spec.
+   1. The JSONX documents must provide meaningful and useful validation features via XSD validation.
 
-    _**Note**: In order to support validation based on the aforementioned attributes, the <ins>JSONx</ins> framework relies on a "Breadth First Search" algorithm to attempt to match each member in a JSON array to an element definition. <ins>Loosely defined elements can result in more costly validation times. Elements defined with strict attributes, however, will result in optimal performance.</ins> When matching member elements of an array, the array validator has a worst case performance of `O(N * E!)`, where `N` is the number of elements in an array, and `E` is the number of element classes in the array definition._
+1. Provide direct integration for parsing and marshaling binding objects for JAX-RS runtimes.
 
-    <ins>Example</ins>: _(Exerpt from [arrays.jsonx](/generator/src/test/resources/array.jsonx))_
-    ```xml
-    <array minIterate="2" maxIterate="9" nullable="false">
-      <string maxOccurs="3" nullable="false"/>
-      <reference type="rootString" minOccurs="2"/>
-      <boolean nullable="false"/>
-      <array minIterate="0" maxIterate="3" minOccurs="3" maxOccurs="5">
-        <string nullable="false" minOccurs="2" maxOccurs="7"/>
-        <reference type="rootNumber"/>
-        <array maxIterate="2" maxOccurs="1">
-          <reference type="bar$rootArray2"/>
-          <array maxOccurs="2">
-            <array nullable="false">
-              <string/>
-            </array>
-          </array>
-          <boolean minOccurs="5"/>
-        </array>
-        <reference type="rootBoolean"/>
-        <number maxOccurs="7"/>
-      </array>
-      <reference type="templateArray"/>
-      <number nullable="false"/>
-    </array>
-    ```
+   1. The JAX-RS integration must support any JAX-RS application as defined in [JAX-RS 2.1 Spec](http://download.oracle.com/otn-pub/jcp/jaxrs-2_1-pfd-spec/jaxrs-2_1-pfd-spec.pdf).
 
-2. **boolean**
+   1. The JAX-RS integration must be automatic and free of requirement for configuration that would couple an application to the <ins>JSONX Framework</ins>.
 
-    No attributes to validate.
+1. Provide schema validation and code generation facilities in a Maven plugin.
 
-3. **number**
+   1. The Maven plugin must present errors and warnings that arise during parsing and validation of schema documents, and JSON documents with an associated schema.
 
-    Number classes define the following validation rules:
+   1. The Maven plugin must offer facilities to generate binding classes conforming to specified schema documents.
 
-    * `form`: Either "real" or "integer".
-    * `range`: Numerical range in [interval notation][interval-notation].
+## 3 <ins>JSONX Framework</ins>
 
-    <ins>Example</ins>: _(Exerpt from [datatype.jsonx](/generator/src/test/resources/datatype.jsonx))_
-    ```xml
-    <number name="num"/>
-    <number name="numInt" form="integer"/>
-    <number name="numIntRange1" form="integer" range="[1,]"/>
-    <number name="numIntRange2" form="integer" range="[,4]"/>
-    <number name="numRange1" form="real" range="(1.2,]"/>
-    <number name="numRange2" form="real" range="[,4.35)"/>
-    ```
+The <ins>JSONX Framework</ins> is comprised of 6 constituent parts:
 
-4. **object**
+### 3.1 JSON Schema Definition Language
 
-    Object classes define the spec of properties that are allowed ot appear in the object. Properties specify the following attributes to define validation rules:
+   Describe JSON documents by using schema components to constrain and document the meaning, usage and relationships of their constituent parts: value types and their content.
 
-    * `use`: Whether the member property is **"optional"** or "required".
-    * `nullable`: Whether the member property can be represented as `null`.
+   For a detailed specification of the schema language, see [<ins>JSON Schema Definition Language</ins>](/schema).
 
-    Additionally, the object class defines the following validation rules:
+### 3.2 JSON/Java Binding API
 
-    * `abstract`: Whether the definition represents an abstract class (that cannot be instantiated).
-    * `extends`: Object class inheritence.
+   Provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][jsd] to be validated, and parsed and marshaled, to and from Java objects of strongly-typed classes.
 
-    <ins>Example</ins>: _(Exerpt from [complete.jsonx](/generator/src/test/resources/complete.jsonx))_
-    ```xml
-    <objectType name="xyz$objects">
-      <property name="objectDefault" xsi:type="object"/>
-      <property name="objectOptional" xsi:type="object" use="optional"/>
-      <property name="objectOptionalNotNullable" xsi:type="object" use="optional" nullable="false"/>
-      <property name="objectExtendsAbstract" xsi:type="object" extends="cls$abstractObject">
-        <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
-        <property name="objectExtendsBooleans" xsi:type="object" extends="simple$booleans"/>
-          <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
-          <property name="objectNumber" xsi:type="number"/>
-        </property>
-        <property name="objectOptionalNotNullableExtendsAbstract" xsi:type="object" extends="cls$abstractObject" use="optional" nullable="false">
-          <property name="objectNumber" xsi:type="number"/>
-        </property>
-      </property>
-      <property name="objectExtendsStrings" xsi:type="object" extends="simple$strings">
-        <property name="additionalString" xsi:type="string"/>
-      </property>
-    </objectType>
-    ```
+   For a detailed specification of the binding API, see [<ins>JSON/Java Binding API</ins>](/binding).
 
-5. **string**
+### 3.3 JSD Binding Generator
 
-    String classes define the following validation rules:
+   Consumes a JSD schema, and generates classes that use the <ins>JSON/Java Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
-    * `pattern`: A regex pattern for value validation.
+   For a detailed specification of the binding generator, see [<ins>JSD Binding Generator</ins>](/generator).
 
-    <ins>Example</ins>: _(Exerpt from [datatype.jsonx](/generator/src/test/resources/datatype.jsonx))_
-    ```xml
-    <string name="str"/>
-    <string name="strPattern" pattern="[%0-9a-z]+"/>
-    ```
+### 3.4 JSONX-JSON
 
-### JAX-RS Provider
+   Offers facilities for validating and converting JSON and JSONX documents (JSONX is JSON expressed in XML syntax).
 
-The <ins>JSONx</ins> framework implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in [`JxObjectProvider`](/rs/src/main/java/org/openjax/jsonx/rs/JxObjectProvider.java) to integrate with JAX-RS servers.
+   For a detailed specification of JSONX, see [<ins>JSONX-JSON</ins>](/json).
+
+### 3.5 JAX-RS Integration for JSONX
+
+   Implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in the JAX-RS API to integrate with JAX-RS server runtimes.
+
+   For a detailed specification of JAX-RS integration, see [<ins>JAX-RS Integration for JSONX</ins>](/rs).
+
+### 3.6 JSONX Maven Plugin
+
+   A Maven plugin for generating JSONX and JSD bindings.
+
+   For a detailed specification of the Maven plugin, see [<ins>JSONX Maven Plugin</ins>](/maven-plugin).
 
 ## Usage
 
 ### Getting Started
+
+The following example presents a use-case involving a schema document that defines JSON messages consumed and produced by binding classes in Java.
 
 #### Prerequisites
 
@@ -213,7 +140,7 @@ The <ins>JSONx</ins> framework implements the `MessageBodyReader` and `MessageBo
 
 1. In your preferred development directory, create a [`maven-archetype-quickstart`][maven-archetype-quickstart] project.
 
-  ```tcsh
+  ```bash
   mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
   ```
 
@@ -289,19 +216,19 @@ The <ins>JSONx</ins> framework implements the `MessageBodyReader` and `MessageBo
 
 5. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, a class by the name of `json` (as was specified in the `<prefix>` element of the `<configuration>` in the `jsonx-maven-plugin` definition) will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
 
-6. The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
+6. The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONX</ins> to and from JSON:
 
-  To parse JSON to <ins>JSONx</ins> Bindings:
+  To parse JSON to <ins>JSONX</ins> Bindings:
 
   ```java
   String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
   json.Credentials credentials = JxDecoder.parseObject(json.Credentials.class, new JsonReader(new StringReader(json)));
   ```
   
-  To marshal <ins>JSONx</ins> Bindings to JSON:
+  To marshal <ins>JSONX</ins> Bindings to JSON:
 
   ```java
-  String json2 = new JxEncoder().marshal(credentials);
+  String json2 = JxEncoder.get().marshal(credentials);
   assertEquals(json, json2);
   ```
 
@@ -319,11 +246,8 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics#Including_or_excluding_endpoints)
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[json]: http://www.json.org/
-[jsonx-jsonx]: /generator/src/main/resources/schema.jsonx
+[jsd]: ../schema
 [jsonx-maven-plugin]: /maven-plugin
-[jsonx-xsd]: /generator/src/main/resources/schema.xsd
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/

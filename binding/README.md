@@ -148,6 +148,8 @@ The `@ArrayType`, `@ArrayProperty` and `@ArrayElement` annotations define 3 comm
 
    The maximum inclusive number of iterations of child elements. Default: 1.
 
+_**Note**: In order to support validation based on the aforementioned attributes, the <ins>JSONx</ins> framework relies on a "Breadth First Search" algorithm to attempt to match each member in a JSON array to an element definition. <ins>Loosely defined elements can result in more costly validation times. Elements defined with strict attributes, however, will result in optimal performance.</ins> When matching member elements of an array, the array validator has a worst case performance of `O(N * E!)`, where `N` is the number of elements in an array, and `E` is the number of element classes in the array definition._
+
 <ins>Example</ins>: The annotation `@Staff` defines a JSON array that is comprised of zero or more `Contractor` and `Employee` member types in any order.
 
 ```java
