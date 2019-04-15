@@ -1,25 +1,55 @@
 # JSONX Maven Plugin
 
-> Maven Plugin for [JSONX][jsonx] framework
+## Abstract
 
-[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+This document specifies the <ins>JSONX Maven Plugin</ins>, which offers facilities for for generating JSONX and JSD bindings with the [JSON/Java Binding API][api].
 
-### Introduction
+## Table of Contents
+
+<samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
+<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Goals Overview][#goals]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Usage][#usage]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`jsonx:generate`][#generate]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1.1 [Example][#example]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [Configuration Parameters][#parameters]
+
+### 1 Introduction
 
 The `jsonx-maven-plugin` plugin is used to generate JSONX and JSD bindings with the [JSONX][jsonx] framework.
 
-### Goals Overview
+### 1.1 Conventions Used in This Document
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+
+## 2 Purpose
+
+Provide schema validation, code generation, and other convenience utlities in a <ins>Maven plugin</ins>.
+
+## 3 Requirements
+
+1. The <ins>Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
+
+1. The <ins>Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s and binding classes.
+
+1. The <ins>Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
+
+## 4 Specification
+
+### 4.1 Goals Overview
 
 * [`jsonx:generate`](#jsonxgenerate) generates JSD bindings.
 
-### Usage
+### 4.2 Usage
 
-#### `jsonx:generate`
+#### 4.2.1 `jsonx:generate`
 
 The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used to generate Java bindings for JSD schemas specified in the `configuration`. To configure the generation of JSD bindings for desired JSD schemas, add a `configuration` element to the plugin's specification.
 
-##### Example
+##### 4.2.1.1 Example
 
 ```xml
 <plugin>
@@ -44,7 +74,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 </plugin>
 ```
 
-#### Configuration Parameters
+#### 4.2.2 Configuration Parameters
 
 | Name                          | Type    | Use      | Description                                                               |
 |:------------------------------|:--------|:---------|:--------------------------------------------------------------------------|
@@ -67,5 +97,16 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[mvn-plugin]: https://img.shields.io/badge/mvn-plugin-lightgrey.svg
+[#introduction]: #1-introduction
+[#conventions]: #11-conventions-used-in-this-document
+[#purpose]: #2-purpose
+[#requirements]: #3-requirements
+[#specification]: #4-specification
+[#goals]: #41-goals-overview
+[#usage]: #42-usage
+[#generate]: #421-jsonxgenerate
+[#example]: #4211-example
+[#parameters]: #422-configuration-parameters
+
+[api]: /../../binding
 [jsonx]: /../..

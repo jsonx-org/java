@@ -8,21 +8,25 @@ This document specifies the <ins>JSONX-JSON API</ins>, which offers facilities f
 
 <samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications][#dependencies]<br>
-<samp>&nbsp;&nbsp;</samp>2 [JSONX Schema][#jsonxschema]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [`boolean` type][#booleantype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2 [`string` type][#stringtype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3 [`number` type][#numbertype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [`object` type][#objecttype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [`array` type][#arraytype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6 [`null` value][#nullvalue]<br>
-<samp>&nbsp;&nbsp;</samp>3 [JSONX-JSON API][#jsonxjsonapi]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [`JxConverter`][#jxconverter]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Sample Documents][#samples]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`paypal.json`][#paypaljson]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`paypal.jsonx`][#paypaljsonx]<br>
-<samp>&nbsp;&nbsp;</samp>5 [Related Resources for JSONX-JSON][#resources]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Schemas for JSONX Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSONX Schema 0.9.8][#jsonx-098]
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
+<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JSONX Schema][#jsonxschema]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.1 [`boolean` type][#booleantype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2 [`string` type][#stringtype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3 [`number` type][#numbertype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.4 [`object` type][#objecttype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5 [`array` type][#arraytype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.6 [`null` value][#nullvalue]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [JSONX-JSON API][#jsonxjsonapi]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`JxConverter`][#jxconverter]<br>
+<samp>&nbsp;&nbsp;</samp>5 [Sample Documents][#samples]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`paypal.json`][#paypaljson]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`paypal.jsonx`][#paypaljsonx]<br>
+<samp>&nbsp;&nbsp;</samp>6 [Related Resources for JSONX-JSON][#resources]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JSONX Schema][#json-schemas]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONX Schema 0.9.8][#jsonx-098]
 
 ## 1 Introduction
 
@@ -32,47 +36,65 @@ JSONX is JSON expressed in XML syntax. This document presents the structural par
 
 The definition of the <ins>JSONX-JSON API</ins> depends on the following specifications: [\[RFC4627\]][rfc4627] and [\[XMLSchema\]][xmlschema].
 
-## 2 JSONX Schema
+### 1.2 Conventions Used in This Document
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+
+## 2 Purpose
+
+Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONX documents</ins>.
+
+## 3 Requirements
+
+1. The <ins>JSONX documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+
+1. The <ins>JSONX documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+
+1. The <ins>JSONX documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+
+## 4 Specification
+
+### 4.1 <ins>JSONX Schema</ins>
 
 The JSONX Schema defines XML elements that represent an XML-equivalent of a JSON document. The JSONX Schema represents the JSON value types as follows:
 
-### 2.1 `boolean` Type
+#### 4.1.1 `boolean` Type
 
 The `false` and `true` string literals.
 
 <ins>Example</ins>: `true`
 
-### 2.2 `string` Type
+#### 4.1.2 `string` Type
 
 A double-quoted string. A JSON string may require to be escaped to a string that is legal for XML. The escaped characters are [Predefined Entities in XML][xmlentities].
 
 <ins>Example</ins>: `"string"`
 
-### 2.3 `number` Type
+#### 4.1.3 `number` Type
 
 A number that conforms to the [\[RFC4627\]][rfc4627] section 2.4.
 
 <ins>Example</ins>: `6.626E-34`
 
-### 2.4 `object` Type
+#### 4.1.4 `object` Type
 
 A JSON object is represented by the `<o>` element. The `<o>` element does not have attributes, and may contain 0 or more `<p>` elements.
 
 A JSON object property is represented by the `<p>` element. The `<p>` element contains an attribute `name` that specifies the property's name. The content of the `<p>` element can be one of [`boolean` type][#booleantype], [`string` type][#stringtype], [`number` type][#numbertype], [`object` type][#objecttype], or [`array` type][#arraytype].
 
-### 2.5 `array` Type
+#### 4.1.5 `array` Type
 
 A JSON array is represented by the `<a>` element. The `<a>` element does not have attributes, and may contain 0 or more space delimited members conforming to [`boolean` type][#booleantype], [`string` type][#stringtype], [`number` type][#numbertype], [`object` type][#objecttype], or [`array` type][#arraytype].
 
-### 2.6 `null` Value
+#### 4.1.6 `null` Value
 
 The `null` JSON value is represented by the string `null`.
 
-## 3 <ins>JSONX-JSON API</ins>
+### 4.2 <ins>JSONX-JSON API</ins>
 
 The <ins>JSONX-JSON API</ins> offers facilities for validating and converting JSON and JSONX documents.
 
-### 3.1 `JxConverter`
+#### 4.2.1 `JxConverter`
 
 The `JxConverter` class contains utility methods for conversion of JSON documents to JSONX documents, and vice versa.
 
@@ -88,11 +110,11 @@ JxConverter.jsonToJsonx(new JsonReader(new StringReader(json), false), true);
 JxConverter.jsonxToJson(new ByteArrayInputStream(jsonx.getBytes()), true);
 ```
 
-## 4 Sample Documents
+## 5 Sample Documents
 
 This section provides a sample JSON and its JSONX alternative.
 
-### 4.1 `paypal.json`
+### 5.1 `paypal.json`
 
 ```json
 {
@@ -130,7 +152,7 @@ This section provides a sample JSON and its JSONX alternative.
 }
 ```
 
-### 4.2 `paypal.jsonx`
+### 5.2 `paypal.jsonx`
 
 ```xml
 <o
@@ -171,31 +193,49 @@ This section provides a sample JSON and its JSONX alternative.
 </p></o>
 ```
 
-## 5 Related Resources for JSONX-JSON
+## 6 Related Resources for JSONX-JSON
 
-### 5.1 Schemas for JSONX-JSON
+### 6.1 Schemas for JSONX-JSON
 
-#### 5.1.1 JSONX Schema 0.9.8
+#### 6.1.1 JSONX Schema 0.9.8
 
 * A JSONX Schema schema document XSD [jsonx-0.9.8.xsd][jsonxxsd] for JSONX Schema documents.
 
+### JavaDocs
+
+JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
 [#introduction]: #1-introduction
 [#dependencies]: #11-dependencies
-[#jsonxschema]: #2-jsonxschema
-[#booleantype]: #21-booleantype
-[#stringtype]: #22-stringtype
-[#numbertype]: #23-numbertype
-[#objecttype]: #24-objecttype
-[#arraytype]: #25-arraytype
-[#nullvalue]: #26-nullvalue
-[#jsonxjsonapi]: #3-jsonxjsonapi
-[#jxconverter]: #31-jxconverter
-[#samples]: #4-samples
-[#paypaljson]: #41-paypaljson
-[#paypaljsonx]: #42-paypaljsonx
-[#resources]: #5-resources
-[#json-schemas]: #51-json-schemas
-[#jsonx-098]: #52-jsonx-098]
+[#conventions]: #12-conventions-used-in-this-document
+[#purpose]: #2-purpose
+[#requirements]: #3-requirements
+[#specification]: #4-specification
+[#jsonxschema]: #41-jsonxschema
+[#booleantype]: #411-booleantype
+[#stringtype]: #412-stringtype
+[#numbertype]: #413-numbertype
+[#objecttype]: #414-objecttype
+[#arraytype]: #415-arraytype
+[#nullvalue]: #416-nullvalue
+[#jsonxjsonapi]: #42-jsonxjsonapi
+[#jxconverter]: #421-jxconverter
+[#samples]: #5-samples
+[#paypaljson]: #51-paypaljson
+[#paypaljsonx]: #52-paypaljsonx
+[#resources]: #6-resources
+[#json-schemas]: #61-json-schemas
+[#jsonx-098]: #62-jsonx-098]
 
 [api]: ../binding
 [jsonxxsd]: http://jsonx.openjax.org/jsonx-0.9.8.xsd

@@ -9,29 +9,31 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 <samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications][#dependencies]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [<ins>JSON Schema Definition Language</ins>][#jsd]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [Schema Document][#schema]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2 [Model for JSON Values][#model]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.1 [`boolean` Model][#boolean]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.2 [`number` Model][#number]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.3 [`string` Model][#string]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.4 [`object` Model][#object]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.4.1 [Property Names][#property-names]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.5 [`array` Model][#array]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.6 [`any` Model][#any]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.7 [`reference` Model][#reference]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3 [Root Declarative Types][#types]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [Object Properties][#properties]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [Array Elements][#elements]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Related Resources for JSON Schema][#resources]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [Schemas for JSON Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1.1 [JSON Schema 0.9.8][#schema-098]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1.2 [JSON Schema 0.9.7][#schema-097]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Sample Schemas][#samples]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`structure.jsdx`][#structurejsdx]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`structure.jsd`][#structurejsd]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [`datatype.jsdx`][#datatypejsdx]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [`datatype.jsd`][#datatypejsd]
+<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Schema Document][#schema]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Model for JSON Values][#model]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`boolean` Model][#boolean]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [`number` Model][#number]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`string` Model][#string]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.4 [`object` Model][#object]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.4.1 [Property Names][#property-names]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.5 [`array` Model][#array]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.6 [`any` Model][#any]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.7 [`reference` Model][#reference]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [Root Declarative Types][#types]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [Object Properties][#properties]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.5 [Array Elements][#elements]<br>
+<samp>&nbsp;&nbsp;</samp>5 [Related Resources for JSON Schema][#resources]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Schemas for JSON Schema][#json-schemas]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSON Schema 0.9.8][#schema-098]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [JSON Schema 0.9.7][#schema-097]<br>
+<samp>&nbsp;&nbsp;</samp>6 [Sample Schemas][#samples]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`structure.jsdx`][#structurejsdx]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`structure.jsd`][#structurejsd]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [`datatype.jsdx`][#datatypejsdx]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [`datatype.jsd`][#datatypejsd]
 
 ## 1 Introduction
 
@@ -49,27 +51,43 @@ The definition of the <ins>JSON Schema Definition Language</ins> depends on the 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 <ins>JSON Schema Definition Language</ins>
+## 2 Purpose
+
+Provide a <ins>schema language</ins> to describe normative contracts between producer and consumer ends of a protocol exchanging JSON documents.
+
+## 3 Requirements
+
+1. The <ins>schema language</ins> MUST constrain and document the meaning, usage, constraints and relationships of the constituent parts of a JSON document.
+
+1. The <ins>schema language</ins> MUST provide meaningful and useful constraint rules for the 5 JSON value types: `boolean`, `number`, `string`, `object`, and `array`.
+
+1. The <ins>schema language</ins> MUST support schema descriptions for any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+
+1. The <ins>schema language</ins> MUST be free-of and agnostic-to patterns specific to any particular programming language.
+
+1. The <ins>schema language</ins> MUST be able to describe itself.
+
+## 4 Specification
 
 The <ins>JSON Schema Definition Language</ins> (JSD) is normatively defined in an <ins>XML Schema Document</ins>, with translations expressed in the <ins>JSON/XML Schema Definition Language</ins> (JSDX), as well as the <ins>JSON Schema Definition Language</ins> (JSD) itself.
 
 The JSD is comprised of 5 structural abstractions:
 
-<samp>&nbsp;&nbsp;</samp>2.1 [Schema][#schema]<br>
-<samp>&nbsp;&nbsp;</samp>2.2 [Model for JSON Values][#model]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.1 [`boolean` Model][#boolean]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.2 [`number` Model][#number]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.3 [`string` Model][#string]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.4 [`object` Model][#object]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.4.1 [Property Names][#property-names]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.5 [`array` Model][#array]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.6 [`any` Model][#any]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.7 [`reference` Model][#reference]<br>
-<samp>&nbsp;&nbsp;</samp>2.3 [Root Declarative Types][#types]<br>
-<samp>&nbsp;&nbsp;</samp>2.4 [Object Properties][#properties]<br>
-<samp>&nbsp;&nbsp;</samp>2.5 [Array Elements][#elements]
+<samp>&nbsp;&nbsp;</samp>4.1 [Schema][#schema]<br>
+<samp>&nbsp;&nbsp;</samp>4.2 [Model for JSON Values][#model]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`boolean` Model][#boolean]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [`number` Model][#number]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`string` Model][#string]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.4 [`object` Model][#object]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.4.1 [Property Names][#property-names]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.5 [`array` Model][#array]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.6 [`any` Model][#any]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.7 [`reference` Model][#reference]<br>
+<samp>&nbsp;&nbsp;</samp>4.3 [Root Declarative Types][#types]<br>
+<samp>&nbsp;&nbsp;</samp>4.4 [Object Properties][#properties]<br>
+<samp>&nbsp;&nbsp;</samp>4.5 [Array Elements][#elements]
 
-### 2.1 Schema Document
+### 4.1 Schema Document
 
 The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#types] definitions.
 
@@ -91,11 +109,11 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
    </schema>
    ```
 
-### 2.2 Model for JSON Values
+### 4.2 Model for JSON Values
 
 The <samp>**model**</samp> objects define the constraint properties of the five JSON value classes: <samp>**boolean**</samp>, <samp>**number**</samp>, <samp>**string**</samp>, <samp>**object**</samp>, and <samp>**array**</samp>. The <ins>JSON Schema Definition Language</ins> defines two additional meta value classes named <samp>**any**</samp> and <samp>**reference**</samp>.
 
-#### 2.2.1 `boolean` Model
+#### 4.2.1 `boolean` Model
 
 The <samp>**boolean**</samp> model is the only model that lacks validation constraints.
 
@@ -118,7 +136,7 @@ The <samp>**boolean**</samp> model is the only model that lacks validation const
    <property xsi:type="boolean"/>
    ```
 
-#### 2.2.2 `number` Model
+#### 4.2.2 `number` Model
 
 The <samp>**number**</samp> model defines two validation constraints for <samp>**number**</samp> JSON value types: <samp>form</samp>, and <samp>range</samp>.
 
@@ -141,7 +159,7 @@ The <samp>**number**</samp> model defines two validation constraints for <samp>*
    <property xsi:type="number" form="real" range="[-1,1)"/>
    ```
 
-#### 2.2.3 `string` Model
+#### 4.2.3 `string` Model
 
 The <samp>**string**</samp> model defines one validation constraint for <samp>**string**</samp> JSON value types: <samp>pattern</samp>.
 
@@ -164,7 +182,7 @@ The <samp>**string**</samp> model defines one validation constraint for <samp>**
    <property xsi:type="string" pattern="pattern"/>
    ```
 
-#### 2.2.4 `object` Model
+#### 4.2.4 `object` Model
 
 The <samp>**object**</samp> model defines three validation constraints for <samp>**object**</samp> JSON value types: <samp>abstract</samp>, <samp>extends</samp>, and named <samp>properties</samp>.
 
@@ -173,7 +191,7 @@ The <samp>**object**</samp> model defines three validation constraints for <samp
 | <a name="objecttype"><samp>( **object** )</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:abstract</samp><br>&nbsp;<br><samp>jsd:extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying<br>&nbsp;&nbsp;object inheritence.<br>_[Property declaration][#properties]_<br>&nbsp;&nbsp;Declaration of object property. |
 
 
-##### 2.2.4.1 Property Names
+##### 4.2.4.1 Property Names
 
 Names of object properties are considered as regular expressions. If an object declaration defines a property with the name <samp>"[a-z]+"</samp>, it means that this name matches any property whose name is one or more alpha characters. This also means that the name <samp>"foo"</samp> will only match "foo". If multiple defined property name patterns capture the same name, the associated value will be validated against the top-most property definition that matched the name. The example below shows an <samp>**any**</samp> property that matches all names (except those that are defined above the <samp>**any**</samp> property definition).
 
@@ -228,7 +246,7 @@ Names of object properties are considered as regular expressions. If an object d
    </object>
    ```
 
-#### 2.2.5 `array` Model
+#### 4.2.5 `array` Model
 
 The <samp>**array**</samp> model defines three validation constraints for <samp>**array**</samp> JSON value types: <samp>minIterate</samp>, <samp>maxIterate</samp>, and member <samp>elements</samp>.
 
@@ -279,7 +297,7 @@ The <samp>**array**</samp> model defines three validation constraints for <samp>
    </array>
    ```
 
-#### 2.2.6 `any` Model
+#### 4.2.6 `any` Model
 
 The <samp>**any**</samp> model defines one validation constraint: <samp>types</samp>.
 
@@ -302,7 +320,7 @@ The <samp>**any**</samp> model defines one validation constraint: <samp>types</s
    <property xsi:type="any" types="..."/>
    ```
 
-#### 2.2.7 `reference` Model
+#### 4.2.7 `reference` Model
 
 The <samp>**reference**</samp> model defines one validation constraint: <samp>type</samp>.
 
@@ -325,7 +343,7 @@ The <samp>**reference**</samp> model defines one validation constraint: <samp>ty
    <property xsi:type="reference" type="..."/>
    ```
 
-### 2.3 Root Declarative Types
+### 4.3 Root Declarative Types
 
 The <samp>**type**</samp> objects are immediate children of the <samp>[**schema**][#schema]</samp> object, and represent type definitions that are referenceable throughout the schema, via `any.types`, `object.extends`, `array.elements.reference`, and `object.properties.reference`. The <samp>**type**</samp> objects inherit constraint properties from <samp>[**model**][#model]</samp> definitions with the following extensions: (Note that the <samp>**any**</samp> and <samp>**reference**</samp> models are not available as a declarative <samp>**type**s</samp>).
 
@@ -365,7 +383,7 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
    </schema>
    ```
 
-### 2.4 Object Properties
+### 4.4 Object Properties
 
 The <samp>**property**</samp> objects define properties for the declarative objects that belong to an <samp>**[object](#objecttype)**</samp>. The <samp>**property**</samp> objects inherit constraint properties from <samp>[**model**][#model]</samp> definitions with the following extensions:
 
@@ -415,7 +433,7 @@ The <samp>**property**</samp> objects define properties for the declarative obje
    </schema>
    ```
 
-### 2.5 Array Elements
+### 4.5 Array Elements
 
 The <samp>**element**</samp> objects define properties for the declarative objects that belong to an <samp>**[array](#arraytype)**</samp>. The <samp>**element**</samp> objects inherit constraint properties from <samp>[**model**][#model]</samp> definitions with the following extensions:
 
@@ -461,11 +479,11 @@ The <samp>**element**</samp> objects define properties for the declarative objec
    </schema>
    ```
 
-## 3 Related Resources for JSON Schema
+## 5 Related Resources for JSON Schema
 
-### 3.1 Schemas for JSON Schema
+### 5.1 Schemas for JSON Schema
 
-#### 3.1.1 JSON Schema 0.9.8
+#### 5.1.1 JSON Schema 0.9.8
 
 * A JSON Schema schema document XSD [schema-0.9.8.xsd](http://jsonx.openjax.org/schema-0.9.8.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
 
@@ -473,15 +491,15 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 * A JSON Schema schema document JSD [schema-0.9.8.jsd](http://jsonx.openjax.org/schema-0.9.8.jsd) for JSON Schema documents.
 
-#### 3.1.2 JSON Schema 0.9.7
+#### 5.1.2 JSON Schema 0.9.7
 
 * A JSON Schema schema document XSD [schema-0.9.7.xsd](http://jsonx.openjax.org/schema-0.9.7.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
 
-### 4 Sample Schemas
+### 6 Sample Schemas
 
 This section provides sample schemas in both `jsdx` and `jsd` forms.
 
-#### 4.1 `structure.jsdx`
+#### 6.1 `structure.jsdx`
 
 ```xml
 <schema
@@ -546,7 +564,7 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 </schema>
 ```
 
-#### 4.2 `structure.jsd`
+#### 6.2 `structure.jsd`
 
 ```json
 {
@@ -709,7 +727,7 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 }
 ```
 
-#### 4.3 `datatypes.jsdx`
+#### 6.3 `datatypes.jsdx`
 
 ```xml
 <schema
@@ -872,7 +890,7 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 </schema>
 ```
 
-#### 4.4 `datatypes.jsd`
+#### 6.4 `datatypes.jsd`
 
 ```json
 {
@@ -1557,29 +1575,31 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#introduction]: #1-introduction
 [#dependencies]: #11-dependencies-on-other-specifications
 [#conventions]: #12-conventions-used-in-this-document
-[#jsd]: #2-json-schema-definition-language
-[#schema]: #21-schema-document
-[#model]: #22-model-for-json-values
-[#boolean]: #221-boolean-model
-[#number]: #222-number-model
-[#string]: #223-string-model
-[#object]: #224-object-model
-[#property-names]: #2241-property-names
-[#array]: #225-array-model
-[#any]: #226-any-model
-[#reference]: #227-reference-model
-[#types]: #23-root-declarative-types
-[#properties]: #24-object-properties
-[#elements]: #25-array-elements
-[#samples]: #3-sample-schemas
-[#resources]: #3-related-resources-for-json-schema
-[#json-schemas]: #31-schemas-for-json-schema
-[#schema-098]: #311-json-schema-098
-[#schema-097]: #312-json-schema-097
-[#structurejsdx]: #31-structurejsdx
-[#structurejsd]: #32-structurejsd
-[#datatypejsdx]: #33-datatypejsdx
-[#datatypejsd]: #34-datatypejsd
+[#purpose]: #2-purpose
+[#requirements]: #3-requirements
+[#specification]: #4-specification
+[#schema]: #41-schema-document
+[#model]: #42-model-for-json-values
+[#boolean]: #421-boolean-model
+[#number]: #422-number-model
+[#string]: #423-string-model
+[#object]: #424-object-model
+[#property-names]: #4241-property-names
+[#array]: #425-array-model
+[#any]: #426-any-model
+[#reference]: #427-reference-model
+[#types]: #43-root-declarative-types
+[#properties]: #44-object-properties
+[#elements]: #45-array-elements
+[#samples]: #5-sample-schemas
+[#resources]: #5-related-resources-for-json-schema
+[#json-schemas]: #51-schemas-for-json-schema
+[#schema-098]: #511-json-schema-098
+[#schema-097]: #512-json-schema-097
+[#structurejsdx]: #51-structurejsdx
+[#structurejsd]: #52-structurejsd
+[#datatypejsdx]: #53-datatypejsdx
+[#datatypejsd]: #54-datatypejsd
 [interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics#Including_or_excluding_endpoints)
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 [json]: http://www.json.org/

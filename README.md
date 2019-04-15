@@ -14,32 +14,32 @@ The <ins>JSONX Framework</ins> is a collection of specifications and reference i
 <samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
 <samp>&nbsp;&nbsp;</samp>2 [<ins>JSONX Framework</ins>][#jsonxframework]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [JSON Schema Definition Language][#jsd]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [<ins>JSON Schema Definition Language</ins>][#jsd]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.1 [Purpose][#1purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.2 [Requirements][#1requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.3 [Specification][#1specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.4 [Example Usage][#1example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2 [JSON/Java Binding API][#binding]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2 [<ins>JSON/Java Binding API</ins>][#binding]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.1 [Purpose][#2purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.2 [Requirements][#2requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.3 [Specification][#2specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.4 [Example Usage][#2example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3 [JSD Binding Generator][#generator]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3 [<ins>JSD Binding Generator</ins>][#generator]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.1 [Purpose][#3purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.2 [Requirements][#3requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.3 [Specification][#3specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.4 [Example Usage][#3example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [JSONX-JSON][#jsonx-json]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [<ins>JSONX-JSON</ins>][#jsonx-json]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.1 [Purpose][#4purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.2 [Requirements][#4requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.3 [Specification][#4specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.4 [Example Usage][#4example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [JAX-RS Integration for JSONX][#jaxrs]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [<ins>JAX-RS Integration for JSONX</ins>][#jaxrs]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.1 [Purpose][#5purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.2 [Requirements][#5requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.3 [Specification][#5specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.4 [Example Usage][#5example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6 [JSONX Maven Plugin][#maven-plugin]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6 [<ins>JSONX Maven Plugin</ins>][#maven-plugin]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6.1 [Purpose][#6purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6.2 [Requirements][#6requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6.3 [Specification][#6specification]<br>
@@ -525,7 +525,7 @@ Please make sure to update tests as appropriate.
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [#introduction]: #1-introduction
-[#conventions]: #11-conventions
+[#conventions]: #11-conventions-used-in-this-document
 [#jsonxframework]: #2-jsonxframework
 [#jsd]: #21-jsd
 [#1purpose]: #211-purpose

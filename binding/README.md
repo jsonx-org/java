@@ -9,41 +9,43 @@ This document specifies the <ins>JSON/Java Binding API</ins>, which offers facil
 <samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications][#dependencies]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [<ins>JSON/Java Binding API</ins>][#bindingapi]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [Structural][#structural]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.1 [JSON objects (`JxObject`)][#jxobject]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.2 [Property Annotations][#properties]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.2.1 [Special Considerations][#specialconsiderations]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.3 [JSON arrays (`@ArrayType`)][#arraytype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.3.1 [Special Considerations][#specialconsiderations]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.4 [Element Annotations][#elements]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5 [JSON Value Annotations][#values]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.1 [<samp>**object**</samp> Type][#object]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.1.1 [`@ObjectProperty`][#objectproperty]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.1.2 [`@ObjectElement`][#objectelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.2 [<samp>**array**</samp> Type][#array]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.2.1 [`@ArrayProperty`][#arrayproperty]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.2.2 [`@ArrayElement`][#arrayelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.3 [<samp>**boolean**</samp> Type][#boolean]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.3.1 [`@BooleanProperty`][#booleanproperty]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.3.2 [`@BooleanElement`][#booleanelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.4 [<samp>**number**</samp> Type][#number]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.4.1 [`@NumberProperty`][#numberproperty]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.4.2 [`@NumberElement`][#numberelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.5 [<samp>**string**</samp> Type][#string]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.5.1 [`@StringProperty`][#stringproperty]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.5.2 [`@StringElement`][#stringelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.6 [<samp>**any**</samp> Type][#any]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.6.1 [`@AnyProperty`][#anyproperty]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.6.2 [`@AnyElement`][#anyelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.7 [`AnyObject`][#anyobject]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.5.8 [`@AnyArray`][#anyarray]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2 [Functional][#functional]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.1 [`ValidationException`][#validationexception]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.2 [`JxEncoder`][#jxencoder]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.2.1 [`EncodeException`][#encodeexception]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.3 [`JxDecoder`][#jxdecoder]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2.3.1 [`DecodeException`][#decodeexception]
+<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Structural][#structural]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.1 [JSON objects (`JxObject`)][#jxobject]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2 [Property Annotations][#properties]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2.1 [Special Considerations][#specialconsiderations]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3 [JSON arrays (`@ArrayType`)][#arraytype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3.1 [Special Considerations][#specialconsiderations]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.4 [Element Annotations][#elements]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5 [JSON Value Annotations][#values]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1 [<samp>**object**</samp> Type][#object]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1.1 [`@ObjectProperty`][#objectproperty]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1.2 [`@ObjectElement`][#objectelement]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2 [<samp>**array**</samp> Type][#array]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2.1 [`@ArrayProperty`][#arrayproperty]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2.2 [`@ArrayElement`][#arrayelement]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3 [<samp>**boolean**</samp> Type][#boolean]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3.1 [`@BooleanProperty`][#booleanproperty]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3.2 [`@BooleanElement`][#booleanelement]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4 [<samp>**number**</samp> Type][#number]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4.1 [`@NumberProperty`][#numberproperty]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4.2 [`@NumberElement`][#numberelement]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5 [<samp>**string**</samp> Type][#string]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5.1 [`@StringProperty`][#stringproperty]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5.2 [`@StringElement`][#stringelement]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6 [<samp>**any**</samp> Type][#any]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6.1 [`@AnyProperty`][#anyproperty]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6.2 [`@AnyElement`][#anyelement]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.7 [`AnyObject`][#anyobject]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.8 [`@AnyArray`][#anyarray]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Functional][#functional]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`ValidationException`][#validationexception]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [`JxEncoder`][#jxencoder]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2.1 [`EncodeException`][#encodeexception]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`JxDecoder`][#jxdecoder]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3.1 [`DecodeException`][#decodeexception]
 
 ## 1 Introduction
 
@@ -61,15 +63,35 @@ The definition of <ins>JSON/Java Binding API</ins> depends on the following spec
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 <ins>JSON/Java Binding API</ins>
+## 2 Purpose
+
+Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to and from strongly-typed Java classes.
+
+## 3 Requirements
+
+1. The <ins>binding API</ins> MUST be able to model the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable with the <ins>schema language</ins>.
+
+1. The <ins>binding API</ins> MUST enforce (via validation) the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable in the <ins>schema language</ins>.
+
+1. The <ins>binding API</ins> MUST produce clear and useful error messages when exception of <ins>schema document</ins> constraints are encountered during validation of JSON documents.
+
+1. The <ins>binding API</ins> MUST constrain the constituent parts of a <ins>schema document</ins> to Java type bindings that are as lightweight as necessary to retain the full normative scope of specification of the <ins>schema language</ins>.
+
+1. The <ins>binding API</ins> MUST use light coupling, not imposing requirements for exclusionary patterns onto a class model of binding classes.
+
+1. The <ins>binding API</ins> MUST offer easy patterns for manual description of bindings.
+
+1. The <ins>binding API</ins> MUST be straightforward, intuitive, and resilient to human error.
+
+## 4 Specification
 
 The <ins>JSON/Java Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.openjax.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
 
-#### 2.1 Structural
+#### 4.1 Structural
 
 The <ins>Structural</ins> part of the <ins>JSON/Java Binding API</ins> is used to define rules that bind Java classes to JSON Schemas. The primitive JSON value types <samp>**boolean**</samp>, <samp>**number**</samp> and <samp>**string**</samp> are represented by their analogous Java types of `Boolean`, `Number`, and `String`. The <samp>**object**</samp> value type is represented by the `JxObject` interface, with properties defined with [Property Annotations][#properties]. The <samp>**array**</samp> value type is represented by the `@ArrayType`, `@ArrayProperty` and `@ArrayElement` annotations, with elements defined with [Element Annotations][#elements].
 
-##### 2.1.1 JSON objects (`JxObject`)
+##### 4.1.1 JSON objects (`JxObject`)
 
 An <samp>**object**</samp> definition in a JSD can be bound to a Java class that implements the `JxObject` interface. The `JxObject` interface does not define any methods, and is used to specify to the <ins>JSON/Java Binding API</ins> that the class supports JSON binding.
 
@@ -86,7 +108,7 @@ public class MyObject implements JxObject {
 }
 ```
 
-##### 2.1.2 Property Annotations
+##### 4.1.2 Property Annotations
 
 Property annotations are used to define property bindings in JSON objects. Property annotations annotate fields in a class to bind to JSON properties in a JSON object. There are 5 property annotations:
 
@@ -97,7 +119,7 @@ Property annotations are used to define property bindings in JSON objects. Prope
 1. [`@AnyProperty`][#anyproperty]
 
 Property annotations define 3 common attributes:
-  
+
 1. `name()`
 
    The name of the property. If omitted, the name of the property is the field's name.
@@ -110,12 +132,12 @@ Property annotations define 3 common attributes:
 
    Whether the property is required or optional (`Use.REQUIRED` or `Use.OPTIONAL`). Default: `Use.REQUIRED`.
 
-###### 2.1.2.1 Special Considerations
+###### 4.1.2.1 Special Considerations
 
 Different combinations of `nullable()` and `use()` have different requirements regarding field's declared type:
 
 * `(nullable=false, use=Use.REQUIRED)`
-  
+
   Declared type is unrestricted, and allows `boolean` primitive for <samp>**boolean**</samp> JSON values, and numerical primitives (`byte`, `short`, `int`, `long`, `float`, and `double`) for <samp>**number**</samp> JSON values.
 
 * `(nullable=true, use=Use.REQUIRED)`
@@ -130,7 +152,7 @@ Different combinations of `nullable()` and `use()` have different requirements r
 
   Declared type must be `Optional<>`, so as to support the presence of the property with a `null` value, as well as its absence.
 
-###### 2.1.3 JSON arrays (`@ArrayType`)
+###### 4.1.3 JSON arrays (`@ArrayType`)
 
 The `@ArrayType` annotation is used to annotate an annotation class that represents binding rules for a JSON array. The `@ArrayType` annotation describes the manifest of element members that are allowed to appear in the JSON array. The manifest of element members is represented by [Element Annotations][#elements].
 
@@ -160,11 +182,11 @@ public @interface Staff {
 }
 ```
 
-###### 2.1.3.1 Special Considerations
+###### 4.1.3.1 Special Considerations
 
 The `minIterate()` and `maxIterate()` attributes define the repetition cardinality of element types in a JSON array. The default for both attributes is `1`, which effectively removes the computational complexity of multi-iterable array definitions during parsing, marshaling, and validating JSON arrays. It is important to note that when set to non-`1` values, the computational complexity increases by one dimension. The value of `minIterate()` must be less than or equal to `maxIterate()`.
 
-##### 2.1.4 Element Annotations
+##### 4.1.4 Element Annotations
 
 Element annotations are used to define element bindings in JSON arrays. Element annotations specify the rules for parsing, marshaling and validating JSON arrays in string or Java object form. There are 5 element annotations:
 
@@ -209,15 +231,15 @@ Element annotations define 4 common attributes:
 
    The maximum inclusive number of occurrence of this element. Default: `Integer.MAX_VALUE`.
 
-##### 2.1.5 JSON Value Annotations
+##### 4.1.5 JSON Value Annotations
 
 In addition to the default attributes defined for [Property Annotations][#properties] and [Element Annotations][#elements], the <ins>JSON/Java Binding API</ins> defines specific attributes for JSON Value Types that map to analogous contstraint properties in the [<ins>JSON Schema Definition Language</ins>][jsd].
 
-##### 2.1.5.1 <samp>object</samp> Type
+##### 4.1.5.1 <samp>object</samp> Type
 
 A JSON <samp>**object**</samp> is represented by Java objects that implement the [`JxObject`][#jxobject] interface.
 
-###### 2.1.5.1.1 `@ObjectProperty`
+###### 4.1.5.1.1 `@ObjectProperty`
 
 The `@ObjectProperty` annotation is used to bind a JSON object type to a field in a `JxObject` subclass. The field's class type specifies the JSON binding class, which must be a subclass of the `JxObject` interface. If the field's class type does not inherit from the `JxObject` interface, the <ins>JSON/Java Binding API</ins> will throw a `ValidationException` during parsing or marshaling.
 
@@ -230,7 +252,7 @@ public class MyObject implements JxObject {
 }
 ```
 
-###### 2.1.5.1.2 `@ObjectElement`
+###### 4.1.5.1.2 `@ObjectElement`
 
 The `@ObjectElement` annotation is used to bind a JSON object type as a member type of a JSON array. The `@ObjectElement` defines the following additional attributes:
 
@@ -248,11 +270,11 @@ public class Company implements JxObject {
 }
 ```
 
-##### 2.1.5.2 <samp>array</samp> Type
+##### 4.1.5.2 <samp>array</samp> Type
 
 A JSON <samp>**array**</samp> is represented by instances of `java.util.List`.
 
-###### 2.1.5.2.1 `@ArrayProperty`
+###### 4.1.5.2.1 `@ArrayProperty`
 
 The `@ArrayProperty` annotation is used to bind a JSON array definition to a field defined in a subclass of a `JxObject`. The `@ArrayProperty` annotation allows one to declare JSON array binding rules specific to the field on which they are defined.
 
@@ -278,7 +300,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 2.1.5.2.2 `@ArrayElement`
+###### 4.1.5.2.2 `@ArrayElement`
 
 The `@ArrayElement` annotation is used to bind a JSON array definition as a member type of a JSON array. The `@ArrayElement` annotation allows one to declare JSON array binding rules that are specific only to the member element on which they are defined.
 
@@ -295,11 +317,11 @@ public class Company implements JxObject {
 }
 ```
 
-##### 2.1.5.3 <samp>boolean</samp> Type
+##### 4.1.5.3 <samp>boolean</samp> Type
 
 A JSON <samp>**boolean**</samp> is represented by instances of `java.lang.Boolean` and `boolean` (refer to [Special Considerations][#specialconsiderations] to determine the appropriate declared type).
 
-###### 2.1.5.3.1 `@BooleanProperty`
+###### 4.1.5.3.1 `@BooleanProperty`
 
 ```java
 public class Company implements JxObject {
@@ -314,7 +336,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 2.1.5.3.2 `@BooleanElement`
+###### 4.1.5.3.2 `@BooleanElement`
 
 ```java
 public class Company implements JxObject {
@@ -324,7 +346,7 @@ public class Company implements JxObject {
 }
 ```
 
-##### 2.1.5.4 <samp>number</samp> Type
+##### 4.1.5.4 <samp>number</samp> Type
 
 A JSON <samp>**number**</samp> is represented by instances of `java.lang.Number` and the primitive numerical types (`byte`, `short`, `int`, `long`, `float`, and `double`-- refer to [Special Considerations][#specialconsiderations] to determine the appropriate declared type).
 
@@ -342,7 +364,7 @@ The `@NumberProperty` and `@NumberElement` annotations define the following addi
    * Half-open or half-closed interval: `[min,max)`
    * Degenerate interval: `[val]`
 
-###### 2.1.5.4.1 `@NumberProperty`
+###### 4.1.5.4.1 `@NumberProperty`
 
 ```java
 public class Company implements JxObject {
@@ -357,7 +379,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 2.1.5.4.2 `@NumberElement`
+###### 4.1.5.4.2 `@NumberElement`
 
 ```java
 public class Company implements JxObject {
@@ -367,7 +389,7 @@ public class Company implements JxObject {
 }
 ```
 
-##### 2.1.5.5 <samp>string</samp> Type
+##### 4.1.5.5 <samp>string</samp> Type
 
 A JSON <samp>**string**</samp> is represented by instances of `java.lang.String`.
 
@@ -377,7 +399,7 @@ The `@StringProperty` and `@StringElement` annotations define the following addi
 
    Specifies the regex pattern.
 
-###### 2.1.5.5.1 `@StringProperty`
+###### 4.1.5.5.1 `@StringProperty`
 
 ```java
 public class Company implements JxObject {
@@ -392,7 +414,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 2.1.5.5.2 `@StringElement`
+###### 4.1.5.5.2 `@StringElement`
 
 ```java
 public class Company implements JxObject {
@@ -402,7 +424,7 @@ public class Company implements JxObject {
 }
 ```
 
-##### 2.1.5.6 <samp>any</samp> Type
+##### 4.1.5.6 <samp>any</samp> Type
 
 <samp>**any**</samp> represents a meta value type that is used to refer to actual JSON value types.
 
@@ -434,7 +456,7 @@ The `@AnyProperty` and `@AnyElement` annotations define the following additional
 
       A `Class<? extends JxObject>` specifying acceptable object classes.
 
-###### 2.1.5.6.1 `@AnyProperty`
+###### 4.1.5.6.1 `@AnyProperty`
 
 ```java
 public class Company implements JxObject {
@@ -449,7 +471,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 2.1.5.6.2 `@AnyElement`
+###### 4.1.5.6.2 `@AnyElement`
 
 ```java
 public class Company implements JxObject {
@@ -459,58 +481,58 @@ public class Company implements JxObject {
 }
 ```
 
-###### 2.1.5.7 `AnyObject`
+###### 4.1.5.7 `AnyObject`
 
 The `AnyObject` class is a JSON/Java binding that utilizes the `@AnyProperty` annotation to be able to represent any JSON object.
 
-###### 2.1.5.8 `@AnyArray`
+###### 4.1.5.8 `@AnyArray`
 
 The `AnyArray` annotation is a JSON/Java binding that utilizes the `@AnyElement` annotation to be able to represent any JSON array.
 
-#### 2.2 Functional
+#### 4.2 Functional
 
 The functional part of the <ins>JSON/Java Binding API</ins> is responsible for parsing, marshaling, and validating JSON documents in string or object form.
 
-##### 2.2.1 `ValidationException`
+##### 4.2.1 `ValidationException`
 
 The `ValidationException` represents an error in the use of the [Structural][#structural] part of the <ins>JSON/Java Binding API</ins>. The `ValidationException` is thrown when the binding model is evaluated during the process of parsing a JSON document string to binding classes, or marshaling binding classes to a JSON document string.
 
-##### 2.2.2 `JxEncoder`
+##### 4.2.2 `JxEncoder`
 
 The `JxEncoder` serializes Jx objects (that extend `JxObject`) and Jx arrays (with a provided annotation class that declares an `@ArrayType` annotation) to JSON documents. `JxEncoder` instances are differentiated by the `indent` value, which represents the number of spaces to use (as meaningless whitespace) when encoding JSON documents. The `JxEncoder` has a `protected` constructor, and exposes `static` fields and methods to obtain a `JxEncoder` instance so that instances can be cached.
 
 1. `JxEncoder#_0`
 
    The `JxEncoder` instance with `indent=0`.
-   
+
 1. `JxEncoder#_1`
 
    The `JxEncoder` instance with `indent=1`.
-   
+
 1. `JxEncoder#_2`
 
    The `JxEncoder` instance with `indent=2`.
-   
+
 1. `JxEncoder#_3`
 
    The `JxEncoder` instance with `indent=3`.
-   
+
 1. `JxEncoder#_4`
 
    The `JxEncoder` instance with `indent=4`.
-   
+
 1. `JxEncoder#_8`
 
    The `JxEncoder` instance with `indent=8`.
-   
+
 1. `JxEncoder#get(int)`
 
    Gets the the `JxEncoder` instance for the specified `indent` value. The specified value must be a non-negative integer.
-   
+
 1. `JxEncoder#get()`
 
    Gets the the global `JxEncoder` instance. The default global `JxEncoder` has `indent=0`.
-   
+
 1. `JxEncoder#set(JxEncoder)`
 
    Sets the the global `JxEncoder` instance to the specified `JxEncoder`.
@@ -525,11 +547,11 @@ Once a `JxEncoder` instance is obtained, it can be used to marshal binding objec
 
    Marshals the specified `JxObject`.
 
-##### 2.2.2.1 `EncodeException`
+##### 4.2.2.1 `EncodeException`
 
 Signals that an error has occurred while encoding a JSON document.
 
-##### 2.2.3 `JxDecoder`
+##### 4.2.3 `JxDecoder`
 
 The `JxDecoder` deserializes JSON documents to objects of `JxObject` classes, or to lists conforming to a provided annotation class that declares an `@ArrayType` annotation. The `JxDecoder` is an uninstantiable class that provides `static` methods for parsing JSON document strings.
 
@@ -541,47 +563,63 @@ The `JxDecoder` deserializes JSON documents to objects of `JxObject` classes, or
 
    Parses a JSON array from the supplied `JsonReader` as per the specification of the provided annotation class that declares an `ArrayType` annotation.
 
-##### 2.2.3.1 `DecodeException`
+##### 4.2.3.1 `DecodeException`
 
 Signals that an error has occurred while decoding a JSON document.
+
+### JavaDocs
+
+JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [#introduction]: #1-introduction
 [#dependencies]: #11-dependencies
 [#conventions]: #12-conventions
-[#bindingapi]: #2-bindingapi
-[#structural]: #21-structural
-[#jxobject]: #211-jxobject
-[#properties]: #212-properties
-[#specialconsiderations]: #2121-specialconsiderations
-[#arraytype]: #213-arraytype
-[#specialconsiderations]: #2131-specialconsiderations
-[#elements]: #214-elements
-[#values]: #215-values
-[#object]: #2151-object
-[#objectproperty]: #21511-objectproperty
-[#objectelement]: #21512-objectelement
-[#array]: #2152-array
-[#arrayproperty]: #21521-arrayproperty
-[#arrayelement]: #21522-arrayelement
-[#boolean]: #2153-boolean
-[#booleanproperty]: #21531-booleanproperty
-[#booleanelement]: #21532-booleanelement
-[#number]: #2154-number
-[#numberproperty]: #21541-numberproperty
-[#numberelement]: #21542-numberelement
-[#string]: #2155-string
-[#stringproperty]: #21551-stringproperty
-[#stringelement]: #21552-stringelement
-[#any]: #2156-any
-[#anyproperty]: #21561-anyproperty
-[#anyelement]: #21562-anyelement
-[#anyobject]: #2157-anyobject
-[#anyarray]: #2158-anyarray
-[#functional]: #22-functional
-[#validationexception]: #221-validationexception
-[#jxencoder]: #222-jxencoder
-[#encodeexception]: #2221-encodeexception
-[#jxdecoder]: #223-jxdecoder
-[#decodeexception]: #2231-decodeexception
+[#purpose]: #2-purpose
+[#requirements]: #3-requirements
+[#specification]: #4-specification
+[#structural]: #41-structural
+[#jxobject]: #411-jxobject
+[#properties]: #412-properties
+[#specialconsiderations]: #4121-specialconsiderations
+[#arraytype]: #413-arraytype
+[#specialconsiderations]: #4131-specialconsiderations
+[#elements]: #414-elements
+[#values]: #415-values
+[#object]: #4151-object
+[#objectproperty]: #41511-objectproperty
+[#objectelement]: #41512-objectelement
+[#array]: #4152-array
+[#arrayproperty]: #41521-arrayproperty
+[#arrayelement]: #41522-arrayelement
+[#boolean]: #4153-boolean
+[#booleanproperty]: #41531-booleanproperty
+[#booleanelement]: #41532-booleanelement
+[#number]: #4154-number
+[#numberproperty]: #41541-numberproperty
+[#numberelement]: #41542-numberelement
+[#string]: #4155-string
+[#stringproperty]: #41551-stringproperty
+[#stringelement]: #41552-stringelement
+[#any]: #4156-any
+[#anyproperty]: #41561-anyproperty
+[#anyelement]: #41562-anyelement
+[#anyobject]: #4157-anyobject
+[#anyarray]: #4158-anyarray
+[#functional]: #42-functional
+[#validationexception]: #421-validationexception
+[#jxencoder]: #422-jxencoder
+[#encodeexception]: #4221-encodeexception
+[#jxdecoder]: #423-jxdecoder
+[#decodeexception]: #4231-decodeexception
 
 [jsd]: ../schema
