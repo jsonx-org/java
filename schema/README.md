@@ -489,34 +489,34 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd">
   <array name="array">
-    <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-    <number form="real" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-    <string pattern="pattern" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-    <array minIterate="1" maxIterate="1" minOccurs="1" maxOccurs="unbounded" nullable="true">
-      <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-      <number form="real" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-      <string pattern="pattern" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
+    <boolean nullable="true"/>
+    <number form="real" range="[-1,1)" nullable="true"/>
+    <string pattern="pattern" nullable="true"/>
+    <array nullable="true">
+      <boolean nullable="true"/>
+      <number form="real" range="[-1,1)" nullable="true"/>
+      <string pattern="pattern" nullable="true"/>
       <any types="boolean number string array object"/>
     </array>
     <reference type="object"/>
-    <any types="boolean number string array object" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
+    <any types="boolean number string array object" nullable="true"/>
   </array>
   <boolean name="boolean"/>
   <number name="number" form="real" range="[-1,1)"/>
   <string name="string" pattern="pattern"/>
   <object name="object">
-    <property name="array" xsi:type="array" minIterate="1" maxIterate="1" nullable="true" use="required">
-      <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-      <number form="real" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-      <string pattern="pattern" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-      <array minIterate="1" maxIterate="1" minOccurs="1" maxOccurs="unbounded" nullable="true">
-        <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-        <number form="real" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-        <string pattern="pattern" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
+    <property name="array" xsi:type="array" nullable="true" use="required">
+      <boolean nullable="true"/>
+      <number form="real" range="[-1,1)" nullable="true"/>
+      <string pattern="pattern" nullable="true"/>
+      <array nullable="true">
+        <boolean nullable="true"/>
+        <number form="real" range="[-1,1)" nullable="true"/>
+        <string pattern="pattern" nullable="true"/>
         <any types="boolean number string array object"/>
       </array>
       <reference type="object"/>
-      <any types="boolean number string array object" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
+      <any types="boolean number string array object" nullable="true"/>
     </property>
     <property name="boolean" xsi:type="boolean" nullable="true" use="required"/>
     <property name="number" xsi:type="number" form="real" range="[-1,1)" nullable="true" use="required"/>
@@ -527,18 +527,18 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
       <property name="subNumber" xsi:type="number" form="real" range="[-1,1)" nullable="true" use="required"/>
       <property name="subString" xsi:type="string" pattern="pattern" nullable="true" use="required"/>
       <property name="subBooleanRef" xsi:type="reference" type="boolean" nullable="true" use="required"/>
-      <property name="subArray" xsi:type="array" minIterate="1" maxIterate="1" nullable="true" use="required">
-        <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-        <number form="real" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-        <string pattern="pattern" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-        <array minIterate="1" maxIterate="1" minOccurs="1" maxOccurs="unbounded" nullable="true">
-          <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-          <number form="real" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
-          <string pattern="pattern" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
+      <property name="subArray" xsi:type="array" nullable="true" use="required">
+        <boolean nullable="true"/>
+        <number form="real" range="[-1,1)" nullable="true"/>
+        <string pattern="pattern" nullable="true"/>
+        <array nullable="true">
+          <boolean nullable="true"/>
+          <number form="real" range="[-1,1)" nullable="true"/>
+          <string pattern="pattern" nullable="true"/>
           <any types="boolean number string array object"/>
         </array>
         <reference type="object"/>
-        <any types="boolean number string array object" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
+        <any types="boolean number string array object" nullable="true"/>
       </property>
     </property>
     <property names=".*" xsi:type="any" types="boolean number string array object" nullable="true" use="optional"/>
