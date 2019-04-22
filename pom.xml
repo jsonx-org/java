@@ -35,7 +35,7 @@
     <module>schema</module>
     <module>binding</module>
     <module>generator</module>
-    <module>maven-plugin</module>
+    <module>jsonx-maven-plugin</module>
     <module>rs</module>
   </modules>
   <build>
