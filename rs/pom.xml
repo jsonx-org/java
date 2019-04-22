@@ -24,20 +24,8 @@
     <artifactId>jsonx</artifactId>
     <version>0.9.8-SNAPSHOT</version>
   </parent>
-  <artifactId>jsonx-rs</artifactId>
+  <artifactId>rs</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <!-- FIXME: Exit code: 1 - javadoc: error - Error fetching URL: https://github.com/jax-rs/ -->
-          <detectLinks>false</detectLinks>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>javax.ws.rs</groupId>
@@ -46,7 +34,7 @@
     </dependency>
     <dependency>
       <groupId>org.openjax.jsonx</groupId>
-      <artifactId>jsonx-binding</artifactId>
+      <artifactId>binding</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
