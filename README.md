@@ -503,7 +503,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
 
   ```java
   String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
-  json.Credentials credentials = JxDecoder.parseObject(json.Credentials.class, new JsonReader(new StringReader(json)));
+  Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
   ```
 
   To marshal <ins>JSONX</ins> Bindings to JSON:
