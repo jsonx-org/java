@@ -22,9 +22,9 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 import org.junit.Test;
+import org.openjax.ext.json.JSON;
+import org.openjax.ext.xml.api.XmlElement;
 import org.openjax.jsonx.Registry.Kind;
-import org.openjax.standard.json.JSON;
-import org.openjax.standard.xml.api.XmlElement;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {

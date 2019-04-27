@@ -19,8 +19,8 @@ package org.openjax.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.standard.util.Annotations;
-import org.openjax.standard.util.Strings;
+import org.openjax.ext.util.Annotations;
+import org.openjax.ext.util.Strings;
 
 final class Error {
   static final Error NULL = new Error(null);

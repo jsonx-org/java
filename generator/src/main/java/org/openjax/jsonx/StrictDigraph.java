@@ -16,7 +16,7 @@
 
 package org.openjax.jsonx;
 
-import org.openjax.standard.util.Digraph;
+import org.openjax.ext.util.Digraph;
 
 class StrictDigraph<T> extends Digraph<T> {
   private static final long serialVersionUID = 4143833580153219718L;

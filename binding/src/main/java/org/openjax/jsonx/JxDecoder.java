@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import org.openjax.standard.json.JsonReader;
-import org.openjax.standard.util.function.TriPredicate;
+import org.openjax.ext.json.JsonReader;
+import org.openjax.ext.util.function.TriPredicate;
 
 /**
  * Decoder that deserializes JSON documents to objects of {@code JxObject}

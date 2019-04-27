@@ -23,9 +23,9 @@ import java.io.StringReader;
 import java.net.URL;
 
 import org.junit.Test;
-import org.openjax.standard.io.Streams;
-import org.openjax.standard.json.JsonReader;
-import org.openjax.standard.net.MemoryURLStreamHandler;
+import org.openjax.ext.io.Streams;
+import org.openjax.ext.json.JsonReader;
+import org.openjax.ext.net.MemoryURLStreamHandler;
 import org.xml.sax.SAXException;
 
 public class JxConverterTest {

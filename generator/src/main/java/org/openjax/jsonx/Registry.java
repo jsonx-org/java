@@ -24,8 +24,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
-import org.openjax.standard.util.Classes;
-import org.openjax.standard.util.Strings;
+import org.openjax.ext.util.Classes;
+import org.openjax.ext.util.Strings;
 
 class Registry {
   final class Value {

@@ -26,10 +26,10 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 
-import org.openjax.standard.json.JsonReader;
-import org.openjax.standard.util.Strings;
-import org.openjax.standard.xml.api.CharacterDatas;
-import org.openjax.standard.xml.sax.Parsers;
+import org.openjax.ext.json.JsonReader;
+import org.openjax.ext.util.Strings;
+import org.openjax.ext.xml.api.CharacterDatas;
+import org.openjax.ext.xml.sax.Parsers;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

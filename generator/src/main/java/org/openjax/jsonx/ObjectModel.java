@@ -28,11 +28,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
-import org.openjax.standard.lang.IllegalAnnotationException;
-import org.openjax.standard.util.Classes;
-import org.openjax.standard.util.Iterators;
-import org.openjax.standard.util.Strings;
-import org.openjax.standard.xml.api.XmlElement;
+import org.openjax.ext.lang.IllegalAnnotationException;
+import org.openjax.ext.util.Classes;
+import org.openjax.ext.util.Iterators;
+import org.openjax.ext.util.Strings;
+import org.openjax.ext.xml.api.XmlElement;
 
 final class ObjectModel extends Referrer<ObjectModel> {
   private static xL4gluGCXYYJc.Schema.Object type(final schema.ObjectType jsonx, final String name) {

@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 
-import org.openjax.standard.util.Annotations;
-import org.openjax.standard.util.DelegateList;
-import org.openjax.standard.util.Numbers;
-import org.openjax.standard.util.function.TriPredicate;
+import org.openjax.ext.util.Annotations;
+import org.openjax.ext.util.DelegateList;
+import org.openjax.ext.util.Numbers;
+import org.openjax.ext.util.function.TriPredicate;
 
 class ArrayValidator {
   static class Relation {

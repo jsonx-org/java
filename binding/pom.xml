@@ -28,17 +28,17 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <dependencies>
     <dependency>
-      <groupId>org.openjax.standard</groupId>
+      <groupId>org.openjax.ext</groupId>
       <artifactId>math</artifactId>
       <version>0.6.4-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.standard</groupId>
+      <groupId>org.openjax.ext</groupId>
       <artifactId>net</artifactId>
       <version>0.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.standard</groupId>
+      <groupId>org.openjax.ext</groupId>
       <artifactId>json</artifactId>
       <version>0.9.1-SNAPSHOT</version>
     </dependency>

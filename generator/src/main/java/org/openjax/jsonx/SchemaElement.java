@@ -35,16 +35,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.openjax.ext.json.JsonReader;
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
-import org.openjax.standard.json.JsonReader;
-import org.openjax.standard.lang.PackageLoader;
-import org.openjax.standard.lang.PackageNotFoundException;
-import org.openjax.standard.net.URLs;
-import org.openjax.standard.util.FastCollections;
-import org.openjax.standard.util.IdentityHashSet;
-import org.openjax.standard.util.Iterators;
-import org.openjax.standard.xml.api.ValidationException;
-import org.openjax.standard.xml.api.XmlElement;
+import org.openjax.ext.lang.PackageLoader;
+import org.openjax.ext.lang.PackageNotFoundException;
+import org.openjax.ext.net.URLs;
+import org.openjax.ext.util.FastCollections;
+import org.openjax.ext.util.IdentityHashSet;
+import org.openjax.ext.util.Iterators;
+import org.openjax.ext.xml.api.ValidationException;
+import org.openjax.ext.xml.api.XmlElement;
 import org.openjax.xsb.runtime.Bindings;
 import org.openjax.xsb.runtime.QName;
 

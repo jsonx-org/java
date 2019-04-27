@@ -28,13 +28,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
-import org.openjax.standard.lang.AnnotationParameterException;
-import org.openjax.standard.lang.IllegalAnnotationException;
-import org.openjax.standard.util.FastArrays;
-import org.openjax.standard.util.FastCollections;
-import org.openjax.standard.util.Iterators;
-import org.openjax.standard.util.Strings;
-import org.openjax.standard.xml.api.XmlElement;
+import org.openjax.ext.lang.AnnotationParameterException;
+import org.openjax.ext.lang.IllegalAnnotationException;
+import org.openjax.ext.util.FastArrays;
+import org.openjax.ext.util.FastCollections;
+import org.openjax.ext.util.Iterators;
+import org.openjax.ext.util.Strings;
+import org.openjax.ext.xml.api.XmlElement;
 import org.openjax.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {

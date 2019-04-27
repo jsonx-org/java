@@ -23,7 +23,7 @@ import java.math.BigInteger;
 
 import org.openjax.jsonx.ArrayValidator.Relation;
 import org.openjax.jsonx.ArrayValidator.Relations;
-import org.openjax.standard.util.Annotations;
+import org.openjax.ext.util.Annotations;
 
 class NumberCodec extends PrimitiveCodec<Number> {
   static Number decodeArray(final Form form, final String token) {

@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.openjax.ext.xml.api.XmlElement;
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
-import org.openjax.standard.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 

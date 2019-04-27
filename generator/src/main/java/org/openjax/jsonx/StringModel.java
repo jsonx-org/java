@@ -21,8 +21,8 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
-import org.openjax.standard.lang.IllegalAnnotationException;
-import org.openjax.standard.util.Strings;
+import org.openjax.ext.lang.IllegalAnnotationException;
+import org.openjax.ext.util.Strings;
 
 final class StringModel extends Model {
   private static xL4gluGCXYYJc.Schema.String type(final String name) {

@@ -27,9 +27,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openjax.ext.json.JsonReader;
+import org.openjax.ext.net.MemoryURLStreamHandler;
 import org.openjax.jsonx.ArrayValidator.Relations;
-import org.openjax.standard.json.JsonReader;
-import org.openjax.standard.net.MemoryURLStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;

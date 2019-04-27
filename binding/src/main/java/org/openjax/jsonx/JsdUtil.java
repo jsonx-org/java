@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import org.openjax.standard.util.Annotations;
-import org.openjax.standard.util.FixedOrderComparator;
-import org.openjax.standard.util.Identifiers;
-import org.openjax.standard.util.Strings;
+import org.openjax.ext.util.Annotations;
+import org.openjax.ext.util.FixedOrderComparator;
+import org.openjax.ext.util.Identifiers;
+import org.openjax.ext.util.Strings;
 
 final class JsdUtil {
   static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "match", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");

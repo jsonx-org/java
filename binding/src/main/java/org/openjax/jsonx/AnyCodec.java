@@ -21,9 +21,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.openjax.ext.json.JsonReader;
 import org.openjax.jsonx.ArrayValidator.Relations;
-import org.openjax.standard.json.JsonReader;
-import org.openjax.standard.util.function.TriPredicate;
+import org.openjax.ext.util.function.TriPredicate;
 
 class AnyCodec extends Codec {
   static Object decode(final Annotation annotation, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {

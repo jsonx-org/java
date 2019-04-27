@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc.$MaxOccurs;
-import org.openjax.standard.util.Classes;
-import org.openjax.standard.xml.api.XmlElement;
+import org.openjax.ext.util.Classes;
+import org.openjax.ext.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;

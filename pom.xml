@@ -41,19 +41,19 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.openjax.standard.xml</groupId>
+        <groupId>org.openjax.ext.xml</groupId>
         <artifactId>xml-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.openjax.standard</groupId>
+      <groupId>org.openjax.ext</groupId>
       <artifactId>logging</artifactId>
       <version>0.4.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.standard</groupId>
+      <groupId>org.openjax.ext</groupId>
       <artifactId>test</artifactId>
       <version>0.6.9-SNAPSHOT</version>
       <scope>test</scope>

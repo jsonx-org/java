@@ -20,9 +20,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.regex.PatternSyntaxException;
 
+import org.openjax.ext.json.JsonStrings;
 import org.openjax.jsonx.ArrayValidator.Relation;
 import org.openjax.jsonx.ArrayValidator.Relations;
-import org.openjax.standard.json.JsonStrings;
 
 class StringCodec extends PrimitiveCodec<String> {
   static String decodeArray(final String token) {

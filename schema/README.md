@@ -487,7 +487,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 #### 5.1.1 JSON Schema 0.2.2
 
-* A JSON Schema schema document XSD [schema-0.2.2.xsd](http://jsonx.openjax.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
+* A JSON Schema schema document XSD [schema-0.2.2.xsd](http://jsonx.openjax.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://ext.openjax.org/xml/datatypes-0.9.2.xsd).
 
 * A JSON Schema schema document JSDX [schema-0.2.2.jsdx](http://jsonx.openjax.org/schema-0.2.2.jsdx) for JSON Schema documents.
 
@@ -495,7 +495,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 #### 5.1.2 JSON Schema 0.1.0
 
-* A JSON Schema schema document XSD [schema-0.1.0.xsd](http://jsonx.openjax.org/schema-0.1.0.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
+* A JSON Schema schema document XSD [schema-0.1.0.xsd](http://jsonx.openjax.org/schema-0.1.0.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://ext.openjax.org/xml/datatypes-0.9.2.xsd).
 
 ### 6 Sample Schemas
 

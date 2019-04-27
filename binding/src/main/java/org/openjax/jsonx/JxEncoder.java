@@ -27,9 +27,9 @@ import java.util.Optional;
 
 import org.openjax.jsonx.ArrayValidator.Relation;
 import org.openjax.jsonx.ArrayValidator.Relations;
-import org.openjax.standard.util.Classes;
-import org.openjax.standard.util.FastArrays;
-import org.openjax.standard.util.function.TriObjBiIntConsumer;
+import org.openjax.ext.util.Classes;
+import org.openjax.ext.util.FastArrays;
+import org.openjax.ext.util.function.TriObjBiIntConsumer;
 
 /**
  * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx
