@@ -1,5 +1,7 @@
 # JSON Schema
 
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/schema.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/schema)
+
 ## Abstract
 
 This document specifies the <ins>JSON Schema Definition Language</ins>, which offers facilities for describing the structure and constraining the contents of JSON documents. The schema language, which is itself represented in an JSON vocabulary, extends the capabilities found in JSON documents.
@@ -1557,10 +1559,6 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
   }
 }
 ```
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

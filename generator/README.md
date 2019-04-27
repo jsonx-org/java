@@ -1,5 +1,10 @@
 # JSD Binding Generator
 
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/generator.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/generator)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/generator.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/generator)
+
 ## Abstract
 
 This document specifies the <ins>JSD Binding Generator</ins>, which offers facilities for generating Java binding classes from a JSD schema.
@@ -75,10 +80,6 @@ Supported SCHEMA_IN|OUT formats:
 ```
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

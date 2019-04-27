@@ -1,5 +1,10 @@
 # JSON/Java Binding API
 
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/binding.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/binding)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/binding.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/binding)
+
 ## Abstract
 
 This document specifies the <ins>JSON/Java Binding API</ins>, which offers facilities for binding Java classes to JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][jsd].
@@ -566,10 +571,6 @@ The `JxDecoder` deserializes JSON documents to objects of `JxObject` classes, or
 ##### 4.2.3.1 `DecodeException`
 
 Signals that an error has occurred while decoding a JSON document.
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

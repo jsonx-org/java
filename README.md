@@ -1,5 +1,8 @@
 # JSONX Framework
 
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/jsonx.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/jsonx)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/jsonx.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/jsonx)
+
 > JSON Schema, Validation, Java Binding, and more
 
 [![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
@@ -509,10 +512,6 @@ The following example presents a use-case involving a <ins>schema document</ins>
   String json2 = JxEncoder.get().marshal(credentials);
   assertEquals(json, json2);
   ```
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

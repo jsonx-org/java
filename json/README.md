@@ -1,5 +1,10 @@
 # JSONX-JSON
 
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/json.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/json)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/json.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/json)
+
 ## Abstract
 
 This document specifies the <ins>JSONX-JSON API</ins>, which offers facilities for validating and converting JSON and JSONX documents.
@@ -200,10 +205,6 @@ This section provides a sample JSON and its JSONX alternative.
 #### 6.1.1 JSONX Schema 0.9.8
 
 * A JSONX Schema schema document XSD [jsonx-0.9.8.xsd][jsonxxsd] for JSONX Schema documents.
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

@@ -1,5 +1,10 @@
 # JSONX Maven Plugin
 
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/jsonx-maven-plugin.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/jsonx-maven-plugin)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/jsonx-maven-plugin.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/jsonx-maven-plugin)
+
 ## Abstract
 
 This document specifies the <ins>JSONX Maven Plugin</ins>, which offers facilities for for generating JSONX and JSD bindings with the [JSON/Java Binding API][api].
@@ -82,10 +87,6 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 | <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;         | String<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.                                     |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of JSD or JSDX schema.                                          |
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 

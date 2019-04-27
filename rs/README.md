@@ -1,5 +1,10 @@
 # JAX-RS Integration for JSONX
 
+[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/rs.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/rs)
+[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/rs.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/rs)
+
 ## Abstract
 
 This document specifies the <ins>JAX-RS Integration for JSONX</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][api].
@@ -68,10 +73,6 @@ public class MyApplication extends javax.ws.rs.core.Application {
   }
 }
 ```
-
-### JavaDocs
-
-JavaDocs are available [here](https://jsonx.openjax.org/apidocs/).
 
 ## Contributing
 
