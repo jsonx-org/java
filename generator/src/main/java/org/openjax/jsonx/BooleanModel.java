@@ -19,7 +19,7 @@ package org.openjax.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
 
 final class BooleanModel extends Model {
   private static final Id ID = Id.hashed("b");

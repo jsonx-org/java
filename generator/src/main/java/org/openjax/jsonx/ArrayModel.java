@@ -27,7 +27,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
 import org.openjax.standard.lang.AnnotationParameterException;
 import org.openjax.standard.lang.IllegalAnnotationException;
 import org.openjax.standard.util.FastArrays;

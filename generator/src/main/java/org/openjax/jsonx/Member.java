@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
 import org.openjax.standard.util.FastCollections;
 import org.openjax.standard.util.Strings;
 import org.openjax.xsb.runtime.Attribute;

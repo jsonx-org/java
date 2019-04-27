@@ -99,8 +99,8 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: JSD 
 
 ```json
 {
-  "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
-  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.9.8.jsd http://jsonx.openjax.org/schema-0.9.8.jsd",
+  "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
+  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.2.2.jsd http://jsonx.openjax.org/schema-0.2.2.jsd",
   "boolean": { "jsd:class": "boolean" },
   "number": { "jsd:class": "number", "jsd:range": "[-1,1)" },
   "string": { "jsd:class": "string", "jsd:pattern": "pattern" },
@@ -126,9 +126,9 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: JSD 
 
 ```xml
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd http://jsonx.openjax.org/schema-0.2.2.xsd">
   <boolean name="boolean"/>
   <number name="number" form="real" range="[-1,1)"/>
   <string name="string" pattern="pattern"/>
@@ -320,9 +320,9 @@ The <ins>JAX-RS Integration for JSONX</ins> sub-project provides `MessageBodyRea
 
 ```xml
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd http://jsonx.openjax.org/schema.xsd">
   <object name="account">
     <property xsi:type="string" name="email" use="optional" nullable="false" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}"/>
     <property xsi:type="string" name="token" use="optional" nullable="false" pattern="(\S)|(\S.*\S)"/>
@@ -389,7 +389,7 @@ The <ins>JSONX Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 <plugin>
   <groupId>org.openjax.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.9.8-SNAPSHOT</version>
+  <version>0.2.2-SNAPSHOT</version>
   <executions>
     <execution>
       <goals>
@@ -429,9 +429,9 @@ The following example presents a use-case involving a <ins>schema document</ins>
 
   ```xml
   <schema
-    xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+    xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema.xsd">
+    xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd http://jsonx.openjax.org/schema.xsd">
 
     <object name="id" abstract="true">
       <property xsi:type="string" name="id" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" nullable="false"/>
@@ -467,7 +467,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
   <plugin>
     <groupId>org.openjax.jsonx</groupId>
     <artifactId>jsonx-maven-plugin</artifactId>
-    <version>0.9.8-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
     <executions>
       <execution>
         <goals>
@@ -491,7 +491,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
   <dependency>
     <groupId>org.openjax.jsonx</groupId>
     <artifactId>jsonx-generator</artifactId>
-    <version>0.9.8</version>
+    <version>0.2.2</version>
   </dependency>
   ```
 

@@ -15,10 +15,10 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema.xsd">
-  
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd http://jsonx.openjax.org/schema.xsd">
+
   <object abstract="true" name="xmldsig">
     <property name="xmldsig" xsi:type="string"/>
   </object>
@@ -26,14 +26,14 @@
     <property name="pub_rsa" xsi:type="string"/>
   </object>
   <object name="signature" extends="pubRsa"/>
-  
+
   <object name="dsig" extends="xmldsig"/>
-  
+
   <object abstract="true" name="partialData">
     <property name="a" xsi:type="string" pattern="[&quot;0-9A-F]*"/>
     <property name="b" xsi:type="string" pattern="[\\0-9A-F]*"/>
   </object>
-  
+
   <object name="message">
     <property name="subject" xsi:type="string"/>
     <property name="url" xsi:type="string" pattern="((https?|ftp)://[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)"/>
@@ -56,7 +56,7 @@
     </property>
     <property xsi:type="reference" name="signature" type="signature"/>
   </object>
-  
+
   <object name="attachment">
     <property name="filename" xsi:type="string" nullable="false"/>
     <property name="data" xsi:type="object" extends="partialData">
@@ -64,14 +64,14 @@
     </property>
     <property name="serial" xsi:type="number" nullable="false"/>
   </object>
-  
+
   <object name="links">
     <property xsi:type="string" name="href" pattern="((https?|ftp)://[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)" nullable="false"/>
     <property xsi:type="string" name="rel" pattern="(\S)|(\S.*\S)" nullable="false"/>
     <property xsi:type="string" name="method" pattern="(\S)|(\S.*\S)" nullable="false"/>
     <property xsi:type="string" name="enc" use="optional"/>
   </object>
-  
+
   <object name="payPalEvent">
     <property xsi:type="string" name="id" nullable="false"/>
     <property xsi:type="string" name="create_time" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.{1,3})?" nullable="false"/>
@@ -113,12 +113,12 @@
       <reference type="links" nullable="false"/>
     </property>
   </object>
-  
+
   <object name="data">
     <property xsi:type="string" name="id" nullable="false"/>
     <property xsi:type="string" name="url" nullable="false"/>
   </object>
-  
+
   <object name="giphy">
     <property xsi:type="array" name="data">
       <reference type="data" nullable="false"/>

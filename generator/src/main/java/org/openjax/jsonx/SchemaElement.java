@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
 import org.openjax.standard.json.JsonReader;
 import org.openjax.standard.lang.PackageLoader;
 import org.openjax.standard.lang.PackageNotFoundException;

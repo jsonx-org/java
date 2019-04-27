@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd ../../main/resources/schema.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd ../../main/resources/schema.xsd">
   <array name="arrayDepthFour" minIterate="4" maxIterate="4">
     <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10"/>
     <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8"/>

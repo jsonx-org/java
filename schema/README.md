@@ -29,8 +29,8 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.5 [Array Elements][#elements]<br>
 <samp>&nbsp;&nbsp;</samp>5 [Related Resources for JSON Schema][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Schemas for JSON Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSON Schema 0.9.8][#schema-098]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [JSON Schema 0.9.7][#schema-097]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSON Schema 0.2.2][#schema-098]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [JSON Schema 0.1.0][#schema-097]<br>
 <samp>&nbsp;&nbsp;</samp>6 [Sample Schemas][#samples]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`structure.jsdx`][#structurejsdx]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`structure.jsd`][#structurejsd]<br>
@@ -99,14 +99,14 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
+   { "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
      ...
    }
    ```
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd">
+   <schema xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd">
      ...
    </schema>
    ```
@@ -355,7 +355,7 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
+   { "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
      ...
      "rootArray": { "jsd:class": "array",
        "jsd:elements": [...] },
@@ -370,7 +370,7 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd">
+   <schema xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd">
      ...
      <array name="rootArray">
        ...
@@ -395,7 +395,7 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
+   { "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
      ...
      "rootObject": { "jsd:class": "object",
        "jsd:properties": {
@@ -416,7 +416,7 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd">
+   <schema xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd">
      ...
      <object name="rootObject">
        <property name="propArray" xsi:type="array" nullable="true" use="required">
@@ -445,7 +445,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
+   { "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
      ...
      "rootArray": {
        "jsd:class": "array",
@@ -465,7 +465,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd">
+   <schema xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd">
      ...
      <array name="rootArray">
        <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
@@ -485,17 +485,17 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 ### 5.1 Schemas for JSON Schema
 
-#### 5.1.1 JSON Schema 0.9.8
+#### 5.1.1 JSON Schema 0.2.2
 
-* A JSON Schema schema document XSD [schema-0.9.8.xsd](http://jsonx.openjax.org/schema-0.9.8.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
+* A JSON Schema schema document XSD [schema-0.2.2.xsd](http://jsonx.openjax.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
 
-* A JSON Schema schema document JSDX [schema-0.9.8.jsdx](http://jsonx.openjax.org/schema-0.9.8.jsdx) for JSON Schema documents.
+* A JSON Schema schema document JSDX [schema-0.2.2.jsdx](http://jsonx.openjax.org/schema-0.2.2.jsdx) for JSON Schema documents.
 
-* A JSON Schema schema document JSD [schema-0.9.8.jsd](http://jsonx.openjax.org/schema-0.9.8.jsd) for JSON Schema documents.
+* A JSON Schema schema document JSD [schema-0.2.2.jsd](http://jsonx.openjax.org/schema-0.2.2.jsd) for JSON Schema documents.
 
-#### 5.1.2 JSON Schema 0.9.7
+#### 5.1.2 JSON Schema 0.1.0
 
-* A JSON Schema schema document XSD [schema-0.9.7.xsd](http://jsonx.openjax.org/schema-0.9.7.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
+* A JSON Schema schema document XSD [schema-0.1.0.xsd](http://jsonx.openjax.org/schema-0.1.0.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://standard.openjax.org/xml/datatypes-0.9.2.xsd).
 
 ### 6 Sample Schemas
 
@@ -505,9 +505,9 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 
 ```xml
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd http://jsonx.openjax.org/schema-0.2.2.xsd">
   <array name="array">
     <boolean nullable="true"/>
     <number form="real" range="[-1,1)" nullable="true"/>
@@ -570,8 +570,8 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 
 ```json
 {
-  "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
-  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.9.8.jsd http://jsonx.openjax.org/schema-0.9.8.jsd",
+  "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
+  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.2.2.jsd http://jsonx.openjax.org/schema-0.2.2.jsd",
   "array": {
     "jsd:class": "array",
     "jsd:elements": [{
@@ -733,9 +733,9 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 
 ```xml
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd http://jsonx.openjax.org/schema-0.9.8.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd http://jsonx.openjax.org/schema-0.2.2.xsd">
   <array name="arrayArr">
     <reference type="arrayBool" maxOccurs="1"/>
     <reference type="arrayNum" maxOccurs="1"/>
@@ -896,8 +896,8 @@ This section provides sample schemas in both `jsdx` and `jsd` forms.
 
 ```json
 {
-  "jsd:ns": "http://jsonx.openjax.org/schema-0.9.8.jsd",
-  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.9.8.jsd http://jsonx.openjax.org/schema-0.9.8.jsd",
+  "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
+  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.2.2.jsd http://jsonx.openjax.org/schema-0.2.2.jsd",
   "arrayArr": {
     "jsd:class": "array",
     "jsd:elements": [{

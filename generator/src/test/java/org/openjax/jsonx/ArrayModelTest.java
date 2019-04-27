@@ -22,8 +22,8 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Member;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc.$Number;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc.$Member;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc.$Number;
 
 public class ArrayModelTest {
   private static class Number extends $Number {

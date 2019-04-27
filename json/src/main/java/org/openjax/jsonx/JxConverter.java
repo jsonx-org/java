@@ -340,9 +340,9 @@ public final class JxConverter {
   private static void appendObject(final JsonReader reader, final boolean declareNamespace, final StringBuilder builder) throws IOException {
     builder.append("<o");
     if (declareNamespace) {
-      builder.append(" xmlns=\"http://jsonx.openjax.org/jsonx-0.9.8.xsd\"");
+      builder.append(" xmlns=\"http://jsonx.openjax.org/jsonx-0.2.2.xsd\"");
       builder.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-      builder.append(" xsi:schemaLocation=\"http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx-0.9.8.xsd\"");
+      builder.append(" xsi:schemaLocation=\"http://jsonx.openjax.org/jsonx-0.2.2.xsd http://jsonx.openjax.org/jsonx-0.2.2.xsd\"");
     }
 
     builder.append('>');

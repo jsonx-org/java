@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.openjax.jsonx.schema_0_9_8.xL4gluGCXYYJc;
+import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
 import org.openjax.standard.jci.CompilationException;
 import org.openjax.standard.jci.InMemoryCompiler;
 import org.openjax.standard.json.JSON;
@@ -84,7 +84,7 @@ public class SchemaTest {
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
     final XmlElement xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.9.8.xsd " + schemaXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.2.2.xsd " + schemaXsd);
     return xml;
   }
 

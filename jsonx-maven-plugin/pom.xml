@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.openjax.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.9.8-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>jsonx-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
@@ -85,10 +85,10 @@
                     <classpath/>
                     <argument>org.openjax.jsonx.Generator</argument>
                     <argument>--prefix</argument>
-                    <argument>org.openjax.jsonx.schema_0_9_8.</argument>
+                    <argument>org.openjax.jsonx.schema_0_2_2.</argument>
                     <argument>-d</argument>
                     <argument>${project.build.directory}/generated-sources/jsonx</argument>
-                    <argument>../schema/src/main/resources/schema-0.9.8.jsdx</argument>
+                    <argument>../schema/src/main/resources/schema-0.2.2.jsdx</argument>
                   </arguments>
                   <workingDirectory>${basedir}/../generator</workingDirectory>
                 </configuration>
@@ -105,8 +105,8 @@
                     <argument>-classpath</argument>
                     <classpath/>
                     <argument>org.openjax.jsonx.Converter</argument>
-                    <argument>../schema/src/main/resources/schema-0.9.8.jsdx</argument>
-                    <argument>../schema/src/main/resources/schema-0.9.8.jsd</argument>
+                    <argument>../schema/src/main/resources/schema-0.2.2.jsdx</argument>
+                    <argument>../schema/src/main/resources/schema-0.2.2.jsd</argument>
                   </arguments>
                   <workingDirectory>${basedir}/../generator</workingDirectory>
                 </configuration>

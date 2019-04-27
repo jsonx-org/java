@@ -150,7 +150,7 @@ final class Error {
         else if (arg instanceof Error)
           obj = arg.toString();
         else
-          obj = Strings.truncate(String.valueOf(arg), 16);
+          obj = Strings.truncate(String.valueOf(arg), 128);
 
         args[i] = obj;
       }

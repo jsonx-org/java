@@ -31,7 +31,7 @@ This document specifies the <ins>JSONX-JSON API</ins>, which offers facilities f
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`paypal.jsonx`][#paypaljsonx]<br>
 <samp>&nbsp;&nbsp;</samp>6 [Related Resources for JSONX-JSON][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JSONX Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONX Schema 0.9.8][#jsonx-098]
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONX Schema 0.2.2][#jsonx-098]
 
 ## 1 Introduction
 
@@ -161,9 +161,9 @@ This section provides a sample JSON and its JSONX alternative.
 
 ```xml
 <o
-  xmlns="http://jsonx.openjax.org/jsonx-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/jsonx-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.9.8.xsd http://jsonx.openjax.org/jsonx-0.9.8.xsd">
+  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.2.2.xsd http://jsonx.openjax.org/jsonx-0.2.2.xsd">
   <p name="id"> "WH-7YX49823S2290830K-0JE13296W68552352"</p>
   <p name="event_version"> "1.0"</p>
   <p name="create_time"> "2016-05-31T17:53:29Z"</p>
@@ -202,9 +202,9 @@ This section provides a sample JSON and its JSONX alternative.
 
 ### 6.1 Schemas for JSONX-JSON
 
-#### 6.1.1 JSONX Schema 0.9.8
+#### 6.1.1 JSONX Schema 0.2.2
 
-* A JSONX Schema schema document XSD [jsonx-0.9.8.xsd][jsonxxsd] for JSONX Schema documents.
+* A JSONX Schema schema document XSD [jsonx-0.2.2.xsd][jsonxxsd] for JSONX Schema documents.
 
 ## Contributing
 
@@ -239,7 +239,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#jsonx-098]: #62-jsonx-098]
 
 [api]: ../binding
-[jsonxxsd]: http://jsonx.openjax.org/jsonx-0.9.8.xsd
+[jsonxxsd]: http://jsonx.openjax.org/jsonx-0.2.2.xsd
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
 [xmlschema]: http://www.w3.org/2001/XMLSchema
 [xmlentities]: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Predefined_entities_in_XML

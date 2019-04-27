@@ -15,22 +15,22 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://jsonx.openjax.org/schema-0.9.8.xsd"
+  xmlns="http://jsonx.openjax.org/schema-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.9.8.xsd schema-0.9.8.xsd">
-  
+  xsi:schemaLocation="http://jsonx.openjax.org/schema-0.2.2.xsd schema-0.2.2.xsd">
+
   <object name="schema">
-    <property name="jsd:ns" xsi:type="string" pattern="http://jsonx.openjax.org/schema-0.9.8.jsd" nullable="false"/>
-    <property name="jsd:schemaLocation" xsi:type="string" pattern="http://jsonx.openjax.org/schema-0.9.8.jsd [^ ]+" nullable="false" use="optional"/>
+    <property name="jsd:ns" xsi:type="string" pattern="http://jsonx.openjax.org/schema-0.2.2.jsd" nullable="false"/>
+    <property name="jsd:schemaLocation" xsi:type="string" pattern="http://jsonx.openjax.org/schema-0.2.2.jsd [^ ]+" nullable="false" use="optional"/>
     <property names="[a-zA-Z_$][-a-zA-Z\d_$]*" xsi:type="any" types="array boolean number objectType string" nullable="false"/>
   </object>
-  
+
   <string name="min" pattern="[\d]+"/>
   <string name="max" pattern="([\d]+|unbounded)"/>
   <string name="use" pattern="(required|optional)"/>
-  
+
   <object name="member" abstract="true"/>
-  
+
   <object name="any" extends="member">
     <property name="jsd:class" xsi:type="string" pattern="any" nullable="false"/>
     <property name="jsd:types" xsi:type="string" pattern="\S+( \S+)*" nullable="false" use="optional"/>
@@ -72,11 +72,11 @@
     <property name="jsd:class" xsi:type="string" pattern="string" nullable="false"/>
     <property name="jsd:pattern" xsi:type="string" nullable="false" use="optional"/>
   </object>
-  
+
   <object name="objectType" extends="object">
     <property xsi:type="boolean" name="jsd:abstract" nullable="false" use="optional"/>
   </object>
-  
+
   <object name="anyProperty" extends="any">
     <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
     <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
@@ -105,7 +105,7 @@
     <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
     <property name="jsd:use" xsi:type="reference" type="use" nullable="false" use="optional"/>
   </object>
-  
+
   <object name="anyElement" extends="any">
     <property name="jsd:nullable" xsi:type="boolean" nullable="false" use="optional"/>
     <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
@@ -141,5 +141,5 @@
     <property name="jsd:minOccurs" xsi:type="reference" type="min" nullable="false" use="optional"/>
     <property name="jsd:maxOccurs" xsi:type="reference" type="max" nullable="false" use="optional"/>
   </object>
-  
+
 </schema>

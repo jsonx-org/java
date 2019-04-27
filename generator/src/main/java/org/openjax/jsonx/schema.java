@@ -1228,7 +1228,7 @@ public class schema {
   }
 
   public static class Schema implements org.openjax.jsonx.JxObject {
-    @org.openjax.jsonx.StringProperty(name="jsd:ns", pattern="http://jsonx.openjax.org/schema-0.9.8.jsd", nullable=false)
+    @org.openjax.jsonx.StringProperty(name="jsd:ns", pattern="http://jsonx.openjax.org/schema-0.2.2.jsd", nullable=false)
     private java.lang.String jsd_3aNs;
     
     public void setJsd_3aNs(final java.lang.String jsd_3aNs) {
@@ -1239,7 +1239,7 @@ public class schema {
       return jsd_3aNs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://jsonx.openjax.org/schema-0.9.8.jsd [^ ]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.openjax.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://jsonx.openjax.org/schema-0.2.2.jsd [^ ]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aSchemaLocation;
     
     public void setJsd_3aSchemaLocation(final java.lang.String jsd_3aSchemaLocation) {

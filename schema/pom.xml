@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.openjax.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.9.8-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>schema</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>

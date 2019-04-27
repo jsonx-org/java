@@ -16,13 +16,13 @@
 -->
 <xs:schema
   elementFormDefault="qualified"
-  targetNamespace="http://jsonx.openjax.org/jsonx-0.9.7.xsd"
-  xmlns:jx="http://jsonx.openjax.org/jsonx-0.9.7.xsd"
+  targetNamespace="http://jsonx.openjax.org/jsonx-0.1.0.xsd"
+  xmlns:jx="http://jsonx.openjax.org/jsonx-0.1.0.xsd"
   xmlns:dt="http://standard.openjax.org/xml/datatypes-0.9.2.xsd"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  
+
   <xs:import namespace="http://standard.openjax.org/xml/datatypes-0.9.2.xsd" schemaLocation="http://standard.openjax.org/xml/datatypes-0.9.2.xsd"/>
-  
+
   <xs:complexType name="element" abstract="true">
     <xs:attribute name="doc" type="dt:stringNonEmpty">
       <xs:annotation>
@@ -30,7 +30,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
-  
+
   <xs:attributeGroup name="nameable">
     <xs:attribute name="name" type="dt:identifier" use="required">
       <xs:annotation>
@@ -38,7 +38,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="annullable">
     <xs:attribute name="nullable" type="xs:boolean" default="true">
       <xs:annotation>
@@ -46,7 +46,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="requirable">
     <xs:attribute name="required" type="xs:boolean" default="true">
       <xs:annotation>
@@ -54,7 +54,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:complexType name="ref">
     <xs:complexContent>
       <xs:extension base="jx:element">
@@ -66,20 +66,20 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="boolean">
     <xs:complexContent>
       <xs:extension base="jx:element"/>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:simpleType name="form">
     <xs:restriction base="xs:string">
       <xs:enumeration value="integer"/>
       <xs:enumeration value="real"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:complexType name="number">
     <xs:complexContent>
       <xs:extension base="jx:element">
@@ -101,7 +101,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:complexType name="string">
     <xs:complexContent>
       <xs:extension base="jx:element">
@@ -123,13 +123,13 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:simpleType name="maxCardinality">
     <xs:restriction base="xs:string">
       <xs:pattern value="(\d+)|(unbounded)"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:attributeGroup name="recurrable">
     <xs:attribute name="minOccurs" type="xs:nonNegativeInteger" default="0">
       <xs:annotation>
@@ -142,7 +142,7 @@
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:complexType name="array">
     <xs:complexContent>
       <xs:extension base="jx:element">
@@ -220,14 +220,14 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:simpleType name="unknown">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ignore"/>
       <xs:enumeration value="error"/>
     </xs:restriction>
   </xs:simpleType>
-  
+
   <xs:complexType name="object">
     <xs:complexContent>
       <xs:extension base="jx:element">
@@ -321,7 +321,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  
+
   <xs:element name="jsonx">
     <xs:complexType>
       <xs:sequence>
