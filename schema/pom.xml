@@ -29,13 +29,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.safris.maven</groupId>
-        <artifactId>offlinejavadoc-maven-plugin</artifactId>
-        <configuration>
-          <sourcepath>${project.build.directory}/generated-sources/xsb</sourcepath>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.openjax.xsb</groupId>
         <artifactId>xsb-maven-plugin</artifactId>
         <version>2.1.4-SNAPSHOT</version>
