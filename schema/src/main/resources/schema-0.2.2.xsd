@@ -16,8 +16,8 @@
 -->
 <xs:schema
   elementFormDefault="qualified"
-  targetNamespace="http://jsonx.openjax.org/schema-0.2.2.xsd"
-  xmlns:js="http://jsonx.openjax.org/schema-0.2.2.xsd"
+  targetNamespace="http://www.jsonx.org/JSONSchema-0.2.2.xsd"
+  xmlns:js="http://www.jsonx.org/JSONSchema-0.2.2.xsd"
   xmlns:dt="http://ext.openjax.org/xml/datatypes-0.9.2.xsd"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 

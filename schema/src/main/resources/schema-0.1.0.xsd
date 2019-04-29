@@ -16,8 +16,8 @@
 -->
 <xs:schema
   elementFormDefault="qualified"
-  targetNamespace="http://jsonx.openjax.org/jsonx-0.1.0.xsd"
-  xmlns:jx="http://jsonx.openjax.org/jsonx-0.1.0.xsd"
+  targetNamespace="http://www.jsonx.org/JSONSchema-0.1.0.xsd"
+  xmlns:js="http://www.jsonx.org/JSONSchema-0.1.0.xsd"
   xmlns:dt="http://ext.openjax.org/xml/datatypes-0.9.2.xsd"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
@@ -57,7 +57,7 @@
 
   <xs:complexType name="ref">
     <xs:complexContent>
-      <xs:extension base="jx:element">
+      <xs:extension base="js:element">
         <xs:attribute name="property" type="dt:qualifiedIdentifier" use="required">
           <xs:annotation>
             <xs:documentation>Name of referenced property. Required.</xs:documentation>
@@ -69,7 +69,7 @@
 
   <xs:complexType name="boolean">
     <xs:complexContent>
-      <xs:extension base="jx:element"/>
+      <xs:extension base="js:element"/>
     </xs:complexContent>
   </xs:complexType>
 
@@ -82,8 +82,8 @@
 
   <xs:complexType name="number">
     <xs:complexContent>
-      <xs:extension base="jx:element">
-        <xs:attribute name="form" type="jx:form" default="real">
+      <xs:extension base="js:element">
+        <xs:attribute name="form" type="js:form" default="real">
           <xs:annotation>
             <xs:documentation>Numeric form of number (integer or real). Default: real.</xs:documentation>
           </xs:annotation>
@@ -104,7 +104,7 @@
 
   <xs:complexType name="string">
     <xs:complexContent>
-      <xs:extension base="jx:element">
+      <xs:extension base="js:element">
         <xs:attribute name="pattern" type="dt:stringNonEmpty">
           <xs:annotation>
             <xs:documentation>Regex pattern for string.</xs:documentation>
@@ -136,7 +136,7 @@
         <xs:documentation>Minimum inclusive occurrence of element in array. Default: 0.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="maxOccurs" type="jx:maxCardinality" default="unbounded">
+    <xs:attribute name="maxOccurs" type="js:maxCardinality" default="unbounded">
       <xs:annotation>
         <xs:documentation>Maximum inclusive occurrence of element in array. Default: 1.</xs:documentation>
       </xs:annotation>
@@ -145,14 +145,14 @@
 
   <xs:complexType name="array">
     <xs:complexContent>
-      <xs:extension base="jx:element">
+      <xs:extension base="js:element">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="boolean">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:boolean">
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:recurrable"/>
+                <xs:extension base="js:boolean">
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -160,9 +160,9 @@
           <xs:element name="number">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:number">
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:recurrable"/>
+                <xs:extension base="js:number">
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -170,9 +170,9 @@
           <xs:element name="string">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:string">
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:recurrable"/>
+                <xs:extension base="js:string">
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -180,9 +180,9 @@
           <xs:element name="array">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:array">
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:recurrable"/>
+                <xs:extension base="js:array">
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -190,14 +190,14 @@
           <xs:element name="object">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:object">
+                <xs:extension base="js:object">
                   <xs:attribute name="class" type="dt:qualifiedIdentifier" use="required">
                     <xs:annotation>
                       <xs:documentation>Name of class. Required.</xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:recurrable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -209,9 +209,9 @@
           <xs:element name="ref">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:ref">
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:recurrable"/>
+                <xs:extension base="js:ref">
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:recurrable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -230,15 +230,15 @@
 
   <xs:complexType name="object">
     <xs:complexContent>
-      <xs:extension base="jx:element">
+      <xs:extension base="js:element">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="boolean">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:boolean">
-                  <xs:attributeGroup ref="jx:nameable"/>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:requirable"/>
+                <xs:extension base="js:boolean">
+                  <xs:attributeGroup ref="js:nameable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:requirable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -246,10 +246,10 @@
           <xs:element name="number">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:number">
-                  <xs:attributeGroup ref="jx:nameable"/>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:requirable"/>
+                <xs:extension base="js:number">
+                  <xs:attributeGroup ref="js:nameable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:requirable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -257,10 +257,10 @@
           <xs:element name="string">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:string">
-                  <xs:attributeGroup ref="jx:nameable"/>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:requirable"/>
+                <xs:extension base="js:string">
+                  <xs:attributeGroup ref="js:nameable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:requirable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -268,10 +268,10 @@
           <xs:element name="array">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:array">
-                  <xs:attributeGroup ref="jx:nameable"/>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:requirable"/>
+                <xs:extension base="js:array">
+                  <xs:attributeGroup ref="js:nameable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:requirable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -279,15 +279,15 @@
           <xs:element name="object">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:object">
+                <xs:extension base="js:object">
                   <xs:attribute name="class" type="dt:identifier" use="required">
                     <xs:annotation>
                       <xs:documentation>Name of class. Required.</xs:documentation>
                     </xs:annotation>
                   </xs:attribute>
-                  <xs:attributeGroup ref="jx:nameable"/>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:requirable"/>
+                  <xs:attributeGroup ref="js:nameable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:requirable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -299,10 +299,10 @@
           <xs:element name="ref">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:ref">
-                  <xs:attributeGroup ref="jx:nameable"/>
-                  <xs:attributeGroup ref="jx:annullable"/>
-                  <xs:attributeGroup ref="jx:requirable"/>
+                <xs:extension base="js:ref">
+                  <xs:attributeGroup ref="js:nameable"/>
+                  <xs:attributeGroup ref="js:annullable"/>
+                  <xs:attributeGroup ref="js:requirable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -313,7 +313,7 @@
             <xs:documentation>Parent type of object. Optional.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="unknown" type="jx:unknown" default="error">
+        <xs:attribute name="unknown" type="js:unknown" default="error">
           <xs:annotation>
             <xs:documentation>Policy when unknown property is encountered (ignore or error). Default: error.</xs:documentation>
           </xs:annotation>
@@ -329,8 +329,8 @@
           <xs:element name="boolean">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:boolean">
-                  <xs:attributeGroup ref="jx:nameable"/>
+                <xs:extension base="js:boolean">
+                  <xs:attributeGroup ref="js:nameable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -338,8 +338,8 @@
           <xs:element name="number">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:number">
-                  <xs:attributeGroup ref="jx:nameable"/>
+                <xs:extension base="js:number">
+                  <xs:attributeGroup ref="js:nameable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -347,8 +347,8 @@
           <xs:element name="string">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:string">
-                  <xs:attributeGroup ref="jx:nameable"/>
+                <xs:extension base="js:string">
+                  <xs:attributeGroup ref="js:nameable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -356,8 +356,8 @@
           <xs:element name="array">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:array">
-                  <xs:attributeGroup ref="jx:nameable"/>
+                <xs:extension base="js:array">
+                  <xs:attributeGroup ref="js:nameable"/>
                 </xs:extension>
               </xs:complexContent>
             </xs:complexType>
@@ -365,7 +365,7 @@
           <xs:element name="object">
             <xs:complexType>
               <xs:complexContent>
-                <xs:extension base="jx:object">
+                <xs:extension base="js:object">
                   <xs:attribute name="class" type="dt:qualifiedIdentifier" use="required">
                     <xs:annotation>
                       <xs:documentation>Name of class. Required.</xs:documentation>
@@ -402,19 +402,19 @@
       </xs:attribute>
     </xs:complexType>
     <xs:key name="nameKey">
-      <xs:selector xpath="./jx:boolean | ./jx:number | ./jx:string | ./jx:array | ./jx:object"/>
+      <xs:selector xpath="./js:boolean | ./js:number | ./js:string | ./js:array | ./js:object"/>
       <xs:field xpath="@name | @class"/>
     </xs:key>
     <xs:key name="objectNameKey">
-      <xs:selector xpath="./jx:object"/>
+      <xs:selector xpath="./js:object"/>
       <xs:field xpath="@class"/>
     </xs:key>
-    <xs:keyref name="objectNameKeyRef" refer="jx:objectNameKey">
-      <xs:selector xpath=".//jx:*"/>
+    <xs:keyref name="objectNameKeyRef" refer="js:objectNameKey">
+      <xs:selector xpath=".//js:*"/>
       <xs:field xpath="@extends"/>
     </xs:keyref>
-    <xs:keyref name="nameKeyRef" refer="jx:nameKey">
-      <xs:selector xpath=".//jx:property"/>
+    <xs:keyref name="nameKeyRef" refer="js:nameKey">
+      <xs:selector xpath=".//js:property"/>
       <xs:field xpath="@ref"/>
     </xs:keyref>
   </xs:element>

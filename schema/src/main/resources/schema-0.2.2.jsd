@@ -1,6 +1,6 @@
 {
-  "jsd:ns": "http://jsonx.openjax.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://jsonx.openjax.org/schema-0.2.2.jsd http://jsonx.openjax.org/schema-0.2.2.jsd",
+  "jsd:ns": "http://jsonx.openjax.org/JSONSchema-0.2.2.jsd",
+  "jsd:schemaLocation": "http://jsonx.openjax.org/JSONSchema-0.2.2.jsd http://jsonx.openjax.org/JSONSchema-0.2.2.jsd",
   "max": {
     "jsd:class": "string",
     "jsd:pattern": "([\\d]+|unbounded)"
@@ -434,12 +434,12 @@
       "jsd:ns": {
         "jsd:class": "string",
         "jsd:nullable": false,
-        "jsd:pattern": "http://jsonx.openjax.org/schema-0.2.2.jsd"
+        "jsd:pattern": "http://jsonx.openjax.org/JSONSchema-0.2.2.jsd"
       },
       "jsd:schemaLocation": {
         "jsd:class": "string",
         "jsd:nullable": false,
-        "jsd:pattern": "http://jsonx.openjax.org/schema-0.2.2.jsd [^ ]+",
+        "jsd:pattern": "http://jsonx.openjax.org/JSONSchema-0.2.2.jsd [^ ]+",
         "jsd:use": "optional"
       },
       "[a-zA-Z_$][-a-zA-Z\\d_$]*": {
