@@ -1,7 +1,7 @@
 # JSONX Framework
 
-[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/jsonx.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/jsonx)
-[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/jsonx.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg)](https://www.javadoc.io/doc/org.jsonx/jsonx)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
 
 > JSON Schema, Validation, Java Binding, and more
 
@@ -247,7 +247,7 @@ The <ins>JSD Binding Generator</ins> provides convenience utilities for generati
 The following example generates binding classes (`.java` files) in `target/generated-sources/jsonx` for the <ins>schema document</ins> at `src/main/resources/example.jsd`, with prefix `org.example$`.
 
 ```bash
-java -cp ... org.openjax.jsonx.Generator --prefix org.example$ -d target/generated-sources/jsonx src/main/resources/example.jsd
+java -cp ... org.jsonx.Generator --prefix org.example$ -d target/generated-sources/jsonx src/main/resources/example.jsd
 ```
 
 ##### 2.3.4.2 `Converter`
@@ -255,7 +255,7 @@ java -cp ... org.openjax.jsonx.Generator --prefix org.example$ -d target/generat
 The following example converts the JSD file at `src/main/resources/example.jsd` to a JSDX file in `target/generated-resources`.
 
 ```bash
-java -cp ... org.openjax.jsonx.Converter src/main/resources/example.jsd target/generated-resources/example.jsdx
+java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated-resources/example.jsdx
 ```
 
 ### 2.4 <ins>JSONX-JSON</ins>
@@ -387,7 +387,7 @@ The <ins>JSONX Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 
 ```xml
 <plugin>
-  <groupId>org.openjax.jsonx</groupId>
+  <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
   <version>0.2.2-SNAPSHOT</version>
   <executions>
@@ -461,11 +461,11 @@ The following example presents a use-case involving a <ins>schema document</ins>
   </schema>
   ```
 
-3. Add the [`org.openjax.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
+3. Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
 
   ```xml
   <plugin>
-    <groupId>org.openjax.jsonx</groupId>
+    <groupId>org.jsonx</groupId>
     <artifactId>jsonx-maven-plugin</artifactId>
     <version>0.2.2-SNAPSHOT</version>
     <executions>
@@ -485,11 +485,11 @@ The following example presents a use-case involving a <ins>schema document</ins>
   </plugin>
   ```
 
-4. Add the `org.openjax.jsonx:jsonx-generator` dependency to the POM.
+4. Add the `org.jsonx:jsonx-generator` dependency to the POM.
 
   ```xml
   <dependency>
-    <groupId>org.openjax.jsonx</groupId>
+    <groupId>org.jsonx</groupId>
     <artifactId>jsonx-generator</artifactId>
     <version>0.2.2</version>
   </dependency>

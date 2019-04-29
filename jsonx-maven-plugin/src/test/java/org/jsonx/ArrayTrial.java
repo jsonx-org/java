@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -26,8 +26,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.jsonx.ArrayValidator.Relation;
-import org.openjax.jsonx.ArrayValidator.Relations;
+import org.jsonx.ArrayValidator.Relation;
+import org.jsonx.ArrayValidator.Relations;
 
 class ArrayTrial<T> extends PropertyTrial<T> {
   static Object createValid(final Class<? extends Annotation> arrayAnnotationType, final int minIterate, final int maxIterate, final int[] elementIds, final IdToElement idToElement) {

@@ -1,8 +1,8 @@
-package org.openjax.jsonx;
+package org.jsonx;
 
 public class schema {
-  public static class Any extends org.openjax.jsonx.schema.Member {
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="any", nullable=false)
+  public static class Any extends org.jsonx.schema.Member {
+    @org.jsonx.StringProperty(name="jsd:class", pattern="any", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -13,7 +13,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:types", pattern="\\S+( \\S+)*", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:types", pattern="\\S+( \\S+)*", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aTypes;
     
     public void setJsd_3aTypes(final java.lang.String jsd_3aTypes) {
@@ -29,10 +29,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Any) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Any) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.Any that = (org.openjax.jsonx.schema.Any)obj;
+      final org.jsonx.schema.Any that = (org.jsonx.schema.Any)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -52,12 +52,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class AnyElement extends org.openjax.jsonx.schema.Any {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class AnyElement extends org.jsonx.schema.Any {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -68,7 +68,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -79,7 +79,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -95,10 +95,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.AnyElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.AnyElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.AnyElement that = (org.openjax.jsonx.schema.AnyElement)obj;
+      final org.jsonx.schema.AnyElement that = (org.jsonx.schema.AnyElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -122,12 +122,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class AnyProperty extends org.openjax.jsonx.schema.Any {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class AnyProperty extends org.jsonx.schema.Any {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -138,7 +138,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -154,10 +154,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.AnyProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.AnyProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.AnyProperty that = (org.openjax.jsonx.schema.AnyProperty)obj;
+      final org.jsonx.schema.AnyProperty that = (org.jsonx.schema.AnyProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -177,12 +177,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class Array extends org.openjax.jsonx.schema.Member {
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="array", nullable=false)
+  public static class Array extends org.jsonx.schema.Member {
+    @org.jsonx.StringProperty(name="jsd:class", pattern="array", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -193,7 +193,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minIterate", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minIterate", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinIterate;
     
     public void setJsd_3aMinIterate(final java.lang.String jsd_3aMinIterate) {
@@ -204,7 +204,7 @@ public class schema {
       return jsd_3aMinIterate;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxIterate", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxIterate", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxIterate;
     
     public void setJsd_3aMaxIterate(final java.lang.String jsd_3aMaxIterate) {
@@ -215,14 +215,14 @@ public class schema {
       return jsd_3aMaxIterate;
     }
     
-    @org.openjax.jsonx.ObjectElement(id=6, type=org.openjax.jsonx.schema.ObjectElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ObjectElement(id=5, type=org.openjax.jsonx.schema.StringElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ObjectElement(id=4, type=org.openjax.jsonx.schema.ReferenceElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ObjectElement(id=3, type=org.openjax.jsonx.schema.NumberElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ObjectElement(id=2, type=org.openjax.jsonx.schema.BooleanElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ObjectElement(id=1, type=org.openjax.jsonx.schema.ArrayElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ObjectElement(id=0, type=org.openjax.jsonx.schema.AnyElement.class, minOccurs=0, nullable=false)
-    @org.openjax.jsonx.ArrayProperty(name="jsd:elements", elementIds={0, 1, 2, 3, 4, 5, 6}, maxIterate=2147483647, nullable=false)
+    @org.jsonx.ObjectElement(id=6, type=org.jsonx.schema.ObjectElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ObjectElement(id=5, type=org.jsonx.schema.StringElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ObjectElement(id=4, type=org.jsonx.schema.ReferenceElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ObjectElement(id=3, type=org.jsonx.schema.NumberElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ObjectElement(id=2, type=org.jsonx.schema.BooleanElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ObjectElement(id=1, type=org.jsonx.schema.ArrayElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.AnyElement.class, minOccurs=0, nullable=false)
+    @org.jsonx.ArrayProperty(name="jsd:elements", elementIds={0, 1, 2, 3, 4, 5, 6}, maxIterate=2147483647, nullable=false)
     private java.util.List<java.lang.Object> jsd_3aElements;
     
     public void setJsd_3aElements(final java.util.List<java.lang.Object> jsd_3aElements) {
@@ -238,10 +238,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Array) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Array) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.Array that = (org.openjax.jsonx.schema.Array)obj;
+      final org.jsonx.schema.Array that = (org.jsonx.schema.Array)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -269,12 +269,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ArrayElement extends org.openjax.jsonx.schema.Array {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ArrayElement extends org.jsonx.schema.Array {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -285,7 +285,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -296,7 +296,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -312,10 +312,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ArrayElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ArrayElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ArrayElement that = (org.openjax.jsonx.schema.ArrayElement)obj;
+      final org.jsonx.schema.ArrayElement that = (org.jsonx.schema.ArrayElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -339,12 +339,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ArrayProperty extends org.openjax.jsonx.schema.Array {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ArrayProperty extends org.jsonx.schema.Array {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -355,7 +355,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -371,10 +371,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ArrayProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ArrayProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ArrayProperty that = (org.openjax.jsonx.schema.ArrayProperty)obj;
+      final org.jsonx.schema.ArrayProperty that = (org.jsonx.schema.ArrayProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -394,12 +394,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class Boolean extends org.openjax.jsonx.schema.Member {
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="boolean", nullable=false)
+  public static class Boolean extends org.jsonx.schema.Member {
+    @org.jsonx.StringProperty(name="jsd:class", pattern="boolean", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -415,10 +415,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Boolean) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Boolean) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.Boolean that = (org.openjax.jsonx.schema.Boolean)obj;
+      final org.jsonx.schema.Boolean that = (org.jsonx.schema.Boolean)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -434,12 +434,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class BooleanElement extends org.openjax.jsonx.schema.Boolean {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class BooleanElement extends org.jsonx.schema.Boolean {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -450,7 +450,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -461,7 +461,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -477,10 +477,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.BooleanElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.BooleanElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.BooleanElement that = (org.openjax.jsonx.schema.BooleanElement)obj;
+      final org.jsonx.schema.BooleanElement that = (org.jsonx.schema.BooleanElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -504,12 +504,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class BooleanProperty extends org.openjax.jsonx.schema.Boolean {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class BooleanProperty extends org.jsonx.schema.Boolean {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -520,7 +520,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -536,10 +536,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.BooleanProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.BooleanProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.BooleanProperty that = (org.openjax.jsonx.schema.BooleanProperty)obj;
+      final org.jsonx.schema.BooleanProperty that = (org.jsonx.schema.BooleanProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -559,17 +559,17 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static abstract class Member implements org.openjax.jsonx.JxObject {
+  public static abstract class Member implements org.jsonx.JxObject {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Member))
+      if (!(obj instanceof org.jsonx.schema.Member))
         return false;
     
       return true;
@@ -582,12 +582,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class Number extends org.openjax.jsonx.schema.Member {
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="number", nullable=false)
+  public static class Number extends org.jsonx.schema.Member {
+    @org.jsonx.StringProperty(name="jsd:class", pattern="number", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -598,7 +598,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:form", pattern="(integer|real)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:form", pattern="(integer|real)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aForm;
     
     public void setJsd_3aForm(final java.lang.String jsd_3aForm) {
@@ -609,7 +609,7 @@ public class schema {
       return jsd_3aForm;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?\\d+(\\.\\d+)?)?,(-?\\d+(\\.\\d+)?)?[\\)\\]]", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?\\d+(\\.\\d+)?)?,(-?\\d+(\\.\\d+)?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aRange;
     
     public void setJsd_3aRange(final java.lang.String jsd_3aRange) {
@@ -625,10 +625,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Number) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Number) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.Number that = (org.openjax.jsonx.schema.Number)obj;
+      final org.jsonx.schema.Number that = (org.jsonx.schema.Number)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -652,12 +652,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class NumberElement extends org.openjax.jsonx.schema.Number {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class NumberElement extends org.jsonx.schema.Number {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -668,7 +668,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -679,7 +679,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -695,10 +695,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.NumberElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.NumberElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.NumberElement that = (org.openjax.jsonx.schema.NumberElement)obj;
+      final org.jsonx.schema.NumberElement that = (org.jsonx.schema.NumberElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -722,12 +722,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class NumberProperty extends org.openjax.jsonx.schema.Number {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class NumberProperty extends org.jsonx.schema.Number {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -738,7 +738,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -754,10 +754,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.NumberProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.NumberProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.NumberProperty that = (org.openjax.jsonx.schema.NumberProperty)obj;
+      final org.jsonx.schema.NumberProperty that = (org.jsonx.schema.NumberProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -777,13 +777,13 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static abstract class Object extends org.openjax.jsonx.schema.Member {
-    public static class Jsd_3aProperties implements org.openjax.jsonx.JxObject {
-      @org.openjax.jsonx.AnyProperty(name=".*", types={@org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.AnyProperty.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.ArrayProperty.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.BooleanProperty.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.NumberProperty.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.ObjectProperty.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.ReferenceProperty.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.StringProperty.class)}, nullable=false)
+  public static abstract class Object extends org.jsonx.schema.Member {
+    public static class Jsd_3aProperties implements org.jsonx.JxObject {
+      @org.jsonx.AnyProperty(name=".*", types={@org.jsonx.t(objects=org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects=org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects=org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects=org.jsonx.schema.StringProperty.class)}, nullable=false)
       public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
       
       @java.lang.Override
@@ -791,10 +791,10 @@ public class schema {
         if (obj == this)
           return true;
       
-        if (!(obj instanceof org.openjax.jsonx.schema.Object.Jsd_3aProperties))
+        if (!(obj instanceof org.jsonx.schema.Object.Jsd_3aProperties))
           return false;
       
-        final org.openjax.jsonx.schema.Object.Jsd_3aProperties that = (org.openjax.jsonx.schema.Object.Jsd_3aProperties)obj;
+        final org.jsonx.schema.Object.Jsd_3aProperties that = (org.jsonx.schema.Object.Jsd_3aProperties)obj;
         if (that._2e_2a != null ? !that._2e_2a.equals(_2e_2a) : _2e_2a != null)
           return false;
       
@@ -810,10 +810,10 @@ public class schema {
       
       @java.lang.Override
       public java.lang.String toString() {
-        return org.openjax.jsonx.JxEncoder.get().marshal(this);
+        return org.jsonx.JxEncoder.get().marshal(this);
       }
     }
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="object", nullable=false)
+    @org.jsonx.StringProperty(name="jsd:class", pattern="object", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -824,7 +824,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:extends", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:extends", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aExtends;
     
     public void setJsd_3aExtends(final java.lang.String jsd_3aExtends) {
@@ -835,14 +835,14 @@ public class schema {
       return jsd_3aExtends;
     }
     
-    @org.openjax.jsonx.ObjectProperty(name="jsd:properties", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
-    private org.openjax.jsonx.schema.Object.Jsd_3aProperties jsd_3aProperties;
+    @org.jsonx.ObjectProperty(name="jsd:properties", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    private org.jsonx.schema.Object.Jsd_3aProperties jsd_3aProperties;
     
-    public void setJsd_3aProperties(final org.openjax.jsonx.schema.Object.Jsd_3aProperties jsd_3aProperties) {
+    public void setJsd_3aProperties(final org.jsonx.schema.Object.Jsd_3aProperties jsd_3aProperties) {
       this.jsd_3aProperties = jsd_3aProperties;
     }
     
-    public org.openjax.jsonx.schema.Object.Jsd_3aProperties getJsd_3aProperties() {
+    public org.jsonx.schema.Object.Jsd_3aProperties getJsd_3aProperties() {
       return jsd_3aProperties;
     }
     
@@ -851,10 +851,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Object) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Object) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.Object that = (org.openjax.jsonx.schema.Object)obj;
+      final org.jsonx.schema.Object that = (org.jsonx.schema.Object)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -878,12 +878,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ObjectElement extends org.openjax.jsonx.schema.Object {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ObjectElement extends org.jsonx.schema.Object {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -894,7 +894,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -905,7 +905,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -921,10 +921,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ObjectElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ObjectElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ObjectElement that = (org.openjax.jsonx.schema.ObjectElement)obj;
+      final org.jsonx.schema.ObjectElement that = (org.jsonx.schema.ObjectElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -948,12 +948,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ObjectProperty extends org.openjax.jsonx.schema.Object {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ObjectProperty extends org.jsonx.schema.Object {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -964,7 +964,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -980,10 +980,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ObjectProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ObjectProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ObjectProperty that = (org.openjax.jsonx.schema.ObjectProperty)obj;
+      final org.jsonx.schema.ObjectProperty that = (org.jsonx.schema.ObjectProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -1003,12 +1003,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ObjectType extends org.openjax.jsonx.schema.Object {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:abstract", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ObjectType extends org.jsonx.schema.Object {
+    @org.jsonx.BooleanProperty(name="jsd:abstract", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aAbstract;
     
     public void setJsd_3aAbstract(final java.lang.Boolean jsd_3aAbstract) {
@@ -1024,10 +1024,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ObjectType) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ObjectType) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ObjectType that = (org.openjax.jsonx.schema.ObjectType)obj;
+      final org.jsonx.schema.ObjectType that = (org.jsonx.schema.ObjectType)obj;
       if (that.jsd_3aAbstract != null ? !that.jsd_3aAbstract.equals(jsd_3aAbstract) : jsd_3aAbstract != null)
         return false;
     
@@ -1043,12 +1043,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static abstract class Reference extends org.openjax.jsonx.schema.Member {
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="reference", nullable=false)
+  public static abstract class Reference extends org.jsonx.schema.Member {
+    @org.jsonx.StringProperty(name="jsd:class", pattern="reference", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -1059,7 +1059,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:type", nullable=false)
+    @org.jsonx.StringProperty(name="jsd:type", nullable=false)
     private java.lang.String jsd_3aType;
     
     public void setJsd_3aType(final java.lang.String jsd_3aType) {
@@ -1075,10 +1075,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Reference) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Reference) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.Reference that = (org.openjax.jsonx.schema.Reference)obj;
+      final org.jsonx.schema.Reference that = (org.jsonx.schema.Reference)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -1098,12 +1098,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ReferenceElement extends org.openjax.jsonx.schema.Reference {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ReferenceElement extends org.jsonx.schema.Reference {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -1114,7 +1114,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -1125,7 +1125,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -1141,10 +1141,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ReferenceElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ReferenceElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ReferenceElement that = (org.openjax.jsonx.schema.ReferenceElement)obj;
+      final org.jsonx.schema.ReferenceElement that = (org.jsonx.schema.ReferenceElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -1168,12 +1168,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class ReferenceProperty extends org.openjax.jsonx.schema.Reference {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class ReferenceProperty extends org.jsonx.schema.Reference {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -1184,7 +1184,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -1200,10 +1200,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.ReferenceProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.ReferenceProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.ReferenceProperty that = (org.openjax.jsonx.schema.ReferenceProperty)obj;
+      final org.jsonx.schema.ReferenceProperty that = (org.jsonx.schema.ReferenceProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -1223,12 +1223,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class Schema implements org.openjax.jsonx.JxObject {
-    @org.openjax.jsonx.StringProperty(name="jsd:ns", pattern="http://jsonx.openjax.org/schema-0.2.2.jsd", nullable=false)
+  public static class Schema implements org.jsonx.JxObject {
+    @org.jsonx.StringProperty(name="jsd:ns", pattern="http://www.jsonx.org/schema-0.2.2.jsd", nullable=false)
     private java.lang.String jsd_3aNs;
     
     public void setJsd_3aNs(final java.lang.String jsd_3aNs) {
@@ -1239,7 +1239,7 @@ public class schema {
       return jsd_3aNs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://jsonx.openjax.org/schema-0.2.2.jsd [^ ]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://www.jsonx.org/schema-0.2.2.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aSchemaLocation;
     
     public void setJsd_3aSchemaLocation(final java.lang.String jsd_3aSchemaLocation) {
@@ -1250,7 +1250,7 @@ public class schema {
       return jsd_3aSchemaLocation;
     }
     
-    @org.openjax.jsonx.AnyProperty(name="[a-zA-Z_$][-a-zA-Z\\d_$]*", types={@org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.Array.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.Boolean.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.Number.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.ObjectType.class), @org.openjax.jsonx.t(objects=org.openjax.jsonx.schema.String.class)}, nullable=false)
+    @org.jsonx.AnyProperty(name="[a-zA-Z_$][-a-zA-Z\\d_$]*", types={@org.jsonx.t(objects=org.jsonx.schema.Array.class), @org.jsonx.t(objects=org.jsonx.schema.Boolean.class), @org.jsonx.t(objects=org.jsonx.schema.Number.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects=org.jsonx.schema.String.class)}, nullable=false)
     public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a = new java.util.LinkedHashMap<>();
     
     @java.lang.Override
@@ -1258,10 +1258,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.Schema))
+      if (!(obj instanceof org.jsonx.schema.Schema))
         return false;
     
-      final org.openjax.jsonx.schema.Schema that = (org.openjax.jsonx.schema.Schema)obj;
+      final org.jsonx.schema.Schema that = (org.jsonx.schema.Schema)obj;
       if (that.jsd_3aNs != null ? !that.jsd_3aNs.equals(jsd_3aNs) : jsd_3aNs != null)
         return false;
     
@@ -1285,12 +1285,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class String extends org.openjax.jsonx.schema.Member {
-    @org.openjax.jsonx.StringProperty(name="jsd:class", pattern="string", nullable=false)
+  public static class String extends org.jsonx.schema.Member {
+    @org.jsonx.StringProperty(name="jsd:class", pattern="string", nullable=false)
     private java.lang.String jsd_3aClass;
     
     public void setJsd_3aClass(final java.lang.String jsd_3aClass) {
@@ -1301,7 +1301,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:pattern", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:pattern", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aPattern;
     
     public void setJsd_3aPattern(final java.lang.String jsd_3aPattern) {
@@ -1317,10 +1317,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.String) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.String) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.String that = (org.openjax.jsonx.schema.String)obj;
+      final org.jsonx.schema.String that = (org.jsonx.schema.String)obj;
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
@@ -1340,12 +1340,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class StringElement extends org.openjax.jsonx.schema.String {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class StringElement extends org.jsonx.schema.String {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -1356,7 +1356,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:minOccurs", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinOccurs;
     
     public void setJsd_3aMinOccurs(final java.lang.String jsd_3aMinOccurs) {
@@ -1367,7 +1367,7 @@ public class schema {
       return jsd_3aMinOccurs;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:maxOccurs", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxOccurs;
     
     public void setJsd_3aMaxOccurs(final java.lang.String jsd_3aMaxOccurs) {
@@ -1383,10 +1383,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.StringElement) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.StringElement) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.StringElement that = (org.openjax.jsonx.schema.StringElement)obj;
+      final org.jsonx.schema.StringElement that = (org.jsonx.schema.StringElement)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -1410,12 +1410,12 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 
-  public static class StringProperty extends org.openjax.jsonx.schema.String {
-    @org.openjax.jsonx.BooleanProperty(name="jsd:nullable", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+  public static class StringProperty extends org.jsonx.schema.String {
+    @org.jsonx.BooleanProperty(name="jsd:nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aNullable;
     
     public void setJsd_3aNullable(final java.lang.Boolean jsd_3aNullable) {
@@ -1426,7 +1426,7 @@ public class schema {
       return jsd_3aNullable;
     }
     
-    @org.openjax.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.openjax.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:use", pattern="(required|optional)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aUse;
     
     public void setJsd_3aUse(final java.lang.String jsd_3aUse) {
@@ -1442,10 +1442,10 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.openjax.jsonx.schema.StringProperty) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.StringProperty) || !super.equals(obj))
         return false;
     
-      final org.openjax.jsonx.schema.StringProperty that = (org.openjax.jsonx.schema.StringProperty)obj;
+      final org.jsonx.schema.StringProperty that = (org.jsonx.schema.StringProperty)obj;
       if (that.jsd_3aNullable != null ? !that.jsd_3aNullable.equals(jsd_3aNullable) : jsd_3aNullable != null)
         return false;
     
@@ -1465,7 +1465,7 @@ public class schema {
     
     @java.lang.Override
     public java.lang.String toString() {
-      return org.openjax.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().marshal(this);
     }
   }
 }

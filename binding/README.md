@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/binding.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/binding)
-[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/binding.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/binding)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/binding.svg)](https://www.javadoc.io/doc/org.jsonx/binding)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/binding.svg)](https://mvnrepository.com/artifact/org.jsonx/binding)
 
 ## Abstract
 
@@ -90,7 +90,7 @@ Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to an
 
 ## 4 Specification
 
-The <ins>JSON/Java Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.openjax.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
+The <ins>JSON/Java Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
 
 #### 4.1 Structural
 

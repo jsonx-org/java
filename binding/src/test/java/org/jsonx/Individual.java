@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 public class Individual implements JxObject {
   @StringProperty(pattern="\\S+ \\S+")

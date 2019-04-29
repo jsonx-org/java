@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashMap;
@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.openjax.ext.util.FastCollections;
 import org.openjax.ext.util.Strings;
 import org.openjax.xsb.runtime.Attribute;
@@ -40,28 +40,28 @@ abstract class Member extends Element {
     @Override
     public String apply(final Binding t) {
       final String name;
-      if (t instanceof xL4gluGCXYYJc.$Array)
-        name = ((xL4gluGCXYYJc.$Array)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.$Boolean)
-        name = ((xL4gluGCXYYJc.$Boolean)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.$Number)
-        name = ((xL4gluGCXYYJc.$Number)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.$Object)
-        name = ((xL4gluGCXYYJc.$Object)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.$String)
-        name = ((xL4gluGCXYYJc.$String)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.$Reference)
-        name = ((xL4gluGCXYYJc.$Reference)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.Array)
-        name = ((xL4gluGCXYYJc.Schema.Array)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.Boolean)
-        name = ((xL4gluGCXYYJc.Schema.Boolean)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.Number)
-        name = ((xL4gluGCXYYJc.Schema.Number)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.Object)
-        name = ((xL4gluGCXYYJc.Schema.Object)t).getName$().text();
-      else if (t instanceof xL4gluGCXYYJc.Schema.String)
-        name = ((xL4gluGCXYYJc.Schema.String)t).getName$().text();
+      if (t instanceof xL0gluGCXYYJc.$Array)
+        name = ((xL0gluGCXYYJc.$Array)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.$Boolean)
+        name = ((xL0gluGCXYYJc.$Boolean)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.$Number)
+        name = ((xL0gluGCXYYJc.$Number)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.$Object)
+        name = ((xL0gluGCXYYJc.$Object)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.$String)
+        name = ((xL0gluGCXYYJc.$String)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.$Reference)
+        name = ((xL0gluGCXYYJc.$Reference)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.Schema.Array)
+        name = ((xL0gluGCXYYJc.Schema.Array)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.Schema.Boolean)
+        name = ((xL0gluGCXYYJc.Schema.Boolean)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.Schema.Number)
+        name = ((xL0gluGCXYYJc.Schema.Number)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.Schema.Object)
+        name = ((xL0gluGCXYYJc.Schema.Object)t).getName$().text();
+      else if (t instanceof xL0gluGCXYYJc.Schema.String)
+        name = ((xL0gluGCXYYJc.Schema.String)t).getName$().text();
       else
         name = null;
 
@@ -75,7 +75,7 @@ abstract class Member extends Element {
     }
   };
 
-  static Integer parseMaxCardinality(final int minCardinality, final xL4gluGCXYYJc.$MaxOccurs maxCardinality, final String name, final Integer dflt) {
+  static Integer parseMaxCardinality(final int minCardinality, final xL0gluGCXYYJc.$MaxOccurs maxCardinality, final String name, final Integer dflt) {
     final Integer max = "unbounded".equals(maxCardinality.text()) ? Integer.MAX_VALUE : Integer.parseInt(maxCardinality.text());
     if (minCardinality > max)
       throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
@@ -107,7 +107,7 @@ abstract class Member extends Element {
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
-  Member(final Registry registry, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL4gluGCXYYJc.$MaxOccurs maxOccurs) {
+  Member(final Registry registry, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs) {
     this(registry, id, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
   }
 

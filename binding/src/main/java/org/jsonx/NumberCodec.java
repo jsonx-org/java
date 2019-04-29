@@ -14,15 +14,15 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.openjax.jsonx.ArrayValidator.Relation;
-import org.openjax.jsonx.ArrayValidator.Relations;
+import org.jsonx.ArrayValidator.Relation;
+import org.jsonx.ArrayValidator.Relations;
 import org.openjax.ext.util.Annotations;
 
 class NumberCodec extends PrimitiveCodec<Number> {

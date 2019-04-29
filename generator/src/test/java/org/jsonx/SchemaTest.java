@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +40,7 @@ import org.openjax.ext.jci.CompilationException;
 import org.openjax.ext.jci.InMemoryCompiler;
 import org.openjax.ext.json.JSON;
 import org.openjax.ext.json.JsonReader;
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.openjax.ext.lang.PackageNotFoundException;
 import org.openjax.ext.test.AssertXml;
 import org.openjax.ext.util.Classes;
@@ -76,25 +76,25 @@ public class SchemaTest {
     settings.add(new Settings(Integer.MAX_VALUE));
   }
 
-  private static xL4gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, ValidationException {
+  private static xL0gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, ValidationException {
     try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
-      return (xL4gluGCXYYJc.Schema)Bindings.parse(in);
+      return (xL0gluGCXYYJc.Schema)Bindings.parse(in);
     }
   }
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
     final XmlElement xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://jsonx.openjax.org/schema-0.2.2.xsd " + schemaXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.2.xsd " + schemaXsd);
     return xml;
   }
 
-  private static SchemaElement testParseSchema(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> Schema");
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("    b) Schema -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
-    final xL4gluGCXYYJc.Schema testBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(xml);
+    final xL0gluGCXYYJc.Schema testBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual(true);
     return controlSchema;
@@ -160,7 +160,7 @@ public class SchemaTest {
     final String prefix = packageName + ".";
 
     logger.info(fileName + "...");
-    final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
+    final xL0gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
     testJson(controlBinding, prefix);
 
     logger.info("  4) Schema -> Java(1)");
@@ -186,7 +186,7 @@ public class SchemaTest {
       throw e;
     }
 
-    final SchemaElement test2Schema = testParseSchema((xL4gluGCXYYJc.Schema)Bindings.parse(xml), prefix);
+    final SchemaElement test2Schema = testParseSchema((xL0gluGCXYYJc.Schema)Bindings.parse(xml), prefix);
     logger.info("  8) Schema -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
@@ -200,7 +200,7 @@ public class SchemaTest {
       final String prefix = packageName + ".";
 
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
-      final xL4gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
+      final xL0gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
       final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -214,7 +214,7 @@ public class SchemaTest {
       final SchemaElement test1Schema = newSchema(classLoader, packageName);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final SchemaElement test2Schema = new SchemaElement((xL4gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
+      final SchemaElement test2Schema = new SchemaElement((xL0gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources);
 
@@ -222,7 +222,7 @@ public class SchemaTest {
     }
   }
 
-  private static void testJson(final xL4gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
+  private static void testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
@@ -235,7 +235,7 @@ public class SchemaTest {
 
     logger.info("       c) Schema -> XML(3)");
     final String jsonXml = toXml(schema, Settings.DEFAULT).toString();
-    final xL4gluGCXYYJc.Schema jsonBinding = (xL4gluGCXYYJc.Schema)Bindings.parse(jsonXml);
+    final xL0gluGCXYYJc.Schema jsonBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(jsonXml);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);
   }
 
@@ -246,12 +246,12 @@ public class SchemaTest {
 
   @Test
   public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("datatype.jsdx", "org.openjax.jsonx.datatype");
+    test("datatype.jsdx", "org.jsonx.datatype");
   }
 
   @Test
   public void testStructure() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("structure.jsdx", "org.openjax.jsonx.structure");
+    test("structure.jsdx", "org.jsonx.structure");
   }
 
   @Test
@@ -261,16 +261,16 @@ public class SchemaTest {
 
   @Test
   public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reference.jsdx", "org.openjax.jsonx.reference");
+    test("reference.jsdx", "org.jsonx.reference");
   }
 
   @Test
   public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("reserved.jsdx", "org.openjax.jsonx.reserved");
+    test("reserved.jsdx", "org.jsonx.reserved");
   }
 
   @Test
   public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("complete.jsdx", "org.openjax.jsonx.complete");
+    test("complete.jsdx", "org.jsonx.complete");
   }
 }

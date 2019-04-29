@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -22,8 +22,8 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc.$Member;
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc.$Number;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$Member;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$Number;
 
 public class ArrayModelTest {
   private static class Number extends $Number {

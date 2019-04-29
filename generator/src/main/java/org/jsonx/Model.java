@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc.$MaxOccurs;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$MaxOccurs;
 import org.openjax.ext.util.Classes;
 import org.openjax.ext.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;

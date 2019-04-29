@@ -14,15 +14,15 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.openjax.jsonx.datatype.ObjArr;
-import org.openjax.jsonx.datatype.ObjBool;
-import org.openjax.jsonx.datatype.ObjNum;
-import org.openjax.jsonx.datatype.ObjObj;
-import org.openjax.jsonx.datatype.ObjStr;
+import org.jsonx.datatype.ObjArr;
+import org.jsonx.datatype.ObjBool;
+import org.jsonx.datatype.ObjNum;
+import org.jsonx.datatype.ObjObj;
+import org.jsonx.datatype.ObjStr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

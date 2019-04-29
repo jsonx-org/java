@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.openjax.ext.json.JSON;
 import org.openjax.ext.xml.api.XmlElement;
-import org.openjax.jsonx.Registry.Kind;
+import org.jsonx.Registry.Kind;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
@@ -108,25 +108,25 @@ public class TypeTest {
   public void testGenerics() {
     final Registry registry = new Registry("");
 
-    final String packageName0 = "org.openjax.jsonx.zero";
+    final String packageName0 = "org.jsonx.zero";
     final String name0 = "Zero";
 
-    final String superPackageName0 = "org.openjax.jsonx.superzero";
+    final String superPackageName0 = "org.jsonx.superzero";
     final String superName0 = "SuperZero";
     final Registry.Type type0 = registry.getType(Kind.CLASS, packageName0, name0, superPackageName0, superName0, null);
 
-    final String packageName1 = "org.openjax.jsonx.one";
+    final String packageName1 = "org.jsonx.one";
     final String name1 = "One";
 
-    final String superPackageName1 = "org.openjax.jsonx.superone";
+    final String superPackageName1 = "org.jsonx.superone";
     final String superName1 = "SuperOne";
     final Registry.Type type1 = registry.getType(Kind.CLASS, packageName1, name1, superPackageName1, superName1, null);
 
-    final String packageName2 = "org.openjax.jsonx.two";
+    final String packageName2 = "org.jsonx.two";
     final String name2 = "Two";
     final Registry.Type type2 = registry.getType(Kind.CLASS, packageName2, name2, type0.getPackage(), type0.getCompoundName(), null);
 
-    final String packageName3 = "org.openjax.jsonx.three";
+    final String packageName3 = "org.jsonx.three";
     final String name3 = "Three";
     final Registry.Type type3 = registry.getType(Kind.CLASS, packageName3, name3, type1.getPackage(), type1.getCompoundName(), null);
 

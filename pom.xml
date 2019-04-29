@@ -24,7 +24,7 @@
     <artifactId>openjax</artifactId>
     <version>2.5.3-SNAPSHOT</version>
   </parent>
-  <groupId>org.openjax.jsonx</groupId>
+  <groupId>org.jsonx</groupId>
   <artifactId>jsonx</artifactId>
   <version>0.2.2-SNAPSHOT</version>
   <packaging>pom</packaging>

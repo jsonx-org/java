@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.openjax.ext.json.JsonReader;
 import org.openjax.ext.net.MemoryURLStreamHandler;
-import org.openjax.jsonx.ArrayValidator.Relations;
+import org.jsonx.ArrayValidator.Relations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;

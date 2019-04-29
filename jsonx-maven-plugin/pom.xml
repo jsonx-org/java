@@ -20,7 +20,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.openjax.jsonx</groupId>
+    <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
     <version>0.2.2-SNAPSHOT</version>
   </parent>
@@ -83,9 +83,9 @@
                   <arguments>
                     <argument>-classpath</argument>
                     <classpath/>
-                    <argument>org.openjax.jsonx.Generator</argument>
+                    <argument>org.jsonx.Generator</argument>
                     <argument>--prefix</argument>
-                    <argument>org.openjax.jsonx.schema_0_2_2.</argument>
+                    <argument>org.jsonx.www.schema_0_2_2.</argument>
                     <argument>-d</argument>
                     <argument>${project.build.directory}/generated-sources/jsonx</argument>
                     <argument>../schema/src/main/resources/schema-0.2.2.jsdx</argument>
@@ -104,7 +104,7 @@
                   <arguments>
                     <argument>-classpath</argument>
                     <classpath/>
-                    <argument>org.openjax.jsonx.Converter</argument>
+                    <argument>org.jsonx.Converter</argument>
                     <argument>../schema/src/main/resources/schema-0.2.2.jsdx</argument>
                     <argument>../schema/src/main/resources/schema-0.2.2.jsd</argument>
                   </arguments>
@@ -137,7 +137,7 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.openjax.jsonx</groupId>
+            <groupId>org.jsonx</groupId>
             <artifactId>jsonx-maven-plugin</artifactId>
             <version>${project.version}</version>
             <executions>
@@ -182,17 +182,17 @@
       <version>0.3.5-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.jsonx</groupId>
+      <groupId>org.jsonx</groupId>
       <artifactId>json</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.jsonx</groupId>
+      <groupId>org.jsonx</groupId>
       <artifactId>generator</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.jsonx</groupId>
+      <groupId>org.jsonx</groupId>
       <artifactId>generator</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

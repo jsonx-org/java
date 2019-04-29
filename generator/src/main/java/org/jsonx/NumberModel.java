@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -22,59 +22,59 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.openjax.ext.lang.IllegalAnnotationException;
 import org.openjax.xsb.runtime.Binding;
 import org.openjax.xsb.runtime.Bindings;
 
 final class NumberModel extends Model {
-  private static xL4gluGCXYYJc.Schema.Number type(final String name) {
-    final xL4gluGCXYYJc.Schema.Number xsb = new xL4gluGCXYYJc.Schema.Number();
+  private static xL0gluGCXYYJc.Schema.Number type(final String name) {
+    final xL0gluGCXYYJc.Schema.Number xsb = new xL0gluGCXYYJc.Schema.Number();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.Number.Name$(name));
+      xsb.setName$(new xL0gluGCXYYJc.Schema.Number.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Number property(final schema.NumberProperty jsonx, final String name) {
-    final xL4gluGCXYYJc.$Number xsb = new xL4gluGCXYYJc.$Number() {
+  private static xL0gluGCXYYJc.$Number property(final schema.NumberProperty jsonx, final String name) {
+    final xL0gluGCXYYJc.$Number xsb = new xL0gluGCXYYJc.$Number() {
       private static final long serialVersionUID = -346722555715286411L;
 
       @Override
-      protected xL4gluGCXYYJc.$Member inherits() {
-        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXYYJc.$Member inherits() {
+        return new xL0gluGCXYYJc.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Number.Name$(name));
+      xsb.setName$(new xL0gluGCXYYJc.$Number.Name$(name));
 
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Number.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$Number.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Number.Use$(xL4gluGCXYYJc.$Number.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+      xsb.setUse$(new xL0gluGCXYYJc.$Number.Use$(xL0gluGCXYYJc.$Number.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$ArrayMember.Number element(final schema.NumberElement jsonx) {
-    final xL4gluGCXYYJc.$ArrayMember.Number xsb = new xL4gluGCXYYJc.$ArrayMember.Number();
+  private static xL0gluGCXYYJc.$ArrayMember.Number element(final schema.NumberElement jsonx) {
+    final xL0gluGCXYYJc.$ArrayMember.Number xsb = new xL0gluGCXYYJc.$ArrayMember.Number();
 
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Number.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Number.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
     if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$NumberMember jsdToXsb(final schema.Number jsd, final String name) {
-    final xL4gluGCXYYJc.$NumberMember xsb;
+  static xL0gluGCXYYJc.$NumberMember jsdToXsb(final schema.Number jsd, final String name) {
+    final xL0gluGCXYYJc.$NumberMember xsb;
     if (jsd instanceof schema.NumberProperty)
       xsb = property((schema.NumberProperty)jsd, name);
     else if (jsd instanceof schema.NumberElement)
@@ -85,23 +85,23 @@ final class NumberModel extends Model {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getJsd_3aForm() != null)
-      xsb.setForm$(new xL4gluGCXYYJc.$NumberMember.Form$(xL4gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsd.getJsd_3aForm())));
+      xsb.setForm$(new xL0gluGCXYYJc.$NumberMember.Form$(xL0gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsd.getJsd_3aForm())));
 
     if (jsd.getJsd_3aRange() != null)
-      xsb.setRange$(new xL4gluGCXYYJc.$NumberMember.Range$(jsd.getJsd_3aRange()));
+      xsb.setRange$(new xL0gluGCXYYJc.$NumberMember.Range$(jsd.getJsd_3aRange()));
 
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Number binding) {
+  static NumberModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.Number binding) {
     return registry.declare(binding).value(new NumberModel(registry, binding), null);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Number binding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array.Number binding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Number binding) {
     return registry.reference(new NumberModel(registry, binding), referrer);
   }
 
@@ -145,14 +145,14 @@ final class NumberModel extends Model {
     return range == null || range.length() == 0 ? null : new Range(range);
   }
 
-  private static Range parseRange(final xL4gluGCXYYJc.$NumberMember.Range$ range) {
+  private static Range parseRange(final xL0gluGCXYYJc.$NumberMember.Range$ range) {
     return range == null ? null : parseRange(range.text());
   }
 
   final Form form;
   final Range range;
 
-  private NumberModel(final Registry registry, final xL4gluGCXYYJc.Schema.Number binding) {
+  private NumberModel(final Registry registry, final xL0gluGCXYYJc.Schema.Number binding) {
     super(registry, Id.named(binding.getName$()));
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {
@@ -163,7 +163,7 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final xL4gluGCXYYJc.$Number binding) {
+  private NumberModel(final Registry registry, final xL0gluGCXYYJc.$Number binding) {
     super(registry, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {
@@ -174,7 +174,7 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final xL4gluGCXYYJc.$Array.Number binding) {
+  private NumberModel(final Registry registry, final xL0gluGCXYYJc.$Array.Number binding) {
     super(registry, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {

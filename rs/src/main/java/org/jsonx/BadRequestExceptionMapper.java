@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;

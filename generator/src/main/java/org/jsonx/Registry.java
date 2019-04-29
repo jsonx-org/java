@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.openjax.ext.util.Classes;
 import org.openjax.ext.util.Strings;
 
@@ -327,23 +327,23 @@ class Registry {
   private final ArrayList<Runnable> deferredReferences = new ArrayList<>();
   final Type OBJECT = getType(Object.class);
 
-  Value declare(final xL4gluGCXYYJc.Schema.Boolean binding) {
+  Value declare(final xL0gluGCXYYJc.Schema.Boolean binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.Number binding) {
+  Value declare(final xL0gluGCXYYJc.Schema.Number binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.String binding) {
+  Value declare(final xL0gluGCXYYJc.Schema.String binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.Array binding) {
+  Value declare(final xL0gluGCXYYJc.Schema.Array binding) {
     return new Value(binding.getName$().text());
   }
 
-  Value declare(final xL4gluGCXYYJc.Schema.Object binding) {
+  Value declare(final xL0gluGCXYYJc.Schema.Object binding) {
     return new Value(binding.getName$().text());
   }
 
@@ -351,7 +351,7 @@ class Registry {
     return new Value(id.toString());
   }
 
-  Value declare(final xL4gluGCXYYJc.$Object binding) {
+  Value declare(final xL0gluGCXYYJc.$Object binding) {
     return new Value(ObjectModel.getFullyQualifiedName(binding));
   }
 

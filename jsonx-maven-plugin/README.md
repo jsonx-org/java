@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/jsonx-maven-plugin.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/jsonx-maven-plugin)
-[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/jsonx-maven-plugin.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/jsonx-maven-plugin)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx-maven-plugin.svg)](https://www.javadoc.io/doc/org.jsonx/jsonx-maven-plugin)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx-maven-plugin.svg)](https://mvnrepository.com/artifact/org.jsonx/jsonx-maven-plugin)
 
 ## Abstract
 
@@ -58,7 +58,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 
 ```xml
 <plugin>
-  <groupId>org.openjax.jsonx</groupId>
+  <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
   <version>0.2.2-SNAPSHOT</version>
   <executions>

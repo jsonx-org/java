@@ -14,62 +14,62 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 
 final class BooleanModel extends Model {
   private static final Id ID = Id.hashed("b");
 
-  private static xL4gluGCXYYJc.Schema.Boolean type(final String name) {
-    final xL4gluGCXYYJc.Schema.Boolean xsb = new xL4gluGCXYYJc.Schema.Boolean();
+  private static xL0gluGCXYYJc.Schema.Boolean type(final String name) {
+    final xL0gluGCXYYJc.Schema.Boolean xsb = new xL0gluGCXYYJc.Schema.Boolean();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.Boolean.Name$(name));
+      xsb.setName$(new xL0gluGCXYYJc.Schema.Boolean.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Boolean property(final schema.BooleanProperty jsonx, final String name) {
-    final xL4gluGCXYYJc.$Boolean xsb = new xL4gluGCXYYJc.$Boolean() {
+  private static xL0gluGCXYYJc.$Boolean property(final schema.BooleanProperty jsonx, final String name) {
+    final xL0gluGCXYYJc.$Boolean xsb = new xL0gluGCXYYJc.$Boolean() {
       private static final long serialVersionUID = 650722913732574568L;
 
       @Override
-      protected xL4gluGCXYYJc.$Member inherits() {
-        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXYYJc.$Member inherits() {
+        return new xL0gluGCXYYJc.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Boolean.Name$(name));
+      xsb.setName$(new xL0gluGCXYYJc.$Boolean.Name$(name));
 
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Boolean.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$Boolean.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Boolean.Use$(xL4gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+      xsb.setUse$(new xL0gluGCXYYJc.$Boolean.Use$(xL0gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsonx) {
-    final xL4gluGCXYYJc.$ArrayMember.Boolean xsb = new xL4gluGCXYYJc.$ArrayMember.Boolean();
+  private static xL0gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsonx) {
+    final xL0gluGCXYYJc.$ArrayMember.Boolean xsb = new xL0gluGCXYYJc.$ArrayMember.Boolean();
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
     if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$BooleanMember jsdToXsb(final schema.Boolean jsd, final String name) {
-    final xL4gluGCXYYJc.$BooleanMember xsb;
+  static xL0gluGCXYYJc.$BooleanMember jsdToXsb(final schema.Boolean jsd, final String name) {
+    final xL0gluGCXYYJc.$BooleanMember xsb;
     if (jsd instanceof schema.BooleanProperty)
       xsb = property((schema.BooleanProperty)jsd, name);
     else if (jsd instanceof schema.BooleanElement)
@@ -82,7 +82,7 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Boolean binding) {
+  static BooleanModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.Boolean binding) {
     return registry.declare(binding).value(new BooleanModel(registry, binding), null);
   }
 
@@ -102,23 +102,23 @@ final class BooleanModel extends Model {
     return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array.Boolean binding) {
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Boolean binding) {
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Boolean binding) {
     return registry.reference(new BooleanModel(registry, binding), referrer);
   }
 
-  private BooleanModel(final Registry registry, final xL4gluGCXYYJc.Schema.Boolean binding) {
+  private BooleanModel(final Registry registry, final xL0gluGCXYYJc.Schema.Boolean binding) {
     super(registry, Id.named(binding.getName$()));
   }
 
-  private BooleanModel(final Registry registry, final xL4gluGCXYYJc.$Boolean binding) {
+  private BooleanModel(final Registry registry, final xL0gluGCXYYJc.$Boolean binding) {
     super(registry, ID, binding.getName$(), binding.getNullable$(), binding.getUse$());
   }
 
-  private BooleanModel(final Registry registry, final xL4gluGCXYYJc.$Array.Boolean binding) {
+  private BooleanModel(final Registry registry, final xL0gluGCXYYJc.$Array.Boolean binding) {
     super(registry, ID, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
   }
 

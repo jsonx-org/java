@@ -14,14 +14,14 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import org.openjax.ext.xml.api.XmlElement;
-import org.openjax.jsonx.Registry.Type;
+import org.jsonx.Registry.Type;
 
 final class Deferred<T extends Member> extends Member {
   private final Supplier<T> supplier;

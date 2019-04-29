@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.openjax.jsonx/json.svg)](https://www.javadoc.io/doc/org.openjax.jsonx/json)
-[![Released Version](https://img.shields.io/maven-central/v/org.openjax.jsonx/json.svg)](https://mvnrepository.com/artifact/org.openjax.jsonx/json)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/json.svg)](https://www.javadoc.io/doc/org.jsonx/json)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/json.svg)](https://mvnrepository.com/artifact/org.jsonx/json)
 
 ## Abstract
 

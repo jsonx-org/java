@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -22,8 +22,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.openjax.ext.json.JsonReader;
-import org.openjax.jsonx.ArrayValidator.Relation;
-import org.openjax.jsonx.ArrayValidator.Relations;
+import org.jsonx.ArrayValidator.Relation;
+import org.jsonx.ArrayValidator.Relations;
 import org.openjax.ext.util.function.TriPredicate;
 
 class ArrayCodec extends Codec {

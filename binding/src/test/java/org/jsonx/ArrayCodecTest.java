@@ -14,10 +14,10 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import static org.junit.Assert.*;
-import static org.openjax.jsonx.TestUtil.*;
+import static org.jsonx.TestUtil.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -36,16 +36,16 @@ import org.junit.Test;
 import org.openjax.ext.json.JsonReader;
 import org.openjax.ext.math.BigDecimals;
 import org.openjax.ext.math.BigIntegers;
-import org.openjax.jsonx.ArrayValidator.Relation;
-import org.openjax.jsonx.ArrayValidator.Relations;
-import org.openjax.jsonx.TestArray.Array1d1;
-import org.openjax.jsonx.TestArray.Array1d2;
-import org.openjax.jsonx.TestArray.Array1d3;
-import org.openjax.jsonx.TestArray.Array2d1;
-import org.openjax.jsonx.TestArray.Array2d2;
-import org.openjax.jsonx.TestArray.Array3d;
-import org.openjax.jsonx.TestArray.ArrayAny;
-import org.openjax.jsonx.TestArray.ArrayLoop;
+import org.jsonx.ArrayValidator.Relation;
+import org.jsonx.ArrayValidator.Relations;
+import org.jsonx.TestArray.Array1d1;
+import org.jsonx.TestArray.Array1d2;
+import org.jsonx.TestArray.Array1d3;
+import org.jsonx.TestArray.Array2d1;
+import org.jsonx.TestArray.Array2d2;
+import org.jsonx.TestArray.Array3d;
+import org.jsonx.TestArray.ArrayAny;
+import org.jsonx.TestArray.ArrayLoop;
 import org.openjax.ext.util.FastCollections;
 import org.openjax.ext.util.Strings;
 import org.slf4j.Logger;

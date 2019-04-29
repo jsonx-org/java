@@ -14,15 +14,15 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.regex.PatternSyntaxException;
 
 import org.openjax.ext.json.JsonStrings;
-import org.openjax.jsonx.ArrayValidator.Relation;
-import org.openjax.jsonx.ArrayValidator.Relations;
+import org.jsonx.ArrayValidator.Relation;
+import org.jsonx.ArrayValidator.Relations;
 
 class StringCodec extends PrimitiveCodec<String> {
   static String decodeArray(final String token) {

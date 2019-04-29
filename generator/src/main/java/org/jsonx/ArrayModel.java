@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -27,7 +27,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.openjax.ext.lang.AnnotationParameterException;
 import org.openjax.ext.lang.IllegalAnnotationException;
 import org.openjax.ext.util.FastArrays;
@@ -38,53 +38,53 @@ import org.openjax.ext.xml.api.XmlElement;
 import org.openjax.xsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
-  private static xL4gluGCXYYJc.Schema.Array type(final String name) {
-    final xL4gluGCXYYJc.Schema.Array xsb = new xL4gluGCXYYJc.Schema.Array();
+  private static xL0gluGCXYYJc.Schema.Array type(final String name) {
+    final xL0gluGCXYYJc.Schema.Array xsb = new xL0gluGCXYYJc.Schema.Array();
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.Schema.Array.Name$(name));
+      xsb.setName$(new xL0gluGCXYYJc.Schema.Array.Name$(name));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$Array property(final schema.ArrayProperty jsonx, final String name) {
-    final xL4gluGCXYYJc.$Array xsb = new xL4gluGCXYYJc.$Array() {
+  private static xL0gluGCXYYJc.$Array property(final schema.ArrayProperty jsonx, final String name) {
+    final xL0gluGCXYYJc.$Array xsb = new xL0gluGCXYYJc.$Array() {
       private static final long serialVersionUID = 3936180512257992902L;
 
       @Override
-      protected xL4gluGCXYYJc.$Member inherits() {
-        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXYYJc.$Member inherits() {
+        return new xL0gluGCXYYJc.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL4gluGCXYYJc.$Array.Name$(name));
+      xsb.setName$(new xL0gluGCXYYJc.$Array.Name$(name));
 
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Array.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$Array.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Array.Use$(xL4gluGCXYYJc.$Array.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+      xsb.setUse$(new xL0gluGCXYYJc.$Array.Use$(xL0gluGCXYYJc.$Array.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$ArrayMember.Array element(final schema.ArrayElement jsonx) {
-    final xL4gluGCXYYJc.$ArrayMember.Array xsb = new xL4gluGCXYYJc.$ArrayMember.Array();
+  private static xL0gluGCXYYJc.$ArrayMember.Array element(final schema.ArrayElement jsonx) {
+    final xL0gluGCXYYJc.$ArrayMember.Array xsb = new xL0gluGCXYYJc.$ArrayMember.Array();
 
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Array.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Array.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
 
     if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$ArrayMember jsdToXsb(final schema.Array jsd, final String name) {
-    final xL4gluGCXYYJc.$ArrayMember xsb;
+  static xL0gluGCXYYJc.$ArrayMember jsdToXsb(final schema.Array jsd, final String name) {
+    final xL0gluGCXYYJc.$ArrayMember xsb;
     if (jsd instanceof schema.ArrayProperty)
       xsb = property((schema.ArrayProperty)jsd, name);
     else if (jsd instanceof schema.ArrayElement)
@@ -95,24 +95,24 @@ final class ArrayModel extends Referrer<ArrayModel> {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getJsd_3aMinIterate() != null)
-      xsb.setMinIterate$(new xL4gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getJsd_3aMinIterate())));
+      xsb.setMinIterate$(new xL0gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getJsd_3aMinIterate())));
 
     if (jsd.getJsd_3aMaxIterate() != null)
-      xsb.setMaxIterate$(new xL4gluGCXYYJc.$ArrayMember.MaxIterate$(jsd.getJsd_3aMaxIterate()));
+      xsb.setMaxIterate$(new xL0gluGCXYYJc.$ArrayMember.MaxIterate$(jsd.getJsd_3aMaxIterate()));
 
     for (final Object element : jsd.getJsd_3aElements()) {
       if (element instanceof schema.AnyElement)
-        xsb.addAny((xL4gluGCXYYJc.$ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
+        xsb.addAny((xL0gluGCXYYJc.$ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
       else if (element instanceof schema.ArrayElement)
-        xsb.addArray((xL4gluGCXYYJc.$ArrayMember.Array)ArrayModel.jsdToXsb((schema.ArrayElement)element, null));
+        xsb.addArray((xL0gluGCXYYJc.$ArrayMember.Array)ArrayModel.jsdToXsb((schema.ArrayElement)element, null));
       else if (element instanceof schema.BooleanElement)
-        xsb.addBoolean((xL4gluGCXYYJc.$ArrayMember.Boolean)BooleanModel.jsdToXsb((schema.BooleanElement)element, null));
+        xsb.addBoolean((xL0gluGCXYYJc.$ArrayMember.Boolean)BooleanModel.jsdToXsb((schema.BooleanElement)element, null));
       else if (element instanceof schema.NumberElement)
-        xsb.addNumber((xL4gluGCXYYJc.$ArrayMember.Number)NumberModel.jsdToXsb((schema.NumberElement)element, null));
+        xsb.addNumber((xL0gluGCXYYJc.$ArrayMember.Number)NumberModel.jsdToXsb((schema.NumberElement)element, null));
       else if (element instanceof schema.ReferenceElement)
-        xsb.addReference((xL4gluGCXYYJc.$ArrayMember.Reference)Reference.jsdToXsb((schema.ReferenceElement)element, null));
+        xsb.addReference((xL0gluGCXYYJc.$ArrayMember.Reference)Reference.jsdToXsb((schema.ReferenceElement)element, null));
       else if (element instanceof schema.StringElement)
-        xsb.addString((xL4gluGCXYYJc.$ArrayMember.String)StringModel.jsdToXsb((schema.StringElement)element, null));
+        xsb.addString((xL0gluGCXYYJc.$ArrayMember.String)StringModel.jsdToXsb((schema.StringElement)element, null));
       else
         throw new UnsupportedOperationException("Unsupported JSONx type: " + element.getClass().getName());
     }
@@ -120,7 +120,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return xsb;
   }
 
-  static ArrayModel declare(final Registry registry, final xL4gluGCXYYJc.Schema.Array binding) {
+  static ArrayModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.Array binding) {
     return registry.declare(binding).value(new ArrayModel(registry, binding), null);
   }
 
@@ -193,11 +193,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return new Reference(registry, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), model);
   }
 
-  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array.Array binding) {
+  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
-  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array binding) {
+  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array binding) {
     return registry.reference(new ArrayModel(registry, binding), referrer);
   }
 
@@ -206,28 +206,28 @@ final class ArrayModel extends Referrer<ArrayModel> {
     attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + FastArrays.toString(indices, ", ") + "}");
   }
 
-  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final xL4gluGCXYYJc.$ArrayMember binding) {
+  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final xL0gluGCXYYJc.$ArrayMember binding) {
     final List<Member> members = new ArrayList<>();
-    final Iterator<? super xL4gluGCXYYJc.$Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof xL4gluGCXYYJc.$Member);
+    final Iterator<? super xL0gluGCXYYJc.$Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof xL0gluGCXYYJc.$Member);
     while (iterator.hasNext()) {
-      final xL4gluGCXYYJc.$Member member = (xL4gluGCXYYJc.$Member)iterator.next();
-      if (member instanceof xL4gluGCXYYJc.$Array.Any) {
-        members.add(AnyModel.reference(registry, referrer, (xL4gluGCXYYJc.$Array.Any)member));
+      final xL0gluGCXYYJc.$Member member = (xL0gluGCXYYJc.$Member)iterator.next();
+      if (member instanceof xL0gluGCXYYJc.$Array.Any) {
+        members.add(AnyModel.reference(registry, referrer, (xL0gluGCXYYJc.$Array.Any)member));
       }
-      else if (member instanceof xL4gluGCXYYJc.$Array.Array) {
-        members.add(ArrayModel.reference(registry, referrer, (xL4gluGCXYYJc.$Array.Array)member));
+      else if (member instanceof xL0gluGCXYYJc.$Array.Array) {
+        members.add(ArrayModel.reference(registry, referrer, (xL0gluGCXYYJc.$Array.Array)member));
       }
-      else if (member instanceof xL4gluGCXYYJc.$Array.Boolean) {
-        members.add(BooleanModel.reference(registry, referrer, (xL4gluGCXYYJc.$Array.Boolean)member));
+      else if (member instanceof xL0gluGCXYYJc.$Array.Boolean) {
+        members.add(BooleanModel.reference(registry, referrer, (xL0gluGCXYYJc.$Array.Boolean)member));
       }
-      else if (member instanceof xL4gluGCXYYJc.$Array.Number) {
-        members.add(NumberModel.reference(registry, referrer, (xL4gluGCXYYJc.$Array.Number)member));
+      else if (member instanceof xL0gluGCXYYJc.$Array.Number) {
+        members.add(NumberModel.reference(registry, referrer, (xL0gluGCXYYJc.$Array.Number)member));
       }
-      else if (member instanceof xL4gluGCXYYJc.$Array.String) {
-        members.add(StringModel.reference(registry, referrer, (xL4gluGCXYYJc.$Array.String)member));
+      else if (member instanceof xL0gluGCXYYJc.$Array.String) {
+        members.add(StringModel.reference(registry, referrer, (xL0gluGCXYYJc.$Array.String)member));
       }
-      else if (member instanceof xL4gluGCXYYJc.$Array.Reference) {
-        final xL4gluGCXYYJc.$Array.Reference reference = (xL4gluGCXYYJc.$Array.Reference)member;
+      else if (member instanceof xL0gluGCXYYJc.$Array.Reference) {
+        final xL0gluGCXYYJc.$Array.Reference reference = (xL0gluGCXYYJc.$Array.Reference)member;
         members.add(Reference.defer(registry, reference, () -> {
           final Model model = registry.getModel(Id.named(reference.getType$()));
           if (model == null)
@@ -278,21 +278,21 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return minIterate == null || minIterate == 1 ? null : minIterate;
   }
 
-  private ArrayModel(final Registry registry, final xL4gluGCXYYJc.Schema.Array binding) {
+  private ArrayModel(final Registry registry, final xL0gluGCXYYJc.Schema.Array binding) {
     super(registry, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text())));
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
   }
 
-  private ArrayModel(final Registry registry, final xL4gluGCXYYJc.$Array binding) {
+  private ArrayModel(final Registry registry, final xL0gluGCXYYJc.$Array binding) {
     super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$(), null);
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
   }
 
-  private ArrayModel(final Registry registry, final xL4gluGCXYYJc.$Array.Array binding) {
+  private ArrayModel(final Registry registry, final xL0gluGCXYYJc.$Array.Array binding) {
     super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
     if (this.maxOccurs != null && this.minOccurs != null && this.minOccurs > this.maxOccurs)
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs + "\" > maxOccurs=\"" + this.maxOccurs + "\"");

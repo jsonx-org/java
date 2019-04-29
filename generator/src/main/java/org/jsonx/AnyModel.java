@@ -14,7 +14,7 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.openjax.jsonx;
+package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -23,55 +23,55 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.openjax.jsonx.schema_0_2_2.xL4gluGCXYYJc;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
-  private static xL4gluGCXYYJc.$Any property(final schema.AnyProperty jsonx, final String name) {
-    final xL4gluGCXYYJc.$Any xsb = new xL4gluGCXYYJc.$Any() {
+  private static xL0gluGCXYYJc.$Any property(final schema.AnyProperty jsonx, final String name) {
+    final xL0gluGCXYYJc.$Any xsb = new xL0gluGCXYYJc.$Any() {
       private static final long serialVersionUID = 650722913732574568L;
 
       @Override
-      protected xL4gluGCXYYJc.$Member inherits() {
-        return new xL4gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXYYJc.$Member inherits() {
+        return new xL0gluGCXYYJc.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setNames$(new xL4gluGCXYYJc.$Any.Names$(name));
+      xsb.setNames$(new xL0gluGCXYYJc.$Any.Names$(name));
 
     if (jsonx.getJsd_3aTypes() != null)
-      xsb.setTypes$(new xL4gluGCXYYJc.$Any.Types$(jsonx.getJsd_3aTypes().split(" ")));
+      xsb.setTypes$(new xL0gluGCXYYJc.$Any.Types$(jsonx.getJsd_3aTypes().split(" ")));
 
     if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$Any.Nullable$(jsonx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$Any.Nullable$(jsonx.getJsd_3aNullable()));
 
     if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL4gluGCXYYJc.$Any.Use$(xL4gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+      xsb.setUse$(new xL0gluGCXYYJc.$Any.Use$(xL0gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL4gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsdx) {
-    final xL4gluGCXYYJc.$ArrayMember.Any xsb = new xL4gluGCXYYJc.$ArrayMember.Any();
+  private static xL0gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsdx) {
+    final xL0gluGCXYYJc.$ArrayMember.Any xsb = new xL0gluGCXYYJc.$ArrayMember.Any();
 
     if (jsdx.getJsd_3aTypes() != null)
-      xsb.setTypes$(new xL4gluGCXYYJc.$ArrayMember.Any.Types$(jsdx.getJsd_3aTypes().split(" ")));
+      xsb.setTypes$(new xL0gluGCXYYJc.$ArrayMember.Any.Types$(jsdx.getJsd_3aTypes().split(" ")));
 
     if (jsdx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL4gluGCXYYJc.$ArrayMember.Any.Nullable$(jsdx.getJsd_3aNullable()));
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Any.Nullable$(jsdx.getJsd_3aNullable()));
 
     if (jsdx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsdx.getJsd_3aMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsdx.getJsd_3aMinOccurs())));
 
     if (jsdx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL4gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsdx.getJsd_3aMaxOccurs()));
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsdx.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
 
-  static xL4gluGCXYYJc.$AnyMember jsdToXsb(final schema.Any jsd, final String name) {
-    final xL4gluGCXYYJc.$AnyMember xsb;
+  static xL0gluGCXYYJc.$AnyMember jsdToXsb(final schema.Any jsd, final String name) {
+    final xL0gluGCXYYJc.$AnyMember xsb;
     if (jsd instanceof schema.AnyProperty)
       xsb = property((schema.AnyProperty)jsd, name);
     else if (jsd instanceof schema.AnyElement)
@@ -98,20 +98,20 @@ final class AnyModel extends Referrer<AnyModel> {
     return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Array.Any binding) {
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Any binding) {
     return registry.reference(new AnyModel(registry, binding), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL4gluGCXYYJc.$Any binding) {
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Any binding) {
     return registry.reference(new AnyModel(registry, binding), referrer);
   }
 
-  private static final xL4gluGCXYYJc.$Reference anonymousReference = new xL4gluGCXYYJc.$Reference() {
+  private static final xL0gluGCXYYJc.$Reference anonymousReference = new xL0gluGCXYYJc.$Reference() {
     private static final long serialVersionUID = 7585066984559415750L;
     private final Name$ name = new Name$("");
 
     @Override
-    protected xL4gluGCXYYJc.$Member inherits() {
+    protected xL0gluGCXYYJc.$Member inherits() {
       return null;
     }
 
@@ -133,12 +133,12 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private final List<Member> types;
 
-  private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Any binding) {
+  private AnyModel(final Registry registry, final xL0gluGCXYYJc.$Any binding) {
     super(registry, binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
     this.types = getTypes(binding.getTypes$());
   }
 
-  private AnyModel(final Registry registry, final xL4gluGCXYYJc.$Array.Any binding) {
+  private AnyModel(final Registry registry, final xL0gluGCXYYJc.$Array.Any binding) {
     super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
     this.types = getTypes(binding.getTypes$());
   }
