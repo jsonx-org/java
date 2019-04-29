@@ -109,7 +109,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
 
     final Model model = registry.getModel(id);
     if (model == null)
-      throw new IllegalStateException("Top-level " + elementName() + " \"" + type + "\" not found");
+      return new Deferred<>(null, () -> registry.getModel(id));
 
     return model;
   }
