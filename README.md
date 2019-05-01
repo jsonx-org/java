@@ -308,7 +308,7 @@ Provide <ins>JAX-RS integration</ins> for parsing and marshaling Java object ins
 
 1. The <ins>JAX-RS integration</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONX Framework</ins>.
 
-#### 2.5.2 Specification
+#### 2.5.3 Specification
 
 For a detailed specification of <ins>JAX-RS integration</ins>, see [<ins>JAX-RS Integration for JSONX</ins>](/rs).
 
@@ -525,13 +525,13 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 [#introduction]: #1-introduction
 [#conventions]: #11-conventions-used-in-this-document
-[#jsonxframework]: #2-jsonxframework
-[#jsd]: #21-jsd
+[#jsonxframework]: #2-jsonx-framework
+[#jsd]: #21-json-schema-definition-language
 [#1purpose]: #211-purpose
 [#1requirements]: #212-requirements
 [#1specification]: #213-specification
 [#1example]: #214-example-usage
-[#binding]: #22-binding
+[#binding]: #22-jsonjava-binding-api
 [#2purpose]: #221-purpose
 [#2requirements]: #222-requirements
 [#2specification]: #223-specification
@@ -546,24 +546,23 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#4requirements]: #242-requirements
 [#4specification]: #243-specification
 [#4example]: #244-example-usage
-[#jaxrs]: #25-jaxrs
+[#jaxrs]: #25-jax-rs-integration-for-jsonx
 [#5purpose]: #251-purpose
 [#5requirements]: #252-requirements
 [#5specification]: #253-specification
 [#5example]: #254-example-usage
-[#maven-plugin]: #26-maven-plugin
+[#maven-plugin]: #26-jsonx-maven-plugin
 [#6purpose]: #261-purpose
 [#6requirements]: #262-requirements
 [#6specification]: #263-specification
 [#6example]: #264-example-usage
-[#gettingstarted]: #3-gettingstarted
+[#gettingstarted]: #3-getting-started
 [#prerequisites]: #31-prerequisites
 [#example]: #32-example
 
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[schema]: /../../schema
 [jsonx-maven-plugin]: /maven-plugin
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
-[rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
+[schema]: /../../schema
 [xmlschema]: http://www.w3.org/2001/XMLSchema

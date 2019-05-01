@@ -217,26 +217,26 @@ Please make sure to update tests as appropriate.
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [#introduction]: #1-introduction
-[#dependencies]: #11-dependencies
+[#dependencies]: #11-dependencies-on-other-specifications
 [#conventions]: #12-conventions-used-in-this-document
 [#purpose]: #2-purpose
 [#requirements]: #3-requirements
 [#specification]: #4-specification
-[#jsonxschema]: #41-jsonxschema
-[#booleantype]: #411-booleantype
-[#stringtype]: #412-stringtype
-[#numbertype]: #413-numbertype
-[#objecttype]: #414-objecttype
-[#arraytype]: #415-arraytype
-[#nullvalue]: #416-nullvalue
-[#jsonxjsonapi]: #42-jsonxjsonapi
+[#jsonxschema]: #41-jsonx-schema
+[#booleantype]: #411-boolean-type
+[#stringtype]: #412-string-type
+[#numbertype]: #413-number-type
+[#objecttype]: #414-object-type
+[#arraytype]: #415-array-type
+[#nullvalue]: #416-null-value
+[#jsonxjsonapi]: #42-jsonx-json-api
 [#jxconverter]: #421-jxconverter
-[#samples]: #5-samples
+[#samples]: #5-sample-documents
 [#paypaljson]: #51-paypaljson
 [#paypaljsonx]: #52-paypaljsonx
-[#resources]: #6-resources
-[#json-schemas]: #61-json-schemas
-[#jsonx-098]: #62-jsonx-098]
+[#resources]: #6-related-resources-for-jsonx-json
+[#json-schemas]: #61-schemas-for-jsonx-json
+[#jsonx-098]: #611-jsonx-schema-022
 
 [api]: ../binding
 [jsonxxsd]: http://jsonx.openjax.org/jsonx-0.2.2.xsd

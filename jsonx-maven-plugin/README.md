@@ -81,12 +81,12 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 
 #### 4.2.2 Configuration Parameters
 
-| Name                          | Type    | Use      | Description                                                               |
-|:------------------------------|:--------|:---------|:--------------------------------------------------------------------------|
-| <samp>/destDir¹</samp>        | String  | Required | Destination path of generated bindings.                                   |
-| <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;         | String<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
-| <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.                                     |
-| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of JSD or JSDX schema.                                          |
+| Name                          | Type    | Use      | Description                             |
+|:------------------------------|:--------|:---------|:----------------------------------------|
+| <samp>/destDir¹</samp>        | String  | Required | Destination path of generated bindings. |
+| <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | String<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character.</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
+| <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
+| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of JSD or JSDX schema.        |
 
 ## Contributing
 

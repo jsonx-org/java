@@ -92,7 +92,7 @@ Please make sure to update tests as appropriate.
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [#introduction]: #1-introduction
-[#conventions]: #11-conventions
+[#conventions]: #11-conventions-used-in-this-document
 [#purpose]: #2-purpose
 [#requirements]: #3-requirements
 [#specification]: #4-specification
