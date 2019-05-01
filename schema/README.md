@@ -1,6 +1,13 @@
 # JSON Schema
 
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/schema.svg)](https://mvnrepository.com/artifact/org.jsonx/schema)
+> <ins>JSON Schema Definition Language</ins> for JSON documents
+
+[![XSD](https://img.shields.io/badge/schema.xsd-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.xsd)
+[![XSD](https://img.shields.io/badge/schema.jsdx-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.jsdx)
+[![XSD](https://img.shields.io/badge/schema.jsd-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.jsd)<br>
+[![XSD](https://img.shields.io/badge/schema.xsd-v0.1.0-yellow.svg)](http://jsonx.org/schema-0.1.0.xsd)
+[![XSD](https://img.shields.io/badge/schema.jsdx-v0.1.0-orange.svg)]()
+[![XSD](https://img.shields.io/badge/schema.jsd-v0.1.0-orange.svg)]()
 
 ## Abstract
 
