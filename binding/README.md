@@ -623,4 +623,4 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#jxdecoder]: #423-jxdecoder
 [#decodeexception]: #4231-decodeexception
 
-[jsd]: ../schema
+[jsd]: ../schema/

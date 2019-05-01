@@ -561,8 +561,8 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#example]: #32-example
 
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[jsonx-maven-plugin]: /maven-plugin
+[jsonx-maven-plugin]: /maven-plugin/
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
-[schema]: /../../schema
+[schema]: /schema/
 [xmlschema]: http://www.w3.org/2001/XMLSchema

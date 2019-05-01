@@ -109,5 +109,5 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#example]: #4211-example
 [#parameters]: #422-configuration-parameters
 
-[api]: /../../binding
+[api]: /../../binding/
 [jsonx]: /../..

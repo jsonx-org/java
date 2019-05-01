@@ -238,7 +238,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#json-schemas]: #61-schemas-for-jsonx-json
 [#jsonx-098]: #611-jsonx-schema-022
 
-[api]: ../binding
+[api]: ../binding/
 [jsonxxsd]: http://jsonx.openjax.org/jsonx-0.2.2.xsd
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
 [xmlschema]: http://www.w3.org/2001/XMLSchema
