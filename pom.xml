@@ -28,8 +28,15 @@
   <artifactId>jsonx</artifactId>
   <version>0.2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>${project.groupId}:${project.artifactId}</name>
-  <url>https://jsonx.openjax.org/</url>
+  <url>https://www.jsonx.org/</url>
+  <name>Jsonx</name>
+  <description>
+    A collection of specifications and reference implementations that provide structural and
+    functional patterns intended to help developers work with JSON. The JSONX Framework is based on
+    the JSON Schema Definition Language, which is a schema language inspired by the [XMLSchema]
+    specification. This document introduces the JSONX Framework, and presents a directory of links
+    to its constituent parts and related resources.
+  </description>
   <modules>
     <module>json</module>
     <module>schema</module>

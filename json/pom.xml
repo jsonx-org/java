@@ -25,7 +25,12 @@
     <version>0.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>json</artifactId>
-  <name>${project.groupId}:${project.artifactId}</name>
+  <name>Jsonx JSON</name>
+  <description>
+    JSONX is JSON expressed in XML syntax. This document presents the structural part of JSONX, as
+    well as the normative specification of the JSONX-JSON API. It also contains a directory of
+    links to these related resources.
+  </description>
   <dependencies>
     <dependency>
       <groupId>org.openjax.ext</groupId>

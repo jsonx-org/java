@@ -26,7 +26,10 @@
   </parent>
   <artifactId>jsonx-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>${project.groupId}:${project.artifactId}</name>
+  <name>Jsonx Maven Plugin</name>
+  <description>
+    The jsonx-maven-plugin plugin is used to generate JSONX and JSD bindings with the JSONX framework.
+  </description>
   <build>
     <plugins>
       <plugin>

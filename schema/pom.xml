@@ -25,7 +25,15 @@
     <version>0.2.2-SNAPSHOT</version>
   </parent>
   <artifactId>schema</artifactId>
-  <name>${project.groupId}:${project.artifactId}</name>
+  <name>Jsonx Schema</name>
+  <description>
+    The JSON Schema Definition Language is designed to describe JSON documents by using schema
+    components to constrain and document the meaning, usage and relationships of their constituent
+    parts: value types and their content. Schemas may also provide for the specification of
+    additional document information, such as normalization and defaulting of values. Schemas have
+    facilities for self-documentation. Thus, the JSON Schema Definition Language can be used to
+    define, describe and catalogue JSON vocabularies for JSON documents.
+  </description>
   <build>
     <plugins>
       <plugin>
