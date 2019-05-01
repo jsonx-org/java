@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import org.openjax.ext.json.JsonParseException;
 import org.openjax.ext.json.JsonReader;
 import org.openjax.ext.util.function.TriPredicate;
 
@@ -93,9 +94,10 @@ public final class JxDecoder {
    * @return A {@code List} representing the parsed JSON array.
    * @throws DecodeException If an exception has occurred while decoding a JSON
    *           document.
+   * @throws JsonParseException If the content is not well formed.
    * @throws IOException If an I/O error has occurred.
    */
-  public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, IOException {
+  public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     final String token = reader.readToken();
     if (!"[".equals(token))
       throw new DecodeException("Expected '[', but got '" + token + "'", reader.getPosition() - 1);
