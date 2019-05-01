@@ -322,7 +322,7 @@
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:element name="jsonx">
+  <xs:element name="schema">
     <xs:complexType>
       <xs:sequence>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
