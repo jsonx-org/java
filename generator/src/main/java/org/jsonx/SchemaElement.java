@@ -45,8 +45,8 @@ import org.openjax.ext.util.IdentityHashSet;
 import org.openjax.ext.util.Iterators;
 import org.openjax.ext.xml.api.ValidationException;
 import org.openjax.ext.xml.api.XmlElement;
-import org.openjax.xsb.runtime.Bindings;
-import org.openjax.xsb.runtime.QName;
+import org.jaxsb.runtime.Bindings;
+import org.jaxsb.runtime.QName;
 
 /**
  * The root {@link Element} of a JSON Schema Document.

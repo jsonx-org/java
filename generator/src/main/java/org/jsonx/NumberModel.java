@@ -24,8 +24,8 @@ import java.util.Map;
 
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.openjax.ext.lang.IllegalAnnotationException;
-import org.openjax.xsb.runtime.Binding;
-import org.openjax.xsb.runtime.Bindings;
+import org.jaxsb.runtime.Binding;
+import org.jaxsb.runtime.Bindings;
 
 final class NumberModel extends Model {
   private static xL0gluGCXYYJc.Schema.Number type(final String name) {

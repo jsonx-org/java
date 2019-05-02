@@ -35,7 +35,7 @@ import org.openjax.ext.util.FastCollections;
 import org.openjax.ext.util.Iterators;
 import org.openjax.ext.util.Strings;
 import org.openjax.ext.xml.api.XmlElement;
-import org.openjax.xsb.runtime.Bindings;
+import org.jaxsb.runtime.Bindings;
 
 final class ArrayModel extends Referrer<ArrayModel> {
   private static xL0gluGCXYYJc.Schema.Array type(final String name) {

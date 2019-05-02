@@ -47,7 +47,7 @@ import org.openjax.ext.util.Classes;
 import org.openjax.ext.xml.api.ValidationException;
 import org.openjax.ext.xml.api.XmlElement;
 import org.openjax.ext.xml.sax.Validator;
-import org.openjax.xsb.runtime.Bindings;
+import org.jaxsb.runtime.Bindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
