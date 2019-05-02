@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 OpenJAX
+/* Copyright (c) 2018 Jsonx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -103,7 +103,7 @@ public class SchemaTest {
   private static void writeFile(final String fileName, final String data) throws IOException {
     try (final OutputStreamWriter out = new FileWriter(new File(generatedResourcesDir, fileName))) {
       out.write("<!--\n");
-      out.write("  Copyright (c) 2017 OpenJAX\n\n");
+      out.write("  Copyright (c) 2017 Jsonx\n\n");
       out.write("  Permission is hereby granted, free of charge, to any person obtaining a copy\n");
       out.write("  of this software and associated documentation files (the \"Software\"), to deal\n");
       out.write("  in the Software without restriction, including without limitation the rights\n");
@@ -241,7 +241,7 @@ public class SchemaTest {
 
   @Test
   public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("array.jsdx", "org.openjax.jsonx");
+    test("array.jsdx", "org.jsonx");
   }
 
   @Test
@@ -256,7 +256,7 @@ public class SchemaTest {
 
   @Test
   public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
-    test("template.jsdx", "org.openjax.jsonx");
+    test("template.jsdx", "org.jsonx");
   }
 
   @Test

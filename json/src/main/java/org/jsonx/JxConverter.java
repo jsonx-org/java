@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 OpenJAX
+/* Copyright (c) 2019 Jsonx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -340,9 +340,9 @@ public final class JxConverter {
   private static void appendObject(final JsonReader reader, final boolean declareNamespace, final StringBuilder builder) throws IOException {
     builder.append("<o");
     if (declareNamespace) {
-      builder.append(" xmlns=\"http://jsonx.openjax.org/jsonx-0.2.2.xsd\"");
+      builder.append(" xmlns=\"http://www.jsonx.org/jsonx-0.2.2.xsd\"");
       builder.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-      builder.append(" xsi:schemaLocation=\"http://jsonx.openjax.org/jsonx-0.2.2.xsd http://jsonx.openjax.org/jsonx-0.2.2.xsd\"");
+      builder.append(" xsi:schemaLocation=\"http://www.jsonx.org/jsonx-0.2.2.xsd http://www.jsonx.org/jsonx-0.2.2.xsd\"");
     }
 
     builder.append('>');

@@ -1,7 +1,7 @@
 # JSD Binding Generator
 
-[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/generator.svg)](https://www.javadoc.io/doc/org.jsonx/generator)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/generator.svg)](https://mvnrepository.com/artifact/org.jsonx/generator)
 

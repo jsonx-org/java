@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2017 OpenJAX
+  Copyright (c) 2017 Jsonx
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -153,7 +153,7 @@
             </executions>
             <configuration>
               <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
-              <prefix>org.openjax.jsonx.</prefix>
+              <prefix>org.jsonx.</prefix>
               <schemas>
                 <schema>src/test/resources/test.jsdx</schema>
               </schemas>

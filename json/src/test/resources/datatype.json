@@ -1,9 +1,9 @@
-{ "jsns":   "http://jsonx.openjax.org/schema-0.9.8.jsd",
-  "schemaLocation":   "http://jsonx.openjax.org/schema-0.9.8.jsd http://jsonx.openjax.org/schema-0.9.8.jsd",
+{ "jsns":   "http://www.jsonx.org/schema-0.2.2.jsd",
+  "schemaLocation":   "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
   "arrayArr": {
     "class":    "array",
     "random":   [
-      "hello",   
+      "hello",
         false,
       {  },
       [  ],

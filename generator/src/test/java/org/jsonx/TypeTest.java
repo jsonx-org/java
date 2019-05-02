@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 OpenJAX
+/* Copyright (c) 2018 Jsonx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -91,6 +91,14 @@ public class TypeTest {
     final String superPackageName = "two";
     final String superName = "Foo$Bar";
     final Registry.Type type = registry.getType(Kind.CLASS, packageName, name, superPackageName, superName, null);
+    assertEquals(Kind.CLASS, type.getKind());
+    assertEquals(name, type.getCompoundName());
+    assertEquals(name.replace('$', '.'), type.getCanonicalCompoundName());
+    assertEquals("Three", type.getSimpleName());
+    assertEquals(packageName + "." + name, type.getName());
+    assertEquals(packageName + "." + name, type.getRelativeName(""));
+    assertEquals(name, type.getRelativeName(packageName));
+    assertEquals("Two$Three", type.getSubName(packageName + ".One"));
 
     assertEquals(packageName + ".One$Two", type.getDeclaringType().toString());
     assertEquals(packageName + ".One", type.getDeclaringType().getDeclaringType().toString());
@@ -114,6 +122,11 @@ public class TypeTest {
     final String superPackageName0 = "org.jsonx.superzero";
     final String superName0 = "SuperZero";
     final Registry.Type type0 = registry.getType(Kind.CLASS, packageName0, name0, superPackageName0, superName0, null);
+    assertEquals(packageName0, type0.getPackage());
+    assertEquals(packageName0, type0.getCanonicalPackage());
+    assertEquals(name0, type0.getSimpleName());
+    assertEquals(packageName0 + "." + name0, type0.getName());
+    assertEquals(packageName0 + "." + name0, type0.getCanonicalName());
 
     final String packageName1 = "org.jsonx.one";
     final String name1 = "One";
@@ -121,6 +134,8 @@ public class TypeTest {
     final String superPackageName1 = "org.jsonx.superone";
     final String superName1 = "SuperOne";
     final Registry.Type type1 = registry.getType(Kind.CLASS, packageName1, name1, superPackageName1, superName1, null);
+    final Registry.Type type1Copy = registry.getType(Kind.CLASS, packageName1, name1, superPackageName1, superName1, null);
+    assertEquals(type1, type1Copy);
 
     final String packageName2 = "org.jsonx.two";
     final String name2 = "Two";

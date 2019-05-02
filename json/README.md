@@ -1,7 +1,7 @@
 # JSONX-JSON
 
-[![Build Status](https://travis-ci.org/openjax/jsonx.png)](https://travis-ci.org/openjax/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/openjax/jsonx/badge.svg)](https://coveralls.io/github/openjax/jsonx)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/json.svg)](https://www.javadoc.io/doc/org.jsonx/json)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/json.svg)](https://mvnrepository.com/artifact/org.jsonx/json)
 
@@ -161,9 +161,9 @@ This section provides a sample JSON and its JSONX alternative.
 
 ```xml
 <o
-  xmlns="http://jsonx.openjax.org/jsonx-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/jsonx-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://jsonx.openjax.org/jsonx-0.2.2.xsd http://jsonx.openjax.org/jsonx-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/jsonx-0.2.2.xsd http://www.jsonx.org/jsonx-0.2.2.xsd">
   <p name="id"> "WH-7YX49823S2290830K-0JE13296W68552352"</p>
   <p name="event_version"> "1.0"</p>
   <p name="create_time"> "2016-05-31T17:53:29Z"</p>
@@ -239,7 +239,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#jsonx-098]: #611-jsonx-schema-022
 
 [api]: ../binding/
-[jsonxxsd]: http://jsonx.openjax.org/jsonx-0.2.2.xsd
+[jsonxxsd]: http://www.jsonx.org/jsonx-0.2.2.xsd
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
 [xmlschema]: http://www.w3.org/2001/XMLSchema
 [xmlentities]: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Predefined_entities_in_XML

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 OpenJAX
+# Copyright (c) 2018 Jsonx
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,7 +18,7 @@ jdk:
 - oraclejdk8
 - oraclejdk11
 install:
-- cp settings.xml $HOME/.m2/settings.xml && rm -rf ~/.m2/repository/org/openjax
+- cp settings.xml $HOME/.m2/settings.xml && rm -rf ~/.m2/repository/org/jsonx
 script:
 - 'if [ "$TRAVIS_JDK_VERSION" = "oraclejdk8" ] &&
       [ "$TRAVIS_BRANCH" = "master" ] &&
