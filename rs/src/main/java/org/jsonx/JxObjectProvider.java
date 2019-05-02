@@ -33,7 +33,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.openjax.ext.json.JsonReader;
+import org.openjax.json.JsonReader;
 
 /**
  * A JAX-RS {@link Provider} that implements {@link MessageBodyReader} and

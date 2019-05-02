@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import org.openjax.ext.json.JsonParseException;
-import org.openjax.ext.json.JsonReader;
-import org.openjax.ext.util.function.TriPredicate;
+import org.openjax.json.JsonParseException;
+import org.openjax.json.JsonReader;
+import org.openjax.util.function.TriPredicate;
 
 /**
  * Decoder that deserializes JSON documents to objects of {@code JxObject}

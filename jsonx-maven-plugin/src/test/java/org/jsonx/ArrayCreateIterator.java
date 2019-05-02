@@ -21,7 +21,7 @@ import java.lang.annotation.Annotation;
 
 import org.jsonx.ArrayTrial.TrialType;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.ext.util.function.TriPredicate;
+import org.openjax.util.function.TriPredicate;
 
 class ArrayCreateIterator extends ArrayIterator {
   private final TrialType trialType;

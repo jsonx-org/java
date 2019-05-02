@@ -180,7 +180,7 @@
       <version>3.6.1</version>
     </dependency>
     <dependency>
-      <groupId>org.openjax.ext.maven</groupId>
+      <groupId>org.openjax.maven</groupId>
       <artifactId>mojo</artifactId>
       <version>0.3.5-SNAPSHOT</version>
     </dependency>

@@ -26,9 +26,9 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.openjax.ext.maven.mojo.GeneratorMojo;
-import org.openjax.ext.maven.mojo.SourceInput;
-import org.openjax.ext.util.Identifiers;
+import org.openjax.maven.mojo.GeneratorMojo;
+import org.openjax.maven.mojo.SourceInput;
+import org.openjax.util.Identifiers;
 
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
 @Execute(goal="generate")

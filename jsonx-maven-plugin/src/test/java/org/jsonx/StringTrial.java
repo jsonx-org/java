@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
-import org.openjax.ext.util.Characters;
+import org.openjax.util.Characters;
 
 import com.mifmif.common.regex.Generex;
 

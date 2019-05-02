@@ -22,8 +22,8 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.openjax.ext.json.JSON;
-import org.openjax.ext.xml.api.XmlElement;
+import org.openjax.json.JSON;
+import org.openjax.xml.api.XmlElement;
 import org.jsonx.Registry.Kind;
 
 public class TypeTest {

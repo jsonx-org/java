@@ -18,7 +18,7 @@ package org.jsonx;
 
 import java.util.Map;
 
-import org.openjax.ext.xml.api.XmlElement;
+import org.openjax.xml.api.XmlElement;
 
 abstract class Element {
   /**

@@ -30,7 +30,7 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.junit.Test;
-import org.openjax.ext.json.JsonParseException;
+import org.openjax.json.JsonParseException;
 
 public class JxObjectProviderTest {
   private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder._0);

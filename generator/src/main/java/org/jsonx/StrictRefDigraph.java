@@ -18,7 +18,7 @@ package org.jsonx;
 
 import java.util.function.Function;
 
-import org.openjax.ext.util.RefDigraph;
+import org.openjax.util.RefDigraph;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
   private static final long serialVersionUID = 4143833580153219718L;

@@ -19,7 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import org.openjax.ext.util.Numbers;
+import org.openjax.util.Numbers;
 
 final class AnyType {
   static boolean isEnabled(final Class<?> annotation) {

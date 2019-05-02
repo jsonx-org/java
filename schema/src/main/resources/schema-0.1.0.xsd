@@ -18,10 +18,10 @@
   elementFormDefault="qualified"
   targetNamespace="http://www.jsonx.org/schema-0.1.0.xsd"
   xmlns:js="http://www.jsonx.org/schema-0.1.0.xsd"
-  xmlns:dt="http://ext.openjax.org/xml/datatypes-0.9.2.xsd"
+  xmlns:dt="http://www.openjax.org/xml/datatypes-0.9.2.xsd"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:import namespace="http://ext.openjax.org/xml/datatypes-0.9.2.xsd" schemaLocation="http://ext.openjax.org/xml/datatypes-0.9.2.xsd"/>
+  <xs:import namespace="http://www.openjax.org/xml/datatypes-0.9.2.xsd" schemaLocation="http://www.openjax.org/xml/datatypes-0.9.2.xsd"/>
 
   <xs:complexType name="element" abstract="true">
     <xs:attribute name="doc" type="dt:stringNonEmpty">

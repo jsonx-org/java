@@ -23,7 +23,7 @@ import java.math.BigInteger;
 import java.util.Map;
 
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.openjax.ext.lang.IllegalAnnotationException;
+import org.openjax.lang.IllegalAnnotationException;
 import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
 

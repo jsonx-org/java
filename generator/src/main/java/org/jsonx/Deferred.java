@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.openjax.ext.xml.api.XmlElement;
+import org.openjax.xml.api.XmlElement;
 import org.jsonx.Registry.Type;
 
 final class Deferred<T extends Member> extends Member {

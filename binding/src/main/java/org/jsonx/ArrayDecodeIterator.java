@@ -19,11 +19,11 @@ package org.jsonx;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.openjax.ext.json.JsonReader;
+import org.openjax.json.JsonReader;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.ext.util.ArrayIntList;
-import org.openjax.ext.util.function.TriPredicate;
+import org.openjax.util.ArrayIntList;
+import org.openjax.util.function.TriPredicate;
 
 class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;

@@ -22,10 +22,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
-import org.openjax.ext.json.JSON;
-import org.openjax.ext.net.URLs;
-import org.openjax.ext.xml.api.ValidationException;
-import org.openjax.ext.xml.api.XmlElement;
+import org.openjax.json.JSON;
+import org.openjax.net.URLs;
+import org.openjax.xml.api.ValidationException;
+import org.openjax.xml.api.XmlElement;
 
 /**
  * Utility for converting JSD files to JSDX, and vice versa.

@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-import org.openjax.ext.util.Strings;
+import org.openjax.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 class Id {

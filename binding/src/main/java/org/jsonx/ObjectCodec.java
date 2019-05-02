@@ -23,11 +23,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openjax.ext.json.JsonReader;
+import org.openjax.json.JsonReader;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.ext.util.Classes;
-import org.openjax.ext.util.function.TriPredicate;
+import org.openjax.util.Classes;
+import org.openjax.util.function.TriPredicate;
 
 class ObjectCodec extends Codec {
   static Object decodeArray(final Class<? extends JxObject> type, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
