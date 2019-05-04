@@ -22,7 +22,7 @@ import java.util.ListIterator;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.util.function.TriPredicate;
+import org.libj.util.function.TriPredicate;
 
 class ArrayEncodeIterator extends ArrayIterator {
   static <T>Error validateArray(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {

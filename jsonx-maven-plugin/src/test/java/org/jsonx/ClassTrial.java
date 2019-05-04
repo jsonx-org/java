@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openjax.json.JsonReader;
-import org.openjax.net.MemoryURLStreamHandler;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.net.MemoryURLStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;

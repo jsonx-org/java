@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-import org.openjax.net.URLs;
+import org.libj.net.URLs;
 
 public class OnlineArticle extends Publication {
   @StringProperty(pattern=URLs.REGEX)

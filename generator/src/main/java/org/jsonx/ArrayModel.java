@@ -28,12 +28,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.openjax.lang.AnnotationParameterException;
-import org.openjax.lang.IllegalAnnotationException;
-import org.openjax.util.FastArrays;
-import org.openjax.util.FastCollections;
-import org.openjax.util.Iterators;
-import org.openjax.util.Strings;
+import org.libj.lang.AnnotationParameterException;
+import org.libj.lang.IllegalAnnotationException;
+import org.libj.util.FastArrays;
+import org.libj.util.FastCollections;
+import org.libj.util.Iterators;
+import org.libj.util.Strings;
 import org.openjax.xml.api.XmlElement;
 import org.jaxsb.runtime.Bindings;
 

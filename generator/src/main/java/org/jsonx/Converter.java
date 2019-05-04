@@ -22,8 +22,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
+import org.libj.net.URLs;
 import org.openjax.json.JSON;
-import org.openjax.net.URLs;
 import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
 

@@ -21,8 +21,8 @@ import java.lang.annotation.Annotation;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.util.Strings;
-import org.openjax.util.function.TriPredicate;
+import org.libj.util.Strings;
+import org.libj.util.function.TriPredicate;
 
 abstract class ArrayIterator {
   static String preview(final Object current) {

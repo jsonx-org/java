@@ -20,8 +20,8 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.openjax.xml.api.XmlElement;
 import org.jsonx.Registry.Type;
+import org.openjax.xml.api.XmlElement;
 
 final class Deferred<T extends Member> extends Member {
   private final Supplier<T> supplier;

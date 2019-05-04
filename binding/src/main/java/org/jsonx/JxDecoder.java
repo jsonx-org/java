@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
-import org.openjax.util.function.TriPredicate;
+import org.libj.util.function.TriPredicate;
 
 /**
  * Decoder that deserializes JSON documents to objects of {@code JxObject}

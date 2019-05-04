@@ -22,11 +22,11 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openjax.util.Classes;
-import org.openjax.util.FastArrays;
-import org.openjax.util.function.Throwing;
-import org.openjax.util.function.TriConsumer;
-import org.openjax.util.function.TriPredicate;
+import org.libj.util.Classes;
+import org.libj.util.FastArrays;
+import org.libj.util.function.Throwing;
+import org.libj.util.function.TriConsumer;
+import org.libj.util.function.TriPredicate;
 
 abstract class Codec {
   final Field field;

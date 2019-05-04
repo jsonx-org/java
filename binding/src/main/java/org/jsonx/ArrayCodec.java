@@ -24,7 +24,7 @@ import java.util.List;
 import org.openjax.json.JsonReader;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.util.function.TriPredicate;
+import org.libj.util.function.TriPredicate;
 
 class ArrayCodec extends Codec {
   static Object decodeArray(final ArrayElement element, final Class<? extends Annotation> type, final String token, final JsonReader reader, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {

@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.openjax.json.JsonReader;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.util.function.TriPredicate;
+import org.libj.util.function.TriPredicate;
 
 class AnyCodec extends Codec {
   static Object decode(final Annotation annotation, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {

@@ -34,8 +34,8 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.openjax.json.JsonReader;
-import org.openjax.math.BigDecimals;
-import org.openjax.math.BigIntegers;
+import org.libj.math.BigDecimals;
+import org.libj.math.BigIntegers;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.jsonx.TestArray.Array1d1;
@@ -46,8 +46,8 @@ import org.jsonx.TestArray.Array2d2;
 import org.jsonx.TestArray.Array3d;
 import org.jsonx.TestArray.ArrayAny;
 import org.jsonx.TestArray.ArrayLoop;
-import org.openjax.util.FastCollections;
-import org.openjax.util.Strings;
+import org.libj.util.FastCollections;
+import org.libj.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

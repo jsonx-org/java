@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.openjax.json.JsonStrings;
 import org.jsonx.ArrayValidator.Relations;
-import org.openjax.util.FastCollections;
+import org.libj.util.FastCollections;
 
 import com.google.common.base.Strings;
 

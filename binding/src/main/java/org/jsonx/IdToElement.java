@@ -19,7 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 
-import org.openjax.util.ObservableMap;
+import org.libj.util.ObservableMap;
 
 class IdToElement extends ObservableMap<Integer,Annotation> {
   private int minIterate;

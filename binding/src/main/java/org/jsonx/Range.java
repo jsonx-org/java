@@ -19,7 +19,7 @@ package org.jsonx;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import org.openjax.util.Numbers;
+import org.libj.util.Numbers;
 
 public class Range implements Serializable {
   private static final long serialVersionUID = 1698022878075488056L;
