@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.libj.util.Classes;
-import org.libj.util.FastArrays;
+import org.libj.util.ArrayUtil;
 import org.libj.util.function.Throwing;
 import org.libj.util.function.TriConsumer;
 import org.libj.util.function.TriPredicate;
@@ -79,7 +79,7 @@ abstract class Codec {
         if (!optional || value instanceof Optional)
           setMethod.invoke(object, value);
         else if (value != null && !genericType.isInstance(value))
-          throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? FastArrays.toString(setMethod.getParameterTypes(), ',', c -> c.getName()) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" of value: " + value);
+          throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? ArrayUtil.toString(setMethod.getParameterTypes(), ',', c -> c.getName()) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" of value: " + value);
         else
           setMethod.invoke(object, Optional.ofNullable(value));
       }
@@ -98,7 +98,7 @@ abstract class Codec {
     }
     catch (final IllegalArgumentException e) {
       if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
-        throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? FastArrays.toString(setMethod.getParameterTypes(), ',', c -> c.getName()) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+        throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? ArrayUtil.toString(setMethod.getParameterTypes(), ',', c -> c.getName()) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
 
       throw new UnsupportedOperationException(e);
     }

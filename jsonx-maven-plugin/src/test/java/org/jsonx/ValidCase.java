@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.openjax.json.JsonStrings;
 import org.jsonx.ArrayValidator.Relations;
-import org.libj.util.FastCollections;
+import org.libj.util.CollectionUtil;
 
 import com.google.common.base.Strings;
 
@@ -62,7 +62,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
     }
     else if (trial.value() instanceof List) {
       final List<Object> list = format((List<?>)trial.value(), relations, true);
-      expected = "[" + FastCollections.toString(list, listDelimiter) + "]";
+      expected = "[" + CollectionUtil.toString(list, listDelimiter) + "]";
     }
     else if (trial instanceof StringTrial || trial instanceof AnyTrial && trial.value() instanceof String) {
       expected = StringCodec.encodeObject((String)trial.value()).toString();

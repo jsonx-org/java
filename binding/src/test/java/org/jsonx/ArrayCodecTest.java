@@ -46,7 +46,7 @@ import org.jsonx.TestArray.Array2d2;
 import org.jsonx.TestArray.Array3d;
 import org.jsonx.TestArray.ArrayAny;
 import org.jsonx.TestArray.ArrayLoop;
-import org.libj.util.FastCollections;
+import org.libj.util.CollectionUtil;
 import org.libj.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,7 +137,7 @@ public class ArrayCodecTest {
   private static void test(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
     final Relations relations = new Relations();
     final Error error = ArrayValidator.validate(annotationType, members, relations, true, null);
-    final Relations flatRelations = FastCollections.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
+    final Relations flatRelations = CollectionUtil.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
     final String errorString = error == null ? null : error.toString();
     if (expected != null && errorString != null && !expected.equals(errorString)) {
       String msg = "\"" + Strings.escapeForJava(errorString) + "\"";
@@ -155,7 +155,7 @@ public class ArrayCodecTest {
       assertEquals(expected, errorString);
 
     if (errorString == null) {
-      final List<Object> flatMembers = FastCollections.flatten(members, new ArrayList<>(), true);
+      final List<Object> flatMembers = CollectionUtil.flatten(members, new ArrayList<>(), true);
       assertEquals("Number of members not matched", flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
       if (!debugPass) {

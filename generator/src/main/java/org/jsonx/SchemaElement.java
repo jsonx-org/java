@@ -42,7 +42,7 @@ import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.libj.net.URLs;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
-import org.libj.util.FastCollections;
+import org.libj.util.CollectionUtil;
 import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
 import org.jaxsb.runtime.Bindings;
@@ -207,7 +207,7 @@ public final class SchemaElement extends Element {
 
     final List<String> cycle = digraph.getCycleRef();
     if (cycle != null)
-      throw new ValidationException("Cycle detected in object hierarchy: " + FastCollections.toString(cycle, " -> "));
+      throw new ValidationException("Cycle detected in object hierarchy: " + CollectionUtil.toString(cycle, " -> "));
 
     final ListIterator<xL0gluGCXYYJc.$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
     while (topologicalOrder.hasPrevious()) {
@@ -339,7 +339,7 @@ public final class SchemaElement extends Element {
    * @param classes The classes to scan.
    */
   public SchemaElement(final Class<?> ... classes) {
-    this(FastCollections.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
+    this(CollectionUtil.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
   }
 
   /**

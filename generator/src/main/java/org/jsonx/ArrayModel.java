@@ -30,8 +30,8 @@ import java.util.Set;
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.libj.lang.AnnotationParameterException;
 import org.libj.lang.IllegalAnnotationException;
-import org.libj.util.FastArrays;
-import org.libj.util.FastCollections;
+import org.libj.util.ArrayUtil;
+import org.libj.util.CollectionUtil;
 import org.libj.util.Iterators;
 import org.libj.util.Strings;
 import org.openjax.xml.api.XmlElement;
@@ -203,7 +203,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   private void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
     writeIterateClauses(attributes);
-    attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + FastArrays.toString(indices, ", ") + "}");
+    attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + ArrayUtil.toString(indices, ", ") + "}");
   }
 
   private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final xL0gluGCXYYJc.$ArrayMember binding) {
@@ -344,7 +344,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
     final List<Integer> cycle = digraph.getCycle();
     if (cycle != null)
-      throw new ValidationException("Cycle detected in element index dependency graph: " + FastCollections.toString(digraph.getCycle(), " -> "));
+      throw new ValidationException("Cycle detected in element index dependency graph: " + CollectionUtil.toString(digraph.getCycle(), " -> "));
 
     final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<>(idToElement.size());
     for (final Integer elementId : digraph.getTopologicalOrder())

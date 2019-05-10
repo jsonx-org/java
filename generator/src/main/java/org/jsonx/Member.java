@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.libj.util.FastCollections;
+import org.libj.util.CollectionUtil;
 import org.libj.util.Strings;
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Binding;
@@ -166,7 +166,7 @@ abstract class Member extends Element {
     final StringBuilder builder = new StringBuilder();
     final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
     if (elementAnnotations != null && elementAnnotations.size() > 0)
-      builder.append(FastCollections.toString(elementAnnotations, '\n')).append('\n');
+      builder.append(CollectionUtil.toString(elementAnnotations, '\n')).append('\n');
 
     final AttributeMap attributes = new AttributeMap();
     toAnnotationAttributes(attributes, this);

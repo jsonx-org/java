@@ -28,7 +28,7 @@ import java.util.Optional;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.Classes;
-import org.libj.util.FastArrays;
+import org.libj.util.ArrayUtil;
 import org.libj.util.function.TriObjBiIntConsumer;
 
 /**
@@ -430,7 +430,7 @@ public class JxEncoder {
     }
 
     if (indent > 0)
-      builder.append('\n').append(FastArrays.createRepeat(' ', (depth - 1) * 2));
+      builder.append('\n').append(ArrayUtil.createRepeat(' ', (depth - 1) * 2));
 
     builder.append('}');
     return null;
@@ -438,7 +438,7 @@ public class JxEncoder {
 
   private Error appendValue(final StringBuilder builder, final String name, final Object value, final Field field, final Annotation annotation, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final int depth) {
     if (indent > 0)
-      builder.append('\n').append(FastArrays.createRepeat(' ', depth * 2));
+      builder.append('\n').append(ArrayUtil.createRepeat(' ', depth * 2));
 
     builder.append('"').append(name).append('"').append(colon);
     final int start = builder.length();
