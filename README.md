@@ -1,12 +1,11 @@
 # JSONX Framework
 
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg)](https://www.javadoc.io/doc/org.jsonx/jsonx)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
-
 > JSON Schema, Validation, Java Binding, and more
 
 [![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg)](https://www.javadoc.io/doc/org.jsonx/jsonx)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
 
 ## Abstract
 
