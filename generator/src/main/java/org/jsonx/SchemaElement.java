@@ -158,13 +158,13 @@ public final class SchemaElement extends Element {
   private final String version;
 
   /**
-   * Creates a new {@code SchemaElement} from the specified XML binding, and with the
-   * provided package / class name prefix string.
+   * Creates a new {@code SchemaElement} from the specified XML binding, and
+   * with the provided package / class name prefix string.
    *
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
-   * @throws ValidationException
+   * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final xL0gluGCXYYJc.Schema schema, final String prefix) throws ValidationException {
