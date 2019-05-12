@@ -388,7 +388,7 @@ The <ins>JSONX Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.2.2-SNAPSHOT</version>
+  <version>0.2.2</version>
   <executions>
     <execution>
       <goals>
@@ -466,7 +466,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
   <plugin>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx-maven-plugin</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.2</version>
     <executions>
       <execution>
         <goals>

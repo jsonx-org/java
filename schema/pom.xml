@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.2</version>
   </parent>
   <artifactId>schema</artifactId>
   <name>Jsonx Schema</name>
@@ -39,7 +39,7 @@
       <plugin>
         <groupId>org.jaxsb</groupId>
         <artifactId>jaxsb-maven-plugin</artifactId>
-        <version>2.1.4-SNAPSHOT</version>
+        <version>2.1.4</version>
         <executions>
           <execution>
             <goals>
@@ -60,7 +60,7 @@
     <dependency>
       <groupId>org.jaxsb</groupId>
       <artifactId>runtime</artifactId>
-      <version>2.1.4-SNAPSHOT</version>
+      <version>2.1.4</version>
     </dependency>
   </dependencies>
 </project>

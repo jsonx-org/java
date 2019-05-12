@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.2</version>
   </parent>
   <artifactId>binding</artifactId>
   <name>Jsonx Binding</name>
@@ -39,17 +39,17 @@
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>math</artifactId>
-      <version>0.6.4-SNAPSHOT</version>
+      <version>0.6.4</version>
     </dependency>
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>net</artifactId>
-      <version>0.5.0-SNAPSHOT</version>
+      <version>0.5.0</version>
     </dependency>
     <dependency>
       <groupId>org.openjax</groupId>
       <artifactId>json</artifactId>
-      <version>0.9.1-SNAPSHOT</version>
+      <version>0.9.1</version>
     </dependency>
   </dependencies>
 </project>
