@@ -22,21 +22,45 @@
   <parent>
     <groupId>org.safris.maven</groupId>
     <artifactId>rootpom</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
   </parent>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx</artifactId>
   <version>0.2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>https://www.jsonx.org/</url>
-  <name>Jsonx</name>
+  <name>JSONx</name>
   <description>
     A collection of specifications and reference implementations that provide structural and
-    functional patterns intended to help developers work with JSON. The JSONX Framework is based on
+    functional patterns intended to help developers work with JSON. The JSONx Framework is based on
     the JSON Schema Definition Language, which is a schema language inspired by the [XMLSchema]
-    specification. This document introduces the JSONX Framework, and presents a directory of links
+    specification. This document introduces the JSONx Framework, and presents a directory of links
     to its constituent parts and related resources.
   </description>
+  <organization>
+    <name>JSONx</name>
+    <url>https://www.jsonx.org/</url>
+  </organization>
+  <scm>
+    <url>https://github.com/jsonxorg/jsonx</url>
+    <connection>scm:git:https://github.com/jsonxorg/jsonx.git</connection>
+    <developerConnection>scm:git:https://github.com/jsonxorg/jsonx.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>https://opensource.org/licenses/MIT/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>sevasafris</id>
+      <name>Seva Safris</name>
+      <email>seva@safris.org</email>
+    </developer>
+  </developers>
   <modules>
     <module>json</module>
     <module>schema</module>
