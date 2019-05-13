@@ -1,4 +1,4 @@
-# JSONX-JSON
+# JSONx-JSON
 
 [![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
@@ -7,7 +7,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONX-JSON API</ins>, which offers facilities for validating and converting JSON and JSONX documents.
+This document specifies the <ins>JSONx-JSON API</ins>, which offers facilities for validating and converting JSON and JSONx documents.
 
 ## Table of Contents
 
@@ -17,51 +17,51 @@ This document specifies the <ins>JSONX-JSON API</ins>, which offers facilities f
 <samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
 <samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JSONX Schema][#jsonxschema]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JSONx Schema][#jsonxschema]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.1 [`boolean` type][#booleantype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2 [`string` type][#stringtype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3 [`number` type][#numbertype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.4 [`object` type][#objecttype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5 [`array` type][#arraytype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.6 [`null` value][#nullvalue]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [JSONX-JSON API][#jsonxjsonapi]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [JSONx-JSON API][#jsonxjsonapi]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`JxConverter`][#jxconverter]<br>
 <samp>&nbsp;&nbsp;</samp>5 [Sample Documents][#samples]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`paypal.json`][#paypaljson]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`paypal.jsonx`][#paypaljsonx]<br>
-<samp>&nbsp;&nbsp;</samp>6 [Related Resources for JSONX-JSON][#resources]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JSONX Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONX Schema 0.2.2][#jsonx-098]
+<samp>&nbsp;&nbsp;</samp>6 [Related Resources for JSONx-JSON][#resources]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JSONx Schema][#json-schemas]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONx Schema 0.2.2][#jsonx-098]
 
 ## 1 Introduction
 
-JSONX is JSON expressed in XML syntax. This document presents the structural part of JSONX, as well as the normative specification of the <ins>JSONX-JSON API</ins>. It also contains a directory of links to these related resources.
+JSONx is JSON expressed in XML syntax. This document presents the structural part of JSONx, as well as the normative specification of the <ins>JSONx-JSON API</ins>. It also contains a directory of links to these related resources.
 
 ### 1.1 Dependencies on Other Specifications
 
-The definition of the <ins>JSONX-JSON API</ins> depends on the following specifications: [\[RFC4627\]][rfc4627] and [\[XMLSchema\]][xmlschema].
+The definition of the <ins>JSONx-JSON API</ins> depends on the following specifications: [RFC4627][rfc4627] and [XMLSchema][xmlschema].
 
 ### 1.2 Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## 2 Purpose
 
-Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONX documents</ins>.
+Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONx documents</ins>.
 
 ## 3 Requirements
 
-1. The <ins>JSONX documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>JSONx documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-1. The <ins>JSONX documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+1. The <ins>JSONx documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
 
-1. The <ins>JSONX documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+1. The <ins>JSONx documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
 ## 4 Specification
 
-### 4.1 <ins>JSONX Schema</ins>
+### 4.1 <ins>JSONx Schema</ins>
 
-The JSONX Schema defines XML elements that represent an XML-equivalent of a JSON document. The JSONX Schema represents the JSON value types as follows:
+The JSONx Schema defines XML elements that represent an XML-equivalent of a JSON document. The JSONx Schema represents the JSON value types as follows:
 
 #### 4.1.1 `boolean` Type
 
@@ -77,7 +77,7 @@ A double-quoted string. A JSON string may require to be escaped to a string that
 
 #### 4.1.3 `number` Type
 
-A number that conforms to the [\[RFC4627\]][rfc4627] section 2.4.
+A number that conforms to the [RFC4627][rfc4627] section 2.4.
 
 <ins>Example</ins>: `6.626E-34`
 
@@ -95,21 +95,21 @@ A JSON array is represented by the `<a>` element. The `<a>` element does not hav
 
 The `null` JSON value is represented by the string `null`.
 
-### 4.2 <ins>JSONX-JSON API</ins>
+### 4.2 <ins>JSONx-JSON API</ins>
 
-The <ins>JSONX-JSON API</ins> offers facilities for validating and converting JSON and JSONX documents.
+The <ins>JSONx-JSON API</ins> offers facilities for validating and converting JSON and JSONx documents.
 
 #### 4.2.1 `JxConverter`
 
-The `JxConverter` class contains utility methods for conversion of JSON documents to JSONX documents, and vice versa.
+The `JxConverter` class contains utility methods for conversion of JSON documents to JSONx documents, and vice versa.
 
-<ins>Example</ins>: Convert a JSON document to a JSONX document
+<ins>Example</ins>: Convert a JSON document to a JSONx document
 
 ```java
 JxConverter.jsonToJsonx(new JsonReader(new StringReader(json), false), true);
 ```
 
-<ins>Example</ins>: Convert a JSONX document to a JSON document
+<ins>Example</ins>: Convert a JSONx document to a JSON document
 
 ```java
 JxConverter.jsonxToJson(new ByteArrayInputStream(jsonx.getBytes()), true);
@@ -117,7 +117,7 @@ JxConverter.jsonxToJson(new ByteArrayInputStream(jsonx.getBytes()), true);
 
 ## 5 Sample Documents
 
-This section provides a sample JSON and its JSONX alternative.
+This section provides a sample JSON and its JSONx alternative.
 
 ### 5.1 `paypal.json`
 
@@ -198,13 +198,13 @@ This section provides a sample JSON and its JSONX alternative.
 </p></o>
 ```
 
-## 6 Related Resources for JSONX-JSON
+## 6 Related Resources for JSONx-JSON
 
-### 6.1 Schemas for JSONX-JSON
+### 6.1 Schemas for JSONx-JSON
 
-#### 6.1.1 JSONX Schema 0.2.2
+#### 6.1.1 JSONx Schema 0.2.2
 
-* A JSONX Schema schema document XSD [jsonx-0.2.2.xsd][jsonxxsd] for JSONX Schema documents.
+* A JSONx Schema schema document XSD [jsonx-0.2.2.xsd][jsonxxsd] for JSONx Schema documents.
 
 ## Contributing
 

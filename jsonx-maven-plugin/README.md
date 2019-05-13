@@ -1,4 +1,4 @@
-# JSONX Maven Plugin
+# JSONx Maven Plugin
 
 [![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
@@ -7,7 +7,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONX Maven Plugin</ins>, which offers facilities for for generating JSONX and JSD bindings with the [JSON/Java Binding API][api].
+This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSON/Java Binding API][api].
 
 ## Table of Contents
 
@@ -24,11 +24,11 @@ This document specifies the <ins>JSONX Maven Plugin</ins>, which offers faciliti
 
 ### 1 Introduction
 
-The `jsonx-maven-plugin` plugin is used to generate JSONX and JSD bindings with the [JSONX][jsonx] framework.
+The `jsonx-maven-plugin` plugin is used to generate JSONx and JSD bindings with the [JSONx][jsonx] framework.
 
 ### 1.1 Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## 2 Purpose
 
@@ -86,7 +86,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 | <samp>/destDir¹</samp>        | String  | Required | Destination path of generated bindings. |
 | <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | String<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character.</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
-| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of JSD or JSDX schema.        |
+| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path of JSD or JSDx schema.        |
 
 ## Contributing
 

@@ -1,4 +1,4 @@
-# JAX-RS Integration for JSONX
+# JAX-RS Integration for JSONx
 
 [![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
@@ -7,7 +7,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JAX-RS Integration for JSONX</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][api].
+This document specifies the <ins>JAX-RS Integration for JSONx</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][api].
 
 ## Table of Contents
 
@@ -22,31 +22,31 @@ This document specifies the <ins>JAX-RS Integration for JSONX</ins>, which offer
 
 ## 1 Introduction
 
-This document sets out the structural part of the <ins>JAX-RS Integration for JSONX</ins>. It also contains a directory of links to these related resources.
+This document sets out the structural part of the <ins>JAX-RS Integration for JSONx</ins>. It also contains a directory of links to these related resources.
 
-<ins>JAX-RS Integration for JSONX</ins> is implemented to the specification of the JAX-RS API. <ins>JAX-RS Integration for JSONX</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
+<ins>JAX-RS Integration for JSONx</ins> is implemented to the specification of the JAX-RS API. <ins>JAX-RS Integration for JSONx</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
 
 ### 1.1 Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## 2 Purpose
 
-Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONX documents</ins>.
+Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONx documents</ins>.
 
 ## 3 Requirements
 
-1. The <ins>JSONX documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>JSONx documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-1. The <ins>JSONX documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+1. The <ins>JSONx documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
 
-1. The <ins>JSONX documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+1. The <ins>JSONx documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
 ## 4 Specification
 
 ### 4.1 `JxObjectProvider`
 
-A JAX-RS `Provider` that implements `MessageBodyReader` and `MessageBodyWriter` support for reading and writing JSON documents with the JSONX API.
+A JAX-RS `Provider` that implements `MessageBodyReader` and `MessageBodyWriter` support for reading and writing JSON documents with the JSONx API.
 
 ### 4.2 `BadRequestExceptionMapper`
 

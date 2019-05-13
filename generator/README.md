@@ -27,7 +27,7 @@ The <ins>JSD Binding Generator</ins> consumes a JSD schema, and produces Java cl
 
 ### 1.1 Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## 2 Purpose
 
@@ -65,18 +65,18 @@ Optional arguments:
   --prefix <PREFIX>  Package prefix for generated classes.
 
 Supported SCHEMA_FILE formats:
-                 <JSD|JSDX>
+                 <JSD|JSDx>
 ```
 
 ### 4.2 `Converter`
 
-The `Converter` is a utility class that can be used on the CLI to convert JSD files to JSDX, and vice versa. The `Converter` class has the following usage specification:
+The `Converter` is a utility class that can be used on the CLI to convert JSD files to JSDx, and vice versa. The `Converter` class has the following usage specification:
 
 ```
 Usage: Converter <SCHEMA_IN> [SCHEMA_OUT]
 
 Supported SCHEMA_IN|OUT formats:
-                 <JSD|JSDX>
+                 <JSD|JSDx>
 ```
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.

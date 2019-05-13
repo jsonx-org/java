@@ -1,7 +1,5 @@
 # JSON Schema
 
-> <ins>JSON Schema Definition Language</ins> for JSON documents
-
 [![XSD](https://img.shields.io/badge/schema.xsd-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.xsd)
 [![XSD](https://img.shields.io/badge/schema.jsdx-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.jsdx)
 [![XSD](https://img.shields.io/badge/schema.jsd-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.jsd)<br>
@@ -54,11 +52,11 @@ Any application that consumes well-formed JSON can use the <ins>JSON Schema Defi
 
 ### 1.1 Dependencies on Other Specifications
 
-The definition of the <ins>JSON Schema Definition Language</ins> depends on the following specifications: [\[RFC4627\]][rfc4627] and [\[XMLSchema\]][xmlschema].
+The definition of the <ins>JSON Schema Definition Language</ins> depends on the following specifications: [RFC4627][rfc4627] and [XMLSchema][xmlschema].
 
 ### 1.2 Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## 2 Purpose
 
@@ -70,7 +68,7 @@ Provide a <ins>schema language</ins> to describe normative contracts between pro
 
 1. The <ins>schema language</ins> MUST provide meaningful and useful constraint rules for the 5 JSON value types: `boolean`, `number`, `string`, `object`, and `array`.
 
-1. The <ins>schema language</ins> MUST support schema descriptions for any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>schema language</ins> MUST support schema descriptions for any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 1. The <ins>schema language</ins> MUST be free-of and agnostic-to patterns specific to any particular programming language.
 
@@ -78,7 +76,7 @@ Provide a <ins>schema language</ins> to describe normative contracts between pro
 
 ## 4 Specification
 
-The <ins>JSON Schema Definition Language</ins> (JSD) is normatively defined in an <ins>XML Schema Document</ins>, with translations expressed in the <ins>JSON/XML Schema Definition Language</ins> (JSDX), as well as the <ins>JSON Schema Definition Language</ins> (JSD) itself.
+The <ins>JSON Schema Definition Language</ins> (JSD) is normatively defined in an <ins>XML Schema Document</ins>, with translations expressed in the <ins>JSON/XML Schema Definition Language</ins> (JSDx), as well as the <ins>JSON Schema Definition Language</ins> (JSD) itself.
 
 The JSD is comprised of 5 structural abstractions:
 
@@ -496,7 +494,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 * A JSON Schema schema document XSD [schema-0.2.2.xsd](http://www.jsonx.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://www.openjax.org/xml/datatypes-0.9.2.xsd).
 
-* A JSON Schema schema document JSDX [schema-0.2.2.jsdx](http://www.jsonx.org/schema-0.2.2.jsdx) for JSON Schema documents.
+* A JSON Schema schema document JSDx [schema-0.2.2.jsdx](http://www.jsonx.org/schema-0.2.2.jsdx) for JSON Schema documents.
 
 * A JSON Schema schema document JSD [schema-0.2.2.jsd](http://www.jsonx.org/schema-0.2.2.jsd) for JSON Schema documents.
 

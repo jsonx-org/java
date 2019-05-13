@@ -1,6 +1,4 @@
-# JSONX Framework
-
-> JSON Schema, Validation, Java Binding, and more
+# JSONx Framework
 
 [![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
@@ -9,13 +7,15 @@
 
 ## Abstract
 
-The <ins>JSONX Framework</ins> is a collection of specifications and reference implementations that provide <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON. The <ins>JSONX Framework</ins> is based on the [<ins>JSON Schema Definition Language</ins>][schema], which is a <ins>schema language</ins> inspired by the [\[XMLSchema\]][xmlschema] specification. This document introduces the <ins>JSONX Framework</ins>, and presents a directory of links to its constituent parts and related resources.
+The <ins>JSONx Framework</ins> is a collection of specifications and reference implementations that provide <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON. The <ins>JSONx Framework</ins> defines the [<ins>JSON Schema Definition Language</ins>][schema], which is a <ins>schema language</ins> inspired by the [XMLSchema][xmlschema] specification.
+
+This document introduces the <ins>JSONx Framework</ins>, and presents a directory of links to its constituent parts and related resources.
 
 ## Table of Contents
 
 <samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [<ins>JSONX Framework</ins>][#jsonxframework]<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>JSONx Framework</ins>][#jsonxframework]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [<ins>JSON Schema Definition Language</ins>][#jsd]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.1 [Purpose][#1purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1.2 [Requirements][#1requirements]<br>
@@ -31,17 +31,17 @@ The <ins>JSONX Framework</ins> is a collection of specifications and reference i
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.2 [Requirements][#3requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.3 [Specification][#3specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3.4 [Example Usage][#3example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [<ins>JSONX-JSON</ins>][#jsonx-json]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [<ins>JSONx-JSON</ins>][#jsonx-json]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.1 [Purpose][#4purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.2 [Requirements][#4requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.3 [Specification][#4specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4.4 [Example Usage][#4example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [<ins>JAX-RS Integration for JSONX</ins>][#jaxrs]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5 [<ins>JAX-RS Integration for JSONx</ins>][#jaxrs]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.1 [Purpose][#5purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.2 [Requirements][#5requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.3 [Specification][#5specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.5.4 [Example Usage][#5example]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6 [<ins>JSONX Maven Plugin</ins>][#maven-plugin]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6 [<ins>JSONx Maven Plugin</ins>][#maven-plugin]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6.1 [Purpose][#6purpose]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6.2 [Requirements][#6requirements]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.6.3 [Specification][#6specification]<br>
@@ -52,7 +52,7 @@ The <ins>JSONX Framework</ins> is a collection of specifications and reference i
 
 ## 1 Introduction
 
-The <ins>JSONX Framework</ins> is created for developers, offering <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations (on the Java platform) of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
+The <ins>JSONx Framework</ins> is created for developers, offering <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations (on the Java platform) of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
 
 1. Definition of a normative contract between a producer and consumer of JSON documents.
 1. Validation of JSON documents conforming to a respective <ins>schema document</ins>.
@@ -60,11 +60,11 @@ The <ins>JSONX Framework</ins> is created for developers, offering <ins>structur
 
 ### 1.1 Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 <ins>JSONX Framework</ins>
+## 2 <ins>JSONx Framework</ins>
 
-The <ins>JSONX Framework</ins> was created to help developers solve common problems related to various use-cases regarding JSON. The following sections present the constituent sub-projects of the <ins>JSONX Framework</ins>, and provide the purpose and requirements for each.
+The <ins>JSONx Framework</ins> was created to help developers solve common problems related to various use-cases regarding JSON. The following sections present the constituent sub-projects of the <ins>JSONx Framework</ins>, and provide the purpose and requirements for each.
 
 ### 2.1 <ins>JSON Schema Definition Language</ins>
 
@@ -78,9 +78,11 @@ Provide a <ins>schema language</ins> to describe normative contracts between pro
 
 1. The <ins>schema language</ins> MUST constrain and document the meaning, usage, constraints and relationships of the constituent parts of a JSON document.
 
-1. The <ins>schema language</ins> MUST provide meaningful and useful constraint rules for the 5 JSON value types: `boolean`, `number`, `string`, `object`, and `array`.
+1. The <ins>schema language</ins> MUST provide meaningful and useful constraint rules for the 5 JSON value types:
 
-1. The <ins>schema language</ins> MUST support schema descriptions for any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+   `boolean`, `number`, `string`, `object`, `array`.
+
+1. The <ins>schema language</ins> MUST support schema descriptions for any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 1. The <ins>schema language</ins> MUST be free-of and agnostic-to patterns specific to any particular programming language.
 
@@ -92,7 +94,7 @@ For a detailed specification of the <ins>schema language</ins>, see [<ins>JSON S
 
 #### 2.1.4 Example Usage
 
-The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: JSD (Json Schema Document), and JSDX (JSD in XML semantics). The following illustrates an example JSD and JSDX. Expressing the <ins>schema document</ins> in JSDX allows a developer to leverage the edit-time validation features of XML IDEs such as [oXygen XML Editor](https://www.oxygenxml.com/).
+The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: JSD (Json Schema Document), and JSDx (JSD in XML semantics). The following illustrates an example JSD and JSDx. Expressing the <ins>schema document</ins> in JSDx allows a developer to leverage the edit-time validation features of XML IDEs such as [oXygen XML Editor](https://www.oxygenxml.com/).
 
 ##### 2.1.4.1 JSD
 
@@ -121,7 +123,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: JSD 
 }
 ```
 
-##### 2.1.4.2 JSDX
+##### 2.1.4.2 JSDx
 
 ```xml
 <schema
@@ -251,49 +253,49 @@ java -cp ... org.jsonx.Generator --prefix org.example$ -d target/generated-sourc
 
 ##### 2.3.4.2 `Converter`
 
-The following example converts the JSD file at `src/main/resources/example.jsd` to a JSDX file in `target/generated-resources`.
+The following example converts the JSD file at `src/main/resources/example.jsd` to a JSDx file in `target/generated-resources`.
 
 ```bash
 java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated-resources/example.jsdx
 ```
 
-### 2.4 <ins>JSONX-JSON</ins>
+### 2.4 <ins>JSONx-JSON</ins>
 
-Offers facilities for validating and converting JSON and JSONX documents (JSONX is JSON expressed in XML syntax).
+Offers facilities for validating and converting JSON and JSONx documents (JSONx is JSON expressed in XML syntax).
 
 #### 2.4.1 Purpose
 
-Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONX documents</ins>.
+Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONx documents</ins>.
 
 #### 2.4.2 Requirements
 
-1. The <ins>JSONX documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [\[RFC2119\]](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>JSONx documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-1. The <ins>JSONX documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+1. The <ins>JSONx documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
 
-1. The <ins>JSONX documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+1. The <ins>JSONx documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
 #### 2.4.3 Specification
 
-For a detailed specification of JSONX, see [<ins>JSONX-JSON</ins>](/json).
+For a detailed specification of JSONx, see [<ins>JSONx-JSON</ins>](/json).
 
 #### 2.4.4 Example Usage
 
-The <ins>JSONX-JSON</ins> sub-project provides convenience utilities for converting and validating JSON and JSONX documents. The following illustrates example usage of the `JxConverter` class.
+The <ins>JSONx-JSON</ins> sub-project provides convenience utilities for converting and validating JSON and JSONx documents. The following illustrates example usage of the `JxConverter` class.
 
-##### 2.4.4.1 JSON->JSONX
+##### 2.4.4.1 JSON->JSONx
 
 ```java
 String jsonx = JxConverter.jsonToJsonx(new JsonReader(new FileReader("example.json")));
 ```
 
-##### 2.4.4.1 JSONX->JSON
+##### 2.4.4.1 JSONx->JSON
 
 ```java
 String json = JxConverter.jsonxToJson(new FileInputStream("example.jsonx"));
 ```
 
-### 2.5 <ins>JAX-RS Integration for JSONX</ins>
+### 2.5 <ins>JAX-RS Integration for JSONx</ins>
 
 Implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in the JAX-RS API to integrate with JAX-RS server runtimes.
 
@@ -305,17 +307,17 @@ Provide <ins>JAX-RS integration</ins> for parsing and marshaling Java object ins
 
 1. The <ins>JAX-RS integration</ins> MUST support any JAX-RS application that implements the facets relevant to parsing and marshaling of entity object, as defined in the [JAX-RS 2.0 Specification](https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf).
 
-1. The <ins>JAX-RS integration</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONX Framework</ins>.
+1. The <ins>JAX-RS integration</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework</ins>.
 
 #### 2.5.3 Specification
 
-For a detailed specification of <ins>JAX-RS integration</ins>, see [<ins>JAX-RS Integration for JSONX</ins>](/rs).
+For a detailed specification of <ins>JAX-RS integration</ins>, see [<ins>JAX-RS Integration for JSONx</ins>](/rs).
 
 #### 2.5.4 Example Usage
 
-The <ins>JAX-RS Integration for JSONX</ins> sub-project provides `MessageBodyReader` and `MessageBodyWriter` providers that can be registered with a JAX-RS runtime. The following illustrates example usage.
+The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyReader` and `MessageBodyWriter` providers that can be registered with a JAX-RS runtime. The following illustrates example usage.
 
-##### 2.5.4.1 Schema in JSDX
+##### 2.5.4.1 Schema in JSDx
 
 ```xml
 <schema
@@ -360,9 +362,9 @@ public class AccountService {
 
 ```
 
-### 2.6 <ins>JSONX Maven Plugin</ins>
+### 2.6 <ins>JSONx Maven Plugin</ins>
 
-A Maven plugin for generating JSONX and JSD bindings.
+A Maven plugin for generating JSONx and JSD bindings.
 
 #### 2.6.1 Purpose
 
@@ -378,11 +380,11 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 #### 2.6.3 Specification
 
-For a detailed specification of the Maven plugin, see [<ins>JSONX Maven Plugin</ins>](/maven-plugin).
+For a detailed specification of the Maven plugin, see [<ins>JSONx Maven Plugin</ins>](/maven-plugin).
 
 #### 2.6.4 Example Usage
 
-The <ins>JSONX Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
+The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
 
 ```xml
 <plugin>
@@ -490,16 +492,16 @@ The following example presents a use-case involving a <ins>schema document</ins>
 
 1. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, a class by the name of `json` (as was specified in the `<prefix>` element of the `<configuration>` in the `jsonx-maven-plugin` definition) will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
 
-1. The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONX</ins> to and from JSON:
+1. The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
 
-  To parse JSON to <ins>JSONX</ins> Bindings:
+  To parse JSON to <ins>JSONx</ins> Bindings:
 
   ```java
   String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
   Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
   ```
 
-  To marshal <ins>JSONX</ins> Bindings to JSON:
+  To marshal <ins>JSONx</ins> Bindings to JSON:
 
   ```java
   String json2 = JxEncoder.get().marshal(credentials);
