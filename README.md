@@ -418,13 +418,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
 
 ### 3.2 Example
 
-1. In your preferred development directory, create a [`maven-archetype-quickstart`][maven-archetype-quickstart] project.
-
-  ```bash
-  mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
-  ```
-
-2. Create an `example.jsonx` and put it in `src/main/resources/`.
+1. Create an `example.jsonx` and put it in `src/main/resources/`.
 
   ```xml
   <schema
@@ -460,7 +454,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
   </schema>
   ```
 
-3. Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
+1. Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
 
   ```xml
   <plugin>
@@ -484,7 +478,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
   </plugin>
   ```
 
-4. Add the `org.jsonx:jsonx-generator` dependency to the POM.
+1. Add the `org.jsonx:jsonx-generator` dependency to the POM.
 
   ```xml
   <dependency>
@@ -494,9 +488,9 @@ The following example presents a use-case involving a <ins>schema document</ins>
   </dependency>
   ```
 
-5. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, a class by the name of `json` (as was specified in the `<prefix>` element of the `<configuration>` in the `jsonx-maven-plugin` definition) will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
+1. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, a class by the name of `json` (as was specified in the `<prefix>` element of the `<configuration>` in the `jsonx-maven-plugin` definition) will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
 
-6. The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONX</ins> to and from JSON:
+1. The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONX</ins> to and from JSON:
 
   To parse JSON to <ins>JSONX</ins> Bindings:
 
@@ -514,7 +508,7 @@ The following example presents a use-case involving a <ins>schema document</ins>
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
