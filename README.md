@@ -380,7 +380,7 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 #### 2.6.3 Specification
 
-For a detailed specification of the Maven plugin, see [<ins>JSONx Maven Plugin</ins>](/maven-plugin).
+For a detailed specification of the Maven plugin, see [<ins>JSONx Maven Plugin</ins>][jsonx-maven-plugin].
 
 #### 2.6.4 Example Usage
 
@@ -556,7 +556,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#example]: #32-example
 
 [jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-[jsonx-maven-plugin]: /maven-plugin/
+[jsonx-maven-plugin]: /jsonx-maven-plugin
 [maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
 [schema]: /schema/
