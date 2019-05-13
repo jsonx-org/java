@@ -46,7 +46,7 @@
             <executions>
               <execution>
                 <id>empty-javadoc-jar</id>
-                <phase>validate</phase>
+                <phase>verify</phase>
                 <goals>
                   <goal>jar</goal>
                 </goals>
