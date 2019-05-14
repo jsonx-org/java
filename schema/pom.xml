@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2017 Jsonx
+  Copyright (c) 2017 JSONx
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,10 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>schema</artifactId>
-  <name>Jsonx Schema</name>
+  <name>JSONx Schema</name>
   <description>
     The JSON Schema Definition Language is designed to describe JSON documents by using schema
     components to constrain and document the meaning, usage and relationships of their constituent

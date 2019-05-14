@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2019 Jsonx
+  Copyright (c) 2019 JSONx
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,10 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>json</artifactId>
-  <name>Jsonx JSON</name>
+  <name>JSONx JSON</name>
   <description>
     JSONX is JSON expressed in XML syntax. This document presents the structural part of JSONX, as
     well as the normative specification of the JSONX-JSON API. It also contains a directory of

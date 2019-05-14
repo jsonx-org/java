@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2017 Jsonx
+  Copyright (c) 2017 JSONx
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,10 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3-SNAPSHOT</version>
   </parent>
   <artifactId>binding</artifactId>
-  <name>Jsonx Binding</name>
+  <name>JSONx Binding</name>
   <description>
     The JSON/Java Binding API is designed to bind JSON documents to Java objects. More specifically,
     the JSON/Java Binding API provides a way for JSON objects whose structure is expressed in the
