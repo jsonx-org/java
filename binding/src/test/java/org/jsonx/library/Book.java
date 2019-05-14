@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Jsonx
+/* Copyright (c) 2017 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -14,9 +14,15 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.jsonx;
+package org.jsonx.library;
 
 import java.util.List;
+
+import org.jsonx.ArrayElement;
+import org.jsonx.ArrayProperty;
+import org.jsonx.NumberElement;
+import org.jsonx.StringElement;
+import org.jsonx.StringProperty;
 
 public class Book extends Publication {
   @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d")

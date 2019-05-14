@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Jsonx
+/* Copyright (c) 2017 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -14,10 +14,22 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.jsonx;
+package org.jsonx.library;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.jsonx.ArrayElement;
+import org.jsonx.ArrayProperty;
+import org.jsonx.ArrayType;
+import org.jsonx.BooleanProperty;
+import org.jsonx.JxEncoder;
+import org.jsonx.JxObject;
+import org.jsonx.ObjectElement;
+import org.jsonx.ObjectProperty;
+import org.jsonx.StringElement;
+import org.jsonx.StringProperty;
+import org.jsonx.Use;
 
 public class Library implements JxObject {
   public static class Journal extends Publication {

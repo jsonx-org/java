@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 Jsonx
+/* Copyright (c) 2019 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.openjax.json.JsonStrings;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
@@ -38,7 +39,7 @@ final class AnyModel extends Referrer<AnyModel> {
     };
 
     if (name != null)
-      xsb.setNames$(new xL0gluGCXYYJc.$Any.Names$(name));
+      xsb.setNames$(new xL0gluGCXYYJc.$Any.Names$(JsonStrings.unescape(name)));
 
     if (jsonx.getJsd_3aTypes() != null)
       xsb.setTypes$(new xL0gluGCXYYJc.$Any.Types$(jsonx.getJsd_3aTypes().split(" ")));

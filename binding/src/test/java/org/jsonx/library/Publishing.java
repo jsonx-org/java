@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Jsonx
+/* Copyright (c) 2017 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -14,9 +14,15 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.jsonx;
+package org.jsonx.library;
 
 import java.math.BigInteger;
+
+import org.jsonx.Form;
+import org.jsonx.JxEncoder;
+import org.jsonx.JxObject;
+import org.jsonx.NumberProperty;
+import org.jsonx.StringProperty;
 
 public class Publishing implements JxObject {
   @NumberProperty(form=Form.INTEGER)

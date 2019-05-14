@@ -31,10 +31,6 @@ import org.junit.Test;
 import org.openjax.json.JsonReader;
 
 public class InvoiceTest {
-  static {
-    JxEncoder.set(JxEncoder._2);
-  }
-
   @Test
   public void test() throws DecodeException, IOException {
     final Address address = new Address();
@@ -57,7 +53,7 @@ public class InvoiceTest {
     invoice.setShippingAddress(address);
     invoice.setBilledItems(Collections.singletonList(item));
 
-    final String json = invoice.toString();
+    final String json = JxEncoder._2.marshal(invoice);
     assertEquals(invoice, JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json))));
   }
 }

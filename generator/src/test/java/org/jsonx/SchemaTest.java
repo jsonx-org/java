@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 Jsonx
+/* Copyright (c) 2018 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,19 +34,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.jaxsb.runtime.Bindings;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
 import org.junit.Test;
 import org.libj.jci.CompilationException;
 import org.libj.jci.InMemoryCompiler;
+import org.libj.lang.PackageNotFoundException;
+import org.libj.net.MemoryURLStreamHandler;
 import org.libj.test.AssertXml;
+import org.libj.util.Classes;
 import org.openjax.json.JSON;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.Validator;
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.libj.lang.PackageNotFoundException;
-import org.libj.util.Classes;
-import org.jaxsb.runtime.Bindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -103,7 +103,7 @@ public class SchemaTest {
   private static void writeFile(final String fileName, final String data) throws IOException {
     try (final OutputStreamWriter out = new FileWriter(new File(generatedResourcesDir, fileName))) {
       out.write("<!--\n");
-      out.write("  Copyright (c) 2017 Jsonx\n\n");
+      out.write("  Copyright (c) 2017 JSONx\n\n");
       out.write("  Permission is hereby granted, free of charge, to any person obtaining a copy\n");
       out.write("  of this software and associated documentation files (the \"Software\"), to deal\n");
       out.write("  in the Software without restriction, including without limitation the rights\n");
@@ -161,7 +161,8 @@ public class SchemaTest {
 
     logger.info(fileName + "...");
     final xL0gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
-    testJson(controlBinding, prefix);
+    final String jsd = testJson(controlBinding, prefix);
+    testConverter(jsd);
 
     logger.info("  4) Schema -> Java(1)");
     final SchemaElement controlSchema = testParseSchema(controlBinding, prefix);
@@ -222,55 +223,73 @@ public class SchemaTest {
     }
   }
 
-  private static void testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
+  private static String testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
-    final String json = JSON.toString(controlSchema.toJson());
+    final String jsd = JSON.toString(controlSchema.toJson());
     logger.info("       b) JSON -> Schema");
     final SchemaElement schema;
-    try (final JsonReader reader = new JsonReader(new StringReader(json))) {
+    try (final JsonReader reader = new JsonReader(new StringReader(jsd))) {
       schema = new SchemaElement(JxDecoder.parseObject(schema.Schema.class, reader), prefix);
     }
 
     logger.info("       c) Schema -> XML(3)");
-    final String jsonXml = toXml(schema, Settings.DEFAULT).toString();
-    final xL0gluGCXYYJc.Schema jsonBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(jsonXml);
+    final String jsdx = toXml(schema, Settings.DEFAULT).toString();
+    final xL0gluGCXYYJc.Schema jsonBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(jsdx);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);
+    return jsd;
+  }
+
+  private static void testConverter(final String jsd) throws DecodeException, IOException, ValidationException {
+    final URL jsdUrl = MemoryURLStreamHandler.createURL(jsd.getBytes());
+    final String jsdx = Converter.jsdToJsdx(jsdUrl);
+    final URL jsdxUrl = MemoryURLStreamHandler.createURL(jsdx.getBytes());
+    final String jsd2 = Converter.jsdxToJsd(jsdxUrl);
+    assertEquals(jsd, jsd2);
+
+    final URL jsd2Url = MemoryURLStreamHandler.createURL(jsd2.getBytes());
+    final String jsdx2 = Converter.jsdToJsdx(jsd2Url);
+    assertEquals(jsdx, jsdx2);
   }
 
   @Test
-  public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testInvoice() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+    test("invoice.jsdx", "org.jsonx.invoice");
+  }
+
+  @Test
+  public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("array.jsdx", "org.jsonx");
   }
 
   @Test
-  public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("datatype.jsdx", "org.jsonx.datatype");
   }
 
   @Test
-  public void testStructure() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testStructure() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("structure.jsdx", "org.jsonx.structure");
   }
 
   @Test
-  public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("template.jsdx", "org.jsonx");
   }
 
   @Test
-  public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("reference.jsdx", "org.jsonx.reference");
   }
 
   @Test
-  public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("reserved.jsdx", "org.jsonx.reserved");
   }
 
   @Test
-  public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, MalformedURLException, PackageNotFoundException, SAXException {
+  public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("complete.jsdx", "org.jsonx.complete");
   }
 }

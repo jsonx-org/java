@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Jsonx
+/* Copyright (c) 2017 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.jsonx.library.Address;
+import org.jsonx.library.Book;
+import org.jsonx.library.Employee;
+import org.jsonx.library.Individual;
+import org.jsonx.library.Library;
+import org.jsonx.library.OnlineArticle;
+import org.jsonx.library.Publishing;
 import org.junit.Test;
 import org.openjax.json.JsonReader;
 import org.slf4j.Logger;

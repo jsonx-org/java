@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 OpenJAX
+/* Copyright (c) 2018 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,8 +16,8 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
 import static org.jsonx.TestUtil.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -32,10 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.openjax.json.JsonReader;
-import org.libj.math.BigDecimals;
-import org.libj.math.BigIntegers;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.jsonx.TestArray.Array1d1;
@@ -46,8 +42,12 @@ import org.jsonx.TestArray.Array2d2;
 import org.jsonx.TestArray.Array3d;
 import org.jsonx.TestArray.ArrayAny;
 import org.jsonx.TestArray.ArrayLoop;
+import org.junit.Test;
+import org.libj.math.BigDecimals;
+import org.libj.math.BigIntegers;
 import org.libj.util.CollectionUtil;
 import org.libj.util.Strings;
+import org.openjax.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

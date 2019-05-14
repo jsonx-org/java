@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2018 Jsonx
+  Copyright (c) 2018 JSONx
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -97,7 +97,7 @@
     <property name="arrayStr" xsi:type="reference" type="arrayStr"/>
     <property name="arrayStrOptional" xsi:type="reference" type="arrayStr" use="optional"/>
     <property name="arrayStrOptionalNotNullable" xsi:type="reference" type="arrayStr" use="optional" nullable="false"/>
-    <property names="anyNumStr" types="num str" xsi:type="any" use="optional"/>
+    <property names="anyNumStr" xsi:type="any" types="num str" use="optional"/>
   </object>
   <object name="objBool">
     <property name="bo+l" xsi:type="reference" type="bool" nullable="false"/>
