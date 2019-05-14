@@ -25,7 +25,7 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [Requirements](#32-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [**Getting Started**][#invoice-example]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [Specification](#34-specification)<br>
-<samp>&nbsp;&nbsp;</samp>4 [<ins>JSD Binding Generator</ins>](#4-generator)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>JSD Binding Generator</ins>](#4-jsd-binding-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [**Getting Started**](#43-getting-started)<br>
@@ -41,14 +41,14 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [**Getting Started**](#63-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3.1 [Generator](#431-generator)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3.2 [Converter][#converter]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
 <samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Maven Plugin</ins>](#7-jsonx-maven-plugin)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.2 [Requirements](#72-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [**Getting Started**](#73-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.4 [Specification](#74-specification)<br>
+<samp>&nbsp;&nbsp;</samp>8 [Contributing](#8-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>9 [License](#9-license)<br>
 
 ## 1 Introduction
 
@@ -703,13 +703,13 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 
 _For a detailed specification of the Maven plugin, see **[<ins>JSONx Maven Plugin</ins>][jsonx-maven-plugin]**._
 
-## Contributing
+## 8 Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-### License
+### 9 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
