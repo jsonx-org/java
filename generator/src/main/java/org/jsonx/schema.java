@@ -44,7 +44,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1859646040 * 31 + super.hashCode();
+      int hashCode = 188459569 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       hashCode = 31 * hashCode + (jsd_3aTypes == null ? 0 : jsd_3aTypes.hashCode());
       return hashCode;
@@ -113,7 +113,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -318735308 * 31 + super.hashCode();
+      int hashCode = 1449550731 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -169,7 +169,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 2019305373 * 31 + super.hashCode();
+      int hashCode = 1001597734 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;
@@ -259,7 +259,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -413333739 * 31 + super.hashCode();
+      int hashCode = 721134942 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinIterate == null ? 0 : jsd_3aMinIterate.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxIterate == null ? 0 : jsd_3aMaxIterate.hashCode());
@@ -330,7 +330,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 869367335 * 31 + super.hashCode();
+      int hashCode = -614798402 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -386,7 +386,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 195781642 * 31 + super.hashCode();
+      int hashCode = 1431284051 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;
@@ -427,7 +427,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1277574684 * 31 + super.hashCode();
+      int hashCode = -1974865427 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       return hashCode;
     }
@@ -495,7 +495,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1031982200 * 31 + super.hashCode();
+      int hashCode = 677851215 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -551,7 +551,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 941875161 * 31 + super.hashCode();
+      int hashCode = -1446250782 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;
@@ -577,7 +577,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      return 402951518;
+      return 1211742261;
     }
     
     @java.lang.Override
@@ -643,7 +643,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 446357005 * 31 + super.hashCode();
+      int hashCode = 1255147748 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       hashCode = 31 * hashCode + (jsd_3aForm == null ? 0 : jsd_3aForm.hashCode());
       hashCode = 31 * hashCode + (jsd_3aRange == null ? 0 : jsd_3aRange.hashCode());
@@ -713,7 +713,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 798646319 * 31 + super.hashCode();
+      int hashCode = 2034148728 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -769,7 +769,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1996569854 * 31 + super.hashCode();
+      int hashCode = 1944266457 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;
@@ -803,7 +803,7 @@ public class schema {
       
       @java.lang.Override
       public int hashCode() {
-        int hashCode = 1356798086;
+        int hashCode = -152562033;
         hashCode = 31 * hashCode + (_2e_2a == null ? 0 : _2e_2a.hashCode());
         return hashCode;
       }
@@ -869,7 +869,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 457352707 * 31 + super.hashCode();
+      int hashCode = 1266143450 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       hashCode = 31 * hashCode + (jsd_3aExtends == null ? 0 : jsd_3aExtends.hashCode());
       hashCode = 31 * hashCode + (jsd_3aProperties == null ? 0 : jsd_3aProperties.hashCode());
@@ -939,7 +939,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1364580217 * 31 + super.hashCode();
+      int hashCode = -1694884670 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -995,7 +995,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1632488200 * 31 + super.hashCode();
+      int hashCode = -1986619185 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;
@@ -1036,7 +1036,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -841879587 * 31 + super.hashCode();
+      int hashCode = 926406452 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aAbstract == null ? 0 : jsd_3aAbstract.hashCode());
       return hashCode;
     }
@@ -1090,7 +1090,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1922766343 * 31 + super.hashCode();
+      int hashCode = 1841260496 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
       return hashCode;
@@ -1159,7 +1159,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1440474379 * 31 + super.hashCode();
+      int hashCode = 1837032716 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -1215,7 +1215,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1605132540 * 31 + super.hashCode();
+      int hashCode = 128637381 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;
@@ -1276,7 +1276,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 572733541;
+      int hashCode = 1381524284;
       hashCode = 31 * hashCode + (jsd_3aNs == null ? 0 : jsd_3aNs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aSchemaLocation == null ? 0 : jsd_3aSchemaLocation.hashCode());
       hashCode = 31 * hashCode + (_5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a == null ? 0 : _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.hashCode());
@@ -1332,7 +1332,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 588735189 * 31 + super.hashCode();
+      int hashCode = 1397525932 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
       hashCode = 31 * hashCode + (jsd_3aPattern == null ? 0 : jsd_3aPattern.hashCode());
       return hashCode;
@@ -1401,7 +1401,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 648833639 * 31 + super.hashCode();
+      int hashCode = 1884336048 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMinOccurs == null ? 0 : jsd_3aMinOccurs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aMaxOccurs == null ? 0 : jsd_3aMaxOccurs.hashCode());
@@ -1457,7 +1457,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1949171658 * 31 + super.hashCode();
+      int hashCode = 1595040673 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNullable == null ? 0 : jsd_3aNullable.hashCode());
       hashCode = 31 * hashCode + (jsd_3aUse == null ? 0 : jsd_3aUse.hashCode());
       return hashCode;

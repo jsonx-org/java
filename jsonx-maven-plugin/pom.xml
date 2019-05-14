@@ -71,52 +71,6 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
-            <executions>
-              <execution>
-                <id>generator</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <executable>java</executable>
-                  <arguments>
-                    <argument>-classpath</argument>
-                    <classpath/>
-                    <argument>org.jsonx.Generator</argument>
-                    <argument>--prefix</argument>
-                    <argument>org.jsonx.www.schema_0_2_2.</argument>
-                    <argument>-d</argument>
-                    <argument>${project.build.directory}/generated-sources/jsonx</argument>
-                    <argument>../schema/src/main/resources/schema-0.2.2.jsdx</argument>
-                  </arguments>
-                  <workingDirectory>${basedir}/../generator</workingDirectory>
-                </configuration>
-              </execution>
-              <execution>
-                <id>converter</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <executable>java</executable>
-                  <arguments>
-                    <argument>-classpath</argument>
-                    <classpath/>
-                    <argument>org.jsonx.Converter</argument>
-                    <argument>../schema/src/main/resources/schema-0.2.2.jsdx</argument>
-                    <argument>../schema/src/main/resources/schema-0.2.2.jsd</argument>
-                  </arguments>
-                  <workingDirectory>${basedir}/../generator</workingDirectory>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
             <executions>

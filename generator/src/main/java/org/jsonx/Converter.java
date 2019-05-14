@@ -44,10 +44,14 @@ public final class Converter {
       trapPrintUsage();
 
     final String converted = convert(new File(args[0]).getAbsoluteFile().toURI().toURL());
-    if (args.length == 1)
+    if (args.length == 1) {
       System.out.println(converted);
-    else
-      Files.write(new File(args[1]).toPath(), converted.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+    else {
+      final File destFile = new File(args[1]);
+      destFile.getParentFile().mkdirs();
+      Files.write(destFile.toPath(), converted.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
   }
 
   /**

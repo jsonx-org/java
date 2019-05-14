@@ -709,17 +709,15 @@ Pull requests are welcome. For major changes, please [open an issue](../../issue
 
 Please make sure to update tests as appropriate.
 
-### 9 License
+## 9 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [#converter]: #432-converter
 [#invoice-example]: #33-getting-started
 
-[jdk8-download]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 [jsonx-maven-plugin]: /jsonx-maven-plugin
-[maven-archetype-quickstart]: http://maven.apache.org/archetypes/maven-archetype-quickstart/
 [maven]: https://maven.apache.org/
+[oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
 [schema]: /schema/
 [xmlschema]: http://www.w3.org/2001/XMLSchema
-[oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
