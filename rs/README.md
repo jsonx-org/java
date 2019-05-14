@@ -61,7 +61,7 @@ The JAX-RS API requires `Provider`s to be decalred as either "singleton" instanc
 public class MyApplication extends javax.ws.rs.core.Application {
   @Override
   public Set<Object> getSingletons() {
-    final Set<Object> singletons = new HashSet<>();
+    Set<Object> singletons = new HashSet<>();
     singletons.add(new JxObjectProvider(JxEncoder._2));
     singletons.add(new BadRequestExceptionMapper());
     return singletons;
