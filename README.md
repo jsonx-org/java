@@ -666,7 +666,7 @@ The <ins>JSONx-JSON</ins> sub-project provides convenience utilities for convert
 String jsonx = JxConverter.jsonToJsonx(new JsonReader(new FileReader("example.json")));
 ```
 
-#### 6.3.1 JSONx->JSON
+#### 6.3.2 JSONx->JSON
 
 ```java
 String json = JxConverter.jsonxToJson(new FileInputStream("example.jsonx"));

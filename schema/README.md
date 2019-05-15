@@ -1567,7 +1567,7 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 

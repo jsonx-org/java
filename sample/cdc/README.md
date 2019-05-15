@@ -167,7 +167,7 @@ _The code included in this module implements this example._
 
 ## 2 Contributing
 
-Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please [open an issue](../../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
@@ -175,6 +175,6 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#jsd]: ../#2-json-schema-definition-language
+[#jsd]: /#2-json-schema-definition-language
 
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
