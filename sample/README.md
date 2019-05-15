@@ -36,6 +36,6 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#jsd]: /#2-json-schema-definition-language
+[#jsd]: ../../../#3-json-schema-definition-language
 
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
