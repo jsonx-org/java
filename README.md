@@ -254,6 +254,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
    {
      "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
      "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+
      "myNumber": { "jsd:class": "number", "jsd:range": "[-1,1)" },
      "myString": { "jsd:class": "string", "jsd:pattern": "[a-z]+" },
      "myObject": {
@@ -267,8 +268,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
                { "jsd:class": "boolean" },
                { "jsd:class": "number", "jsd:form": "integer", "jsd:range": "[0,100]" },
                { "jsd:class": "string", "jsd:pattern": "[0-9]+" },
-               { "jsd:class": "any", "jsd:types": "myNumber myString" }
-             ]},
+               { "jsd:class": "any", "jsd:types": "myNumber myString" } ]},
            { "jsd:class": "reference", "jsd:type": "myObject" },
            { "jsd:class": "any", "jsd:types": "myString myObject" }]
          }
@@ -303,6 +303,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
      xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+
      <number name="myNumber" range="[-1,1)"/>
      <string name="myString" pattern="[a-z]+"/>
      <object name="myObject">
@@ -320,6 +321,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
          <any types="myString myObject"/>
        </property>
      </object>
+
    </schema>
    ```
 
@@ -369,9 +371,10 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
    {
      "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
      "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+
      "positiveDecimal": { "jsd:class": "number", "jsd:range": "[1,]" },
      "positiveInteger": { "jsd:class": "number", "jsd:form": "integer", "jsd:range": "[1,]" },
-     "date": { "jsd:class": "string", "jsd:pattern": "-?[0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|(02-(0[1-9]|1[0-9]|2[0-9]))|(0[469]|11)-(0[1-9]|[12][0-9]|30)" },
+     "date": { "jsd:class": "string", "jsd:pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
      "nonEmptyString": { "jsd:class": "string", "jsd:pattern": "\\S|\\S.*\\S" },
      "address": { "jsd:class": "object", "jsd:properties": {
        "name": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString" },
@@ -386,8 +389,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
        "billingAddress": { "jsd:class": "reference", "jsd:type": "address" },
        "shippingAddress": { "jsd:class": "reference", "jsd:type": "address" },
        "billedItems": { "jsd:class": "array", "jsd:nullable": false, "jsd:elements": [
-         { "jsd:class": "reference", "jsd:type": "item" } ]
-       } }
+         { "jsd:class": "reference", "jsd:type": "item" } ] } }
      },
      "item": { "jsd:class": "object", "jsd:properties": {
        "description": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString" },
@@ -407,9 +409,10 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
      xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+
      <number name="positiveDecimal" range="[1,]"/>
      <number name="positiveInteger" form="integer" range="[1,]"/>
-     <string name="date" pattern="-?[0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|(02-(0[1-9]|1[0-9]|2[0-9]))|(0[469]|11)-(0[1-9]|[12][0-9]|30)"/>
+     <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
      <string name="nonEmptyString" pattern="\S|\S.*\S"/>
      <object name="address">
        <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false"/>
@@ -433,6 +436,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
        <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
        <property name="price" xsi:type="reference" type="positiveDecimal" nullable="false"/>
      </object>
+
    </schema>
    ```
 
@@ -511,7 +515,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
      @NumberProperty(form=Form.INTEGER, range="[1,]")
      public java.math.BigInteger number;
 
-     @StringProperty(pattern="-?[0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|(02-(0[1-9]|1[0-9]|2[0-9]))|(0[469]|11)-(0[1-9]|[12][0-9]|30)")
+     @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")
      public String date;
 
      @ObjectProperty
@@ -702,19 +706,17 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
    {
      "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
      "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+
      "uuid": { "jsd:class": "string", "jsd:pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
      "id": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
-       "id": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "uuid" } }
-     },
+       "id": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "uuid" } } },
      "credentials": { "jsd:class": "object", "jsd:properties": {
        "email": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
-       "password": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "[0-9a-f]{64}", "jsd:use": "optional" } }
-     },
+       "password": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "[0-9a-f]{64}", "jsd:use": "optional" } } },
      "account": { "jsd:class": "object", "jsd:extends": "credentials", "jsd:properties": {
        "id": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "uuid", "jsd:use": "optional" },
        "firstName": { "jsd:class": "string", "jsd:nullable": false },
-       "lastName": { "jsd:class": "string", "jsd:nullable": false } }
-     }
+       "lastName": { "jsd:class": "string", "jsd:nullable": false } } }
    }
    ```
 
@@ -727,6 +729,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
      xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+
      <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
      <object name="id" abstract="true">
        <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
@@ -740,6 +743,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
        <property name="firstName" xsi:type="string" nullable="false"/>
        <property name="lastName" xsi:type="string" nullable="false"/>
      </object>
+
    </schema>
    ```
 
