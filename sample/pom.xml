@@ -24,23 +24,14 @@
     <artifactId>jsonx</artifactId>
     <version>0.2.3-SNAPSHOT</version>
   </parent>
-  <artifactId>json</artifactId>
-  <name>JSONx JSON</name>
+  <groupId>org.jsonx.sample</groupId>
+  <artifactId>sample</artifactId>
+  <packaging>pom</packaging>
+  <name>JSONx Sample</name>
   <description>
-    JSONX is JSON expressed in XML syntax. This document presents the structural part of JSONX, as
-    well as the normative specification of the JSONX-JSON API. It also contains a directory of
-    links to these related resources.
+    JSONx Samples.
   </description>
-  <dependencies>
-    <dependency>
-      <groupId>org.openjax</groupId>
-      <artifactId>json</artifactId>
-      <version>0.9.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjax.xml</groupId>
-      <artifactId>sax</artifactId>
-      <version>0.9.3-SNAPSHOT</version>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>cdc</module>
+  </modules>
 </project>

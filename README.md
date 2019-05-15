@@ -15,40 +15,44 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 
 <samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
-<samp>&nbsp;&nbsp;</samp>2 [<ins>JSON Schema Definition Language</ins>](#2-json-schema-definition-language)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [Purpose](#21-purpose)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.2 [Requirements](#22-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.3 [**Getting Started**](#23-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.4 [Specification](#24-specification)<br>
-<samp>&nbsp;&nbsp;</samp>3 [<ins>JSON/Java Binding API</ins>](#3-jsonjava-binding-api)<br>
+<samp>&nbsp;&nbsp;</samp>2 [Use-Cases](#2-use-cases)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [Consumer Driven Contracts](#21-consumer-driven-contracts)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>JSON Schema Definition Language</ins>][#jsd]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [Purpose](#31-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [Requirements](#32-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [**Getting Started**][#invoice-example]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [**Getting Started**](#33-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [Specification](#34-specification)<br>
-<samp>&nbsp;&nbsp;</samp>4 [<ins>JSD Binding Generator</ins>](#4-jsd-binding-generator)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>JSON/Java Binding API</ins>](#4-jsonjava-binding-api)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [**Getting Started**](#43-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3.1 [Generator](#431-generator)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3.2 [Converter][#converter]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [**Getting Started**][#invoice-example]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [Specification](#44-specification)<br>
-<samp>&nbsp;&nbsp;</samp>5 [<ins>JSONx-JSON</ins>](#5-jsonx-json)<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>JSD Binding Generator</ins>](#5-jsd-binding-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Purpose](#51-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [Requirements](#52-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3 [**Getting Started**](#53-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.1 [Generator](#531-generator)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.2 [Converter][#converter]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.4 [Specification](#54-specification)<br>
-<samp>&nbsp;&nbsp;</samp>6 [<ins>JAX-RS Integration for JSONx</ins>](#6-jax-rs-integration-for-jsonx)<br>
+<samp>&nbsp;&nbsp;</samp>6 [<ins>JSONx-JSON</ins>](#6-jsonx-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [**Getting Started**](#63-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON-JSONx](#631-json-jsonx)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [JSONx-JSON](#632-jsonx-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
-<samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Maven Plugin</ins>](#7-jsonx-maven-plugin)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>JAX-RS Integration for JSONx</ins>](#7-jax-rs-integration-for-jsonx)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.2 [Requirements](#72-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [**Getting Started**](#73-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.4 [Specification](#74-specification)<br>
-<samp>&nbsp;&nbsp;</samp>8 [Contributing](#8-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>9 [License](#9-license)<br>
+<samp>&nbsp;&nbsp;</samp>8 [<ins>JSONx Maven Plugin</ins>](#8-jsonx-maven-plugin)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.1 [Purpose](#81-purpose)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.2 [Requirements](#82-requirements)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3 [**Getting Started**](#83-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.4 [Specification](#84-specification)<br>
+<samp>&nbsp;&nbsp;</samp>9 [Contributing](#9-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>10 [License](#10-license)<br>
 
 ## 1 Introduction
 
@@ -62,15 +66,169 @@ The <ins>JSONx Framework</ins> was created to help developers solve common probl
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 <ins>JSON Schema Definition Language</ins>
+## 2 Use-Cases
+
+The following sections lists common use-cases that the <ins>JSONx Framework</ins> fulfills.
+
+### 2.1 Consumer Driven Contracts
+
+The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
+
+The following example illustrates a simple protocol that uses the [<ins>Consumer Driven Contracts</ins>][cdc] approach, and consists of the actors:
+
+1. **Producer**: Representing the provider of the <ins>ProductSearch</ins> service.
+1. **Consumer1**: The first consumer of the <ins>ProductSearch</ins> service.
+1. **Consumer2**: The second consumer of the <ins>ProductSearch</ins> service.
+
+Consider a simple <ins>ProductSearch</ins> service, which allows consumer applications to search a product catalogue.
+
+Version **v1** of the protocol defines the contract:
+
+* **Request**
+
+  ```
+  GET /ProductSearch?name=<name>
+  ```
+
+* **Response**
+
+  ```diff
+  {
+    "Version": "v1",
+    "CatalogueID": <number>,
+    "Name": <string>,
+    "Price": <string>,
+    "Manufacturer": <string>,
+    "InStock": <boolean>
+  }
+  ```
+
+The <ins>JSD</ins> that describes the **Response** contract is:
+
+```json
+{
+  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
+    "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
+    "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
+    "Price": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jsd:class": "boolean", "jsd:nullable": false} } },
+
+  "product1": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
+    "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v1"} } }
+}
+```
+
+**(Alternatively)** The <ins>JSDx</ins> form of the **Response** contract is:
+
+<sub>_**Note:** The [Converter][#converter] utility automatically converts between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+
+```xml
+<schema
+  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+
+  <object name="product" abstract="true">
+    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
+    <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
+    <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
+    <property name="InStock" xsi:type="boolean" nullable="false"/>
+  </object>
+
+  <object name="product1" extends="product">
+    <property name="Version" xsi:type="string" pattern="v1" nullable="false"/>
+  </object>
+
+</schema>
+```
+
+All actors -- **Producer**, **Consumer1**, and **Consumer2** -- agree on the contract, and implement and integrate the protocol into their systems. To assert receipt of contract-compliant documents, all actors use the contract definition to automatically validate received and sent messages.
+
+After many months of running in production, **Consumer2** issues a request to the **Producer** to provide additional information in the response. Specifically, **Consumer2** requests for the addition of another field in the JSON response:
+
+```diff
+{
+- "Version": "v1.0",
++ "Version": "v2.0",
+  "CatalogueID": <number>,
+  "Name": <string>,
+  "Price": <string>,
+  "Manufacturer": <string>,
+  "InStock": <boolean>,
++ "Description": <string>
+}
+```
+
+To satisfy **Consumer2**'s request, the contract is updated to support version **v2** of the **Response**:
+
+
+```diff
+{
+  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
+    "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
+    "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
+    "Price": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jsd:class": "boolean", "jsd:nullable": false} } },
+
+  "product1": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
+    "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v1"} } },
+
++ "product2": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
++   "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v2" },
++   "Description": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" } } }
+}
+```
+
+**(Alternatively)** The <ins>JSDx</ins> form of the change to the **Response** contract is:
+
+<sub>_**Note:** The [Converter][#converter] utility automatically converts between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+
+```diff
+<schema
+  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+
+  <object name="product" abstract="true">
+    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
+    <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
+    <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
+    <property name="InStock" xsi:type="boolean" nullable="false"/>
+  </object>
+
+  <object name="product1" extends="product">
+    <property name="Version" xsi:type="string" pattern="v1" nullable="false"/>
+  </object>
+
++ <object name="product2" extends="product">
++   <property name="Version" xsi:type="string" pattern="v2" nullable="false"/>
++   <property name="Description" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
++ </object>
+
+</schema>
+```
+
+With this approach, the **v2** evolution of the contract satisfies **Customer2**. And, since the contract also retains support for **v1**, integration with **Customer1** is unaffected.
+
+_For the application code, see **[<ins>Consumer Driven Contracts</ins>](/sample/cdc)**._
+
+## 3 <ins>JSON Schema Definition Language</ins>
 
 Describes JSON documents using schema components to constrain and document the meaning, usage and relationships of their constituent parts: value types and their content.
 
-### 2.1 Purpose
+### 3.1 Purpose
 
 Provide a <ins>schema language</ins> to describe normative contracts between producer and consumer ends of a protocol exchanging JSON documents.
 
-### 2.2 Requirements
+### 3.2 Requirements
 
 1. The <ins>schema language</ins> MUST constrain and document the meaning, usage, constraints and relationships of the constituent parts of a JSON document.
 
@@ -84,7 +242,7 @@ Provide a <ins>schema language</ins> to describe normative contracts between pro
 
 1. The <ins>schema language</ins> MUST be able to describe itself.
 
-### 2.3 Getting Started
+### 3.3 Getting Started
 
 The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins>JSD (Json Schema Document)</ins>, and <ins>JSDx (JSD in XML semantics)</ins>.
 
@@ -134,7 +292,9 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
          1. `myObject`
          1. Either **`myString`** or **`myObject`**.
 
-1. Alternatively, you can create an equivalent `schema.jsdx`:
+1. **(Alternatively)** Can create an equivalent `schema.jsdx`:
+
+   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
    ```xml
    <schema
@@ -167,19 +327,19 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    When using the <ins>JSDx</ins> format with the [oXygen XML Editor][oxygenxml], the auto-completion features of the editor will guide you in writing the schema. With the <ins>JSDx</ins> format, the XML editor will also validate keys and keyrefs to ensure that declared types are referenced correctly.
 
-### 2.4 Specification
+### 3.4 Specification
 
 _For a detailed specification of the <ins>schema language</ins>, see **[<ins>JSON Schema Definition Language</ins>](/schema)**._
 
-## 3 <ins>JSON/Java Binding API</ins>
+## 4 <ins>JSON/Java Binding API</ins>
 
 Provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][schema] to be <ins>validated</ins>, <ins>parsed</ins> and <ins>marshaled</ins>, to and from Java objects of strongly-typed classes.
 
-### 3.1 Purpose
+### 4.1 Purpose
 
 Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to and from strongly-typed Java classes.
 
-### 3.2 Requirements
+### 4.2 Requirements
 
 1. The <ins>binding API</ins> MUST be able to model the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable with the <ins>schema language</ins>.
 
@@ -195,7 +355,7 @@ Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to an
 
 1. The <ins>binding API</ins> MUST be straightforward, intuitive, and resilient to human error.
 
-### 3.3 Getting Started
+### 4.3 Getting Started
 
 The <ins>JSON/Java Binding API</ins> uses annotations to bind class definitions to usage, constraints and relationships specifiable in the <ins>schema language</ins>.
 
@@ -432,19 +592,19 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
    assertEquals(invoice, invoice2);
    ```
 
-### 3.4 Specification
+### 4.4 Specification
 
 _For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSON/Java Binding API</ins>](/binding)**._
 
-## 4 <ins>JSD Binding Generator</ins>
+## 5 <ins>JSD Binding Generator</ins>
 
 Consumes a JSD schema, and generates classes that use the <ins>JSON/Java Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
-### 4.1 Purpose
+### 5.1 Purpose
 
 Provide a <ins>binding generator</ins> utility for automatic generation of binding classes from a <ins>schema document</ins>.
 
-### 4.2 Requirements
+### 5.2 Requirements
 
 1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>binding API</ins>.
 
@@ -456,11 +616,11 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 1. The <ins>binding generator</ins> MUST be able to validate a <ins>schema document</ins>.
 
-### 4.3 Getting Started
+### 5.3 Getting Started
 
 The <ins>JSD Binding Generator</ins> provides convenience utilities for generating bindings and converting <ins>schema document</ins>s. The following illustrates example usage of the `Generator` and `Converter` executable classes.
 
-#### 4.3.1 `Generator`
+#### 5.3.1 `Generator`
 
 The following example generates binding classes (`.java` files) in `target/generated-sources/jsonx` for the <ins>schema document</ins> at `src/main/resources/example.jsd`, with prefix `org.example$`.
 
@@ -468,7 +628,7 @@ The following example generates binding classes (`.java` files) in `target/gener
 java -cp ... org.jsonx.Generator --prefix org.example$ -d target/generated-sources/jsonx src/main/resources/example.jsd
 ```
 
-#### 4.3.2 `Converter`
+#### 5.3.2 `Converter`
 
 The following example converts the JSD file at `src/main/resources/example.jsd` to a <ins>JSDx</ins> file in `target/generated-resources`.
 
@@ -476,19 +636,19 @@ The following example converts the JSD file at `src/main/resources/example.jsd` 
 java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated-resources/example.jsdx
 ```
 
-### 4.4 Specification
+### 5.4 Specification
 
 _For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSD Binding Generator</ins>](/generator)**._
 
-## 5 <ins>JSONx-JSON</ins>
+## 6 <ins>JSONx-JSON</ins>
 
 Offers facilities for validating and converting JSON and JSONx documents (JSONx is JSON expressed in XML syntax).
 
-### 5.1 Purpose
+### 6.1 Purpose
 
 Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONx documents</ins>.
 
-### 5.2 Requirements
+### 6.2 Requirements
 
 1. The <ins>JSONx documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
@@ -496,41 +656,41 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 1. The <ins>JSONx documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
-### 5.3 Getting Started
+### 6.3 Getting Started
 
 The <ins>JSONx-JSON</ins> sub-project provides convenience utilities for converting and validating JSON and JSONx documents. The following illustrates example usage of the `JxConverter` class.
 
-### 5.4 Specification
-
-_For a detailed specification of JSONx, see **[<ins>JSONx-JSON</ins>](/json)**._
-
-#### 5.4.1 JSON->JSONx
+#### 6.3.1 JSON->JSONx
 
 ```java
 String jsonx = JxConverter.jsonToJsonx(new JsonReader(new FileReader("example.json")));
 ```
 
-#### 5.4.1 JSONx->JSON
+#### 6.3.1 JSONx->JSON
 
 ```java
 String json = JxConverter.jsonxToJson(new FileInputStream("example.jsonx"));
 ```
 
-## 6 <ins>JAX-RS Integration for JSONx</ins>
+### 6.4 Specification
+
+_For a detailed specification of JSONx, see **[<ins>JSONx-JSON</ins>](/json)**._
+
+## 7 <ins>JAX-RS Integration for JSONx</ins>
 
 Implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in the JAX-RS API to integrate with JAX-RS server runtimes.
 
-### 6.1 Purpose
+### 7.1 Purpose
 
 Provide <ins>JAX-RS integration</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-### 6.2 Requirements
+### 7.2 Requirements
 
 1. The <ins>JAX-RS integration</ins> MUST support any JAX-RS application that implements the facets relevant to parsing and marshaling of entity object, as defined in the [JAX-RS 2.0 Specification](https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf).
 
 1. The <ins>JAX-RS integration</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework</ins>.
 
-### 6.3 Getting Started
+### 7.3 Getting Started
 
 The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyReader` and `MessageBodyWriter` providers that can be registered with a JAX-RS runtime. The following illustrates example usage.
 
@@ -652,19 +812,19 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
    }
    ```
 
-### 6.4 Specification
+### 7.4 Specification
 
 _For a detailed specification of <ins>JAX-RS integration</ins>, see **[<ins>JAX-RS Integration for JSONx</ins>](/rs)**._
 
-## 7 <ins>JSONx Maven Plugin</ins>
+## 8 <ins>JSONx Maven Plugin</ins>
 
 A Maven plugin for generating JSONx and JSD bindings.
 
-### 7.1 Purpose
+### 8.1 Purpose
 
 Provide schema validation, code generation, and other convenience utlities in a <ins>Maven plugin</ins>.
 
-### 7.2 Requirements
+### 8.2 Requirements
 
 1. The <ins>Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
 
@@ -672,7 +832,7 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 1. The <ins>Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
-### 7.3 Getting Started
+### 8.3 Getting Started
 
 The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
 
@@ -699,23 +859,25 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 </plugin>
 ```
 
-### 7.4 Specification
+### 8.4 Specification
 
 _For a detailed specification of the Maven plugin, see **[<ins>JSONx Maven Plugin</ins>][jsonx-maven-plugin]**._
 
-## 8 Contributing
+## 9 Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 9 License
+## 10 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#converter]: #432-converter
-[#invoice-example]: #33-getting-started
+[#converter]: #532-converter
+[#invoice-example]: #43-getting-started
+[#jsd]: #3-json-schema-definition-language
 
+[cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [jsonx-maven-plugin]: /jsonx-maven-plugin
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html

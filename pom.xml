@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.safris.maven</groupId>
     <artifactId>rootpom</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
   </parent>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx</artifactId>
@@ -68,6 +68,7 @@
     <module>generator</module>
     <module>jsonx-maven-plugin</module>
     <module>rs</module>
+    <module>sample</module>
   </modules>
   <build>
     <plugins>
