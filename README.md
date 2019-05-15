@@ -109,6 +109,7 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 {
   "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+
   "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
     "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
     "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
@@ -170,6 +171,7 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 {
   "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+
   "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
     "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
     "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
