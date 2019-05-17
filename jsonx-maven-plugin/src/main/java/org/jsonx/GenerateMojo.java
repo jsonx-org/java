@@ -18,7 +18,6 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -26,17 +25,11 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.openjax.maven.mojo.GeneratorMojo;
-import org.openjax.maven.mojo.SourceInput;
 import org.libj.util.Identifiers;
 
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
 @Execute(goal="generate")
-public class JsonxMojo extends GeneratorMojo {
-  @SourceInput
-  @Parameter(property="schemas", required=true)
-  private List<String> schemas;
-
+public class GenerateMojo extends JxMojo {
   @Parameter(name="prefix", property="prefix", required=true)
   private String prefix;
 
@@ -47,9 +40,8 @@ public class JsonxMojo extends GeneratorMojo {
       throw new IllegalArgumentException("Illegal \"prefix\" parameter: " + prefix);
 
     try {
-      for (final URL resource : configuration.getSourceInputs("schemas")) {
-        final SchemaElement schema = SchemaElement.parse(resource, prefix);
-        schema.toSource(configuration.getDestDir());
+      for (final String schema : schemas) {
+        SchemaElement.parse(new URL(schema), prefix).toSource(configuration.getDestDir());
       }
     }
     catch (final IOException e) {
