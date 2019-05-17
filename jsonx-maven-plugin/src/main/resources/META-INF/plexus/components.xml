@@ -23,7 +23,9 @@
       <configuration>
         <id>jsonx</id>
         <default-phases>
+          <generate-resources>org.jsonx:jsonx-maven-plugin:convert</generate-resources>
           <generate-sources>org.jsonx:jsonx-maven-plugin:generate</generate-sources>
+          <compile>org.jsonx:jsonx-maven-plugin:validate</compile>
         </default-phases>
       </configuration>
     </component>
@@ -34,10 +36,14 @@
       <configuration>
         <id>jsonx</id>
         <phases>
+          <phase>convert</phase>
           <phase>generate</phase>
+          <phase>validate</phase>
         </phases>
         <default-phases>
+          <convert>org.jsonx:jsonx-maven-plugin:convert</convert>
           <generate>org.jsonx:jsonx-maven-plugin:generate</generate>
+          <validate>org.jsonx:jsonx-maven-plugin:validate</validate>
         </default-phases>
       </configuration>
     </component>

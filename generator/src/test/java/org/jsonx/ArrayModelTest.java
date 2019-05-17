@@ -21,9 +21,9 @@ import static org.junit.Assert.*;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.junit.Test;
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$Member;
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$Number;
+import org.junit.Test;
 
 public class ArrayModelTest {
   private static class Number extends $Number {

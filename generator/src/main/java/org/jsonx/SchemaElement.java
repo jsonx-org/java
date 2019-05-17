@@ -30,28 +30,27 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.openjax.json.JsonReader;
-import org.openjax.xml.api.ValidationException;
-import org.openjax.xml.api.XmlElement;
+import org.jaxsb.runtime.Bindings;
+import org.jaxsb.runtime.QName;
 import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.libj.net.URLs;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
+import org.libj.net.URLs;
 import org.libj.util.CollectionUtil;
 import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
-import org.jaxsb.runtime.Bindings;
-import org.jaxsb.runtime.QName;
+import org.openjax.json.JsonReader;
+import org.openjax.xml.api.ValidationException;
+import org.openjax.xml.api.XmlElement;
 
 /**
  * The root {@link Element} of a JSON Schema Document.
  */
-public final class SchemaElement extends Element {
+public final class SchemaElement extends Element implements Declarer {
   private static xL0gluGCXYYJc.Schema jsdToXsb(final schema.Schema jsd) {
     final xL0gluGCXYYJc.Schema schema = new xL0gluGCXYYJc.Schema();
     for (final Map.Entry<String,Object> entry : jsd._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
@@ -83,6 +82,7 @@ public final class SchemaElement extends Element {
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
+   * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws IOException, DecodeException, ValidationException {
     try (final InputStream in = url.openStream()) {
@@ -101,6 +101,7 @@ public final class SchemaElement extends Element {
    * @return The {@code SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
    * @throws ValidationException If a validation error has occurred.
+   * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, ValidationException {
     try (final InputStream in = url.openStream()) {
@@ -123,6 +124,7 @@ public final class SchemaElement extends Element {
    * @throws IllegalArgumentException If the format of the content of the
    *           specified file is malformed, or is not JSDX or JSD.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parse(final URL url, final String prefix) throws IOException {
     if (URLs.getName(url).endsWith(".jsd")) {
@@ -171,6 +173,33 @@ public final class SchemaElement extends Element {
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
+    assertNoCycle(schema);
+
+    final Iterator<? super xL0gluGCXYYJc.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXYYJc.$Member);
+    while (elementIterator.hasNext()) {
+      final xL0gluGCXYYJc.$Member member = (xL0gluGCXYYJc.$Member)elementIterator.next();
+      if (member instanceof xL0gluGCXYYJc.Schema.Array)
+        ArrayModel.declare(registry, this, (xL0gluGCXYYJc.Schema.Array)member);
+      else if (member instanceof xL0gluGCXYYJc.Schema.Boolean)
+        BooleanModel.declare(registry, this, (xL0gluGCXYYJc.Schema.Boolean)member);
+      else if (member instanceof xL0gluGCXYYJc.Schema.Number)
+        NumberModel.declare(registry, this, (xL0gluGCXYYJc.Schema.Number)member);
+      else if (member instanceof xL0gluGCXYYJc.Schema.String)
+        StringModel.declare(registry, this, (xL0gluGCXYYJc.Schema.String)member);
+      else if (member instanceof xL0gluGCXYYJc.Schema.Object)
+        ObjectModel.declare(registry, this, (xL0gluGCXYYJc.Schema.Object)member);
+      else
+        throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
+    }
+
+    for (final Model model : registry.getModels())
+      if (model instanceof Referrer)
+        ((Referrer<?>)model).resolveReferences();
+
+    registry.resolveReferences();
+  }
+
+  private static void assertNoCycle(final xL0gluGCXYYJc.Schema schema) throws ValidationException {
     final StrictRefDigraph<xL0gluGCXYYJc.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
       if (obj instanceof xL0gluGCXYYJc.Schema.Array)
         return ((xL0gluGCXYYJc.Schema.Array)obj).getName$().text();
@@ -190,9 +219,9 @@ public final class SchemaElement extends Element {
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
     });
 
-    final Iterator<? super xL0gluGCXYYJc.$Member> iterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXYYJc.$Member);
-    while (iterator.hasNext()) {
-      final xL0gluGCXYYJc.$Member member = (xL0gluGCXYYJc.$Member)iterator.next();
+    final Iterator<? super xL0gluGCXYYJc.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXYYJc.$Member);
+    while (elementIterator.hasNext()) {
+      final xL0gluGCXYYJc.$Member member = (xL0gluGCXYYJc.$Member)elementIterator.next();
       if (member instanceof xL0gluGCXYYJc.Schema.Object) {
         final xL0gluGCXYYJc.Schema.Object object = (xL0gluGCXYYJc.Schema.Object)member;
         if (object.getExtends$() != null)
@@ -208,29 +237,6 @@ public final class SchemaElement extends Element {
     final List<String> cycle = digraph.getCycleRef();
     if (cycle != null)
       throw new ValidationException("Cycle detected in object hierarchy: " + CollectionUtil.toString(cycle, " -> "));
-
-    final ListIterator<xL0gluGCXYYJc.$Member> topologicalOrder = digraph.getTopologicalOrder().listIterator(digraph.getSize());
-    while (topologicalOrder.hasPrevious()) {
-      final xL0gluGCXYYJc.$Member member = topologicalOrder.previous();
-      if (member instanceof xL0gluGCXYYJc.Schema.Array)
-        ArrayModel.declare(registry, (xL0gluGCXYYJc.Schema.Array)member);
-      else if (member instanceof xL0gluGCXYYJc.Schema.Boolean)
-        BooleanModel.declare(registry, (xL0gluGCXYYJc.Schema.Boolean)member);
-      else if (member instanceof xL0gluGCXYYJc.Schema.Number)
-        NumberModel.declare(registry, (xL0gluGCXYYJc.Schema.Number)member);
-      else if (member instanceof xL0gluGCXYYJc.Schema.String)
-        StringModel.declare(registry, (xL0gluGCXYYJc.Schema.String)member);
-      else if (member instanceof xL0gluGCXYYJc.Schema.Object)
-        ObjectModel.declare(registry, (xL0gluGCXYYJc.Schema.Object)member);
-      else
-        throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
-    }
-
-    for (final Model model : registry.getModels())
-      if (model instanceof Referrer)
-        ((Referrer<?>)model).resolveReferences();
-
-    registry.resolveReferences();
   }
 
   /**
@@ -348,7 +354,7 @@ public final class SchemaElement extends Element {
    * @param classes The classes to scan.
    */
   public SchemaElement(final Collection<Class<?>> classes) {
-    final Registry registry = new Registry(classes);
+    final Registry registry = new Registry(this, classes);
     this.registry = registry;
     final QName name = xL0gluGCXYYJc.Schema.class.getAnnotation(QName.class);
     this.version = name.namespaceURI().substring(0, name.namespaceURI().lastIndexOf('.'));
@@ -361,12 +367,14 @@ public final class SchemaElement extends Element {
       if (registry.isRootMember(model, settings))
         members.add(model);
 
-    members.sort(new Comparator<Model>() {
-      @Override
-      public int compare(final Model o1, final Model o2) {
-        return o1.compareTo(o2);
-      }
-    });
+    if (!registry.isFromJsd) {
+      members.sort(new Comparator<Model>() {
+        @Override
+        public int compare(final Model o1, final Model o2) {
+          return o1.compareTo(o2);
+        }
+      });
+    }
 
     return members;
   }

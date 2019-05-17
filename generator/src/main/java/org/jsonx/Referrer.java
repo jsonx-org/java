@@ -26,7 +26,7 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
-abstract class Referrer<T extends Referrer<?>> extends Model {
+abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer {
   private static final ThreadLocal<Integer> count = new ThreadLocal<Integer>() {
     @Override
     protected Integer initialValue() {
@@ -79,31 +79,31 @@ abstract class Referrer<T extends Referrer<?>> extends Model {
 
   private final Registry.Type type;
 
-  Referrer(final Registry registry, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {
-    super(registry, Id.named(type), name, nullable, use);
+  Referrer(final Registry registry, final Declarer declarer, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {
+    super(registry, declarer, Id.named(type), name, nullable, use);
     this.type = type;
   }
 
-  Referrer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Registry.Type type) {
-    super(registry, Id.named(type), nullable, minOccurs, maxOccurs);
+  Referrer(final Registry registry, final Declarer declarer, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Registry.Type type) {
+    super(registry, declarer, Id.named(type), nullable, minOccurs, maxOccurs);
     this.type = type;
   }
 
-  Referrer(final Registry registry, final Registry.Type type) {
-    super(registry, Id.named(type));
+  Referrer(final Registry registry, final Declarer declarer, final Registry.Type type) {
+    super(registry, declarer, Id.named(type));
     this.type = type;
   }
 
-  Referrer(final Registry registry, final Boolean nullable, final Use use, final Registry.Type type) {
-    super(registry, Id.named(type), nullable, use);
+  Referrer(final Registry registry, final Declarer declarer, final Boolean nullable, final Use use, final Registry.Type type) {
+    super(registry, declarer, Id.named(type), nullable, use);
     this.type = type;
   }
 
   Member getReference(final $String type) {
-    if (type == null)
-      return null;
+    return type == null ? null : getReference(Id.named(type));
+  }
 
-    final Id id = Id.named(type);
+  private Member getReference(final Id id) {
     if (registry.isPending(id))
       return new Deferred<>(null, () -> registry.getModel(id));
 

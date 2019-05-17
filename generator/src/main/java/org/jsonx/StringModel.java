@@ -87,12 +87,12 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static StringModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.String binding) {
-    return registry.declare(binding).value(new StringModel(registry, binding), null);
+  static StringModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.String binding) {
+    return registry.declare(binding).value(new StringModel(registry, declarer, binding), null);
   }
 
   static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.Schema.String binding) {
-    final StringModel model = new StringModel(registry, binding);
+    final StringModel model = new StringModel(registry, referrer, binding);
     final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
@@ -100,27 +100,27 @@ final class StringModel extends Model {
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Field field) {
-    final StringModel model = new StringModel(registry, property, field);
+    final StringModel model = new StringModel(registry, referrer, property, field);
     final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
-    final StringModel model = new StringModel(registry, element);
+    final StringModel model = new StringModel(registry, referrer, element);
     final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
-    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.String binding) {
-    return registry.reference(new StringModel(registry, binding), referrer);
+    return registry.reference(new StringModel(registry, referrer, binding), referrer);
   }
 
   static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$String binding) {
-    return registry.reference(new StringModel(registry, binding), referrer);
+    return registry.reference(new StringModel(registry, referrer, binding), referrer);
   }
 
   private static String parsePattern(final String pattern) {
@@ -133,31 +133,31 @@ final class StringModel extends Model {
 
   final String pattern;
 
-  private StringModel(final Registry registry, final xL0gluGCXYYJc.Schema.String binding) {
-    super(registry, Id.named(binding.getName$()));
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.String binding) {
+    super(registry, declarer, Id.named(binding.getName$()));
     this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final xL0gluGCXYYJc.$String binding) {
-    super(registry, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$String binding) {
+    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final xL0gluGCXYYJc.$Array.String binding) {
-    super(registry, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.String binding) {
+    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final StringProperty property, final Field field) {
-    super(registry, Id.hashed("s", parsePattern(property.pattern())), property.nullable(), property.use());
+  private StringModel(final Registry registry, final Declarer declarer, final StringProperty property, final Field field) {
+    super(registry, declarer, Id.hashed("s", parsePattern(property.pattern())), property.nullable(), property.use());
     if (!isAssignable(field, String.class, false, property.nullable(), property.use()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + StringProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of String type, or optional and nullable fields of Optional<String> type");
 
     this.pattern = parsePattern(property.pattern());
   }
 
-  private StringModel(final Registry registry, final StringElement element) {
-    super(registry, Id.hashed("s", parsePattern(element.pattern())), element.nullable(), null);
+  private StringModel(final Registry registry, final Declarer declarer, final StringElement element) {
+    super(registry, declarer, Id.hashed("s", parsePattern(element.pattern())), element.nullable(), null);
     this.pattern = parsePattern(element.pattern());
   }
 

@@ -27,7 +27,7 @@ final class Deferred<T extends Member> extends Member {
   private final Supplier<T> supplier;
 
   Deferred(final String name, final Supplier<T> supplier) {
-    super(null, null, name, null, null, null, null);
+    super(null, null, null, name, null, null, null, null);
     this.supplier = supplier;
   }
 

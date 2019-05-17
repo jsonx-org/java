@@ -84,27 +84,27 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Field field) {
-    final AnyModel model = new AnyModel(registry, property);
+    final AnyModel model = new AnyModel(registry, referrer, property);
     final Id id = model.id;
 
     final AnyModel registered = (AnyModel)registry.getModel(id);
-    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyElement element) {
-    final AnyModel model = new AnyModel(registry, element);
+    final AnyModel model = new AnyModel(registry, referrer, element);
     final Id id = model.id;
 
     final AnyModel registered = (AnyModel)registry.getModel(id);
-    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Any binding) {
-    return registry.reference(new AnyModel(registry, binding), referrer);
+    return registry.reference(new AnyModel(registry, referrer, binding), referrer);
   }
 
   static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Any binding) {
-    return registry.reference(new AnyModel(registry, binding), referrer);
+    return registry.reference(new AnyModel(registry, referrer, binding), referrer);
   }
 
   private static final xL0gluGCXYYJc.$Reference anonymousReference = new xL0gluGCXYYJc.$Reference() {
@@ -134,23 +134,23 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private final List<Member> types;
 
-  private AnyModel(final Registry registry, final xL0gluGCXYYJc.$Any binding) {
-    super(registry, binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
+  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Any binding) {
+    super(registry, declarer, binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
     this.types = getTypes(binding.getTypes$());
   }
 
-  private AnyModel(final Registry registry, final xL0gluGCXYYJc.$Array.Any binding) {
-    super(registry, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
+  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Any binding) {
+    super(registry, declarer, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
     this.types = getTypes(binding.getTypes$());
   }
 
-  private AnyModel(final Registry registry, final AnyProperty property) {
-    super(registry, property.nullable(), property.use(), null);
+  private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property) {
+    super(registry, declarer, property.nullable(), property.use(), null);
     this.types = getTypes(property.types());
   }
 
-  private AnyModel(final Registry registry, final AnyElement element) {
-    super(registry, element.nullable(), null, null);
+  private AnyModel(final Registry registry, final Declarer declarer, final AnyElement element) {
+    super(registry, declarer, element.nullable(), null, null);
     this.types = getTypes(element.types());
   }
 
@@ -162,7 +162,7 @@ final class AnyModel extends Referrer<AnyModel> {
     final List<Member> types = new ArrayList<>(idrefs.size());
     for (final String idref : idrefs) {
       final Id id = Id.hashed(idref);
-      types.add(Reference.defer(registry, anonymousReference, () -> {
+      types.add(Reference.defer(registry, this, anonymousReference, () -> {
         final Member model = registry.getModel(id);
         if (model == null)
           throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
@@ -209,7 +209,7 @@ final class AnyModel extends Referrer<AnyModel> {
     for (final t type : types) {
       Member member = null;
       if (AnyType.isEnabled(type.arrays()))
-        member = ArrayModel.referenceOrDeclare(registry, type.arrays());
+        member = ArrayModel.referenceOrDeclare(registry, this, type.arrays());
 
       if (type.booleans()) {
         if (member != null)

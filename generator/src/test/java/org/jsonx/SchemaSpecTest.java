@@ -26,16 +26,26 @@ import org.libj.io.Streams;
 import org.openjax.xml.api.ValidationException;
 
 public class SchemaSpecTest {
-  public static void test(final String version) throws IOException, ValidationException {
-    final URL controlJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema-" + version + ".jsd");
-    final String controlJsd = new String(Streams.readBytes(controlJsdUrl.openStream()));
-    final URL testJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema-" + version + ".jsdx");
+  public static void test(String version) throws IOException, ValidationException {
+    if (version.length() > 0)
+      version = "-" + version;
+
+    final URL testJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema" + version + ".jsdx");
     final String testJsd = Converter.jsdxToJsd(testJsdUrl);
+
+    final URL controlJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema" + version + ".jsd");
+    final String controlJsd = new String(Streams.readBytes(controlJsdUrl.openStream()));
+
     assertEquals(controlJsd, testJsd);
   }
 
   @Test
   public void test() throws IOException, ValidationException {
+    test("");
+  }
+
+  @Test
+  public void test022() throws IOException, ValidationException {
     test("0.2.2");
   }
 }

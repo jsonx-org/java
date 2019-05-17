@@ -69,20 +69,20 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
-    super(registry, id, name, nullable, use);
+  Model(final Registry registry, final Declarer declarer, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
+    super(registry, declarer, id, name, nullable, use);
   }
 
-  Model(final Registry registry, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    super(registry, id, nullable, minOccurs, maxOccurs);
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
+    super(registry, declarer, id, nullable, minOccurs, maxOccurs);
   }
 
-  Model(final Registry registry, final Id id) {
-    super(registry, id, null, null, null, null, null);
+  Model(final Registry registry, final Declarer declarer, final Id id) {
+    super(registry, declarer, id, null, null, null, null, null);
   }
 
-  Model(final Registry registry, final Id id, final Boolean nullable, final Use use) {
-    super(registry, id, null, nullable, use, null, null);
+  Model(final Registry registry, final Declarer declarer, final Id id, final Boolean nullable, final Use use) {
+    super(registry, declarer, id, null, nullable, use, null, null);
   }
 
   String sortKey() {
@@ -105,7 +105,7 @@ abstract class Model extends Member implements Comparable<Model> {
 
   @Override
   XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = toAttributes(owner, "", packageName);
+    final Map<String,Object> attributes = toAttributes(owner, prefix, packageName);
     return new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
   }
 

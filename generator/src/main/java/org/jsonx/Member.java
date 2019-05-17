@@ -24,12 +24,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.libj.util.CollectionUtil;
-import org.libj.util.Strings;
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.libj.util.CollectionUtil;
+import org.libj.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -89,6 +89,7 @@ abstract class Member extends Element {
   }
 
   final Registry registry;
+  final Declarer declarer;
   final Id id;
   final String name;
   final Boolean nullable;
@@ -96,8 +97,9 @@ abstract class Member extends Element {
   final Integer minOccurs;
   final Integer maxOccurs;
 
-  Member(final Registry registry, final Id id, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
+  Member(final Registry registry, final Declarer declarer, final Id id, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs) {
     this.registry = registry;
+    this.declarer = declarer;
     this.id = id;
     this.name = name;
     this.nullable = nullable == null || nullable ? null : nullable;
@@ -107,12 +109,12 @@ abstract class Member extends Element {
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
   }
 
-  Member(final Registry registry, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs) {
-    this(registry, id, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
+  Member(final Registry registry, final Declarer declarer, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs) {
+    this(registry, declarer, id, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
   }
 
-  Member(final Registry registry, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
-    this(registry, id, (String)name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
+  Member(final Registry registry, final Declarer declarer, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
+    this(registry, declarer, id, (String)name.text(), nullable == null ? null : nullable.text(), use == null ? null : Use.valueOf(use.text().toUpperCase()), null, null);
   }
 
   @Override

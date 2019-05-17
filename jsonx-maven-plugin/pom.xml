@@ -99,19 +99,48 @@
             <version>${project.version}</version>
             <executions>
               <execution>
+                <id>convert</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                  <goal>convert</goal>
+                </goals>
+                <configuration>
+                  <destDir>${project.build.directory}/generated-test-resources/jsonx</destDir>
+                  <schemas>
+                    <schema>src/test/resources/test.jsd</schema>
+                    <schema>src/test/resources/test.jsdx</schema>
+                  </schemas>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate</id>
+                <phase>generate-test-sources</phase>
                 <goals>
                   <goal>generate</goal>
                 </goals>
-                <phase>generate-test-sources</phase>
+                <configuration>
+                  <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
+                  <prefix>org.jsonx.</prefix>
+                  <schemas>
+                    <schema>src/test/resources/test.jsd</schema>
+                    <schema>src/test/resources/test.jsdx</schema>
+                  </schemas>
+                </configuration>
+              </execution>
+              <execution>
+                <id>validate</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>validate</goal>
+                </goals>
+                <configuration>
+                  <schemas>
+                    <schema>src/test/resources/test.jsd</schema>
+                    <schema>src/test/resources/test.jsdx</schema>
+                  </schemas>
+                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
-              <prefix>org.jsonx.</prefix>
-              <schemas>
-                <schema>src/test/resources/test.jsdx</schema>
-              </schemas>
-            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -136,7 +165,7 @@
     <dependency>
       <groupId>org.openjax.maven</groupId>
       <artifactId>mojo</artifactId>
-      <version>0.3.5</version>
+      <version>0.4.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.jsonx</groupId>

@@ -257,10 +257,12 @@ class Registry {
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
+  final boolean isFromJsd;
   final String packageName;
   final String classPrefix;
 
   Registry(final String prefix) {
+    this.isFromJsd = true;
     if (prefix.length() > 0) {
       final char lastChar = prefix.charAt(prefix.length() - 1);
       if (lastChar == '.') {
@@ -280,12 +282,13 @@ class Registry {
   }
 
   @SuppressWarnings("unchecked")
-  Registry(final Collection<Class<?>> classes) {
+  Registry(final Declarer declarer, final Collection<Class<?>> classes) {
+    this.isFromJsd = false;
     for (final Class<?> cls : classes) {
       if (cls.isAnnotation())
-        ArrayModel.referenceOrDeclare(this, (Class<? extends Annotation>)cls);
+        ArrayModel.referenceOrDeclare(this, declarer, (Class<? extends Annotation>)cls);
       else
-        ObjectModel.referenceOrDeclare(this, cls);
+        ObjectModel.referenceOrDeclare(this, declarer, cls);
     }
 
     this.packageName = getClassPrefix();
@@ -393,6 +396,9 @@ class Registry {
   }
 
   boolean isRootMember(final Member member, final Settings settings) {
+    if (isFromJsd)
+      return member.declarer instanceof SchemaElement;
+
     if (deferredReferences.size() > 0)
       throw new IllegalStateException("Deferred references have not been resolved");
 

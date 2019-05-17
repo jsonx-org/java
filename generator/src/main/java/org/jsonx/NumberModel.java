@@ -22,10 +22,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
-import org.libj.lang.IllegalAnnotationException;
 import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
+import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.libj.lang.IllegalAnnotationException;
 
 final class NumberModel extends Model {
   private static xL0gluGCXYYJc.Schema.Number type(final String name) {
@@ -93,36 +93,36 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.Number binding) {
-    return registry.declare(binding).value(new NumberModel(registry, binding), null);
+  static NumberModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Number binding) {
+    return registry.declare(binding).value(new NumberModel(registry, declarer, binding), null);
   }
 
   static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Number binding) {
-    return registry.reference(new NumberModel(registry, binding), referrer);
+    return registry.reference(new NumberModel(registry, referrer, binding), referrer);
   }
 
   static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Number binding) {
-    return registry.reference(new NumberModel(registry, binding), referrer);
+    return registry.reference(new NumberModel(registry, referrer, binding), referrer);
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Field field) {
-    final NumberModel model = new NumberModel(registry, property, field);
+    final NumberModel model = new NumberModel(registry, referrer, property, field);
     final Id id = model.id;
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
-    final NumberModel model = new NumberModel(registry, element.annotationType(), element.nullable(), element.form(), element.range());
+    final NumberModel model = new NumberModel(registry, referrer, element.annotationType(), element.nullable(), element.form(), element.range());
     final Id id = model.id;
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
-    final NumberModel model = new NumberModel(registry, type.annotationType(), null, type.form(), type.range());
+    final NumberModel model = new NumberModel(registry, referrer, type.annotationType(), null, type.form(), type.range());
     final Id id = model.id;
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -152,8 +152,8 @@ final class NumberModel extends Model {
   final Form form;
   final Range range;
 
-  private NumberModel(final Registry registry, final xL0gluGCXYYJc.Schema.Number binding) {
-    super(registry, Id.named(binding.getName$()));
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Number binding) {
+    super(registry, declarer, Id.named(binding.getName$()));
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {
       this.range = parseRange(binding.getRange$());
@@ -163,8 +163,8 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final xL0gluGCXYYJc.$Number binding) {
-    super(registry, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Number binding) {
+    super(registry, declarer, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {
       this.range = parseRange(binding.getRange$());
@@ -174,8 +174,8 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final xL0gluGCXYYJc.$Array.Number binding) {
-    super(registry, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Number binding) {
+    super(registry, declarer, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
     try {
       this.range = parseRange(binding.getRange$());
@@ -185,8 +185,8 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final NumberProperty property, final Field field) {
-    super(registry, Id.hashed("n", parseForm(property.form()), parseRange(property.range())), property.nullable(), property.use());
+  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) {
+    super(registry, declarer, Id.hashed("n", parseForm(property.form()), parseRange(property.range())), property.nullable(), property.use());
     if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Number subtype, or non-nullable fields of primitive numeric type, or optional and nullable fields of Optional<? extends Number> type");
 
@@ -199,8 +199,8 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final Class<? extends Annotation> annotationType, final Boolean nullable, final Form form, final String range) {
-    super(registry, Id.hashed("n", parseForm(form), parseRange(range)), nullable, null);
+  private NumberModel(final Registry registry, final Declarer declarer, final Class<? extends Annotation> annotationType, final Boolean nullable, final Form form, final String range) {
+    super(registry, declarer, Id.hashed("n", parseForm(form), parseRange(range)), nullable, null);
     this.form = parseForm(form);
     try {
       this.range = parseRange(range);

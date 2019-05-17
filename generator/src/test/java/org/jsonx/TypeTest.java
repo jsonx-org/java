@@ -21,14 +21,14 @@ import static org.junit.Assert.*;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
+import org.jsonx.Registry.Kind;
 import org.junit.Test;
 import org.openjax.json.JSON;
 import org.openjax.xml.api.XmlElement;
-import org.jsonx.Registry.Kind;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
-    return new Member(null, null, null, null, null, null, null) {
+    return new Member(null, null, null, null, null, null, null, null) {
       @Override
       Registry.Type type() {
         return type;

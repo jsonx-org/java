@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>net</artifactId>
-      <version>0.5.0</version>
+      <version>0.5.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.openjax</groupId>

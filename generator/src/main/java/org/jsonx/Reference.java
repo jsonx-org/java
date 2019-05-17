@@ -82,48 +82,48 @@ final class Reference extends Member {
 
   final Model model;
 
-  static Deferred<Reference> defer(final Registry registry, final xL0gluGCXYYJc.$Array.Reference binding, final Supplier<Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, binding, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Reference binding, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
   }
 
-  private Reference(final Registry registry, final xL0gluGCXYYJc.$Array.Reference binding, final Model model) {
-    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Reference binding, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final xL0gluGCXYYJc.$Reference binding, final Supplier<Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, binding, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Reference binding, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
   }
 
-  private Reference(final Registry registry, final xL0gluGCXYYJc.$Reference binding, final Model model) {
-    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getName$(), binding.getNullable$(), binding.getUse$());
+  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Reference binding, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Supplier<Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, nullable, minOccurs, maxOccurs, model.get()));
   }
 
-  private Reference(final Registry registry, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Model model) {
-    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), nullable, minOccurs, maxOccurs);
+  private Reference(final Registry registry, final Declarer declarer, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), nullable, minOccurs, maxOccurs);
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final String name, final Boolean nullable, final Use use, final Supplier<Model> model) {
-    return new Deferred<>(name, () -> new Reference(registry, name, nullable, use, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Supplier<Model> model) {
+    return new Deferred<>(name, () -> new Reference(registry, declarer, name, nullable, use, model.get()));
   }
 
-  Reference(final Registry registry, final String name, final Boolean nullable, final Use use, final Model model) {
-    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), name, nullable, use, null, null);
+  Reference(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), name, nullable, use, null, null);
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Supplier<Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, nullable, minOccurs, maxOccurs, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, nullable, minOccurs, maxOccurs, model.get()));
   }
 
-  Reference(final Registry registry, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
-    super(registry, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, nullable, null, minOccurs, maxOccurs);
+  Reference(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, nullable, null, minOccurs, maxOccurs);
     this.model = model;
   }
 
@@ -183,6 +183,9 @@ final class Reference extends Member {
 
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
+    if ("signature".equals(name))
+      System.out.println();
+
     final Map<String,Object> properties = new LinkedHashMap<>();
     properties.put("jsd:class", elementName());
 
@@ -191,6 +194,9 @@ final class Reference extends Member {
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
+    for (final String x : properties.keySet())
+      if ("extends".equals(x))
+        System.out.println();
     return properties;
   }
 

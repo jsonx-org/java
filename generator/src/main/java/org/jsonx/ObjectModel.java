@@ -107,12 +107,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static ObjectModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.Object binding) {
-    return registry.declare(binding).value(new ObjectModel(registry, binding), null);
+  static ObjectModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Object binding) {
+    return registry.declare(binding).value(new ObjectModel(registry, declarer, binding), null);
   }
 
   static ObjectModel declare(final Registry registry, final ObjectModel referrer, final xL0gluGCXYYJc.$Object binding) {
-    return registry.declare(binding).value(new ObjectModel(registry, binding), referrer);
+    return registry.declare(binding).value(new ObjectModel(registry, referrer, binding), referrer);
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Field field) {
@@ -121,29 +121,29 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     final Id id = Id.named(getRealType(field));
     if (registry.isPending(id))
-      return Reference.defer(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), () -> registry.reference(registry.getModel(id), referrer));
+      return Reference.defer(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), () -> registry.reference(registry.getModel(id), referrer));
 
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, field, property), referrer) : registry.reference(model, referrer));
+    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), model == null ? registry.declare(id).value(new ObjectModel(registry, referrer, field, property), referrer) : registry.reference(model, referrer));
   }
 
-  static Member referenceOrDeclare(final Registry registry, final Element referrer, final ObjectElement element) {
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectElement element) {
     final Id id = Id.named(element.type());
     if (registry.isPending(id))
-      return Reference.defer(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), () -> registry.reference(registry.getModel(id), referrer instanceof Referrer ? (Referrer<?>)referrer : null));
+      return Reference.defer(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), () -> registry.reference(registry.getModel(id), referrer));
 
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, element), referrer instanceof Referrer ? (Referrer<?>)referrer : null) : registry.reference(model, referrer instanceof Referrer ? (Referrer<?>)referrer : null));
+    return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), model == null ? registry.declare(id).value(new ObjectModel(registry, referrer, element), referrer) : registry.reference(model, referrer));
   }
 
-  static Member referenceOrDeclare(final Registry registry, final Class<?> cls) {
+  static Member referenceOrDeclare(final Registry registry, final Declarer declarer, final Class<?> cls) {
     checkJSObject(cls);
     final Id id = Id.named(cls);
     if (registry.isPending(id))
       return new Deferred<>(null, () -> registry.reference(registry.getModel(id), null));
 
     final ObjectModel model = (ObjectModel)registry.getModel(id);
-    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, cls, null, null), null);
+    return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, declarer, cls, null, null), null);
   }
 
   static String getFullyQualifiedName(final xL0gluGCXYYJc.$Object binding) {
@@ -186,12 +186,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
       throw new IllegalArgumentException("Class " + cls.getName() + " does not implement " + JxObject.class.getName());
   }
 
-  private static void recurseInnerClasses(final Registry registry, final Class<?> cls) {
+  private void recurseInnerClasses(final Registry registry, final Class<?> cls) {
     for (final Class<?> innerClass : cls.getClasses()) {
       if (!JxObject.class.isAssignableFrom(innerClass))
         recurseInnerClasses(registry, innerClass);
       else
-        referenceOrDeclare(registry, innerClass);
+        referenceOrDeclare(registry, this, innerClass);
     }
   }
 
@@ -225,11 +225,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
       else if (member instanceof xL0gluGCXYYJc.$Reference) {
         final xL0gluGCXYYJc.$Reference reference = (xL0gluGCXYYJc.$Reference)member;
         final Id id = Id.named(reference.getType$());
-        final Member model = registry.getModel(id);
-        if (model == null)
-          throw new IllegalStateException("Reference \"" + reference.getName$().text() + "\" -> type=\"" + reference.getType$().text() + "\" not found");
-
-        members.put(reference.getName$().text(), model instanceof Reference ? model : Reference.defer(registry, reference, () -> registry.reference((Model)model, objectModel)));
+        final Member child = registry.getModel(id);
+        members.put(reference.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, reference, () -> registry.reference(registry.getModel(id), objectModel)));
       }
       else if (member instanceof xL0gluGCXYYJc.$String) {
         final xL0gluGCXYYJc.$String string = (xL0gluGCXYYJc.$String)member;
@@ -251,33 +248,33 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private Member superObject;
   final boolean isAbstract;
 
-  private ObjectModel(final Registry registry, final xL0gluGCXYYJc.Schema.Object binding) {
-    super(registry, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
+  private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Object binding) {
+    super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());
     this.members = parseMembers(binding, this);
   }
 
-  private ObjectModel(final Registry registry, final Field field, final ObjectProperty property) {
-    this(registry, getRealType(field), property.nullable(), property.use());
+  private ObjectModel(final Registry registry, final Declarer declarer, final Field field, final ObjectProperty property) {
+    this(registry, declarer, getRealType(field), property.nullable(), property.use());
   }
 
-  private ObjectModel(final Registry registry, final ObjectElement element) {
-    this(registry, element.type(), element.nullable(), null);
+  private ObjectModel(final Registry registry, final Declarer declarer, final ObjectElement element) {
+    this(registry, declarer, element.type(), element.nullable(), null);
   }
 
-  private ObjectModel(final Registry registry, final xL0gluGCXYYJc.$Object binding) {
-    super(registry, binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
+  private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Object binding) {
+    super(registry, declarer, binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
     this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;
     this.members = parseMembers(binding, this);
   }
 
-  private ObjectModel(final Registry registry, final Class<?> cls, final Boolean nullable, final Use use) {
-    super(registry, nullable, use, registry.getType(cls));
+  private ObjectModel(final Registry registry, final Declarer declarer, final Class<?> cls, final Boolean nullable, final Use use) {
+    super(registry, declarer, nullable, use, registry.getType(cls));
     final Class<?> superClass = cls.getSuperclass();
     this.isAbstract = Modifier.isAbstract(cls.getModifiers());
-    this.superObject = superClass == null || !JxObject.class.isAssignableFrom(superClass) ? null : referenceOrDeclare(registry, superClass);
+    this.superObject = superClass == null || !JxObject.class.isAssignableFrom(superClass) ? null : referenceOrDeclare(registry, declarer, superClass);
 
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     for (final Field field : cls.getDeclaredFields()) {

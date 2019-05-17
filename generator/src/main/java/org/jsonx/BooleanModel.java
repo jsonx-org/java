@@ -82,55 +82,55 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final xL0gluGCXYYJc.Schema.Boolean binding) {
-    return registry.declare(binding).value(new BooleanModel(registry, binding), null);
+  static BooleanModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Boolean binding) {
+    return registry.declare(binding).value(new BooleanModel(registry, declarer, binding), null);
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Field field) {
-    final BooleanModel model = new BooleanModel(registry, property, field);
+    final BooleanModel model = new BooleanModel(registry, referrer, property, field);
     final Id id = model.id;
 
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
-    return new Reference(registry, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
-    final BooleanModel model = new BooleanModel(registry, element);
+    final BooleanModel model = new BooleanModel(registry, referrer, element);
     final Id id = model.id;
 
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
-    return new Reference(registry, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Boolean binding) {
-    return registry.reference(new BooleanModel(registry, binding), referrer);
+    return registry.reference(new BooleanModel(registry, referrer, binding), referrer);
   }
 
   static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Boolean binding) {
-    return registry.reference(new BooleanModel(registry, binding), referrer);
+    return registry.reference(new BooleanModel(registry, referrer, binding), referrer);
   }
 
-  private BooleanModel(final Registry registry, final xL0gluGCXYYJc.Schema.Boolean binding) {
-    super(registry, Id.named(binding.getName$()));
+  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Boolean binding) {
+    super(registry, declarer, Id.named(binding.getName$()));
   }
 
-  private BooleanModel(final Registry registry, final xL0gluGCXYYJc.$Boolean binding) {
-    super(registry, ID, binding.getName$(), binding.getNullable$(), binding.getUse$());
+  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Boolean binding) {
+    super(registry, declarer, ID, binding.getName$(), binding.getNullable$(), binding.getUse$());
   }
 
-  private BooleanModel(final Registry registry, final xL0gluGCXYYJc.$Array.Boolean binding) {
-    super(registry, ID, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Boolean binding) {
+    super(registry, declarer, ID, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
   }
 
-  private BooleanModel(final Registry registry, final BooleanProperty property, final Field field) {
-    super(registry, ID, property.nullable(), property.use());
+  private BooleanModel(final Registry registry, final Declarer declarer, final BooleanProperty property, final Field field) {
+    super(registry, declarer, ID, property.nullable(), property.use());
     if (!isAssignable(field, Boolean.class, false, property.nullable(), property.use()) && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
       isAssignable(field, Boolean.class, false, property.nullable(), property.use());
 //      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Boolean type, non-nullable boolean type, or optional and nullable fields of Optional<Boolean> type");
   }
 
-  private BooleanModel(final Registry registry, final BooleanElement element) {
-    super(registry, ID, element.nullable(), null);
+  private BooleanModel(final Registry registry, final Declarer declarer, final BooleanElement element) {
+    super(registry, declarer, ID, element.nullable(), null);
   }
 
   @Override
