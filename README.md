@@ -52,7 +52,7 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3 [**Getting Started**](#83-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.4 [Specification](#84-specification)<br>
 <samp>&nbsp;&nbsp;</samp>9 [Contributing](#9-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>10 [License](#10-license)<br>
+<samp>&nbsp;&nbsp;</samp>10 [License](#10-license)
 
 ## 1 Introduction
 
@@ -828,13 +828,15 @@ A Maven plugin for generating JSONx and JSD bindings.
 
 ### 8.1 Purpose
 
-Provide schema validation, code generation, and other convenience utlities in a <ins>Maven plugin</ins>.
+Provide schema <ins>validation</ins>, schema <ins>conversion</ins>, and Java binding source <ins>generation</ins> in a <ins>Maven plugin</ins>.
 
 ### 8.2 Requirements
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
+1. The <ins>Maven plugin</ins> MUST offer utilities for the generation of Java binding sources from a specified <ins>schema document</ins>.
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s and binding classes.
+1. The <ins>Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s.
+
+1. The <ins>Maven plugin</ins> MUST offer utilities for conversion of <ins>schema document</ins>s from <ins>JSD</ins> to <ins>JSDx</ins>, and vice versa.
 
 1. The <ins>Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
