@@ -93,7 +93,7 @@ public final class SchemaElement extends Element implements Declarer {
 
   /**
    * Creates a {@code SchemaElement} from the content of the specified file that
-   * is expected to be in JSDX format.
+   * is expected to be in JSDx format.
    *
    * @param url The {@code URL} of the content to parse.
    * @param prefix The class name prefix to be prepended to the names of
@@ -112,7 +112,7 @@ public final class SchemaElement extends Element implements Declarer {
 
   /**
    * Creates a {@code SchemaElement} from the contents of the specified
-   * {@code file}. The supported content formats are JSDX and JSD. If the
+   * {@code file}. The supported content formats are JSDx and JSD. If the
    * supplied file is not in one of the supported formats, an
    * {@code IllegalArgumentException} is thrown.
    *
@@ -122,7 +122,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @return A {@code SchemaElement} from the contents of the specified
    *         {@code file}.
    * @throws IllegalArgumentException If the format of the content of the
-   *           specified file is malformed, or is not JSDX or JSD.
+   *           specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */

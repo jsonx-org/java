@@ -55,10 +55,10 @@ public final class Converter {
   }
 
   /**
-   * Converts a JDS file to the JSDX format.
+   * Converts a JDS file to the JSDx format.
    *
    * @param url The {@code URL} of the content to convert.
-   * @return The converted file in JSDX format.
+   * @return The converted file in JSDx format.
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
@@ -82,12 +82,12 @@ public final class Converter {
   }
 
   /**
-   * Converts a JDS or JSDX file to the other format.
+   * Converts a JDS or JSDx file to the other format.
    *
    * @param url The {@code URL} of the content to convert.
    * @return The converted format.
    * @throws IllegalArgumentException If the format of the content of the
-   *           specified file is malformed, or is not JSDX or JSD.
+   *           specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
    */
   public static String convert(final URL url) throws IOException {

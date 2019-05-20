@@ -54,7 +54,7 @@ public class ConvertMojo extends JxMojo {
           converted = Converter.jsdxToJsd(url);
         }
         else {
-          throw new MojoExecutionException("File extension not recognized as JSD or JSDX: " + schema);
+          throw new MojoExecutionException("File extension not recognized as JSD or JSDx: " + schema);
         }
 
         final File destFile = new File(configuration.getDestDir(), destName);

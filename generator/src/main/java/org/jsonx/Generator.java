@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Utility for generating Java source code from JSD or JSDX schema files.
+ * Utility for generating Java source code from JSD or JSDx schema files.
  */
 public class Generator {
   private static void trapPrintUsage() {
