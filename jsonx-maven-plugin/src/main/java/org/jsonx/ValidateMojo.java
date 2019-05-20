@@ -26,13 +26,13 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.openjax.maven.mojo.FileSetMojo;
+import org.openjax.maven.mojo.PatternSetMojo;
 import org.openjax.maven.mojo.FilterParameter;
 import org.openjax.maven.mojo.FilterType;
 
 @Mojo(name="validate", defaultPhase=LifecyclePhase.COMPILE)
 @Execute(goal="validate")
-public class ValidateMojo extends FileSetMojo {
+public class ValidateMojo extends PatternSetMojo {
   @FilterParameter(FilterType.URL)
   @Parameter(property="schemas", required=true)
   private List<String> schemas;
