@@ -183,9 +183,6 @@ final class Reference extends Member {
 
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
-    if ("signature".equals(name))
-      System.out.println();
-
     final Map<String,Object> properties = new LinkedHashMap<>();
     properties.put("jsd:class", elementName());
 
@@ -194,9 +191,6 @@ final class Reference extends Member {
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    for (final String x : properties.keySet())
-      if ("extends".equals(x))
-        System.out.println();
     return properties;
   }
 
