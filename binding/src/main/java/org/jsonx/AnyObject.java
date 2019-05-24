@@ -18,6 +18,9 @@ package org.jsonx;
 
 import java.util.LinkedHashMap;
 
+/**
+ * A {@link JxObject} that represents any JSON object.
+ */
 public class AnyObject implements JxObject {
   @AnyProperty(name=".*", types={@t(arrays=AnyArray.class), @t(booleans=true), @t(numbers=@NumberType), @t(objects=AnyObject.class), @t(strings=".*")})
   public final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
