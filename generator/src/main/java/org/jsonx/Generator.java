@@ -33,7 +33,7 @@ public class Generator {
     System.err.println("  --prefix <PREFIX>  Package prefix for generated classes.");
     System.err.println();
     System.err.println("Supported SCHEMA_FILE formats:");
-    System.err.println("                 <JSD|JSDX>");
+    System.err.println("                 <JSD|JSDx>");
     System.exit(1);
   }
 

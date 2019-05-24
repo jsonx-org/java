@@ -15,21 +15,21 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
   <object name="product" abstract="true">
-    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="CatalogueID" xsi:type="number" scale="0" range="[1,]" nullable="false"/>
     <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
     <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
     <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
     <property name="InStock" xsi:type="boolean" nullable="false"/>
   </object>
-  
+
   <object name="product1" extends="product">
     <property name="Version" xsi:type="string" pattern="v1" nullable="false"/>
   </object>
-  
+
   <object name="product2" extends="product">
     <property name="Version" xsi:type="string" pattern="v2" nullable="false"/>
     <property name="Description" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>

@@ -222,7 +222,7 @@ public class ArrayCodecTest {
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
-      assertEquals("Invalid range attribute: @" + NumberElement.class.getName() + "(id=0, form=REAL, range=\"xxxx\", minOccurs=1, maxOccurs=1, nullable=true)", e.getMessage());
+      assertEquals("Invalid range attribute: @" + NumberElement.class.getName() + "(id=0, scale=2147483647, range=\"xxxx\", minOccurs=1, maxOccurs=1, nullable=true)", e.getMessage());
     }
 
     try {
@@ -266,7 +266,7 @@ public class ArrayCodecTest {
     test(ArrayAny.class, array, l(Boolean.TRUE), a("0"));
     test(ArrayAny.class, array, l(Boolean.TRUE, BigInteger.ONE), a("0", "1"));
     test(ArrayAny.class, array, l(Boolean.TRUE, BigInteger.ONE, "string"), a("0", "1", "2"));
-    test(ArrayAny.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @" + AnyElement.class.getName() + "(id=0, types={@" + t.class.getName() + "(booleans=true, numbers=@" + NumberType.class.getName() + "(form=REAL, range=\" \"), objects=" + JxObject.class.getName() + ".class, strings=\" \", arrays=java.lang.annotation.Annotation.class)}, minOccurs=0, maxOccurs=2147483647, nullable=false): Illegal value: null");
+    test(ArrayAny.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @org.jsonx.AnyElement(id=0, types={@org.jsonx.t(booleans=true, numbers=@org.jsonx.NumberType(scale=-2147483648, range=\" \"), objects=org.jsonx.JxObject.class, strings=\" \", arrays=java.lang.annotation.Annotation.class)}, minOccurs=0, maxOccurs=2147483647, nullable=false): Illegal value: null");
 
     test(ArrayAny.class, array, l(BigInteger.ONE), a("1"));
     test(ArrayAny.class, array, l(BigInteger.ONE, Boolean.TRUE), a("1", "0"));

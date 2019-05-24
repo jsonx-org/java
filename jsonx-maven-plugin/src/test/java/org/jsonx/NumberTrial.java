@@ -28,13 +28,13 @@ import org.libj.util.Classes;
 class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
     final Range range = property.range().length() == 0 ? null : new Range(property.range());
-    trials.add(new NumberTrial(ValidCase.CASE, field, object, toProperForm(field, property.form(), makeValid(range)), property));
+    trials.add(new NumberTrial(ValidCase.CASE, field, object, toProperForm(field, property.scale(), makeValid(range)), property));
 
     if (property.range().length() > 0)
-      trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.form(), makeInvalid(range)), property));
+      trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.scale(), makeInvalid(range)), property));
 
-    if (property.form() == Form.INTEGER && BigDecimal.class.isAssignableFrom(field.getType()))
-      trials.add(new NumberTrial(FormCase.CASE, field, object, makeValid(range), property));
+    if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(field.getType()))
+      trials.add(new NumberTrial(ScaleCase.CASE, field, object, setScale(makeValid(range), property.scale() + 1), property));
 
     if (property.use() == Use.REQUIRED) {
       trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));
@@ -48,33 +48,47 @@ class NumberTrial extends PropertyTrial<Number> {
     }
   }
 
-  static Number createValid(final Field field, final String range, final Form form) {
-    return toProperForm(field, form, range.length() == 0 ? null : makeValid(new Range(range)));
+  static Number createValid(final Field field, final String range, final int scale) {
+    return toProperForm(field, scale, range.length() == 0 ? null : makeValid(new Range(range)));
   }
 
-  static Number createValid(final String range, final Form form) {
-    return toProperForm(form, range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)));
+  static Number createValid(final String range, final int scale) {
+    return toProperForm(scale, range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)));
   }
 
-  static BigDecimal makeValid(final Range range) {
-    return range == null ? null : range.getMax() == null ? range.getMin().add(BigDecimal.ONE) : range.getMin() == null ? range.getMax().subtract(BigDecimal.ONE) : range.getMax().subtract(range.getMin()).multiply(BigDecimal.valueOf(random.nextDouble())).add(range.getMin());
+  private static BigDecimal makeValid(final Range range) {
+    if (range == null)
+      return null;
+
+    if (range.getMax() == null)
+      return range.getMin().add(BigDecimal.ONE);
+
+    if (range.getMin() == null)
+      return range.getMax().subtract(BigDecimal.ONE);
+
+    return range.getMax().subtract(range.getMin()).multiply(BigDecimal.valueOf(random.nextDouble())).add(range.getMin());
   }
 
   private static BigDecimal makeInvalid(final Range range) {
     return range.getMin() != null ? range.getMin().subtract(BigDecimal.ONE) : range.getMax().add(BigDecimal.ONE);
   }
 
-  static Number toProperForm(final Form form, final BigDecimal value) {
-    return form == Form.REAL ? value : value.toBigInteger();
+  private static Number toProperForm(final int scale, final BigDecimal value) {
+    return scale == 0 ? value.toBigInteger() : value;
   }
 
-  static Number toProperForm(final Field field, final Form form, final BigDecimal value) {
+  private static Number setScale(final BigDecimal value, final int scale) {
+//    if (scale == Integer.MIN_VALUE)
+//      System.out.println();
+//    System.out.println(value + " " + scale);
+    return value == null ? null : scale == Integer.MAX_VALUE ? value : value.setScale(scale, RoundingMode.HALF_EVEN);
+  }
+
+  private static Number toProperForm(final Field field, final int scale, final BigDecimal value) {
     final boolean isOptional = Optional.class.isAssignableFrom(field.getType());
     final Class<?> type = isOptional ? Classes.getGenericClasses(field)[0] : field.getType();
-    if (BigDecimal.class.isAssignableFrom(type)) {
-      final BigDecimal decimal = value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value;
-      return form == Form.INTEGER ? decimal.setScale(0, RoundingMode.DOWN) : decimal;
-    }
+    if (BigDecimal.class.isAssignableFrom(type))
+      return setScale(value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value, scale);
 
     if (BigInteger.class.isAssignableFrom(type))
       return value == null ? BigInteger.valueOf(random.nextLong()) : value.toBigInteger();
@@ -97,15 +111,15 @@ class NumberTrial extends PropertyTrial<Number> {
     if (Float.class.isAssignableFrom(type))
       return value == null ? random.nextFloat() * random.nextInt() : value.floatValue();
 
-    throw new UnsupportedOperationException("Number type is not supported: " + field.getType().getName());
+    throw new UnsupportedOperationException("Unsupported type: " + field.getType().getName());
   }
 
-  final Form form;
+  final int scale;
   final Range range;
 
   private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Field field, final Object object, final Object value, final NumberProperty property) {
     super(kase, field, object, value, property.name(), property.use());
-    this.form = property.form();
+    this.scale = property.scale();
     this.range = property.range().length() == 0 ? null : new Range(property.range());
   }
 }

@@ -72,7 +72,7 @@ public class Invalid {
   }
 
   public static class NumRange implements JxObject {
-    @NumberProperty(use=Use.OPTIONAL, form=Form.INTEGER, range="[-3,")
+    @NumberProperty(use=Use.OPTIONAL, scale=0, range="[-3,")
     private Optional<Byte> invalidRange;
 
     public Optional<Byte> getInvalidRange() {
@@ -107,15 +107,15 @@ public class Invalid {
       this.invalidAnnotation = invalidAnnotation;
     }
 
-    @NumberProperty(use=Use.OPTIONAL, form=Form.INTEGER)
-    private Optional<BigDecimal> invalidForm;
+    @NumberProperty(use=Use.OPTIONAL, scale=-1)
+    private Optional<BigDecimal> invalidScale;
 
-    public Optional<BigDecimal> getInvalidForm() {
-      return this.invalidForm;
+    public Optional<BigDecimal> getInvalidScale() {
+      return this.invalidScale;
     }
 
-    public void setInvalidForm(final Optional<BigDecimal> invalidForm) {
-      this.invalidForm = invalidForm;
+    public void setInvalidScale(final Optional<BigDecimal> invalidScale) {
+      this.invalidScale = invalidScale;
     }
   }
 

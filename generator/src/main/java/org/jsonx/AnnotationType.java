@@ -21,9 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-class AnnotationSpec {
+class AnnotationType {
   @SuppressWarnings("unchecked")
-  private static StringBuilder toAnnotation(final Map<String,Object> attributes) {
+  private static StringBuilder render(final Map<String,Object> attributes) {
     final StringBuilder builder = new StringBuilder();
     final Iterator<Map.Entry<String,Object>> iterator = attributes.entrySet().iterator();
     for (int i = 0; iterator.hasNext(); ++i) {
@@ -60,7 +60,7 @@ class AnnotationSpec {
   private final Class<? extends Annotation> annotationType;
   private final AttributeMap attributes;
 
-  AnnotationSpec(final Class<? extends Annotation> annotationType, final AttributeMap attributes) {
+  AnnotationType(final Class<? extends Annotation> annotationType, final AttributeMap attributes) {
     this.annotationType = annotationType;
     this.attributes = attributes;
   }
@@ -70,7 +70,7 @@ class AnnotationSpec {
     final StringBuilder builder = new StringBuilder();
     builder.append('@').append(annotationType.getName());
     if (attributes.size() > 0)
-      builder.append('(').append(toAnnotation(attributes)).append(')');
+      builder.append('(').append(render(attributes)).append(')');
 
     return builder.toString();
   }

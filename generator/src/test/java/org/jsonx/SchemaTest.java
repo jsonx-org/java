@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
 import org.junit.Test;
 import org.libj.jci.CompilationException;
 import org.libj.jci.InMemoryCompiler;

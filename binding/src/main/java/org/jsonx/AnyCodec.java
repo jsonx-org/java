@@ -62,7 +62,7 @@ class AnyCodec extends Codec {
             return value;
         }
         else if (AnyType.isEnabled(type.numbers())) {
-          final Number value = NumberCodec.decodeArray(type.numbers().form(), token);
+          final Number value = NumberCodec.decodeArray(type.numbers().scale(), token);
           if (value != null)
             return value;
         }
@@ -92,7 +92,7 @@ class AnyCodec extends Codec {
           return null;
       }
       else if (AnyType.isEnabled(type.numbers())) {
-        error = NumberCodec.encodeArray(annotation, type.numbers().form(), type.numbers().range(), object, index, relations, validate);
+        error = NumberCodec.encodeArray(annotation, type.numbers().scale(), type.numbers().range(), object, index, relations, validate);
         if (error == null)
           return null;
       }
@@ -129,7 +129,7 @@ class AnyCodec extends Codec {
         return BooleanCodec.encodeObject((Boolean)object);
       }
       else if (object instanceof Number && AnyType.isEnabled(type.numbers())) {
-        final Object encoded = NumberCodec.encodeObject(annotation, type.numbers().form(), type.numbers().range(), (Number)object, validate);
+        final Object encoded = NumberCodec.encodeObject(annotation, type.numbers().scale(), type.numbers().range(), (Number)object, validate);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else

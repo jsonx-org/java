@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
 import org.openjax.json.JsonStrings;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
@@ -395,7 +395,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  List<AnnotationSpec> getClassAnnotation() {
+  List<AnnotationType> getClassAnnotation() {
     return null;
   }
 

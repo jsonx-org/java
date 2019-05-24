@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
 import org.libj.lang.IllegalAnnotationException;
 
 final class NumberModel extends Model {
@@ -84,8 +84,8 @@ final class NumberModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getJsd_3aForm() != null)
-      xsb.setForm$(new xL0gluGCXYYJc.$NumberMember.Form$(xL0gluGCXYYJc.$NumberMember.Form$.Enum.valueOf(jsd.getJsd_3aForm())));
+    if (jsd.getJsd_3aScale() != null)
+      xsb.setScale$(new xL0gluGCXYYJc.$NumberMember.Scale$(jsd.getJsd_3aScale().intValue()));
 
     if (jsd.getJsd_3aRange() != null)
       xsb.setRange$(new xL0gluGCXYYJc.$NumberMember.Range$(jsd.getJsd_3aRange()));
@@ -114,7 +114,7 @@ final class NumberModel extends Model {
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
-    final NumberModel model = new NumberModel(registry, referrer, element.annotationType(), element.nullable(), element.form(), element.range());
+    final NumberModel model = new NumberModel(registry, referrer, element.annotationType(), element.nullable(), element.scale(), element.range());
     final Id id = model.id;
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -122,7 +122,7 @@ final class NumberModel extends Model {
   }
 
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
-    final NumberModel model = new NumberModel(registry, referrer, type.annotationType(), null, type.form(), type.range());
+    final NumberModel model = new NumberModel(registry, referrer, type.annotationType(), null, type.scale(), type.range());
     final Id id = model.id;
 
     final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -137,8 +137,8 @@ final class NumberModel extends Model {
     throw new ValidationException(cls.getName() + " Invalid range=\"" + range + "\"", e);
   }
 
-  private static Form parseForm(final Form form) {
-    return form == Form.REAL ? null : form;
+  private static int parseScale(final xL0gluGCXYYJc.$NumberMember.Scale$ scale) {
+    return scale == null || scale.text() == null ? Integer.MAX_VALUE : scale.text();
   }
 
   private static Range parseRange(final String range) {
@@ -149,12 +149,12 @@ final class NumberModel extends Model {
     return range == null ? null : parseRange(range.text());
   }
 
-  final Form form;
+  final int scale;
   final Range range;
 
   private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Number binding) {
     super(registry, declarer, Id.named(binding.getName$()));
-    this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
+    this.scale = parseScale(binding.getScale$());
     try {
       this.range = parseRange(binding.getRange$());
     }
@@ -164,8 +164,8 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Number binding) {
-    super(registry, declarer, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
+    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
+    this.scale = parseScale(binding.getScale$());
     try {
       this.range = parseRange(binding.getRange$());
     }
@@ -175,8 +175,8 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Number binding) {
-    super(registry, declarer, Id.hashed("n", parseForm(Form.valueOf(binding.getForm$().text().toUpperCase())), parseRange(binding.getRange$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.form = parseForm(Form.valueOf(binding.getForm$().text().toUpperCase()));
+    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    this.scale = parseScale(binding.getScale$());
     try {
       this.range = parseRange(binding.getRange$());
     }
@@ -186,11 +186,11 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) {
-    super(registry, declarer, Id.hashed("n", parseForm(property.form()), parseRange(property.range())), property.nullable(), property.use());
+    super(registry, declarer, Id.hashed("n", property.scale(), parseRange(property.range())), property.nullable(), property.use());
     if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Number subtype, or non-nullable fields of primitive numeric type, or optional and nullable fields of Optional<? extends Number> type");
 
-    this.form = parseForm(property.form());
+    this.scale = property.scale();
     try {
       this.range = parseRange(property.range());
     }
@@ -199,9 +199,9 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Class<? extends Annotation> annotationType, final Boolean nullable, final Form form, final String range) {
-    super(registry, declarer, Id.hashed("n", parseForm(form), parseRange(range)), nullable, null);
-    this.form = parseForm(form);
+  private NumberModel(final Registry registry, final Declarer declarer, final Class<? extends Annotation> annotationType, final Boolean nullable, final int scale, final String range) {
+    super(registry, declarer, Id.hashed("n", scale, parseRange(range)), nullable, null);
+    this.scale = scale;
     try {
       this.range = parseRange(range);
     }
@@ -212,7 +212,7 @@ final class NumberModel extends Model {
 
   @Override
   Registry.Type type() {
-    return registry.getType(form == Form.INTEGER ? BigInteger.class : BigDecimal.class);
+    return registry.getType(scale == 0 ? BigInteger.class : BigDecimal.class);
   }
 
   @Override
@@ -233,8 +233,8 @@ final class NumberModel extends Model {
   @Override
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
-    if (form != null)
-      attributes.put(prefix + "form", form.toString().toLowerCase());
+    if (scale != Integer.MAX_VALUE)
+      attributes.put(prefix + "scale", scale);
 
     if (range != null)
       attributes.put(prefix + "range", range.toString());
@@ -245,8 +245,8 @@ final class NumberModel extends Model {
   @Override
   void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
-    if (form != null)
-      attributes.put("form", Form.class.getName() + "." + form);
+    if (scale != Integer.MAX_VALUE)
+      attributes.put("scale", scale);
 
     if (range != null)
       attributes.put("range", "\"" + range.toString() + "\"");

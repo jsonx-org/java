@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 public @interface t {
   Class<? extends Annotation> arrays() default Annotation.class;
   boolean booleans() default false;
-  NumberType numbers() default @NumberType(range="\0");
+  NumberType numbers() default @NumberType(range="\0", scale=Integer.MIN_VALUE);
   String strings() default "\0";
   Class<? extends JxObject> objects() default JxObject.class;
 }

@@ -15,11 +15,11 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
-  <number name="positiveDecimal" range="[1,]"/>
-  <number name="positiveInteger" form="integer" range="[1,]"/>
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
+  <number name="money" scale="2" range="[1,]"/>
+  <number name="positiveInteger" scale="0" range="[1,]"/>
   <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
   <string name="nonEmptyString" pattern="\S|\S.*\S"/>
   <object name="address">
@@ -42,6 +42,6 @@
     <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
     <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
     <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
-    <property name="price" xsi:type="reference" type="positiveDecimal" nullable="false"/>
+    <property name="price" xsi:type="reference" type="money" nullable="false"/>
   </object>
 </schema>

@@ -26,29 +26,29 @@ import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.Annotations;
 
 class NumberCodec extends PrimitiveCodec<Number> {
-  static Number decodeArray(final Form form, final String token) {
+  static Number decodeArray(final int scale, final String token) {
     final char ch;
     if ((ch = token.charAt(0)) != '-' && (ch < '0' || '9' < ch))
       return null;
 
-    return NumberCodec.decodeObject(form, token);
+    return NumberCodec.decodeObject(scale, token);
   }
 
-  static Number decodeObject(final Form form, final String json) {
+  static Number decodeObject(final int scale, final String json) {
     try {
-      return form == Form.INTEGER ? new BigInteger(json) : new BigDecimal(json);
+      return scale == 0 ? new BigInteger(json) : new BigDecimal(json);
     }
     catch (final NumberFormatException e) {
       return null;
     }
   }
 
-  static Error encodeArray(final Annotation annotation, final Form form, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
+  static Error encodeArray(final Annotation annotation, final int scale, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!(object instanceof Number))
       return Error.CONTENT_NOT_EXPECTED(object, -1);
 
     if (validate) {
-      final Error error = NumberCodec.validate(annotation, (Number)object, form, range);
+      final Error error = NumberCodec.validate(annotation, (Number)object, scale, range);
       if (error != null)
         return error;
     }
@@ -57,9 +57,9 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return null;
   }
 
-  static Object encodeObject(final Annotation annotation, final Form form, final String range, final Number object, final boolean validate) throws EncodeException, ValidationException {
+  static Object encodeObject(final Annotation annotation, final int scale, final String range, final Number object, final boolean validate) throws EncodeException, ValidationException {
     if (validate) {
-      final Error error = validate(annotation, object, form, range);
+      final Error error = validate(annotation, object, scale, range);
       if (error != null)
         return error;
     }
@@ -67,9 +67,15 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return String.valueOf(object);
   }
 
-  private static Error validate(final Annotation annotation, final Number object, final Form form, final String range) {
-    if (form == Form.INTEGER && object.longValue() != object.doubleValue())
-      return Error.INTEGER_NOT_VALID(Form.class, object, -1);
+  private static Error validate(final Annotation annotation, final Number object, final int scale, final String range) {
+    if (scale != 0) {
+      final Error error = isScaleValid(object.toString(), scale, -1);
+      if (error != null)
+        return error;
+    }
+    else if (object.longValue() != object.doubleValue()) {
+      return Error.SCALE_NOT_VALID(scale, object, -1);
+    }
 
     if (range.length() > 0) {
       try {
@@ -84,12 +90,12 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return null;
   }
 
-  private final Form form;
+  private final int scale;
   private final Range range;
 
   NumberCodec(final NumberProperty property, final Field field) {
     super(field, property.name(), property.nullable(), property.use());
-    this.form = property.form();
+    this.scale = property.scale();
     if (property.range().length() == 0) {
       this.range = null;
     }
@@ -108,21 +114,33 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return firstChar == '-' || '0' <= firstChar && firstChar <= '9';
   }
 
+  private static Error isScaleValid(final String value, final int scale, final int offset) {
+    if (scale == Integer.MAX_VALUE)
+      return null;
+
+    final int dot = value.indexOf('.');
+    if (scale != 0 ? value.length() - 1 - dot > scale : dot != -1)
+      return Error.SCALE_NOT_VALID(scale, value, offset);
+
+    return null;
+  }
+
   @Override
   Error validate(final String json, final int offset) {
-    if (form != Form.REAL) {
-      final int dot = json.indexOf('.');
-      if (dot != -1)
-        return Error.INTEGER_NOT_VALID(Form.class, json, offset);
-    }
+    final Error error = isScaleValid(json, scale, offset);
+    if (error != null)
+      return error;
 
     // FIXME: decode() is done here and in the caller's scope
-    return range != null && !range.isValid(parse(json)) ? Error.RANGE_NOT_MATCHED(range, json, offset) : null;
+    if (range != null && !range.isValid(parse(json)))
+      return Error.RANGE_NOT_MATCHED(range, json, offset);
+
+    return null;
   }
 
   @Override
   Number parse(final String json) {
-    return decodeObject(form, json);
+    return decodeObject(scale, json);
   }
 
   @Override

@@ -40,6 +40,6 @@ public class SchemaCodeTest {
 
   @Test
   public void test() throws IOException {
-    test("0.2.2");
+    test("0.2.3");
   }
 }

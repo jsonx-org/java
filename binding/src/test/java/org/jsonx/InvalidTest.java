@@ -178,7 +178,7 @@ public class InvalidTest {
     @Test
     public void testInvalidForm() throws IOException {
       final Invalid.Num binding = new Invalid.Num();
-      binding.setInvalidForm(Optional.of(BigDecimal.valueOf(5.8)));
+      binding.setInvalidScale(Optional.of(BigDecimal.valueOf(5.8)));
 
       try {
         validEncoder.marshal(binding);

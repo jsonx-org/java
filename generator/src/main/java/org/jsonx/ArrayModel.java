@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
 import org.libj.lang.AnnotationParameterException;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.ArrayUtil;
@@ -457,7 +457,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return element;
   }
 
-  private void renderAnnotations(final AttributeMap attributes, final List<AnnotationSpec> annotations) {
+  private void renderAnnotations(final AttributeMap attributes, final List<AnnotationType> annotations) {
     final int[] indices = new int[members.size()];
     for (int i = 0, index = 0; i < members.size(); ++i) {
       indices[i] = index;
@@ -492,16 +492,16 @@ final class ArrayModel extends Referrer<ArrayModel> {
       attributes.put("maxIterate", String.valueOf(maxIterate));
   }
 
-  private static int writeElementAnnotations(final List<AnnotationSpec> annotations, final Member member, final int index, final Member owner) {
+  private static int writeElementAnnotations(final List<AnnotationType> annotations, final Member member, final int index, final Member owner) {
     final AttributeMap attributes = new AttributeMap();
     attributes.put("id", index);
 
-    final AnnotationSpec annotationSpec = new AnnotationSpec(member.elementAnnotation(), attributes);
+    final AnnotationType annotationSpec = new AnnotationType(member.elementAnnotation(), attributes);
     final Member reference = member instanceof Reference ? ((Reference)member).model : member;
     if (reference instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)reference;
       int offset = 1;
-      final List<AnnotationSpec> inner = new ArrayList<>();
+      final List<AnnotationType> inner = new ArrayList<>();
       if (arrayModel.classType() == null) {
         final int[] indices = new int[arrayModel.members.size()];
         for (int i = 0; i < arrayModel.members.size(); ++i) {
@@ -536,11 +536,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  List<AnnotationSpec> toElementAnnotations() {
+  List<AnnotationType> toElementAnnotations() {
     if (classType() != null)
       return null;
 
-    final List<AnnotationSpec> annotations = new ArrayList<>();
+    final List<AnnotationType> annotations = new ArrayList<>();
     int index = 0;
     for (final Member member : members)
       index += writeElementAnnotations(annotations, member, index, this);
@@ -549,11 +549,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  List<AnnotationSpec> getClassAnnotation() {
+  List<AnnotationType> getClassAnnotation() {
     final AttributeMap attributes = new AttributeMap();
-    final List<AnnotationSpec> annotations = new ArrayList<>();
+    final List<AnnotationType> annotations = new ArrayList<>();
     renderAnnotations(attributes, annotations);
-    annotations.add(new AnnotationSpec(ArrayType.class, attributes));
+    annotations.add(new AnnotationType(ArrayType.class, attributes));
     return annotations;
   }
 

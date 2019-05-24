@@ -206,20 +206,20 @@ public class JxEncoder {
         builder.append(BooleanCodec.encodeObject((Boolean)value));
       }
       else if (Number.class.isAssignableFrom(type)) {
-        final Form form;
+        final int scale;
         final String range;
         if (isProperty) {
           final NumberProperty property = (NumberProperty)annotation;
-          form = property.form();
+          scale = property.scale();
           range = property.range();
         }
         else {
           final NumberElement element = (NumberElement)annotation;
-          form = element.form();
+          scale = element.scale();
           range = element.range();
         }
 
-        final Object encoded = NumberCodec.encodeObject(annotation, form, range, (Number)value, validate);
+        final Object encoded = NumberCodec.encodeObject(annotation, scale, range, (Number)value, validate);
         if (encoded instanceof Error)
           return (Error)encoded;
 

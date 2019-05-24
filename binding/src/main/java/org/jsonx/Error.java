@@ -56,8 +56,8 @@ final class Error {
     return new Error(offset, "Range %s does not match: %s", range, object);
   }
 
-  static Error INTEGER_NOT_VALID(final Class<?> type, final Object object, final int offset) {
-    return new Error(offset, "Illegal %s .INTEGER value: %s", type, object);
+  static Error SCALE_NOT_VALID(final int scale, final Object object, final int offset) {
+    return new Error(offset, "Unsatisfied scale=\"%d\": %s", scale, object);
   }
 
   static Error BOOLEAN_NOT_VALID(final String token, final int offset) {

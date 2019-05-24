@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd ../../main/resources/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
   <array name="break" maxIterate="2">
     <reference type="extends" minOccurs="9" maxOccurs="10"/>
     <reference type="import" minOccurs="7" maxOccurs="8"/>
@@ -37,7 +37,7 @@
     <reference type="public" minOccurs="5" maxOccurs="6"/>
   </array>
   <boolean name="public"/>
-  <number name="byte" form="integer" range="[2,9]"/>
+  <number name="byte" scale="0" range="[2,9]"/>
   <string name="abstract" pattern="[a-z]+"/>
   <object name="test-reserved">
     <property name="boolean" xsi:type="array" minIterate="5" maxIterate="10">

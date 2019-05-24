@@ -24,6 +24,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberType {
-  Form form() default Form.REAL;
+  int scale() default Integer.MAX_VALUE;
   String range() default "";
 }

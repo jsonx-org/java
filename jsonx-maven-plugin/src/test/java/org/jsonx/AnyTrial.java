@@ -47,7 +47,7 @@ class AnyTrial extends PropertyTrial<Object> {
       return BooleanTrial.createValid();
 
     if (AnyType.isEnabled(type.numbers()))
-      return NumberTrial.createValid(type.numbers().range(), type.numbers().form());
+      return NumberTrial.createValid(type.numbers().range(), type.numbers().scale());
 
     if (AnyType.isEnabled(type.objects()))
       return ObjectTrial.createValid(type.objects());

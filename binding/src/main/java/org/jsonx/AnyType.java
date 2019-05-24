@@ -27,7 +27,7 @@ final class AnyType {
   }
 
   static boolean isEnabled(final NumberType number) {
-    return !"\0".equals(number.range());
+    return number.scale() != Integer.MIN_VALUE || !"\0".equals(number.range());
   }
 
   static boolean isEnabled(final String pattern) {
@@ -73,8 +73,8 @@ final class AnyType {
     }
 
     @Override
-    public Form form() {
-      return null;
+    public int scale() {
+      return Integer.MIN_VALUE;
     }
 
     @Override
@@ -90,8 +90,8 @@ final class AnyType {
     }
 
     @Override
-    public Form form() {
-      return Form.REAL;
+    public int scale() {
+      return Integer.MAX_VALUE;
     }
 
     @Override

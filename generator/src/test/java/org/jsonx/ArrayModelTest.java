@@ -21,8 +21,8 @@ import static org.junit.Assert.*;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$Member;
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$Number;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Member;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Number;
 import org.junit.Test;
 
 public class ArrayModelTest {
@@ -49,12 +49,12 @@ public class ArrayModelTest {
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));
-    number1.setForm$(new $Number.Form$($Number.Form$.integer));
+    number1.setScale$(new $Number.Scale$(0));
     final NumberModel model1 = NumberModel.reference(registry, null, number1);
 
     final $Number number2 = new Number();
     number2.setName$(new $Number.Name$("integer2"));
-    number2.setForm$(new $Number.Form$($Number.Form$.integer));
+    number2.setScale$(new $Number.Scale$(0));
     final NumberModel model2 = NumberModel.reference(registry, null, number2);
 
     assertEquals(registry.getType(BigInteger.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));

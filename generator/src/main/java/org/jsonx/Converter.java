@@ -28,14 +28,14 @@ import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
 
 /**
- * Utility for converting JSD files to JSDX, and vice versa.
+ * Utility for converting JSD files to JSDx, and vice versa.
  */
 public final class Converter {
   private static void trapPrintUsage() {
     System.err.println("Usage: Converter <SCHEMA_IN> [SCHEMA_OUT]");
     System.err.println();
     System.err.println("Supported SCHEMA_IN|OUT formats:");
-    System.err.println("                 <JSD|JSDX>");
+    System.err.println("                 <JSD|JSDx>");
     System.exit(1);
   }
 

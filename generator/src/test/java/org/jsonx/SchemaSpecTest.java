@@ -45,7 +45,7 @@ public class SchemaSpecTest {
   }
 
   @Test
-  public void test022() throws IOException, ValidationException {
-    test("0.2.2");
+  public void test023() throws IOException, ValidationException {
+    test("0.2.3");
   }
 }

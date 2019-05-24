@@ -19,14 +19,13 @@ package org.jsonx;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
 import org.libj.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 class Id {
   private static String hash(final Object ... variables) {
-    final Checksum crc = new CRC32();
+    final CRC32 crc = new CRC32();
     final byte[] bytes = Arrays.toString(variables).getBytes();
     crc.update(bytes, 0, bytes.length);
     return Long.toString(crc.getValue(), 16);

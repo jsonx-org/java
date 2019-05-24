@@ -74,7 +74,7 @@ public class Range implements Serializable {
 
   public Range(final String string) throws ParseException {
     if (string.length() < 4)
-      throw new IllegalArgumentException("Range spec min length is 4, but was " + string.length());
+      throw new IllegalArgumentException("Range min length is 4, but was " + string.length() + (string.length() > 0 ? ": " + string : ""));
 
     char ch = string.charAt(0);
     if (!(this.minInclusive = ch == '[') && ch != '(')

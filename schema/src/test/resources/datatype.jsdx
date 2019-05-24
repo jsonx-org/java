@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd ../../main/resources/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
   <array name="arrayArr">
     <reference type="arrayBool" maxOccurs="1"/>
     <reference type="arrayNum" maxOccurs="1"/>
@@ -36,15 +36,14 @@
     <reference type="num" minOccurs="1" maxOccurs="1"/>
     <reference type="num" minOccurs="0" maxOccurs="1" nullable="false"/>
     <reference type="numInt" minOccurs="1" maxOccurs="1"/>
-    <reference type="numInt" minOccurs="0" maxOccurs="1" nullable="false"/>
-    <reference type="numIntRange1" minOccurs="1" maxOccurs="1"/>
-    <reference type="numIntRange1" minOccurs="0" maxOccurs="1" nullable="false"/>
-    <reference type="numIntRange2" minOccurs="1" maxOccurs="1"/>
-    <reference type="numIntRange2" minOccurs="0" maxOccurs="1" nullable="false"/>
-    <reference type="numRange1" minOccurs="1" maxOccurs="1"/>
-    <reference type="numRange1" minOccurs="0" maxOccurs="1" nullable="false"/>
-    <reference type="numRange2" minOccurs="1" maxOccurs="1"/>
-    <reference type="numRange2" minOccurs="0" maxOccurs="1" nullable="false"/>
+    <reference type="numRange" minOccurs="0" maxOccurs="1" nullable="false"/>
+    <reference type="numIntRange" minOccurs="1" maxOccurs="1"/>
+    <reference type="numScale" minOccurs="0" maxOccurs="1" nullable="false"/>
+    <reference type="numScaleRange" minOccurs="1" maxOccurs="1"/>
+    <reference type="numInt" minOccurs="1" maxOccurs="1"/>
+    <reference type="numRange" minOccurs="0" maxOccurs="1" nullable="false"/>
+    <reference type="numIntRange" minOccurs="1" maxOccurs="1"/>
+    <reference type="numScaleRange" minOccurs="0" maxOccurs="1" nullable="false"/>
   </array>
   <array name="arrayObj">
     <reference type="objArr" maxOccurs="1"/>
@@ -73,11 +72,11 @@
   </array>
   <boolean name="bool"/>
   <number name="num"/>
-  <number name="numInt" form="integer"/>
-  <number name="numIntRange1" form="integer" range="[1,]"/>
-  <number name="numIntRange2" form="integer" range="[,4]"/>
-  <number name="numRange1" range="[1,]"/>
-  <number name="numRange2" range="[,4]"/>
+  <number name="numInt" scale="0"/>
+  <number name="numRange" range="[1,]"/>
+  <number name="numIntRange" scale="0" range="[1,]"/>
+  <number name="numScale" scale="2" range="[1.11,]"/>
+  <number name="numScaleRange" scale="3" range="[2.222,]"/>
   <string name="str"/>
   <string name="strDec"/>
   <string name="strDecEnc"/>
@@ -107,24 +106,31 @@
   </object>
   <object name="objNum">
     <property name="num.+" xsi:type="reference" type="num"/>
+    <property name="numRequired" xsi:type="reference" type="num"/>
     <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
+    <property name="numRequiredNotNullable" xsi:type="reference" type="num" nullable="false"/>
     <property name="numOptionalNotNullable" xsi:type="reference" type="num" use="optional" nullable="false"/>
-    <property name="numInt" xsi:type="reference" type="numInt"/>
     <property names="any" xsi:type="any" types="num str" nullable="false"/>
+    <property name="numIntRequired" xsi:type="reference" type="numInt"/>
     <property name="numIntOptional" xsi:type="reference" type="numInt" use="optional"/>
+    <property name="numIntRequiredNotNullable" xsi:type="reference" type="numInt" nullable="false"/>
     <property name="numIntOptionalNotNullable" xsi:type="reference" type="numInt" use="optional" nullable="false"/>
-    <property name="numIntRange1" xsi:type="reference" type="numIntRange1"/>
-    <property name="numIntRange1Optional" xsi:type="reference" type="numIntRange1" use="optional"/>
-    <property name="numIntRange1OptionalNotNullable" xsi:type="reference" type="numIntRange1" use="optional" nullable="false"/>
-    <property name="numIntRange2" xsi:type="reference" type="numIntRange2"/>
-    <property name="numIntRange2Optional" xsi:type="reference" type="numIntRange2" use="optional"/>
-    <property name="numIntRange2OptionalNotNullable" xsi:type="reference" type="numIntRange2" use="optional" nullable="false"/>
-    <property name="numRange1" xsi:type="reference" type="numRange1"/>
-    <property name="numRange1Optional" xsi:type="reference" type="numRange1" use="optional"/>
-    <property name="numRange1OptionalNotNullable" xsi:type="reference" type="numRange1" use="optional" nullable="false"/>
-    <property name="numRange2" xsi:type="reference" type="numRange2"/>
-    <property name="numRange2Optional" xsi:type="reference" type="numRange2" use="optional"/>
-    <property name="numRange2OptionalNotNullable" xsi:type="reference" type="numRange2" use="optional" nullable="false"/>
+    <property name="numRangeRequired" xsi:type="reference" type="numRange"/>
+    <property name="numRangeOptional" xsi:type="reference" type="numRange" use="optional"/>
+    <property name="numRangeRequiredNotNullable" xsi:type="reference" type="numRange" nullable="false"/>
+    <property name="numRangeOptionalNotNullable" xsi:type="reference" type="numRange" use="optional" nullable="false"/>
+    <property name="numIntRangeRequired" xsi:type="reference" type="numIntRange"/>
+    <property name="numIntRangeOptional" xsi:type="reference" type="numIntRange" use="optional"/>
+    <property name="numIntRangeRequiredNotNullable" xsi:type="reference" type="numIntRange" nullable="false"/>
+    <property name="numIntRangeOptionalNotNullable" xsi:type="reference" type="numIntRange" use="optional" nullable="false"/>
+    <property name="numScaleRequired" xsi:type="reference" type="numScale"/>
+    <property name="numScaleOptional" xsi:type="reference" type="numScale" use="optional"/>
+    <property name="numScaleRequiredNotNullable" xsi:type="reference" type="numScale" nullable="false"/>
+    <property name="numScaleOptionalNotNullable" xsi:type="reference" type="numScale" use="optional" nullable="false"/>
+    <property name="numScaleRangeRequired" xsi:type="reference" type="numScaleRange"/>
+    <property name="numScaleRangeOptional" xsi:type="reference" type="numScaleRange" use="optional"/>
+    <property name="numScaleRangeRequiredNotNullable" xsi:type="reference" type="numScaleRange" nullable="false"/>
+    <property name="numScaleRangeOptionalNotNullable" xsi:type="reference" type="numScaleRange" use="optional" nullable="false"/>
   </object>
   <object name="objObj">
     <property name="objOptional" xsi:type="reference" type="objBool" use="optional"/>

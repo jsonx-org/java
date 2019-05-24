@@ -78,7 +78,7 @@ class ArrayDecodeIterator extends ArrayIterator {
     else if (codecType == BooleanCodec.class)
       value = BooleanCodec.decodeArray(token);
     else if (codecType == NumberCodec.class)
-      value = NumberCodec.decodeArray(((NumberElement)annotation).form(), token);
+      value = NumberCodec.decodeArray(((NumberElement)annotation).scale(), token);
     else if (codecType == ObjectCodec.class)
       value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), token, reader, onPropertyDecode);
     else if (codecType == StringCodec.class)

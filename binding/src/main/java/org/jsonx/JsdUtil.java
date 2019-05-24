@@ -29,7 +29,7 @@ import org.libj.util.Identifiers;
 import org.libj.util.Strings;
 
 final class JsdUtil {
-  static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "names", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "form", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
+  static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "names", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
   private static final char prefix = '\0';
   private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
   private static final Function<Character,String> substitutions2 = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? "_" + Integer.toHexString(c) : "__";

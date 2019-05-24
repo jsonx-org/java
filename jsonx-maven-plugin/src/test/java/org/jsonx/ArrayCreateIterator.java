@@ -75,7 +75,7 @@ class ArrayCreateIterator extends ArrayIterator {
     }
     else if (annotation instanceof NumberElement) {
       final NumberElement element = (NumberElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : NumberTrial.createValid(element.range(), element.form());
+      current = element.nullable() && Math.random() < 0.5 ? null : NumberTrial.createValid(element.range(), element.scale());
     }
     else if (annotation instanceof ObjectElement) {
       final ObjectElement element = (ObjectElement)annotation;

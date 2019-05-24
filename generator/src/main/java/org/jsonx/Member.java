@@ -27,7 +27,7 @@ import java.util.function.Function;
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
 import org.libj.util.CollectionUtil;
 import org.libj.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
@@ -166,7 +166,7 @@ abstract class Member extends Element {
 
   final String toField() {
     final StringBuilder builder = new StringBuilder();
-    final List<AnnotationSpec> elementAnnotations = toElementAnnotations();
+    final List<AnnotationType> elementAnnotations = toElementAnnotations();
     if (elementAnnotations != null && elementAnnotations.size() > 0)
       builder.append(CollectionUtil.toString(elementAnnotations, '\n')).append('\n');
 
@@ -185,7 +185,7 @@ abstract class Member extends Element {
 
     final String typeName = type.toCanonicalString();
     final String classCase = JsdUtil.fixReserved(JsdUtil.toClassName(name));
-    builder.append(new AnnotationSpec(propertyAnnotation(), attributes));
+    builder.append(new AnnotationType(propertyAnnotation(), attributes));
     if (isRegex) {
       builder.append("\npublic final ").append(typeName).append(' ').append(instanceName).append(" = new ").append(LinkedHashMap.class.getName()).append("<>();");
     }
@@ -204,10 +204,10 @@ abstract class Member extends Element {
 
   /**
    * Intended to be overridden by each concrete subclass, this method returns a
-   * list of {@link AnnotationSpec} objects representing the annotations of
+   * list of {@link AnnotationType} objects representing the annotations of
    * {@code this} element.
    */
-  List<AnnotationSpec> toElementAnnotations() {
+  List<AnnotationType> toElementAnnotations() {
     return null;
   }
 

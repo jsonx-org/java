@@ -598,18 +598,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.jsonx.StringProperty(name="jsd:form", pattern="(integer|real)", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    private java.lang.String jsd_3aForm;
-    
-    public void setJsd_3aForm(final java.lang.String jsd_3aForm) {
-      this.jsd_3aForm = jsd_3aForm;
-    }
-    
-    public java.lang.String getJsd_3aForm() {
-      return jsd_3aForm;
-    }
-    
-    @org.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?\\d+(\\.\\d+)?)?,(-?\\d+(\\.\\d+)?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aRange;
     
     public void setJsd_3aRange(final java.lang.String jsd_3aRange) {
@@ -618,6 +607,17 @@ public class schema {
     
     public java.lang.String getJsd_3aRange() {
       return jsd_3aRange;
+    }
+    
+    @org.jsonx.NumberProperty(name="jsd:scale", scale=0, use=org.jsonx.Use.OPTIONAL, nullable=false)
+    private java.math.BigInteger jsd_3aScale;
+    
+    public void setJsd_3aScale(final java.math.BigInteger jsd_3aScale) {
+      this.jsd_3aScale = jsd_3aScale;
+    }
+    
+    public java.math.BigInteger getJsd_3aScale() {
+      return jsd_3aScale;
     }
     
     @java.lang.Override
@@ -632,10 +632,10 @@ public class schema {
       if (that.jsd_3aClass != null ? !that.jsd_3aClass.equals(jsd_3aClass) : jsd_3aClass != null)
         return false;
     
-      if (that.jsd_3aForm != null ? !that.jsd_3aForm.equals(jsd_3aForm) : jsd_3aForm != null)
+      if (that.jsd_3aRange != null ? !that.jsd_3aRange.equals(jsd_3aRange) : jsd_3aRange != null)
         return false;
     
-      if (that.jsd_3aRange != null ? !that.jsd_3aRange.equals(jsd_3aRange) : jsd_3aRange != null)
+      if (that.jsd_3aScale != null ? !that.jsd_3aScale.equals(jsd_3aScale) : jsd_3aScale != null)
         return false;
     
       return true;
@@ -645,8 +645,8 @@ public class schema {
     public int hashCode() {
       int hashCode = 1255147748 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aClass == null ? 0 : jsd_3aClass.hashCode());
-      hashCode = 31 * hashCode + (jsd_3aForm == null ? 0 : jsd_3aForm.hashCode());
       hashCode = 31 * hashCode + (jsd_3aRange == null ? 0 : jsd_3aRange.hashCode());
+      hashCode = 31 * hashCode + (jsd_3aScale == null ? 0 : jsd_3aScale.hashCode());
       return hashCode;
     }
     
@@ -1228,7 +1228,7 @@ public class schema {
   }
 
   public static class Schema implements org.jsonx.JxObject {
-    @org.jsonx.StringProperty(name="jsd:ns", pattern="http://www.jsonx.org/schema-0.2.2.jsd", nullable=false)
+    @org.jsonx.StringProperty(name="jsd:ns", pattern="http://www.jsonx.org/schema-0.2.3.jsd", nullable=false)
     private java.lang.String jsd_3aNs;
     
     public void setJsd_3aNs(final java.lang.String jsd_3aNs) {
@@ -1239,7 +1239,7 @@ public class schema {
       return jsd_3aNs;
     }
     
-    @org.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://www.jsonx.org/schema-0.2.2.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://www.jsonx.org/schema-0.2.3.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aSchemaLocation;
     
     public void setJsd_3aSchemaLocation(final java.lang.String jsd_3aSchemaLocation) {

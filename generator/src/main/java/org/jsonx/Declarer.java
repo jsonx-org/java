@@ -22,5 +22,5 @@ package org.jsonx;
  * @see SchemaElement
  * @see Referrer
  */
-public interface Declarer {
+interface Declarer {
 }

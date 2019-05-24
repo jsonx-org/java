@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$MaxOccurs;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$MaxOccurs;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -99,10 +99,6 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     this.type = type;
   }
 
-  Member getReference(final $String type) {
-    return type == null ? null : getReference(Id.named(type));
-  }
-
   private Member getReference(final Id id) {
     if (registry.isPending(id))
       return new Deferred<>(null, () -> registry.getModel(id));
@@ -114,11 +110,15 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     return model;
   }
 
+  final Member getReference(final $String type) {
+    return type == null ? null : getReference(Id.named(type));
+  }
+
   final Registry.Type classType() {
     return type;
   }
 
-  abstract List<AnnotationSpec> getClassAnnotation();
+  abstract List<AnnotationType> getClassAnnotation();
   abstract String toSource(Settings settings);
   abstract void resolveReferences();
 }

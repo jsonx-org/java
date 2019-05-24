@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 public @interface NumberElement {
   int id();
   boolean nullable() default true;
-  Form form() default Form.REAL;
+  int scale() default Integer.MAX_VALUE;
   String range() default "";
   int minOccurs() default 1;
   int maxOccurs() default Integer.MAX_VALUE;

@@ -1,11 +1,14 @@
 # JSON Schema
 
-[![XSD](https://img.shields.io/badge/schema.xsd-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.xsd)
-[![XSD](https://img.shields.io/badge/schema.jsdx-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.jsdx)
-[![XSD](https://img.shields.io/badge/schema.jsd-v0.2.2-blue.svg)](http://jsonx.org/schema-0.2.2.jsd)<br>
+[![XSD](https://img.shields.io/badge/schema.xsd-v0.2.3-blue.svg)](http://jsonx.org/schema-0.2.3.xsd)
+[![JSDx](https://img.shields.io/badge/schema.jsdx-v0.2.3-blue.svg)](http://jsonx.org/schema-0.2.3.jsdx)
+[![JSD](https://img.shields.io/badge/schema.jsd-v0.2.3-blue.svg)](http://jsonx.org/schema-0.2.3.jsd)<br>
+[![XSD](https://img.shields.io/badge/schema.xsd-v0.2.2-orange.svg)](http://jsonx.org/schema-0.2.2.xsd)
+[![JSDx](https://img.shields.io/badge/schema.jsdx-v0.2.2-orange.svg)](http://jsonx.org/schema-0.2.2.jsdx)
+[![JSD](https://img.shields.io/badge/schema.jsd-v0.2.2-orange.svg)](http://jsonx.org/schema-0.2.2.jsd)<br>
 [![XSD](https://img.shields.io/badge/schema.xsd-v0.1.0-yellow.svg)](http://jsonx.org/schema-0.1.0.xsd)
-[![XSD](https://img.shields.io/badge/schema.jsdx-v0.1.0-orange.svg)]()
-[![XSD](https://img.shields.io/badge/schema.jsd-v0.1.0-orange.svg)]()
+[![JSDx](https://img.shields.io/badge/schema.jsdx-v0.1.0-inactive.svg)]()
+[![JSD](https://img.shields.io/badge/schema.jsd-v0.1.0-inactive.svg)]()
 
 ## Abstract
 
@@ -34,8 +37,8 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.5 [Array Elements][#elements]<br>
 <samp>&nbsp;&nbsp;</samp>5 [Related Resources for JSON Schema][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Schemas for JSON Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSON Schema 0.2.2][#schema-022]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [JSON Schema 0.1.0][#schema-010]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [Current](#511-current)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [Obsolete](#512-obsolete)<br>
 <samp>&nbsp;&nbsp;</samp>6 [Sample Schemas][#samples]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`structure.jsdx`][#structurejsdx]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`structure.jsd`][#structurejsd]<br>
@@ -490,17 +493,33 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 ### 5.1 Schemas for JSON Schema
 
-#### 5.1.1 JSON Schema 0.2.2
+#### 5.1.1 Current
 
-* A JSON Schema schema document XSD [schema-0.2.2.xsd](http://www.jsonx.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://www.openjax.org/xml/datatypes-0.9.2.xsd).
+* <ins>JSON Schema 0.2.3</ins> **[Current]**
 
-* A JSON Schema schema document JSDx [schema-0.2.2.jsdx](http://www.jsonx.org/schema-0.2.2.jsdx) for JSON Schema documents.
+  * A JSON Schema schema document XSD [schema-0.2.3.xsd](http://www.jsonx.org/schema-0.2.3.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://www.openjax.org/xml/datatypes-0.9.2.xsd).
 
-* A JSON Schema schema document JSD [schema-0.2.2.jsd](http://www.jsonx.org/schema-0.2.2.jsd) for JSON Schema documents.
+  * A JSON Schema schema document JSDx [schema-0.2.3.jsdx](http://www.jsonx.org/schema-0.2.3.jsdx) for JSON Schema documents.
 
-#### 5.1.2 JSON Schema 0.1.0
+  * A JSON Schema schema document JSD [schema-0.2.3.jsd](http://www.jsonx.org/schema-0.2.3.jsd) for JSON Schema documents.
 
-* A JSON Schema schema document XSD [schema-0.1.0.xsd](http://www.jsonx.org/schema-0.1.0.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://www.openjax.org/xml/datatypes-0.9.2.xsd).
+#### 5.1.2 Obsolete
+
+* <ins>JSON Schema 0.2.2</ins> **[Deprecated]**
+
+  * A JSON Schema schema document XSD [schema-0.2.2.xsd](http://www.jsonx.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd]( http://www.openjax.org/xml/datatypes-0.9.2.xsd).
+
+  * A JSON Schema schema document JSDx [schema-0.2.2.jsdx](http://www.jsonx.org/schema-0.2.2.jsdx) for JSON Schema documents.
+
+  * A JSON Schema schema document JSD [schema-0.2.2.jsd](http://www.jsonx.org/schema-0.2.2.jsd) for JSON Schema documents.
+
+* <ins>JSON Schema 0.1.0</ins> **[Deprecated]**
+
+  * A JSON Schema schema document XSD [schema-0.1.0.xsd](http://www.jsonx.org/schema-0.1.0.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd](http://www.openjax.org/xml/datatypes-0.9.2.xsd).
+
+  * A JSON Schema schema document JSDx ~~schema-0.1.0.jsdx~~ for JSON Schema documents.
+
+  * A JSON Schema schema document JSD ~~schema-0.1.0.jsd~~ for JSON Schema documents.
 
 ### 6 Sample Schemas
 
@@ -1596,8 +1615,9 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#elements]: #45-array-elements
 [#resources]: #5-related-resources-for-json-schema
 [#json-schemas]: #51-schemas-for-json-schema
-[#schema-022]: #511-json-schema-022
-[#schema-010]: #512-json-schema-010
+[#schema-023]: #511-json-schema-023-current
+[#schema-022]: #512-json-schema-022-deprecated
+[#schema-010]: #513-json-schema-010-deprecated
 [#samples]: #6-sample-schemas
 [#structurejsdx]: #61-structurejsdx
 [#structurejsd]: #62-structurejsd

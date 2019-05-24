@@ -18,14 +18,13 @@ package org.jsonx.library;
 
 import java.math.BigInteger;
 
-import org.jsonx.Form;
 import org.jsonx.JxEncoder;
 import org.jsonx.JxObject;
 import org.jsonx.NumberProperty;
 import org.jsonx.StringProperty;
 
 public class Address implements JxObject {
-  @NumberProperty(form=Form.INTEGER, range="[0,]")
+  @NumberProperty(scale=0, range="[0,]")
   private BigInteger number;
 
   public BigInteger getNumber() {

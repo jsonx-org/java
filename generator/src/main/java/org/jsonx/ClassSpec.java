@@ -46,7 +46,7 @@ class ClassSpec {
       return null;
 
     final StringBuilder builder = new StringBuilder();
-    final Iterator<AnnotationSpec> iterator = referrer.getClassAnnotation().iterator();
+    final Iterator<AnnotationType> iterator = referrer.getClassAnnotation().iterator();
     for (int i = 0; iterator.hasNext(); ++i) {
       if (i > 0)
         builder.append('\n');

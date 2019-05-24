@@ -27,6 +27,6 @@ public @interface NumberProperty {
   String name() default "";
   boolean nullable() default true;
   Use use() default Use.REQUIRED;
-  Form form() default Form.REAL;
+  int scale() default Integer.MAX_VALUE;
   String range() default "";
 }

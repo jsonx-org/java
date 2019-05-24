@@ -114,7 +114,7 @@ public class TestArray implements JxObject {
   }
 
   @NumberElement(id=4, minOccurs=1, maxOccurs=2, range="[0,10]")
-  @NumberElement(id=3, minOccurs=0, maxOccurs=2, form=Form.INTEGER, range="[0,4]", nullable=false)
+  @NumberElement(id=3, minOccurs=0, maxOccurs=2, scale=0, range="[0,4]", nullable=false)
   @StringElement(id=2, minOccurs=0, maxOccurs=2, pattern="[a-z0-9]+")
   @StringElement(id=1, minOccurs=2, maxOccurs=3, pattern="[a-z]+")
   @BooleanElement(id=0, minOccurs=0, maxOccurs=3)
@@ -161,10 +161,10 @@ public class TestArray implements JxObject {
     return this;
   }
 
-  @NumberElement(id=9, form=Form.INTEGER, range="[0,5]", minOccurs=0, maxOccurs=1, nullable=false)
-  @NumberElement(id=8, form=Form.INTEGER, range="[5,10]", minOccurs=0, maxOccurs=1, nullable=false)
+  @NumberElement(id=9, scale=0, range="[0,5]", minOccurs=0, maxOccurs=1, nullable=false)
+  @NumberElement(id=8, scale=0, range="[5,10]", minOccurs=0, maxOccurs=1, nullable=false)
   @NumberElement(id=7, minOccurs=1, maxOccurs=2, range="[0,10]")
-  @NumberElement(id=6, minOccurs=0, maxOccurs=2, form=Form.INTEGER, range="[0,4]", nullable=false)
+  @NumberElement(id=6, minOccurs=0, maxOccurs=2, scale=0, range="[0,4]", nullable=false)
   @StringElement(id=5, minOccurs=0, maxOccurs=2, pattern="[A-Z0-9]+")
   @StringElement(id=4, minOccurs=2, maxOccurs=3, pattern="[A-Z]+")
   @BooleanElement(id=3, minOccurs=0, maxOccurs=3)

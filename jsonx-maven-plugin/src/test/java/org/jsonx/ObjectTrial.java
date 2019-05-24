@@ -71,7 +71,7 @@ class ObjectTrial extends PropertyTrial<Object> {
         final NumberProperty numberProperty = field.getAnnotation(NumberProperty.class);
         if (numberProperty != null) {
           if (numberProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, name, NumberTrial.createValid(field, numberProperty.range(), numberProperty.form()));
+            setField(field, object, name, NumberTrial.createValid(field, numberProperty.range(), numberProperty.scale()));
 
           continue;
         }

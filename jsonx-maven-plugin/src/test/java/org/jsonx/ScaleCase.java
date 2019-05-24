@@ -18,20 +18,20 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
-class FormCase extends FailureCase<NumberTrial> {
-  static final FormCase CASE = new FormCase();
+class ScaleCase extends FailureCase<NumberTrial> {
+  static final ScaleCase CASE = new ScaleCase();
 
   @Override
   void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().contains("...does not match form..."));
+    assertTrue(trial.name, e.getMessage().startsWith("Unsatisfied scale=\""));
   }
 
   @Override
   boolean onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().contains("...does not match form..."));
+    assertTrue(trial.name, e.getMessage().startsWith("Unsatisfied scale=\""));
     return true;
   }
 
-  private FormCase() {
+  private ScaleCase() {
   }
 }

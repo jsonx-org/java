@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd ../../main/resources/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
   <array name="rootArrayBool">
     <boolean/>
   </array>
@@ -26,7 +26,7 @@
       <array maxOccurs="14" maxIterate="5">
         <boolean nullable="false"/>
         <any types="rootNumberReal rootMultiArray" minOccurs="2" maxOccurs="3" nullable="false"/>
-        <number form="integer" range="(1.2,2.4)" maxOccurs="3"/>
+        <number scale="0" range="(1.2,2.4)" maxOccurs="3"/>
       </array>
       <array minOccurs="2" maxOccurs="13" minIterate="2" maxIterate="3">
         <reference type="rootArrayBool" minOccurs="2" nullable="false"/>
@@ -38,7 +38,7 @@
     <reference type="simple-rootBooleanArray" maxOccurs="3"/>
   </array>
   <boolean name="rootBoolean"/>
-  <number name="rootNumberInteger" form="integer" range="(2,9)"/>
+  <number name="rootNumberInteger" scale="0" range="(2,9)"/>
   <number name="rootNumberReal" range="[2.3392,9.87832)"/>
   <string name="rootString" pattern="[a-z]+"/>
   <object name="cls-abstractObject" abstract="true">
@@ -84,7 +84,8 @@
     <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
     <property name="numberMin" xsi:type="number" range="[0,]"/>
     <property name="numberMax" xsi:type="number" range="[,0]"/>
-    <property name="numberInteger" xsi:type="number" form="integer"/>
+    <property name="numberInteger" xsi:type="number" scale="0"/>
+    <property name="numberScale" xsi:type="number" scale="1"/>
   </object>
   <object name="simple-numbersArray">
     <property name="numberArrayRefDefault" xsi:type="array">
@@ -204,30 +205,30 @@
       <number range="[,0]" minOccurs="2"/>
     </property>
     <property name="numberArrayForm" xsi:type="array">
-      <number form="integer"/>
-      <number/> <!-- form="real" -->
+      <number scale="0"/>
+      <number/> <!-- -->
     </property>
     <property name="numberArrayForm2" xsi:type="array">
-      <number form="integer"/>
+      <number scale="0"/>
       <any/>
-      <number form="integer"/>
+      <number scale="0"/>
     </property>
     <property name="arrayNumberString" xsi:type="array">
-      <number form="integer"/>
+      <number scale="0" range="[-999,999]"/>
       <string/>
       <any/>
     </property>
     <property name="arrayStringNumber" xsi:type="array">
       <string/>
-      <number form="integer"/>
+      <number scale="0" range="[-99999,99999]"/>
     </property>
     <property name="arrayBooleanNumebr" xsi:type="array">
       <any/>
       <boolean/>
-      <number form="integer"/>
+      <number scale="0" range="[-9999999,9999999]"/>
     </property>
     <property name="arrayNumberBoolean" xsi:type="array">
-      <number form="integer"/>
+      <number scale="0" range="[-999999999,999999999]"/>
       <boolean/>
     </property>
     <property name="arrayBooleanString" xsi:type="array">
@@ -255,11 +256,11 @@
             <any types="rootString" minOccurs="3" maxOccurs="4"/>
             <boolean/>
           </array>
-          <number/>
+          <number scale="0" range="[-99,99]"/>
           <any/>
         </array>
         <any types="rootNumberReal simple-numbersArray" minOccurs="4" maxOccurs="5"/>
-        <number nullable="false"/>
+        <number scale="0" range="[-99999999999,99999999999]" nullable="false"/>
       </array>
       <string/>
       <boolean nullable="false"/>
@@ -327,11 +328,11 @@
       <property name="objectExtendsBooleans3" xsi:type="object" extends="simple-booleans"/>
       <property name="objectOptionalExtendsAbstract" xsi:type="object" extends="cls-abstractObject" use="optional">
         <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
-        <property name="objectNumber" xsi:type="number"/>
+        <property name="objectNumber" xsi:type="number" scale="5"/>
       </property>
       <property name="objectOptionalNotNullableExtendsAbstract" xsi:type="object" extends="cls-abstractObject" use="optional" nullable="false">
         <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
-        <property name="objectNumber" xsi:type="number"/>
+        <property name="objectNumber" xsi:type="number" scale="9"/>
       </property>
     </property>
     <property name="objectExtendsStrings" xsi:type="object" extends="simple-strings">

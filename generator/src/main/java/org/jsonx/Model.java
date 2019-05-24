@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc.$MaxOccurs;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$MaxOccurs;
 import org.libj.util.Classes;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;

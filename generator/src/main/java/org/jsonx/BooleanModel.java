@@ -19,7 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.jsonx.www.schema_0_2_2.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
 
 final class BooleanModel extends Model {
   private static final Id ID = Id.hashed("b");
@@ -126,7 +126,6 @@ final class BooleanModel extends Model {
     super(registry, declarer, ID, property.nullable(), property.use());
     if (!isAssignable(field, Boolean.class, false, property.nullable(), property.use()) && (field.getType() != boolean.class || property.use() == Use.OPTIONAL))
       isAssignable(field, Boolean.class, false, property.nullable(), property.use());
-//      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + BooleanProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Boolean type, non-nullable boolean type, or optional and nullable fields of Optional<Boolean> type");
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final BooleanElement element) {

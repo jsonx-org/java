@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd ../../main/resources/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
   <array name="bar-rootArray1">
     <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
   </array>
@@ -39,7 +39,7 @@
     <reference type="rootBoolean" nullable="false"/>
   </array>
   <boolean name="rootBoolean"/>
-  <number name="rootNumber" form="integer" range="[2,9]"/>
+  <number name="rootNumber" scale="0" range="[2,9]"/>
   <string name="rootString" pattern="[a-z]+"/>
   <object name="objectWithArray">
     <property name="arrayArray" xsi:type="array" minIterate="4" maxIterate="7">
