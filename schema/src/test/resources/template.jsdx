@@ -54,7 +54,7 @@
     <property names="any3*" xsi:type="any" types="rootNumber rootBoolean" nullable="false"/>
     <property names="any4+" xsi:type="any" types="rootString arrayDepthOne" nullable="false"/>
     <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
-    <property name="numberDirectOptional" xsi:type="number" range="[5,8]" use="optional"/>
+    <property name="numberDirectOptional" xsi:type="number" range="[5e-1,8]" use="optional"/>
     <property names="any5" xsi:type="any" types="arrayDepthOne arrayDepthTwo" use="optional"/>
     <property name="numberOptional" xsi:type="reference" type="rootNumber" use="optional"/>
     <property name="stringDirectOptional" xsi:type="string" use="optional"/>

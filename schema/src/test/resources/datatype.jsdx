@@ -73,10 +73,10 @@
   <boolean name="bool"/>
   <number name="num"/>
   <number name="numInt" scale="0"/>
-  <number name="numRange" range="[1,]"/>
+  <number name="numRange" range="[1e10,]"/>
   <number name="numIntRange" scale="0" range="[1,]"/>
-  <number name="numScale" scale="2" range="[1.11,]"/>
-  <number name="numScaleRange" scale="3" range="[2.222,]"/>
+  <number name="numScale" scale="2" range="[1.11e-2,100]"/>
+  <number name="numScaleRange" scale="3" range="[2.222e-12,]"/>
   <string name="str"/>
   <string name="strDec"/>
   <string name="strDecEnc"/>

@@ -26,7 +26,7 @@
       <array maxOccurs="14" maxIterate="5">
         <boolean nullable="false"/>
         <any types="rootNumberReal rootMultiArray" minOccurs="2" maxOccurs="3" nullable="false"/>
-        <number scale="0" range="(1.2,2.4)" maxOccurs="3"/>
+        <number scale="0" range="(1.2E1,2.4E3)" maxOccurs="3"/>
       </array>
       <array minOccurs="2" maxOccurs="13" minIterate="2" maxIterate="3">
         <reference type="rootArrayBool" minOccurs="2" nullable="false"/>
@@ -39,7 +39,7 @@
   </array>
   <boolean name="rootBoolean"/>
   <number name="rootNumberInteger" scale="0" range="(2,9)"/>
-  <number name="rootNumberReal" range="[2.3392,9.87832)"/>
+  <number name="rootNumberReal" range="[2.3392E2,9.87832e3)"/>
   <string name="rootString" pattern="[a-z]+"/>
   <object name="cls-abstractObject" abstract="true">
     <property name="booleanPropertyOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
@@ -82,8 +82,8 @@
     <property name="numberDefault" xsi:type="number"/>
     <property name="numberOptional" xsi:type="number" use="optional"/>
     <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
-    <property name="numberMin" xsi:type="number" range="[0,]"/>
-    <property name="numberMax" xsi:type="number" range="[,0]"/>
+    <property name="numberMin" xsi:type="number" range="[0e2,]"/>
+    <property name="numberMax" xsi:type="number" range="[,0E1]"/>
     <property name="numberInteger" xsi:type="number" scale="0"/>
     <property name="numberScale" xsi:type="number" scale="1"/>
   </object>
