@@ -598,7 +598,7 @@ public class schema {
       return jsd_3aClass;
     }
     
-    @org.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aRange;
     
     public void setJsd_3aRange(final java.lang.String jsd_3aRange) {

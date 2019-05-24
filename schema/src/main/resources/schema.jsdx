@@ -54,7 +54,7 @@
   </object>
   <object name="number" extends="member">
     <property name="jsd:class" xsi:type="string" pattern="number" nullable="false"/>
-    <property name="jsd:range" xsi:type="string" pattern="[\(\[](-?(0|[1-9]\d*)(\.\d+)?)?,(-?(0|[1-9]\d*)(\.\d+)?)?[\)\]]" nullable="false" use="optional"/>
+    <property name="jsd:range" xsi:type="string" pattern="[\(\[](-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?([1-9]\d*))?)?,(-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?([1-9]\d*))?)?[\)\]]" nullable="false" use="optional"/>
     <property name="jsd:scale" xsi:type="number" scale="0" nullable="false" use="optional"/>
   </object>
   <object name="object" abstract="true" extends="member">
