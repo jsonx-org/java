@@ -65,7 +65,7 @@ public final class Converter {
    */
   public static String jsdToJsdx(final URL url) throws IOException, DecodeException, ValidationException {
     final XmlElement xml = SchemaElement.parseJsd(url, "").toXml();
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd");
+    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd");
     return xml.toString(2);
   }
 

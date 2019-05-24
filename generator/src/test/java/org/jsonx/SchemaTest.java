@@ -84,7 +84,7 @@ public class SchemaTest {
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
     final XmlElement xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.2.xsd " + schemaXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.3.xsd " + schemaXsd);
     return xml;
   }
 
