@@ -24,9 +24,9 @@ import org.libj.util.Numbers;
 public class Range implements Serializable {
   private static final long serialVersionUID = 1698022878075488056L;
 
-  private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int index, final boolean commaOk) throws ParseException {
+  private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int start, final boolean commaOk) throws ParseException {
     try {
-      for (int i = index; i < string.length() - 1; ++i) {
+      for (int i = start, end = string.length() - 1; i < end; ++i) {
         final char ch = string.charAt(i);
         if (ch == ',') {
           if (commaOk)
@@ -38,10 +38,11 @@ public class Range implements Serializable {
         builder.append(ch);
       }
 
+      // FIXME: Parsing of the string should be done manually, in accordance to RFC4627.
       return builder.length() == 0 ? null : new BigDecimal(builder.toString());
     }
     catch (final NumberFormatException e) {
-      final ParseException pe = new ParseException(string, index);
+      final ParseException pe = new ParseException(string, start);
       pe.initCause(e);
       throw pe;
     }

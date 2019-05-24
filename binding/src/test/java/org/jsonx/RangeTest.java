@@ -98,4 +98,72 @@ public class RangeTest {
     assertEquals(new Range(null, true, BigDecimal.TEN, true), new Range("[,10]"));
     assertEquals(new Range(BigDecimal.TEN, true, null, true), new Range("[10,]"));
   }
+
+  private static void assertPass(final String ... values) {
+    for (int i = 0; i < values.length; ++i)
+      new Range(values[i]);
+  }
+
+  private static void assertFail(final Class<? extends Exception> cls, final String ... values) {
+    for (int i = 0; i < values.length; ++i) {
+      try {
+        new Range(values[i]);
+        fail("Expected " + cls.getSimpleName() + ": " + values[i]);
+      }
+      catch (final Exception e) {
+        if (!cls.isInstance(e))
+          throw e;
+      }
+    }
+  }
+
+  private static void assertFailArgument(final String ... values) {
+    assertFail(IllegalArgumentException.class, values);
+  }
+
+  private static void assertFailParse(final String ... values) {
+    assertFail(ParseException.class, values);
+  }
+
+  @Test
+  public void testPass() {
+    assertPass("[-0,1]", "(-2,-1)", "[0,1)", "(0,1]");
+    assertPass("[0.1,1.1]", "(0.1,1.1)", "[-2.1,-1.1)", "(0.1,1.1]");
+    assertPass("[0,1.1]", "(0,1.1)", "[0,1.1)", "(-2,-1.1]");
+    assertPass("[0.1,1]", "(0.1,1)", "[0.1,1)", "(0.1,1]");
+
+    assertPass("[,-1]", "(,-1)", "[,1)", "(,1]");
+    assertPass("[,1.1]", "(,1.1)", "[,1.1)", "(,1.1]");
+
+    assertPass("[-0,]", "(-0,)", "[0,)", "(0,]");
+    assertPass("[-0.1,]", "(0.1,)", "[0.1,)", "(-0.1,]");
+
+    assertPass("[-0E1,1e2]", "(-1E3,-1e2)", "[0e1,1E2)", "(0e1,1E2]");
+    assertPass("[0.1E-3,1.1]", "(0.1E-3,1.1)", "[-2.1e-3,-0.00001)", "(0.1e-3,1.1]");
+    assertPass("[0,1.1]", "(0,1.1)", "[0,1.1)", "(-2,-1.1]");
+    assertPass("[0.1,1]", "(0.1,1)", "[0.1,1)", "(0.1,1]");
+
+    assertPass("[,-1]", "(,-1)", "[,1)", "(,1]");
+    assertPass("[,1.1]", "(,1.1)", "[,1.1)", "(,1.1]");
+
+    assertPass("[-0,]", "(-0,)", "[0,)", "(0,]");
+    assertPass("[-0.1,]", "(0.1,)", "[0.1,)", "(-0.1,]");
+  }
+
+  @Test
+  public void testFailArgument() {
+    assertFailArgument("[", "]", "[,", ",]", "[1,", ",1]");
+    assertFailArgument("(", "]", "(,", ",]", "(1,", ",1]");
+    assertFailArgument("[", ")", "[,", ",)", "[1,", ",1)");
+    assertFailArgument("[", ")", "[,", ",)", "[1,", ",1)");
+  }
+
+  /** FIXME: {@link Range#parseNumber(StringBuilder,String,int,boolean)} */
+  @Test
+  public void testFailParse() {
+    assertFailParse(/*"[00,0]", "[0,00]", "[-.1,0]", "[-1.,0]", */"[-0.1,-]", "[-,1]");
+    assertFailParse(/*"(00,0]", "(0,00]", "(-.1,0]", "(-1.,0]", */"(-0.1,-]", "(-,1]");
+    assertFailParse(/*"[00,0)", "[0,00)", "[-.1,0)", "[1.,0)", */"[-0.1,-)", "[-,1)");
+    assertFailParse(/*"[0E0,0)", "[0,00)", "[-.1,0)", "[1.,0)", */"[-0.1,-)", "[-,1)");
+  }
 }
