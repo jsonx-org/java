@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.regex.PatternSyntaxException;
 
-import org.openjax.json.JsonStrings;
+import org.openjax.json.JsonTypes;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 
@@ -58,7 +58,7 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   static String encodeObject(final String string) throws EncodeException {
-    return JsonStrings.escape(string).insert(0, '"').append('"').toString();
+    return JsonTypes.escape(string).insert(0, '"').append('"').toString();
   }
 
   static Object encodeObject(final Annotation annotation, final String pattern, final String object, final boolean validate) throws EncodeException {

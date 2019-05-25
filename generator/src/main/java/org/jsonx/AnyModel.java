@@ -24,7 +24,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
-import org.openjax.json.JsonStrings;
+import org.openjax.json.JsonTypes;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
@@ -39,7 +39,7 @@ final class AnyModel extends Referrer<AnyModel> {
     };
 
     if (name != null)
-      xsb.setNames$(new xL0gluGCXYYJc.$Any.Names$(JsonStrings.unescape(name)));
+      xsb.setNames$(new xL0gluGCXYYJc.$Any.Names$(JsonTypes.unescape(name)));
 
     if (jsonx.getJsd_3aTypes() != null)
       xsb.setTypes$(new xL0gluGCXYYJc.$Any.Types$(jsonx.getJsd_3aTypes().split(" ")));

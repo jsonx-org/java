@@ -18,12 +18,12 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.Annotations;
+import org.openjax.json.JsonParseException;
+import org.openjax.json.JsonTypes;
 
 class NumberCodec extends PrimitiveCodec<Number> {
   static Number decodeArray(final int scale, final String token) {
@@ -36,9 +36,9 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   static Number decodeObject(final int scale, final String json) {
     try {
-      return scale == 0 ? new BigInteger(json) : new BigDecimal(json);
+      return scale == 0 ? JsonTypes.parseInteger(json) : JsonTypes.parseDecimal(json);
     }
-    catch (final NumberFormatException e) {
+    catch (final JsonParseException e) {
       return null;
     }
   }

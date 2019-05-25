@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.libj.util.Numbers;
+import org.openjax.json.JsonTypes;
 
 public class Range implements Serializable {
   private static final long serialVersionUID = 1698022878075488056L;
@@ -38,8 +39,7 @@ public class Range implements Serializable {
         builder.append(ch);
       }
 
-      // FIXME: Parsing of the string should be done manually, in accordance to RFC4627.
-      return builder.length() == 0 ? null : new BigDecimal(builder.toString());
+      return builder.length() == 0 ? null : JsonTypes.parseDecimal(builder.toString());
     }
     catch (final NumberFormatException e) {
       final ParseException pe = new ParseException(string, start);
