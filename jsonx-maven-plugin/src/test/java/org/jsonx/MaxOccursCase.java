@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 class MaxOccursCase extends FailureCase<ArrayTrial<Object>> {
   static final MaxOccursCase CASE = new MaxOccursCase();
 

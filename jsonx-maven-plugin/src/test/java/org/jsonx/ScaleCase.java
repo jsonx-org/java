@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 class ScaleCase extends FailureCase<NumberTrial> {
   static final ScaleCase CASE = new ScaleCase();
 

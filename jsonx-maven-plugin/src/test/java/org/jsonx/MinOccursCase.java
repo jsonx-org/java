@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 class MinOccursCase extends FailureCase<ArrayTrial<Object>> {
   static final MinOccursCase CASE = new MinOccursCase();
 

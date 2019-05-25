@@ -22,7 +22,7 @@ import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Optional;
 
-abstract class PropertyTrial<T> {
+abstract class PropertyTrial<T> extends Trial {
   static void setField(final Field field, final Object object, final String name, final Object value) {
     try {
       if (Map.class.isAssignableFrom(field.getType()))

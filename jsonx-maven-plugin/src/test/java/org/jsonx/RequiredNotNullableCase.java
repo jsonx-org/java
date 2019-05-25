@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Object>> {
   static final RequiredNotNullableCase CASE = new RequiredNotNullableCase();
 

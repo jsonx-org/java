@@ -34,7 +34,7 @@ class NumberTrial extends PropertyTrial<Number> {
       trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.scale(), makeInvalid(range)), property));
 
     if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(field.getType()))
-      trials.add(new NumberTrial(ScaleCase.CASE, field, object, setScale(makeValid(range), property.scale() + 1), property));
+      trials.add(new NumberTrial(ScaleCase.CASE, field, object, toProperForm(field, property.scale() + 1, makeInvalid(range)), property));
 
     if (property.use() == Use.REQUIRED) {
       trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));
@@ -53,7 +53,7 @@ class NumberTrial extends PropertyTrial<Number> {
   }
 
   static Number createValid(final String range, final int scale) {
-    return toProperForm(scale, range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)));
+    return setScale(range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)), scale);
   }
 
   private static BigDecimal makeValid(final Range range) {
@@ -73,15 +73,8 @@ class NumberTrial extends PropertyTrial<Number> {
     return range.getMin() != null ? range.getMin().subtract(BigDecimal.ONE) : range.getMax().add(BigDecimal.ONE);
   }
 
-  private static Number toProperForm(final int scale, final BigDecimal value) {
-    return scale == 0 ? value.toBigInteger() : value;
-  }
-
   private static Number setScale(final BigDecimal value, final int scale) {
-//    if (scale == Integer.MIN_VALUE)
-//      System.out.println();
-//    System.out.println(value + " " + scale);
-    return value == null ? null : scale == Integer.MAX_VALUE ? value : value.setScale(scale, RoundingMode.HALF_EVEN);
+    return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.toBigInteger() : value.setScale(scale, RoundingMode.HALF_EVEN);
   }
 
   private static Number toProperForm(final Field field, final int scale, final BigDecimal value) {

@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 JSONx
+/* Copyright (c) 2019 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,20 +16,5 @@
 
 package org.jsonx;
 
-class RangeCase extends FailureCase<NumberTrial> {
-  static final RangeCase CASE = new RangeCase();
-
-  @Override
-  void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " does not match: "));
-  }
-
-  @Override
-  boolean onDecode(final NumberTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " does not match: "));
-    return true;
-  }
-
-  private RangeCase() {
-  }
+abstract class Trial extends Asserting {
 }

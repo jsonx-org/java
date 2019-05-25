@@ -16,5 +16,5 @@
 
 package org.jsonx;
 
-abstract class Case<T extends PropertyTrial<?>> {
+abstract class Case<T extends PropertyTrial<?>> extends Asserting {
 }

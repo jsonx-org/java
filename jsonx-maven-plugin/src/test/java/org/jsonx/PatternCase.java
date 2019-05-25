@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 class PatternCase extends FailureCase<StringTrial> {
   static final PatternCase CASE = new PatternCase();
 

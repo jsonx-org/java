@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 import java.util.Map;
 import java.util.Optional;
 

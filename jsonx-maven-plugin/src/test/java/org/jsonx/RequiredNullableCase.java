@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 import org.jsonx.ArrayValidator.Relations;
 
 class RequiredNullableCase extends SuccessCase<PropertyTrial<? super Object>> {

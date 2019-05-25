@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 class NullableCase extends FailureCase<ArrayTrial<Object>> {
   static final NullableCase CASE = new NullableCase();
 

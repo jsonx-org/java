@@ -16,14 +16,12 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openjax.json.JsonStrings;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.CollectionUtil;
+import org.openjax.json.JsonStrings;
 
 import com.google.common.base.Strings;
 
@@ -87,8 +85,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       actual = String.valueOf(value);
     }
 
-    if (!expected.equals(actual))
-      assertEquals(expected, actual);
+    assertEquals(expected, actual);
   }
 
   @Override
@@ -100,9 +97,6 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = format((List<?>)trial.value(), relations, false);
     else
       expected = trial.value();
-
-    if (!expected.equals(value))
-      return false;
 
     assertEquals(expected, value);
     return true;

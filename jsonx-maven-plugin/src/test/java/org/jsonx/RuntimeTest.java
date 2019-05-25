@@ -16,13 +16,13 @@
 
 package org.jsonx;
 
-import org.junit.AfterClass;
-import org.junit.Test;
 import org.jsonx.datatype.ObjArr;
 import org.jsonx.datatype.ObjBool;
 import org.jsonx.datatype.ObjNum;
 import org.jsonx.datatype.ObjObj;
 import org.jsonx.datatype.ObjStr;
+import org.junit.AfterClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
