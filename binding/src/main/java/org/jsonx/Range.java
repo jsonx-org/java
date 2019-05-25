@@ -56,7 +56,7 @@ public class Range implements Serializable {
     if (compare > 0)
       throw new IllegalArgumentException("min=\"" + min + "\" > max=\"" + max + "\"");
 
-    if (compare == 0 && (!minInclusive || !maxInclusive))
+    if (compare == 0 && minInclusive != maxInclusive)
       throw new IllegalArgumentException(string + " defines an empty range");
   }
 

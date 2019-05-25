@@ -19,8 +19,10 @@ package org.jsonx;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import org.junit.Test;
+import org.openjax.json.JsonParseException;
 
 @SuppressWarnings("unused")
 public class RangeTest {
@@ -104,25 +106,29 @@ public class RangeTest {
       new Range(values[i]);
   }
 
-  private static void assertFail(final Class<? extends Exception> cls, final String ... values) {
+  @SafeVarargs
+  private static void assertFail(final String[] values, final Class<? extends Exception> ... classes) {
     for (int i = 0; i < values.length; ++i) {
       try {
         new Range(values[i]);
-        fail("Expected " + cls.getSimpleName() + ": " + values[i]);
+        fail("Expected " + Arrays.toString(classes) + ": " + values[i]);
       }
       catch (final Exception e) {
-        if (!cls.isInstance(e))
-          throw e;
+        for (final Class<? extends Exception> cls : classes)
+          if (cls.isInstance(e))
+            return;
+
+        throw e;
       }
     }
   }
 
   private static void assertFailArgument(final String ... values) {
-    assertFail(IllegalArgumentException.class, values);
+    assertFail(values, IllegalArgumentException.class);
   }
 
   private static void assertFailParse(final String ... values) {
-    assertFail(ParseException.class, values);
+    assertFail(values, ParseException.class, JsonParseException.class);
   }
 
   @Test
@@ -156,14 +162,14 @@ public class RangeTest {
     assertFailArgument("(", "]", "(,", ",]", "(1,", ",1]");
     assertFailArgument("[", ")", "[,", ",)", "[1,", ",1)");
     assertFailArgument("[", ")", "[,", ",)", "[1,", ",1)");
+    assertFailArgument("[0E0,0)", "(0E0,0]");
   }
 
-  /** FIXME: {@link Range#parseNumber(StringBuilder,String,int,boolean)} */
   @Test
   public void testFailParse() {
-    assertFailParse(/*"[00,0]", "[0,00]", "[-.1,0]", "[-1.,0]", */"[-0.1,-]", "[-,1]");
-    assertFailParse(/*"(00,0]", "(0,00]", "(-.1,0]", "(-1.,0]", */"(-0.1,-]", "(-,1]");
-    assertFailParse(/*"[00,0)", "[0,00)", "[-.1,0)", "[1.,0)", */"[-0.1,-)", "[-,1)");
-    assertFailParse(/*"[0E0,0)", "[0,00)", "[-.1,0)", "[1.,0)", */"[-0.1,-)", "[-,1)");
+    assertFailParse("[00,0]", "[0,00]", "[-.1,0]", "[-1.,0]", "[-0.1,-]", "[-,1]");
+    assertFailParse("(00,0]", "(0,00]", "(-.1,0]", "(-1.,0]", "(-0.1,-]", "(-,1]");
+    assertFailParse("[00,0)", "[0,00)", "[-.1,0)", "[1.,0)", "[-0.1,-)", "[-,1)");
+    assertFailParse("[0,00)", "[-.1,0)", "[1.,0)", "[-0.1,-)", "[-,1)");
   }
 }
