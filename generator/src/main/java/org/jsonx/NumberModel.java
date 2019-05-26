@@ -237,10 +237,10 @@ final class NumberModel extends Model {
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (scale != Integer.MAX_VALUE)
-      attributes.put(prefix + "scale", scale);
+      attributes.put("scale", scale);
 
     if (range != null)
-      attributes.put(prefix + "range", range.toString());
+      attributes.put("range", range.toString());
 
     return attributes;
   }

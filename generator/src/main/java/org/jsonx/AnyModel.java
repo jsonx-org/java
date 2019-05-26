@@ -345,7 +345,7 @@ final class AnyModel extends Referrer<AnyModel> {
         builder.append(Registry.getSubName(type.id.toString(), packageName)).append(' ');
 
       builder.setLength(builder.length() - 1);
-      attributes.put(prefix + "types", builder.toString());
+      attributes.put("types", builder.toString());
     }
 
     return attributes;

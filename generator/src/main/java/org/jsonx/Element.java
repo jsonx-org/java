@@ -39,9 +39,9 @@ abstract class Element {
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    final AttributeMap attributes = new AttributeMap();
+    final AttributeMap attributes = new AttributeMap(prefix);
     if (doc != null)
-      attributes.put(prefix + "doc", doc);
+      attributes.put("doc", doc);
 
     return attributes;
   }

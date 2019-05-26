@@ -188,7 +188,7 @@ final class StringModel extends Model {
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (pattern != null)
-      attributes.put(prefix + "pattern", pattern);
+      attributes.put("pattern", pattern);
 
     return attributes;
   }

@@ -103,7 +103,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
         else if (property.getValue() instanceof schema.ObjectProperty)
           xsb.addProperty(ObjectModel.jsdToXsb((schema.ObjectProperty)property.getValue(), property.getKey()));
         else
-          throw new UnsupportedOperationException("Unsupported JSONx type: " + property.getValue().getClass().getName());
+          throw new UnsupportedOperationException("Unsupported type: " + property.getValue().getClass().getName());
       }
     }
 
@@ -349,10 +349,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
     attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
-      attributes.put(prefix + "extends", JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
+      attributes.put("extends", JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
 
     if (isAbstract)
-      attributes.put(prefix + "abstract", isAbstract);
+      attributes.put("abstract", isAbstract);
 
     return attributes;
   }

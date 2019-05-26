@@ -424,10 +424,10 @@ final class ArrayModel extends Referrer<ArrayModel> {
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id.toString());
 
     if (minIterate != null)
-      attributes.put(prefix + "minIterate", String.valueOf(minIterate));
+      attributes.put("minIterate", String.valueOf(minIterate));
 
     if (maxIterate != null)
-      attributes.put(prefix + "maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
+      attributes.put("maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
 
     return attributes;
   }

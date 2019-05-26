@@ -133,17 +133,17 @@ abstract class Member extends Element {
 
     if (!(owner instanceof SchemaElement)) {
       if (nullable != null)
-        attributes.put(prefix + "nullable", nullable);
+        attributes.put("nullable", nullable);
 
       if (use != null)
-        attributes.put(prefix + "use", use.toString().toLowerCase());
+        attributes.put("use", use.toString().toLowerCase());
     }
 
     if (minOccurs != null)
-      attributes.put(prefix + "minOccurs", String.valueOf(minOccurs));
+      attributes.put("minOccurs", String.valueOf(minOccurs));
 
     if (maxOccurs != null)
-      attributes.put(prefix + "maxOccurs", String.valueOf(maxOccurs));
+      attributes.put("maxOccurs", String.valueOf(maxOccurs));
 
     return attributes;
   }

@@ -165,17 +165,17 @@ final class Reference extends Member {
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
-      element.getAttributes().remove(prefix + "minOccurs");
-      element.getAttributes().remove(prefix + "maxOccurs");
-      element.getAttributes().remove(prefix + "nullable");
-      element.getAttributes().remove(prefix + "use");
+      element.getAttributes().remove("minOccurs");
+      element.getAttributes().remove("maxOccurs");
+      element.getAttributes().remove("nullable");
+      element.getAttributes().remove("use");
       element.getAttributes().putAll(attributes);
       return element;
     }
 
     if (model != null) {
       final String subName = Registry.getSubName(model.id.toString(), packageName);
-      attributes.put(prefix + "type", subName);
+      attributes.put("type", subName);
     }
 
     if (!(owner instanceof ObjectModel))
