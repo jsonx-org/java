@@ -32,7 +32,7 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Boolean property(final schema.BooleanProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$Boolean property(final schema.BooleanProperty jsd, final String name) {
     final xL0gluGCXYYJc.$Boolean xsb = new xL0gluGCXYYJc.$Boolean() {
       private static final long serialVersionUID = 650722913732574568L;
 
@@ -45,25 +45,25 @@ final class BooleanModel extends Model {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Boolean.Name$(name));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Boolean.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Boolean.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Boolean.Use$(xL0gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Boolean.Use$(xL0gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsonx) {
+  private static xL0gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Boolean xsb = new xL0gluGCXYYJc.$ArrayMember.Boolean();
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+    if (jsd.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
 
-    if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+    if (jsd.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -78,6 +78,9 @@ final class BooleanModel extends Model {
       xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     return xsb;
   }
@@ -111,15 +114,15 @@ final class BooleanModel extends Model {
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Boolean binding) {
-    super(registry, declarer, Id.named(binding.getName$()));
+    super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Boolean binding) {
-    super(registry, declarer, ID, binding.getName$(), binding.getNullable$(), binding.getUse$());
+    super(registry, declarer, ID, binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Boolean binding) {
-    super(registry, declarer, ID, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(registry, declarer, ID, binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final BooleanProperty property, final Field field) {

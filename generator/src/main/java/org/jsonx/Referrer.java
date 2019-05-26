@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Documented;
 import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$MaxOccurs;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
@@ -79,18 +80,18 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
 
   private final Registry.Type type;
 
-  Referrer(final Registry registry, final Declarer declarer, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {
-    super(registry, declarer, Id.named(type), name, nullable, use);
+  Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {
+    super(registry, declarer, Id.named(type), doc, name, nullable, use);
     this.type = type;
   }
 
-  Referrer(final Registry registry, final Declarer declarer, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Registry.Type type) {
-    super(registry, declarer, Id.named(type), nullable, minOccurs, maxOccurs);
+  Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Registry.Type type) {
+    super(registry, declarer, Id.named(type), doc, nullable, minOccurs, maxOccurs);
     this.type = type;
   }
 
-  Referrer(final Registry registry, final Declarer declarer, final Registry.Type type) {
-    super(registry, declarer, Id.named(type));
+  Referrer(final Registry registry, final Declarer declarer, final Registry.Type type, final $Documented.Doc$ doc) {
+    super(registry, declarer, Id.named(type), doc);
     this.type = type;
   }
 

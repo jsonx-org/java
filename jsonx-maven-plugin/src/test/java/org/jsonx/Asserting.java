@@ -17,8 +17,12 @@
 package org.jsonx;
 
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class Asserting {
+  static final Logger logger = LoggerFactory.getLogger(Asserting.class);
+
   static void assertEquals(final String message, final Object expected, final Object actual) {
     final boolean equals = expected == null ? actual == null : expected.equals(actual);
     if (!equals)

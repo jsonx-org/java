@@ -15,6 +15,7 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
+  doc="Schema focusing on references"
   xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
@@ -24,18 +25,18 @@
   <boolean name="bool"/>
   <number name="num"/>
   <number name="numInt" scale="0"/>
-  <number name="numRange" range="[1e-1,]"/>
-  <number name="numIntRange" scale="0" range="[1e-2,]"/>
-  <number name="numScale" scale="2" range="[1.11e-213,]"/>
-  <number name="numScaleRange" scale="3" range="[2.222e-19,]"/>
-  <string name="str"/>
-  <string name="strDec"/>
-  <string name="strDecEnc"/>
-  <string name="strEnc"/>
-  <string name="strPattern" pattern="[a-z]+"/>
-  <string name="strPatternDec" pattern="[a-z]+"/>
-  <string name="strPatternDecEnc" pattern="[a-z]+"/>
-  <string name="strPatternEnc" pattern="[a-z]+"/>
+  <number name="numRange" range="[1E-100,]"/>
+  <number name="numIntRange" scale="0" range="[1E-20,]"/>
+  <number name="numScale" scale="2" range="[1.11E-213,]"/>
+  <number name="numScaleRange" scale="3" range="[2.222E-19,]"/>
+  <string name="str" doc="1"/>
+  <string name="strDec" doc="2"/>
+  <string name="strDecEnc" doc="3"/>
+  <string name="strEnc" doc="4"/>
+  <string name="strPattern" pattern="[a-z]+" doc="1"/>
+  <string name="strPatternDec" pattern="[a-z]+" doc="2"/>
+  <string name="strPatternDecEnc" pattern="[a-z]+" doc="3"/>
+  <string name="strPatternEnc" pattern="[a-z]+" doc="4"/>
   <object name="objArr">
     <property name="bool" xsi:type="reference" type="bool"/>
     <property name="boolOptional" xsi:type="reference" type="bool" use="optional"/>

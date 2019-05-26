@@ -22,6 +22,7 @@ import java.util.Optional;
 
 class BooleanTrial extends PropertyTrial<Boolean> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final BooleanProperty property) {
+    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new BooleanTrial(ValidCase.CASE, field, object, createValid(), property));
     if (property.use() == Use.REQUIRED) {
       trials.add(new BooleanTrial(getNullableCase(property.nullable()), field, object, null, property));

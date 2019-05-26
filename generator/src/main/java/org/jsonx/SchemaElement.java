@@ -52,23 +52,26 @@ import org.openjax.xml.api.XmlElement;
  */
 public final class SchemaElement extends Element implements Declarer {
   private static xL0gluGCXYYJc.Schema jsdToXsb(final schema.Schema jsd) {
-    final xL0gluGCXYYJc.Schema schema = new xL0gluGCXYYJc.Schema();
+    final xL0gluGCXYYJc.Schema xsb = new xL0gluGCXYYJc.Schema();
     for (final Map.Entry<String,Object> entry : jsd._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
       if (entry.getValue() instanceof schema.Array)
-        schema.addArray((xL0gluGCXYYJc.Schema.Array)ArrayModel.jsdToXsb((schema.Array)entry.getValue(), entry.getKey()));
+        xsb.addArray((xL0gluGCXYYJc.Schema.Array)ArrayModel.jsdToXsb((schema.Array)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.Boolean)
-        schema.addBoolean((xL0gluGCXYYJc.Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)entry.getValue(), entry.getKey()));
+        xsb.addBoolean((xL0gluGCXYYJc.Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.Number)
-        schema.addNumber((xL0gluGCXYYJc.Schema.Number)NumberModel.jsdToXsb((schema.Number)entry.getValue(), entry.getKey()));
+        xsb.addNumber((xL0gluGCXYYJc.Schema.Number)NumberModel.jsdToXsb((schema.Number)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.ObjectType)
-        schema.addObject((xL0gluGCXYYJc.Schema.Object)ObjectModel.jsdToXsb((schema.Object)entry.getValue(), entry.getKey()));
+        xsb.addObject((xL0gluGCXYYJc.Schema.Object)ObjectModel.jsdToXsb((schema.Object)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.String)
-        schema.addString((xL0gluGCXYYJc.Schema.String)StringModel.jsdToXsb((schema.String)entry.getValue(), entry.getKey()));
+        xsb.addString((xL0gluGCXYYJc.Schema.String)StringModel.jsdToXsb((schema.String)entry.getValue(), entry.getKey()));
       else
         throw new UnsupportedOperationException("Unsupported type: " + entry.getValue().getClass().getName());
     }
 
-    return schema;
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+
+    return xsb;
   }
 
   /**
@@ -170,6 +173,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final xL0gluGCXYYJc.Schema schema, final String prefix) throws ValidationException {
+    super(schema.getDoc$());
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
@@ -354,6 +358,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param classes The classes to scan.
    */
   public SchemaElement(final Collection<Class<?>> classes) {
+    super(null);
     final Registry registry = new Registry(this, classes);
     this.registry = registry;
     final QName name = xL0gluGCXYYJc.Schema.class.getAnnotation(QName.class);
@@ -413,7 +418,7 @@ public final class SchemaElement extends Element implements Declarer {
     if (members.size() == 0)
       return null;
 
-    final Map<String,Object> properties = new LinkedHashMap<>();
+    final Map<String,Object> properties = new LinkedHashMap<>(toAttributes(owner, "jsd:", packageName));
     properties.put("jsd:ns", version + ".jsd");
     properties.put("jsd:schemaLocation", version + ".jsd " + version + ".jsd");
     for (final Model member : members) {
@@ -474,6 +479,10 @@ public final class SchemaElement extends Element implements Declarer {
       final String annotation = classSpec.getAnnotation();
       if (annotation != null)
         builder.append('\n').append(annotation);
+
+      final String doc = classSpec.getDoc();
+      if (doc != null)
+        builder.append('\n').append(doc);
 
       builder.append("\npublic ").append(classSpec);
       sources.put(type.getName(), builder.toString());

@@ -48,21 +48,34 @@ class StringTrial extends PropertyTrial<String> {
     private final String pattern;
     private final Generex generex;
 
-    private StringGen(final String pattern) {
-      this.pattern = pattern;
-      if (pattern.length() == 0)
+    private StringGen(String pattern) {
+      if (pattern.length() == 0) {
         this.generex = null;
-      else if (!Generex.isValidPattern(pattern))
-        throw new UnsupportedOperationException("Regex pattern \"" + pattern + "\" is not supported");
-      else
+      }
+      else {
+        if (pattern.startsWith("^"))
+          pattern = pattern.substring(1);
+
+        if (pattern.endsWith("$"))
+          pattern = pattern.substring(0, pattern.length() - 1);
+
+        if (!Generex.isValidPattern(pattern))
+          throw new UnsupportedOperationException("Regex pattern \"" + pattern + "\" is not supported");
+
         this.generex = new Generex(pattern);
+      }
+
+      this.pattern = pattern;
     }
 
     String random() {
       if (generex == null)
         return randomString(stringLength);
 
-      while (true) {
+      for (int i = 0;; ++i) {
+        if (i == 1000)
+          throw new IllegalArgumentException("Cannot create string for pattern: " + pattern);
+
         final String string = filterPrintable(generex.random(stringLength));
         if (string.matches(pattern))
           return string;
@@ -71,6 +84,7 @@ class StringTrial extends PropertyTrial<String> {
   }
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final StringProperty property) {
+    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new StringTrial(ValidCase.CASE, field, object, createValid(property.pattern()), property));
     if (property.pattern().length() > 0)
       trials.add(new StringTrial(PatternCase.CASE, field, object, createInvalid(property.pattern()), property));

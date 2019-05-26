@@ -35,18 +35,18 @@ import org.libj.util.Strings;
 import org.openjax.xml.api.XmlElement;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  private static xL0gluGCXYYJc.Schema.Object type(final schema.ObjectType jsonx, final String name) {
+  private static xL0gluGCXYYJc.Schema.Object type(final schema.ObjectType jsd, final String name) {
     final xL0gluGCXYYJc.Schema.Object xsb = new xL0gluGCXYYJc.Schema.Object();
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.Schema.Object.Name$(name));
 
-    if (jsonx.getJsd_3aAbstract() != null)
-      xsb.setAbstract$(new xL0gluGCXYYJc.Schema.Object.Abstract$(jsonx.getJsd_3aAbstract()));
+    if (jsd.getJsd_3aAbstract() != null)
+      xsb.setAbstract$(new xL0gluGCXYYJc.Schema.Object.Abstract$(jsd.getJsd_3aAbstract()));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Object property(final schema.ObjectProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$Object property(final schema.ObjectProperty jsd, final String name) {
     final xL0gluGCXYYJc.$Object xsb = new xL0gluGCXYYJc.$Object() {
       private static final long serialVersionUID = 5201562440101597524L;
 
@@ -59,14 +59,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Object.Name$(name));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Object.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Object.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Object.Use$(xL0gluGCXYYJc.$Object.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Object.Use$(xL0gluGCXYYJc.$Object.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
-    if (jsonx.getJsd_3aExtends() != null)
-      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsonx.getJsd_3aExtends()));
+    if (jsd.getJsd_3aExtends() != null)
+      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getJsd_3aExtends()));
 
     return xsb;
   }
@@ -79,6 +79,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
       xsb = property((schema.ObjectProperty)jsd, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     if (jsd.getJsd_3aExtends() != null)
       xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getJsd_3aExtends()));
@@ -249,7 +252,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   final boolean isAbstract;
 
   private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Object binding) {
-    super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
+    super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null), binding.getDoc$());
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());
     this.members = parseMembers(binding, this);
@@ -264,7 +267,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Object binding) {
-    super(registry, declarer, binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
+    super(registry, declarer, binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
     this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;
     this.members = parseMembers(binding, this);

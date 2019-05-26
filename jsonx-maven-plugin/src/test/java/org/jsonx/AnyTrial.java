@@ -59,6 +59,7 @@ class AnyTrial extends PropertyTrial<Object> {
   }
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final AnyProperty property) {
+    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new AnyTrial(ValidCase.CASE, field, object, createValid(property), property));
     if (property.nullable()) {
       trials.add(new AnyTrial(OptionalNullableCase.CASE, field, object, null, property));

@@ -196,10 +196,12 @@ public class schema {
     @org.jsonx.StringProperty(name="jsd:minIterate", pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMinIterate;
     
+    /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
     public void setJsd_3aMinIterate(final java.lang.String jsd_3aMinIterate) {
       this.jsd_3aMinIterate = jsd_3aMinIterate;
     }
     
+    /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
     public java.lang.String getJsd_3aMinIterate() {
       return jsd_3aMinIterate;
     }
@@ -207,10 +209,12 @@ public class schema {
     @org.jsonx.StringProperty(name="jsd:maxIterate", pattern="([\\d]+|unbounded)", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aMaxIterate;
     
+    /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
     public void setJsd_3aMaxIterate(final java.lang.String jsd_3aMaxIterate) {
       this.jsd_3aMaxIterate = jsd_3aMaxIterate;
     }
     
+    /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
     public java.lang.String getJsd_3aMaxIterate() {
       return jsd_3aMaxIterate;
     }
@@ -563,13 +567,30 @@ public class schema {
     }
   }
 
-  public static abstract class Member implements org.jsonx.JxObject {
+  public static abstract class Documented implements org.jsonx.JxObject {
+    @org.jsonx.StringProperty(name="jsd:doc")
+    private java.lang.String jsd_3aDoc;
+    
+    /** Defines text comments. Optional. **/
+    public void setJsd_3aDoc(final java.lang.String jsd_3aDoc) {
+      this.jsd_3aDoc = jsd_3aDoc;
+    }
+    
+    /** Defines text comments. Optional. **/
+    public java.lang.String getJsd_3aDoc() {
+      return jsd_3aDoc;
+    }
+    
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.jsonx.schema.Member))
+      if (!(obj instanceof org.jsonx.schema.Documented))
+        return false;
+    
+      final org.jsonx.schema.Documented that = (org.jsonx.schema.Documented)obj;
+      if (that.jsd_3aDoc != null ? !that.jsd_3aDoc.equals(jsd_3aDoc) : jsd_3aDoc != null)
         return false;
     
       return true;
@@ -577,7 +598,32 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      return 1211742261;
+      int hashCode = -955389163;
+      hashCode = 31 * hashCode + (jsd_3aDoc == null ? 0 : jsd_3aDoc.hashCode());
+      return hashCode;
+    }
+    
+    @java.lang.Override
+    public java.lang.String toString() {
+      return org.jsonx.JxEncoder.get().marshal(this);
+    }
+  }
+
+  public static abstract class Member extends org.jsonx.schema.Documented {
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this)
+        return true;
+    
+      if (!(obj instanceof org.jsonx.schema.Member) || !super.equals(obj))
+        return false;
+    
+      return true;
+    }
+    
+    @java.lang.Override
+    public int hashCode() {
+      return 1211742261 * 31 + super.hashCode();
     }
     
     @java.lang.Override
@@ -601,10 +647,12 @@ public class schema {
     @org.jsonx.StringProperty(name="jsd:range", pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aRange;
     
+    /**        Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interal: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val] **/
     public void setJsd_3aRange(final java.lang.String jsd_3aRange) {
       this.jsd_3aRange = jsd_3aRange;
     }
     
+    /**        Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interal: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val] **/
     public java.lang.String getJsd_3aRange() {
       return jsd_3aRange;
     }
@@ -612,10 +660,12 @@ public class schema {
     @org.jsonx.NumberProperty(name="jsd:scale", scale=0, use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.math.BigInteger jsd_3aScale;
     
+    /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
     public void setJsd_3aScale(final java.math.BigInteger jsd_3aScale) {
       this.jsd_3aScale = jsd_3aScale;
     }
     
+    /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
     public java.math.BigInteger getJsd_3aScale() {
       return jsd_3aScale;
     }
@@ -827,10 +877,12 @@ public class schema {
     @org.jsonx.StringProperty(name="jsd:extends", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jsd_3aExtends;
     
+    /** Specifies the name of the type to extend. Optional. **/
     public void setJsd_3aExtends(final java.lang.String jsd_3aExtends) {
       this.jsd_3aExtends = jsd_3aExtends;
     }
     
+    /** Specifies the name of the type to extend. Optional. **/
     public java.lang.String getJsd_3aExtends() {
       return jsd_3aExtends;
     }
@@ -1011,10 +1063,12 @@ public class schema {
     @org.jsonx.BooleanProperty(name="jsd:abstract", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.Boolean jsd_3aAbstract;
     
+    /** Specifies whether the object is abstract. Default: false. **/
     public void setJsd_3aAbstract(final java.lang.Boolean jsd_3aAbstract) {
       this.jsd_3aAbstract = jsd_3aAbstract;
     }
     
+    /** Specifies whether the object is abstract. Default: false. **/
     public java.lang.Boolean getJsd_3aAbstract() {
       return jsd_3aAbstract;
     }
@@ -1062,10 +1116,12 @@ public class schema {
     @org.jsonx.StringProperty(name="jsd:type", nullable=false)
     private java.lang.String jsd_3aType;
     
+    /** Specifies the name of the referenced type. Required. **/
     public void setJsd_3aType(final java.lang.String jsd_3aType) {
       this.jsd_3aType = jsd_3aType;
     }
     
+    /** Specifies the name of the referenced type. Required. **/
     public java.lang.String getJsd_3aType() {
       return jsd_3aType;
     }
@@ -1227,7 +1283,7 @@ public class schema {
     }
   }
 
-  public static class Schema implements org.jsonx.JxObject {
+  public static class Schema extends org.jsonx.schema.Documented {
     @org.jsonx.StringProperty(name="jsd:ns", pattern="http://www.jsonx.org/schema-0.2.3.jsd", nullable=false)
     private java.lang.String jsd_3aNs;
     
@@ -1258,7 +1314,7 @@ public class schema {
       if (obj == this)
         return true;
     
-      if (!(obj instanceof org.jsonx.schema.Schema))
+      if (!(obj instanceof org.jsonx.schema.Schema) || !super.equals(obj))
         return false;
     
       final org.jsonx.schema.Schema that = (org.jsonx.schema.Schema)obj;
@@ -1276,7 +1332,7 @@ public class schema {
     
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 1381524284;
+      int hashCode = 1381524284 * 31 + super.hashCode();
       hashCode = 31 * hashCode + (jsd_3aNs == null ? 0 : jsd_3aNs.hashCode());
       hashCode = 31 * hashCode + (jsd_3aSchemaLocation == null ? 0 : jsd_3aSchemaLocation.hashCode());
       hashCode = 31 * hashCode + (_5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a == null ? 0 : _5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.hashCode());

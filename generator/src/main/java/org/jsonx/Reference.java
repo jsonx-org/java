@@ -23,27 +23,28 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Documented;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 final class Reference extends Member {
-  private static xL0gluGCXYYJc.$ArrayMember.Reference element(final schema.ReferenceElement jsonx) {
+  private static xL0gluGCXYYJc.$ArrayMember.Reference element(final schema.ReferenceElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Reference xsb = new xL0gluGCXYYJc.$ArrayMember.Reference();
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+    if (jsd.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
 
-    if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+    if (jsd.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Reference property(final schema.ReferenceProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$Reference property(final schema.ReferenceProperty jsd, final String name) {
     final xL0gluGCXYYJc.$Reference xsb = new xL0gluGCXYYJc.$Reference() {
       private static final long serialVersionUID = 9188863837584292929L;
 
@@ -56,11 +57,11 @@ final class Reference extends Member {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Reference.Name$(name));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Reference.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Reference.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Reference.Use$(xL0gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Reference.Use$(xL0gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
     return xsb;
   }
@@ -73,6 +74,9 @@ final class Reference extends Member {
       xsb = property((schema.ReferenceProperty)jsd, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     if (jsd.getJsd_3aType() != null)
       xsb.setType$(new xL0gluGCXYYJc.$ReferenceMember.Type$(jsd.getJsd_3aType()));
@@ -87,7 +91,7 @@ final class Reference extends Member {
   }
 
   private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Reference binding, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
   }
 
@@ -96,16 +100,16 @@ final class Reference extends Member {
   }
 
   private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Reference binding, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getName$(), binding.getNullable$(), binding.getUse$());
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Supplier<Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, nullable, minOccurs, maxOccurs, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Supplier<Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, doc, nullable, minOccurs, maxOccurs, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), nullable, minOccurs, maxOccurs);
+  private Reference(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), doc, nullable, minOccurs, maxOccurs);
     this.model = model;
   }
 
@@ -114,7 +118,7 @@ final class Reference extends Member {
   }
 
   Reference(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), name, nullable, use, null, null);
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, name, nullable, use, null, null);
     this.model = model;
   }
 
@@ -123,7 +127,7 @@ final class Reference extends Member {
   }
 
   Reference(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, nullable, null, minOccurs, maxOccurs);
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, null, nullable, null, minOccurs, maxOccurs);
     this.model = model;
   }
 

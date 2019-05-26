@@ -135,9 +135,26 @@ public class SchemaTest {
     return new SchemaElement(getPackage(classLoader, packageName), classLoader, c -> c.getClassLoader() == classLoader);
   }
 
-  private static void assertSources(final Map<String,String> expected, final Map<String,String> actual) {
+  /**
+   * Removes the comments from the specified Java source.
+   *
+   * @param source The source.
+   * @return The source without comments.
+   */
+  private static String removeComments(final String source) {
+    final StringBuilder builder = new StringBuilder(source);
+    for (int end = source.length(), start; (end = builder.lastIndexOf(" **/\n", end)) != -1;) {
+      start = builder.lastIndexOf("\n", end - 5);
+      builder.delete(start, end + 4);
+      end = start;
+    }
+
+    return builder.toString();
+  }
+
+  private static void assertSources(final Map<String,String> expected, final Map<String,String> actual, final boolean withComments) {
     for (final Map.Entry<String,String> entry : expected.entrySet())
-      assertEquals(entry.getValue(), actual.get(entry.getKey()));
+      assertEquals(withComments ? entry.getValue() : removeComments(entry.getValue()), actual.get(entry.getKey()));
 
     try {
       assertEquals(expected.size(), actual.size());
@@ -191,7 +208,7 @@ public class SchemaTest {
     logger.info("  8) Schema -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
-    assertSources(test1Sources, test2Sources);
+    assertSources(test1Sources, test2Sources, false);
 
     testSettings(fileName, packageName, test1Sources);
   }
@@ -209,7 +226,7 @@ public class SchemaTest {
       for (final Map.Entry<String,String> entry : test1Sources.entrySet())
         compiler.addSource(entry.getValue());
 
-      assertSources(originalSources, test1Sources);
+      assertSources(originalSources, test1Sources, true);
 
       final ClassLoader classLoader = compiler.compile();
       final SchemaElement test1Schema = newSchema(classLoader, packageName);
@@ -217,7 +234,7 @@ public class SchemaTest {
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
       final SchemaElement test2Schema = new SchemaElement((xL0gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
       final Map<String,String> test2Sources = test2Schema.toSource();
-      assertSources(test1Sources, test2Sources);
+      assertSources(test1Sources, test2Sources, false);
 
       testJson(controlBinding, prefix);
     }

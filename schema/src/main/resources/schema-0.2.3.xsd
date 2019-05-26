@@ -22,8 +22,22 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:import namespace="http://www.openjax.org/xml/datatypes-0.9.2.xsd" schemaLocation="http://www.openjax.org/xml/datatypes-0.9.2.xsd"/>
+  
+  <xs:complexType name="documented" abstract="true">
+    <xs:attribute name="doc" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Defines text comments. Optional.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
 
-  <xs:complexType name="member" abstract="true"/>
+  <xs:complexType name="member" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="js:documented"/>
+    </xs:complexContent>
+  </xs:complexType>
 
   <xs:attributeGroup name="annullable">
     <xs:attribute name="nullable" type="xs:boolean" default="true">
@@ -171,7 +185,7 @@
         <xs:attribute name="scale" type="xs:nonNegativeInteger">
           <xs:annotation>
             <xs:documentation>
-              The number of digits to the right of the decimal point in a number. If a value is not specified, the scale is unbounded.   
+              The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded.   
             </xs:documentation>
           </xs:annotation>
         </xs:attribute>
@@ -352,64 +366,68 @@
 
   <xs:element name="schema">
     <xs:complexType>
-      <xs:sequence>
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element name="boolean">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="js:booleanMember">
-                  <xs:attributeGroup ref="js:id"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="number">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="js:numberMember">
-                  <xs:attributeGroup ref="js:id"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="string">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="js:stringMember">
-                  <xs:attributeGroup ref="js:id"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="array">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="js:arrayMember">
-                  <xs:attributeGroup ref="js:id"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-          </xs:element>
-          <xs:element name="object">
-            <xs:complexType>
-              <xs:complexContent>
-                <xs:extension base="js:objectMember">
-                  <xs:attribute name="abstract" type="xs:boolean" default="false">
-                    <xs:annotation>
-                      <xs:documentation>Specifies whether the object is abstract. Default: false.</xs:documentation>
-                    </xs:annotation>
-                  </xs:attribute>
-                  <xs:attributeGroup ref="js:id"/>
-                </xs:extension>
-              </xs:complexContent>
-            </xs:complexType>
-            <xs:unique name="uniquePropertyName">
-              <xs:selector xpath="./js:property"/>
-              <xs:field xpath="@name | @names"/>
-            </xs:unique>
-          </xs:element>
-        </xs:choice>
-      </xs:sequence>
+      <xs:complexContent>
+        <xs:extension base="js:documented">
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="boolean">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="js:booleanMember">
+                      <xs:attributeGroup ref="js:id"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="number">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="js:numberMember">
+                      <xs:attributeGroup ref="js:id"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="string">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="js:stringMember">
+                      <xs:attributeGroup ref="js:id"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="array">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="js:arrayMember">
+                      <xs:attributeGroup ref="js:id"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="object">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="js:objectMember">
+                      <xs:attribute name="abstract" type="xs:boolean" default="false">
+                        <xs:annotation>
+                          <xs:documentation>Specifies whether the object is abstract. Default: false.</xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                      <xs:attributeGroup ref="js:id"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+                <xs:unique name="uniquePropertyName">
+                  <xs:selector xpath="./js:property"/>
+                  <xs:field xpath="@name | @names"/>
+                </xs:unique>
+              </xs:element>
+            </xs:choice>
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
     </xs:complexType>
   </xs:element>
 

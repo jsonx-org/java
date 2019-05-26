@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Documented;
 import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$MaxOccurs;
 import org.libj.util.Classes;
 import org.openjax.xml.api.XmlElement;
@@ -69,20 +70,20 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $AnySimpleType name, final $Boolean nullable, final $String use) {
-    super(registry, declarer, id, name, nullable, use);
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType name, final $Boolean nullable, final $String use) {
+    super(registry, declarer, id, doc, name, nullable, use);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    super(registry, declarer, id, nullable, minOccurs, maxOccurs);
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
+    super(registry, declarer, id, doc, nullable, minOccurs, maxOccurs);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id) {
-    super(registry, declarer, id, null, null, null, null, null);
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc) {
+    super(registry, declarer, id, doc, null, null, null, null, null);
   }
 
   Model(final Registry registry, final Declarer declarer, final Id id, final Boolean nullable, final Use use) {
-    super(registry, declarer, id, null, nullable, use, null, null);
+    super(registry, declarer, id, null, null, nullable, use, null, null);
   }
 
   String sortKey() {

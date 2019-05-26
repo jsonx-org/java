@@ -27,6 +27,7 @@ import org.libj.util.Classes;
 
 class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
+    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     final Range range = property.range().length() == 0 ? null : new Range(property.range());
     trials.add(new NumberTrial(ValidCase.CASE, field, object, toProperForm(field, property.scale(), makeValid(range)), property));
 
@@ -34,7 +35,7 @@ class NumberTrial extends PropertyTrial<Number> {
       trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.scale(), makeInvalid(range)), property));
 
     if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(field.getType()))
-      trials.add(new NumberTrial(ScaleCase.CASE, field, object, toProperForm(field, property.scale() + 1, makeInvalid(range)), property));
+      trials.add(new NumberTrial(ScaleCase.CASE, field, object, toProperForm(field, property.scale() + 1, makeValid(range)), property));
 
     if (property.use() == Use.REQUIRED) {
       trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));

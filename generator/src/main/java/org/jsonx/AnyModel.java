@@ -28,7 +28,7 @@ import org.openjax.json.JsonTypes;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
-  private static xL0gluGCXYYJc.$Any property(final schema.AnyProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$Any property(final schema.AnyProperty jsd, final String name) {
     final xL0gluGCXYYJc.$Any xsb = new xL0gluGCXYYJc.$Any() {
       private static final long serialVersionUID = 650722913732574568L;
 
@@ -41,32 +41,32 @@ final class AnyModel extends Referrer<AnyModel> {
     if (name != null)
       xsb.setNames$(new xL0gluGCXYYJc.$Any.Names$(JsonTypes.unescape(name)));
 
-    if (jsonx.getJsd_3aTypes() != null)
-      xsb.setTypes$(new xL0gluGCXYYJc.$Any.Types$(jsonx.getJsd_3aTypes().split(" ")));
+    if (jsd.getJsd_3aTypes() != null)
+      xsb.setTypes$(new xL0gluGCXYYJc.$Any.Types$(jsd.getJsd_3aTypes().split(" ")));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Any.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Any.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Any.Use$(xL0gluGCXYYJc.$Any.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Any.Use$(xL0gluGCXYYJc.$Any.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsdx) {
+  private static xL0gluGCXYYJc.$ArrayMember.Any element(final schema.AnyElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Any xsb = new xL0gluGCXYYJc.$ArrayMember.Any();
 
-    if (jsdx.getJsd_3aTypes() != null)
-      xsb.setTypes$(new xL0gluGCXYYJc.$ArrayMember.Any.Types$(jsdx.getJsd_3aTypes().split(" ")));
+    if (jsd.getJsd_3aTypes() != null)
+      xsb.setTypes$(new xL0gluGCXYYJc.$ArrayMember.Any.Types$(jsd.getJsd_3aTypes().split(" ")));
 
-    if (jsdx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Any.Nullable$(jsdx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Any.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsdx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsdx.getJsd_3aMinOccurs())));
+    if (jsd.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
 
-    if (jsdx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsdx.getJsd_3aMaxOccurs()));
+    if (jsd.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Any.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -79,6 +79,9 @@ final class AnyModel extends Referrer<AnyModel> {
       xsb = element((schema.AnyElement)jsd);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     return xsb;
   }
@@ -135,12 +138,12 @@ final class AnyModel extends Referrer<AnyModel> {
   private final List<Member> types;
 
   private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Any binding) {
-    super(registry, declarer, binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
+    super(registry, declarer, binding.getDoc$(), binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
     this.types = getTypes(binding.getTypes$());
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Any binding) {
-    super(registry, declarer, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
+    super(registry, declarer, binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
     this.types = getTypes(binding.getTypes$());
   }
 

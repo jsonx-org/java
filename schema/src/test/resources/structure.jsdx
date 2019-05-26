@@ -15,6 +15,7 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
+  doc="Schema expressing complex nested structures"
   xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
