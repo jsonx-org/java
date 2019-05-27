@@ -77,6 +77,17 @@
         <artifactId>xml-maven-plugin</artifactId>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.safris.maven</groupId>
+          <artifactId>coverallsio-maven-plugin</artifactId>
+          <configuration>
+            <aggregateOnly>true</aggregateOnly>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   <dependencies>
     <dependency>
