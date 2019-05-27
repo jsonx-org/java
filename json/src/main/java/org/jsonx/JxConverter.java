@@ -19,17 +19,17 @@ package org.jsonx;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
 import java.util.Objects;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 
+import org.libj.util.Strings;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
 import org.openjax.xml.sax.Parsers;
-import org.libj.util.Strings;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -83,7 +83,7 @@ public final class JxConverter {
     final SAXParser parser = getParser(validate);
     final StringBuilder builder = new StringBuilder();
     parser.parse(Objects.requireNonNull(in), new DefaultHandler() {
-      private final Stack<String> stack = new Stack<>();
+      private final ArrayDeque<String> stack = new ArrayDeque<>();
       private StringBuilder characters = null;
       private StringBuilder prevWs = null;
       private String prevElem = null;
@@ -129,7 +129,7 @@ public final class JxConverter {
           prevWs = null;
         }
 
-        prevElem = !stack.empty() && "a".equals(stack.peek()) ? "m" : localName;
+        prevElem = !stack.isEmpty() && "a".equals(stack.peek()) ? "m" : localName;
         if ("o".equals(localName)) {
           builder.append('}');
         }
@@ -169,15 +169,15 @@ public final class JxConverter {
 
           if ("a".equals(stack.peek())) {
             final Matcher matcher = pattern.matcher(characters);
-            String lastWs = null;
-            int i = 0;
-            for (; matcher.find(); ++i) {
-              if (i > 0) {
+            String prevWs = null;
+            int i = -1;
+            while (matcher.find()) {
+              if (++i > 0) {
                 builder.append(',');
               }
               else {
                 final int len = characters.length();
-                for (int j = 0; i < len; ++j) {
+                for (int j = 0; j < len; ++j) {
                   final char c = characters.charAt(j);
                   if (Character.isWhitespace(c))
                     builder.append(c);
@@ -186,9 +186,9 @@ public final class JxConverter {
                 }
               }
 
-              if (lastWs != null) {
-                builder.append(lastWs.substring(1));
-                lastWs = null;
+              if (prevWs != null) {
+                builder.append(prevWs.substring(1));
+                prevWs = null;
               }
 
               prevElem = "m";
@@ -198,18 +198,18 @@ public final class JxConverter {
 
               final String ws = matcher.group("ws");
               if (ws != null)
-                lastWs = ws;
+                prevWs = ws;
             }
 
             if (i == 0) {
               builder.append(characters);
             }
-            else if (lastWs != null) {
+            else if (prevWs != null) {
               if (hasMore) {
-                builder.append(',').append(lastWs.substring(1));
+                builder.append(',').append(prevWs.substring(1));
               }
               else {
-                builder.append(lastWs);
+                builder.append(prevWs);
               }
 
               return true;
@@ -266,8 +266,7 @@ public final class JxConverter {
   public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
     final StringBuilder builder = new StringBuilder();
     for (String token; (token = reader.readToken()) != null;) {
-      final char ch = token.charAt(0);
-      if (Character.isWhitespace(ch))
+      if (Character.isWhitespace(token.charAt(0)))
         builder.append(token);
       else if ("{".equals(token))
         appendObject(reader, declareNamespace, builder);
@@ -281,10 +280,10 @@ public final class JxConverter {
   }
 
   private static void appendValue(final JsonReader reader, final String token, final StringBuilder builder) throws IOException {
-    final char ch = token.charAt(0);
-    if (ch == '{')
+    final char c0 = token.charAt(0);
+    if (c0 == '{')
       appendObject(reader, false, builder);
-    else if (ch == '[')
+    else if (c0 == '[')
       appendArray(reader, builder);
     else
       builder.append(CharacterDatas.escapeForElem(token));
@@ -292,8 +291,7 @@ public final class JxConverter {
 
   private static void appendArray(final JsonReader reader, final StringBuilder builder) throws IOException {
     builder.append("<a>");
-    String last = null;
-    for (String token = null; (token == null ? token = reader.readToken() : token) != null;) {
+    for (String token = null, prev = null; (token == null ? token = reader.readToken() : token) != null;) {
       final char ch = token.charAt(0);
       if (Character.isWhitespace(ch)) {
         builder.append(token);
@@ -304,12 +302,12 @@ public final class JxConverter {
       }
       else if ("{".equals(token)) {
         appendObject(reader, false, builder);
-        last = token;
+        prev = token;
         token = null;
       }
       else if ("[".equals(token)) {
         appendArray(reader, builder);
-        last = token;
+        prev = token;
         token = null;
       }
       else if (",".equals(token)) {
@@ -320,8 +318,8 @@ public final class JxConverter {
           token = reader.readToken();
         }
 
-        final char c = token.charAt(0);
-        if (!"{".equals(last) && !"[".equals(last) || c != '{' && c != '[')
+        final char c0 = token.charAt(0);
+        if (!"{".equals(prev) && !"[".equals(prev) || c0 != '{' && c0 != '[')
           builder.append(' ');
 
         if (ws != null)
@@ -329,7 +327,7 @@ public final class JxConverter {
       }
       else {
         appendValue(reader, token, builder);
-        last = token;
+        prev = token;
         token = null;
       }
     }
