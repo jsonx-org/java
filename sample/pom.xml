@@ -34,4 +34,17 @@
   <modules>
     <module>cdc</module>
   </modules>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.safris.maven</groupId>
+          <artifactId>coverallsio-maven-plugin</artifactId>
+          <configuration>
+            <skipModule>sample</skipModule>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
