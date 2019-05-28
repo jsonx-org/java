@@ -20,16 +20,45 @@ import java.util.TreeMap;
 
 import org.libj.util.ObservableMap;
 
+/**
+ * Map of attributes that guarantees attribute order as per
+ * {@link JsdUtil#ATTRIBUTES}.
+ */
 class AttributeMap extends ObservableMap<String,Object> {
-  AttributeMap() {
+  private final String prefix;
+
+  /**
+   * Creates a new {@code AttributeMap} with the specified prefix. For each
+   * invocation of {@link #put(String,Object)} and {@link #remove(Object)}, the
+   * provided {@code key} is prepended with {@code prefix} (if {@code prefix} is
+   * not null).
+   *
+   * @param prefix The prefix to prepend to each key.
+   */
+  AttributeMap(final String prefix) {
     super(new TreeMap<>(JsdUtil.ATTRIBUTES));
+    this.prefix = prefix;
+  }
+
+  /**
+   * Creates a new {@code AttributeMap} with a null prefix.
+   */
+  AttributeMap() {
+    this(null);
+  }
+
+  @Override
+  protected boolean beforeRemove(final Object key, final Object value) {
+    target.remove(prefix != null ? prefix + key : key);
+    return false;
   }
 
   @Override
   protected boolean beforePut(final String key, final Object oldValue, final Object newValue) {
-    if (oldValue == null || oldValue.equals(newValue) || "xsi:schemaLocation".equals(key))
-      return true;
+    if (oldValue != null && !oldValue.equals(newValue) && !"xsi:schemaLocation".equals(key))
+      throw new IllegalArgumentException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
 
-    throw new IllegalArgumentException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
+    target.put(prefix != null ? prefix + key : key, newValue);
+    return false;
   }
 }

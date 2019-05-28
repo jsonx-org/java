@@ -15,50 +15,51 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
+  doc="Schema expressing the variations of templates"
   xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
-  <array name="arrayDepthFour" minIterate="4" maxIterate="4">
-    <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10"/>
-    <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8"/>
-    <reference type="rootBoolean"/>
-    <reference type="rootBoolean" nullable="false"/>
+  <array name="arrayDepthFour" minIterate="4" maxIterate="4" doc="Array template">
+    <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10" doc="Referene to arrayDepthThree"/>
+    <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8" doc="Referene to arrayDepthTwo"/>
+    <reference type="rootBoolean" doc="Referene to rootBoolean"/>
+    <reference type="rootBoolean" nullable="false" doc="Not-nullable referene to rootBoolean"/>
   </array>
-  <array name="arrayDepthOne">
-    <reference type="rootBoolean" minOccurs="5" maxOccurs="6" nullable="false"/>
+  <array name="arrayDepthOne" doc="Array with a depth of one">
+    <reference type="rootBoolean" minOccurs="5" maxOccurs="6" nullable="false" doc="Reference to rootBoolean"/>
   </array>
-  <array name="arrayDepthThree" minIterate="3" maxIterate="3">
-    <reference type="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4"/>
-    <reference type="rootNumber" nullable="false"/>
-    <reference type="rootString"/>
+  <array name="arrayDepthThree" minIterate="3" maxIterate="3" doc="Array with a depth of three">
+    <reference type="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4" doc="Refenre to arrayDepthTwo"/>
+    <reference type="rootNumber" nullable="false" doc="Reference to rootNumber"/>
+    <reference type="rootString" doc="Reference to rootString"/>
   </array>
-  <array name="arrayDepthTwo" minIterate="2" maxIterate="2">
-    <reference type="arrayDepthOne" minOccurs="1" maxOccurs="2" nullable="false"/>
-    <reference type="rootBoolean" nullable="false"/>
+  <array name="arrayDepthTwo" minIterate="2" maxIterate="2" doc="Array of depth two">
+    <reference type="arrayDepthOne" minOccurs="1" maxOccurs="2" nullable="false" doc="Reference to arrayDepthOne"/>
+    <reference type="rootBoolean" nullable="false" doc="Reference to rootBoolean"/>
   </array>
-  <boolean name="rootBoolean"/>
-  <number name="rootNumber" scale="0" range="[2,9]"/>
-  <string name="rootString" pattern="[a-z]+"/>
-  <object name="test-template">
-    <property name="arrayDirectOptionalNotNullable" xsi:type="array" use="optional" nullable="false" minIterate="3" maxIterate="5">
-      <boolean/>
+  <boolean name="rootBoolean" doc="Boolean template"/>
+  <number name="rootNumber" scale="0" range="[2,9]" doc="Number template"/>
+  <string name="rootString" pattern="[a-z]+" doc="String template"/>
+  <object name="test-template" doc="Object class/template">
+    <property name="arrayDirectOptionalNotNullable" xsi:type="array" use="optional" nullable="false" minIterate="3" maxIterate="5" doc="In-line definition of an array">
+      <boolean doc="An ordinary boolean"/>
     </property>
-    <property name="arrayOne" xsi:type="reference" type="arrayDepthOne" use="optional"/>
-    <property name="arrayTwo" xsi:type="reference" type="arrayDepthTwo"/>
-    <property names="any1?" xsi:type="any"/>
-    <property name="arrayThree" xsi:type="reference" type="arrayDepthThree" use="optional" nullable="false"/>
-    <property name="arrayFour" xsi:type="reference" type="arrayDepthFour" use="optional"/>
-    <property names="any2\*" xsi:type="any" types="rootString rootNumber"/>
-    <property name="booleanDirectOptional" xsi:type="boolean" use="optional"/>
-    <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false"/>
-    <property names="any3*" xsi:type="any" types="rootNumber rootBoolean" nullable="false"/>
-    <property names="any4+" xsi:type="any" types="rootString arrayDepthOne" nullable="false"/>
-    <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
-    <property name="numberDirectOptional" xsi:type="number" range="[5e-1,8]" use="optional"/>
-    <property names="any5" xsi:type="any" types="arrayDepthOne arrayDepthTwo" use="optional"/>
-    <property name="numberOptional" xsi:type="reference" type="rootNumber" use="optional"/>
-    <property name="stringDirectOptional" xsi:type="string" use="optional"/>
-    <property name="stringOptional" xsi:type="reference" type="rootString" use="optional"/>
-    <property names="any6" xsi:type="any" types="arrayDepthTwo arrayDepthThree"/>
+    <property name="arrayOne" xsi:type="reference" type="arrayDepthOne" use="optional" doc="Reference to arrayDepthOne"/>
+    <property name="arrayTwo" xsi:type="reference" type="arrayDepthTwo" doc="Reference to arrayDepthTwo"/>
+    <property names="any1?" xsi:type="any" doc="Property with regex name of any type"/>
+    <property name="arrayThree" xsi:type="reference" type="arrayDepthThree" use="optional" nullable="false" doc="Reference to arrayDepthThree"/>
+    <property name="arrayFour" xsi:type="reference" type="arrayDepthFour" use="optional" doc="Reference to arrayDepthFour"/>
+    <property names="any2\*" xsi:type="any" types="rootString rootNumber" doc="Property with regex name and type 'rootString' or 'rootNumber'"/>
+    <property name="booleanDirectOptional" xsi:type="boolean" use="optional" doc="Propery of boolean type"/>
+    <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false" doc="Propery preferencing rootBoolean"/>
+    <property names="any3*" xsi:type="any" types="rootNumber rootBoolean" nullable="false" doc="Property with regex name accepting type 'rootNumber' or 'rootBoolean'"/>
+    <property names="any4+" xsi:type="any" types="rootString arrayDepthOne" nullable="false" doc="Property with regex name accepting type 'rootString' or 'arrayDepthOne'"/>
+    <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional" doc="Propery preferencing rootBoolean"/>
+    <property name="numberDirectOptional" xsi:type="number" range="[5e-1,8]" use="optional" doc="Propery with number type"/>
+    <property names="any5" xsi:type="any" types="arrayDepthOne arrayDepthTwo" use="optional" doc="Property named 'any5' accepting type 'arrayDepthOne' or 'arrayDepthTwo'"/>
+    <property name="numberOptional" xsi:type="reference" type="rootNumber" use="optional" doc="Propery preferencing rootNumber"/>
+    <property name="stringDirectOptional" xsi:type="string" use="optional" doc="Propery of string type"/>
+    <property name="stringOptional" xsi:type="reference" type="rootString" use="optional" doc="Optional property referencing rootString"/>
+    <property names="any6" xsi:type="any" types="arrayDepthTwo arrayDepthThree" doc="Property named 'any6' accepting type 'arrayDepthTwo' or 'arrayDepthTree'"/>
   </object>
 </schema>

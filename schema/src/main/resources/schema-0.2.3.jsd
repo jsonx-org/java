@@ -1,8 +1,36 @@
 {
   "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+  "min": {
+    "jsd:class": "string",
+    "jsd:pattern": "[\\d]+"
+  },
+  "max": {
+    "jsd:class": "string",
+    "jsd:pattern": "([\\d]+|unbounded)"
+  },
+  "use": {
+    "jsd:class": "string",
+    "jsd:pattern": "(required|optional)"
+  },
+  "documented": {
+    "jsd:class": "object",
+    "jsd:abstract": true,
+    "jsd:properties": {
+      "jsd:doc": {
+        "jsd:class": "string",
+        "jsd:doc": "Defines text comments. Optional."
+      }
+    }
+  },
+  "member": {
+    "jsd:class": "object",
+    "jsd:abstract": true,
+    "jsd:extends": "documented"
+  },
   "schema": {
     "jsd:class": "object",
+    "jsd:extends": "documented",
     "jsd:properties": {
       "jsd:ns": {
         "jsd:class": "string",
@@ -21,22 +49,6 @@
         "jsd:types": "array boolean number objectType string"
       }
     }
-  },
-  "min": {
-    "jsd:class": "string",
-    "jsd:pattern": "[\\d]+"
-  },
-  "max": {
-    "jsd:class": "string",
-    "jsd:pattern": "([\\d]+|unbounded)"
-  },
-  "use": {
-    "jsd:class": "string",
-    "jsd:pattern": "(required|optional)"
-  },
-  "member": {
-    "jsd:class": "object",
-    "jsd:abstract": true
   },
   "any": {
     "jsd:class": "object",
@@ -66,12 +78,14 @@
       },
       "jsd:minIterate": {
         "jsd:class": "reference",
+        "jsd:doc": "Specifies the minimum inclusive number of iterations of child elements. Default: 1.",
         "jsd:nullable": false,
         "jsd:type": "min",
         "jsd:use": "optional"
       },
       "jsd:maxIterate": {
         "jsd:class": "reference",
+        "jsd:doc": "Specifies the maximum inclusive number of iterations of child elements. Default: 1.",
         "jsd:nullable": false,
         "jsd:type": "max",
         "jsd:use": "optional"
@@ -141,12 +155,14 @@
       },
       "jsd:range": {
         "jsd:class": "string",
+        "jsd:doc": "       Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interal: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val]",
         "jsd:nullable": false,
         "jsd:pattern": "[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]",
         "jsd:use": "optional"
       },
       "jsd:scale": {
         "jsd:class": "number",
+        "jsd:doc": "The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded.",
         "jsd:nullable": false,
         "jsd:scale": 0,
         "jsd:use": "optional"
@@ -165,6 +181,7 @@
       },
       "jsd:extends": {
         "jsd:class": "string",
+        "jsd:doc": "Specifies the name of the type to extend. Optional.",
         "jsd:nullable": false,
         "jsd:use": "optional"
       },
@@ -194,6 +211,7 @@
       },
       "jsd:type": {
         "jsd:class": "string",
+        "jsd:doc": "Specifies the name of the referenced type. Required.",
         "jsd:nullable": false
       }
     }
@@ -220,6 +238,7 @@
     "jsd:properties": {
       "jsd:abstract": {
         "jsd:class": "boolean",
+        "jsd:doc": "Specifies whether the object is abstract. Default: false.",
         "jsd:nullable": false,
         "jsd:use": "optional"
       }

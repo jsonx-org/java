@@ -46,7 +46,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Array property(final schema.ArrayProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$Array property(final schema.ArrayProperty jsd, final String name) {
     final xL0gluGCXYYJc.$Array xsb = new xL0gluGCXYYJc.$Array() {
       private static final long serialVersionUID = 3936180512257992902L;
 
@@ -59,26 +59,26 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Array.Name$(name));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Array.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Array.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Array.Use$(xL0gluGCXYYJc.$Array.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Array.Use$(xL0gluGCXYYJc.$Array.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$ArrayMember.Array element(final schema.ArrayElement jsonx) {
+  private static xL0gluGCXYYJc.$ArrayMember.Array element(final schema.ArrayElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Array xsb = new xL0gluGCXYYJc.$ArrayMember.Array();
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Array.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Array.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+    if (jsd.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
 
-    if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+    if (jsd.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -93,6 +93,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
       xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     if (jsd.getJsd_3aMinIterate() != null)
       xsb.setMinIterate$(new xL0gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getJsd_3aMinIterate())));
@@ -279,21 +282,21 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Array binding) {
-    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text())));
+    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text())), binding.getDoc$());
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array binding) {
-    super(registry, declarer, binding.getName$(), binding.getNullable$(), binding.getUse$(), null);
+    super(registry, declarer, binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$(), null);
     this.members = parseMembers(registry, this, binding);
     this.minIterate = parseIterate(binding.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Array binding) {
-    super(registry, declarer, binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
+    super(registry, declarer, binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
     if (this.maxOccurs != null && this.minOccurs != null && this.minOccurs > this.maxOccurs)
       throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs + "\" > maxOccurs=\"" + this.maxOccurs + "\"");
 
@@ -303,7 +306,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final Annotation arrayAnnotation, final int minIterate, final int maxIterate, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {
-    super(registry, declarer, type);
+    super(registry, declarer, type, null);
     final Map<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
     for (final Annotation elementAnnotation : JsdUtil.flatten(annotations)) {
@@ -421,10 +424,10 @@ final class ArrayModel extends Referrer<ArrayModel> {
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id.toString());
 
     if (minIterate != null)
-      attributes.put(prefix + "minIterate", String.valueOf(minIterate));
+      attributes.put("minIterate", String.valueOf(minIterate));
 
     if (maxIterate != null)
-      attributes.put(prefix + "maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
+      attributes.put("maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
 
     return attributes;
   }

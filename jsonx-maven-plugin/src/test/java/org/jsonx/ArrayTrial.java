@@ -108,6 +108,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
   }
 
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final ArrayProperty property) {
+    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new ArrayTrial<>(ValidCase.CASE, field, object, createValid(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement()), property));
     final Object testNullable = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.NULLABLE);
     if (testNullable != null)

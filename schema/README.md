@@ -3,9 +3,9 @@
 [![XSD](https://img.shields.io/badge/schema.xsd-v0.2.3-blue.svg)](http://jsonx.org/schema-0.2.3.xsd)
 [![JSDx](https://img.shields.io/badge/schema.jsdx-v0.2.3-blue.svg)](http://jsonx.org/schema-0.2.3.jsdx)
 [![JSD](https://img.shields.io/badge/schema.jsd-v0.2.3-blue.svg)](http://jsonx.org/schema-0.2.3.jsd)<br>
-[![XSD](https://img.shields.io/badge/schema.xsd-v0.2.2-orange.svg)](http://jsonx.org/schema-0.2.2.xsd)
-[![JSDx](https://img.shields.io/badge/schema.jsdx-v0.2.2-orange.svg)](http://jsonx.org/schema-0.2.2.jsdx)
-[![JSD](https://img.shields.io/badge/schema.jsd-v0.2.2-orange.svg)](http://jsonx.org/schema-0.2.2.jsd)<br>
+[![XSD](https://img.shields.io/badge/schema.xsd-v0.2.3-orange.svg)](http://jsonx.org/schema-0.2.3.xsd)
+[![JSDx](https://img.shields.io/badge/schema.jsdx-v0.2.3-orange.svg)](http://jsonx.org/schema-0.2.3.jsdx)
+[![JSD](https://img.shields.io/badge/schema.jsd-v0.2.3-orange.svg)](http://jsonx.org/schema-0.2.3.jsd)<br>
 [![XSD](https://img.shields.io/badge/schema.xsd-v0.1.0-yellow.svg)](http://jsonx.org/schema-0.1.0.xsd)
 [![JSDx](https://img.shields.io/badge/schema.jsdx-v0.1.0-inactive.svg)]()
 [![JSD](https://img.shields.io/badge/schema.jsd-v0.1.0-inactive.svg)]()
@@ -103,18 +103,22 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **schema** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema_<br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_[Type Declaration][#types]_<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
+| <samp>( **schema** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:schemaLocation</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br><samp>jsd:doc</samp><br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema._ Required.<br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_Location URL of namespace._ Optional.<br>&nbsp;&nbsp;Specified as: `"%NAMESPACE_URI% %LOCATION_URL%"`<br>&nbsp;&nbsp;Used by schema processors to determine location of<br>&nbsp;&nbsp;schema definition for a namespace.<br>Text comments. Optional.<br>_[Type Declaration][#types]_. Optional.<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+   {
+     "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+     "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
      ...
    }
    ```
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://www.jsonx.org/schema-0.2.2.xsd">
+   <schema
+      xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+      xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
      ...
    </schema>
    ```
@@ -122,6 +126,26 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
 ### 4.2 Model for JSON Values
 
 The <samp>**model**</samp> objects define the constraint properties of the five JSON value classes: <samp>**boolean**</samp>, <samp>**number**</samp>, <samp>**string**</samp>, <samp>**object**</samp>, and <samp>**array**</samp>. The <ins>JSON Schema Definition Language</ins> defines two additional meta value classes named <samp>**any**</samp> and <samp>**reference**</samp>.
+
+Each <samp>**model**</samp> object supports the `doc` attribute.
+
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
+|:-|:-|:-|
+| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp> | <samp>jsd:doc</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Text comments. Optional.<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; |
+
+1. <ins>Example</ins>: `jsd`
+   ```json
+   { "jsd:doc": "Comment for this element",
+     ...
+   }
+   ```
+
+1. <ins>Example</ins>: `jsdx`
+   ```xml
+   <any doc="Comment for this element">
+      ...
+   </any>
+   ```
 
 #### 4.2.1 `boolean` Model
 
@@ -148,25 +172,25 @@ The <samp>**boolean**</samp> model is the only model that lacks validation const
 
 #### 4.2.2 `number` Model
 
-The <samp>**number**</samp> model defines two validation constraints for <samp>**number**</samp> JSON value types: <samp>form</samp>, and <samp>range</samp>.
+The <samp>**number**</samp> model defines two validation constraints for <samp>**number**</samp> JSON value types: <samp>scale</samp>, and <samp>range</samp>.
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **number** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:form</samp><br>&nbsp;<br><samp>jsd:range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(integer\|**real**)</samp><br>&nbsp;&nbsp;Specifies whether a decimal character is allowed. <br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
+| <samp>( **number** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:scale</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(0\|1\|2\|...)</samp><br>&nbsp;&nbsp;The number of digits to the right of the decimal point.<br>&nbsp;&nbsp;**If a value is not specified, the scale is unbounded.**<br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "number", "form": "real", "range": "[-1,1)" }
+   { "jsd:class": "number", "scale": 0, "range": "[-1,1)" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
    ```xml
-   <number form="real" range="[-1,1)"/>
+   <number range="[-1,1)"/>
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(object properties)</samp>
    ```xml
-   <property xsi:type="number" form="real" range="[-1,1)"/>
+   <property xsi:type="number" range="[-1,1)"/>
    ```
 
 #### 4.2.3 `string` Model
@@ -363,7 +387,7 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+   { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
      "rootArray": { "jsd:class": "array",
        "jsd:elements": [...] },
@@ -378,7 +402,7 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://www.jsonx.org/schema-0.2.2.xsd">
+   <schema xmlns="http://www.jsonx.org/schema-0.2.3.xsd">
      ...
      <array name="rootArray">
        ...
@@ -403,7 +427,7 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+   { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
      "rootObject": { "jsd:class": "object",
        "jsd:properties": {
@@ -424,7 +448,7 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://www.jsonx.org/schema-0.2.2.xsd">
+   <schema xmlns="http://www.jsonx.org/schema-0.2.3.xsd">
      ...
      <object name="rootObject">
        <property name="propArray" xsi:type="array" nullable="true" use="required">
@@ -453,7 +477,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+   { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
      "rootArray": {
        "jsd:class": "array",
@@ -473,7 +497,7 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 1. <ins>Example</ins>: `jsdx`
    ```xml
-   <schema xmlns="http://www.jsonx.org/schema-0.2.2.xsd">
+   <schema xmlns="http://www.jsonx.org/schema-0.2.3.xsd">
      ...
      <array name="rootArray">
        <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
@@ -505,13 +529,13 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 #### 5.1.2 Obsolete
 
-* <ins>JSON Schema 0.2.2</ins> **[Deprecated]**
+* <ins>JSON Schema 0.2.3</ins> **[Deprecated]**
 
-  * A JSON Schema schema document XSD [schema-0.2.2.xsd](http://www.jsonx.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd]( http://www.openjax.org/xml/datatypes-0.9.2.xsd).
+  * A JSON Schema schema document XSD [schema-0.2.3.xsd](http://www.jsonx.org/schema-0.2.3.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd]( http://www.openjax.org/xml/datatypes-0.9.2.xsd).
 
-  * A JSON Schema schema document JSDx [schema-0.2.2.jsdx](http://www.jsonx.org/schema-0.2.2.jsdx) for JSON Schema documents.
+  * A JSON Schema schema document JSDx [schema-0.2.3.jsdx](http://www.jsonx.org/schema-0.2.3.jsdx) for JSON Schema documents.
 
-  * A JSON Schema schema document JSD [schema-0.2.2.jsd](http://www.jsonx.org/schema-0.2.2.jsd) for JSON Schema documents.
+  * A JSON Schema schema document JSD [schema-0.2.3.jsd](http://www.jsonx.org/schema-0.2.3.jsd) for JSON Schema documents.
 
 * <ins>JSON Schema 0.1.0</ins> **[Deprecated]**
 
@@ -529,16 +553,16 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
   <array name="array">
     <boolean nullable="true"/>
-    <number form="real" range="[-1,1)" nullable="true"/>
+    <number range="[-1,1)" nullable="true"/>
     <string pattern="pattern" nullable="true"/>
     <array nullable="true">
       <boolean nullable="true"/>
-      <number form="real" range="[-1,1)" nullable="true"/>
+      <number range="[-1,1)" nullable="true"/>
       <string pattern="pattern" nullable="true"/>
       <any types="boolean number string array object"/>
     </array>
@@ -546,16 +570,16 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     <any types="boolean number string array object" nullable="true"/>
   </array>
   <boolean name="boolean"/>
-  <number name="number" form="real" range="[-1,1)"/>
+  <number name="number" range="[-1,1)"/>
   <string name="string" pattern="pattern"/>
   <object name="object">
     <property name="array" xsi:type="array" nullable="true" use="required">
       <boolean nullable="true"/>
-      <number form="real" range="[-1,1)" nullable="true"/>
+      <number range="[-1,1)" nullable="true"/>
       <string pattern="pattern" nullable="true"/>
       <array nullable="true">
         <boolean nullable="true"/>
-        <number form="real" range="[-1,1)" nullable="true"/>
+        <number range="[-1,1)" nullable="true"/>
         <string pattern="pattern" nullable="true"/>
         <any types="boolean number string array object"/>
       </array>
@@ -563,21 +587,21 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
       <any types="boolean number string array object" nullable="true"/>
     </property>
     <property name="boolean" xsi:type="boolean" nullable="true" use="required"/>
-    <property name="number" xsi:type="number" form="real" range="[-1,1)" nullable="true" use="required"/>
+    <property name="number" xsi:type="number" range="[-1,1)" nullable="true" use="required"/>
     <property name="string" xsi:type="string" pattern="pattern" nullable="true" use="required"/>
     <property name="booleanRef" xsi:type="reference" type="boolean" nullable="true" use="required"/>
     <property name="subObject" xsi:type="object" extends="object" nullable="true" use="optional">
       <property name="subBoolean" xsi:type="boolean" nullable="true" use="required"/>
-      <property name="subNumber" xsi:type="number" form="real" range="[-1,1)" nullable="true" use="required"/>
+      <property name="subNumber" xsi:type="number" range="[-1,1)" nullable="true" use="required"/>
       <property name="subString" xsi:type="string" pattern="pattern" nullable="true" use="required"/>
       <property name="subBooleanRef" xsi:type="reference" type="boolean" nullable="true" use="required"/>
       <property name="subArray" xsi:type="array" nullable="true" use="required">
         <boolean nullable="true"/>
-        <number form="real" range="[-1,1)" nullable="true"/>
+        <number range="[-1,1)" nullable="true"/>
         <string pattern="pattern" nullable="true"/>
         <array nullable="true">
           <boolean nullable="true"/>
-          <number form="real" range="[-1,1)" nullable="true"/>
+          <number range="[-1,1)" nullable="true"/>
           <string pattern="pattern" nullable="true"/>
           <any types="boolean number string array object"/>
         </array>
@@ -594,8 +618,8 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ```json
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "array": {
     "jsd:class": "array",
     "jsd:elements": [{
@@ -757,9 +781,9 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
   <array name="arrayArr">
     <reference type="arrayBool" maxOccurs="1"/>
     <reference type="arrayNum" maxOccurs="1"/>
@@ -815,9 +839,9 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
   </array>
   <boolean name="bool"/>
   <number name="num"/>
-  <number name="numInt" form="integer"/>
-  <number name="numIntRange1" form="integer" range="[1,]"/>
-  <number name="numIntRange2" form="integer" range="[,4]"/>
+  <number name="numInt" scale="0"/>
+  <number name="numIntRange1" scale="0" range="[1,]"/>
+  <number name="numIntRange2" scale="0" range="[,4]"/>
   <number name="numRange1" range="[1,]"/>
   <number name="numRange2" range="[,4]"/>
   <string name="str"/>
@@ -920,8 +944,8 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ```json
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "arrayArr": {
     "jsd:class": "array",
     "jsd:elements": [{
@@ -1152,16 +1176,16 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
   },
   "numInt": {
     "jsd:class": "number",
-    "jsd:form": "integer"
+    "jsd:scale": 0
   },
   "numIntRange1": {
     "jsd:class": "number",
-    "jsd:form": "integer",
+    "jsd:scale": 0,
     "jsd:range": "[1,]"
   },
   "numIntRange2": {
     "jsd:class": "number",
-    "jsd:form": "integer",
+    "jsd:scale": 0,
     "jsd:range": "[,4]"
   },
   "numRange1": {

@@ -28,7 +28,7 @@ import org.openjax.xml.api.XmlElement;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
-    return new Member(null, null, null, null, null, null, null, null) {
+    return new Member(null, null, null, null, null, null, null, null, null) {
       @Override
       Registry.Type type() {
         return type;

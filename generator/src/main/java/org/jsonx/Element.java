@@ -18,9 +18,16 @@ package org.jsonx;
 
 import java.util.Map;
 
+import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Documented;
 import org.openjax.xml.api.XmlElement;
 
 abstract class Element {
+  final String doc;
+
+  Element(final $Documented.Doc$ doc) {
+    this.doc = doc == null || doc.text() == null || doc.text().length() == 0 ? null : doc.text();
+  }
+
   /**
    * Intended to be overridden by each concrete subclass, this method returns a
    * {@code Map<String,String>} of name/value attributes that define the spec of
@@ -32,7 +39,11 @@ abstract class Element {
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    return new AttributeMap();
+    final AttributeMap attributes = new AttributeMap(prefix);
+    if (doc != null)
+      attributes.put("doc", doc);
+
+    return attributes;
   }
 
   abstract XmlElement toXml(Settings settings, Element owner, final String prefix, String packageName);

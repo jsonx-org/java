@@ -38,11 +38,12 @@ class ClassSpec {
     this.type = type;
   }
 
-  String getAnnotation() {
-    if (referrer == null)
-      return null;
+  String getDoc() {
+    return referrer != null && referrer.doc != null ? "/** " + referrer.doc.trim() + " **/" : null;
+  }
 
-    if (referrer.getClassAnnotation() == null)
+  String getAnnotation() {
+    if (referrer == null || referrer.getClassAnnotation() == null)
       return null;
 
     final StringBuilder builder = new StringBuilder();
@@ -85,6 +86,10 @@ class ClassSpec {
       final String annotation = memberClass.getAnnotation();
       if (annotation != null)
         builder.append("\n  ").append(annotation.replace("\n", "\n  "));
+
+      final String memberDoc = memberClass.getDoc();
+      if (memberDoc != null)
+        builder.append("\n  ").append(memberDoc);
 
       builder.append("\n  public static ").append(memberClass.toString().replace("\n", "\n  "));
     }

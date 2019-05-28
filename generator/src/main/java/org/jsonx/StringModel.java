@@ -33,7 +33,7 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$String property(final schema.StringProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$String property(final schema.StringProperty jsd, final String name) {
     final xL0gluGCXYYJc.$String xsb = new xL0gluGCXYYJc.$String() {
       private static final long serialVersionUID = -8328022363685261988L;
 
@@ -46,26 +46,26 @@ final class StringModel extends Model {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$String.Name$(name));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$String.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$String.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$String.Use$(xL0gluGCXYYJc.$String.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$String.Use$(xL0gluGCXYYJc.$String.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$ArrayMember.String element(final schema.StringElement jsonx) {
+  private static xL0gluGCXYYJc.$ArrayMember.String element(final schema.StringElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.String xsb = new xL0gluGCXYYJc.$ArrayMember.String();
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.String.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.String.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+    if (jsd.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
 
-    if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.String.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+    if (jsd.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.String.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -80,6 +80,9 @@ final class StringModel extends Model {
       xsb  = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     if (jsd.getJsd_3aPattern() != null)
       xsb.setPattern$(new xL0gluGCXYYJc.$StringMember.Pattern$(jsd.getJsd_3aPattern()));
@@ -134,17 +137,17 @@ final class StringModel extends Model {
   final String pattern;
 
   private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.String binding) {
-    super(registry, declarer, Id.named(binding.getName$()));
+    super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
   private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$String binding) {
-    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
+    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
   private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.String binding) {
-    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
@@ -185,7 +188,7 @@ final class StringModel extends Model {
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (pattern != null)
-      attributes.put(prefix + "pattern", pattern);
+      attributes.put("pattern", pattern);
 
     return attributes;
   }

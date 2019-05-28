@@ -36,7 +36,7 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Number property(final schema.NumberProperty jsonx, final String name) {
+  private static xL0gluGCXYYJc.$Number property(final schema.NumberProperty jsd, final String name) {
     final xL0gluGCXYYJc.$Number xsb = new xL0gluGCXYYJc.$Number() {
       private static final long serialVersionUID = -346722555715286411L;
 
@@ -49,26 +49,26 @@ final class NumberModel extends Model {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Number.Name$(name));
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Number.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Number.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Number.Use$(xL0gluGCXYYJc.$Number.Use$.Enum.valueOf(jsonx.getJsd_3aUse())));
+    if (jsd.getJsd_3aUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Number.Use$(xL0gluGCXYYJc.$Number.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$ArrayMember.Number element(final schema.NumberElement jsonx) {
+  private static xL0gluGCXYYJc.$ArrayMember.Number element(final schema.NumberElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Number xsb = new xL0gluGCXYYJc.$ArrayMember.Number();
 
-    if (jsonx.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Number.Nullable$(jsonx.getJsd_3aNullable()));
+    if (jsd.getJsd_3aNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Number.Nullable$(jsd.getJsd_3aNullable()));
 
-    if (jsonx.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsonx.getJsd_3aMinOccurs())));
+    if (jsd.getJsd_3aMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
 
-    if (jsonx.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsonx.getJsd_3aMaxOccurs()));
+    if (jsd.getJsd_3aMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
 
     return xsb;
   }
@@ -83,6 +83,9 @@ final class NumberModel extends Model {
       xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
+
+    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
 
     if (jsd.getJsd_3aScale() != null)
       xsb.setScale$(new xL0gluGCXYYJc.$NumberMember.Scale$(jsd.getJsd_3aScale().intValue()));
@@ -153,7 +156,7 @@ final class NumberModel extends Model {
   final Range range;
 
   private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Number binding) {
-    super(registry, declarer, Id.named(binding.getName$()));
+    super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
     this.scale = parseScale(binding.getScale$());
     try {
       this.range = parseRange(binding.getRange$());
@@ -164,7 +167,7 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Number binding) {
-    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getName$(), binding.getNullable$(), binding.getUse$());
+    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.scale = parseScale(binding.getScale$());
     try {
       this.range = parseRange(binding.getRange$());
@@ -175,7 +178,7 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Number binding) {
-    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.scale = parseScale(binding.getScale$());
     try {
       this.range = parseRange(binding.getRange$());
@@ -234,10 +237,10 @@ final class NumberModel extends Model {
   Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
     final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
     if (scale != Integer.MAX_VALUE)
-      attributes.put(prefix + "scale", scale);
+      attributes.put("scale", scale);
 
     if (range != null)
-      attributes.put(prefix + "range", range.toString());
+      attributes.put("range", range.toString());
 
     return attributes;
   }

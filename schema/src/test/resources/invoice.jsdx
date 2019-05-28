@@ -15,33 +15,34 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
+  doc="Schema describing an invoice"
   xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
-  <number name="money" scale="2" range="[1,]"/>
-  <number name="positiveInteger" scale="0" range="[1,]"/>
-  <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
-  <string name="nonEmptyString" pattern="\S|\S.*\S"/>
-  <object name="address">
-    <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-    <property name="address" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-    <property name="city" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-    <property name="postalCode" xsi:type="reference" type="nonEmptyString" nullable="false" use="optional"/>
-    <property name="country" xsi:type="reference" type="nonEmptyString"/>
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema.xsd">
+  <number name="money" scale="2" range="[0,]" doc="Non-negative number representing money with 2 digits past the decimal for cents"/>
+  <number name="positiveInteger" scale="0" range="[1,]" doc="Positive integer"/>
+  <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))" doc="ISO-8601 date format"/>
+  <string name="nonEmptyString" pattern="\S|\S.*\S" doc="String with at least one non-whitespace character"/>
+  <object name="address" doc="An address">
+    <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false" doc="Name"/>
+    <property name="address" xsi:type="reference" type="nonEmptyString" nullable="false" doc="Street address"/>
+    <property name="city" xsi:type="reference" type="nonEmptyString" nullable="false" doc="City"/>
+    <property name="postalCode" xsi:type="reference" type="nonEmptyString" nullable="false" use="optional" doc="Postal code (zipcode in USA)"/>
+    <property name="country" xsi:type="reference" type="nonEmptyString" doc="Country"/>
   </object>
-  <object name="invoice">
-    <property name="number" xsi:type="reference" type="positiveInteger"/>
-    <property name="date" xsi:type="reference" type="date"/>
-    <property name="billingAddress" xsi:type="reference" type="address"/>
-    <property name="shippingAddress" xsi:type="reference" type="address"/>
-    <property name="billedItems" xsi:type="array" nullable="false">
-      <reference type="item"/>
+  <object name="invoice" doc="An invoice">
+    <property name="number" xsi:type="reference" type="positiveInteger" doc="Invoice number"/>
+    <property name="date" xsi:type="reference" type="date" doc="Date of invoice"/>
+    <property name="billingAddress" xsi:type="reference" type="address" doc="Billindg address"/>
+    <property name="shippingAddress" xsi:type="reference" type="address" doc="Shipping address"/>
+    <property name="billedItems" xsi:type="array" nullable="false" doc="Array of billed items">
+      <reference type="item" doc="Billed item"/>
     </property>
   </object>
-  <object name="item">
-    <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-    <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
-    <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
-    <property name="price" xsi:type="reference" type="money" nullable="false"/>
+  <object name="item" doc="An item">
+    <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false" doc="Description of item"/>
+    <property name="code" xsi:type="reference" type="positiveInteger" nullable="false" doc="Code of item"/>
+    <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false" doc="Quantity of item"/>
+    <property name="price" xsi:type="reference" type="money" nullable="false" doc="Price of item"/>
   </object>
 </schema>
