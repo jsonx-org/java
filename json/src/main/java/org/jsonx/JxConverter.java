@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Utility class that provides functions to convert JSON document to JSONX
+ * Utility class that provides functions to convert JSON document to JSONx
  * documents, and vice versa.
  */
 public final class JxConverter {
@@ -68,13 +68,13 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSONX document from the specified {@code InputStream} to a JSON
+   * Converts a JSONx document from the specified {@code InputStream} to a JSON
    * document.
    *
-   * @param in The {@code InputStream} for the JSONX document to be converted.
-   * @param validate If {@code true}, the JSONX document will be validated
+   * @param in The {@code InputStream} for the JSONx document to be converted.
+   * @param validate If {@code true}, the JSONx document will be validated
    *          during the conversion process.
-   * @return A JSON document equivalent of the JSONX document.
+   * @return A JSON document equivalent of the JSONx document.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a SAX error has occurred.
    * @throws NullPointerException If {@code in} is null.
@@ -178,9 +178,9 @@ public final class JxConverter {
               else {
                 final int len = characters.length();
                 for (int j = 0; j < len; ++j) {
-                  final char c = characters.charAt(j);
-                  if (Character.isWhitespace(c))
-                    builder.append(c);
+                  final char ch = characters.charAt(j);
+                  if (Character.isWhitespace(ch))
+                    builder.append(ch);
                   else
                     break;
                 }
@@ -201,7 +201,7 @@ public final class JxConverter {
                 prevWs = ws;
             }
 
-            if (i == 0) {
+            if (i == -1) {
               builder.append(characters);
             }
             else if (prevWs != null) {
@@ -231,7 +231,7 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSON document from the specified {@code JsonReader} to a JSONX
+   * Converts a JSON document from the specified {@code JsonReader} to a JSONx
    * document without declaring the XML namespace.
    * <p>
    * This method is equivalent to calling
@@ -243,7 +243,7 @@ public final class JxConverter {
    * @param reader The {@code JsonReader} for the JSON document to be converted.
    *          declare the {@code xmlns} and {@code xsi:schemaLocation}
    *          attributes in the root element.
-   * @return A JSONX document equivalent of the JSON document.
+   * @return A JSONx document equivalent of the JSON document.
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If {@code reader} is null.
    */
@@ -252,14 +252,14 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSON document from the specified {@code JsonReader} to a JSONX
+   * Converts a JSON document from the specified {@code JsonReader} to a JSONx
    * document.
    *
    * @param reader The {@code JsonReader} for the JSON document to be converted.
-   * @param declareNamespace If {@code true}, the resulting JSONX document will
+   * @param declareNamespace If {@code true}, the resulting JSONx document will
    *          declare the {@code xmlns} and {@code xsi:schemaLocation}
    *          attributes in the root element.
-   * @return A JSONX document equivalent of the JSON document.
+   * @return A JSONx document equivalent of the JSON document.
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If {@code reader} is null.
    */
@@ -292,8 +292,7 @@ public final class JxConverter {
   private static void appendArray(final JsonReader reader, final StringBuilder builder) throws IOException {
     builder.append("<a>");
     for (String token = null, prev = null; (token == null ? token = reader.readToken() : token) != null;) {
-      final char ch = token.charAt(0);
-      if (Character.isWhitespace(ch)) {
+      if (Character.isWhitespace(token.charAt(0))) {
         builder.append(token);
         token = null;
       }
