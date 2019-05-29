@@ -23,11 +23,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openjax.json.JsonReader;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.Classes;
 import org.libj.util.function.TriPredicate;
+import org.openjax.json.JsonReader;
 
 class ObjectCodec extends Codec {
   static Object decodeArray(final Class<? extends JxObject> type, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
@@ -41,6 +41,9 @@ class ObjectCodec extends Codec {
       for (String token; !"}".equals(token = reader.readToken());) {
         if (",".equals(token))
           token = reader.readToken();
+
+        if ("}".equals(token))
+          break;
 
         if (!":".equals(reader.readToken()))
           throw new IllegalStateException("Should have been caught by JsonReader: " + token);
@@ -104,8 +107,7 @@ class ObjectCodec extends Codec {
           }
         }
 
-        if (value != null)
-          codec.set(object, propertyName, value, onPropertyDecode);
+        codec.set(object, propertyName, value, onPropertyDecode);
       }
 
       for (final Field field : Classes.getDeclaredFieldsDeep(object.getClass())) {

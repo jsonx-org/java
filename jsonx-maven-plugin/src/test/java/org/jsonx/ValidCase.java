@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.CollectionUtil;
-import org.openjax.json.JsonTypes;
+import org.openjax.json.JsonUtil;
 
 import com.google.common.base.Strings;
 
@@ -35,7 +35,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       final Object member = list.get(i);
       if (member instanceof String) {
         if (escape) {
-          out.add("\"" + JsonTypes.escape((String)member) + "\"");
+          out.add("\"" + JsonUtil.escape((String)member) + "\"");
         }
         else {
           out.add(member);

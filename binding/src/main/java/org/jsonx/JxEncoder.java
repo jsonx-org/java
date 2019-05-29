@@ -27,8 +27,8 @@ import java.util.Optional;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.libj.util.Classes;
 import org.libj.util.ArrayUtil;
+import org.libj.util.Classes;
 import org.libj.util.function.TriObjBiIntConsumer;
 
 /**
@@ -255,6 +255,8 @@ public class JxEncoder {
           return error;
       }
       else if (annotation instanceof AnyProperty) {
+        if ("content".equals(name))
+          System.out.println();
         final Object encoded = AnyCodec.encodeObject(annotation, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, this, depth, validate);
         if (encoded instanceof Error)
           return (Error)encoded;
@@ -394,7 +396,17 @@ public class JxEncoder {
 
       final Object value = getValue(object, name, use);
       if (value != null || nullable && use == Use.REQUIRED) {
-        if (value instanceof Map) {
+        if (!Map.class.isAssignableFrom(field.getType())) {
+          if (hasProperties)
+            builder.append(',');
+
+          final Error error = appendValue(builder, name, value, field, annotation, onFieldEncode, depth);
+          if (error != null)
+            return error;
+
+          hasProperties = true;
+        }
+        else if (value != null) {
           final Map<?,?> map = (Map<?,?>)value;
           for (final Map.Entry<?,?> entry : map.entrySet()) {
             if (validate && !nullable && use == Use.OPTIONAL && entry.getValue() == null)
@@ -409,16 +421,6 @@ public class JxEncoder {
 
             hasProperties = true;
           }
-        }
-        else {
-          if (hasProperties)
-            builder.append(',');
-
-          final Error error = appendValue(builder, name, value, field, annotation, onFieldEncode, depth);
-          if (error != null)
-            return error;
-
-          hasProperties = true;
         }
       }
       else if (validate && use == Use.REQUIRED) {

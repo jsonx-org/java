@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
-import org.libj.util.Classes;
 import org.libj.util.ArrayUtil;
+import org.libj.util.Classes;
 import org.libj.util.function.Throwing;
 import org.libj.util.function.TriConsumer;
 import org.libj.util.function.TriPredicate;
@@ -84,7 +84,7 @@ abstract class Codec {
           setMethod.invoke(object, Optional.ofNullable(value));
       }
       else {
-        if (!genericType.isInstance(value))
+        if (value != null && !genericType.isInstance(value))
           throw new ValidationException(object.getClass().getName() + "#" + field.getName() + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" of value: " + value);
 
         putMethod.accept(object, name, value);

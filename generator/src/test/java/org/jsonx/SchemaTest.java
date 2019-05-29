@@ -244,7 +244,7 @@ public class SchemaTest {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
-    final String jsd = JSON.toString(controlSchema.toJson());
+    final String jsd = JSON.toString(controlSchema.toJson(), 2);
     logger.info("       b) JSON -> Schema");
     final SchemaElement schema;
     try (final JsonReader reader = new JsonReader(new StringReader(jsd))) {

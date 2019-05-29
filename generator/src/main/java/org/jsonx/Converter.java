@@ -78,7 +78,7 @@ public final class Converter {
    * @throws ValidationException If a validation error has occurred.
    */
   public static String jsdxToJsd(final URL url) throws IOException, ValidationException {
-    return JSON.toString(SchemaElement.parseJsdx(url, "").toJson());
+    return JSON.toString(SchemaElement.parseJsdx(url, "").toJson(), 2);
   }
 
   /**

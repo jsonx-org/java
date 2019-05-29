@@ -21,10 +21,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.openjax.json.JsonReader;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.function.TriPredicate;
+import org.openjax.json.JsonReader;
 
 class ArrayCodec extends Codec {
   static Object decodeArray(final ArrayElement element, final Class<? extends Annotation> type, final String token, final JsonReader reader, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
@@ -80,15 +80,14 @@ class ArrayCodec extends Codec {
       elementIds = JsdUtil.digest(type.getAnnotations(), type.getName(), idToElement = new IdToElement());
     }
 
-    final Relations subRelations = new Relations();
+    // Special case when annotation == null, which happens only from AnyCodec
+    final Relations subRelations = annotation == null ? relations : new Relations();
     final Error subError = ArrayValidator.validate((List<?>)object, idToElement, elementIds, subRelations, validate, onPropertyDecode);
     if (validate && subError != null)
       return subError;
 
     if (annotation != null)
       relations.set(index, new Relation(subRelations, annotation));
-    else if (subRelations.size() == 1)
-      relations.set(index, subRelations.get(0));
 
     return null;
   }

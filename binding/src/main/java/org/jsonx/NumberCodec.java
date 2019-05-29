@@ -23,7 +23,7 @@ import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.Annotations;
 import org.openjax.json.JsonParseException;
-import org.openjax.json.JsonTypes;
+import org.openjax.json.JsonUtil;
 
 class NumberCodec extends PrimitiveCodec<Number> {
   static Number decodeArray(final int scale, final String token) {
@@ -36,7 +36,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   static Number decodeObject(final int scale, final String json) {
     try {
-      return scale == 0 ? JsonTypes.parseInteger(json) : JsonTypes.parseDecimal(json);
+      return scale == 0 ? JsonUtil.parseInteger(json) : JsonUtil.parseDecimal(json);
     }
     catch (final JsonParseException e) {
       return null;
