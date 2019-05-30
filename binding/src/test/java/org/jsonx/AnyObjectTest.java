@@ -16,33 +16,50 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.libj.io.Readers;
 import org.openjax.json.JsonReader;
 
 public class AnyObjectTest {
+  private static void assertEquals(final Object expected, final Object actual) {
+    Assert.assertEquals(expected, actual);
+    if (expected != null)
+      Assert.assertEquals(expected.hashCode(), actual.hashCode());
+  }
+
   private static void testArray(final String fileName) throws DecodeException, IOException {
     try (final JsonReader reader = test(fileName)) {
-      final List<?> array = JxDecoder.parseArray(AnyArray.class, reader);
+      final List<?> array0 = JxDecoder.parseArray(AnyArray.class, reader);
       reader.reset();
+
+      final List<?> array1 = JxDecoder.parseArray(AnyArray.class, reader);
+      reader.reset();
+
+      assertEquals(array0, array1);
+
       final String expected = Readers.readFully(reader);
-      final String actual = JxEncoder.get().marshal(array, AnyArray.class);
+      final String actual = JxEncoder.get().marshal(array0, AnyArray.class);
       assertEquals(expected, actual);
     }
   }
 
   private static void testObject(final String fileName) throws DecodeException, IOException {
     try (final JsonReader reader = test(fileName)) {
-      final AnyObject object = JxDecoder.parseObject(AnyObject.class, reader);
+      final AnyObject object0 = JxDecoder.parseObject(AnyObject.class, reader);
       reader.reset();
+
+      final AnyObject object1 = JxDecoder.parseObject(AnyObject.class, reader);
+      reader.reset();
+
+      assertEquals(object0, object1);
+
       final String expected = Readers.readFully(reader);
-      final String actual = object.toString();
+      final String actual = object0.toString();
       assertEquals(expected, actual);
     }
   }

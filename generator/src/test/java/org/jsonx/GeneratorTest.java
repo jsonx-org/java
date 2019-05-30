@@ -27,8 +27,8 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 public class GeneratorTest {
-  private static boolean preventExit = true;
   private static final File destDir = new File("target/generated-test-sources/jsonx");
+  private static boolean preventExit = true;
 
   static {
     System.setSecurityManager(new SecurityManager() {

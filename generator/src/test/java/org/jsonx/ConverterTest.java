@@ -16,11 +16,42 @@
 
 package org.jsonx;
 
-import java.io.IOException;
+import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.security.Permission;
+
+import org.junit.AfterClass;
 import org.junit.Test;
 
 public class ConverterTest {
+  private static boolean preventExit = true;
+
+  static {
+    System.setSecurityManager(new SecurityManager() {
+      @Override
+      public void checkPermission(final Permission permission) {
+        if (preventExit && permission.getName().startsWith("exitVM"))
+          throw new SecurityException();
+      }
+    });
+  }
+
+  @AfterClass
+  public static void afterClass() {
+    preventExit = false;
+  }
+
+  @Test
+  public void testUsage() throws IOException {
+    try {
+      Converter.main(new String[0]);
+      fail("Expected SecurityException");
+    }
+    catch (final SecurityException e) {
+    }
+  }
+
   @Test
   public void test() throws IOException {
     Converter.convert(ClassLoader.getSystemClassLoader().getResource("schema.jsd"));

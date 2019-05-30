@@ -16,7 +16,10 @@
 
 package org.jsonx;
 
-@AnyElement(id=0, types={@t(arrays=AnyArray.class), @t(booleans=true), @t(numbers=@NumberType), @t(objects=AnyObject.class), @t(strings=".*")}, minOccurs=0)
+/**
+ * An @{@link ArrayType} that represents any JSON array.
+ */
+@AnyElement(id=0, minOccurs=0)
 @ArrayType(elementIds={0})
 public @interface AnyArray {
 }

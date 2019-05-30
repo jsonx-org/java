@@ -16,5 +16,8 @@
 
 package org.jsonx;
 
+/**
+ * Marker interface for JSONx binding object classes.
+ */
 public interface JxObject {
 }
