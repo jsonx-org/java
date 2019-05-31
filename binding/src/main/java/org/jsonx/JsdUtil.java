@@ -186,28 +186,6 @@ final class JsdUtil {
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
-  static int getMinOccurs(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).minOccurs();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).minOccurs();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).minOccurs();
-
-    if (annotation instanceof NumberElement)
-      return ((NumberElement)annotation).minOccurs();
-
-    if (annotation instanceof ObjectElement)
-      return ((ObjectElement)annotation).minOccurs();
-
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).minOccurs();
-
-    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
-  }
-
   static int getId(final Annotation annotation) {
     if (annotation instanceof AnyElement)
       return ((AnyElement)annotation).id();
@@ -226,6 +204,28 @@ final class JsdUtil {
 
     if (annotation instanceof StringElement)
       return ((StringElement)annotation).id();
+
+    throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
+  }
+
+  static int getMinOccurs(final Annotation annotation) {
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).minOccurs();
+
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).minOccurs();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).minOccurs();
+
+    if (annotation instanceof NumberElement)
+      return ((NumberElement)annotation).minOccurs();
+
+    if (annotation instanceof ObjectElement)
+      return ((ObjectElement)annotation).minOccurs();
+
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).minOccurs();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
