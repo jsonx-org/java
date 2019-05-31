@@ -17,34 +17,12 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 import java.util.ListIterator;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.function.TriPredicate;
 
 class ArrayEncodeIterator extends ArrayIterator {
-  static <T>Error validateArray(final ArrayElement element, final List<T> member, final int i, IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
-    final int[] elementIds;
-    if (element.type() != ArrayType.class) {
-      elementIds = JsdUtil.digest(element.type().getAnnotations(), element.type().getName(), idToElement = new IdToElement());
-    }
-    else {
-      elementIds = element.elementIds();
-      idToElement.setMinIterate(element.minIterate());
-      idToElement.setMaxIterate(element.maxIterate());
-    }
-
-    final Relations subRelations = new Relations();
-    final Error subError = ArrayValidator.validate(member, idToElement, elementIds, subRelations, validate, onPropertyDecode);
-    if (validate && subError != null)
-      return subError;
-
-    relations.set(i, new Relation(subRelations, element));
-    return null;
-  }
-
   private final ListIterator<Object> listIterator;
 
   ArrayEncodeIterator(final ListIterator<Object> listIterator) {
