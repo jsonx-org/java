@@ -1,9 +1,9 @@
 # JAX-RS Integration for JSONx
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.png)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg)](https://www.javadoc.io/doc/org.jsonx/rs)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg)](https://mvnrepository.com/artifact/org.jsonx/rs)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?1)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?1)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?1)](https://www.javadoc.io/doc/org.jsonx/rs)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg?1)](https://mvnrepository.com/artifact/org.jsonx/rs)
 
 ## Abstract
 
