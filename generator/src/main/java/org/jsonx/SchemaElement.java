@@ -87,7 +87,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
-  public static SchemaElement parseJsd(final URL url, final String prefix) throws IOException, DecodeException, ValidationException {
+  public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException, ValidationException {
     try (final InputStream in = url.openStream()) {
       final schema.Schema schema = JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in)));
       return new SchemaElement(schema, prefix);
