@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,6 +34,7 @@ import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.junit.Assert;
 import org.junit.Test;
 import org.libj.jci.CompilationException;
 import org.libj.jci.InMemoryCompiler;
@@ -240,22 +239,44 @@ public class SchemaTest {
     }
   }
 
+  static void assertEquals(final String message, final Object expected, final Object actual) {
+    Assert.assertEquals(message, expected, actual);
+    if (expected != null && actual != null)
+      Assert.assertEquals(message, expected.hashCode(), actual.hashCode());
+  }
+
+  static void assertEquals(final Object expected, final Object actual) {
+    assertEquals(null, expected, actual);
+  }
+
   private static String testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
     final String jsd = JSON.toString(controlSchema.toJson(), 2);
     logger.info("       b) JSON -> Schema");
-    final SchemaElement schema;
-    try (final JsonReader reader = new JsonReader(new StringReader(jsd))) {
-      schema = new SchemaElement(JxDecoder.parseObject(schema.Schema.class, reader), prefix);
-    }
-
+    final SchemaElement schema = new SchemaElement(testParseSchema(jsd, true), prefix);
     logger.info("       c) Schema -> XML(3)");
     final String jsdx = toXml(schema, Settings.DEFAULT).toString();
     final xL0gluGCXYYJc.Schema jsonBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(jsdx);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);
     return jsd;
+  }
+
+  private static schema.Schema testParseSchema(final String jsd, final boolean test) throws DecodeException, IOException {
+    try (final JsonReader reader = new JsonReader(new StringReader(jsd))) {
+      final schema.Schema schema1 = JxDecoder.parseObject(schema.Schema.class, reader);
+      if (test) {
+        final String jsd1 = schema1.toString();
+        final schema.Schema schema2 = testParseSchema(jsd1, false);
+        final String jsd2 = schema2.toString();
+
+        assertEquals(schema1, schema2);
+        assertEquals(jsd1, jsd2);
+      }
+
+      return schema1;
+    }
   }
 
   private static void testConverter(final String jsd) throws DecodeException, IOException, ValidationException {

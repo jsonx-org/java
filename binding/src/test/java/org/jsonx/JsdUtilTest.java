@@ -53,6 +53,27 @@ public class JsdUtilTest {
   }
 
   @Test
+  public void testToIdentifier() {
+    assertEquals("_$", JsdUtil.toIdentifier(""));
+    assertEquals("helloWorld", JsdUtil.toIdentifier("helloWorld"));
+    assertEquals("_32HelloWorld", JsdUtil.toIdentifier("2HelloWorld"));
+  }
+
+  @Test
+  public void testToInstanceName() {
+    assertEquals("_$", JsdUtil.toInstanceName(""));
+    assertEquals("helloWorld", JsdUtil.toInstanceName("HelloWorld"));
+    assertEquals("_32HelloWorld", JsdUtil.toInstanceName("2HelloWorld"));
+  }
+
+  @Test
+  public void testToClassName() {
+    assertEquals("_$", JsdUtil.toClassName(""));
+    assertEquals("HelloWorld", JsdUtil.toClassName("helloWorld"));
+    assertEquals("_32helloWorld", JsdUtil.toClassName("2helloWorld"));
+  }
+
+  @Test
   public void testGetField() throws NoSuchFieldException {
     testGetField("any");
     testGetField("array");
