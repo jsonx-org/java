@@ -74,6 +74,25 @@ public class JsdUtilTest {
   }
 
   @Test
+  public void testFlipName() {
+    assertEquals("Cat", JsdUtil.flipName("cat"));
+    assertEquals("Cat", JsdUtil.flipName("cat"));
+    assertEquals("Cat", JsdUtil.flipName("cat"));
+
+    assertEquals("CAT", JsdUtil.flipName("CAT"));
+    assertEquals("CAT", JsdUtil.flipName("CAT"));
+    assertEquals("CAT", JsdUtil.flipName("CAT"));
+
+    assertEquals("a.b.Cat", JsdUtil.flipName("a.b.cat"));
+    assertEquals("a.b-Cat", JsdUtil.flipName("a.b$cat"));
+    assertEquals("a.b$Cat", JsdUtil.flipName("a.b-cat"));
+
+    assertEquals("a.b.CAT", JsdUtil.flipName("a.b.CAT"));
+    assertEquals("a.b-CAT", JsdUtil.flipName("a.b$CAT"));
+    assertEquals("a.b$CAT", JsdUtil.flipName("a.b-CAT"));
+  }
+
+  @Test
   public void testGetField() throws NoSuchFieldException {
     testGetField("any");
     testGetField("array");
