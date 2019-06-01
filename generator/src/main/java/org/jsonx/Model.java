@@ -47,7 +47,7 @@ abstract class Model extends Member implements Comparable<Model> {
         return false;
 
       if (!(genericTypes[1] instanceof ParameterizedType))
-        return !nullable && cls.isAssignableFrom((Class<?>)genericTypes[1]);
+        return cls.isAssignableFrom((Class<?>)genericTypes[1]);
 
       final Class<?> valueType = (Class<?>)((ParameterizedType)genericTypes[1]).getRawType();
       if (!Optional.class.isAssignableFrom(valueType))

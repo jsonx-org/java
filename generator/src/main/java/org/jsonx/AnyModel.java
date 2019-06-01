@@ -24,6 +24,9 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.libj.lang.IllegalAnnotationException;
+import org.libj.util.Classes;
+import org.libj.util.Strings;
 import org.openjax.json.JsonUtil;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
@@ -87,7 +90,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Field field) {
-    final AnyModel model = new AnyModel(registry, referrer, property);
+    final AnyModel model = new AnyModel(registry, referrer, property, field);
     final Id id = model.id;
 
     final AnyModel registered = (AnyModel)registry.getModel(id);
@@ -147,14 +150,21 @@ final class AnyModel extends Referrer<AnyModel> {
     this.types = getTypes(binding.getTypes$());
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property) {
+  private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Field field) {
     super(registry, declarer, property.nullable(), property.use(), null);
-    this.types = getTypes(property.types());
+    this.types = getMemberTypes(property.types());
+    final Class<?> requiredFieldType = property.types().length == 0 ? Object.class : getFieldType(property.types());
+    final boolean isRegex = Strings.isRegex(property.name());
+    if (isRegex && !Map.class.isAssignableFrom(field.getType()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + AnyProperty.class.getSimpleName() + " of type " + field.getType().getName() + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
+
+    if (!isAssignable(field, requiredFieldType, isRegex, property.nullable(), property.use()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + AnyProperty.class.getSimpleName() + " of type " + field.getType().getName() + " is not assignable for the specified types attribute");
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyElement element) {
     super(registry, declarer, element.nullable(), null, null);
-    this.types = getTypes(element.types());
+    this.types = getMemberTypes(element.types());
   }
 
   private List<Member> getTypes(final $IDREFS refs) {
@@ -204,7 +214,28 @@ final class AnyModel extends Referrer<AnyModel> {
     }
   };
 
-  private List<Member> getTypes(final t[] types) {
+  private static Class<?> getFieldType(final t[] types) {
+    if (types.length == 0)
+      return null;
+
+    final List<Class<?>> members = new ArrayList<>(types.length);
+    for (final t type : types) {
+      if (AnyType.isEnabled(type.arrays()))
+        members.add(List.class);
+      else if (type.booleans())
+        members.add(Boolean.class);
+      else if (AnyType.isEnabled(type.numbers()))
+        members.add(Number.class);
+      else if (AnyType.isEnabled(type.objects()))
+        members.add(type.objects());
+      else if (AnyType.isEnabled(type.strings()))
+        members.add(String.class);
+    }
+
+    return Classes.getGreatestCommonSuperclass(members.toArray(new Class[members.size()]));
+  }
+
+  private List<Member> getMemberTypes(final t[] types) {
     if (types.length == 0)
       return null;
 
@@ -311,9 +342,11 @@ final class AnyModel extends Referrer<AnyModel> {
     return members;
   }
 
+  private Registry.Type type;
+
   @Override
   Registry.Type type() {
-    return this.types == null ? registry.getType(Object.class) : getGreatestCommonSuperType(this.types);
+    return type == null ? type = (this.types == null ? registry.getType(Object.class) : getGreatestCommonSuperType(this.types)) : type;
   }
 
   @Override

@@ -190,8 +190,8 @@ final class NumberModel extends Model {
 
   private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) {
     super(registry, declarer, Id.hashed("n", property.scale(), parseRange(property.range())), property.nullable(), property.use());
-    if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) && (!field.getType().isPrimitive() || field.getType() == char.class || property.use() == Use.OPTIONAL))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of Number subtype, or non-nullable fields of primitive numeric type, or optional and nullable fields of Optional<? extends Number> type");
+    if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) || field.getType() == char.class || field.getType() == boolean.class || field.getType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number type with use=\"required\" or nullable=false, or of primitive numeric type with use=\"required\" and nullable=false, or of Optional<? extends Number> type with use=\"optional\" and nullable=true");
 
     this.scale = property.scale();
     try {

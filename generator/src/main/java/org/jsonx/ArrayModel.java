@@ -155,26 +155,26 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return registry.declare(id).value(new ArrayModel(registry, declarer, arrayType, arrayType.minIterate(), arrayType.maxIterate(), arrayType.elementIds(), cls.getAnnotations(), registry.getType(cls), cls.getName()), null);
   }
 
-  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty arrayProperty, final Field field) {
-    if (!isAssignable(field, List.class, Strings.isRegex(JsdUtil.getName(field)), arrayProperty.nullable(), arrayProperty.use()))
-      throw new IllegalAnnotationException(arrayProperty, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to required or not-nullable fields of List<?> types, or optional and nullable fields of Optional<? extends List<?>> type");
+  static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final Field field) {
+    if (!isAssignable(field, List.class, false, property.nullable(), property.use()))
+      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of List<?> type with use=\"required\" or nullable=false, or of Optional<? extends List<?>> type with use=\"optional\" and nullable=true");
 
-    if (ArrayType.class.equals(arrayProperty.type())) {
-      final ArrayModel model = new ArrayModel(registry, referrer, arrayProperty, arrayProperty.minIterate(), arrayProperty.maxIterate(), arrayProperty.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
+    if (ArrayType.class.equals(property.type())) {
+      final ArrayModel model = new ArrayModel(registry, referrer, property, property.minIterate(), property.maxIterate(), property.elementIds(), field.getAnnotations(), null, field.getDeclaringClass().getName() + "." + field.getName());
       final Id id = model.id;
 
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
-      return new Reference(registry, referrer, JsdUtil.getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
-    final Registry.Type type = registry.getType(arrayProperty.type());
+    final Registry.Type type = registry.getType(property.type());
     final Id id = Id.named(type);
 
     if (registry.isPending(id))
-      return Reference.defer(registry, referrer, JsdUtil.getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.use(), () -> registry.getModel(id));
+      return Reference.defer(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), () -> registry.getModel(id));
 
-    final ArrayModel model = referenceOrDeclare(registry, referrer, arrayProperty, arrayProperty.minIterate(), arrayProperty.maxIterate(), arrayProperty.type(), id, type);
-    return new Reference(registry, referrer, JsdUtil.getName(arrayProperty.name(), field), arrayProperty.nullable(), arrayProperty.use(), model);
+    final ArrayModel model = referenceOrDeclare(registry, referrer, property, property.minIterate(), property.maxIterate(), property.type(), id, type);
+    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), model);
   }
 
   private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayElement arrayElement, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
