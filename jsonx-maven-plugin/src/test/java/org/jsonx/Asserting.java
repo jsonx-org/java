@@ -27,6 +27,9 @@ class Asserting {
     final boolean equals = expected == null ? actual == null : expected.equals(actual);
     if (!equals)
       Assert.assertEquals(message, expected, actual);
+
+    if (expected != null)
+      Assert.assertEquals(expected.hashCode(), actual.hashCode());
   }
 
   static void assertEquals(final Object expected, final Object actual) {

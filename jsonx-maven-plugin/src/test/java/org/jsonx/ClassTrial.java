@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -34,8 +35,10 @@ class ClassTrial extends Trial {
   private static final JxEncoder validEncoder = JxEncoder.get();
   private static final JxEncoder invalidEncoder = new JxEncoder(validEncoder.indent, false);
 
-  private final JxObject binding;
   private final List<PropertyTrial<?>> trials = new ArrayList<>();
+  private final JxObject binding;
+
+  private int count = 0;
 
   ClassTrial(final Class<? extends JxObject> cls) throws IllegalAccessException, IllegalArgumentException, InstantiationException, InvocationTargetException, NoSuchMethodException {
     if (cls.isAnnotation() || Modifier.isAbstract(cls.getModifiers()))
@@ -86,13 +89,12 @@ class ClassTrial extends Trial {
   }
 
   public int run() throws Exception {
-    int count = 0;
     for (final PropertyTrial<?> trial : trials)
       if (trial.kase instanceof ValidCase)
         PropertyTrial.setField(trial.field, trial.object, trial.name, trial.rawValue());
 
     for (final PropertyTrial<?> trial : trials)
-      count += invoke(trial);
+      invoke(trial);
 
     return count;
   }
@@ -100,8 +102,8 @@ class ClassTrial extends Trial {
   private static void testJsonx(final String json) throws IOException, SAXException {
     final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(json)));
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
-    try {
-      final String json2 = JxConverter.jsonxToJson(url.openStream(), false);
+    try (final InputStream in = url.openStream()) {
+      final String json2 = JxConverter.jsonxToJson(in, false);
       assertEquals(json, json2);
     }
     catch (final SAXException e) {
@@ -110,15 +112,12 @@ class ClassTrial extends Trial {
     }
   }
 
-  private int invoke(final PropertyTrial<?> trial) throws Exception {
-    int count = 0;
-    final Object before = trial.field.get(trial.object);
+  private String testEncode(final PropertyTrial<?> trial, final Relations[] relations) throws Exception {
     PropertyTrial.setField(trial.field, trial.object, trial.name, trial.rawValue());
 
     String json = null;
     String value = null;
     Exception exception = null;
-    final Relations[] relations = {null};
     try {
       final int[] bounds = {-1, -1};
       json = validEncoder.marshal(binding, (f,n,r,s,e) -> {
@@ -162,10 +161,15 @@ class ClassTrial extends Trial {
       throw t;
     }
 
+    return json;
+  }
+
+  private JxObject testDecode(final PropertyTrial<?> trial, final Relations[] relations, final String json) throws Exception {
     final Object[] object = {null};
-    exception = null;
+    Exception exception = null;
+    JxObject decoded = null;
     try {
-      JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,n,v) -> {
+      decoded = JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,n,v) -> {
         if (n.equals(trial.name)) {
           if (object[0] != null)
             throw new IllegalStateException();
@@ -194,6 +198,18 @@ class ClassTrial extends Trial {
       logger.error(t.getMessage(), t);
       throw t;
     }
+
+    return decoded;
+  }
+
+  private int invoke(final PropertyTrial<?> trial) throws Exception {
+    final Object before = trial.field.get(trial.object);
+
+    final Relations[] relations = {null};
+    final String json = testEncode(trial, relations);
+    final JxObject decoded = testDecode(trial, relations, json);
+    if (decoded != null)
+      assertEquals(binding, decoded);
 
     trial.field.set(trial.object, before);
     return count;
