@@ -19,8 +19,6 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 import org.libj.util.Annotations;
@@ -90,28 +88,6 @@ final class JsdUtil {
     }
     catch (final NoSuchMethodException e) {
       return null;
-    }
-  }
-
-  static List<Class<?>> getDeclaredObjectTypes(final Field field) {
-    final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsdUtil.digest(field, idToElement);
-    final Annotation[] annotations = idToElement.get(elementIds);
-    final List<Class<?>> types = new ArrayList<>();
-    getDeclaredObjectTypes(annotations, types);
-    return types;
-  }
-
-  private static void getDeclaredObjectTypes(final Annotation[] annotations, final List<Class<?>> types) {
-    for (final Annotation annotation : annotations) {
-      if (annotation instanceof ArrayElement) {
-        final ArrayElement element = (ArrayElement)annotation;
-        if (element.type() != ArrayType.class)
-          getDeclaredObjectTypes(element.type().getAnnotations(), types);
-      }
-      else if (annotation instanceof ObjectElement) {
-        types.add(((ObjectElement)annotation).type());
-      }
     }
   }
 

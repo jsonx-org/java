@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import org.libj.util.Numbers;
 import org.openjax.json.JsonUtil;
 
-public class Range implements Serializable {
+public class Range implements Cloneable, Serializable {
   private static final long serialVersionUID = 1698022878075488056L;
 
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int start, final boolean commaOk) throws ParseException {
@@ -120,6 +120,16 @@ public class Range implements Serializable {
   }
 
   @Override
+  protected Range clone() {
+    try {
+      return (Range)super.clone();
+    }
+    catch (final CloneNotSupportedException e) {
+      throw new UnsupportedOperationException(e);
+    }
+  }
+
+  @Override
   public boolean equals(final Object obj) {
     if (obj == this)
       return true;
@@ -134,9 +144,9 @@ public class Range implements Serializable {
   @Override
   public int hashCode() {
     int hashCode = 43729;
-    hashCode = 31 * hashCode + min.hashCode() ^ 7;
+    hashCode = 31 * hashCode + (min == null ? 0 : min.hashCode() ^ 7);
     hashCode = 31 * hashCode + Boolean.hashCode(minInclusive);
-    hashCode = 31 * hashCode + max.hashCode() ^ 7;
+    hashCode = 31 * hashCode + (max == null ? 0 : max.hashCode() ^ 7);
     hashCode = 31 * hashCode + Boolean.hashCode(maxInclusive);
     return hashCode;
   }

@@ -21,11 +21,22 @@ import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.openjax.json.JsonParseException;
 
 @SuppressWarnings("unused")
 public class RangeTest {
+  static void assertEquals(final String message, final Object expected, final Object actual) {
+    Assert.assertEquals(message, expected, actual);
+    if (expected != null)
+      Assert.assertEquals(expected.hashCode(), actual.hashCode());
+  }
+
+  static void assertEquals(final Object expected, final Object actual) {
+    assertEquals(null, expected, actual);
+  }
+
   @Test
   public void test() throws ParseException {
     try {
@@ -99,6 +110,9 @@ public class RangeTest {
 
     assertEquals(new Range(null, true, BigDecimal.TEN, true), new Range("[,10]"));
     assertEquals(new Range(BigDecimal.TEN, true, null, true), new Range("[10,]"));
+
+    final Range range = new Range("[10,10]");
+    assertEquals(range, range.clone());
   }
 
   private static void assertPass(final String ... values) {

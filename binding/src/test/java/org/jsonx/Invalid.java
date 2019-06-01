@@ -21,6 +21,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class Invalid {
+  public static class NoProperty implements JxObject {
+    private Boolean noProperty;
+
+    public Boolean getNoProperty() {
+      return this.noProperty;
+    }
+
+    public void setNoProperty(final Boolean noProperty) {
+      this.noProperty = noProperty;
+    }
+  }
+
   public static class InvalidName implements JxObject {
     @BooleanProperty(name="foo")
     private Boolean invalidName;

@@ -22,6 +22,16 @@ import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.jsonx.Invalid.ArrAnnotationType;
+import org.jsonx.Invalid.Bool;
+import org.jsonx.Invalid.InvalidName;
+import org.jsonx.Invalid.NoProperty;
+import org.jsonx.Invalid.Num;
+import org.jsonx.TestArray.Array2d1;
+import org.jsonx.TestArray.ArrayAny;
+import org.jsonx.TestArray.ArrayLoop;
+import org.jsonx.library.Library;
+import org.jsonx.library.Library.Staff;
 import org.junit.Test;
 
 public class JsdUtilTest {
@@ -100,5 +110,33 @@ public class JsdUtilTest {
     testGetField("number");
     testGetField("object");
     testGetField("string");
+  }
+
+  @Test
+  public void testGetMaxOccurs() {
+    try {
+      JsdUtil.getMaxOccurs(ArrayLoop.class.getAnnotation(ArrayType.class));
+      fail("Expected UnsupportedOperationException");
+    }
+    catch (final UnsupportedOperationException e) {
+    }
+
+    assertEquals(Integer.MAX_VALUE, JsdUtil.getMaxOccurs(Staff.class.getAnnotation(ObjectElement.class)));
+
+    assertEquals(1, JsdUtil.getMaxOccurs(Array2d1.class.getAnnotation(ArrayElement.class)));
+    assertEquals(Integer.MAX_VALUE, JsdUtil.getMaxOccurs(ArrayLoop.class.getAnnotation(StringElement.class)));
+    assertEquals(Integer.MAX_VALUE, JsdUtil.getMaxOccurs(ArrayLoop.class.getAnnotation(NumberElement.class)));
+    assertEquals(Integer.MAX_VALUE, JsdUtil.getMaxOccurs(ArrayLoop.class.getAnnotation(BooleanElement.class)));
+    assertEquals(Integer.MAX_VALUE, JsdUtil.getMaxOccurs(ArrayAny.class.getAnnotation(AnyElements.class).value()[0]));
+  }
+
+  @Test
+  public void testGetName() throws NoSuchFieldException {
+    assertNull(JsdUtil.getName(NoProperty.class.getDeclaredField("noProperty")));
+    assertEquals("foo", JsdUtil.getName(InvalidName.class.getDeclaredField("invalidName")));
+    assertEquals("invalidAnnotation", JsdUtil.getName(Bool.class.getDeclaredField("invalidAnnotation")));
+    assertEquals("invalidAnnotation", JsdUtil.getName(Num.class.getDeclaredField("invalidAnnotation")));
+    assertEquals("invalidAnnotationType", JsdUtil.getName(ArrAnnotationType.class.getDeclaredField("invalidAnnotationType")));
+    assertEquals("address", JsdUtil.getName(Library.class.getDeclaredField("address")));
   }
 }

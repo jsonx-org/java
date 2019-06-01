@@ -19,14 +19,14 @@ package org.jsonx;
 import java.util.Arrays;
 import java.util.List;
 
-public final class TestUtil {
+final class TestUtil {
   @SafeVarargs
-  public static <T>List<T> l(final T ... members) {
+  static <T>List<T> l(final T ... members) {
     return Arrays.asList(members);
   }
 
   @SafeVarargs
-  public static <T>T[] a(final T ... members) {
+  static <T>T[] a(final T ... members) {
     return members;
   }
 
