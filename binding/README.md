@@ -1,9 +1,9 @@
 # JSON/Java Binding API
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?1)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?1)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/binding.svg?1)](https://www.javadoc.io/doc/org.jsonx/binding)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/binding.svg?1)](https://mvnrepository.com/artifact/org.jsonx/binding)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?dCn34FxU)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?dCn34FxU)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/binding.svg?dCn34FxU)](https://www.javadoc.io/doc/org.jsonx/binding)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/binding.svg?dCn34FxU)](https://mvnrepository.com/artifact/org.jsonx/binding)
 
 ## Abstract
 
