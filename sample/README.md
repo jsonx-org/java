@@ -1,9 +1,9 @@
 # JSONx Samples
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?dCn34FxU)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?dCn34FxU)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?dCn34FxU)](https://www.javadoc.io/doc/org.jsonx/rs)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg?dCn34FxU)](https://mvnrepository.com/artifact/org.jsonx/rs)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?Yrn6JXVz)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?Yrn6JXVz)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?Yrn6JXVz)](https://www.javadoc.io/doc/org.jsonx/rs)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg?Yrn6JXVz)](https://mvnrepository.com/artifact/org.jsonx/rs)
 
 ## Abstract
 
