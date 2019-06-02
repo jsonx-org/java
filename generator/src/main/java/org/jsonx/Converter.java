@@ -109,7 +109,7 @@ public final class Converter {
     try {
       return jsdxToJsd(url);
     }
-    catch (final ValidationException ve) {
+    catch (final IllegalArgumentException | ValidationException ve) {
       try {
         return jsdToJsdx(url);
       }

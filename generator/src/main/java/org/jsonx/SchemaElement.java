@@ -46,6 +46,8 @@ import org.libj.util.Iterators;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
+import org.openjax.xml.sax.SilentErrorHandler;
+import org.xml.sax.ErrorHandler;
 
 /**
  * The root {@link Element} of a JSON Schema Document.
@@ -94,6 +96,12 @@ public final class SchemaElement extends Element implements Declarer {
     }
   }
 
+  private static ErrorHandler errorHandler;
+
+  private static ErrorHandler getErrorHandler() {
+    return errorHandler == null ? errorHandler = new SilentErrorHandler() : errorHandler;
+  }
+
   /**
    * Creates a {@code SchemaElement} from the content of the specified file that
    * is expected to be in JSDx format.
@@ -103,12 +111,14 @@ public final class SchemaElement extends Element implements Declarer {
    *          generated JSD bindings.
    * @return The {@code SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
+   * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException}
+   *           has occurred.
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, ValidationException {
     try (final InputStream in = url.openStream()) {
-      final xL0gluGCXYYJc.Schema schema = (xL0gluGCXYYJc.Schema)Bindings.parse(in);
+      final xL0gluGCXYYJc.Schema schema = (xL0gluGCXYYJc.Schema)Bindings.parse(in, getErrorHandler());
       return new SchemaElement(schema, prefix);
     }
   }

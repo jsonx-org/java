@@ -18,11 +18,15 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.security.Permission;
 
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.libj.net.MemoryURLStreamHandler;
 
 public class ConverterTest {
   private static boolean preventExit = true;
@@ -50,11 +54,37 @@ public class ConverterTest {
     }
     catch (final SecurityException e) {
     }
+
+    try {
+      Converter.main(new String[] {});
+      fail("Expected SecurityException");
+    }
+    catch (final SecurityException e) {
+    }
   }
 
   @Test
-  public void test() throws IOException {
+  public void testConvertSchema() throws IOException {
     Converter.convert(ClassLoader.getSystemClassLoader().getResource("schema.jsd"));
     Converter.convert(ClassLoader.getSystemClassLoader().getResource("schema.jsdx"));
+  }
+
+  @Test
+  public void testMain() throws IOException {
+    final File jsdFile = Files.createTempFile("jsd", null).toFile();
+    jsdFile.deleteOnExit();
+    Converter.main(new String[] {"src/test/resources/account.jsdx", jsdFile.getAbsolutePath()});
+    final String jsd1 = new String(Files.readAllBytes(jsdFile.toPath()));
+    final String jsdx = Converter.convert(jsdFile.toURI().toURL());
+    final URL jsdxUrl = MemoryURLStreamHandler.createURL(jsdx.getBytes());
+    assertEquals(jsd1, Converter.convert(jsdxUrl));
+
+    final File jsdxFile = Files.createTempFile("jsdx", null).toFile();
+    jsdxFile.deleteOnExit();
+    Converter.main(new String[] {jsdFile.getAbsolutePath(), jsdxFile.getAbsolutePath()});
+    final String jsdx1 = new String(Files.readAllBytes(jsdxFile.toPath()));
+    final String jsd = Converter.convert(jsdxFile.toURI().toURL());
+    final URL jsdUrl = MemoryURLStreamHandler.createURL(jsd.getBytes());
+    assertEquals(jsdx1, Converter.convert(jsdUrl));
   }
 }
