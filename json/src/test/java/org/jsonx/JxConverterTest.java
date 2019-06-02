@@ -18,36 +18,47 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.Test;
 import org.libj.io.Streams;
 import org.libj.net.MemoryURLStreamHandler;
+import org.libj.util.function.Throwing;
 import org.openjax.json.JsonReader;
-import org.xml.sax.SAXException;
 
 public class JxConverterTest {
-  private static void test(final String fileName) throws IOException, SAXException {
-    final String control = new String(Streams.readBytes(ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)));
-    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(control), false), true);
-    final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
-    final String test = JxConverter.jsonxToJson(url.openStream(), true);
-    if (!control.equals(test)) {
-      System.err.println(jsonx);
-      System.out.println(test);
-      assertEquals(control, test);
+  private static final int count = 100;
+
+  private static void test(final String fileName) throws InterruptedException {
+    final CountDownLatch latch = new CountDownLatch(count);
+    for (int i = 0; i < count; ++i) {
+      new Thread(Throwing.rethrow(() -> {
+        final String control = new String(Streams.readBytes(ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)));
+        final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(control), false), true);
+        final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
+        final String test = JxConverter.jsonxToJson(url.openStream(), true);
+        if (!control.equals(test)) {
+          System.err.println(jsonx);
+          System.out.println(test);
+          assertEquals(control, test);
+        }
+
+        latch.countDown();
+      })).start();
     }
+
+    latch.await();
   }
 
   @Test
-  public void testDataType() throws IOException, SAXException {
+  public void testDataType() throws InterruptedException {
     test("datatype.json");
   }
 
   @Test
-  public void testPayPal() throws IOException, SAXException {
+  public void testPayPal() throws InterruptedException {
     test("paypal.json");
   }
 }
