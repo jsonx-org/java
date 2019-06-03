@@ -26,9 +26,9 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.openjax.maven.mojo.PatternSetMojo;
 import org.openjax.maven.mojo.FilterParameter;
 import org.openjax.maven.mojo.FilterType;
+import org.openjax.maven.mojo.PatternSetMojo;
 
 @Mojo(name="validate", defaultPhase=LifecyclePhase.COMPILE)
 @Execute(goal="validate")
@@ -46,7 +46,6 @@ public class ValidateMojo extends PatternSetMojo {
 
       for (final String schema : schemas)
         SchemaElement.parse(new URL(schema), "");
-
     }
     catch (final  IOException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);

@@ -19,9 +19,9 @@ package org.jsonx;
 import java.util.List;
 
 import org.apache.maven.plugins.annotations.Parameter;
-import org.openjax.maven.mojo.GeneratorMojo;
 import org.openjax.maven.mojo.FilterParameter;
 import org.openjax.maven.mojo.FilterType;
+import org.openjax.maven.mojo.GeneratorMojo;
 
 public abstract class JxMojo extends GeneratorMojo {
   @FilterParameter(FilterType.URL)
