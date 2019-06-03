@@ -17,7 +17,8 @@
 package org.jsonx;
 
 /**
- * Signals that an error has occurred while decoding a JSON document.
+ * Signals that an error has occurred while decoding a JSON document to binding
+ * classes.
  */
 public class DecodeException extends Exception {
   private static final long serialVersionUID = 7087309932016830988L;

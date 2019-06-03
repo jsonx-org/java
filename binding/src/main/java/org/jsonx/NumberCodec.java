@@ -104,7 +104,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
         this.range = new Range(property.range());
       }
       catch (final ParseException e) {
-        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES));
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES), e);
       }
     }
   }

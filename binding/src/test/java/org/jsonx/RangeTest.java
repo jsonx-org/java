@@ -115,13 +115,13 @@ public class RangeTest {
     assertEquals(range, range.clone());
   }
 
-  private static void assertPass(final String ... values) {
+  private static void assertPass(final String ... values) throws ParseException {
     for (int i = 0; i < values.length; ++i)
       new Range(values[i]);
   }
 
   @SafeVarargs
-  private static void assertFail(final String[] values, final Class<? extends Exception> ... classes) {
+  private static void assertFail(final String[] values, final Class<? extends Exception> ... classes) throws ParseException {
     for (int i = 0; i < values.length; ++i) {
       try {
         new Range(values[i]);
@@ -137,16 +137,16 @@ public class RangeTest {
     }
   }
 
-  private static void assertFailArgument(final String ... values) {
+  private static void assertFailArgument(final String ... values) throws ParseException {
     assertFail(values, IllegalArgumentException.class);
   }
 
-  private static void assertFailParse(final String ... values) {
+  private static void assertFailParse(final String ... values) throws ParseException {
     assertFail(values, ParseException.class, JsonParseException.class);
   }
 
   @Test
-  public void testPass() {
+  public void testPass() throws ParseException {
     assertPass("[-0,1]", "(-2,-1)", "[0,1)", "(0,1]");
     assertPass("[0.1,1.1]", "(0.1,1.1)", "[-2.1,-1.1)", "(0.1,1.1]");
     assertPass("[0,1.1]", "(0,1.1)", "[0,1.1)", "(-2,-1.1]");
@@ -171,7 +171,7 @@ public class RangeTest {
   }
 
   @Test
-  public void testFailArgument() {
+  public void testFailArgument() throws ParseException {
     assertFailArgument("[", "]", "[,", ",]", "[1,", ",1]");
     assertFailArgument("(", "]", "(,", ",]", "(1,", ",1]");
     assertFailArgument("[", ")", "[,", ",)", "[1,", ",1)");
@@ -180,7 +180,7 @@ public class RangeTest {
   }
 
   @Test
-  public void testFailParse() {
+  public void testFailParse() throws ParseException {
     assertFailParse("[00,0]", "[0,00]", "[-.1,0]", "[-1.,0]", "[-0.1,-]", "[-,1]");
     assertFailParse("(00,0]", "(0,00]", "(-.1,0]", "(-1.,0]", "(-0.1,-]", "(-,1]");
     assertFailParse("[00,0)", "[0,00)", "[-.1,0)", "[1.,0)", "[-0.1,-)", "[-,1)");

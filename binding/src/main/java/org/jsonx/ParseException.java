@@ -19,7 +19,7 @@ package org.jsonx;
 /**
  * Signals that an error has been reached unexpectedly while parsing.
  */
-public class ParseException extends RuntimeException {
+public class ParseException extends Exception {
   private static final long serialVersionUID = -4391452229717188054L;
 
   /**
@@ -29,8 +29,9 @@ public class ParseException extends RuntimeException {
   private final int errorOffset;
 
   /**
-   * Constructs a ParseException with the specified detail message and offset. A
-   * detail message is a String that describes this particular exception.
+   * Constructs a {@code ParseException} with the specified detail message and
+   * offset. A detail message is a String that describes this particular
+   * exception.
    *
    * @param string The detail message.
    * @param errorOffset The position where the error is found while parsing.
@@ -41,8 +42,6 @@ public class ParseException extends RuntimeException {
   }
 
   /**
-   * Returns the position where the error was found.
-   *
    * @return The position where the error was found.
    */
   public int getErrorOffset() {

@@ -95,7 +95,7 @@ class ObjectTrial extends PropertyTrial<Object> {
 
       return object;
     }
-    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | ParseException e) {
+    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
       throw new UnsupportedOperationException(e);
     }
   }

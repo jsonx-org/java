@@ -17,7 +17,8 @@
 package org.jsonx;
 
 /**
- * Signals that an error has occurred while encoding a JSON document.
+ * Signals that an error has occurred while encoding a JSON document from
+ * binding classes.
  */
 public class EncodeException extends RuntimeException {
   private static final long serialVersionUID = -5907473656780591942L;

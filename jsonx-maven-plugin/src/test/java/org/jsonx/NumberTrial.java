@@ -27,34 +27,49 @@ import org.libj.util.Classes;
 
 class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
-    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
-    final Range range = property.range().length() == 0 ? null : new Range(property.range());
-    trials.add(new NumberTrial(ValidCase.CASE, field, object, toProperForm(field, property.scale(), makeValid(range)), property));
+    try {
+      logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
+      final Range range = property.range().length() == 0 ? null : new Range(property.range());
+      trials.add(new NumberTrial(ValidCase.CASE, field, object, toProperForm(field, property.scale(), makeValid(range)), property));
 
-    if (property.range().length() > 0)
-      trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.scale(), makeInvalid(range)), property));
+      if (property.range().length() > 0)
+        trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.scale(), makeInvalid(range)), property));
 
-    if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(field.getType()))
-      trials.add(new NumberTrial(ScaleCase.CASE, field, object, toProperForm(field, property.scale() + 1, makeValid(range)), property));
+      if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(field.getType()))
+        trials.add(new NumberTrial(ScaleCase.CASE, field, object, toProperForm(field, property.scale() + 1, makeValid(range)), property));
 
-    if (property.use() == Use.REQUIRED) {
-      trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));
+      if (property.use() == Use.REQUIRED) {
+        trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));
+      }
+      else if (property.nullable()) {
+        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, null, property));
+        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      }
+      else {
+        trials.add(new NumberTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      }
     }
-    else if (property.nullable()) {
-      trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, null, property));
-      trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
-    }
-    else {
-      trials.add(new NumberTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+    catch (final ParseException e) {
+      throw new IllegalArgumentException(e);
     }
   }
 
   static Number createValid(final Field field, final String range, final int scale) {
-    return toProperForm(field, scale, range.length() == 0 ? null : makeValid(new Range(range)));
+    try {
+      return toProperForm(field, scale, range.length() == 0 ? null : makeValid(new Range(range)));
+    }
+    catch (final ParseException e) {
+      throw new IllegalArgumentException(e);
+    }
   }
 
   static Number createValid(final String range, final int scale) {
-    return setScale(range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)), scale);
+    try {
+      return setScale(range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)), scale);
+    }
+    catch (final ParseException e) {
+      throw new IllegalArgumentException(e);
+    }
   }
 
   private static BigDecimal makeValid(final Range range) {
@@ -111,7 +126,7 @@ class NumberTrial extends PropertyTrial<Number> {
   final int scale;
   final Range range;
 
-  private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Field field, final Object object, final Object value, final NumberProperty property) {
+  private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Field field, final Object object, final Object value, final NumberProperty property) throws ParseException {
     super(kase, field, object, value, property.name(), property.use());
     this.scale = property.scale();
     this.range = property.range().length() == 0 ? null : new Range(property.range());

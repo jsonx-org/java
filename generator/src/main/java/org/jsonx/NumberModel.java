@@ -101,35 +101,60 @@ final class NumberModel extends Model {
   }
 
   static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Number binding) {
-    return registry.reference(new NumberModel(registry, referrer, binding), referrer);
+    try {
+      return registry.reference(new NumberModel(registry, referrer, binding), referrer);
+    }
+    catch (final ParseException e) {
+      throw createValidationException(binding, binding.getRange$().text(), e);
+    }
   }
 
   static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.Number binding) {
-    return registry.reference(new NumberModel(registry, referrer, binding), referrer);
+    try {
+      return registry.reference(new NumberModel(registry, referrer, binding), referrer);
+    }
+    catch (final ParseException e) {
+      throw createValidationException(binding, binding.getRange$().text(), e);
+    }
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Field field) {
-    final NumberModel model = new NumberModel(registry, referrer, property, field);
-    final Id id = model.id;
+    try {
+      final NumberModel model = new NumberModel(registry, referrer, property, field);
+      final Id id = model.id;
 
-    final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      final NumberModel registered = (NumberModel)registry.getModel(id);
+      return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    }
+    catch (final ParseException e) {
+      throw createValidationException(property.annotationType(), property.range(), e);
+    }
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
-    final NumberModel model = new NumberModel(registry, referrer, element.annotationType(), element.nullable(), element.scale(), element.range());
-    final Id id = model.id;
+    try {
+      final NumberModel model = new NumberModel(registry, referrer, element.annotationType(), element.nullable(), element.scale(), element.range());
+      final Id id = model.id;
 
-    final NumberModel registered = (NumberModel)registry.getModel(id);
-    return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      final NumberModel registered = (NumberModel)registry.getModel(id);
+      return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    }
+    catch (final ParseException e) {
+      throw createValidationException(element.annotationType(), element.range(), e);
+    }
   }
 
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
-    final NumberModel model = new NumberModel(registry, referrer, type.annotationType(), null, type.scale(), type.range());
-    final Id id = model.id;
+    try {
+      final NumberModel model = new NumberModel(registry, referrer, type.annotationType(), null, type.scale(), type.range());
+      final Id id = model.id;
 
-    final NumberModel registered = (NumberModel)registry.getModel(id);
-    return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
+      final NumberModel registered = (NumberModel)registry.getModel(id);
+      return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
+    }
+    catch (final ParseException e) {
+      throw createValidationException(type.annotationType(), type.range(), e);
+    }
   }
 
   private static ValidationException createValidationException(final Binding binding, final String range, final ParseException e) {
@@ -144,11 +169,11 @@ final class NumberModel extends Model {
     return scale == null || scale.text() == null ? Integer.MAX_VALUE : scale.text();
   }
 
-  private static Range parseRange(final String range) {
+  private static Range parseRange(final String range) throws ParseException {
     return range == null || range.length() == 0 ? null : new Range(range);
   }
 
-  private static Range parseRange(final xL0gluGCXYYJc.$NumberMember.Range$ range) {
+  private static Range parseRange(final xL0gluGCXYYJc.$NumberMember.Range$ range) throws ParseException {
     return range == null ? null : parseRange(range.text());
   }
 
@@ -166,51 +191,31 @@ final class NumberModel extends Model {
     }
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Number binding) {
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Number binding) throws ParseException {
     super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.scale = parseScale(binding.getScale$());
-    try {
-      this.range = parseRange(binding.getRange$());
-    }
-    catch (final ParseException e) {
-      throw createValidationException(binding, binding.getRange$().text(), e);
-    }
+    this.range = parseRange(binding.getRange$());
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Number binding) {
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Number binding) throws ParseException {
     super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.scale = parseScale(binding.getScale$());
-    try {
-      this.range = parseRange(binding.getRange$());
-    }
-    catch (final ParseException e) {
-      throw createValidationException(binding, binding.getRange$().text(), e);
-    }
+    this.range = parseRange(binding.getRange$());
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) {
+  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) throws ParseException {
     super(registry, declarer, Id.hashed("n", property.scale(), parseRange(property.range())), property.nullable(), property.use());
     if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) || field.getType() == char.class || field.getType() == boolean.class || field.getType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number type with use=\"required\" or nullable=false, or of primitive numeric type with use=\"required\" and nullable=false, or of Optional<? extends Number> type with use=\"optional\" and nullable=true");
 
     this.scale = property.scale();
-    try {
-      this.range = parseRange(property.range());
-    }
-    catch (final ParseException e) {
-      throw createValidationException(property.annotationType(), property.range(), e);
-    }
+    this.range = parseRange(property.range());
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Class<? extends Annotation> annotationType, final Boolean nullable, final int scale, final String range) {
+  private NumberModel(final Registry registry, final Declarer declarer, final Class<? extends Annotation> annotationType, final Boolean nullable, final int scale, final String range) throws ParseException {
     super(registry, declarer, Id.hashed("n", scale, parseRange(range)), nullable, null);
     this.scale = scale;
-    try {
-      this.range = parseRange(range);
-    }
-    catch (final ParseException e) {
-      throw createValidationException(annotationType, range, e);
-    }
+    this.range = parseRange(range);
   }
 
   @Override
