@@ -49,8 +49,6 @@ public class DecodeException extends Exception {
   }
 
   /**
-   * Returns the position where the error was found.
-   *
    * @return The position where the error was found.
    */
   public int getErrorOffset() {
