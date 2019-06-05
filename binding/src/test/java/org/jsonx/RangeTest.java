@@ -112,7 +112,13 @@ public class RangeTest {
     assertEquals(new Range(BigDecimal.TEN, true, null, true), new Range("[10,]"));
 
     final Range range = new Range("[10,10]");
+    assertEquals(BigDecimal.valueOf(10), range.getMin());
+    assertTrue(range.isMinInclusive());
+    assertEquals(BigDecimal.valueOf(10), range.getMax());
+    assertTrue(range.isMaxInclusive());
+    assertEquals(range, range);
     assertEquals(range, range.clone());
+    assertNotEquals("", range);
   }
 
   private static void assertPass(final String ... values) throws ParseException {
