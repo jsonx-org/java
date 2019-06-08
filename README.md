@@ -110,15 +110,15 @@ The <ins>JSD</ins> that describes the **Response** contract is:
   "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
-    "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
-    "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:class": "boolean", "jsd:nullable": false} } },
+  "product": { "jsd:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jsd:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
-    "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v1"} } }
+  "product1": { "jsd:type": "object", "extends": "product", "properties": {
+    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } }
 }
 ```
 
@@ -172,19 +172,19 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
   "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
-    "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
-    "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:class": "boolean", "jsd:nullable": false} } },
+  "product": { "jsd:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jsd:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
-    "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v1"} } },
+  "product1": { "jsd:type": "object", "extends": "product", "properties": {
+    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } },
 
-+ "product2": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
-+   "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v2" },
-+   "Description": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" } } }
++ "product2": { "jsd:type": "object", "extends": "product", "properties": {
++   "Version": { "jsd:type": "string", "nullable": false, "pattern": "v2" },
++   "Description": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
 }
 ```
 
@@ -255,22 +255,22 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
      "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
      "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-     "myNumber": { "jsd:class": "number", "jsd:range": "[-1,1)" },
-     "myString": { "jsd:class": "string", "jsd:pattern": "[a-z]+" },
+     "myNumber": { "jsd:type": "number", "range": "[-1,1)" },
+     "myString": { "jsd:type": "string", "pattern": "[a-z]+" },
      "myObject": {
-       "jsd:class": "object", "jsd:properties": {
+       "jsd:type": "object", "properties": {
          "myArray": {
-           "jsd:class": "array", "jsd:elements": [
-             { "jsd:class": "boolean" },
-             { "jsd:class": "reference", "jsd:type": "myNumber" },
-             { "jsd:class": "reference", "jsd:type": "myString" },
-             { "jsd:class": "array", "jsd:elements": [
-               { "jsd:class": "boolean" },
-               { "jsd:class": "number", "jsd:form": "integer", "jsd:range": "[0,100]" },
-               { "jsd:class": "string", "jsd:pattern": "[0-9]+" },
-               { "jsd:class": "any", "jsd:types": "myNumber myString" } ]},
-           { "jsd:class": "reference", "jsd:type": "myObject" },
-           { "jsd:class": "any", "jsd:types": "myString myObject" }]
+           "jsd:type": "array", "elements": [
+             { "jsd:type": "boolean" },
+             { "jsd:type": "reference", "type": "myNumber" },
+             { "jsd:type": "reference", "type": "myString" },
+             { "jsd:type": "array", "elements": [
+               { "jsd:type": "boolean" },
+               { "jsd:type": "number", "form": "integer", "range": "[0,100]" },
+               { "jsd:type": "string", "pattern": "[0-9]+" },
+               { "jsd:type": "any", "types": "myNumber myString" } ]},
+           { "jsd:type": "reference", "type": "myObject" },
+           { "jsd:type": "any", "types": "myString myObject" }]
          }
        }
      }
@@ -372,30 +372,30 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
      "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
      "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-     "positiveDecimal": { "jsd:class": "number", "jsd:range": "[1,]" },
-     "positiveInteger": { "jsd:class": "number", "jsd:form": "integer", "jsd:range": "[1,]" },
-     "date": { "jsd:class": "string", "jsd:pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
-     "nonEmptyString": { "jsd:class": "string", "jsd:pattern": "\\S|\\S.*\\S" },
-     "address": { "jsd:class": "object", "jsd:properties": {
-       "name": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString" },
-       "address": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString" },
-       "city": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString" },
-       "postalCode": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString", "jsd:use": "optional" },
-       "country": { "jsd:class": "reference", "jsd:type": "nonEmptyString" } }
+     "positiveDecimal": { "jsd:type": "number", "range": "[1,]" },
+     "positiveInteger": { "jsd:type": "number", "form": "integer", "range": "[1,]" },
+     "date": { "jsd:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
+     "nonEmptyString": { "jsd:type": "string", "pattern": "\\S|\\S.*\\S" },
+     "address": { "jsd:type": "object", "properties": {
+       "name": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "address": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "city": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "postalCode": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
+       "country": { "jsd:type": "reference", "type": "nonEmptyString" } }
      },
-     "invoice": { "jsd:class": "object", "jsd:properties": {
-       "number": { "jsd:class": "reference", "jsd:type": "positiveInteger" },
-       "date": { "jsd:class": "reference", "jsd:type": "date" },
-       "billingAddress": { "jsd:class": "reference", "jsd:type": "address" },
-       "shippingAddress": { "jsd:class": "reference", "jsd:type": "address" },
-       "billedItems": { "jsd:class": "array", "jsd:nullable": false, "jsd:elements": [
-         { "jsd:class": "reference", "jsd:type": "item" } ] } }
+     "invoice": { "jsd:type": "object", "properties": {
+       "number": { "jsd:type": "reference", "type": "positiveInteger" },
+       "date": { "jsd:type": "reference", "type": "date" },
+       "billingAddress": { "jsd:type": "reference", "type": "address" },
+       "shippingAddress": { "jsd:type": "reference", "type": "address" },
+       "billedItems": { "jsd:type": "array", "nullable": false, "elements": [
+         { "jsd:type": "reference", "type": "item" } ] } }
      },
-     "item": { "jsd:class": "object", "jsd:properties": {
-       "description": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "nonEmptyString" },
-       "code": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "positiveInteger" },
-       "quantity": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "positiveInteger" },
-       "price": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "positiveDecimal" } }
+     "item": { "jsd:type": "object", "properties": {
+       "description": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "code": { "jsd:type": "reference", "nullable": false, "type": "positiveInteger" },
+       "quantity": { "jsd:type": "reference", "nullable": false, "type": "positiveInteger" },
+       "price": { "jsd:type": "reference", "nullable": false, "type": "positiveDecimal" } }
      }
    }
    ```
@@ -707,16 +707,16 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
      "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
      "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-     "uuid": { "jsd:class": "string", "jsd:pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
-     "id": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
-       "id": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "uuid" } } },
-     "credentials": { "jsd:class": "object", "jsd:properties": {
-       "email": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
-       "password": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "[0-9a-f]{64}", "jsd:use": "optional" } } },
-     "account": { "jsd:class": "object", "jsd:extends": "credentials", "jsd:properties": {
-       "id": { "jsd:class": "reference", "jsd:nullable": false, "jsd:type": "uuid", "jsd:use": "optional" },
-       "firstName": { "jsd:class": "string", "jsd:nullable": false },
-       "lastName": { "jsd:class": "string", "jsd:nullable": false } } }
+     "uuid": { "jsd:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
+     "id": { "jsd:type": "object", "abstract": true, "properties": {
+       "id": { "jsd:type": "reference", "nullable": false, "type": "uuid" } } },
+     "credentials": { "jsd:type": "object", "properties": {
+       "email": { "jsd:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
+       "password": { "jsd:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
+     "account": { "jsd:type": "object", "extends": "credentials", "properties": {
+       "id": { "jsd:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
+       "firstName": { "jsd:type": "string", "nullable": false },
+       "lastName": { "jsd:type": "string", "nullable": false } } }
    }
    ```
 

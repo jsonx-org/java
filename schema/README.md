@@ -103,7 +103,7 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **schema** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:schemaLocation</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br><samp>jsd:doc</samp><br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema._ Required.<br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_Location URL of namespace._ Optional.<br>&nbsp;&nbsp;Specified as: `"%NAMESPACE_URI% %LOCATION_URL%"`<br>&nbsp;&nbsp;Used by schema processors to determine location of<br>&nbsp;&nbsp;schema definition for a namespace.<br>Text comments. Optional.<br>_[Type Declaration][#types]_. Optional.<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
+| <samp>( **schema** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:schemaLocation</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br><samp>doc</samp><br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema._ Required.<br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_Location URL of namespace._ Optional.<br>&nbsp;&nbsp;Specified as: `"%NAMESPACE_URI% %LOCATION_URL%"`<br>&nbsp;&nbsp;Used by schema processors to determine location of<br>&nbsp;&nbsp;schema definition for a namespace.<br>Text comments. Optional.<br>_[Type Declaration][#types]_. Optional.<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
 
 1. <ins>Example</ins>: `jsd`
    ```json
@@ -125,17 +125,17 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
 
 ### 4.2 Model for JSON Values
 
-The <samp>**model**</samp> objects define the constraint properties of the five JSON value classes: <samp>**boolean**</samp>, <samp>**number**</samp>, <samp>**string**</samp>, <samp>**object**</samp>, and <samp>**array**</samp>. The <ins>JSON Schema Definition Language</ins> defines two additional meta value classes named <samp>**any**</samp> and <samp>**reference**</samp>.
+The <samp>**model**</samp> objects define the constraint properties of the five JSON value types: <samp>**boolean**</samp>, <samp>**number**</samp>, <samp>**string**</samp>, <samp>**object**</samp>, and <samp>**array**</samp>. The <ins>JSON Schema Definition Language</ins> defines two additional meta value types named <samp>**any**</samp> and <samp>**reference**</samp>.
 
 Each <samp>**model**</samp> object supports the `doc` attribute.
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp> | <samp>jsd:doc</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Text comments. Optional.<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; |
+| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp> | <samp>doc</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Text comments. Optional.<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; |
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:doc": "Comment for this element",
+   { "doc": "Comment for this element",
      ...
    }
    ```
@@ -153,11 +153,11 @@ The <samp>**boolean**</samp> model is the only model that lacks validation const
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **boolean** )</samp> | <samp>jsd:class</samp> | <samp>boolean</samp> |
+| <samp>( **boolean** )</samp> | <samp>jsd:type</samp> | <samp>boolean</samp> |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "boolean" }
+   { "jsd:type": "boolean" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -176,11 +176,11 @@ The <samp>**number**</samp> model defines two validation constraints for <samp>*
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **number** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:scale</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(0\|1\|2\|...)</samp><br>&nbsp;&nbsp;The number of digits to the right of the decimal point.<br>&nbsp;&nbsp;**If a value is not specified, the scale is unbounded.**<br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
+| <samp>( **number** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>scale</samp><br>&nbsp;<br>&nbsp;<br><samp>range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(0\|1\|2\|...)</samp><br>&nbsp;&nbsp;The number of digits to the right of the decimal point.<br>&nbsp;&nbsp;**If a value is not specified, the scale is unbounded.**<br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "number", "scale": 0, "range": "[-1,1)" }
+   { "jsd:type": "number", "scale": 0, "range": "[-1,1)" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -199,11 +199,11 @@ The <samp>**string**</samp> model defines one validation constraint for <samp>**
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **string** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:pattern</samp><br>&nbsp; | <samp>string</samp><br>_Regular expression_<br>&nbsp;&nbsp;Specifies the regular expression. |
+| <samp>( **string** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>pattern</samp><br>&nbsp; | <samp>string</samp><br>_Regular expression_<br>&nbsp;&nbsp;Specifies the regular expression. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "string", "pattern": "pattern" }
+   { "jsd:type": "string", "pattern": "pattern" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -222,7 +222,7 @@ The <samp>**object**</samp> model defines three validation constraints for <samp
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <a name="objecttype"><samp>( **object** )</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:abstract</samp><br>&nbsp;<br><samp>jsd:extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying<br>&nbsp;&nbsp;object inheritence.<br>_[Property declaration][#properties]_<br>&nbsp;&nbsp;Declaration of object property. |
+| <a name="objecttype"><samp>( **object** )</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>abstract</samp><br>&nbsp;<br><samp>extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying<br>&nbsp;&nbsp;object inheritence.<br>_[Property declaration][#properties]_<br>&nbsp;&nbsp;Declaration of object property. |
 
 
 ##### 4.2.4.1 Property Names
@@ -231,17 +231,17 @@ Names of object properties are considered as regular expressions. If an object d
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "object",
-     "jsd:properties": {
-       "propArray": { "jsd:class": "array",
-         "jsd:elements": [...] },
-       "propBoolean": { "jsd:class": "boolean" },
-       "propNumber": { "jsd:class": "number" },
-       "propString": { "jsd:class": "string" },
-       "propObject": { "jsd:class": "object",
-         "jsd:properties": {...} },
-       "propReference": { "jsd:class": "reference", "jsd:type": "..." },
-       ".*": { "jsd:class": "any", "jsd:types": "..." }
+   { "jsd:type": "object",
+     "properties": {
+       "propArray": { "jsd:type": "array",
+         "elements": [...] },
+       "propBoolean": { "jsd:type": "boolean" },
+       "propNumber": { "jsd:type": "number" },
+       "propString": { "jsd:type": "string" },
+       "propObject": { "jsd:type": "object",
+         "properties": {...} },
+       "propReference": { "jsd:type": "reference", "type": "..." },
+       ".*": { "jsd:type": "any", "types": "..." }
      }
    }
    ```
@@ -286,19 +286,19 @@ The <samp>**array**</samp> model defines three validation constraints for <samp>
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <a name="arraytype"><samp>( **array** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | <samp>jsd:class</samp><br><samp>jsd:minIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:maxIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:elements</samp><br>&nbsp; | <samp>array</samp><br><samp>(**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>(**1**\|2\|...\|unbounded)</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>\[</samp> [Element declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of member element declarations. |
+| <a name="arraytype"><samp>( **array** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | <samp>jsd:type</samp><br><samp>minIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>maxIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>elements</samp><br>&nbsp; | <samp>array</samp><br><samp>(**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>(**1**\|2\|...\|unbounded)</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>\[</samp> [Element declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of member element declarations. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "array",
-     "jsd:elements": [
-       { "jsd:class": "array",
-         "jsd:elements": [...] },
-       { "jsd:class": "boolean" },
-       { "jsd:class": "number" },
-       { "jsd:class": "string" },
-       { "jsd:class": "reference", "jsd:type": "..." },
-       { "jsd:class": "any", "jsd:types": "..." }
+   { "jsd:type": "array",
+     "elements": [
+       { "jsd:type": "array",
+         "elements": [...] },
+       { "jsd:type": "boolean" },
+       { "jsd:type": "number" },
+       { "jsd:type": "string" },
+       { "jsd:type": "reference", "type": "..." },
+       { "jsd:type": "any", "types": "..." }
      ]
    }
    ```
@@ -337,11 +337,11 @@ The <samp>**any**</samp> model defines one validation constraint: <samp>types</s
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **any** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:types</samp><br>&nbsp; | <samp>any</samp><br><samp>\[</samp> Name of [type declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of type declarations. |
+| <samp>( **any** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>types</samp><br>&nbsp; | <samp>any</samp><br><samp>\[</samp> Name of [type declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of type declarations. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "any", "jsd:types": "..." }
+   { "jsd:type": "any", "types": "..." }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -360,11 +360,11 @@ The <samp>**reference**</samp> model defines one validation constraint: <samp>ty
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **reference** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:class</samp><br><samp>jsd:type</samp><br>&nbsp; | <samp>reference</samp><br>_Name of [type declaration][#types]_<br>&nbsp;&nbsp;Name of root-level type declaration to reference. |
+| <samp>( **reference** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>type</samp><br>&nbsp; | <samp>reference</samp><br>_Name of [type declaration][#types]_<br>&nbsp;&nbsp;Name of root-level type declaration to reference. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:class": "reference", "jsd:type": "..." }
+   { "jsd:type": "reference", "type": "..." }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -383,19 +383,19 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **boolean** \|&nbsp;&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;~~any~~ \|</samp><br><samp>&nbsp;&nbsp;~~reference~~ )</samp> | <samp>jsd:name</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | _Name of declared type_<br>&nbsp;&nbsp;Name of type declaration to be used as reference<br>&nbsp;&nbsp;throuthout the JSD.<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; |
+| <samp>( **boolean** \|&nbsp;&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;~~any~~ \|</samp><br><samp>&nbsp;&nbsp;~~reference~~ )</samp> | <samp>name</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | _Name of declared type_<br>&nbsp;&nbsp;Name of type declaration to be used as reference<br>&nbsp;&nbsp;throuthout the JSD.<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; |
 
 1. <ins>Example</ins>: `jsd`
    ```json
    { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
-     "rootArray": { "jsd:class": "array",
-       "jsd:elements": [...] },
-     "rootBoolean": { "jsd:class": "boolean" },
-     "rootNumber": { "jsd:class": "number" },
-     "rootString": { "jsd:class": "string" },
-     "rootObject": { "jsd:class": "object",
-       "jsd:properties": {...} }
+     "rootArray": { "jsd:type": "array",
+       "elements": [...] },
+     "rootBoolean": { "jsd:type": "boolean" },
+     "rootNumber": { "jsd:type": "number" },
+     "rootString": { "jsd:type": "string" },
+     "rootObject": { "jsd:type": "object",
+       "properties": {...} }
      ...
    }
    ```
@@ -423,23 +423,23 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp> | <samp>jsd:use</samp><br>&nbsp;<br><samp>jsd:nullable</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>(**required**\|optional)</samp><br>&nbsp;&nbsp;Specifies whether the property use is required or optional.<br><samp>(**true**\|false)</samp><br>&nbsp;&nbsp;Specifies whether the property is nullable.<br>&nbsp;<br>&nbsp;<br>&nbsp; |
+| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp> | <samp>use</samp><br>&nbsp;<br><samp>nullable</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>(**required**\|optional)</samp><br>&nbsp;&nbsp;Specifies whether the property use is required or optional.<br><samp>(**true**\|false)</samp><br>&nbsp;&nbsp;Specifies whether the property is nullable.<br>&nbsp;<br>&nbsp;<br>&nbsp; |
 
 1. <ins>Example</ins>: `jsd`
    ```json
    { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
-     "rootObject": { "jsd:class": "object",
-       "jsd:properties": {
-         "propArray": { "jsd:class": "array", "jsd:nullable": true, "jsd:use": "required",
-           "jsd:elements": [...] },
-         "propBoolean": { "jsd:class": "boolean", "jsd:nullable": true, "jsd:use": "required" },
-         "propNumber": { "jsd:class": "number", "jsd:nullable": true, "jsd:use": "required" },
-         "propString": { "jsd:class": "string", "jsd:nullable": true, "jsd:use": "required" },
-         "propObject": { "jsd:class": "object", "jsd:nullable": true, "jsd:use": "optional",
-           "jsd:properties": {...} },
-         "propReference": { "jsd:class": "reference", "jsd:nullable": true, "jsd:use": "required", "jsd:type": "..." },
-         ".*": { "jsd:class": "any", "jsd:nullable": true, "jsd:use": "optional", "jsd:types": "..." }
+     "rootObject": { "jsd:type": "object",
+       "properties": {
+         "propArray": { "jsd:type": "array", "nullable": true, "use": "required",
+           "elements": [...] },
+         "propBoolean": { "jsd:type": "boolean", "nullable": true, "use": "required" },
+         "propNumber": { "jsd:type": "number", "nullable": true, "use": "required" },
+         "propString": { "jsd:type": "string", "nullable": true, "use": "required" },
+         "propObject": { "jsd:type": "object", "nullable": true, "use": "optional",
+           "properties": {...} },
+         "propReference": { "jsd:type": "reference", "nullable": true, "use": "required", "type": "..." },
+         ".*": { "jsd:type": "any", "nullable": true, "use": "optional", "types": "..." }
        }
      }
      ...
@@ -473,22 +473,22 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp><br>&nbsp; | <samp>jsd:nullable</samp><br>&nbsp;<br><samp>jsd:minOccurs</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:maxOccurs</samp><br>&nbsp;<br>&nbsp; | <samp>(**true**\|false)</samp><br>&nbsp;&nbsp;Specifies whether the property is nullable.<br><samp>(0\|**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of occurrence of<br>&nbsp;&nbsp;the member element.<br><samp>(0\|1\|2\|...\|**unbounded**)</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of occurrence of<br>&nbsp;&nbsp;the member element. |
+| <samp>( **boolean** \|&nbsp;</samp><br><samp>&nbsp;&nbsp;**number** \|</samp><br><samp>&nbsp;&nbsp;**string** \|</samp><br><samp>&nbsp;&nbsp;**object** \|</samp><br><samp>&nbsp;&nbsp;**array** \|</samp><br><samp>&nbsp;&nbsp;any \|</samp><br><samp>&nbsp;&nbsp;reference )</samp><br>&nbsp; | <samp>nullable</samp><br>&nbsp;<br><samp>minOccurs</samp><br>&nbsp;<br>&nbsp;<br><samp>maxOccurs</samp><br>&nbsp;<br>&nbsp; | <samp>(**true**\|false)</samp><br>&nbsp;&nbsp;Specifies whether the property is nullable.<br><samp>(0\|**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of occurrence of<br>&nbsp;&nbsp;the member element.<br><samp>(0\|1\|2\|...\|**unbounded**)</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of occurrence of<br>&nbsp;&nbsp;the member element. |
 
 1. <ins>Example</ins>: `jsd`
    ```json
    { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
      "rootArray": {
-       "jsd:class": "array",
-       "jsd:elements": [
-         { "jsd:class": "boolean", "jsd:minOccurs": "1", "jsd:maxOccurs": "unbounded", "jsd:nullable": true},
-         { "jsd:class": "number", "jsd:minOccurs": "1", "jsd:maxOccurs": "unbounded", "jsd:nullable": true },
-         { "jsd:class": "string", "jsd:minOccurs": "1", "jsd:maxOccurs": "unbounded", "jsd:nullable": true },
-         { "jsd:class": "array", "jsd:minOccurs": "1", "jsd:maxOccurs": "unbounded", "jsd:nullable": true,
-           "jsd:elements": [...] },
-         { "jsd:class": "reference", "jsd:minOccurs": "1", "jsd:maxOccurs": "unbounded", "jsd:nullable": true, "jsd:type": "..." },
-         { "jsd:class": "any", "jsd:minOccurs": "1", "jsd:maxOccurs": "unbounded", "jsd:nullable": true, "jsd:types": "..." }
+       "jsd:type": "array",
+       "elements": [
+         { "jsd:type": "boolean", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true},
+         { "jsd:type": "number", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true },
+         { "jsd:type": "string", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true },
+         { "jsd:type": "array", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true,
+           "elements": [...] },
+         { "jsd:type": "reference", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true, "type": "..." },
+         { "jsd:type": "any", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true, "types": "..." }
        ]
      }
      ...
@@ -621,156 +621,156 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
   "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "array": {
-    "jsd:class": "array",
-    "jsd:elements": [{
-      "jsd:class": "boolean"
+    "jsd:type": "array",
+    "elements": [{
+      "jsd:type": "boolean"
     }, {
-      "jsd:class": "number",
-      "jsd:range": "[-1,1)"
+      "jsd:type": "number",
+      "range": "[-1,1)"
     }, {
-      "jsd:class": "string",
-      "jsd:pattern": "pattern"
+      "jsd:type": "string",
+      "pattern": "pattern"
     }, {
-      "jsd:class": "array",
-      "jsd:elements": [{
-        "jsd:class": "boolean"
+      "jsd:type": "array",
+      "elements": [{
+        "jsd:type": "boolean"
       }, {
-        "jsd:class": "number",
-        "jsd:range": "[-1,1)"
+        "jsd:type": "number",
+        "range": "[-1,1)"
       }, {
-        "jsd:class": "string",
-        "jsd:pattern": "pattern"
+        "jsd:type": "string",
+        "pattern": "pattern"
       }, {
-        "jsd:class": "any",
-        "jsd:types": "boolean number string array object"
+        "jsd:type": "any",
+        "types": "boolean number string array object"
       }]
     }, {
-      "jsd:class": "reference",
-      "jsd:type": "object"
+      "jsd:type": "reference",
+      "type": "object"
     }, {
-      "jsd:class": "any",
-      "jsd:types": "boolean number string array object"
+      "jsd:type": "any",
+      "types": "boolean number string array object"
     }]
   },
   "boolean": {
-    "jsd:class": "boolean"
+    "jsd:type": "boolean"
   },
   "number": {
-    "jsd:class": "number",
-    "jsd:range": "[-1,1)"
+    "jsd:type": "number",
+    "range": "[-1,1)"
   },
   "string": {
-    "jsd:class": "string",
-    "jsd:pattern": "pattern"
+    "jsd:type": "string",
+    "pattern": "pattern"
   },
   "object": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "array": {
-        "jsd:class": "array",
-        "jsd:elements": [{
-          "jsd:class": "boolean"
+        "jsd:type": "array",
+        "elements": [{
+          "jsd:type": "boolean"
         }, {
-          "jsd:class": "number",
-          "jsd:range": "[-1,1)"
+          "jsd:type": "number",
+          "range": "[-1,1)"
         }, {
-          "jsd:class": "string",
-          "jsd:pattern": "pattern"
+          "jsd:type": "string",
+          "pattern": "pattern"
         }, {
-          "jsd:class": "array",
-          "jsd:elements": [{
-            "jsd:class": "boolean"
+          "jsd:type": "array",
+          "elements": [{
+            "jsd:type": "boolean"
           }, {
-            "jsd:class": "number",
-            "jsd:range": "[-1,1)"
+            "jsd:type": "number",
+            "range": "[-1,1)"
           }, {
-            "jsd:class": "string",
-            "jsd:pattern": "pattern"
+            "jsd:type": "string",
+            "pattern": "pattern"
           }, {
-            "jsd:class": "any",
-            "jsd:types": "boolean number string array object"
+            "jsd:type": "any",
+            "types": "boolean number string array object"
           }]
         }, {
-          "jsd:class": "reference",
-          "jsd:type": "object"
+          "jsd:type": "reference",
+          "type": "object"
         }, {
-          "jsd:class": "any",
-          "jsd:types": "boolean number string array object"
+          "jsd:type": "any",
+          "types": "boolean number string array object"
         }]
       },
       "boolean": {
-        "jsd:class": "boolean"
-      },
-      "number": {
-        "jsd:class": "number",
-        "jsd:range": "[-1,1)"
-      },
-      "string": {
-        "jsd:class": "string",
-        "jsd:pattern": "pattern"
-      },
-      "booleanRef": {
-        "jsd:class": "reference",
         "jsd:type": "boolean"
       },
+      "number": {
+        "jsd:type": "number",
+        "range": "[-1,1)"
+      },
+      "string": {
+        "jsd:type": "string",
+        "pattern": "pattern"
+      },
+      "booleanRef": {
+        "jsd:type": "reference",
+        "type": "boolean"
+      },
       "subObject": {
-        "jsd:class": "object",
-        "jsd:extends": "object",
-        "jsd:use": "optional",
-        "jsd:properties": {
+        "jsd:type": "object",
+        "extends": "object",
+        "use": "optional",
+        "properties": {
           "subBoolean": {
-            "jsd:class": "boolean"
-          },
-          "subNumber": {
-            "jsd:class": "number",
-            "jsd:range": "[-1,1)"
-          },
-          "subString": {
-            "jsd:class": "string",
-            "jsd:pattern": "pattern"
-          },
-          "subBooleanRef": {
-            "jsd:class": "reference",
             "jsd:type": "boolean"
           },
+          "subNumber": {
+            "jsd:type": "number",
+            "range": "[-1,1)"
+          },
+          "subString": {
+            "jsd:type": "string",
+            "pattern": "pattern"
+          },
+          "subBooleanRef": {
+            "jsd:type": "reference",
+            "type": "boolean"
+          },
           "subArray": {
-            "jsd:class": "array",
-            "jsd:elements": [{
-              "jsd:class": "boolean"
+            "jsd:type": "array",
+            "elements": [{
+              "jsd:type": "boolean"
             }, {
-              "jsd:class": "number",
-              "jsd:range": "[-1,1)"
+              "jsd:type": "number",
+              "range": "[-1,1)"
             }, {
-              "jsd:class": "string",
-              "jsd:pattern": "pattern"
+              "jsd:type": "string",
+              "pattern": "pattern"
             }, {
-              "jsd:class": "array",
-              "jsd:elements": [{
-                "jsd:class": "boolean"
+              "jsd:type": "array",
+              "elements": [{
+                "jsd:type": "boolean"
               }, {
-                "jsd:class": "number",
-                "jsd:range": "[-1,1)"
+                "jsd:type": "number",
+                "range": "[-1,1)"
               }, {
-                "jsd:class": "string",
-                "jsd:pattern": "pattern"
+                "jsd:type": "string",
+                "pattern": "pattern"
               }, {
-                "jsd:class": "any",
-                "jsd:types": "boolean number string array object"
+                "jsd:type": "any",
+                "types": "boolean number string array object"
               }]
             }, {
-              "jsd:class": "reference",
-              "jsd:type": "object"
+              "jsd:type": "reference",
+              "type": "object"
             }, {
-              "jsd:class": "any",
-              "jsd:types": "boolean number string array object"
+              "jsd:type": "any",
+              "types": "boolean number string array object"
             }]
           }
         }
       },
       ".*": {
-        "jsd:class": "any",
-        "jsd:types": "boolean number string array object",
-        "jsd:use": "optional"
+        "jsd:type": "any",
+        "types": "boolean number string array object",
+        "use": "optional"
       }
     }
   }
@@ -947,505 +947,505 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
   "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "arrayArr": {
-    "jsd:class": "array",
-    "jsd:elements": [{
-      "jsd:class": "reference",
+    "jsd:type": "array",
+    "elements": [{
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "arrayBool"
+      "type": "arrayBool"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "arrayNum"
+      "type": "arrayNum"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "arrayObj"
+      "type": "arrayObj"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "arrayObj"
+      "type": "arrayObj"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "arrayStr"
+      "type": "arrayStr"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "arrayStr"
+      "type": "arrayStr"
     }, {
-      "jsd:class": "any",
-      "jsd:maxOccurs": "1",
-      "jsd:minOccurs": "0",
-      "jsd:types": "bool num"
+      "jsd:type": "any",
+      "maxOccurs": "1",
+      "minOccurs": "0",
+      "types": "bool num"
     }, {
-      "jsd:class": "any",
-      "jsd:maxOccurs": "1"
+      "jsd:type": "any",
+      "maxOccurs": "1"
     }]
   },
   "arrayBool": {
-    "jsd:class": "array",
-    "jsd:elements": [{
-      "jsd:class": "reference",
+    "jsd:type": "array",
+    "elements": [{
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "bool"
+      "type": "bool"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "bool"
+      "type": "bool"
     }]
   },
   "arrayNum": {
-    "jsd:class": "array",
-    "jsd:elements": [{
-      "jsd:class": "reference",
+    "jsd:type": "array",
+    "elements": [{
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "num"
+      "type": "num"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "num"
+      "type": "num"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "numInt"
+      "type": "numInt"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "numInt"
+      "type": "numInt"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "numIntRange1"
+      "type": "numIntRange1"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "numIntRange1"
+      "type": "numIntRange1"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "numIntRange2"
+      "type": "numIntRange2"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "numIntRange2"
+      "type": "numIntRange2"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "numRange1"
+      "type": "numRange1"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "numRange1"
+      "type": "numRange1"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "numRange2"
+      "type": "numRange2"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "numRange2"
+      "type": "numRange2"
     }]
   },
   "arrayObj": {
-    "jsd:class": "array",
-    "jsd:elements": [{
-      "jsd:class": "reference",
+    "jsd:type": "array",
+    "elements": [{
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "objArr"
+      "type": "objArr"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "objBool"
+      "type": "objBool"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "objNum"
+      "type": "objNum"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "objObj"
+      "type": "objObj"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "objStr"
+      "type": "objStr"
     }]
   },
   "arrayStr": {
-    "jsd:class": "array",
-    "jsd:elements": [{
-      "jsd:class": "reference",
+    "jsd:type": "array",
+    "elements": [{
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "str"
+      "type": "str"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "str"
+      "type": "str"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strDec"
+      "type": "strDec"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strDec"
+      "type": "strDec"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strDecEnc"
+      "type": "strDecEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strDecEnc"
+      "type": "strDecEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strEnc"
+      "type": "strEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strEnc"
+      "type": "strEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strPattern"
+      "type": "strPattern"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strPattern"
+      "type": "strPattern"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strPatternDec"
+      "type": "strPatternDec"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strPatternDec"
+      "type": "strPatternDec"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strPatternDecEnc"
+      "type": "strPatternDecEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strPatternDecEnc"
+      "type": "strPatternDecEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "maxOccurs": "1",
-      "jsd:type": "strPatternEnc"
+      "type": "strPatternEnc"
     }, {
-      "jsd:class": "reference",
+      "jsd:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
-      "jsd:type": "strPatternEnc"
+      "type": "strPatternEnc"
     }]
   },
   "bool": {
-    "jsd:class": "boolean"
+    "jsd:type": "boolean"
   },
   "num": {
-    "jsd:class": "number"
+    "jsd:type": "number"
   },
   "numInt": {
-    "jsd:class": "number",
-    "jsd:scale": 0
+    "jsd:type": "number",
+    "scale": 0
   },
   "numIntRange1": {
-    "jsd:class": "number",
-    "jsd:scale": 0,
-    "jsd:range": "[1,]"
+    "jsd:type": "number",
+    "scale": 0,
+    "range": "[1,]"
   },
   "numIntRange2": {
-    "jsd:class": "number",
-    "jsd:scale": 0,
-    "jsd:range": "[,4]"
+    "jsd:type": "number",
+    "scale": 0,
+    "range": "[,4]"
   },
   "numRange1": {
-    "jsd:class": "number",
-    "jsd:range": "[1,]"
+    "jsd:type": "number",
+    "range": "[1,]"
   },
   "numRange2": {
-    "jsd:class": "number",
-    "jsd:range": "[,4]"
+    "jsd:type": "number",
+    "range": "[,4]"
   },
   "str": {
-    "jsd:class": "string"
+    "jsd:type": "string"
   },
   "strDec": {
-    "jsd:class": "string"
+    "jsd:type": "string"
   },
   "strDecEnc": {
-    "jsd:class": "string"
+    "jsd:type": "string"
   },
   "strEnc": {
-    "jsd:class": "string"
+    "jsd:type": "string"
   },
   "strPattern": {
-    "jsd:class": "string",
-    "jsd:pattern": "[a-z]+"
+    "jsd:type": "string",
+    "pattern": "[a-z]+"
   },
   "strPatternDec": {
-    "jsd:class": "string",
-    "jsd:pattern": "[%0-9a-z]+"
+    "jsd:type": "string",
+    "pattern": "[%0-9a-z]+"
   },
   "strPatternDecEnc": {
-    "jsd:class": "string",
-    "jsd:pattern": "[%0-9a-z]+"
+    "jsd:type": "string",
+    "pattern": "[%0-9a-z]+"
   },
   "strPatternEnc": {
-    "jsd:class": "string",
-    "jsd:pattern": "[%0-9a-z]+"
+    "jsd:type": "string",
+    "pattern": "[%0-9a-z]+"
   },
   "objArr": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       ".*": {
-        "jsd:class": "any",
-        "jsd:nullable": false
+        "jsd:type": "any",
+        "nullable": false
       },
       "arrayBool": {
-        "jsd:class": "reference",
-        "jsd:type": "arrayBool"
+        "jsd:type": "reference",
+        "type": "arrayBool"
       },
       "arrayBoolOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "arrayBool"
+        "type": "arrayBool"
       },
       "arrayBoolOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "arrayBool"
+        "type": "arrayBool"
       },
       "arrayNum": {
-        "jsd:class": "reference",
-        "jsd:type": "arrayNum"
+        "jsd:type": "reference",
+        "type": "arrayNum"
       },
       "arrayNumOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "arrayNum"
+        "type": "arrayNum"
       },
       "arrayNumOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "arrayNum"
+        "type": "arrayNum"
       },
       "arrayStr": {
-        "jsd:class": "reference",
-        "jsd:type": "arrayStr"
+        "jsd:type": "reference",
+        "type": "arrayStr"
       },
       "arrayStrOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "arrayStr"
+        "type": "arrayStr"
       },
       "arrayStrOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "arrayStr"
+        "type": "arrayStr"
       },
       "anyNumStr": {
-        "jsd:class": "any",
-        "jsd:types": "num str",
-        "jsd:use": "optional"
+        "jsd:type": "any",
+        "types": "num str",
+        "use": "optional"
       }
     }
   },
   "objBool": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "bo+l": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "nullable": false,
-        "jsd:type": "bool"
+        "type": "bool"
       },
       ".*": {
-        "jsd:class": "any",
-        "jsd:types": "bool num"
+        "jsd:type": "any",
+        "types": "bool num"
       },
       "bo+lOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "bool"
+        "type": "bool"
       },
       "boolOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "bool"
+        "type": "bool"
       }
     }
   },
   "objNum": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "num.+": {
-        "jsd:class": "reference",
-        "jsd:type": "num"
+        "jsd:type": "reference",
+        "type": "num"
       },
       "numOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "num"
+        "type": "num"
       },
       "numOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "num"
+        "type": "num"
       },
       "numInt": {
-        "jsd:class": "reference",
-        "jsd:type": "numInt"
+        "jsd:type": "reference",
+        "type": "numInt"
       },
       "any": {
-        "jsd:class": "any",
-        "jsd:nullable": false,
-        "jsd:types": "num str"
+        "jsd:type": "any",
+        "nullable": false,
+        "types": "num str"
       },
       "numIntOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "numInt"
+        "type": "numInt"
       },
       "numIntOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "numInt"
+        "type": "numInt"
       },
       "numIntRange1": {
-        "jsd:class": "reference",
-        "jsd:type": "numIntRange1"
+        "jsd:type": "reference",
+        "type": "numIntRange1"
       },
       "numIntRange1Optional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "numIntRange1"
+        "type": "numIntRange1"
       },
       "numIntRange1OptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "numIntRange1"
+        "type": "numIntRange1"
       },
       "numIntRange2": {
-        "jsd:class": "reference",
-        "jsd:type": "numIntRange2"
+        "jsd:type": "reference",
+        "type": "numIntRange2"
       },
       "numIntRange2Optional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "numIntRange2"
+        "type": "numIntRange2"
       },
       "numIntRange2OptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "numIntRange2"
+        "type": "numIntRange2"
       },
       "numRange1": {
-        "jsd:class": "reference",
-        "jsd:type": "numRange1"
+        "jsd:type": "reference",
+        "type": "numRange1"
       },
       "numRange1Optional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "numRange1"
+        "type": "numRange1"
       },
       "numRange1OptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "numRange1"
+        "type": "numRange1"
       },
       "numRange2": {
-        "jsd:class": "reference",
-        "jsd:type": "numRange2"
+        "jsd:type": "reference",
+        "type": "numRange2"
       },
       "numRange2Optional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "numRange2"
+        "type": "numRange2"
       },
       "numRange2OptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "numRange2"
+        "type": "numRange2"
       }
     }
   },
   "objObj": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "objOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "objBool"
+        "type": "objBool"
       },
       "objOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "objNum"
+        "type": "objNum"
       },
       "objExtends1": {
-        "jsd:class": "object",
-        "jsd:extends": "objObj",
-        "jsd:use": "optional",
-        "jsd:properties": {
+        "jsd:type": "object",
+        "extends": "objObj",
+        "use": "optional",
+        "properties": {
           "objExtends2": {
-            "jsd:class": "object",
-            "jsd:extends": "objObj",
-            "jsd:use": "optional",
-            "jsd:properties": {
+            "jsd:type": "object",
+            "extends": "objObj",
+            "use": "optional",
+            "properties": {
               "objExtends3": {
-                "jsd:class": "object",
-                "jsd:extends": "objObj",
-                "jsd:use": "optional",
-                "jsd:properties": {
+                "jsd:type": "object",
+                "extends": "objObj",
+                "use": "optional",
+                "properties": {
                   "objExtends4": {
-                    "jsd:class": "object",
-                    "jsd:extends": "objObj",
-                    "jsd:use": "optional",
-                    "jsd:properties": {
+                    "jsd:type": "object",
+                    "extends": "objObj",
+                    "use": "optional",
+                    "properties": {
                       "num": {
-                        "jsd:class": "reference",
+                        "jsd:type": "reference",
                         "use": "optional",
-                        "jsd:type": "num"
+                        "type": "num"
                       }
                     }
                   }
@@ -1456,152 +1456,152 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
         }
       },
       "objExtendsOptional": {
-        "jsd:class": "object",
-        "jsd:extends": "objBool",
-        "jsd:use": "optional",
-        "jsd:properties": {
+        "jsd:type": "object",
+        "extends": "objBool",
+        "use": "optional",
+        "properties": {
           "num": {
-            "jsd:class": "reference",
-            "jsd:type": "num"
+            "jsd:type": "reference",
+            "type": "num"
           }
         }
       },
       "objExtendsOptionalNotNullable": {
-        "jsd:class": "object",
-        "jsd:extends": "objBool",
-        "jsd:nullable": false,
-        "jsd:use": "optional",
-        "jsd:properties": {
+        "jsd:type": "object",
+        "extends": "objBool",
+        "nullable": false,
+        "use": "optional",
+        "properties": {
           "num": {
-            "jsd:class": "reference",
-            "jsd:type": "num"
+            "jsd:type": "reference",
+            "type": "num"
           }
         }
       }
     }
   },
   "objStr": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "str": {
-        "jsd:class": "reference",
-        "jsd:type": "str"
+        "jsd:type": "reference",
+        "type": "str"
       },
       "strOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "str"
+        "type": "str"
       },
       "strOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "str"
+        "type": "str"
       },
       "strDec": {
-        "jsd:class": "reference",
-        "jsd:type": "strDec"
+        "jsd:type": "reference",
+        "type": "strDec"
       },
       "strDecOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strDec"
+        "type": "strDec"
       },
       "strDecOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strDec"
+        "type": "strDec"
       },
       "strDecEnc": {
-        "jsd:class": "reference",
-        "jsd:type": "strDecEnc"
+        "jsd:type": "reference",
+        "type": "strDecEnc"
       },
       "strDecEncOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strDecEnc"
+        "type": "strDecEnc"
       },
       "strDecEncOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strDecEnc"
+        "type": "strDecEnc"
       },
       "strEnc": {
-        "jsd:class": "reference",
-        "jsd:type": "strEnc"
+        "jsd:type": "reference",
+        "type": "strEnc"
       },
       "strEncOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strEnc"
+        "type": "strEnc"
       },
       "strEncOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strEnc"
+        "type": "strEnc"
       },
       "strPattern": {
-        "jsd:class": "reference",
-        "jsd:type": "strPattern"
+        "jsd:type": "reference",
+        "type": "strPattern"
       },
       "strPatternOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strPattern"
+        "type": "strPattern"
       },
       "strPatternOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strPattern"
+        "type": "strPattern"
       },
       "strPatternDec": {
-        "jsd:class": "reference",
-        "jsd:type": "strPatternDec"
+        "jsd:type": "reference",
+        "type": "strPatternDec"
       },
       "strPatternDecOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strPatternDec"
+        "type": "strPatternDec"
       },
       "strPatternDecOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strPatternDec"
+        "type": "strPatternDec"
       },
       "strPatternDecEnc": {
-        "jsd:class": "reference",
-        "jsd:type": "strPatternDecEnc"
+        "jsd:type": "reference",
+        "type": "strPatternDecEnc"
       },
       "strPatternDecEncOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strPatternDecEnc"
+        "type": "strPatternDecEnc"
       },
       "strPatternDecEncOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strPatternDecEnc"
+        "type": "strPatternDecEnc"
       },
       "strPatternEnc": {
-        "jsd:class": "reference",
-        "jsd:type": "strPatternEnc"
+        "jsd:type": "reference",
+        "type": "strPatternEnc"
       },
       "strPatternEncOptional": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
-        "jsd:type": "strPatternEnc"
+        "type": "strPatternEnc"
       },
       "strPatternEncOptionalNotNullable": {
-        "jsd:class": "reference",
+        "jsd:type": "reference",
         "use": "optional",
         "nullable": false,
-        "jsd:type": "strPatternEnc"
+        "type": "strPatternEnc"
       }
     }
   }

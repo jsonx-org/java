@@ -55,15 +55,15 @@ The <ins>JSD</ins> that describes the **Response** contract is:
   "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
-    "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
-    "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:class": "boolean", "jsd:nullable": false} } },
+  "product": { "jsd:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jsd:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
-    "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v1"} } }
+  "product1": { "jsd:type": "object", "extends": "product", "properties": {
+    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } }
 }
 ```
 
@@ -117,19 +117,19 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
   "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:class": "object", "jsd:abstract": true, "jsd:properties": {
-    "CatalogueID": { "jsd:class": "number", "jsd:form": "integer", "jsd:nullable": false, "jsd:range": "[1,]" },
-    "Name": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:class": "boolean", "jsd:nullable": false} } },
+  "product": { "jsd:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jsd:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
-    "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v1"} } },
+  "product1": { "jsd:type": "object", "extends": "product", "properties": {
+    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } },
 
-+ "product2": { "jsd:class": "object", "jsd:extends": "product", "jsd:properties": {
-+   "Version": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "v2" },
-+   "Description": { "jsd:class": "string", "jsd:nullable": false, "jsd:pattern": "\\S|\\S.*\\S" } } }
++ "product2": { "jsd:type": "object", "extends": "product", "properties": {
++   "Version": { "jsd:type": "string", "nullable": false, "pattern": "v2" },
++   "Description": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
 }
 ```
 
