@@ -34,7 +34,6 @@ import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.ArrayUtil;
 import org.libj.util.CollectionUtil;
 import org.libj.util.Iterators;
-import org.libj.util.Strings;
 import org.openjax.xml.api.XmlElement;
 
 final class ArrayModel extends Referrer<ArrayModel> {
@@ -59,11 +58,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Array.Name$(name));
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Array.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Array.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Array.Use$(xL0gluGCXYYJc.$Array.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
+    if (jsd.getUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Array.Use$(xL0gluGCXYYJc.$Array.Use$.Enum.valueOf(jsd.getUse())));
 
     return xsb;
   }
@@ -71,14 +70,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static xL0gluGCXYYJc.$ArrayMember.Array element(final schema.ArrayElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Array xsb = new xL0gluGCXYYJc.$ArrayMember.Array();
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Array.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Array.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
+    if (jsd.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
 
-    if (jsd.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
+    if (jsd.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Array.MaxOccurs$(jsd.getMaxOccurs()));
 
     return xsb;
   }
@@ -94,16 +93,16 @@ final class ArrayModel extends Referrer<ArrayModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
 
-    if (jsd.getJsd_3aMinIterate() != null)
-      xsb.setMinIterate$(new xL0gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getJsd_3aMinIterate())));
+    if (jsd.getMinIterate() != null)
+      xsb.setMinIterate$(new xL0gluGCXYYJc.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getMinIterate())));
 
-    if (jsd.getJsd_3aMaxIterate() != null)
-      xsb.setMaxIterate$(new xL0gluGCXYYJc.$ArrayMember.MaxIterate$(jsd.getJsd_3aMaxIterate()));
+    if (jsd.getMaxIterate() != null)
+      xsb.setMaxIterate$(new xL0gluGCXYYJc.$ArrayMember.MaxIterate$(jsd.getMaxIterate()));
 
-    for (final Object element : jsd.getJsd_3aElements()) {
+    for (final Object element : jsd.getElements()) {
       if (element instanceof schema.AnyElement)
         xsb.addAny((xL0gluGCXYYJc.$ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
       else if (element instanceof schema.ArrayElement)
@@ -418,8 +417,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (owner instanceof SchemaElement)
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id.toString());
 
@@ -433,14 +432,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
-    final XmlElement element = super.toXml(settings, owner, prefix, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final XmlElement element = super.toXml(settings, owner, packageName);
     if (members.size() == 0)
       return element;
 
     final List<XmlElement> elements = new ArrayList<>();
     for (final Member member : members)
-      elements.add(member.toXml(settings, this, prefix, packageName));
+      elements.add(member.toXml(settings, this, packageName));
 
     element.setElements(elements);
     return element;
@@ -456,7 +455,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     for (final Member member : members)
       elements.add(member.toJson(settings, this, packageName));
 
-    element.put("jsd:elements", elements);
+    element.put("elements", elements);
     return element;
   }
 

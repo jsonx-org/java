@@ -2,349 +2,349 @@
   "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
   "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "xmldsig": {
-    "jsd:class": "object",
-    "jsd:abstract": true,
-    "jsd:properties": {
+    "jsd:type": "object",
+    "abstract": true,
+    "properties": {
       "xmldsig": {
-        "jsd:class": "string"
+        "jsd:type": "string"
       }
     }
   },
   "pubRsa": {
-    "jsd:class": "object",
-    "jsd:abstract": true,
-    "jsd:extends": "xmldsig",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "abstract": true,
+    "extends": "xmldsig",
+    "properties": {
       "pub_rsa": {
-        "jsd:class": "string"
+        "jsd:type": "string"
       }
     }
   },
   "signature": {
-    "jsd:class": "object",
-    "jsd:extends": "pubRsa"
+    "jsd:type": "object",
+    "extends": "pubRsa"
   },
   "dsig": {
-    "jsd:class": "object",
-    "jsd:extends": "xmldsig"
+    "jsd:type": "object",
+    "extends": "xmldsig"
   },
   "partialData": {
-    "jsd:class": "object",
-    "jsd:abstract": true,
-    "jsd:properties": {
+    "jsd:type": "object",
+    "abstract": true,
+    "properties": {
       "a": {
-        "jsd:class": "string",
-        "jsd:pattern": "[\"0-9A-F]*"
+        "jsd:type": "string",
+        "pattern": "[\"0-9A-F]*"
       },
       "b": {
-        "jsd:class": "string",
-        "jsd:pattern": "[\\\\0-9A-F]*"
+        "jsd:type": "string",
+        "pattern": "[\\\\0-9A-F]*"
       }
     }
   },
   "message": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "subject": {
-        "jsd:class": "string"
+        "jsd:type": "string"
       },
       "url": {
-        "jsd:class": "string",
-        "jsd:pattern": "((https?|ftp)://[\\w\\d:#@%/;$()~_?'\\+-=\\\\\\.&]+)"
+        "jsd:type": "string",
+        "pattern": "((https?|ftp)://[\\w\\d:#@%/;$()~_?'\\+-=\\\\\\.&]+)"
       },
       "important": {
-        "jsd:class": "boolean"
+        "jsd:type": "boolean"
       },
       "requiredArray": {
-        "jsd:class": "array",
-        "jsd:elements": [{
-          "jsd:class": "boolean",
-          "jsd:nullable": false
+        "jsd:type": "array",
+        "elements": [{
+          "jsd:type": "boolean",
+          "nullable": false
         }]
       },
       "notRequired": {
-        "jsd:class": "boolean",
-        "jsd:use": "optional"
+        "jsd:type": "boolean",
+        "use": "optional"
       },
       "notRequiredArray": {
-        "jsd:class": "array",
-        "jsd:use": "optional",
-        "jsd:elements": [{
-          "jsd:class": "boolean",
-          "jsd:nullable": false
+        "jsd:type": "array",
+        "use": "optional",
+        "elements": [{
+          "jsd:type": "boolean",
+          "nullable": false
         }]
       },
       "recipients": {
-        "jsd:class": "array",
-        "jsd:elements": [{
-          "jsd:class": "string",
-          "jsd:nullable": false,
-          "jsd:pattern": ".+"
+        "jsd:type": "array",
+        "elements": [{
+          "jsd:type": "string",
+          "nullable": false,
+          "pattern": ".+"
         }]
       },
       "emptyarray": {
-        "jsd:class": "array",
-        "jsd:elements": [{
-          "jsd:class": "string",
-          "jsd:nullable": false,
-          "jsd:pattern": ".+"
+        "jsd:type": "array",
+        "elements": [{
+          "jsd:type": "string",
+          "nullable": false,
+          "pattern": ".+"
         }]
       },
       "attachment": {
-        "jsd:class": "array",
-        "jsd:elements": [{
-          "jsd:class": "reference",
-          "jsd:nullable": false,
-          "jsd:type": "attachment"
+        "jsd:type": "array",
+        "elements": [{
+          "jsd:type": "reference",
+          "nullable": false,
+          "type": "attachment"
         }]
       },
       "signature": {
-        "jsd:class": "reference",
-        "jsd:type": "signature"
+        "jsd:type": "reference",
+        "type": "signature"
       }
     }
   },
   "attachment": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "filename": {
-        "jsd:class": "string",
-        "jsd:nullable": false
+        "jsd:type": "string",
+        "nullable": false
       },
       "data": {
-        "jsd:class": "object",
-        "jsd:extends": "partialData",
-        "jsd:properties": {
+        "jsd:type": "object",
+        "extends": "partialData",
+        "properties": {
           "c": {
-            "jsd:class": "string",
-            "jsd:pattern": "[0-9A-F]*"
+            "jsd:type": "string",
+            "pattern": "[0-9A-F]*"
           }
         }
       },
       "serial": {
-        "jsd:class": "number",
-        "jsd:nullable": false
+        "jsd:type": "number",
+        "nullable": false
       }
     }
   },
   "links": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "href": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "((https?|ftp)://[\\w\\d:#@%/;$()~_?'\\+-=\\\\\\.&]+)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "((https?|ftp)://[\\w\\d:#@%/;$()~_?'\\+-=\\\\\\.&]+)"
       },
       "rel": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "(\\S)|(\\S.*\\S)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "(\\S)|(\\S.*\\S)"
       },
       "method": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "(\\S)|(\\S.*\\S)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "(\\S)|(\\S.*\\S)"
       },
       "enc": {
-        "jsd:class": "string",
-        "jsd:use": "optional"
+        "jsd:type": "string",
+        "use": "optional"
       }
     }
   },
   "payPalEvent": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "id": {
-        "jsd:class": "string",
-        "jsd:nullable": false
+        "jsd:type": "string",
+        "nullable": false
       },
       "create_time": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.{1,3})?"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.{1,3})?"
       },
       "event_type": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "(\\S)|(\\S.*\\S)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "(\\S)|(\\S.*\\S)"
       },
       "event_version": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "(\\S)|(\\S.*\\S)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "(\\S)|(\\S.*\\S)"
       },
       "summary": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "(\\S)|(\\S.*\\S)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "(\\S)|(\\S.*\\S)"
       },
       "resource_type": {
-        "jsd:class": "string",
-        "jsd:nullable": false,
-        "jsd:pattern": "(\\S)|(\\S.*\\S)"
+        "jsd:type": "string",
+        "nullable": false,
+        "pattern": "(\\S)|(\\S.*\\S)"
       },
       "resource": {
-        "jsd:class": "object",
-        "jsd:properties": {
+        "jsd:type": "object",
+        "properties": {
           "id": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "(\\S)|(\\S.*\\S)"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "(\\S)|(\\S.*\\S)"
           },
           "parent_payment": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "(\\S)|(\\S.*\\S)"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "(\\S)|(\\S.*\\S)"
           },
           "update_time": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.{1,3})?"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.{1,3})?"
           },
           "create_time": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.{1,3})?"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.{1,3})?"
           },
           "state": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "(\\S)|(\\S.*\\S)"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "(\\S)|(\\S.*\\S)"
           },
           "amount": {
-            "jsd:class": "object",
-            "jsd:nullable": false,
-            "jsd:properties": {
+            "jsd:type": "object",
+            "nullable": false,
+            "properties": {
               "total": {
-                "jsd:class": "string",
-                "jsd:nullable": false,
-                "jsd:pattern": "(\\S)|(\\S.*\\S)"
+                "jsd:type": "string",
+                "nullable": false,
+                "pattern": "(\\S)|(\\S.*\\S)"
               },
               "currency": {
-                "jsd:class": "string",
-                "jsd:nullable": false,
-                "jsd:pattern": "(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)"
+                "jsd:type": "string",
+                "nullable": false,
+                "pattern": "(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)"
               },
               "details": {
-                "jsd:class": "object",
-                "jsd:nullable": false,
-                "jsd:use": "optional",
-                "jsd:properties": {
+                "jsd:type": "object",
+                "nullable": false,
+                "use": "optional",
+                "properties": {
                   "subtotal": {
-                    "jsd:class": "string",
-                    "jsd:nullable": false,
-                    "jsd:pattern": "(\\S)|(\\S.*\\S)"
+                    "jsd:type": "string",
+                    "nullable": false,
+                    "pattern": "(\\S)|(\\S.*\\S)"
                   }
                 }
               }
             }
           },
           "links": {
-            "jsd:class": "array",
-            "jsd:nullable": false,
-            "jsd:elements": [{
-              "jsd:class": "reference",
-              "jsd:nullable": false,
-              "jsd:type": "links"
+            "jsd:type": "array",
+            "nullable": false,
+            "elements": [{
+              "jsd:type": "reference",
+              "nullable": false,
+              "type": "links"
             }]
           },
           "sale_id": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "(\\S)|(\\S.*\\S)",
-            "jsd:use": "optional"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "(\\S)|(\\S.*\\S)",
+            "use": "optional"
           },
           "payment_mode": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "(\\S)|(\\S.*\\S)",
-            "jsd:use": "optional"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "(\\S)|(\\S.*\\S)",
+            "use": "optional"
           },
           "protection_eligibility": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:pattern": "(\\S)|(\\S.*\\S)",
-            "jsd:use": "optional"
+            "jsd:type": "string",
+            "nullable": false,
+            "pattern": "(\\S)|(\\S.*\\S)",
+            "use": "optional"
           },
           "invoice_number": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:use": "optional"
+            "jsd:type": "string",
+            "nullable": false,
+            "use": "optional"
           },
           "custom": {
-            "jsd:class": "string",
-            "jsd:nullable": false,
-            "jsd:use": "optional"
+            "jsd:type": "string",
+            "nullable": false,
+            "use": "optional"
           },
           "refund_to_payer": {
-            "jsd:class": "object",
-            "jsd:nullable": false,
-            "jsd:use": "optional",
-            "jsd:properties": {
+            "jsd:type": "object",
+            "nullable": false,
+            "use": "optional",
+            "properties": {
               "value": {
-                "jsd:class": "string",
-                "jsd:nullable": false,
-                "jsd:pattern": "(\\S)|(\\S.*\\S)"
+                "jsd:type": "string",
+                "nullable": false,
+                "pattern": "(\\S)|(\\S.*\\S)"
               },
               "currency": {
-                "jsd:class": "string",
-                "jsd:nullable": false,
-                "jsd:pattern": "(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)"
+                "jsd:type": "string",
+                "nullable": false,
+                "pattern": "(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)"
               }
             }
           },
           "transaction_fee": {
-            "jsd:class": "object",
-            "jsd:nullable": false,
-            "jsd:use": "optional",
-            "jsd:properties": {
+            "jsd:type": "object",
+            "nullable": false,
+            "use": "optional",
+            "properties": {
               "value": {
-                "jsd:class": "string",
-                "jsd:nullable": false,
-                "jsd:pattern": "(\\S)|(\\S.*\\S)"
+                "jsd:type": "string",
+                "nullable": false,
+                "pattern": "(\\S)|(\\S.*\\S)"
               },
               "currency": {
-                "jsd:class": "string",
-                "jsd:nullable": false,
-                "jsd:pattern": "(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)"
+                "jsd:type": "string",
+                "nullable": false,
+                "pattern": "(AUD)|(CAD)|(EUR)|(GBP)|(JPY)|(USD)"
               }
             }
           }
         }
       },
       "links": {
-        "jsd:class": "array",
-        "jsd:nullable": false,
-        "jsd:elements": [{
-          "jsd:class": "reference",
-          "jsd:nullable": false,
-          "jsd:type": "links"
+        "jsd:type": "array",
+        "nullable": false,
+        "elements": [{
+          "jsd:type": "reference",
+          "nullable": false,
+          "type": "links"
         }]
       }
     }
   },
   "data": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "id": {
-        "jsd:class": "string",
-        "jsd:nullable": false
+        "jsd:type": "string",
+        "nullable": false
       },
       "url": {
-        "jsd:class": "string",
-        "jsd:nullable": false
+        "jsd:type": "string",
+        "nullable": false
       }
     }
   },
   "giphy": {
-    "jsd:class": "object",
-    "jsd:properties": {
+    "jsd:type": "object",
+    "properties": {
       "data": {
-        "jsd:class": "array",
-        "jsd:elements": [{
-          "jsd:class": "reference",
-          "jsd:nullable": false,
-          "jsd:type": "data"
+        "jsd:type": "array",
+        "elements": [{
+          "jsd:type": "reference",
+          "nullable": false,
+          "type": "data"
         }]
       }
     }

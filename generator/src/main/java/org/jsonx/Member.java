@@ -124,8 +124,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (name != null)
       attributes.put(nameName(), name);
     else if (owner instanceof SchemaElement && !(this instanceof Referrer))

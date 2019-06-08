@@ -92,7 +92,7 @@
   <xs:attributeGroup name="idrefs">
     <xs:attribute name="types" type="xs:IDREFS">
       <xs:annotation>
-        <xs:documentation>Specifies the list of accepted type names. Optional.</xs:documentation>
+        <xs:documentation>Specifies a list of type names. Optional.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:attributeGroup>

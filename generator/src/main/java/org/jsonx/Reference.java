@@ -32,14 +32,14 @@ final class Reference extends Member {
   private static xL0gluGCXYYJc.$ArrayMember.Reference element(final schema.ReferenceElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Reference xsb = new xL0gluGCXYYJc.$ArrayMember.Reference();
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
+    if (jsd.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
 
-    if (jsd.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
+    if (jsd.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));
 
     return xsb;
   }
@@ -57,11 +57,11 @@ final class Reference extends Member {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Reference.Name$(name));
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Reference.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Reference.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Reference.Use$(xL0gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
+    if (jsd.getUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Reference.Use$(xL0gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsd.getUse())));
 
     return xsb;
   }
@@ -75,11 +75,11 @@ final class Reference extends Member {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
 
-    if (jsd.getJsd_3aType() != null)
-      xsb.setType$(new xL0gluGCXYYJc.$ReferenceMember.Type$(jsd.getJsd_3aType()));
+    if (jsd.getType() != null)
+      xsb.setType$(new xL0gluGCXYYJc.$ReferenceMember.Type$(jsd.getType()));
 
     return xsb;
   }
@@ -157,10 +157,10 @@ final class Reference extends Member {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = toAttributes(owner, prefix, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Object> attributes = toAttributes(owner, packageName);
     if (!registry.isRootMember(model, settings)) {
-      final XmlElement element = model.toXml(settings, owner, prefix, packageName);
+      final XmlElement element = model.toXml(settings, owner, packageName);
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
@@ -188,9 +188,9 @@ final class Reference extends Member {
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final Map<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jsd:class", elementName());
+    properties.put("jsd:type", elementName());
 
-    final Map<String,Object> attributes = toXml(settings, owner, "jsd:", packageName).getAttributes();
+    final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

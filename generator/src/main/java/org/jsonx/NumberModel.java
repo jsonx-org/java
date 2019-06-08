@@ -49,11 +49,11 @@ final class NumberModel extends Model {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Number.Name$(name));
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Number.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Number.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Number.Use$(xL0gluGCXYYJc.$Number.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
+    if (jsd.getUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Number.Use$(xL0gluGCXYYJc.$Number.Use$.Enum.valueOf(jsd.getUse())));
 
     return xsb;
   }
@@ -61,14 +61,14 @@ final class NumberModel extends Model {
   private static xL0gluGCXYYJc.$ArrayMember.Number element(final schema.NumberElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Number xsb = new xL0gluGCXYYJc.$ArrayMember.Number();
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Number.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Number.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
+    if (jsd.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
 
-    if (jsd.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
+    if (jsd.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Number.MaxOccurs$(jsd.getMaxOccurs()));
 
     return xsb;
   }
@@ -84,14 +84,14 @@ final class NumberModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
 
-    if (jsd.getJsd_3aScale() != null)
-      xsb.setScale$(new xL0gluGCXYYJc.$NumberMember.Scale$(jsd.getJsd_3aScale().intValue()));
+    if (jsd.getScale() != null)
+      xsb.setScale$(new xL0gluGCXYYJc.$NumberMember.Scale$(jsd.getScale().intValue()));
 
-    if (jsd.getJsd_3aRange() != null)
-      xsb.setRange$(new xL0gluGCXYYJc.$NumberMember.Range$(jsd.getJsd_3aRange()));
+    if (jsd.getRange() != null)
+      xsb.setRange$(new xL0gluGCXYYJc.$NumberMember.Range$(jsd.getRange()));
 
     return xsb;
   }
@@ -239,8 +239,8 @@ final class NumberModel extends Model {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (scale != Integer.MAX_VALUE)
       attributes.put("scale", scale);
 

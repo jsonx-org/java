@@ -96,8 +96,8 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (owner instanceof ObjectModel)
       attributes.put("xsi:type", elementName());
 
@@ -105,17 +105,17 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = toAttributes(owner, prefix, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final Map<String,Object> attributes = toAttributes(owner, packageName);
     return new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
   }
 
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final Map<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jsd:class", elementName());
+    properties.put("jsd:type", elementName());
 
-    final Map<String,Object> attributes = toAttributes(owner, "jsd:", packageName);
+    final Map<String,Object> attributes = toAttributes(owner, packageName);
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

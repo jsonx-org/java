@@ -55,7 +55,7 @@ import org.xml.sax.ErrorHandler;
 public final class SchemaElement extends Element implements Declarer {
   private static xL0gluGCXYYJc.Schema jsdToXsb(final schema.Schema jsd) {
     final xL0gluGCXYYJc.Schema xsb = new xL0gluGCXYYJc.Schema();
-    for (final Map.Entry<String,Object> entry : jsd._5ba_2dZA_2dZ__$_5d_5b_2dA_2dZA_2dZ_5cD__$_5d_2a.entrySet()) {
+    for (final Map.Entry<String,Object> entry : jsd._5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a.entrySet()) {
       if (entry.getValue() instanceof schema.Array)
         xsb.addArray((xL0gluGCXYYJc.Schema.Array)ArrayModel.jsdToXsb((schema.Array)entry.getValue(), entry.getKey()));
       else if (entry.getValue() instanceof schema.Boolean)
@@ -70,8 +70,8 @@ public final class SchemaElement extends Element implements Declarer {
         throw new UnsupportedOperationException("Unsupported type: " + entry.getValue().getClass().getName());
     }
 
-    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
 
     return xsb;
   }
@@ -395,19 +395,19 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
     final List<XmlElement> elements;
     final List<Model> members = rootMembers(settings);
     if (members.size() > 0) {
       elements = new ArrayList<>();
       for (final Model member : members)
-        elements.add(member.toXml(settings, this, prefix, packageName));
+        elements.add(member.toXml(settings, this, packageName));
     }
     else {
       elements = null;
     }
 
-    final Map<String,Object> attributes = super.toAttributes(owner, "", packageName);
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     attributes.put("xmlns", version + ".xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", version + ".xsd " + version + ".xsd");
@@ -419,7 +419,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   public XmlElement toXml(final Settings settings) {
-    return toXml(settings == null ? Settings.DEFAULT : settings, this, "", registry.packageName);
+    return toXml(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
   }
 
   @Override
@@ -428,7 +428,7 @@ public final class SchemaElement extends Element implements Declarer {
     if (members.size() == 0)
       return null;
 
-    final Map<String,Object> properties = new LinkedHashMap<>(toAttributes(owner, "jsd:", packageName));
+    final Map<String,Object> properties = new LinkedHashMap<>(toAttributes(owner, packageName));
     properties.put("jsd:ns", version + ".jsd");
     properties.put("jsd:schemaLocation", version + ".jsd " + version + ".jsd");
     for (final Model member : members) {

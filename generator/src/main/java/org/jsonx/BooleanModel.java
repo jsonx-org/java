@@ -46,25 +46,25 @@ final class BooleanModel extends Model {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Boolean.Name$(name));
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Boolean.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Boolean.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Boolean.Use$(xL0gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
+    if (jsd.getUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Boolean.Use$(xL0gluGCXYYJc.$Boolean.Use$.Enum.valueOf(jsd.getUse())));
 
     return xsb;
   }
 
   private static xL0gluGCXYYJc.$ArrayMember.Boolean element(final schema.BooleanElement jsd) {
     final xL0gluGCXYYJc.$ArrayMember.Boolean xsb = new xL0gluGCXYYJc.$ArrayMember.Boolean();
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Boolean.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsd.getJsd_3aMinOccurs())));
+    if (jsd.getMinOccurs() != null)
+      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
 
-    if (jsd.getJsd_3aMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsd.getJsd_3aMaxOccurs()));
+    if (jsd.getMaxOccurs() != null)
+      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Boolean.MaxOccurs$(jsd.getMaxOccurs()));
 
     return xsb;
   }
@@ -80,8 +80,8 @@ final class BooleanModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
 
     return xsb;
   }

@@ -50,7 +50,7 @@ public class TypeTest {
       }
 
       @Override
-      XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
+      XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
         return null;
       }
 

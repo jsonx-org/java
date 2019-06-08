@@ -40,8 +40,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.Schema.Object.Name$(name));
 
-    if (jsd.getJsd_3aAbstract() != null)
-      xsb.setAbstract$(new xL0gluGCXYYJc.Schema.Object.Abstract$(jsd.getJsd_3aAbstract()));
+    if (jsd.getAbstract() != null)
+      xsb.setAbstract$(new xL0gluGCXYYJc.Schema.Object.Abstract$(jsd.getAbstract()));
 
     return xsb;
   }
@@ -59,14 +59,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new xL0gluGCXYYJc.$Object.Name$(name));
 
-    if (jsd.getJsd_3aNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Object.Nullable$(jsd.getJsd_3aNullable()));
+    if (jsd.getNullable() != null)
+      xsb.setNullable$(new xL0gluGCXYYJc.$Object.Nullable$(jsd.getNullable()));
 
-    if (jsd.getJsd_3aUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Object.Use$(xL0gluGCXYYJc.$Object.Use$.Enum.valueOf(jsd.getJsd_3aUse())));
+    if (jsd.getUse() != null)
+      xsb.setUse$(new xL0gluGCXYYJc.$Object.Use$(xL0gluGCXYYJc.$Object.Use$.Enum.valueOf(jsd.getUse())));
 
-    if (jsd.getJsd_3aExtends() != null)
-      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getJsd_3aExtends()));
+    if (jsd.getExtends() != null)
+      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getExtends()));
 
     return xsb;
   }
@@ -80,14 +80,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getJsd_3aDoc() != null && jsd.getJsd_3aDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getJsd_3aDoc()));
+    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
+      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
 
-    if (jsd.getJsd_3aExtends() != null)
-      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getJsd_3aExtends()));
+    if (jsd.getExtends() != null)
+      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getExtends()));
 
-    if (jsd.getJsd_3aProperties() != null) {
-      for (final Map.Entry<String,Object> property : jsd.getJsd_3aProperties()._2e_2a.entrySet()) {
+    if (jsd.getProperties() != null) {
+      for (final Map.Entry<String,Object> property : jsd.getProperties()._2e_2a.entrySet()) {
         if (property.getValue() instanceof schema.AnyProperty)
           xsb.addProperty(AnyModel.jsdToXsb((schema.AnyProperty)property.getValue(), property.getKey()));
         else if (property.getValue() instanceof schema.ArrayProperty)
@@ -344,8 +344,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String prefix, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, prefix, packageName);
+  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
@@ -358,14 +358,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
-    final XmlElement element = super.toXml(settings, owner, prefix, packageName);
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+    final XmlElement element = super.toXml(settings, owner, packageName);
     if (members == null || members.size() == 0)
       return element;
 
     final List<XmlElement> elements = new ArrayList<>();
     for (final Member member : members.values())
-      elements.add(member.toXml(settings, this, prefix, packageName));
+      elements.add(member.toXml(settings, this, packageName));
 
     element.setElements(elements);
     return element;
@@ -381,7 +381,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     for (final Member member : members.values())
       properties.put(member.name, member.toJson(settings, this, packageName));
 
-    element.put("jsd:properties", properties);
+    element.put("properties", properties);
     return element;
   }
 

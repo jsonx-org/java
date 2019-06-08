@@ -56,7 +56,7 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String prefix, final String packageName) {
+  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
     throw new UnsupportedOperationException();
   }
 
