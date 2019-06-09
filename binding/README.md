@@ -1,9 +1,9 @@
 # JSON/Java Binding API
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?Yrn6JXVz)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?Yrn6JXVz)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/binding.svg?Yrn6JXVz)](https://www.javadoc.io/doc/org.jsonx/binding)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/binding.svg?Yrn6JXVz)](https://mvnrepository.com/artifact/org.jsonx/binding)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/binding.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/binding)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/binding.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/binding)
 
 ## Abstract
 
@@ -11,46 +11,46 @@ This document specifies the <ins>JSON/Java Binding API</ins>, which offers facil
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications][#dependencies]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications](#11-dependencies-on-other-specifications)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document](#12-conventions-used-in-this-document)<br>
+<samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification](#4-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Structural][#structural]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.1 [JSON objects (`JxObject`)][#jxobject]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2 [Property Annotations][#properties]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2.1 [Special Considerations][#specialconsiderations]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2.1 [Special Considerations][#specialconsiderations1]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3 [JSON arrays (`@ArrayType`)][#arraytype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3.1 [Special Considerations][#specialconsiderations]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3.1 [Special Considerations][#specialconsiderations2]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.4 [Element Annotations][#elements]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5 [JSON Value Annotations][#values]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1 [<samp>**object**</samp> Type][#object]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5 [JSON Value Annotations](#415-json-value-annotations)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1 [<samp>**object**</samp> Type](#4151-object-type)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1.1 [`@ObjectProperty`][#objectproperty]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.1.2 [`@ObjectElement`][#objectelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2 [<samp>**array**</samp> Type][#array]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2 [<samp>**array**</samp> Type](#4152-array-type)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2.1 [`@ArrayProperty`][#arrayproperty]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.2.2 [`@ArrayElement`][#arrayelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3 [<samp>**boolean**</samp> Type][#boolean]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3 [<samp>**boolean**</samp> Type](#4153-boolean-type)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3.1 [`@BooleanProperty`][#booleanproperty]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.3.2 [`@BooleanElement`][#booleanelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4 [<samp>**number**</samp> Type][#number]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4 [<samp>**number**</samp> Type](#4154-number-type)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4.1 [`@NumberProperty`][#numberproperty]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.4.2 [`@NumberElement`][#numberelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5 [<samp>**string**</samp> Type][#string]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5 [<samp>**string**</samp> Type](#4155-string-type)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5.1 [`@StringProperty`][#stringproperty]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.5.2 [`@StringElement`][#stringelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6 [<samp>**any**</samp> Type][#any]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6 [<samp>**any**</samp> Type](#4156-any-type)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6.1 [`@AnyProperty`][#anyproperty]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.6.2 [`@AnyElement`][#anyelement]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.7 [`AnyObject`][#anyobject]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.8 [`@AnyArray`][#anyarray]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Functional][#functional]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`ValidationException`][#validationexception]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [`JxEncoder`][#jxencoder]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2.1 [`EncodeException`][#encodeexception]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`JxDecoder`][#jxdecoder]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3.1 [`DecodeException`][#decodeexception]
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.7 [`AnyObject`](#4157-anyobject)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5.8 [`@AnyArray`](#4158-anyarray)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Functional](#42-functional)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`ValidationException`](#421-validationexception)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [`JxEncoder`](#422-jxencoder)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2.1 [`EncodeException`](#4221-encodeexception)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`JxDecoder`](#423-jxdecoder)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3.1 [`DecodeException`](#4231-decodeexception)
 
 ## 1 Introduction
 
@@ -115,9 +115,10 @@ public class MyObject implements JxObject {
 
 ##### 4.1.2 Property Annotations
 
-Property annotations are used to define property bindings in JSON objects. Property annotations annotate fields in a class to bind to JSON properties in a JSON object. There are 5 property annotations:
+Property annotations are used to define property bindings in JSON objects. Property annotations annotate fields in a class to bind to JSON properties in a JSON object. There are 6 property annotations:
 
 1. [`@ObjectProperty`][#objectproperty]
+1. [`@ArrayProperty`][#arrayproperty]
 1. [`@BooleanProperty`][#booleanproperty]
 1. [`@NumberProperty`][#numberproperty]
 1. [`@StringProperty`][#stringproperty]
@@ -193,9 +194,10 @@ The `minIterate()` and `maxIterate()` attributes define the repetition cardinali
 
 ##### 4.1.4 Element Annotations
 
-Element annotations are used to define element bindings in JSON arrays. Element annotations specify the rules for parsing, marshaling and validating JSON arrays in string or Java object form. There are 5 element annotations:
+Element annotations are used to define element bindings in JSON arrays. Element annotations specify the rules for parsing, marshaling and validating JSON arrays in string or Java object form. There are 6 element annotations:
 
 1. [`@ObjectElement`][#objectelement]
+1. [`@ArrayElement`][#arrayelement]
 1. [`@BooleanElement`][#booleanelement]
 1. [`@NumberElement`][#numberelement]
 1. [`@StringElement`][#stringelement]
@@ -324,7 +326,7 @@ public class Company implements JxObject {
 
 ##### 4.1.5.3 <samp>boolean</samp> Type
 
-A JSON <samp>**boolean**</samp> is represented by instances of `java.lang.Boolean` and `boolean` (refer to [Special Considerations][#specialconsiderations] to determine the appropriate declared type).
+A JSON <samp>**boolean**</samp> is represented by instances of `java.lang.Boolean` and `boolean` (refer to [Special Considerations][#specialconsiderations1] to determine the appropriate declared type).
 
 ###### 4.1.5.3.1 `@BooleanProperty`
 
@@ -353,7 +355,7 @@ public class Company implements JxObject {
 
 ##### 4.1.5.4 <samp>number</samp> Type
 
-A JSON <samp>**number**</samp> is represented by instances of `java.lang.Number` and the primitive numerical types (`byte`, `short`, `int`, `long`, `float`, and `double`-- refer to [Special Considerations][#specialconsiderations] to determine the appropriate declared type).
+A JSON <samp>**number**</samp> is represented by instances of `java.lang.Number` and the primitive numerical types (`byte`, `short`, `int`, `long`, `float`, and `double`-- refer to [Special Considerations][#specialconsiderations1] to determine the appropriate declared type).
 
 The `@NumberProperty` and `@NumberElement` annotations define the following additional attributes:
 
@@ -582,45 +584,25 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#introduction]: #1-introduction
-[#dependencies]: #11-dependencies-on-other-specifications
-[#conventions]: #12-conventions-used-in-this-document
-[#purpose]: #2-purpose
-[#requirements]: #3-requirements
-[#specification]: #4-specification
 [#structural]: #41-structural
 [#jxobject]: #411-jxobject
 [#properties]: #412-property-annotations
-[#specialconsiderations]: #4121-special-considerations
+[#specialconsiderations1]: #4121-special-considerations
 [#arraytype]: #413-json-arrays-arraytype
-[#specialconsiderations]: #4131-special-considerations
+[#specialconsiderations2]: #4131-special-considerations
 [#elements]: #414-element-annotations
-[#values]: #415-json-value-annotations
-[#object]: #4151-object-type
 [#objectproperty]: #41511-objectproperty
 [#objectelement]: #41512-objectelement
-[#array]: #4152-array-type
 [#arrayproperty]: #41521-arrayproperty
 [#arrayelement]: #41522-arrayelement
 [#boolean]: #4153-boolean-type
 [#booleanproperty]: #41531-booleanproperty
 [#booleanelement]: #41532-booleanelement
-[#number]: #4154-number-type
 [#numberproperty]: #41541-numberproperty
 [#numberelement]: #41542-numberelement
-[#string]: #4155-string-type
 [#stringproperty]: #41551-stringproperty
 [#stringelement]: #41552-stringelement
-[#any]: #4156-any-type
 [#anyproperty]: #41561-anyproperty
 [#anyelement]: #41562-anyelement
-[#anyobject]: #4157-anyobject
-[#anyarray]: #4158-anyarray
-[#functional]: #42-functional
-[#validationexception]: #421-validationexception
-[#jxencoder]: #422-jxencoder
-[#encodeexception]: #4221-encodeexception
-[#jxdecoder]: #423-jxdecoder
-[#decodeexception]: #4231-decodeexception
 
 [jsd]: ../schema/

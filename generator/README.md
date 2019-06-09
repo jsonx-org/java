@@ -1,9 +1,9 @@
 # JSD Binding Generator
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?Yrn6JXVz)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?Yrn6JXVz)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/generator.svg?Yrn6JXVz)](https://www.javadoc.io/doc/org.jsonx/generator)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/generator.svg?Yrn6JXVz)](https://mvnrepository.com/artifact/org.jsonx/generator)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/generator.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/generator)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/generator.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/generator)
 
 ## Abstract
 
@@ -11,13 +11,13 @@ This document specifies the <ins>JSD Binding Generator</ins>, which offers facil
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`Generator`][#generator]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`Converter`][#converter]
+<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
+<samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification](#4-specification)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`Generator`](#41-generator)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`Converter`](#42-converter)
 
 ## 1 Introduction
 
@@ -90,11 +90,3 @@ Please make sure to update tests as appropriate.
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
-
-[#introduction]: #1-introduction
-[#conventions]: #11-conventions-used-in-this-document
-[#purpose]: #2-purpose
-[#requirements]: #3-requirements
-[#specification]: #4-specification
-[#generator]: #41-generator
-[#converter]: #42-converter

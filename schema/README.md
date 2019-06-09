@@ -16,12 +16,12 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications][#dependencies]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications](#11-dependencies-on-other-specifications)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document](#12-conventions-used-in-this-document)<br>
+<samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
+<samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Specification](#4-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Schema Document][#schema]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Model for JSON Values][#model]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`boolean` Model][#boolean]<br>
@@ -35,15 +35,15 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [Root Declarative Types][#types]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [Object Properties][#properties]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.5 [Array Elements][#elements]<br>
-<samp>&nbsp;&nbsp;</samp>5 [Related Resources for JSON Schema][#resources]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Schemas for JSON Schema][#json-schemas]<br>
+<samp>&nbsp;&nbsp;</samp>5 [Related Resources for JSON Schema](#5-related-resources-for-json-schema)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Schemas for JSON Schema](#51-schemas-for-json-schema)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [Current](#511-current)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [Obsolete](#512-obsolete)<br>
-<samp>&nbsp;&nbsp;</samp>6 [Sample Schemas][#samples]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`structure.jsdx`][#structurejsdx]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`structure.jsd`][#structurejsd]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [`datatype.jsdx`][#datatypejsdx]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [`datatype.jsd`][#datatypejsd]
+<samp>&nbsp;&nbsp;</samp>6 [Sample Schemas](#6-sample-schemas)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`structure.jsdx`](#61-structurejsdx)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`structure.jsd`](#62-structurejsd)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [`datatype.jsdx`](#63-datatypesjsdx)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [`datatype.jsd`](#64-datatypesjsd)
 
 ## 1 Introduction
 
@@ -103,13 +103,13 @@ The <samp>**schema**</samp> is the root object of the JSD, and contains [type][#
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **schema** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>jsd:schemaLocation</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br><samp>doc</samp><br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema._ Required.<br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_Location URL of namespace._ Optional.<br>&nbsp;&nbsp;Specified as: `"%NAMESPACE_URI% %LOCATION_URL%"`<br>&nbsp;&nbsp;Used by schema processors to determine location of<br>&nbsp;&nbsp;schema definition for a namespace.<br>Text comments. Optional.<br>_[Type Declaration][#types]_. Optional.<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
+| <samp>( **schema** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jx:ns</samp><br>&nbsp;<br>&nbsp;<br><samp>jx:schemaLocation</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br><samp>doc</samp><br><samp>[a-zA-Z_$][-a-zA-Z\\d_$]*</samp><br>&nbsp;<br>&nbsp; | _Namespace of the JSON Schema._ Required.<br>&nbsp;&nbsp;Used by schema processors to determine to which<br>&nbsp;&nbsp;version of the JSON Schema the JSD is written.<br>_Location URL of namespace._ Optional.<br>&nbsp;&nbsp;Specified as: `"%NAMESPACE_URI% %LOCATION_URL%"`<br>&nbsp;&nbsp;Used by schema processors to determine location of<br>&nbsp;&nbsp;schema definition for a namespace.<br>Text comments. Optional.<br>_[Type Declaration][#types]_. Optional.<br>&nbsp;&nbsp;Root object definitions that are referenceable<br>&nbsp;&nbsp;throughout the schema. |
 
 1. <ins>Example</ins>: `jsd`
    ```json
    {
-     "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-     "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
      ...
    }
    ```
@@ -153,11 +153,11 @@ The <samp>**boolean**</samp> model is the only model that lacks validation const
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **boolean** )</samp> | <samp>jsd:type</samp> | <samp>boolean</samp> |
+| <samp>( **boolean** )</samp> | <samp>jx:type</samp> | <samp>boolean</samp> |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "boolean" }
+   { "jx:type": "boolean" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -176,11 +176,11 @@ The <samp>**number**</samp> model defines two validation constraints for <samp>*
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **number** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>scale</samp><br>&nbsp;<br>&nbsp;<br><samp>range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(0\|1\|2\|...)</samp><br>&nbsp;&nbsp;The number of digits to the right of the decimal point.<br>&nbsp;&nbsp;**If a value is not specified, the scale is unbounded.**<br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
+| <samp>( **number** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jx:type</samp><br><samp>scale</samp><br>&nbsp;<br>&nbsp;<br><samp>range</samp><br>&nbsp;<br>&nbsp; | <samp>number</samp><br><samp>(0\|1\|2\|...)</samp><br>&nbsp;&nbsp;The number of digits to the right of the decimal point.<br>&nbsp;&nbsp;**If a value is not specified, the scale is unbounded.**<br>_Numerical range_<br>&nbsp;&nbsp;Specifies the minimum and maximum limits in [interval<br>notation][interval-notation]. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "number", "scale": 0, "range": "[-1,1)" }
+   { "jx:type": "number", "scale": 0, "range": "[-1,1)" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -199,11 +199,11 @@ The <samp>**string**</samp> model defines one validation constraint for <samp>**
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **string** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>pattern</samp><br>&nbsp; | <samp>string</samp><br>_Regular expression_<br>&nbsp;&nbsp;Specifies the regular expression. |
+| <samp>( **string** )</samp><br>&nbsp;<br>&nbsp; | <samp>jx:type</samp><br><samp>pattern</samp><br>&nbsp; | <samp>string</samp><br>_Regular expression_<br>&nbsp;&nbsp;Specifies the regular expression. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "string", "pattern": "pattern" }
+   { "jx:type": "string", "pattern": "pattern" }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -222,7 +222,7 @@ The <samp>**object**</samp> model defines three validation constraints for <samp
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <a name="objecttype"><samp>( **object** )</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>abstract</samp><br>&nbsp;<br><samp>extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying<br>&nbsp;&nbsp;object inheritence.<br>_[Property declaration][#properties]_<br>&nbsp;&nbsp;Declaration of object property. |
+| <a name="objecttype"><samp>( **object** )</samp></a><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | <samp>jx:type</samp><br><samp>abstract</samp><br>&nbsp;<br><samp>extends</samp><br>&nbsp;<br>&nbsp;<br><samp>.*</samp><br>&nbsp; | <samp>object</samp><br><samp>(true\|**false**)</samp><br>&nbsp;&nbsp;Whether the object is not allowed to be instantiated.<br>_Name [<samp>( **object** )</samp> type](#objecttype)_<br>&nbsp;&nbsp;Name of root-level object type declaration specifying<br>&nbsp;&nbsp;object inheritence.<br>_[Property declaration][#properties]_<br>&nbsp;&nbsp;Declaration of object property. |
 
 
 ##### 4.2.4.1 Property Names
@@ -231,17 +231,17 @@ Names of object properties are considered as regular expressions. If an object d
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "object",
+   { "jx:type": "object",
      "properties": {
-       "propArray": { "jsd:type": "array",
+       "propArray": { "jx:type": "array",
          "elements": [...] },
-       "propBoolean": { "jsd:type": "boolean" },
-       "propNumber": { "jsd:type": "number" },
-       "propString": { "jsd:type": "string" },
-       "propObject": { "jsd:type": "object",
+       "propBoolean": { "jx:type": "boolean" },
+       "propNumber": { "jx:type": "number" },
+       "propString": { "jx:type": "string" },
+       "propObject": { "jx:type": "object",
          "properties": {...} },
-       "propReference": { "jsd:type": "reference", "type": "..." },
-       ".*": { "jsd:type": "any", "types": "..." }
+       "propReference": { "jx:type": "reference", "type": "..." },
+       ".*": { "jx:type": "any", "types": "..." }
      }
    }
    ```
@@ -286,19 +286,19 @@ The <samp>**array**</samp> model defines three validation constraints for <samp>
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <a name="arraytype"><samp>( **array** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | <samp>jsd:type</samp><br><samp>minIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>maxIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>elements</samp><br>&nbsp; | <samp>array</samp><br><samp>(**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>(**1**\|2\|...\|unbounded)</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>\[</samp> [Element declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of member element declarations. |
+| <a name="arraytype"><samp>( **array** )</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | <samp>jx:type</samp><br><samp>minIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>maxIterate</samp><br>&nbsp;<br>&nbsp;<br><samp>elements</samp><br>&nbsp; | <samp>array</samp><br><samp>(**1**\|2\|...)</samp><br>&nbsp;&nbsp;Specifies the minimum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>(**1**\|2\|...\|unbounded)</samp><br>&nbsp;&nbsp;Specifies the maximum inclusive number of iterations of<br>&nbsp;&nbsp;child members.<br><samp>\[</samp> [Element declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of member element declarations. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "array",
+   { "jx:type": "array",
      "elements": [
-       { "jsd:type": "array",
+       { "jx:type": "array",
          "elements": [...] },
-       { "jsd:type": "boolean" },
-       { "jsd:type": "number" },
-       { "jsd:type": "string" },
-       { "jsd:type": "reference", "type": "..." },
-       { "jsd:type": "any", "types": "..." }
+       { "jx:type": "boolean" },
+       { "jx:type": "number" },
+       { "jx:type": "string" },
+       { "jx:type": "reference", "type": "..." },
+       { "jx:type": "any", "types": "..." }
      ]
    }
    ```
@@ -337,11 +337,11 @@ The <samp>**any**</samp> model defines one validation constraint: <samp>types</s
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **any** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>types</samp><br>&nbsp; | <samp>any</samp><br><samp>\[</samp> Name of [type declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of type declarations. |
+| <samp>( **any** )</samp><br>&nbsp;<br>&nbsp; | <samp>jx:type</samp><br><samp>types</samp><br>&nbsp; | <samp>any</samp><br><samp>\[</samp> Name of [type declaration][#elements]<samp> , ...\]</samp><br>&nbsp;&nbsp;Array of type declarations. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "any", "types": "..." }
+   { "jx:type": "any", "types": "..." }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -360,11 +360,11 @@ The <samp>**reference**</samp> model defines one validation constraint: <samp>ty
 
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Name**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> | **Value**<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp> |
 |:-|:-|:-|
-| <samp>( **reference** )</samp><br>&nbsp;<br>&nbsp; | <samp>jsd:type</samp><br><samp>type</samp><br>&nbsp; | <samp>reference</samp><br>_Name of [type declaration][#types]_<br>&nbsp;&nbsp;Name of root-level type declaration to reference. |
+| <samp>( **reference** )</samp><br>&nbsp;<br>&nbsp; | <samp>jx:type</samp><br><samp>type</samp><br>&nbsp; | <samp>reference</samp><br>_Name of [type declaration][#types]_<br>&nbsp;&nbsp;Name of root-level type declaration to reference. |
 
 1. <ins>Example</ins>: `jsd` <samp>(object properties and array members)</samp>
    ```json
-   { "jsd:type": "reference", "type": "..." }
+   { "jx:type": "reference", "type": "..." }
    ```
 
 1. <ins>Example</ins>: `jsdx` <samp>(type declarations and array members)</samp>
@@ -387,14 +387,14 @@ The <samp>**type**</samp> objects are immediate children of the <samp>[**schema*
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+   { "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
-     "rootArray": { "jsd:type": "array",
+     "rootArray": { "jx:type": "array",
        "elements": [...] },
-     "rootBoolean": { "jsd:type": "boolean" },
-     "rootNumber": { "jsd:type": "number" },
-     "rootString": { "jsd:type": "string" },
-     "rootObject": { "jsd:type": "object",
+     "rootBoolean": { "jx:type": "boolean" },
+     "rootNumber": { "jx:type": "number" },
+     "rootString": { "jx:type": "string" },
+     "rootObject": { "jx:type": "object",
        "properties": {...} }
      ...
    }
@@ -427,19 +427,19 @@ The <samp>**property**</samp> objects define properties for the declarative obje
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+   { "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
-     "rootObject": { "jsd:type": "object",
+     "rootObject": { "jx:type": "object",
        "properties": {
-         "propArray": { "jsd:type": "array", "nullable": true, "use": "required",
+         "propArray": { "jx:type": "array", "nullable": true, "use": "required",
            "elements": [...] },
-         "propBoolean": { "jsd:type": "boolean", "nullable": true, "use": "required" },
-         "propNumber": { "jsd:type": "number", "nullable": true, "use": "required" },
-         "propString": { "jsd:type": "string", "nullable": true, "use": "required" },
-         "propObject": { "jsd:type": "object", "nullable": true, "use": "optional",
+         "propBoolean": { "jx:type": "boolean", "nullable": true, "use": "required" },
+         "propNumber": { "jx:type": "number", "nullable": true, "use": "required" },
+         "propString": { "jx:type": "string", "nullable": true, "use": "required" },
+         "propObject": { "jx:type": "object", "nullable": true, "use": "optional",
            "properties": {...} },
-         "propReference": { "jsd:type": "reference", "nullable": true, "use": "required", "type": "..." },
-         ".*": { "jsd:type": "any", "nullable": true, "use": "optional", "types": "..." }
+         "propReference": { "jx:type": "reference", "nullable": true, "use": "required", "type": "..." },
+         ".*": { "jx:type": "any", "nullable": true, "use": "optional", "types": "..." }
        }
      }
      ...
@@ -477,18 +477,18 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 1. <ins>Example</ins>: `jsd`
    ```json
-   { "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+   { "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
      ...
      "rootArray": {
-       "jsd:type": "array",
+       "jx:type": "array",
        "elements": [
-         { "jsd:type": "boolean", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true},
-         { "jsd:type": "number", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true },
-         { "jsd:type": "string", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true },
-         { "jsd:type": "array", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true,
+         { "jx:type": "boolean", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true},
+         { "jx:type": "number", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true },
+         { "jx:type": "string", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true },
+         { "jx:type": "array", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true,
            "elements": [...] },
-         { "jsd:type": "reference", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true, "type": "..." },
-         { "jsd:type": "any", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true, "types": "..." }
+         { "jx:type": "reference", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true, "type": "..." },
+         { "jx:type": "any", "minOccurs": "1", "maxOccurs": "unbounded", "nullable": true, "types": "..." }
        ]
      }
      ...
@@ -618,157 +618,157 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ```json
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "array": {
-    "jsd:type": "array",
+    "jx:type": "array",
     "elements": [{
-      "jsd:type": "boolean"
+      "jx:type": "boolean"
     }, {
-      "jsd:type": "number",
+      "jx:type": "number",
       "range": "[-1,1)"
     }, {
-      "jsd:type": "string",
+      "jx:type": "string",
       "pattern": "pattern"
     }, {
-      "jsd:type": "array",
+      "jx:type": "array",
       "elements": [{
-        "jsd:type": "boolean"
+        "jx:type": "boolean"
       }, {
-        "jsd:type": "number",
+        "jx:type": "number",
         "range": "[-1,1)"
       }, {
-        "jsd:type": "string",
+        "jx:type": "string",
         "pattern": "pattern"
       }, {
-        "jsd:type": "any",
+        "jx:type": "any",
         "types": "boolean number string array object"
       }]
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "type": "object"
     }, {
-      "jsd:type": "any",
+      "jx:type": "any",
       "types": "boolean number string array object"
     }]
   },
   "boolean": {
-    "jsd:type": "boolean"
+    "jx:type": "boolean"
   },
   "number": {
-    "jsd:type": "number",
+    "jx:type": "number",
     "range": "[-1,1)"
   },
   "string": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "pattern"
   },
   "object": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "properties": {
       "array": {
-        "jsd:type": "array",
+        "jx:type": "array",
         "elements": [{
-          "jsd:type": "boolean"
+          "jx:type": "boolean"
         }, {
-          "jsd:type": "number",
+          "jx:type": "number",
           "range": "[-1,1)"
         }, {
-          "jsd:type": "string",
+          "jx:type": "string",
           "pattern": "pattern"
         }, {
-          "jsd:type": "array",
+          "jx:type": "array",
           "elements": [{
-            "jsd:type": "boolean"
+            "jx:type": "boolean"
           }, {
-            "jsd:type": "number",
+            "jx:type": "number",
             "range": "[-1,1)"
           }, {
-            "jsd:type": "string",
+            "jx:type": "string",
             "pattern": "pattern"
           }, {
-            "jsd:type": "any",
+            "jx:type": "any",
             "types": "boolean number string array object"
           }]
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "object"
         }, {
-          "jsd:type": "any",
+          "jx:type": "any",
           "types": "boolean number string array object"
         }]
       },
       "boolean": {
-        "jsd:type": "boolean"
+        "jx:type": "boolean"
       },
       "number": {
-        "jsd:type": "number",
+        "jx:type": "number",
         "range": "[-1,1)"
       },
       "string": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "pattern": "pattern"
       },
       "booleanRef": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "boolean"
       },
       "subObject": {
-        "jsd:type": "object",
+        "jx:type": "object",
         "extends": "object",
         "use": "optional",
         "properties": {
           "subBoolean": {
-            "jsd:type": "boolean"
+            "jx:type": "boolean"
           },
           "subNumber": {
-            "jsd:type": "number",
+            "jx:type": "number",
             "range": "[-1,1)"
           },
           "subString": {
-            "jsd:type": "string",
+            "jx:type": "string",
             "pattern": "pattern"
           },
           "subBooleanRef": {
-            "jsd:type": "reference",
+            "jx:type": "reference",
             "type": "boolean"
           },
           "subArray": {
-            "jsd:type": "array",
+            "jx:type": "array",
             "elements": [{
-              "jsd:type": "boolean"
+              "jx:type": "boolean"
             }, {
-              "jsd:type": "number",
+              "jx:type": "number",
               "range": "[-1,1)"
             }, {
-              "jsd:type": "string",
+              "jx:type": "string",
               "pattern": "pattern"
             }, {
-              "jsd:type": "array",
+              "jx:type": "array",
               "elements": [{
-                "jsd:type": "boolean"
+                "jx:type": "boolean"
               }, {
-                "jsd:type": "number",
+                "jx:type": "number",
                 "range": "[-1,1)"
               }, {
-                "jsd:type": "string",
+                "jx:type": "string",
                 "pattern": "pattern"
               }, {
-                "jsd:type": "any",
+                "jx:type": "any",
                 "types": "boolean number string array object"
               }]
             }, {
-              "jsd:type": "reference",
+              "jx:type": "reference",
               "type": "object"
             }, {
-              "jsd:type": "any",
+              "jx:type": "any",
               "types": "boolean number string array object"
             }]
           }
         }
       },
       ".*": {
-        "jsd:type": "any",
+        "jx:type": "any",
         "types": "boolean number string array object",
         "use": "optional"
       }
@@ -944,52 +944,52 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 
 ```json
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "arrayArr": {
-    "jsd:type": "array",
+    "jx:type": "array",
     "elements": [{
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "arrayBool"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "arrayNum"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "arrayObj"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "arrayObj"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "arrayStr"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "arrayStr"
     }, {
-      "jsd:type": "any",
+      "jx:type": "any",
       "maxOccurs": "1",
       "minOccurs": "0",
       "types": "bool num"
     }, {
-      "jsd:type": "any",
+      "jx:type": "any",
       "maxOccurs": "1"
     }]
   },
   "arrayBool": {
-    "jsd:type": "array",
+    "jx:type": "array",
     "elements": [{
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "bool"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
@@ -997,63 +997,63 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     }]
   },
   "arrayNum": {
-    "jsd:type": "array",
+    "jx:type": "array",
     "elements": [{
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "num"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "num"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "numInt"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "numInt"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "numIntRange1"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "numIntRange1"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "numIntRange2"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "numIntRange2"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "numRange1"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "numRange1"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "numRange2"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
@@ -1061,107 +1061,107 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     }]
   },
   "arrayObj": {
-    "jsd:type": "array",
+    "jx:type": "array",
     "elements": [{
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "objArr"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "objBool"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "objNum"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "objObj"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "objStr"
     }]
   },
   "arrayStr": {
-    "jsd:type": "array",
+    "jx:type": "array",
     "elements": [{
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "str"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "str"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strDec"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "strDec"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strDecEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "strDecEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "strEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strPattern"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "strPattern"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strPatternDec"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "strPatternDec"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strPatternDecEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
       "type": "strPatternDecEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "maxOccurs": "1",
       "type": "strPatternEnc"
     }, {
-      "jsd:type": "reference",
+      "jx:type": "reference",
       "minOccurs": "0",
       "maxOccurs": "1",
       "nullable": false,
@@ -1169,139 +1169,139 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     }]
   },
   "bool": {
-    "jsd:type": "boolean"
+    "jx:type": "boolean"
   },
   "num": {
-    "jsd:type": "number"
+    "jx:type": "number"
   },
   "numInt": {
-    "jsd:type": "number",
+    "jx:type": "number",
     "scale": 0
   },
   "numIntRange1": {
-    "jsd:type": "number",
+    "jx:type": "number",
     "scale": 0,
     "range": "[1,]"
   },
   "numIntRange2": {
-    "jsd:type": "number",
+    "jx:type": "number",
     "scale": 0,
     "range": "[,4]"
   },
   "numRange1": {
-    "jsd:type": "number",
+    "jx:type": "number",
     "range": "[1,]"
   },
   "numRange2": {
-    "jsd:type": "number",
+    "jx:type": "number",
     "range": "[,4]"
   },
   "str": {
-    "jsd:type": "string"
+    "jx:type": "string"
   },
   "strDec": {
-    "jsd:type": "string"
+    "jx:type": "string"
   },
   "strDecEnc": {
-    "jsd:type": "string"
+    "jx:type": "string"
   },
   "strEnc": {
-    "jsd:type": "string"
+    "jx:type": "string"
   },
   "strPattern": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "[a-z]+"
   },
   "strPatternDec": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "[%0-9a-z]+"
   },
   "strPatternDecEnc": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "[%0-9a-z]+"
   },
   "strPatternEnc": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "[%0-9a-z]+"
   },
   "objArr": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "properties": {
       ".*": {
-        "jsd:type": "any",
+        "jx:type": "any",
         "nullable": false
       },
       "arrayBool": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "arrayBool"
       },
       "arrayBoolOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "arrayBool"
       },
       "arrayBoolOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "arrayBool"
       },
       "arrayNum": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "arrayNum"
       },
       "arrayNumOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "arrayNum"
       },
       "arrayNumOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "arrayNum"
       },
       "arrayStr": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "arrayStr"
       },
       "arrayStrOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "arrayStr"
       },
       "arrayStrOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "arrayStr"
       },
       "anyNumStr": {
-        "jsd:type": "any",
+        "jx:type": "any",
         "types": "num str",
         "use": "optional"
       }
     }
   },
   "objBool": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "properties": {
       "bo+l": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "nullable": false,
         "type": "bool"
       },
       ".*": {
-        "jsd:type": "any",
+        "jx:type": "any",
         "types": "bool num"
       },
       "bo+lOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "bool"
       },
       "boolOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "bool"
@@ -1309,99 +1309,99 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     }
   },
   "objNum": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "properties": {
       "num.+": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "num"
       },
       "numOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "num"
       },
       "numOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "num"
       },
       "numInt": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "numInt"
       },
       "any": {
-        "jsd:type": "any",
+        "jx:type": "any",
         "nullable": false,
         "types": "num str"
       },
       "numIntOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "numInt"
       },
       "numIntOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "numInt"
       },
       "numIntRange1": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "numIntRange1"
       },
       "numIntRange1Optional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "numIntRange1"
       },
       "numIntRange1OptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "numIntRange1"
       },
       "numIntRange2": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "numIntRange2"
       },
       "numIntRange2Optional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "numIntRange2"
       },
       "numIntRange2OptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "numIntRange2"
       },
       "numRange1": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "numRange1"
       },
       "numRange1Optional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "numRange1"
       },
       "numRange1OptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "numRange1"
       },
       "numRange2": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "numRange2"
       },
       "numRange2Optional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "numRange2"
       },
       "numRange2OptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "numRange2"
@@ -1409,41 +1409,41 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     }
   },
   "objObj": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "properties": {
       "objOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "objBool"
       },
       "objOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "objNum"
       },
       "objExtends1": {
-        "jsd:type": "object",
+        "jx:type": "object",
         "extends": "objObj",
         "use": "optional",
         "properties": {
           "objExtends2": {
-            "jsd:type": "object",
+            "jx:type": "object",
             "extends": "objObj",
             "use": "optional",
             "properties": {
               "objExtends3": {
-                "jsd:type": "object",
+                "jx:type": "object",
                 "extends": "objObj",
                 "use": "optional",
                 "properties": {
                   "objExtends4": {
-                    "jsd:type": "object",
+                    "jx:type": "object",
                     "extends": "objObj",
                     "use": "optional",
                     "properties": {
                       "num": {
-                        "jsd:type": "reference",
+                        "jx:type": "reference",
                         "use": "optional",
                         "type": "num"
                       }
@@ -1456,24 +1456,24 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
         }
       },
       "objExtendsOptional": {
-        "jsd:type": "object",
+        "jx:type": "object",
         "extends": "objBool",
         "use": "optional",
         "properties": {
           "num": {
-            "jsd:type": "reference",
+            "jx:type": "reference",
             "type": "num"
           }
         }
       },
       "objExtendsOptionalNotNullable": {
-        "jsd:type": "object",
+        "jx:type": "object",
         "extends": "objBool",
         "nullable": false,
         "use": "optional",
         "properties": {
           "num": {
-            "jsd:type": "reference",
+            "jx:type": "reference",
             "type": "num"
           }
         }
@@ -1481,124 +1481,124 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
     }
   },
   "objStr": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "properties": {
       "str": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "str"
       },
       "strOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "str"
       },
       "strOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "str"
       },
       "strDec": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strDec"
       },
       "strDecOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strDec"
       },
       "strDecOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strDec"
       },
       "strDecEnc": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strDecEnc"
       },
       "strDecEncOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strDecEnc"
       },
       "strDecEncOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strDecEnc"
       },
       "strEnc": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strEnc"
       },
       "strEncOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strEnc"
       },
       "strEncOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strEnc"
       },
       "strPattern": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strPattern"
       },
       "strPatternOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strPattern"
       },
       "strPatternOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strPattern"
       },
       "strPatternDec": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strPatternDec"
       },
       "strPatternDecOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strPatternDec"
       },
       "strPatternDecOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strPatternDec"
       },
       "strPatternDecEnc": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strPatternDecEnc"
       },
       "strPatternDecEncOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strPatternDecEnc"
       },
       "strPatternDecEncOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strPatternDecEnc"
       },
       "strPatternEnc": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "strPatternEnc"
       },
       "strPatternEncOptional": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "type": "strPatternEnc"
       },
       "strPatternEncOptionalNotNullable": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "use": "optional",
         "nullable": false,
         "type": "strPatternEnc"
@@ -1618,12 +1618,6 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#introduction]: #1-introduction
-[#dependencies]: #11-dependencies-on-other-specifications
-[#conventions]: #12-conventions-used-in-this-document
-[#purpose]: #2-purpose
-[#requirements]: #3-requirements
-[#specification]: #4-specification
 [#schema]: #41-schema-document
 [#model]: #42-model-for-json-values
 [#boolean]: #421-boolean-model
@@ -1637,16 +1631,6 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#types]: #43-root-declarative-types
 [#properties]: #44-object-properties
 [#elements]: #45-array-elements
-[#resources]: #5-related-resources-for-json-schema
-[#json-schemas]: #51-schemas-for-json-schema
-[#schema-023]: #511-json-schema-023-current
-[#schema-022]: #512-json-schema-022-deprecated
-[#schema-010]: #513-json-schema-010-deprecated
-[#samples]: #6-sample-schemas
-[#structurejsdx]: #61-structurejsdx
-[#structurejsd]: #62-structurejsd
-[#datatypejsdx]: #63-datatypesjsdx
-[#datatypejsd]: #64-datatypesjsd
 
 [interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics#Including_or_excluding_endpoints)
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt

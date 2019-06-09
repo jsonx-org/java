@@ -1,9 +1,9 @@
 # JSONx Sample: Consumer Driven Contracts
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?Yrn6JXVz)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?Yrn6JXVz)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?Yrn6JXVz)](https://www.javadoc.io/doc/org.jsonx/rs)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg?Yrn6JXVz)](https://mvnrepository.com/artifact/org.jsonx/rs)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/rs)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/rs)
 
 ## Abstract
 
@@ -52,18 +52,18 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```json
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:type": "boolean", "nullable": false} } },
+  "product": { "jx:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jx:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:type": "object", "extends": "product", "properties": {
-    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } }
+  "product1": { "jx:type": "object", "extends": "product", "properties": {
+    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } }
 }
 ```
 
@@ -114,22 +114,22 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:type": "boolean", "nullable": false} } },
+  "product": { "jx:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jx:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:type": "object", "extends": "product", "properties": {
-    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } },
+  "product1": { "jx:type": "object", "extends": "product", "properties": {
+    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } },
 
-+ "product2": { "jsd:type": "object", "extends": "product", "properties": {
-+   "Version": { "jsd:type": "string", "nullable": false, "pattern": "v2" },
-+   "Description": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
++ "product2": { "jx:type": "object", "extends": "product", "properties": {
++   "Version": { "jx:type": "string", "nullable": false, "pattern": "v2" },
++   "Description": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
 }
 ```
 

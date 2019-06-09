@@ -1,9 +1,9 @@
 # JSONx Framework
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?Yrn6JXVz)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?Yrn6JXVz)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg?Yrn6JXVz)](https://www.javadoc.io/doc/org.jsonx/jsonx)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg?Yrn6JXVz)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
 
 ## Abstract
 
@@ -107,18 +107,18 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```json
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:type": "boolean", "nullable": false} } },
+  "product": { "jx:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jx:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:type": "object", "extends": "product", "properties": {
-    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } }
+  "product1": { "jx:type": "object", "extends": "product", "properties": {
+    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } }
 }
 ```
 
@@ -169,22 +169,22 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-  "product": { "jsd:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jsd:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jsd:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "InStock": { "jsd:type": "boolean", "nullable": false} } },
+  "product": { "jx:type": "object", "abstract": true, "properties": {
+    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
+    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
+    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "InStock": { "jx:type": "boolean", "nullable": false} } },
 
-  "product1": { "jsd:type": "object", "extends": "product", "properties": {
-    "Version": { "jsd:type": "string", "nullable": false, "pattern": "v1"} } },
+  "product1": { "jx:type": "object", "extends": "product", "properties": {
+    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } },
 
-+ "product2": { "jsd:type": "object", "extends": "product", "properties": {
-+   "Version": { "jsd:type": "string", "nullable": false, "pattern": "v2" },
-+   "Description": { "jsd:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
++ "product2": { "jx:type": "object", "extends": "product", "properties": {
++   "Version": { "jx:type": "string", "nullable": false, "pattern": "v2" },
++   "Description": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
 }
 ```
 
@@ -252,25 +252,25 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    ```json
    {
-     "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-     "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-     "myNumber": { "jsd:type": "number", "range": "[-1,1)" },
-     "myString": { "jsd:type": "string", "pattern": "[a-z]+" },
+     "myNumber": { "jx:type": "number", "range": "[-1,1)" },
+     "myString": { "jx:type": "string", "pattern": "[a-z]+" },
      "myObject": {
-       "jsd:type": "object", "properties": {
+       "jx:type": "object", "properties": {
          "myArray": {
-           "jsd:type": "array", "elements": [
-             { "jsd:type": "boolean" },
-             { "jsd:type": "reference", "type": "myNumber" },
-             { "jsd:type": "reference", "type": "myString" },
-             { "jsd:type": "array", "elements": [
-               { "jsd:type": "boolean" },
-               { "jsd:type": "number", "form": "integer", "range": "[0,100]" },
-               { "jsd:type": "string", "pattern": "[0-9]+" },
-               { "jsd:type": "any", "types": "myNumber myString" } ]},
-           { "jsd:type": "reference", "type": "myObject" },
-           { "jsd:type": "any", "types": "myString myObject" }]
+           "jx:type": "array", "elements": [
+             { "jx:type": "boolean" },
+             { "jx:type": "reference", "type": "myNumber" },
+             { "jx:type": "reference", "type": "myString" },
+             { "jx:type": "array", "elements": [
+               { "jx:type": "boolean" },
+               { "jx:type": "number", "form": "integer", "range": "[0,100]" },
+               { "jx:type": "string", "pattern": "[0-9]+" },
+               { "jx:type": "any", "types": "myNumber myString" } ]},
+           { "jx:type": "reference", "type": "myObject" },
+           { "jx:type": "any", "types": "myString myObject" }]
          }
        }
      }
@@ -369,33 +369,33 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```json
    {
-     "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-     "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-     "positiveDecimal": { "jsd:type": "number", "range": "[1,]" },
-     "positiveInteger": { "jsd:type": "number", "form": "integer", "range": "[1,]" },
-     "date": { "jsd:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
-     "nonEmptyString": { "jsd:type": "string", "pattern": "\\S|\\S.*\\S" },
-     "address": { "jsd:type": "object", "properties": {
-       "name": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "address": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "city": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "postalCode": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
-       "country": { "jsd:type": "reference", "type": "nonEmptyString" } }
+     "positiveDecimal": { "jx:type": "number", "range": "[1,]" },
+     "positiveInteger": { "jx:type": "number", "form": "integer", "range": "[1,]" },
+     "date": { "jx:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
+     "nonEmptyString": { "jx:type": "string", "pattern": "\\S|\\S.*\\S" },
+     "address": { "jx:type": "object", "properties": {
+       "name": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "address": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "city": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "postalCode": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
+       "country": { "jx:type": "reference", "type": "nonEmptyString" } }
      },
-     "invoice": { "jsd:type": "object", "properties": {
-       "number": { "jsd:type": "reference", "type": "positiveInteger" },
-       "date": { "jsd:type": "reference", "type": "date" },
-       "billingAddress": { "jsd:type": "reference", "type": "address" },
-       "shippingAddress": { "jsd:type": "reference", "type": "address" },
-       "billedItems": { "jsd:type": "array", "nullable": false, "elements": [
-         { "jsd:type": "reference", "type": "item" } ] } }
+     "invoice": { "jx:type": "object", "properties": {
+       "number": { "jx:type": "reference", "type": "positiveInteger" },
+       "date": { "jx:type": "reference", "type": "date" },
+       "billingAddress": { "jx:type": "reference", "type": "address" },
+       "shippingAddress": { "jx:type": "reference", "type": "address" },
+       "billedItems": { "jx:type": "array", "nullable": false, "elements": [
+         { "jx:type": "reference", "type": "item" } ] } }
      },
-     "item": { "jsd:type": "object", "properties": {
-       "description": { "jsd:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "code": { "jsd:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "quantity": { "jsd:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "price": { "jsd:type": "reference", "nullable": false, "type": "positiveDecimal" } }
+     "item": { "jx:type": "object", "properties": {
+       "description": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+       "code": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
+       "quantity": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
+       "price": { "jx:type": "reference", "nullable": false, "type": "positiveDecimal" } }
      }
    }
    ```
@@ -704,19 +704,19 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
    ```json
    {
-     "jsd:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-     "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
 
-     "uuid": { "jsd:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
-     "id": { "jsd:type": "object", "abstract": true, "properties": {
-       "id": { "jsd:type": "reference", "nullable": false, "type": "uuid" } } },
-     "credentials": { "jsd:type": "object", "properties": {
-       "email": { "jsd:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
-       "password": { "jsd:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
-     "account": { "jsd:type": "object", "extends": "credentials", "properties": {
-       "id": { "jsd:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
-       "firstName": { "jsd:type": "string", "nullable": false },
-       "lastName": { "jsd:type": "string", "nullable": false } } }
+     "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
+     "id": { "jx:type": "object", "abstract": true, "properties": {
+       "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
+     "credentials": { "jx:type": "object", "properties": {
+       "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
+       "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
+     "account": { "jx:type": "object", "extends": "credentials", "properties": {
+       "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
+       "firstName": { "jx:type": "string", "nullable": false },
+       "lastName": { "jx:type": "string", "nullable": false } } }
    }
    ```
 

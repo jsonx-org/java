@@ -1,9 +1,9 @@
 # JSONx Maven Plugin
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?Yrn6JXVz)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?Yrn6JXVz)](https://coveralls.io/github/jsonxorg/jsonx)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx-maven-plugin.svg?Yrn6JXVz)](https://www.javadoc.io/doc/org.jsonx/jsonx-maven-plugin)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx-maven-plugin.svg?Yrn6JXVz)](https://mvnrepository.com/artifact/org.jsonx/jsonx-maven-plugin)
+[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx-maven-plugin.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx-maven-plugin)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx-maven-plugin.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/jsonx-maven-plugin)
 
 ## Abstract
 
