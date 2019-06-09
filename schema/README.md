@@ -529,13 +529,13 @@ The <samp>**element**</samp> objects define properties for the declarative objec
 
 #### 5.1.2 Obsolete
 
-* <ins>JSON Schema 0.2.3</ins> **[Deprecated]**
+* <ins>JSON Schema 0.2.2</ins> **[Deprecated]**
 
-  * A JSON Schema schema document XSD [schema-0.2.3.xsd](http://www.jsonx.org/schema-0.2.3.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd]( http://www.openjax.org/xml/datatypes-0.9.2.xsd).
+  * A JSON Schema schema document XSD [schema-0.2.2.xsd](http://www.jsonx.org/schema-0.2.2.xsd) for JSON Schema documents. It incorporates an auxiliary XSD, [datatypes-0.9.2.xsd]( http://www.openjax.org/xml/datatypes-0.9.2.xsd).
 
-  * A JSON Schema schema document JSDx [schema-0.2.3.jsdx](http://www.jsonx.org/schema-0.2.3.jsdx) for JSON Schema documents.
+  * A JSON Schema schema document JSDx [schema-0.2.2.jsdx](http://www.jsonx.org/schema-0.2.2.jsdx) for JSON Schema documents.
 
-  * A JSON Schema schema document JSD [schema-0.2.3.jsd](http://www.jsonx.org/schema-0.2.3.jsd) for JSON Schema documents.
+  * A JSON Schema schema document JSD [schema-0.2.2.jsd](http://www.jsonx.org/schema-0.2.2.jsd) for JSON Schema documents.
 
 * <ins>JSON Schema 0.1.0</ins> **[Deprecated]**
 
