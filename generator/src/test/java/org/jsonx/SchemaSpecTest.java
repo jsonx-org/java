@@ -23,10 +23,10 @@ import java.net.URL;
 
 import org.junit.Test;
 import org.libj.io.Streams;
-import org.openjax.xml.api.ValidationException;
+import org.xml.sax.SAXException;
 
 public class SchemaSpecTest {
-  public static void test(String version) throws IOException, ValidationException {
+  public static void test(String version) throws IOException, SAXException {
     if (version.length() > 0)
       version = "-" + version;
 
@@ -40,12 +40,12 @@ public class SchemaSpecTest {
   }
 
   @Test
-  public void test() throws IOException, ValidationException {
+  public void test() throws IOException, SAXException {
     test("");
   }
 
   @Test
-  public void test023() throws IOException, ValidationException {
+  public void test023() throws IOException, SAXException {
     test("0.2.3");
   }
 }

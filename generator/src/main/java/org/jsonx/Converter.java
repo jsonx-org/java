@@ -24,8 +24,8 @@ import java.nio.file.StandardOpenOption;
 
 import org.libj.net.URLs;
 import org.openjax.json.JSON;
-import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
+import org.xml.sax.SAXException;
 
 /**
  * Utility for converting JSD files to JSDx, and vice versa.
@@ -70,14 +70,14 @@ public final class Converter {
   }
 
   /**
-   * Converts a JDSX file to the JSD format.
+   * Converts a JDSx file to the JSD format.
    *
    * @param url The {@code URL} of the content to convert.
    * @return The converted file in JSD format.
    * @throws IOException If an I/O error has occurred.
-   * @throws ValidationException If a validation error has occurred.
+   * @throws SAXException If a parse error has occurred.
    */
-  public static String jsdxToJsd(final URL url) throws IOException, ValidationException {
+  public static String jsdxToJsd(final URL url) throws IOException, SAXException {
     return JSON.toString(SchemaElement.parseJsdx(url, "").toJson(), 2);
   }
 
@@ -95,13 +95,18 @@ public final class Converter {
       try {
         return jsdToJsdx(url);
       }
-      catch (final DecodeException | ValidationException de) {
+      catch (final DecodeException e0) {
         try {
           return jsdxToJsd(url);
         }
-        catch (final Exception e) {
-          e.addSuppressed(de);
-          throw new IllegalArgumentException(e);
+        catch (final IOException | RuntimeException e1) {
+          e1.addSuppressed(e0);
+          throw e1;
+        }
+        catch (final Exception e1) {
+          final IllegalArgumentException e = new IllegalArgumentException(e0);
+          e.addSuppressed(e1);
+          throw e;
         }
       }
     }
@@ -109,13 +114,18 @@ public final class Converter {
     try {
       return jsdxToJsd(url);
     }
-    catch (final IllegalArgumentException | ValidationException ve) {
+    catch (final SAXException e0) {
       try {
         return jsdToJsdx(url);
       }
-      catch (final DecodeException | ValidationException e) {
-        e.addSuppressed(ve);
-        throw new IllegalArgumentException(e);
+      catch (final IOException | RuntimeException e1) {
+        e1.addSuppressed(e0);
+        throw e1;
+      }
+      catch (final Exception e1) {
+        final IllegalArgumentException e = new IllegalArgumentException(e1);
+        e.addSuppressed(e0);
+        throw e;
       }
     }
   }

@@ -2,15 +2,15 @@ package org.jsonx;
 
 public class schema {
   public static class Any extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="jsd:type", pattern="any", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="any", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @org.jsonx.StringProperty(pattern="\\S+( \\S+)*", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -33,7 +33,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Any that = (org.jsonx.schema.Any)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       if (that.types != null ? !that.types.equals(types) : types != null)
@@ -45,7 +45,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 188459569 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       hashCode = 31 * hashCode + (types == null ? 0 : types.hashCode());
       return hashCode;
     }
@@ -182,15 +182,15 @@ public class schema {
   }
 
   public static class Array extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="jsd:type", pattern="array", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="array", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @org.jsonx.StringProperty(pattern="[\\d]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -246,7 +246,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Array that = (org.jsonx.schema.Array)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       if (that.minIterate != null ? !that.minIterate.equals(minIterate) : minIterate != null)
@@ -264,7 +264,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 721134942 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       hashCode = 31 * hashCode + (minIterate == null ? 0 : minIterate.hashCode());
       hashCode = 31 * hashCode + (maxIterate == null ? 0 : maxIterate.hashCode());
       hashCode = 31 * hashCode + (elements == null ? 0 : elements.hashCode());
@@ -403,15 +403,15 @@ public class schema {
   }
 
   public static class Boolean extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="jsd:type", pattern="boolean", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="boolean", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @java.lang.Override
@@ -423,7 +423,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Boolean that = (org.jsonx.schema.Boolean)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       return true;
@@ -432,7 +432,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1974865427 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       return hashCode;
     }
     
@@ -633,15 +633,15 @@ public class schema {
   }
 
   public static class Number extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="jsd:type", pattern="number", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="number", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @org.jsonx.StringProperty(pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -679,7 +679,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Number that = (org.jsonx.schema.Number)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       if (that.range != null ? !that.range.equals(range) : range != null)
@@ -694,7 +694,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1255147748 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       hashCode = 31 * hashCode + (range == null ? 0 : range.hashCode());
       hashCode = 31 * hashCode + (scale == null ? 0 : scale.hashCode());
       return hashCode;
@@ -863,15 +863,15 @@ public class schema {
         return org.jsonx.JxEncoder.get().marshal(this);
       }
     }
-    @org.jsonx.StringProperty(name="jsd:type", pattern="object", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="object", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @org.jsonx.StringProperty(name="extends", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -907,7 +907,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Object that = (org.jsonx.schema.Object)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       if (that._extends != null ? !that._extends.equals(_extends) : _extends != null)
@@ -922,7 +922,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1266143450 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       hashCode = 31 * hashCode + (_extends == null ? 0 : _extends.hashCode());
       hashCode = 31 * hashCode + (properties == null ? 0 : properties.hashCode());
       return hashCode;
@@ -1102,15 +1102,15 @@ public class schema {
   }
 
   public static abstract class Reference extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="jsd:type", pattern="reference", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="reference", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @org.jsonx.StringProperty(nullable=false)
@@ -1135,7 +1135,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Reference that = (org.jsonx.schema.Reference)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       if (that.type != null ? !that.type.equals(type) : type != null)
@@ -1147,7 +1147,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1841260496 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       hashCode = 31 * hashCode + (type == null ? 0 : type.hashCode());
       return hashCode;
     }
@@ -1284,26 +1284,26 @@ public class schema {
   }
 
   public static class Schema extends org.jsonx.schema.Documented {
-    @org.jsonx.StringProperty(name="jsd:ns", pattern="http://www.jsonx.org/schema-0.2.3.jsd", nullable=false)
-    private java.lang.String jsd_3aNs;
+    @org.jsonx.StringProperty(name="jx:ns", pattern="http://www.jsonx.org/schema-0.2.3.jsd", nullable=false)
+    private java.lang.String jx_3aNs;
     
-    public void setJsd_3aNs(final java.lang.String jsd_3aNs) {
-      this.jsd_3aNs = jsd_3aNs;
+    public void setJx_3aNs(final java.lang.String jx_3aNs) {
+      this.jx_3aNs = jx_3aNs;
     }
     
-    public java.lang.String getJsd_3aNs() {
-      return jsd_3aNs;
+    public java.lang.String getJx_3aNs() {
+      return jx_3aNs;
     }
     
-    @org.jsonx.StringProperty(name="jsd:schemaLocation", pattern="http://www.jsonx.org/schema-0.2.3.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    private java.lang.String jsd_3aSchemaLocation;
+    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="http://www.jsonx.org/schema-0.2.3.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    private java.lang.String jx_3aSchemaLocation;
     
-    public void setJsd_3aSchemaLocation(final java.lang.String jsd_3aSchemaLocation) {
-      this.jsd_3aSchemaLocation = jsd_3aSchemaLocation;
+    public void setJx_3aSchemaLocation(final java.lang.String jx_3aSchemaLocation) {
+      this.jx_3aSchemaLocation = jx_3aSchemaLocation;
     }
     
-    public java.lang.String getJsd_3aSchemaLocation() {
-      return jsd_3aSchemaLocation;
+    public java.lang.String getJx_3aSchemaLocation() {
+      return jx_3aSchemaLocation;
     }
     
     @org.jsonx.AnyProperty(name="[a-zA-Z_][-a-zA-Z\\d_]*", types={@org.jsonx.t(objects=org.jsonx.schema.Array.class), @org.jsonx.t(objects=org.jsonx.schema.Boolean.class), @org.jsonx.t(objects=org.jsonx.schema.Number.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects=org.jsonx.schema.String.class)}, nullable=false)
@@ -1318,10 +1318,10 @@ public class schema {
         return false;
     
       final org.jsonx.schema.Schema that = (org.jsonx.schema.Schema)obj;
-      if (that.jsd_3aNs != null ? !that.jsd_3aNs.equals(jsd_3aNs) : jsd_3aNs != null)
+      if (that.jx_3aNs != null ? !that.jx_3aNs.equals(jx_3aNs) : jx_3aNs != null)
         return false;
     
-      if (that.jsd_3aSchemaLocation != null ? !that.jsd_3aSchemaLocation.equals(jsd_3aSchemaLocation) : jsd_3aSchemaLocation != null)
+      if (that.jx_3aSchemaLocation != null ? !that.jx_3aSchemaLocation.equals(jx_3aSchemaLocation) : jx_3aSchemaLocation != null)
         return false;
     
       if (that._5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a != null ? !that._5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a.equals(_5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a) : _5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a != null)
@@ -1333,8 +1333,8 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1381524284 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aNs == null ? 0 : jsd_3aNs.hashCode());
-      hashCode = 31 * hashCode + (jsd_3aSchemaLocation == null ? 0 : jsd_3aSchemaLocation.hashCode());
+      hashCode = 31 * hashCode + (jx_3aNs == null ? 0 : jx_3aNs.hashCode());
+      hashCode = 31 * hashCode + (jx_3aSchemaLocation == null ? 0 : jx_3aSchemaLocation.hashCode());
       hashCode = 31 * hashCode + (_5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a == null ? 0 : _5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a.hashCode());
       return hashCode;
     }
@@ -1346,15 +1346,15 @@ public class schema {
   }
 
   public static class String extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="jsd:type", pattern="string", nullable=false)
-    private java.lang.String jsd_3aType;
+    @org.jsonx.StringProperty(name="jx:type", pattern="string", nullable=false)
+    private java.lang.String jx_3aType;
     
-    public void setJsd_3aType(final java.lang.String jsd_3aType) {
-      this.jsd_3aType = jsd_3aType;
+    public void setJx_3aType(final java.lang.String jx_3aType) {
+      this.jx_3aType = jx_3aType;
     }
     
-    public java.lang.String getJsd_3aType() {
-      return jsd_3aType;
+    public java.lang.String getJx_3aType() {
+      return jx_3aType;
     }
     
     @org.jsonx.StringProperty(use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -1377,7 +1377,7 @@ public class schema {
         return false;
     
       final org.jsonx.schema.String that = (org.jsonx.schema.String)obj;
-      if (that.jsd_3aType != null ? !that.jsd_3aType.equals(jsd_3aType) : jsd_3aType != null)
+      if (that.jx_3aType != null ? !that.jx_3aType.equals(jx_3aType) : jx_3aType != null)
         return false;
     
       if (that.pattern != null ? !that.pattern.equals(pattern) : pattern != null)
@@ -1389,7 +1389,7 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1397525932 * 31 + super.hashCode();
-      hashCode = 31 * hashCode + (jsd_3aType == null ? 0 : jsd_3aType.hashCode());
+      hashCode = 31 * hashCode + (jx_3aType == null ? 0 : jx_3aType.hashCode());
       hashCode = 31 * hashCode + (pattern == null ? 0 : pattern.hashCode());
       return hashCode;
     }

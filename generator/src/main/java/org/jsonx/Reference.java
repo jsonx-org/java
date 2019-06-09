@@ -188,7 +188,7 @@ final class Reference extends Member {
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final Map<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jsd:type", elementName());
+    properties.put("jx:type", elementName());
 
     final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
     attributes.remove(nameName());

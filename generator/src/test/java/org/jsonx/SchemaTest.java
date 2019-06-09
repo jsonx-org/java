@@ -44,7 +44,6 @@ import org.libj.test.AssertXml;
 import org.libj.util.Classes;
 import org.openjax.json.JSON;
 import org.openjax.json.JsonReader;
-import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.Validator;
 import org.slf4j.Logger;
@@ -75,7 +74,7 @@ public class SchemaTest {
     settings.add(new Settings(Integer.MAX_VALUE));
   }
 
-  private static xL0gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, ValidationException {
+  private static xL0gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, SAXException {
     try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
       return (xL0gluGCXYYJc.Schema)Bindings.parse(in);
     }
@@ -212,7 +211,7 @@ public class SchemaTest {
     testSettings(fileName, packageName, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, ValidationException {
+  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     for (final Settings settings : SchemaTest.settings) {
       final String prefix = packageName + ".";
 
@@ -249,7 +248,7 @@ public class SchemaTest {
     assertEquals(null, expected, actual);
   }
 
-  private static String testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, ValidationException {
+  private static String testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, SAXException {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
@@ -279,7 +278,7 @@ public class SchemaTest {
     }
   }
 
-  private static void testConverter(final String jsd) throws DecodeException, IOException, ValidationException {
+  private static void testConverter(final String jsd) throws DecodeException, IOException, SAXException {
     final URL jsdUrl = MemoryURLStreamHandler.createURL(jsd.getBytes());
     final String jsdx = Converter.jsdToJsdx(jsdUrl);
     final URL jsdxUrl = MemoryURLStreamHandler.createURL(jsdx.getBytes());

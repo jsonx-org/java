@@ -44,10 +44,10 @@ import org.libj.util.CollectionUtil;
 import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
 import org.openjax.json.JsonReader;
-import org.openjax.xml.api.ValidationException;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.SilentErrorHandler;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
 
 /**
  * The root {@link Element} of a JSON Schema Document.
@@ -89,7 +89,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
-  public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException, ValidationException {
+  public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
     try (final InputStream in = url.openStream()) {
       final schema.Schema schema = JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in)));
       return new SchemaElement(schema, prefix);
@@ -111,12 +111,13 @@ public final class SchemaElement extends Element implements Declarer {
    *          generated JSD bindings.
    * @return The {@code SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
+   * @throws SAXException If a parse error has occurred.
    * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException}
    *           has occurred.
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
-  public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, ValidationException {
+  public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
     try (final InputStream in = url.openStream()) {
       final xL0gluGCXYYJc.Schema schema = (xL0gluGCXYYJc.Schema)Bindings.parse(in, getErrorHandler());
       return new SchemaElement(schema, prefix);
@@ -144,13 +145,18 @@ public final class SchemaElement extends Element implements Declarer {
       try {
         return parseJsd(url, prefix);
       }
-      catch (final DecodeException | ValidationException de) {
+      catch (final DecodeException e0) {
         try {
           return parseJsdx(url, prefix);
         }
-        catch (final Exception e) {
-          e.addSuppressed(de);
-          throw new IllegalArgumentException(e);
+        catch (final IOException | RuntimeException e1) {
+          e1.addSuppressed(e0);
+          throw e1;
+        }
+        catch (final Exception e1) {
+          final IllegalArgumentException e = new IllegalArgumentException(e0);
+          e.addSuppressed(e1);
+          throw e;
         }
       }
     }
@@ -158,13 +164,18 @@ public final class SchemaElement extends Element implements Declarer {
     try {
       return parseJsdx(url, prefix);
     }
-    catch (final ValidationException de) {
+    catch (final SAXException e0) {
       try {
         return parseJsd(url, prefix);
       }
-      catch (final DecodeException | ValidationException e) {
-        e.addSuppressed(de);
-        throw new IllegalArgumentException(e);
+      catch (final IOException | RuntimeException e1) {
+        e1.addSuppressed(e0);
+        throw e1;
+      }
+      catch (final Exception e1) {
+        final IllegalArgumentException e = new IllegalArgumentException(e1);
+        e.addSuppressed(e0);
+        throw e;
       }
     }
   }
@@ -429,8 +440,8 @@ public final class SchemaElement extends Element implements Declarer {
       return null;
 
     final Map<String,Object> properties = new LinkedHashMap<>(toAttributes(owner, packageName));
-    properties.put("jsd:ns", version + ".jsd");
-    properties.put("jsd:schemaLocation", version + ".jsd " + version + ".jsd");
+    properties.put("jx:ns", version + ".jsd");
+    properties.put("jx:schemaLocation", version + ".jsd " + version + ".jsd");
     for (final Model member : members) {
       final String name = member.id.toString();
       properties.put(packageName.length() > 0 && name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name, member.toJson(settings, this, packageName));

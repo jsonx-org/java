@@ -30,17 +30,17 @@
   <object name="member" abstract="true" extends="documented"/>
 
   <object name="schema" extends="documented">
-    <property name="jsd:ns" xsi:type="string" pattern="http://www.jsonx.org/schema-0.2.3.jsd" nullable="false"/>
-    <property name="jsd:schemaLocation" xsi:type="string" pattern="http://www.jsonx.org/schema-0.2.3.jsd [^ ]+" nullable="false" use="optional"/>
+    <property name="jx:ns" xsi:type="string" pattern="http://www.jsonx.org/schema-0.2.3.jsd" nullable="false"/>
+    <property name="jx:schemaLocation" xsi:type="string" pattern="http://www.jsonx.org/schema-0.2.3.jsd [^ ]+" nullable="false" use="optional"/>
     <property names="[a-zA-Z_][-a-zA-Z\d_]*" xsi:type="any" types="array boolean number objectType string" nullable="false"/>
   </object>
 
   <object name="any" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="any" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="any" nullable="false"/>
     <property name="types" xsi:type="string" pattern="\S+( \S+)*" nullable="false" use="optional"/>
   </object>
   <object name="array" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="array" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="array" nullable="false"/>
     <property name="minIterate" xsi:type="reference" type="min" nullable="false" use="optional" doc="Specifies the minimum inclusive number of iterations of child elements. Default: 1."/>
     <property name="maxIterate" xsi:type="reference" type="max" nullable="false" use="optional" doc="Specifies the maximum inclusive number of iterations of child elements. Default: 1."/>
     <property name="elements" xsi:type="array" nullable="false" maxIterate="unbounded">
@@ -54,10 +54,10 @@
     </property>
   </object>
   <object name="boolean" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="boolean" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="boolean" nullable="false"/>
   </object>
   <object name="number" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="number" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="number" nullable="false"/>
     <property name="range" xsi:type="string" pattern="[\(\[](-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?([1-9]\d*))?)?,(-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?([1-9]\d*))?)?[\)\]]" nullable="false" use="optional" doc="
       Specifies the value range in interval notation:
       Open (exclusive) interval: (min,max)
@@ -67,18 +67,18 @@
     <property name="scale" xsi:type="number" scale="0" nullable="false" use="optional" doc="The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded."/>
   </object>
   <object name="object" abstract="true" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="object" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="object" nullable="false"/>
     <property name="extends" xsi:type="string" nullable="false" use="optional" doc="Specifies the name of the type to extend. Optional."/>
     <property name="properties" xsi:type="object" nullable="false" use="optional">
       <property names=".*" xsi:type="any" types="anyProperty arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty" nullable="false"/>
     </property>
   </object>
   <object name="reference" abstract="true" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="reference" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="reference" nullable="false"/>
     <property name="type" xsi:type="string" nullable="false" doc="Specifies the name of the referenced type. Required."/>
   </object>
   <object name="string" extends="member">
-    <property name="jsd:type" xsi:type="string" pattern="string" nullable="false"/>
+    <property name="jx:type" xsi:type="string" pattern="string" nullable="false"/>
     <property name="pattern" xsi:type="string" nullable="false" use="optional"/>
   </object>
 

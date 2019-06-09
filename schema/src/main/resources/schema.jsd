@@ -1,66 +1,66 @@
 {
-  "jsd:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-  "jsd:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
   "min": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "[\\d]+"
   },
   "max": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "([\\d]+|unbounded)"
   },
   "use": {
-    "jsd:type": "string",
+    "jx:type": "string",
     "pattern": "(required|optional)"
   },
   "documented": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "abstract": true,
     "properties": {
       "doc": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "doc": "Defines text comments. Optional."
       }
     }
   },
   "member": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "abstract": true,
     "extends": "documented"
   },
   "schema": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "documented",
     "properties": {
-      "jsd:ns": {
-        "jsd:type": "string",
+      "jx:ns": {
+        "jx:type": "string",
         "pattern": "http://www.jsonx.org/schema-0.2.3.jsd",
         "nullable": false
       },
-      "jsd:schemaLocation": {
-        "jsd:type": "string",
+      "jx:schemaLocation": {
+        "jx:type": "string",
         "pattern": "http://www.jsonx.org/schema-0.2.3.jsd [^ ]+",
         "use": "optional",
         "nullable": false
       },
       "[a-zA-Z_][-a-zA-Z\\d_]*": {
-        "jsd:type": "any",
+        "jx:type": "any",
         "types": "array boolean number objectType string",
         "nullable": false
       }
     }
   },
   "any": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "any",
         "nullable": false
       },
       "types": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "pattern": "\\S+( \\S+)*",
         "use": "optional",
         "nullable": false
@@ -68,64 +68,64 @@
     }
   },
   "array": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "array",
         "nullable": false
       },
       "minIterate": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false,
         "doc": "Specifies the minimum inclusive number of iterations of child elements. Default: 1."
       },
       "maxIterate": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false,
         "doc": "Specifies the maximum inclusive number of iterations of child elements. Default: 1."
       },
       "elements": {
-        "jsd:type": "array",
+        "jx:type": "array",
         "maxIterate": "unbounded",
         "nullable": false,
         "elements": [{
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "anyElement",
           "minOccurs": "0",
           "nullable": false
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "arrayElement",
           "minOccurs": "0",
           "nullable": false
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "booleanElement",
           "minOccurs": "0",
           "nullable": false
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "numberElement",
           "minOccurs": "0",
           "nullable": false
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "referenceElement",
           "minOccurs": "0",
           "nullable": false
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "stringElement",
           "minOccurs": "0",
           "nullable": false
         }, {
-          "jsd:type": "reference",
+          "jx:type": "reference",
           "type": "objectElement",
           "minOccurs": "0",
           "nullable": false
@@ -134,34 +134,34 @@
     }
   },
   "boolean": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "boolean",
         "nullable": false
       }
     }
   },
   "number": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "number",
         "nullable": false
       },
       "range": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "pattern": "[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]",
         "use": "optional",
         "nullable": false,
         "doc": "       Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interal: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val]"
       },
       "scale": {
-        "jsd:type": "number",
+        "jx:type": "number",
         "scale": 0,
         "use": "optional",
         "nullable": false,
@@ -170,28 +170,28 @@
     }
   },
   "object": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "abstract": true,
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "object",
         "nullable": false
       },
       "extends": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "use": "optional",
         "nullable": false,
         "doc": "Specifies the name of the type to extend. Optional."
       },
       "properties": {
-        "jsd:type": "object",
+        "jx:type": "object",
         "use": "optional",
         "nullable": false,
         "properties": {
           ".*": {
-            "jsd:type": "any",
+            "jx:type": "any",
             "types": "anyProperty arrayProperty booleanProperty numberProperty objectProperty referenceProperty stringProperty",
             "nullable": false
           }
@@ -200,44 +200,44 @@
     }
   },
   "reference": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "abstract": true,
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "reference",
         "nullable": false
       },
       "type": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "nullable": false,
         "doc": "Specifies the name of the referenced type. Required."
       }
     }
   },
   "string": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "member",
     "properties": {
-      "jsd:type": {
-        "jsd:type": "string",
+      "jx:type": {
+        "jx:type": "string",
         "pattern": "string",
         "nullable": false
       },
       "pattern": {
-        "jsd:type": "string",
+        "jx:type": "string",
         "use": "optional",
         "nullable": false
       }
     }
   },
   "objectType": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "object",
     "properties": {
       "abstract": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false,
         "doc": "Specifies whether the object is abstract. Default: false."
@@ -245,16 +245,16 @@
     }
   },
   "anyProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "any",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -262,16 +262,16 @@
     }
   },
   "arrayProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "array",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -279,16 +279,16 @@
     }
   },
   "booleanProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "boolean",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -296,16 +296,16 @@
     }
   },
   "numberProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "number",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -313,16 +313,16 @@
     }
   },
   "objectProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "object",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -330,16 +330,16 @@
     }
   },
   "referenceProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "reference",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -347,16 +347,16 @@
     }
   },
   "stringProperty": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "string",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "use": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "use",
         "use": "optional",
         "nullable": false
@@ -364,22 +364,22 @@
     }
   },
   "anyElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "any",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false
@@ -387,22 +387,22 @@
     }
   },
   "arrayElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "array",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false
@@ -410,22 +410,22 @@
     }
   },
   "booleanElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "boolean",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false
@@ -433,22 +433,22 @@
     }
   },
   "numberElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "number",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false
@@ -456,22 +456,22 @@
     }
   },
   "objectElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "object",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false
@@ -479,22 +479,22 @@
     }
   },
   "referenceElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "reference",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false
@@ -502,22 +502,22 @@
     }
   },
   "stringElement": {
-    "jsd:type": "object",
+    "jx:type": "object",
     "extends": "string",
     "properties": {
       "nullable": {
-        "jsd:type": "boolean",
+        "jx:type": "boolean",
         "use": "optional",
         "nullable": false
       },
       "minOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "min",
         "use": "optional",
         "nullable": false
       },
       "maxOccurs": {
-        "jsd:type": "reference",
+        "jx:type": "reference",
         "type": "max",
         "use": "optional",
         "nullable": false

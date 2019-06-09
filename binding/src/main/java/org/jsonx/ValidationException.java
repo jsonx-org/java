@@ -22,14 +22,32 @@ package org.jsonx;
 public class ValidationException extends RuntimeException {
   private static final long serialVersionUID = 2984407300739435993L;
 
+  /**
+   * Creates a new {@code ValidationException} with the specified detail
+   * message.
+   *
+   * @param message The detail message.
+   */
   public ValidationException(final String message) {
     super(message);
   }
 
+  /**
+   * Creates a new {@code ValidationException} with the specified cause.
+   *
+   * @param cause The cause.
+   */
   public ValidationException(final Throwable cause) {
     super(cause);
   }
 
+  /**
+   * Creates a new {@code ValidationException} with the specified detail message
+   * and cause.
+   *
+   * @param message The detail message.
+   * @param cause The cause.
+   */
   public ValidationException(final String message, final Throwable cause) {
     super(message, cause);
   }

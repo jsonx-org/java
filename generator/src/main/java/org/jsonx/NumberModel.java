@@ -133,7 +133,7 @@ final class NumberModel extends Model {
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, element.annotationType(), element.nullable(), element.scale(), element.range());
+      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range());
       final Id id = model.id;
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -146,7 +146,7 @@ final class NumberModel extends Model {
 
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, type.annotationType(), null, type.scale(), type.range());
+      final NumberModel model = new NumberModel(registry, referrer, null, type.scale(), type.range());
       final Id id = model.id;
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -212,7 +212,7 @@ final class NumberModel extends Model {
     this.range = parseRange(property.range());
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Class<? extends Annotation> annotationType, final Boolean nullable, final int scale, final String range) throws ParseException {
+  private NumberModel(final Registry registry, final Declarer declarer, final Boolean nullable, final int scale, final String range) throws ParseException {
     super(registry, declarer, Id.hashed("n", scale, parseRange(range)), nullable, null);
     this.scale = scale;
     this.range = parseRange(range);

@@ -28,7 +28,7 @@ import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.libj.net.URLs;
-import org.openjax.xml.api.ValidationException;
+import org.xml.sax.SAXException;
 
 @Mojo(name="convert", defaultPhase=LifecyclePhase.GENERATE_RESOURCES)
 @Execute(goal="convert")
@@ -61,7 +61,7 @@ public class ConvertMojo extends JxMojo {
         Files.write(destFile.toPath(), converted.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
       }
     }
-    catch (final DecodeException | IOException | ValidationException e) {
+    catch (final DecodeException | IOException | SAXException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);
     }
   }
