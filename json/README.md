@@ -31,7 +31,9 @@ This document specifies the <ins>JSONx-JSON API</ins>, which offers facilities f
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`paypal.jsonx`][#paypaljsonx]<br>
 <samp>&nbsp;&nbsp;</samp>6 [Related Resources for JSONx-JSON][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JSONx Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONx Schema 0.2.2][#jsonx-098]
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONx Schema 0.2.2][#jsonx-098]<br>
+<samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
 
 ## 1 Introduction
 
@@ -206,13 +208,13 @@ This section provides a sample JSON and its JSONx alternative.
 
 * A JSONx Schema schema document XSD [jsonx-0.2.2.xsd][jsonxxsd] for JSONx Schema documents.
 
-## Contributing
+## 7 Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-### License
+## 8 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

@@ -17,7 +17,9 @@ This document specifies the <ins>JSD Binding Generator</ins>, which offers facil
 <samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
 <samp>&nbsp;&nbsp;</samp>4 [Specification](#4-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`Generator`](#41-generator)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`Converter`](#42-converter)
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`Converter`](#42-converter)<br>
+<samp>&nbsp;&nbsp;</samp>5 [Contributing](#5-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>6 [License](#6-license)
 
 ## 1 Introduction
 
@@ -81,12 +83,12 @@ Supported SCHEMA_IN|OUT formats:
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.
 
-## Contributing
+## 5 Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-### License
+## 6 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.

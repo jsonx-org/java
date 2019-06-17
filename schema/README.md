@@ -51,6 +51,8 @@ This document specifies the <ins>JSON Schema Definition Language</ins>, which of
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`structure.jsd`](#62-structurejsd)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [`datatype.jsdx`](#63-datatypesjsdx)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [`datatype.jsd`](#64-datatypesjsd)
+<samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
 
 ## 1 Introduction
 
@@ -1991,13 +1993,13 @@ This section provides sample schemas in both `jsdx` and `jsd` representations.
 }
 ```
 
-## Contributing
+## 7 Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-### License
+## 8 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
