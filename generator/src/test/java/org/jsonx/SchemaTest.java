@@ -291,11 +291,6 @@ public class SchemaTest {
   }
 
   @Test
-  public void testInvoice() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("invoice.jsdx", "org.jsonx.invoice");
-  }
-
-  @Test
   public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("array.jsdx", "org.jsonx");
   }

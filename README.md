@@ -5,6 +5,16 @@
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
 
+| **Submodule** | **Summary** |
+|:-|:-|
+| [binding][binding] | API to bind Java classes to JSON objects whose structure is expressed in the<br>[<ins>JSON Schema Definition Language</ins>][schema]. |
+| [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
+| [json][json] | Utility to convert and validate JSON and JSONx documents. |
+| [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
+| [rs][rs] | JAX-RS `@Provider` to read and write JSON documents with the [JSON/Java Binding API][binding]. |
+| [sample][sample] | Sample applications and examples. |
+| [schema][schema] | Normative specification of the <ins>JSON Schema Definition Language</ins> (JSD), which<br>describes the structure and constrains the contents of JSON documents. |
+
 ## Abstract
 
 The <ins>JSONx Framework</ins> is a collection of specifications and reference implementations that provide <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON. The <ins>JSONx Framework</ins> defines the [<ins>JSON Schema Definition Language</ins>][schema], which is a <ins>schema language</ins> inspired by the [XMLSchema][xmlschema] specification.
@@ -56,7 +66,7 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 
 ## 1 Introduction
 
-The <ins>JSONx Framework</ins> was created to help developers solve common problems related to common use-cases regarding JSON. The <ins>JSONx Framework</ins> offers <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations (on the Java platform) of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
+The <ins>JSONx Framework</ins> was created to help developers address common problems and use-cases when working with JSON. The <ins>JSONx Framework</ins> offers <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations (on the Java platform) of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
 
 1. Definition of a normative contract between a producer and consumer of JSON documents.
 1. Validation of JSON documents conforming to a respective <ins>schema document</ins>.
@@ -107,8 +117,8 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -128,9 +138,9 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -169,8 +179,8 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -194,9 +204,9 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -220,7 +230,7 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 With this approach, the **v2** evolution of the contract satisfies **Customer2**. And, since the contract also retains support for **v1**, integration with **Customer1** is unaffected.
 
-_For the application code, see **[<ins>Consumer Driven Contracts</ins>](/sample/cdc)**._
+_For the application code, see **[<ins>Sample: Consumer Driven Contracts</ins>][sample-cdc]**._
 
 ## 3 <ins>JSON Schema Definition Language</ins>
 
@@ -252,8 +262,8 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
      "myNumber": { "jx:type": "number", "range": "[-1,1)" },
      "myString": { "jx:type": "string", "pattern": "[a-z]+" },
@@ -300,9 +310,9 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+     xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
      <number name="myNumber" range="[-1,1)"/>
      <string name="myString" pattern="[a-z]+"/>
@@ -333,7 +343,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
 ### 3.4 Specification
 
-_For a detailed specification of the <ins>schema language</ins>, see **[<ins>JSON Schema Definition Language</ins>](/schema)**._
+_For a detailed specification of the <ins>schema language</ins>, see **[<ins>JSON Schema Definition Language</ins>][schema]**._
 
 ## 4 <ins>JSON/Java Binding API</ins>
 
@@ -369,8 +379,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
      "positiveDecimal": { "jx:type": "number", "range": "[1,]" },
      "positiveInteger": { "jx:type": "number", "form": "integer", "range": "[1,]" },
@@ -406,9 +416,9 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+     xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
      <number name="positiveDecimal" range="[1,]"/>
      <number name="positiveInteger" form="integer" range="[1,]"/>
@@ -598,9 +608,11 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
    assertEquals(invoice, invoice2);
    ```
 
+_For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**._
+
 ### 4.4 Specification
 
-_For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSON/Java Binding API</ins>](/binding)**._
+_For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSON/Java Binding API</ins>][binding]**._
 
 ## 5 <ins>JSD Binding Generator</ins>
 
@@ -644,7 +656,7 @@ java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated
 
 ### 5.4 Specification
 
-_For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSD Binding Generator</ins>](/generator)**._
+_For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSD Binding Generator</ins>][generator]**._
 
 ## 6 <ins>JSONx-JSON</ins>
 
@@ -680,7 +692,7 @@ String json = JxConverter.jsonxToJson(new FileInputStream("example.jsonx"));
 
 ### 6.4 Specification
 
-_For a detailed specification of JSONx, see **[<ins>JSONx-JSON</ins>](/json)**._
+_For a detailed specification of JSONx, see **[<ins>JSONx-JSON</ins>][json]**._
 
 ## 7 <ins>JAX-RS Integration for JSONx</ins>
 
@@ -704,8 +716,8 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
      "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
      "id": { "jx:type": "object", "abstract": true, "properties": {
@@ -726,9 +738,9 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+     xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
      <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
      <object name="id" abstract="true">
@@ -820,7 +832,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
 ### 7.4 Specification
 
-_For a detailed specification of <ins>JAX-RS integration</ins>, see **[<ins>JAX-RS Integration for JSONx</ins>](/rs)**._
+_For a detailed specification of <ins>JAX-RS integration</ins>, see **[<ins>JAX-RS Integration for JSONx</ins>][rs]**._
 
 ## 8 <ins>JSONx Maven Plugin</ins>
 
@@ -885,9 +897,16 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#invoice-example]: #43-getting-started
 [#jsd]: #3-json-schema-definition-language
 
+[binding]: ../../../binding/
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
-[jsonx-maven-plugin]: /jsonx-maven-plugin
+[generator]: ../../../generator/
+[json]: ../../../json/
+[jsonx-maven-plugin]: ../../../jsonx-maven-plugin/
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
-[schema]: /schema/
+[rs]: ../../../rs/
+[sample-cdc]: ../../../sample/tree/master/cdc/
+[sample-invoice]: ../../../sample/tree/master/invoice/
+[sample]: ../../../sample/
+[schema]: ../../../schema/
 [xmlschema]: http://www.w3.org/2001/XMLSchema

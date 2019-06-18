@@ -14,25 +14,20 @@
  * program. If not, see <http://opensource.org/licenses/MIT/>.
  */
 
-package org.jsonx;
+package org.jsonx.sample.invoice;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collections;
 
-import org.jsonx.invoice.Address;
-import org.jsonx.invoice.Invoice;
-import org.jsonx.invoice.Item;
-import org.junit.Test;
-import org.openjax.json.JsonReader;
+import org.jsonx.JxEncoder;
 
-public class InvoiceTest {
-  @Test
-  public void test() throws DecodeException, IOException {
+public class InvoiceSample {
+  public static void main(final String[] args) {
+    System.out.println(JxEncoder._2.marshal(createInvoice()));
+  }
+
+  public static Invoice createInvoice() {
     final Address address = new Address();
     address.setName("John Doe");
     address.setAddress("111 Wall St.");
@@ -53,7 +48,6 @@ public class InvoiceTest {
     invoice.setShippingAddress(address);
     invoice.setBilledItems(Collections.singletonList(item));
 
-    final String json = JxEncoder._2.marshal(invoice);
-    assertEquals(invoice, JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json))));
+    return invoice;
   }
 }

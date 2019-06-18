@@ -7,7 +7,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JAX-RS Integration for JSONx</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][api].
+This document specifies the <ins>JAX-RS Integration for JSONx</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][binding].
 
 ## Table of Contents
 

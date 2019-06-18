@@ -52,8 +52,8 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -73,9 +73,9 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -114,8 +114,8 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.2.2.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.2.jsd http://www.jsonx.org/schema-0.2.2.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -139,9 +139,9 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.2.xsd http://www.jsonx.org/schema-0.2.2.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -169,7 +169,7 @@ _The code included in this module implements this example._
 
 ## 2 Contributing
 
-Pull requests are welcome. For major changes, please [open an issue](../../../../issues) first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
@@ -177,6 +177,7 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#jsd]: ../../../#3-json-schema-definition-language
-
+[#converter]: ../../#532-converter
+[#jsd]: ../../#3-json-schema-definition-language
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
+[jsonx-maven-plugin]: ../../jsonx-maven-plugin/

@@ -20,32 +20,44 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.jsonx</groupId>
-    <artifactId>jsonx</artifactId>
+    <groupId>org.jsonx.sample</groupId>
+    <artifactId>sample</artifactId>
     <version>0.2.3-SNAPSHOT</version>
   </parent>
-  <groupId>org.jsonx.sample</groupId>
-  <artifactId>sample</artifactId>
-  <packaging>pom</packaging>
-  <name>JSONx Sample</name>
+  <artifactId>invoice</artifactId>
+  <name>JSONx Sample Invoice</name>
   <description>
-    JSONx Samples.
+    JSONx Sample Invoice: An example related to invoices.
   </description>
-  <modules>
-    <module>cdc</module>
-    <module>invoice</module>
-  </modules>
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.safris.maven</groupId>
-          <artifactId>coverallsio-maven-plugin</artifactId>
-          <configuration>
-            <skipModule>sample</skipModule>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jsonx</groupId>
+        <artifactId>jsonx-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>generate-sources</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+          <prefix>org.jsonx.sample.invoice.</prefix>
+          <schemas>
+            <schema>src/main/resources/invoice.jsdx</schema>
+          </schemas>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.jsonx</groupId>
+      <artifactId>binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>
