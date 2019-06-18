@@ -897,16 +897,16 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#invoice-example]: #43-getting-started
 [#jsd]: #3-json-schema-definition-language
 
-[binding]: ../../../binding/
+[binding]: binding
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
-[generator]: ../../../generator/
-[json]: ../../../json/
-[jsonx-maven-plugin]: ../../../jsonx-maven-plugin/
+[generator]: generator
+[json]: json
+[jsonx-maven-plugin]: jsonx-maven-plugin
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
-[rs]: ../../../rs/
-[sample-cdc]: ../../../sample/tree/master/cdc/
-[sample-invoice]: ../../../sample/tree/master/invoice/
-[sample]: ../../../sample/
-[schema]: ../../../schema/
+[rs]: rs
+[sample-cdc]: sample/tree/master/cdc
+[sample-invoice]: sample/tree/master/invoice
+[sample]: sample
+[schema]: schema
 [xmlschema]: http://www.w3.org/2001/XMLSchema
