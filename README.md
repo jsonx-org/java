@@ -9,7 +9,7 @@
 |:-|:-|
 | [binding][binding] | API to bind Java classes to JSON objects whose structure is expressed in the<br>[<ins>JSON Schema Definition Language</ins>][schema]. |
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
-| [json][json] | Utility to convert and validate JSON and JSONx documents. |
+| [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
 | [rs][rs] | JAX-RS `@Provider` to read and write JSON documents with the [JSON/Java Binding API][binding]. |
 | [sample][sample] | Sample applications and examples. |
@@ -44,12 +44,12 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.1 [Generator](#531-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.2 [Converter][#converter]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.4 [Specification](#54-specification)<br>
-<samp>&nbsp;&nbsp;</samp>6 [<ins>JSONx-JSON</ins>](#6-jsonx-json)<br>
+<samp>&nbsp;&nbsp;</samp>6 [<ins>JsonXml</ins>](#6-jsonxml)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [**Getting Started**](#63-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON-JSONx](#631-json-jsonx)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [JSONx-JSON](#632-jsonx-json)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON -> XML](#631-json-xml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML -> JSON](#632-xml-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
 <samp>&nbsp;&nbsp;</samp>7 [<ins>JAX-RS Integration for JSONx</ins>](#7-jax-rs-integration-for-jsonx)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
@@ -658,41 +658,41 @@ java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated
 
 _For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSD Binding Generator</ins>][generator]**._
 
-## 6 <ins>JSONx-JSON</ins>
+## 6 <ins>JsonXml</ins>
 
-Offers facilities for validating and converting JSON and JSONx documents (JSONx is JSON expressed in XML syntax).
+Offers facilities for converting JSON documents to XML, and vice-versa.
 
 ### 6.1 Purpose
 
-Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONx documents</ins>.
+Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JsonXml documents</ins>.
 
 ### 6.2 Requirements
 
-1. The <ins>JSONx documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-1. The <ins>JSONx documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+1. The <ins>JsonXml documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
 
-1. The <ins>JSONx documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
 ### 6.3 Getting Started
 
-The <ins>JSONx-JSON</ins> sub-project provides convenience utilities for converting and validating JSON and JSONx documents. The following illustrates example usage of the `JxConverter` class.
+The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
 
 #### 6.3.1 JSON->JSONx
 
 ```java
-String jsonx = JxConverter.jsonToJsonx(new JsonReader(new FileReader("example.json")));
+String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
 ```
 
 #### 6.3.2 JSONx->JSON
 
 ```java
-String json = JxConverter.jsonxToJson(new FileInputStream("example.jsonx"));
+String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
 ```
 
 ### 6.4 Specification
 
-_For a detailed specification of JSONx, see **[<ins>JSONx-JSON</ins>][json]**._
+_For a detailed specification of JsonXml, see **[<ins>JsonXml</ins>][jsonxml]**._
 
 ## 7 <ins>JAX-RS Integration for JSONx</ins>
 
@@ -900,7 +900,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [binding]: binding
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [generator]: generator
-[json]: json
+[jsonxml]: json
 [jsonx-maven-plugin]: jsonx-maven-plugin
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html

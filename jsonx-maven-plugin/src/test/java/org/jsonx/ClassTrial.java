@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsonx.JxConverter;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.net.MemoryURLStreamHandler;
 import org.openjax.json.JsonReader;

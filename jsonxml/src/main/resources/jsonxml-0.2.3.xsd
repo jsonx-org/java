@@ -16,8 +16,8 @@
 -->
 <xs:schema
   elementFormDefault="qualified"
-  targetNamespace="http://www.jsonx.org/jsonx-0.2.2.xsd"
-  xmlns:jx="http://www.jsonx.org/jsonx-0.2.2.xsd"
+  targetNamespace="http://www.jsonx.org/jsonx-0.2.3.xsd"
+  xmlns:jx="http://www.jsonx.org/jsonx-0.2.3.xsd"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:group name="values">
@@ -41,7 +41,7 @@
         <xs:element name="p">
           <xs:complexType mixed="true">
             <xs:group ref="jx:values" minOccurs="0"/>
-            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="n" type="xs:string" use="required"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

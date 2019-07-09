@@ -62,7 +62,7 @@
     </developer>
   </developers>
   <modules>
-    <module>json</module>
+    <module>jsonxml</module>
     <module>schema</module>
     <module>binding</module>
     <module>generator</module>

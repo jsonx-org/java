@@ -117,9 +117,9 @@ public final class JxConverter {
   private static void appendObject(final JsonReader reader, final boolean declareNamespace, final StringBuilder builder) throws IOException {
     builder.append("<o");
     if (declareNamespace) {
-      builder.append(" xmlns=\"http://www.jsonx.org/jsonx-0.2.2.xsd\"");
+      builder.append(" xmlns=\"http://www.jsonx.org/jsonxml-0.2.3.xsd\"");
       builder.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-      builder.append(" xsi:schemaLocation=\"http://www.jsonx.org/jsonx-0.2.2.xsd http://www.jsonx.org/jsonx-0.2.2.xsd\"");
+      builder.append(" xsi:schemaLocation=\"http://www.jsonx.org/jsonx-0.2.3.xsd http://www.jsonx.org/jsonx-0.2.3.xsd\"");
     }
 
     builder.append('>');
@@ -139,7 +139,7 @@ public final class JxConverter {
           token = null;
         }
         else {
-          builder.append("<p name=").append(CharacterDatas.escapeForAttr(token, '"', 1, token.length() - 1));
+          builder.append("<p n=").append(CharacterDatas.escapeForAttr(token, '"', 1, token.length() - 1));
           token = reader.readToken();
           if (Character.isWhitespace(token.charAt(0))) {
             builder.append(token);
@@ -224,9 +224,9 @@ public final class JxConverter {
           builder.append('[');
         }
         else if ("p".equals(localName)) {
-          final int index = attributes.getIndex("name");
+          final int index = attributes.getIndex("n");
           if (index == -1)
-            throw new SAXException("Missing attribute: \"name\"");
+            throw new SAXException("Missing attribute: \"n\"");
 
           builder.append('"').append(CharacterDatas.unescapeFromAttr(attributes.getValue(index), '"')).append("\":");
         }

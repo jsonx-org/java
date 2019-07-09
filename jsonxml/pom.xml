@@ -24,11 +24,11 @@
     <artifactId>jsonx</artifactId>
     <version>0.2.3-SNAPSHOT</version>
   </parent>
-  <artifactId>json</artifactId>
-  <name>JSONx JSON</name>
+  <artifactId>jsonxml</artifactId>
+  <name>JsonXml</name>
   <description>
-    JSONX is JSON expressed in XML syntax. This document presents the structural part of JSONX, as
-    well as the normative specification of the JSONX-JSON API. It also contains a directory of
+    JsonXml is JSON expressed in XML syntax. This document presents the structural part of JsonXml, as
+    well as the normative specification of the JsonXml API. It also contains a directory of
     links to these related resources.
   </description>
   <dependencies>
