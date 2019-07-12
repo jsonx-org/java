@@ -1,7 +1,7 @@
 # JSONx Maven Plugin
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Build Status](https://travis-ci.org/jsonxorg/java.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/java)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx-maven-plugin.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx-maven-plugin)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx-maven-plugin.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/jsonx-maven-plugin)
 
@@ -32,7 +32,7 @@ This document specifies the <ins>JSONx Maven Plugin</ins>, which offers faciliti
 
 ### 1 Introduction
 
-The `jsonx-maven-plugin` plugin is used to generate JSONx and JSD bindings with the [JSONx][jsonx] framework.
+The `jsonx-maven-plugin` plugin is used to generate JSONx and JSD bindings with the [JSONx Framework for Java][jsonx].
 
 ### 1.1 Conventions Used in This Document
 
@@ -182,5 +182,5 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[api]: /../../binding/
-[jsonx]: /../..
+[api]: ../../binding/
+[jsonx]: ../../

@@ -1,7 +1,7 @@
 # JSONx Framework
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Build Status](https://travis-ci.org/jsonxorg/java.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/java)
+[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/jsonx.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/jsonx)
 
@@ -13,7 +13,6 @@
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
 | [rs][rs] | JAX-RS `@Provider` to read and write JSON documents with the [JSON/Java Binding API][binding]. |
 | [sample][sample] | Sample applications and examples. |
-| [schema][schema] | Normative specification of the <ins>JSON Schema Definition Language</ins> (JSD), which<br>describes the structure and constrains the contents of JSON documents. |
 
 ## Abstract
 
@@ -678,13 +677,13 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
 
-#### 6.3.1 JSON->JSONx
+#### 6.3.1 JSON -> XML
 
 ```java
 String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
 ```
 
-#### 6.3.2 JSONx->JSON
+#### 6.3.2 XML -> JSON
 
 ```java
 String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
@@ -900,7 +899,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [binding]: binding
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [generator]: generator
-[jsonxml]: json
+[jsonxml]: jsonxml
 [jsonx-maven-plugin]: jsonx-maven-plugin
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
@@ -908,5 +907,5 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [sample-cdc]: sample/tree/master/cdc
 [sample-invoice]: sample/tree/master/invoice
 [sample]: sample
-[schema]: schema
+[schema]: ../../../schema
 [xmlschema]: http://www.w3.org/2001/XMLSchema
