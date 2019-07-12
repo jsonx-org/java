@@ -63,7 +63,7 @@ public final class Converter {
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
    */
-  public static String jsdToJsdx(final URL url) throws IOException, DecodeException, ValidationException {
+  public static String jsdToJsdx(final URL url) throws DecodeException, IOException, ValidationException {
     final XmlElement xml = SchemaElement.parseJsd(url, "").toXml();
     xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd");
     return xml.toString(2);

@@ -32,23 +32,43 @@
     binding between JSON documents conforming to a JSD schema, and Java object represetations of
     these documents.
   </description>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jaxsb</groupId>
+        <artifactId>jaxsb-maven-plugin</artifactId>
+        <version>2.1.5-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <destDir>${project.build.directory}/generated-sources/jaxsb</destDir>
+              <schemas>
+                <schema>http://www.jsonx.org/schema.xsd</schema>
+              </schemas>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
+    <dependency>
+      <groupId>org.jaxsb</groupId>
+      <artifactId>runtime</artifactId>
+      <version>2.1.5-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>jci</artifactId>
       <version>0.8.4-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jsonx</groupId>
-      <artifactId>schema</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jsonx</groupId>
-      <artifactId>schema</artifactId>
-      <version>${project.version}</version>
-      <type>test-jar</type>
-      <scope>test</scope>
+      <groupId>org.openjax.xml</groupId>
+      <artifactId>api</artifactId>
+      <version>0.9.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.jsonx</groupId>

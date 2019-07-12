@@ -18,7 +18,7 @@
   doc="Schema expressing the variations of templates"
   xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd ../../main/resources/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema.xsd">
   <array name="arrayDepthFour" minIterate="4" maxIterate="4" doc="Array template">
     <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10" doc="Referene to arrayDepthThree"/>
     <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8" doc="Referene to arrayDepthTwo"/>

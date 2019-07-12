@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
 
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
-  private static final URL schemaXsd = ClassLoader.getSystemClassLoader().getResource("schema.xsd");
+  private static final URL schemaXsd;
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
@@ -62,6 +62,7 @@ public class SchemaTest {
     generatedSourcesDir.mkdirs();
     generatedResourcesDir.mkdirs();
     try {
+      schemaXsd = new URL("http://www.jsonx.org/schema.xsd");
       Files.walk(generatedSourcesDir.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(f -> !f.equals(generatedSourcesDir)).forEach(File::delete);
     }
     catch (final IOException e) {

@@ -65,8 +65,8 @@ public class ConverterTest {
 
   @Test
   public void testConvertSchema() throws IOException {
-    Converter.convert(ClassLoader.getSystemClassLoader().getResource("schema.jsd"));
-    Converter.convert(ClassLoader.getSystemClassLoader().getResource("schema.jsdx"));
+    Converter.convert(new URL("http://www.jsonx.org/schema.jsd"));
+    Converter.convert(new URL("http://www.jsonx.org/schema.jsdx"));
   }
 
   @Test

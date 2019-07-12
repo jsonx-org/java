@@ -28,7 +28,7 @@ import org.junit.Test;
 public class SchemaCodeTest {
   private static void test(final String version) throws IOException {
     final File destDir = new File("target/generated-sources/jsonx");
-    final URL testJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema-" + version + ".jsdx");
+    final URL testJsdUrl = new URL("http://www.jsonx.org/schema-" + version + ".jsdx");
     SchemaElement.parse(testJsdUrl, "org.jsonx.schema$").toSource(destDir);
 
     final File controlJavaFile = new File("../generator/src/main/java/org/jsonx/schema.java");

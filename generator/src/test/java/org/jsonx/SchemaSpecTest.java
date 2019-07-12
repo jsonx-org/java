@@ -30,10 +30,10 @@ public class SchemaSpecTest {
     if (version.length() > 0)
       version = "-" + version;
 
-    final URL testJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema" + version + ".jsdx");
+    final URL testJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsdx");
     final String testJsd = Converter.jsdxToJsd(testJsdUrl);
 
-    final URL controlJsdUrl = ClassLoader.getSystemClassLoader().getResource("schema" + version + ".jsd");
+    final URL controlJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsd");
     final String controlJsd = new String(Streams.readBytes(controlJsdUrl.openStream()));
 
     assertEquals(controlJsd, testJsd);
