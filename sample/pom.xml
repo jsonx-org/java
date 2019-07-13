@@ -39,10 +39,19 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>org/jsonx/sample/**/*</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.safris.maven</groupId>
           <artifactId>coverallsio-maven-plugin</artifactId>
           <configuration>
-            <skipModule>sample</skipModule>
+            <skipModule>*</skipModule>
           </configuration>
         </plugin>
       </plugins>
