@@ -28,7 +28,7 @@
   <packaging>maven-plugin</packaging>
   <name>JSONx Maven Plugin</name>
   <description>
-    The jsonx-maven-plugin plugin is used to generate JSONX and JSD bindings with the JSONX framework.
+    The jsonx-maven-plugin plugin is used to generate JSONx and JSD bindings with the JSONx framework.
   </description>
   <build>
     <plugins>

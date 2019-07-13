@@ -24,11 +24,11 @@
     <artifactId>jsonx</artifactId>
     <version>0.2.3-SNAPSHOT</version>
   </parent>
-  <artifactId>rs</artifactId>
-  <name>JSONx RS</name>
+  <artifactId>jaxrs</artifactId>
+  <name>JSONx JAX-RS</name>
   <description>
-    JAX-RS Integration for JSONX is implemented to the specification of the JAX-RS API. JAX-RS
-    Integration for JSONX implements the MessageBodyReader and MessageBodyWriter interfaces in
+    JAX-RS Integration for JSONx is implemented to the specification of the JAX-RS API. JAX-RS
+    Integration for JSONx implements the MessageBodyReader and MessageBodyWriter interfaces in
     JxObjectProvider to integrate with JAX-RS server runtimes.
   </description>
   <dependencies>
