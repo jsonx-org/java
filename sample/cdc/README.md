@@ -1,7 +1,7 @@
 # JSONx Sample: Consumer Driven Contracts
 
-[![Build Status](https://travis-ci.org/jsonxorg/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonxorg/jsonx)
-[![Coverage Status](https://coveralls.io/repos/github/jsonxorg/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonxorg/jsonx)
+[![Build Status](https://travis-ci.org/jsonx-org/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/jsonx)
+[![Coverage Status](https://coveralls.io/repos/github/jsonx-org/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/jsonx)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/rs)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/rs.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/rs)
 
