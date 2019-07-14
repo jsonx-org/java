@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.junit.Assert;
 import org.junit.Test;
 import org.libj.jci.CompilationException;
@@ -83,7 +83,7 @@ public class SchemaTest {
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
     final XmlElement xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.2.3.xsd " + schemaXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.3.1.xsd " + schemaXsd);
     return xml;
   }
 

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.libj.util.Classes;
 import org.libj.util.Strings;
 

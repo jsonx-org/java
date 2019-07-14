@@ -1284,7 +1284,7 @@ public class schema {
   }
 
   public static class Schema extends org.jsonx.schema.Documented {
-    @org.jsonx.StringProperty(name="jx:ns", pattern="http://www.jsonx.org/schema-0.2.3.jsd", nullable=false)
+    @org.jsonx.StringProperty(name="jx:ns", pattern="http://www.jsonx.org/schema-0.3.1.jsd", nullable=false)
     private java.lang.String jx_3aNs;
     
     public void setJx_3aNs(final java.lang.String jx_3aNs) {
@@ -1295,7 +1295,7 @@ public class schema {
       return jx_3aNs;
     }
     
-    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="http://www.jsonx.org/schema-0.2.3.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="http://www.jsonx.org/schema-0.3.1.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String jx_3aSchemaLocation;
     
     public void setJx_3aSchemaLocation(final java.lang.String jx_3aSchemaLocation) {

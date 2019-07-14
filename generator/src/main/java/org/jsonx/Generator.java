@@ -41,7 +41,7 @@ public class Generator {
     if (args.length == 0 || args[0] == null || args[0].length() == 0)
       trapPrintUsage();
 
-    String prefix = null;
+    String prefix = "";
     File destDir = null;
     File schemaFile = null;
     for (int i = 0; i < args.length; ++i) {

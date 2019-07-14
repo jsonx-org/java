@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.libj.lang.AnnotationParameterException;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.ArrayUtil;

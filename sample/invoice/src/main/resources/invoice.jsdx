@@ -16,9 +16,9 @@
 -->
 <schema
   doc="Schema describing an invoice"
-  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
   <number name="money" scale="2" range="[0,]" doc="Non-negative number representing money with 2 digits past the decimal for cents"/>
   <number name="positiveInteger" scale="0" range="[1,]" doc="Positive integer"/>
   <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))" doc="ISO-8601 date format"/>

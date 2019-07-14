@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$Documented;
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc.$MaxOccurs;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc.$Documented;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc.$MaxOccurs;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;

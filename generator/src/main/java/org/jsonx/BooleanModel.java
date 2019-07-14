@@ -19,7 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.libj.lang.IllegalAnnotationException;
 
 final class BooleanModel extends Model {

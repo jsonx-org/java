@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
   </parent>
   <artifactId>jaxrs</artifactId>
   <name>JSONx JAX-RS</name>

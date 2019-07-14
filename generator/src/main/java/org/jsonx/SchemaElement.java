@@ -36,7 +36,7 @@ import java.util.function.Predicate;
 
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.net.URLs;

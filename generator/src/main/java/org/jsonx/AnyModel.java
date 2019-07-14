@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.Classes;
 import org.libj.util.Strings;

@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_2_3.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
 import org.libj.lang.IllegalAnnotationException;
 
 final class NumberModel extends Model {
