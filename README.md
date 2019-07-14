@@ -116,8 +116,8 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -137,9 +137,9 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -178,8 +178,8 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -203,9 +203,9 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 <schema
-  xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -261,8 +261,8 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
 
      "myNumber": { "jx:type": "number", "range": "[-1,1)" },
      "myString": { "jx:type": "string", "pattern": "[a-z]+" },
@@ -309,9 +309,9 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+     xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
 
      <number name="myNumber" range="[-1,1)"/>
      <string name="myString" pattern="[a-z]+"/>
@@ -378,8 +378,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
 
      "positiveDecimal": { "jx:type": "number", "range": "[1,]" },
      "positiveInteger": { "jx:type": "number", "form": "integer", "range": "[1,]" },
@@ -415,9 +415,9 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+     xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
 
      <number name="positiveDecimal" range="[1,]"/>
      <number name="positiveInteger" form="integer" range="[1,]"/>
@@ -715,8 +715,8 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.2.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.2.3.jsd http://www.jsonx.org/schema-0.2.3.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
 
      "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
      "id": { "jx:type": "object", "abstract": true, "properties": {
@@ -737,9 +737,9 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.2.3.xsd"
+     xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.2.3.xsd http://www.jsonx.org/schema-0.2.3.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
 
      <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
      <object name="id" abstract="true">

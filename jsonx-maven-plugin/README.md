@@ -117,7 +117,7 @@ The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.2.3-SNAPSHOT</version>
+  <version>0.3.1-SNAPSHOT</version>
   <executions>
     <execution>
       <phase>generate-resources</phase>
@@ -153,7 +153,7 @@ The `jsonx:validate` goal is bound to the `compile` phase, and is used to valida
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.2.3-SNAPSHOT</version>
+  <version>0.3.1-SNAPSHOT</version>
   <executions>
     <execution>
       <phase>generate-resources</phase>

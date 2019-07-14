@@ -31,7 +31,7 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`paypal.xml`][#paypalxml]<br>
 <samp>&nbsp;&nbsp;</samp>6 [Related Resources for JsonXml][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JSONx Schema][#json-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONx Schema 0.2.3][#jsonxml-023]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JSONx Schema 0.3.1][#jsonxml-023]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.2 [JSONx Schema 0.2.2][#jsonxml-022]<br>
 <samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
@@ -166,7 +166,7 @@ This section provides a sample JSON and its JSONx alternative.
 <o
   xmlns="http://www.jsonx.org/jsonxml-0.2.2.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/jsonxml-0.2.3.xsd http://www.jsonx.org/jsonxml-0.2.3.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/jsonxml-0.3.1.xsd http://www.jsonx.org/jsonxml-0.3.1.xsd">
   <p n="id"> "WH-7YX49823S2290830K-0JE13296W68552352"</p>
   <p n="event_version"> "1.0"</p>
   <p n="create_time"> "2016-05-31T17:53:29Z"</p>
@@ -205,9 +205,9 @@ This section provides a sample JSON and its JSONx alternative.
 
 ### 6.1 Schemas for JsonXml
 
-#### 6.1.1 JsonXml Schema 0.2.3
+#### 6.1.1 JsonXml Schema 0.3.1
 
-* A JSONx Schema schema document XSD [jsonxml-0.2.3.xsd][jsonxml-023] for JSONx Schema documents.
+* A JSONx Schema schema document XSD [jsonxml-0.3.1.xsd][jsonxml-023] for JSONx Schema documents.
 
 #### 6.1.2 JsonXml Schema 0.2.2
 
@@ -247,7 +247,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 [api]: ../binding/
 [jsonxml-022]: http://www.jsonx.org/jsonxml-0.2.2.xsd
-[jsonxml-023]: http://www.jsonx.org/jsonxml-0.2.3.xsd
+[jsonxml-023]: http://www.jsonx.org/jsonxml-0.3.1.xsd
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
 [xmlschema]: http://www.w3.org/2001/XMLSchema
 [xmlentities]: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Predefined_entities_in_XML
