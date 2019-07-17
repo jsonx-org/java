@@ -831,7 +831,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
 ### 7.4 Specification
 
-_For a detailed specification of <ins>JAX-RS integration</ins>, see **[<ins>JAX-RS Integration for JSONx</ins>][rs]**._
+_For a detailed specification of <ins>JAX-RS integration</ins>, see **[<ins>JAX-RS Integration for JSONx</ins>][jaxrs]**._
 
 ## 8 <ins>JSONx Maven Plugin</ins>
 
