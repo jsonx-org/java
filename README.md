@@ -1,4 +1,4 @@
-# JSONx Framework
+# JSONx Framework for Java
 
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
@@ -11,12 +11,12 @@
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
 | [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
-| [rs][rs] | JAX-RS `@Provider` to read and write JSON documents with the [JSON/Java Binding API][binding]. |
+| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [JSON/Java Binding API][binding]. |
 | [sample][sample] | Sample applications and examples. |
 
 ## Abstract
 
-The <ins>JSONx Framework</ins> is a collection of specifications and reference implementations that provide <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON. The <ins>JSONx Framework</ins> defines the [<ins>JSON Schema Definition Language</ins>][schema], which is a <ins>schema language</ins> inspired by the [XMLSchema][xmlschema] specification.
+The <ins>JSONx Framework</ins> is a collection of specifications and reference implementations that provide <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON. The <ins>JSONx Framework</ins> defines the [<ins>JSON Schema Definition Language</ins>][schema], which is a <ins>schema language</ins> designed in close resemblance to the [XMLSchema][xmlschema] specification.
 
 This document introduces the <ins>JSONx Framework</ins>, and presents a directory of links to its constituent parts and related resources.
 
@@ -903,7 +903,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [jsonx-maven-plugin]: jsonx-maven-plugin
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
-[rs]: rs
+[jaxrs]: jaxrs
 [sample-cdc]: sample/tree/master/cdc
 [sample-invoice]: sample/tree/master/invoice
 [sample]: sample
