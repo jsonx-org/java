@@ -20,42 +20,44 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.jsonx</groupId>
-    <artifactId>jsonx</artifactId>
+    <groupId>org.jsonx.sample</groupId>
+    <artifactId>sample</artifactId>
     <version>0.3.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.jsonx.sample</groupId>
-  <artifactId>sample</artifactId>
-  <packaging>pom</packaging>
-  <name>JSONx Sample</name>
+  <artifactId>bank</artifactId>
+  <name>JSONx Sample Bank</name>
   <description>
-    JSONx Samples.
+    JSONx Sample Bank: An example related to bank account transactions.
   </description>
-  <modules>
-    <module>cdc</module>
-    <module>invoice</module>
-    <module>bank</module>
-  </modules>
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <configuration>
-            <excludes>
-              <exclude>org/jsonx/sample/**/*</exclude>
-            </excludes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.safris.maven</groupId>
-          <artifactId>coverallsio-maven-plugin</artifactId>
-          <configuration>
-            <skipModule>*</skipModule>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jsonx</groupId>
+        <artifactId>jsonx-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
+          <prefix>org.jsonx.sample.bank.</prefix>
+          <schemas>
+            <schema>src/test/resources/message.jsdx</schema>
+          </schemas>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.jsonx</groupId>
+      <artifactId>binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

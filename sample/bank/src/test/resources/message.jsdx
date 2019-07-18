@@ -1,0 +1,36 @@
+<!--
+  Copyright (c) 2019 JSONx
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<schema
+  doc="Schema describing bank transactions"
+  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
+  <object name="message" abstract="true"/>
+  <object name="swift" extends="message">
+    <property name="type" xsi:type="string" pattern="swift" nullable="false"/>
+    <property name="code" xsi:type="string" pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?" nullable="false"/>
+  </object>
+  <object name="iban" extends="message">
+    <property name="type" xsi:type="string" pattern="iban" nullable="false"/>
+    <property name="code" xsi:type="string" pattern="[A-Z]{2}\d{2} ?\d{4} ?\d{4} ?\d{4} ?\d{4} ?\d{0,2}" nullable="false"/>
+  </object>
+  <object name="ach" extends="message">
+    <property name="type" xsi:type="string" pattern="ach" nullable="false"/>
+    <property name="code" xsi:type="string" pattern="\w{1,17}" nullable="false"/>
+    <property name="routing" xsi:type="string" pattern="\d{9}" nullable="false"/>
+  </object>
+</schema>
