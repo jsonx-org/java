@@ -18,6 +18,9 @@ package org.jsonx.sample.bank;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.jsonx.EncodeException;
 import org.jsonx.JxEncoder;
 import org.junit.Test;
