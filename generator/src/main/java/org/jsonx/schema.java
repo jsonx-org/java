@@ -610,26 +610,6 @@ public class schema {
   }
 
   public static abstract class Member extends org.jsonx.schema.Documented {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-    
-      if (!(obj instanceof org.jsonx.schema.Member) || !super.equals(obj))
-        return false;
-    
-      return true;
-    }
-    
-    @java.lang.Override
-    public int hashCode() {
-      return 1211742261 * 31 + super.hashCode();
-    }
-    
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.jsonx.JxEncoder.get().marshal(this);
-    }
   }
 
   public static class Number extends org.jsonx.schema.Member {
