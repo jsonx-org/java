@@ -92,7 +92,7 @@ The following schema presents a message declaration for each type of identifier 
    <plugin>
      <groupId>org.jsonx</groupId>
      <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.2.2</version>
+     <version>0.3.1</version>
      <executions>
        <execution>
          <goals>

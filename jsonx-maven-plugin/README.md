@@ -79,7 +79,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.2.2</version>
+  <version>0.3.1</version>
   <executions>
     <execution>
       <phase>generate-sources</phase>

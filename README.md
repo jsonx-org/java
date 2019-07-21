@@ -455,7 +455,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
    <plugin>
      <groupId>org.jsonx</groupId>
      <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.2.2</version>
+     <version>0.3.1</version>
      <executions>
        <execution>
          <goals>
@@ -764,7 +764,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
    <plugin>
      <groupId>org.jsonx</groupId>
      <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.2.2</version>
+     <version>0.3.1</version>
      <executions>
        <execution>
          <goals>
@@ -859,7 +859,7 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.2.2</version>
+  <version>0.3.1</version>
   <executions>
     <execution>
       <goals>

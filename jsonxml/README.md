@@ -164,9 +164,9 @@ This section provides a sample JSON and its JSONx alternative.
 
 ```xml
 <o
-  xmlns="http://www.jsonx.org/jsonxml-0.2.2.xsd"
+  xmlns="http://www.jsonx.org/jsonxml-0.3.1.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/jsonxml-0.3.1.xsd http://www.jsonx.org/jsonxml-0.3.1.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/jsonxml-0.3.1.xsd http://www.jsonx.org/jsonxml.xsd">
   <p n="id"> "WH-7YX49823S2290830K-0JE13296W68552352"</p>
   <p n="event_version"> "1.0"</p>
   <p n="create_time"> "2016-05-31T17:53:29Z"</p>
