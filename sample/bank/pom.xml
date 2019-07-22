@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx.sample</groupId>
     <artifactId>sample</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.1</version>
   </parent>
   <artifactId>bank</artifactId>
   <name>JSONx Sample Bank</name>
@@ -40,14 +40,14 @@
             <goals>
               <goal>generate</goal>
             </goals>
-            <phase>generate-test-sources</phase>
+            <phase>generate-sources</phase>
           </execution>
         </executions>
         <configuration>
-          <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
+          <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
           <prefix>org.jsonx.sample.bank.</prefix>
           <schemas>
-            <schema>src/test/resources/message.jsdx</schema>
+            <schema>src/main/resources/message.jsdx</schema>
           </schemas>
         </configuration>
       </plugin>
