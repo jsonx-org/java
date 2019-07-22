@@ -5,7 +5,7 @@
 * Fix `mkdirs` for parent dir of output file in `JxConverter`.
 * Implement `convert` & `validate` goals in `jsonx-maven-plugin`.
 * Maintain order of root elements during schema conversion.
-* Upgrade to `schema-0.3.1`.
+* Upgrade to `schema-0.3`.
 * Change from `number.format` to `number.scale`.
 * Support exponential notation in `range` spec.
 * Add `doc` attribute to all elements.
