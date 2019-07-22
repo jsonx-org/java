@@ -20,58 +20,58 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.Strings;
 
 final class StringModel extends Model {
-  private static xL0gluGCXYYJc.Schema.String type(final String name) {
-    final xL0gluGCXYYJc.Schema.String xsb = new xL0gluGCXYYJc.Schema.String();
+  private static xL0gluGCXAA.Schema.String type(final String name) {
+    final xL0gluGCXAA.Schema.String xsb = new xL0gluGCXAA.Schema.String();
     if (name != null)
-      xsb.setName$(new xL0gluGCXYYJc.Schema.String.Name$(name));
+      xsb.setName$(new xL0gluGCXAA.Schema.String.Name$(name));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$String property(final schema.StringProperty jsd, final String name) {
-    final xL0gluGCXYYJc.$String xsb = new xL0gluGCXYYJc.$String() {
+  private static xL0gluGCXAA.$String property(final schema.StringProperty jsd, final String name) {
+    final xL0gluGCXAA.$String xsb = new xL0gluGCXAA.$String() {
       private static final long serialVersionUID = -8328022363685261988L;
 
       @Override
-      protected xL0gluGCXYYJc.$Member inherits() {
-        return new xL0gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXAA.$Member inherits() {
+        return new xL0gluGCXAA.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL0gluGCXYYJc.$String.Name$(name));
+      xsb.setName$(new xL0gluGCXAA.$String.Name$(name));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$String.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new xL0gluGCXAA.$String.Nullable$(jsd.getNullable()));
 
     if (jsd.getUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$String.Use$(xL0gluGCXYYJc.$String.Use$.Enum.valueOf(jsd.getUse())));
+      xsb.setUse$(new xL0gluGCXAA.$String.Use$(xL0gluGCXAA.$String.Use$.Enum.valueOf(jsd.getUse())));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$ArrayMember.String element(final schema.StringElement jsd) {
-    final xL0gluGCXYYJc.$ArrayMember.String xsb = new xL0gluGCXYYJc.$ArrayMember.String();
+  private static xL0gluGCXAA.$ArrayMember.String element(final schema.StringElement jsd) {
+    final xL0gluGCXAA.$ArrayMember.String xsb = new xL0gluGCXAA.$ArrayMember.String();
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.String.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.String.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.String.MaxOccurs$(jsd.getMaxOccurs()));
+      xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.String.MaxOccurs$(jsd.getMaxOccurs()));
 
     return xsb;
   }
 
-  static xL0gluGCXYYJc.$StringMember jsdToXsb(final schema.String jsd, final String name) {
-    final xL0gluGCXYYJc.$StringMember xsb;
+  static xL0gluGCXAA.$StringMember jsdToXsb(final schema.String jsd, final String name) {
+    final xL0gluGCXAA.$StringMember xsb;
     if (jsd instanceof schema.StringProperty)
       xsb  = property((schema.StringProperty)jsd, name);
     else if (jsd instanceof schema.StringElement)
@@ -82,19 +82,19 @@ final class StringModel extends Model {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getPattern() != null)
-      xsb.setPattern$(new xL0gluGCXYYJc.$StringMember.Pattern$(jsd.getPattern()));
+      xsb.setPattern$(new xL0gluGCXAA.$StringMember.Pattern$(jsd.getPattern()));
 
     return xsb;
   }
 
-  static StringModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.String binding) {
+  static StringModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.String binding) {
     return registry.declare(binding).value(new StringModel(registry, declarer, binding), null);
   }
 
-  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.Schema.String binding) {
+  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.Schema.String binding) {
     final StringModel model = new StringModel(registry, referrer, binding);
     final Id id = model.id;
 
@@ -118,11 +118,11 @@ final class StringModel extends Model {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$Array.String binding) {
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.String binding) {
     return registry.reference(new StringModel(registry, referrer, binding), referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXYYJc.$String binding) {
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$String binding) {
     return registry.reference(new StringModel(registry, referrer, binding), referrer);
   }
 
@@ -130,23 +130,23 @@ final class StringModel extends Model {
     return pattern == null || pattern.length() == 0 ? null : pattern;
   }
 
-  private static String parsePattern(final xL0gluGCXYYJc.$StringMember.Pattern$ pattern) {
+  private static String parsePattern(final xL0gluGCXAA.$StringMember.Pattern$ pattern) {
     return pattern == null ? null : parsePattern(pattern.text());
   }
 
   final String pattern;
 
-  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.String binding) {
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.String binding) {
     super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$String binding) {
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$String binding) {
     super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.pattern = parsePattern(binding.getPattern$());
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.String binding) {
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.String binding) {
     super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.pattern = parsePattern(binding.getPattern$());
   }

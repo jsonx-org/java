@@ -16,9 +16,9 @@
 -->
 <schema
   doc="Schema with names that overlap with Java's reserved words"
-  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
   <array name="break" maxIterate="2">
     <reference type="extends" minOccurs="9" maxOccurs="10"/>
     <reference type="import" minOccurs="7" maxOccurs="8"/>

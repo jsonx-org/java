@@ -45,7 +45,7 @@ public class SchemaSpecTest {
   }
 
   @Test
-  public void test023() throws IOException, SAXException {
-    test("0.3.1");
+  public void test03() throws IOException, SAXException {
+    test("0.3");
   }
 }

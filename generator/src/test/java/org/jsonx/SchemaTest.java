@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.junit.Assert;
 import org.junit.Test;
 import org.libj.jci.CompilationException;
@@ -75,25 +75,25 @@ public class SchemaTest {
     settings.add(new Settings(Integer.MAX_VALUE));
   }
 
-  private static xL0gluGCXYYJc.Schema newControlBinding(final String fileName) throws IOException, SAXException {
+  private static xL0gluGCXAA.Schema newControlBinding(final String fileName) throws IOException, SAXException {
     try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
-      return (xL0gluGCXYYJc.Schema)Bindings.parse(in);
+      return (xL0gluGCXAA.Schema)Bindings.parse(in);
     }
   }
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
     final XmlElement xml = schema.toXml(settings);
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.3.1.xsd " + schemaXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.3.xsd " + schemaXsd);
     return xml;
   }
 
-  private static SchemaElement testParseSchema(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final xL0gluGCXAA.Schema controlBinding, final String prefix) throws IOException, SAXException {
     logger.info("  Parse XML...");
     logger.info("    a) XML(1) -> Schema");
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("    b) Schema -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
-    final xL0gluGCXYYJc.Schema testBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(xml);
+    final xL0gluGCXAA.Schema testBinding = (xL0gluGCXAA.Schema)Bindings.parse(xml);
     logger.info("    c) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual(true);
     return controlSchema;
@@ -176,7 +176,7 @@ public class SchemaTest {
     final String prefix = packageName + ".";
 
     logger.info(fileName + "...");
-    final xL0gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
+    final xL0gluGCXAA.Schema controlBinding = newControlBinding(fileName);
     final String jsd = testJson(controlBinding, prefix);
     testConverter(jsd);
 
@@ -203,7 +203,7 @@ public class SchemaTest {
       throw e;
     }
 
-    final SchemaElement test2Schema = testParseSchema((xL0gluGCXYYJc.Schema)Bindings.parse(xml), prefix);
+    final SchemaElement test2Schema = testParseSchema((xL0gluGCXAA.Schema)Bindings.parse(xml), prefix);
     logger.info("  8) Schema -> Java(2)");
     final Map<String,String> test2Sources = test2Schema.toSource();
     logger.info("  9) Java(1) == Java(2)");
@@ -217,7 +217,7 @@ public class SchemaTest {
       final String prefix = packageName + ".";
 
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + settings.getTemplateThreshold() + "))");
-      final xL0gluGCXYYJc.Schema controlBinding = newControlBinding(fileName);
+      final xL0gluGCXAA.Schema controlBinding = newControlBinding(fileName);
       final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       writeFile("a" + settings.getTemplateThreshold() + fileName, toXml(controlSchema, settings).toString());
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -231,7 +231,7 @@ public class SchemaTest {
       final SchemaElement test1Schema = newSchema(classLoader, packageName);
       final String schema = toXml(test1Schema, settings).toString();
       writeFile("b" + settings.getTemplateThreshold() + fileName, schema);
-      final SchemaElement test2Schema = new SchemaElement((xL0gluGCXYYJc.Schema)Bindings.parse(schema), prefix);
+      final SchemaElement test2Schema = new SchemaElement((xL0gluGCXAA.Schema)Bindings.parse(schema), prefix);
       final Map<String,String> test2Sources = test2Schema.toSource();
       assertSources(test1Sources, test2Sources, false);
 
@@ -249,7 +249,7 @@ public class SchemaTest {
     assertEquals(null, expected, actual);
   }
 
-  private static String testJson(final xL0gluGCXYYJc.Schema controlBinding, final String prefix) throws DecodeException, IOException, SAXException {
+  private static String testJson(final xL0gluGCXAA.Schema controlBinding, final String prefix) throws DecodeException, IOException, SAXException {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
     logger.info("     testJson...");
     logger.info("       a) Schema -> JSON");
@@ -258,7 +258,7 @@ public class SchemaTest {
     final SchemaElement schema = new SchemaElement(testParseSchema(jsd, true), prefix);
     logger.info("       c) Schema -> XML(3)");
     final String jsdx = toXml(schema, Settings.DEFAULT).toString();
-    final xL0gluGCXYYJc.Schema jsonBinding = (xL0gluGCXYYJc.Schema)Bindings.parse(jsdx);
+    final xL0gluGCXAA.Schema jsonBinding = (xL0gluGCXAA.Schema)Bindings.parse(jsdx);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);
     return jsd;
   }

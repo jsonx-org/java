@@ -1,6 +1,6 @@
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema-0.3.1.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema-0.3.jsd",
   "xmldsig": {
     "jx:type": "object",
     "abstract": true,

@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.Classes;
 import org.libj.util.Iterators;
@@ -35,44 +35,44 @@ import org.libj.util.Strings;
 import org.openjax.xml.api.XmlElement;
 
 final class ObjectModel extends Referrer<ObjectModel> {
-  private static xL0gluGCXYYJc.Schema.Object type(final schema.ObjectType jsd, final String name) {
-    final xL0gluGCXYYJc.Schema.Object xsb = new xL0gluGCXYYJc.Schema.Object();
+  private static xL0gluGCXAA.Schema.Object type(final schema.ObjectType jsd, final String name) {
+    final xL0gluGCXAA.Schema.Object xsb = new xL0gluGCXAA.Schema.Object();
     if (name != null)
-      xsb.setName$(new xL0gluGCXYYJc.Schema.Object.Name$(name));
+      xsb.setName$(new xL0gluGCXAA.Schema.Object.Name$(name));
 
     if (jsd.getAbstract() != null)
-      xsb.setAbstract$(new xL0gluGCXYYJc.Schema.Object.Abstract$(jsd.getAbstract()));
+      xsb.setAbstract$(new xL0gluGCXAA.Schema.Object.Abstract$(jsd.getAbstract()));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Object property(final schema.ObjectProperty jsd, final String name) {
-    final xL0gluGCXYYJc.$Object xsb = new xL0gluGCXYYJc.$Object() {
+  private static xL0gluGCXAA.$Object property(final schema.ObjectProperty jsd, final String name) {
+    final xL0gluGCXAA.$Object xsb = new xL0gluGCXAA.$Object() {
       private static final long serialVersionUID = 5201562440101597524L;
 
       @Override
-      protected xL0gluGCXYYJc.$Member inherits() {
-        return new xL0gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXAA.$Member inherits() {
+        return new xL0gluGCXAA.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL0gluGCXYYJc.$Object.Name$(name));
+      xsb.setName$(new xL0gluGCXAA.$Object.Name$(name));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Object.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new xL0gluGCXAA.$Object.Nullable$(jsd.getNullable()));
 
     if (jsd.getUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Object.Use$(xL0gluGCXYYJc.$Object.Use$.Enum.valueOf(jsd.getUse())));
+      xsb.setUse$(new xL0gluGCXAA.$Object.Use$(xL0gluGCXAA.$Object.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getExtends() != null)
-      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getExtends()));
+      xsb.setExtends$(new xL0gluGCXAA.$ObjectMember.Extends$(jsd.getExtends()));
 
     return xsb;
   }
 
-  static xL0gluGCXYYJc.$ObjectMember jsdToXsb(final schema.Object jsd, final String name) {
-    final xL0gluGCXYYJc.$ObjectMember xsb;
+  static xL0gluGCXAA.$ObjectMember jsdToXsb(final schema.Object jsd, final String name) {
+    final xL0gluGCXAA.$ObjectMember xsb;
     if (jsd instanceof schema.ObjectType)
       xsb = type((schema.ObjectType)jsd, name);
     else if (jsd instanceof schema.ObjectProperty)
@@ -81,10 +81,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getExtends() != null)
-      xsb.setExtends$(new xL0gluGCXYYJc.$ObjectMember.Extends$(jsd.getExtends()));
+      xsb.setExtends$(new xL0gluGCXAA.$ObjectMember.Extends$(jsd.getExtends()));
 
     if (jsd.getProperties() != null) {
       for (final Map.Entry<String,Object> property : jsd.getProperties()._2e_2a.entrySet()) {
@@ -110,11 +110,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static ObjectModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Object binding) {
+  static ObjectModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Object binding) {
     return registry.declare(binding).value(new ObjectModel(registry, declarer, binding), null);
   }
 
-  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final xL0gluGCXYYJc.$Object binding) {
+  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final xL0gluGCXAA.$Object binding) {
     return registry.declare(binding).value(new ObjectModel(registry, referrer, binding), referrer);
   }
 
@@ -149,13 +149,13 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, declarer, cls, null, null), null);
   }
 
-  static String getFullyQualifiedName(final xL0gluGCXYYJc.$Object binding) {
+  static String getFullyQualifiedName(final xL0gluGCXAA.$Object binding) {
     final StringBuilder builder = new StringBuilder();
-    xL0gluGCXYYJc.$Object owner = binding;
+    xL0gluGCXAA.$Object owner = binding;
     do
       builder.insert(0, '$').insert(1, JsdUtil.toIdentifier(Strings.flipFirstCap(owner.getName$().text())));
-    while (owner.owner() instanceof xL0gluGCXYYJc.$Object && (owner = (xL0gluGCXYYJc.$Object)owner.owner()) != null);
-    return builder.insert(0, JsdUtil.toIdentifier(JsdUtil.flipName(((xL0gluGCXYYJc.Schema.Object)owner.owner()).getName$().text()))).toString();
+    while (owner.owner() instanceof xL0gluGCXAA.$Object && (owner = (xL0gluGCXAA.$Object)owner.owner()) != null);
+    return builder.insert(0, JsdUtil.toIdentifier(JsdUtil.flipName(((xL0gluGCXAA.Schema.Object)owner.owner()).getName$().text()))).toString();
   }
 
   private static Member getReference(final Registry registry, final Referrer<?> referrer, final Field field) {
@@ -198,41 +198,41 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  private Map<String,Member> parseMembers(final xL0gluGCXYYJc.$ObjectMember binding, final ObjectModel objectModel) {
+  private Map<String,Member> parseMembers(final xL0gluGCXAA.$ObjectMember binding, final ObjectModel objectModel) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
-    final Iterator<? super xL0gluGCXYYJc.$Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof xL0gluGCXYYJc.$Member);
+    final Iterator<? super xL0gluGCXAA.$Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (iterator.hasNext()) {
-      final xL0gluGCXYYJc.$Member member = (xL0gluGCXYYJc.$Member)iterator.next();
-      if (member instanceof xL0gluGCXYYJc.$Any) {
-        final xL0gluGCXYYJc.$Any any = (xL0gluGCXYYJc.$Any)member;
+      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)iterator.next();
+      if (member instanceof xL0gluGCXAA.$Any) {
+        final xL0gluGCXAA.$Any any = (xL0gluGCXAA.$Any)member;
         members.put(any.getNames$().text(), AnyModel.reference(registry, objectModel, any));
       }
-      else if (member instanceof xL0gluGCXYYJc.$Array) {
-        final xL0gluGCXYYJc.$Array array = (xL0gluGCXYYJc.$Array)member;
+      else if (member instanceof xL0gluGCXAA.$Array) {
+        final xL0gluGCXAA.$Array array = (xL0gluGCXAA.$Array)member;
         final ArrayModel child = ArrayModel.reference(registry, objectModel, array);
         members.put(array.getName$().text(), child);
       }
-      else if (member instanceof xL0gluGCXYYJc.$Boolean) {
-        final xL0gluGCXYYJc.$Boolean bool = (xL0gluGCXYYJc.$Boolean)member;
+      else if (member instanceof xL0gluGCXAA.$Boolean) {
+        final xL0gluGCXAA.$Boolean bool = (xL0gluGCXAA.$Boolean)member;
         members.put(bool.getName$().text(), BooleanModel.reference(registry, objectModel, bool));
       }
-      else if (member instanceof xL0gluGCXYYJc.$Number) {
-        final xL0gluGCXYYJc.$Number number = (xL0gluGCXYYJc.$Number)member;
+      else if (member instanceof xL0gluGCXAA.$Number) {
+        final xL0gluGCXAA.$Number number = (xL0gluGCXAA.$Number)member;
         members.put(number.getName$().text(), NumberModel.reference(registry, objectModel, number));
       }
-      else if (member instanceof xL0gluGCXYYJc.$Object) {
-        final xL0gluGCXYYJc.$Object object = (xL0gluGCXYYJc.$Object)member;
+      else if (member instanceof xL0gluGCXAA.$Object) {
+        final xL0gluGCXAA.$Object object = (xL0gluGCXAA.$Object)member;
         final ObjectModel child = declare(registry, objectModel, object);
         members.put(object.getName$().text(), child);
       }
-      else if (member instanceof xL0gluGCXYYJc.$Reference) {
-        final xL0gluGCXYYJc.$Reference reference = (xL0gluGCXYYJc.$Reference)member;
+      else if (member instanceof xL0gluGCXAA.$Reference) {
+        final xL0gluGCXAA.$Reference reference = (xL0gluGCXAA.$Reference)member;
         final Id id = Id.named(reference.getType$());
         final Member child = registry.getModel(id);
         members.put(reference.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, reference, () -> registry.reference(registry.getModel(id), objectModel)));
       }
-      else if (member instanceof xL0gluGCXYYJc.$String) {
-        final xL0gluGCXYYJc.$String string = (xL0gluGCXYYJc.$String)member;
+      else if (member instanceof xL0gluGCXAA.$String) {
+        final xL0gluGCXAA.$String string = (xL0gluGCXAA.$String)member;
         members.put(string.getName$().text(), StringModel.reference(registry, objectModel, string));
       }
       else {
@@ -251,7 +251,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private Member superObject;
   final boolean isAbstract;
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.Schema.Object binding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Object binding) {
     super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text()), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null), binding.getDoc$());
     this.isAbstract = binding.getAbstract$().text();
     this.superObject = getReference(binding.getExtends$());
@@ -266,7 +266,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this(registry, declarer, element.type(), element.nullable(), null);
   }
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Object binding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Object binding) {
     super(registry, declarer, binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(binding), binding.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(binding.getExtends$().text()) : null));
     this.superObject = getReference(binding.getExtends$());
     this.isAbstract = false;

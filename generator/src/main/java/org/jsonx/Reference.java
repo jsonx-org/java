@@ -22,52 +22,52 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc;
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc.$Documented;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 final class Reference extends Member {
-  private static xL0gluGCXYYJc.$ArrayMember.Reference element(final schema.ReferenceElement jsd) {
-    final xL0gluGCXYYJc.$ArrayMember.Reference xsb = new xL0gluGCXYYJc.$ArrayMember.Reference();
+  private static xL0gluGCXAA.$ArrayMember.Reference element(final schema.ReferenceElement jsd) {
+    final xL0gluGCXAA.$ArrayMember.Reference xsb = new xL0gluGCXAA.$ArrayMember.Reference();
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$ArrayMember.Reference.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Reference.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXYYJc.$ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));
+      xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));
 
     return xsb;
   }
 
-  private static xL0gluGCXYYJc.$Reference property(final schema.ReferenceProperty jsd, final String name) {
-    final xL0gluGCXYYJc.$Reference xsb = new xL0gluGCXYYJc.$Reference() {
+  private static xL0gluGCXAA.$Reference property(final schema.ReferenceProperty jsd, final String name) {
+    final xL0gluGCXAA.$Reference xsb = new xL0gluGCXAA.$Reference() {
       private static final long serialVersionUID = 9188863837584292929L;
 
       @Override
-      protected xL0gluGCXYYJc.$Member inherits() {
-        return new xL0gluGCXYYJc.$ObjectMember.Property();
+      protected xL0gluGCXAA.$Member inherits() {
+        return new xL0gluGCXAA.$ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL0gluGCXYYJc.$Reference.Name$(name));
+      xsb.setName$(new xL0gluGCXAA.$Reference.Name$(name));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXYYJc.$Reference.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new xL0gluGCXAA.$Reference.Nullable$(jsd.getNullable()));
 
     if (jsd.getUse() != null)
-      xsb.setUse$(new xL0gluGCXYYJc.$Reference.Use$(xL0gluGCXYYJc.$Reference.Use$.Enum.valueOf(jsd.getUse())));
+      xsb.setUse$(new xL0gluGCXAA.$Reference.Use$(xL0gluGCXAA.$Reference.Use$.Enum.valueOf(jsd.getUse())));
 
     return xsb;
   }
 
-  static xL0gluGCXYYJc.$ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
-    final xL0gluGCXYYJc.$ReferenceMember xsb;
+  static xL0gluGCXAA.$ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
+    final xL0gluGCXAA.$ReferenceMember xsb;
     if (jsd instanceof schema.ReferenceElement)
       xsb = element((schema.ReferenceElement)jsd);
     else if (jsd instanceof schema.ReferenceProperty)
@@ -76,39 +76,39 @@ final class Reference extends Member {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXYYJc.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getType() != null)
-      xsb.setType$(new xL0gluGCXYYJc.$ReferenceMember.Type$(jsd.getType()));
+      xsb.setType$(new xL0gluGCXAA.$ReferenceMember.Type$(jsd.getType()));
 
     return xsb;
   }
 
   final Model model;
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Reference binding, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference binding, final Supplier<Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Array.Reference binding, final Model model) {
+  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference binding, final Model model) {
     super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Reference binding, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference binding, final Supplier<Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXYYJc.$Reference binding, final Model model) {
+  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference binding, final Model model) {
     super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXAA.$MaxOccurs maxOccurs, final Supplier<Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, doc, nullable, minOccurs, maxOccurs, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXYYJc.$MaxOccurs maxOccurs, final Model model) {
+  private Reference(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXAA.$MaxOccurs maxOccurs, final Model model) {
     super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), doc, nullable, minOccurs, maxOccurs);
     this.model = model;
   }

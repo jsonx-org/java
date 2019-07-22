@@ -21,8 +21,8 @@ import static org.junit.Assert.*;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc.$Member;
-import org.jsonx.www.schema_0_3_1.xL0gluGCXYYJc.$Number;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Number;
 import org.junit.Test;
 
 public class ArrayModelTest {
