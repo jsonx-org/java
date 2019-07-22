@@ -34,8 +34,8 @@ The following schema presents a message declaration for each type of identifier 
    ```json
    {
      "doc": "Schema describing bank transactions",
-     "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
      "message": { "jx:type": "object", "abstract": true },
      "swift": {
        "jx:type": "object", "extends": "message", "properties": {
@@ -66,9 +66,9 @@ The following schema presents a message declaration for each type of identifier 
    ```xml
    <schema
      doc="Schema describing bank transactions"
-     xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
+     xmlns="http://www.jsonx.org/schema-0.3.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
      <object name="message" abstract="true"/>
      <object name="swift" extends="message">
        <property name="type" xsi:type="string" pattern="swift" nullable="false"/>

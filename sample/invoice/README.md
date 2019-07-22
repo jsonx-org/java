@@ -27,8 +27,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```json
    {
-     "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
+     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
      "positiveDecimal": { "jx:type": "number", "range": "[1,]" },
      "positiveInteger": { "jx:type": "number", "form": "integer", "range": "[1,]" },
@@ -64,9 +64,9 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
    ```xml
    <schema
-     xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
+     xmlns="http://www.jsonx.org/schema-0.3.xsd"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
      <number name="positiveDecimal" range="[1,]"/>
      <number name="positiveInteger" form="integer" range="[1,]"/>

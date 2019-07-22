@@ -52,8 +52,8 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -73,9 +73,9 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
@@ -114,8 +114,8 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.1.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.1.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
@@ -139,9 +139,9 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.1.xsd"
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.1.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
