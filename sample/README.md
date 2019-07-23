@@ -25,7 +25,7 @@ The following are sample applications for the <ins>JSONx Framework</ins>.
 
 This sample showcases the familiar **invoice** use-case, and introduces the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSON/Java Binding API</ins>][#binding].
+1. [<ins>JSONx Binding API</ins>][#binding].
 
 _For the application code, see **[<ins>Invoice</ins>](invoice)**._
 

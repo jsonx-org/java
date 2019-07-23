@@ -1,5 +1,7 @@
 # JSONx Sample: Invoice
 
+> **JSON Schema for the enterprise**
+
 [![Build Status](https://travis-ci.org/jsonx-org/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/jsonx)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/rs)
@@ -19,7 +21,7 @@ This document presents the <ins>Invoice</ins> sample application.
 
 This sample is an introduction to the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSON/Java Binding API</ins>][#binding].
+1. [<ins>JSONx Binding API</ins>][#binding].
 
 The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
 

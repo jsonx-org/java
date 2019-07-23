@@ -1,4 +1,6 @@
-# JSD Binding Generator
+# JSONx Binding Generator
+
+> **JSON Schema for the enterprise**
 
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
@@ -7,7 +9,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSD Binding Generator</ins>, which offers facilities for generating Java binding classes from a JSD schema.
+This document specifies the <ins>JSONx Binding Generator</ins>, which offers facilities for generating Java binding classes from a [JSD schema][schema].
 
 ## Table of Contents
 
@@ -23,9 +25,9 @@ This document specifies the <ins>JSD Binding Generator</ins>, which offers facil
 
 ## 1 Introduction
 
-This document presents the functionality of the <ins>JSD Binding Generator</ins>. It also contains a directory of links to these related resources.
+This document presents the functionality of the <ins>JSONx Binding Generator</ins>. It also contains a directory of links to these related resources.
 
-The <ins>JSD Binding Generator</ins> consumes a JSD schema, and produces Java classes in the form of `.java` files. The generated classes have code that relies on the <ins>JSON/Java Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
+The <ins>JSONx Binding Generator</ins> consumes a JSD schema, and produces Java classes in the form of `.java` files. The generated classes have code that relies on the <ins>JSONx Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
 ### 1.1 Conventions Used in This Document
 
@@ -49,9 +51,9 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 ## 4 Specification
 
-The <ins>JSD Binding Generator</ins> generates Java binding classes. The generated classes contain the full scope of specification of the JSD schema from which they are generated. This means that the generated classes can be converted back to the JSD from which they were created, and the normative scope of the schema will be preserved.
+The <ins>JSONx Binding Generator</ins> generates Java binding classes. The generated classes contain the full scope of specification of the JSD schema from which they are generated. This means that the generated classes can be converted back to the JSD from which they were created, and the normative scope of the schema will be preserved.
 
-A distinction has to be made between "normative scope" and "non-normative scope". When referring to a JSD schema, the term "normative scope" represents the structural scope, which isolates the part of the schema document that defines validation criteria for facets of JSON documents. The term "non-normative scope" includes the information in the JSD schema that does not have significance unto the validation for facets of JSON documents. An example of a "non-normative scope" is the name of a `<string name="someName" ...>` type as the root element of the schema. The <ins>JSD Binding Generator</ins> discards this information when creating the Java binding classes.
+A distinction has to be made between "normative scope" and "non-normative scope". When referring to a JSD schema, the term "normative scope" represents the structural scope, which isolates the part of the schema document that defines validation criteria for facets of JSON documents. The term "non-normative scope" includes the information in the JSD schema that does not have significance unto the validation for facets of JSON documents. An example of a "non-normative scope" is the name of a `<string name="someName" ...>` type as the root element of the schema. The <ins>JSONx Binding Generator</ins> discards this information when creating the Java binding classes.
 
 ### 4.1 `Generator`
 
@@ -92,3 +94,5 @@ Please make sure to update tests as appropriate.
 ## 6 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
+[schema]: ../../../../schema

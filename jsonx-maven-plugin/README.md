@@ -1,5 +1,7 @@
 # JSONx Maven Plugin
 
+> **JSON Schema for the enterprise**
+
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx-maven-plugin.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx-maven-plugin)
@@ -7,7 +9,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSON/Java Binding API][api].
+This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSONx Binding API][api].
 
 ## Table of Contents
 
@@ -44,11 +46,11 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 ## 3 Requirements
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
+1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s and binding classes.
+1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s and binding classes.
 
-1. The <ins>Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
+1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
 ## 4 Specification
 

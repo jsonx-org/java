@@ -1,5 +1,7 @@
 # JsonXml
 
+> **JSON Schema for the enterprise**
+
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/json.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/json)

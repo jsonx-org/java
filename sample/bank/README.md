@@ -1,5 +1,7 @@
 # JSONx Sample: Bank Message
 
+> **JSON Schema for the enterprise**
+
 [![Build Status](https://travis-ci.org/jsonx-org/jsonx.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/jsonx)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/jsonx/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/jsonx)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/rs.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/rs)
@@ -19,7 +21,7 @@ This document presents the <ins>Bank Message</ins> sample application.
 
 This sample is an introduction to the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSON/Java Binding API</ins>][#binding].
+1. [<ins>JSONx Binding API</ins>][#binding].
 
 This example presents a simple schema that represents a message with a bank account number. The message can have one of three account number types: **SWIFT**, **IBAN**, and **ACH**. To help banking systems reduce software risk, organizations governing the **SWIFT**, **IBAN** and **ACH** code standards define simple test functions to determine the logical correctness of identifiers.
 

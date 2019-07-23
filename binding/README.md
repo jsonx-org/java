@@ -1,4 +1,6 @@
-# JSON/Java Binding API
+# JSONx Binding API
+
+> **JSON Schema for the enterprise**
 
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
@@ -7,7 +9,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSON/Java Binding API</ins>, which offers facilities for binding Java classes to JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][jsd].
+This document specifies the <ins>JSONx Binding API</ins>, which offers facilities for binding Java classes to JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][jsd].
 
 ## Table of Contents
 
@@ -54,15 +56,15 @@ This document specifies the <ins>JSON/Java Binding API</ins>, which offers facil
 
 ## 1 Introduction
 
-This document sets out the structural part of the <ins>JSON/Java Binding API</ins>. It also contains a directory of links to these related resources.
+This document sets out the structural part of the <ins>JSONx Binding API</ins>. It also contains a directory of links to these related resources.
 
-The <ins>JSON/Java Binding API</ins> is designed to bind JSON documents to Java objects. More specifically, the <ins>JSON/Java Binding API</ins> provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][jsd] to be parsed and marshaled, to and from Java objects of strongly-typed classes. The <ins>JSON/Java Binding API</ins> can also be used to validate JSON documents as they are parsed from text or marshaled from Java objects against a JSD. Thus, the <ins>JSON/Java Binding API</ins> is a reference implementation of the validation and binding functionalities of the [<ins>JSON Schema Definition Language</ins>][jsd].
+The <ins>JSONx Binding API</ins> is designed to bind JSON documents to Java objects. More specifically, the <ins>JSONx Binding API</ins> provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][jsd] to be parsed and marshaled, to and from Java objects of strongly-typed classes. The <ins>JSONx Binding API</ins> can also be used to validate JSON documents as they are parsed from text or marshaled from Java objects against a JSD. Thus, the <ins>JSONx Binding API</ins> is a reference implementation of the validation and binding functionalities of the [<ins>JSON Schema Definition Language</ins>][jsd].
 
-Any application that consumes well-formed JSON can use the <ins>JSON/Java Binding API</ins> to interface with JSON with Java classes. The <ins>JSON/Java Binding API</ins> supports _all_ facilities of the structural and logical features of the [<ins>JSON Schema Definition Language</ins>][jsd].
+Any application that consumes well-formed JSON can use the <ins>JSONx Binding API</ins> to interface with JSON with Java classes. The <ins>JSONx Binding API</ins> supports _all_ facilities of the structural and logical features of the [<ins>JSON Schema Definition Language</ins>][jsd].
 
 ### 1.1 Dependencies on Other Specifications
 
-The definition of <ins>JSON/Java Binding API</ins> depends on the following specifications: [<ins>JSON Schema Definition Language</ins>][jsd].
+The definition of <ins>JSONx Binding API</ins> depends on the following specifications: [<ins>JSON Schema Definition Language</ins>][jsd].
 
 ### 1.2 Conventions Used in This Document
 
@@ -90,15 +92,15 @@ Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to an
 
 ## 4 Specification
 
-The <ins>JSON/Java Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
+The <ins>JSONx Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
 
 #### 4.1 Structural
 
-The <ins>Structural</ins> part of the <ins>JSON/Java Binding API</ins> is used to define rules that bind Java classes to JSON Schemas. The primitive JSON value types <samp>**boolean**</samp>, <samp>**number**</samp> and <samp>**string**</samp> are represented by their analogous Java types of `Boolean`, `Number`, and `String`. The <samp>**object**</samp> value type is represented by the `JxObject` interface, with properties defined with [Property Annotations][#properties]. The <samp>**array**</samp> value type is represented by the `@ArrayType`, `@ArrayProperty` and `@ArrayElement` annotations, with elements defined with [Element Annotations][#elements].
+The <ins>Structural</ins> part of the <ins>JSONx Binding API</ins> is used to define rules that bind Java classes to JSON Schemas. The primitive JSON value types <samp>**boolean**</samp>, <samp>**number**</samp> and <samp>**string**</samp> are represented by their analogous Java types of `Boolean`, `Number`, and `String`. The <samp>**object**</samp> value type is represented by the `JxObject` interface, with properties defined with [Property Annotations][#properties]. The <samp>**array**</samp> value type is represented by the `@ArrayType`, `@ArrayProperty` and `@ArrayElement` annotations, with elements defined with [Element Annotations][#elements].
 
 ##### 4.1.1 JSON objects (`JxObject`)
 
-An <samp>**object**</samp> definition in a JSD can be bound to a Java class that implements the `JxObject` interface. The `JxObject` interface does not define any methods, and is used to specify to the <ins>JSON/Java Binding API</ins> that the class supports JSON binding.
+An <samp>**object**</samp> definition in a JSD can be bound to a Java class that implements the `JxObject` interface. The `JxObject` interface does not define any methods, and is used to specify to the <ins>JSONx Binding API</ins> that the class supports JSON binding.
 
 ```java
 public class MyObject implements JxObject {
@@ -240,7 +242,7 @@ Element annotations define 4 common attributes:
 
 ##### 4.1.5 JSON Value Annotations
 
-In addition to the default attributes defined for [Property Annotations][#properties] and [Element Annotations][#elements], the <ins>JSON/Java Binding API</ins> defines specific attributes for JSON Value Types that map to analogous contstraint properties in the [<ins>JSON Schema Definition Language</ins>][jsd].
+In addition to the default attributes defined for [Property Annotations][#properties] and [Element Annotations][#elements], the <ins>JSONx Binding API</ins> defines specific attributes for JSON Value Types that map to analogous contstraint properties in the [<ins>JSON Schema Definition Language</ins>][jsd].
 
 ##### 4.1.5.1 <samp>object</samp> Type
 
@@ -248,7 +250,7 @@ A JSON <samp>**object**</samp> is represented by Java objects that implement the
 
 ###### 4.1.5.1.1 `@ObjectProperty`
 
-The `@ObjectProperty` annotation is used to bind a JSON object type to a field in a `JxObject` subclass. The field's class type specifies the JSON binding class, which must be a subclass of the `JxObject` interface. If the field's class type does not inherit from the `JxObject` interface, the <ins>JSON/Java Binding API</ins> will throw a `ValidationException` during parsing or marshaling.
+The `@ObjectProperty` annotation is used to bind a JSON object type to a field in a `JxObject` subclass. The field's class type specifies the JSON binding class, which must be a subclass of the `JxObject` interface. If the field's class type does not inherit from the `JxObject` interface, the <ins>JSONx Binding API</ins> will throw a `ValidationException` during parsing or marshaling.
 
 <ins>Example</ins>: The class `MyObject` defines an object property that is of its own type (i.e. `MyObject.object` is of type `MyObject`).
 
@@ -498,11 +500,11 @@ The `AnyArray` annotation is a JSON/Java binding that utilizes the `@AnyElement`
 
 #### 4.2 Functional
 
-The functional part of the <ins>JSON/Java Binding API</ins> is responsible for parsing, marshaling, and validating JSON documents in string or object form.
+The functional part of the <ins>JSONx Binding API</ins> is responsible for parsing, marshaling, and validating JSON documents in string or object form.
 
 ##### 4.2.1 `ValidationException`
 
-The `ValidationException` represents an error in the use of the [Structural][#structural] part of the <ins>JSON/Java Binding API</ins>. The `ValidationException` is thrown when the binding model is evaluated during the process of parsing a JSON document string to binding classes, or marshaling binding classes to a JSON document string.
+The `ValidationException` represents an error in the use of the [Structural][#structural] part of the <ins>JSONx Binding API</ins>. The `ValidationException` is thrown when the binding model is evaluated during the process of parsing a JSON document string to binding classes, or marshaling binding classes to a JSON document string.
 
 ##### 4.2.2 `JxEncoder`
 

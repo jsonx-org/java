@@ -1,4 +1,6 @@
-# JAX-RS Integration for JSONx
+# JSONx Integration for JAX-RS
+
+> **JSON Schema for the enterprise**
 
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
@@ -7,7 +9,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JAX-RS Integration for JSONx</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSON/Java Binding API][binding].
+This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSONx Binding API][binding].
 
 ## Table of Contents
 
@@ -19,28 +21,30 @@ This document specifies the <ins>JAX-RS Integration for JSONx</ins>, which offer
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`JxObjectProvider`][#jxobjectprovider]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`BadRequestExceptionMapper`][#badrequestexceptionmapper]<br>
 <samp>&nbsp;&nbsp;</samp>5 [Usage][#usage]
+<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
 
 ## 1 Introduction
 
-This document sets out the structural part of the <ins>JAX-RS Integration for JSONx</ins>. It also contains a directory of links to these related resources.
+This document sets out the structural part of the <ins>JSONx Integration for JAX-RS</ins>. It also contains a directory of links to these related resources.
 
-<ins>JAX-RS Integration for JSONx</ins> is implemented to the specification of the JAX-RS API. <ins>JAX-RS Integration for JSONx</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
+The <ins>JSONx Integration for JAX-RS</ins> is implemented to the specification of the JAX-RS API. <ins>JSONx Integration for JAX-RS</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
 
 ### 1.1 Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 Purpose
+### 2 Purpose
 
-Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JSONx documents</ins>.
+Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-## 3 Requirements
+### 3 Requirements
 
-1. The <ins>JSONx documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
-1. The <ins>JSONx documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+1. The <ins>JSONx Integration for JAX-RS</ins> MUST support any JAX-RS application that implements the facets relevant to parsing and marshaling of entity object, as defined in the [JAX-RS 2.0 Specification](https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf).
 
-1. The <ins>JSONx documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
 ## 4 Specification
 
@@ -74,13 +78,13 @@ public class MyApplication extends javax.ws.rs.core.Application {
 }
 ```
 
-## Contributing
+## 6 Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-### License
+## 7 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

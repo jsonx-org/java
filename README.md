@@ -1,5 +1,7 @@
 # JSONx Framework for Java
 
+> **JSON Schema for the enterprise**
+
 [![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/jsonx.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/jsonx)
@@ -11,14 +13,14 @@
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
 | [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
-| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [JSON/Java Binding API][binding]. |
-| [sample][sample] | Sample applications and examples. |
+| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [JSONx Binding API][binding]. |
+| [sample][sample] | Sample applications. |
 
 ## Abstract
 
-The <ins>JSONx Framework</ins> is a collection of specifications and reference implementations that provide <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON. The <ins>JSONx Framework</ins> defines the [<ins>JSON Schema Definition Language</ins>][schema], which is a <ins>schema language</ins> designed in close resemblance to the [XMLSchema][xmlschema] specification.
+The <ins>JSONx Framework for Java</ins> provides a reference implementation processor, validator, and binding API for the [<ins>JSON Schema Definition Language (JSD)</ins>][schema], which is a <ins>schema language</ins> for JSON designed in close resemblance to the [XMLSchema][xmlschema] specification. The framework also provides a collection of <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON documents.
 
-This document introduces the <ins>JSONx Framework</ins>, and presents a directory of links to its constituent parts and related resources.
+This document introduces the <ins>JSONx Framework for Java</ins>, and presents a directory of links to its constituent parts and related resources.
 
 ## Table of Contents
 
@@ -31,7 +33,7 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [Requirements](#32-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [**Getting Started**](#33-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [Specification](#34-specification)<br>
-<samp>&nbsp;&nbsp;</samp>4 [<ins>JSON/Java Binding API</ins>](#4-jsonjava-binding-api)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>](#4-jsonjava-binding-api)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [**Getting Started**][#invoice-example]<br>
@@ -50,7 +52,7 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON -> XML](#631-json-xml)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML -> JSON](#632-xml-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
-<samp>&nbsp;&nbsp;</samp>7 [<ins>JAX-RS Integration for JSONx</ins>](#7-jax-rs-integration-for-jsonx)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Integration for JAX-RS</ins>](#7-jsonx-integration-for-jax-rs)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.2 [Requirements](#72-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [**Getting Started**](#73-getting-started)<br>
@@ -65,11 +67,11 @@ This document introduces the <ins>JSONx Framework</ins>, and presents a director
 
 ## 1 Introduction
 
-The <ins>JSONx Framework</ins> was created to help developers address common problems and use-cases when working with JSON. The <ins>JSONx Framework</ins> offers <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations (on the Java platform) of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
+The <ins>JSONx Framework for Java</ins> was created to help developers address common problems and use-cases when working with JSON documents. The <ins>JSONx Framework for Java</ins> offers <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> used to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
 
 1. Definition of a normative contract between a producer and consumer of JSON documents.
 1. Validation of JSON documents conforming to a respective <ins>schema document</ins>.
-1. Java class binding capabilities for JSON documents conforming to a respective <ins>schema document</ins>.
+1. Java class binding API for JSON documents conforming to a respective <ins>schema document</ins>.
 
 ### 1.1 Conventions Used in This Document
 
@@ -77,11 +79,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## 2 Use-Cases
 
-The following sections lists common use-cases that the <ins>JSONx Framework</ins> fulfills.
+The following sections lists common use-cases where <ins>JSONx Framework for Java</ins> can be used.
 
 ### 2.1 Consumer Driven Contracts
 
-The <ins>JSONx Framework</ins> was created specifically with [<ins>Consumer Driven Contracts</ins>][cdc] in mind. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
+The <ins>JSONx Framework for Java</ins> was created specifically with [<ins>Consumer Driven Contracts</ins>][cdc] in mind. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with a model that includes the capacity to evolve based on schema versioning. Additionally, the <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
 The following example illustrates a simple protocol that uses the CDC approach, and consists of the actors:
 
@@ -336,7 +338,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
    The <ins>JSDx</ins> format offers XML validation, and using [oXygen XML Editor][oxygenxml] offers edit-time XML validation, such as:
 
-   <img src="https://user-images.githubusercontent.com/1258414/57699744-b8bb6800-7658-11e9-93bb-8d606c9727cf.png" width="75%">
+   <img src="https://user-images.githubusercontent.com/1258414/61751752-aae93800-ada9-11e9-88b1-65de08f125b5.png" width="75%">
 
    When using the <ins>JSDx</ins> format with the [oXygen XML Editor][oxygenxml], the auto-completion features of the editor will guide you in writing the schema. With the <ins>JSDx</ins> format, the XML editor will also validate keys and keyrefs to ensure that declared types are referenced correctly.
 
@@ -344,7 +346,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
 
 _For a detailed specification of the <ins>schema language</ins>, see **[<ins>JSON Schema Definition Language</ins>][schema]**._
 
-## 4 <ins>JSON/Java Binding API</ins>
+## 4 <ins>JSONx Binding API</ins>
 
 Provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][schema] to be <ins>validated</ins>, <ins>parsed</ins> and <ins>marshaled</ins>, to and from Java objects of strongly-typed classes.
 
@@ -370,7 +372,7 @@ Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to an
 
 ### 4.3 Getting Started
 
-The <ins>JSON/Java Binding API</ins> uses annotations to bind class definitions to usage, constraints and relationships specifiable in the <ins>schema language</ins>.
+The <ins>JSONx Binding API</ins> uses annotations to bind class definitions to usage, constraints and relationships specifiable in the <ins>schema language</ins>.
 
 The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
 
@@ -611,11 +613,11 @@ _For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**.
 
 ### 4.4 Specification
 
-_For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSON/Java Binding API</ins>][binding]**._
+_For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSONx Binding API</ins>][binding]**._
 
 ## 5 <ins>JSD Binding Generator</ins>
 
-Consumes a JSD schema, and generates classes that use the <ins>JSON/Java Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
+Consumes a JSD schema, and generates classes that use the <ins>JSONx Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
 ### 5.1 Purpose
 
@@ -693,23 +695,27 @@ String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
 
 _For a detailed specification of JsonXml, see **[<ins>JsonXml</ins>][jsonxml]**._
 
-## 7 <ins>JAX-RS Integration for JSONx</ins>
+## 7 <ins>JSONx Integration for JAX-RS</ins>
 
 Implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in the JAX-RS API to integrate with JAX-RS server runtimes.
 
 ### 7.1 Purpose
 
-Provide <ins>JAX-RS integration</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
+Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
 ### 7.2 Requirements
 
-1. The <ins>JAX-RS integration</ins> MUST support any JAX-RS application that implements the facets relevant to parsing and marshaling of entity object, as defined in the [JAX-RS 2.0 Specification](https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf).
+1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
-1. The <ins>JAX-RS integration</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework</ins>.
+1. The <ins>JSONx Integration for JAX-RS</ins> MUST support any JAX-RS application that implements the facets relevant to parsing and marshaling of entity object, as defined in the [JAX-RS 2.0 Specification](https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf).
+
+1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
 ### 7.3 Getting Started
 
-The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyReader` and `MessageBodyWriter` providers that can be registered with a JAX-RS runtime. The following illustrates example usage.
+The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` implementing the `MessageBodyReader` and `MessageBodyWriter` interfaces that can be registered with a JAX-RS runtime.
+
+The following illustrates example usage.
 
 1. Create a <ins>JSD</ins> in `src/main/resources/account.jsd`.
 
@@ -800,7 +806,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
    assertEquals(json, json2);
    ```
 
-1. For JAX-RS integration, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
+1. Next, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
 
    ```java
    public class MyApplication extends javax.ws.rs.core.Application {
@@ -831,7 +837,7 @@ The <ins>JAX-RS Integration for JSONx</ins> sub-project provides `MessageBodyRea
 
 ### 7.4 Specification
 
-_For a detailed specification of <ins>JAX-RS integration</ins>, see **[<ins>JAX-RS Integration for JSONx</ins>][jaxrs]**._
+_For a detailed specification of <ins>JSONx Integration for JAX-RS</ins>, see **[<ins>JSONx Integration for JAX-RS</ins>][jaxrs]**._
 
 ## 8 <ins>JSONx Maven Plugin</ins>
 
@@ -843,13 +849,13 @@ Provide schema <ins>validation</ins>, schema <ins>conversion</ins>, and Java bin
 
 ### 8.2 Requirements
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for the generation of Java binding sources from a specified <ins>schema document</ins>.
+1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for the generation of Java binding sources from a specified <ins>schema document</ins>.
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s.
+1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for validation of <ins>schema document</ins>s.
 
-1. The <ins>Maven plugin</ins> MUST offer utilities for conversion of <ins>schema document</ins>s from <ins>JSD</ins> to <ins>JSDx</ins>, and vice versa.
+1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for conversion of <ins>schema document</ins>s from <ins>JSD</ins> to <ins>JSDx</ins>, and vice versa.
 
-1. The <ins>Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
+1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
 ### 8.3 Getting Started
 
