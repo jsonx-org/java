@@ -336,7 +336,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
    </schema>
    ```
 
-   The <ins>JSDx</ins> format offers XML validation, and using [oXygen XML Editor][oxygenxml] offers edit-time XML validation, such as:
+   The <ins>JSDx</ins> format offers XML validation, and using an XML IDE like [oXygen XML Editor][oxygenxml] offers edit-time XML validation, such as:
 
    <img src="https://user-images.githubusercontent.com/1258414/61751752-aae93800-ada9-11e9-88b1-65de08f125b5.png" width="75%">
 
