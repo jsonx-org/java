@@ -361,29 +361,30 @@ A JSON <samp>**number**</samp> is represented by instances of `java.lang.Number`
 
 The `@NumberProperty` and `@NumberElement` annotations define the following additional attributes:
 
-1. `form()`
+1. `scale()`
 
-   Specifies the numeric form of the number (`Form.REAL` or `Form.INTEGER`). Default: `Form.REAL`.
+   Specifies the number of digits to the right of the decimal point. Default: `Integer.MAX_VALUE`.
 
 1. `range()`
 
-   Specifies the value range in interval notation:
+   Specifies the value range in [interval notation][interval-notation]:
    * Open (exclusive) interval: `(min,max)`
    * Closed (inclusive) interal: `[min,max]`
    * Half-open or half-closed interval: `[min,max)`
-   * Degenerate interval: `[val]`
+   * Degenerate interval (left bounded): `[val]` or `[val,]`
+   * Degenerate interval (right bounded): `[,val]`
 
 ###### 4.1.5.4.1 `@NumberProperty`
 
 ```java
 public class Company implements JxObject {
-  @NumberProperty(form=Form.REAL, range="[-1,1)", nullable=false, use=Use.REQUIRED)
-  public BigDecimal real;
+  @NumberProperty(range="[0,]", scale=2, nullable=false)
+  public BigDecimal money;
 
-  @NumberProperty(form=Form.INTEGER, range="[0,]", nullable=true, use=Use.REQUIRED)
-  public BigInteger integer;
+  @NumberProperty(range="(,0)", scale=0)
+  public BigInteger negativeInteger;
 
-  @NumberProperty(range="[,0]", nullable=true, use=Use.OPTIONAL)
+  @NumberProperty(nullable=true, use=Use.OPTIONAL)
   public Optional<? extends Number> optional;
 }
 ```
@@ -392,7 +393,7 @@ public class Company implements JxObject {
 
 ```java
 public class Company implements JxObject {
-  @NumberElement(id=1, form=Form.REAL, range="[-1,1)")
+  @NumberElement(id=1, range="[-1,1)")
   @ArrayProperty(elementIds={1})
   public List<? extends Number> numbers;
 }
@@ -472,10 +473,10 @@ public class Company implements JxObject {
   @AnyProperty(types={@t(booleans=true)}, nullable=false, use=Use.REQUIRED)
   public Boolean booleans;
 
-  @AnyProperty(types={@t(numbers=@NumebrType(form=Form.INTEGER, range="[,100]"))}, nullable=true, use=Use.REQUIRED)
+  @AnyProperty(types={@t(numbers=@NumebrType(range="[,100]"), scale=0)}, nullable=true, use=Use.REQUIRED)
   public BigInteger integers;
 
-  @AnyProperty(types={@t(numbers=@NumebrType(form=Form.INTEGER, range="[,100]"), @t(strings="[a-z]+"))}, nullable=true, use=Use.OPTIONAL)
+  @AnyProperty(types={@t(numbers=@NumebrType(range="[,100]", scale=0), @t(strings="[a-z]+"))}, nullable=true, use=Use.OPTIONAL)
   public Optional<Object> optional;
 }
 ```
@@ -484,7 +485,7 @@ public class Company implements JxObject {
 
 ```java
 public class Company implements JxObject {
-  @AnyElement(id=1, types={@t(numbers=@NumebrType(form=Form.INTEGER, range="[,100]"), @t(strings="[a-z]+"))}, nullable=false)
+  @AnyElement(id=1, types={@t(numbers=@NumebrType(range="[,100]"), scale=0, @t(strings="[a-z]+"))}, nullable=false)
   @ArrayProperty(elementIds={1})
   public List<Object> any;
 }
@@ -607,4 +608,5 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#anyproperty]: #41561-anyproperty
 [#anyelement]: #41562-anyelement
 
+[interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics)#Classification_of_intervals
 [schema]: ../../../../schema

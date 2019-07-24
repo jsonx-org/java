@@ -122,14 +122,14 @@ The <ins>JSD</ins> that describes the **Response** contract is:
   "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "CatalogueID": { "jx:type": "number", "range": "[1,]", "scale": 0, "nullable": false},
+    "Name": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
+    "Price": { "jx:type": "string", "pattern": "\\$\\d+\\.\\d{2}", "nullable": false },
+    "Manufacturer": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
     "InStock": { "jx:type": "boolean", "nullable": false} } },
 
   "product1": { "jx:type": "object", "extends": "product", "properties": {
-    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } }
+    "Version": { "jx:type": "string", "pattern": "v1", "nullable": false } } }
 }
 ```
 
@@ -144,7 +144,7 @@ The <ins>JSD</ins> that describes the **Response** contract is:
   xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
-    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="CatalogueID" xsi:type="number" range="[1,]" scale="0" nullable="false"/>
     <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
     <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
     <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
@@ -184,18 +184,18 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
   "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "CatalogueID": { "jx:type": "number", "range": "[1,]", "scale": 0, "nullable": false},
+    "Name": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
+    "Price": { "jx:type": "string", "pattern": "\\$\\d+\\.\\d{2}", "nullable": false },
+    "Manufacturer": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
     "InStock": { "jx:type": "boolean", "nullable": false} } },
 
   "product1": { "jx:type": "object", "extends": "product", "properties": {
-    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } },
+    "Version": { "jx:type": "string", "pattern": "v1", "nullable": false } } }
 
 + "product2": { "jx:type": "object", "extends": "product", "properties": {
-+   "Version": { "jx:type": "string", "nullable": false, "pattern": "v2" },
-+   "Description": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
++   "Version": { "jx:type": "string", "pattern": "v2", "nullable": false },
++   "Description": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false } } }
 }
 ```
 
@@ -210,7 +210,7 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
   xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
-    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="CatalogueID" xsi:type="number" range="[1,]" scale="0" nullable="false"/>
     <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
     <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
     <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
@@ -277,7 +277,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
              { "jx:type": "reference", "type": "myString" },
              { "jx:type": "array", "elements": [
                { "jx:type": "boolean" },
-               { "jx:type": "number", "form": "integer", "range": "[0,100]" },
+               { "jx:type": "number", "range": "[0,100]", "scale": 0 },
                { "jx:type": "string", "pattern": "[0-9]+" },
                { "jx:type": "any", "types": "myNumber myString" } ]},
            { "jx:type": "reference", "type": "myObject" },
@@ -324,7 +324,7 @@ The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins
          <reference type="myString"/>
          <array>
            <boolean/>
-           <number form="integer" range="[0,100]"/>
+           <number range="[0,100]" scale="0"/>
            <string pattern="[0-9]+"/>
            <any types="myNumber myString"/>
          </array>
@@ -383,8 +383,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
      "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
      "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
-     "positiveDecimal": { "jx:type": "number", "range": "[1,]" },
-     "positiveInteger": { "jx:type": "number", "form": "integer", "range": "[1,]" },
+     "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
+     "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
      "date": { "jx:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
      "nonEmptyString": { "jx:type": "string", "pattern": "\\S|\\S.*\\S" },
      "address": { "jx:type": "object", "properties": {
@@ -406,7 +406,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
        "description": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
        "code": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
        "quantity": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "price": { "jx:type": "reference", "nullable": false, "type": "positiveDecimal" } }
+       "price": { "jx:type": "reference", "nullable": false, "type": "money" } }
      }
    }
    ```
@@ -421,8 +421,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
-     <number name="positiveDecimal" range="[1,]"/>
-     <number name="positiveInteger" form="integer" range="[1,]"/>
+     <number name="money" range="[0,]" scale="2"/>
+     <number name="positiveInteger" range="[1,]" scale="0"/>
      <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
      <string name="nonEmptyString" pattern="\S|\S.*\S"/>
      <object name="address">
@@ -445,7 +445,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
        <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
        <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
        <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
-       <property name="price" xsi:type="reference" type="positiveDecimal" nullable="false"/>
+       <property name="price" xsi:type="reference" type="money" nullable="false"/>
      </object>
 
    </schema>
@@ -508,13 +508,13 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
      @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
      public String description;
 
-     @NumberProperty(form=Form.INTEGER, range="[1,]", nullable=false)
+     @NumberProperty(range="[1,]", scale=0, nullable=false)
      public java.math.BigInteger code;
 
-     @NumberProperty(form=Form.INTEGER, range="[1,]", nullable=false)
+     @NumberProperty(range="[1,]", scale=0, nullable=false)
      public java.math.BigInteger quantity;
 
-     @NumberProperty(range="[1,]", nullable=false)
+     @NumberProperty(range="[1,]", scale=2, nullable=false)
      public java.math.BigDecimal price;
     }
    ```
@@ -523,7 +523,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
    import org.jsonx.*;
 
    public class Invoice implements JxObject {
-     @NumberProperty(form=Form.INTEGER, range="[1,]")
+     @NumberProperty(range="[1,]", scale=0)
      public java.math.BigInteger number;
 
      @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")

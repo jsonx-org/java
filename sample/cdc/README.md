@@ -58,14 +58,14 @@ The <ins>JSD</ins> that describes the **Response** contract is:
   "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "CatalogueID": { "jx:type": "number", "range": "[1,]", "scale": 0, "nullable": false},
+    "Name": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
+    "Price": { "jx:type": "string", "pattern": "\\$\\d+\\.\\d{2}", "nullable": false },
+    "Manufacturer": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
     "InStock": { "jx:type": "boolean", "nullable": false} } },
 
   "product1": { "jx:type": "object", "extends": "product", "properties": {
-    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } }
+    "Version": { "jx:type": "string", "pattern": "v1", "nullable": false } } }
 }
 ```
 
@@ -80,7 +80,7 @@ The <ins>JSD</ins> that describes the **Response** contract is:
   xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
-    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="CatalogueID" xsi:type="number" range="[1,]" scale="0" nullable="false"/>
     <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
     <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
     <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
@@ -120,18 +120,18 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
   "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
-    "CatalogueID": { "jx:type": "number", "form": "integer", "nullable": false, "range": "[1,]" },
-    "Name": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
-    "Price": { "jx:type": "string", "nullable": false, "pattern": "\\$\\d+\\.\\d{2}" },
-    "Manufacturer": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" },
+    "CatalogueID": { "jx:type": "number", "range": "[1,]", "scale": 0, "nullable": false},
+    "Name": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
+    "Price": { "jx:type": "string", "pattern": "\\$\\d+\\.\\d{2}", "nullable": false },
+    "Manufacturer": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false },
     "InStock": { "jx:type": "boolean", "nullable": false} } },
 
   "product1": { "jx:type": "object", "extends": "product", "properties": {
-    "Version": { "jx:type": "string", "nullable": false, "pattern": "v1"} } },
+    "Version": { "jx:type": "string", "pattern": "v1", "nullable": false } } }
 
 + "product2": { "jx:type": "object", "extends": "product", "properties": {
-+   "Version": { "jx:type": "string", "nullable": false, "pattern": "v2" },
-+   "Description": { "jx:type": "string", "nullable": false, "pattern": "\\S|\\S.*\\S" } } }
++   "Version": { "jx:type": "string", "pattern": "v2", "nullable": false },
++   "Description": { "jx:type": "string", "pattern": "\\S|\\S.*\\S", "nullable": false } } }
 }
 ```
 
@@ -146,7 +146,7 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
   xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
-    <property name="CatalogueID" xsi:type="number" form="integer" range="[1,]" nullable="false"/>
+    <property name="CatalogueID" xsi:type="number" range="[1,]" scale="0" nullable="false"/>
     <property name="Name" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
     <property name="Price" xsi:type="string" pattern="\$\d+\.\d{2}" nullable="false"/>
     <property name="Manufacturer" xsi:type="string" pattern="\S|\S.*\S" nullable="false"/>
