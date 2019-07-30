@@ -25,7 +25,7 @@ public class DigraphTest {
   public void testDigraph() {
     final StrictDigraph<String> digraph = new StrictDigraph<>("hello");
     try {
-      digraph.addEdge("a", "a");
+      digraph.add("a", "a");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
@@ -36,7 +36,7 @@ public class DigraphTest {
   public void testRefDigraph() {
     final StrictRefDigraph<String,String> digraph = new StrictRefDigraph<>("hello", s -> s);
     try {
-      digraph.addEdgeRef("a", "a");
+      digraph.add("a", "a");
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {

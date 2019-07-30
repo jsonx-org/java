@@ -250,16 +250,16 @@ public final class SchemaElement extends Element implements Declarer {
       if (member instanceof xL0gluGCXAA.Schema.Object) {
         final xL0gluGCXAA.Schema.Object object = (xL0gluGCXAA.Schema.Object)member;
         if (object.getExtends$() != null)
-          digraph.addEdgeRef(object, object.getExtends$().text());
+          digraph.add(object, object.getExtends$().text());
         else
-          digraph.addVertex(object);
+          digraph.add(object);
       }
       else {
-        digraph.addVertex(member);
+        digraph.add(member);
       }
     }
 
-    final List<String> cycle = digraph.getCycleRef();
+    final List<String> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Cycle detected in object hierarchy: " + CollectionUtil.toString(cycle, " -> "));
   }

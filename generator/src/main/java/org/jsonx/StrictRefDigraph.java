@@ -31,10 +31,10 @@ class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
   }
 
   @Override
-  public boolean addEdgeRef(final T from, final R to) {
+  public boolean add(final T from, final R to) {
     if (reference.apply(from).equals(to))
       throw new ValidationException(selfLinkErrorPrefix + ": " + reference.apply(from) + " -> " + to);
 
-    return super.addEdgeRef(from, to);
+    return super.add(from, to);
   }
 }

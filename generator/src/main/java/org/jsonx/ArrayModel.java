@@ -319,7 +319,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       else if (elementAnnotation instanceof ArrayElement) {
         id = ((ArrayElement)elementAnnotation).id();
         for (final Integer elementId : ((ArrayElement)elementAnnotation).elementIds())
-          digraph.addEdge(id, elementId);
+          digraph.add(id, elementId);
       }
       else if (elementAnnotation instanceof BooleanElement) {
         id = ((BooleanElement)elementAnnotation).id();
@@ -340,7 +340,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       if (idToElement.containsKey(id))
         throw new AnnotationParameterException(elementAnnotation, declaringTypeName + ": @" + elementAnnotation.annotationType().getName() + "(id=" + id + ") cannot share the same id value with another @*Element(id=?) annotation on the same field");
 
-      digraph.addVertex(id);
+      digraph.add(id);
       idToElement.put(id, elementAnnotation);
     }
 

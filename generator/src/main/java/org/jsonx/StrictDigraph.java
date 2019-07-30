@@ -28,10 +28,10 @@ class StrictDigraph<T> extends Digraph<T> {
   }
 
   @Override
-  public boolean addEdge(final T from, final T to) {
+  public boolean add(final T from, final T to) {
     if (from.equals(to))
       throw new ValidationException(selfLinkErrorPrefix + ": " + from + " -> " + to);
 
-    return super.addEdge(from, to);
+    return super.add(from, to);
   }
 }
