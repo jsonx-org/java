@@ -97,4 +97,4 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#badrequestexceptionmapper]: #42-badrequestexceptionmapper
 [#usage]: #5-usage
 
-[api]: ../binding
+[binding]: ../binding
