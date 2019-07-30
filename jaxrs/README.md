@@ -20,7 +20,7 @@ This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offer
 <samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`JxObjectProvider`][#jxobjectprovider]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`BadRequestExceptionMapper`][#badrequestexceptionmapper]<br>
-<samp>&nbsp;&nbsp;</samp>5 [Usage][#usage]
+<samp>&nbsp;&nbsp;</samp>5 [Usage][#usage]<br>
 <samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
 
