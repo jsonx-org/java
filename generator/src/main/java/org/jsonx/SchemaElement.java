@@ -32,7 +32,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
@@ -225,7 +227,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   private static void assertNoCycle(final xL0gluGCXAA.Schema schema) throws ValidationException {
-    final StrictRefDigraph<xL0gluGCXAA.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", obj -> {
+    final Function<xL0gluGCXAA.$Member,String> memberToName = obj -> {
       if (obj instanceof xL0gluGCXAA.Schema.Array)
         return ((xL0gluGCXAA.Schema.Array)obj).getName$().text();
 
@@ -242,7 +244,8 @@ public final class SchemaElement extends Element implements Declarer {
         return ((xL0gluGCXAA.Schema.Object)obj).getName$().text();
 
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
-    });
+    };
+    final StrictRefDigraph<xL0gluGCXAA.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", memberToName);
 
     final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (elementIterator.hasNext()) {
@@ -259,9 +262,9 @@ public final class SchemaElement extends Element implements Declarer {
       }
     }
 
-    final List<String> cycle = digraph.getCycle();
+    final List<xL0gluGCXAA.$Member> cycle = digraph.getCycle();
     if (cycle != null)
-      throw new ValidationException("Cycle detected in object hierarchy: " + CollectionUtil.toString(cycle, " -> "));
+      throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(memberToName).collect(Collectors.joining(" -> ")));
   }
 
   /**
