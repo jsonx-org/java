@@ -94,7 +94,7 @@ abstract class Codec {
         onPropertyDecode.test(object, name, value);
     }
     catch (final IllegalAccessException e) {
-      throw new UnsupportedOperationException(e);
+      throw new IllegalStateException(e);
     }
     catch (final IllegalArgumentException e) {
       if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
