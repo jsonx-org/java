@@ -28,6 +28,9 @@
       markdown: {
         renderer: {
           link: function (href, title, text) {
+            if (href.startsWith("http"))
+              return '<a href="' + href + '">' + text + '</a>';
+
 var h = href;
             var i;
             for (i = -1; href.startsWith("../") || href.startsWith("/.."); ++i)
@@ -42,6 +45,12 @@ var h = href;
             if (id > -1)
               path = path.substring(0, id);
 
+            if (href.endsWith("issues"))
+              return '<a href="https://github.com/jsonx-org' + path + '/issues">' + text + '</a>';
+
+            if (href.endsWith("LICENSE.txt"))
+              return '<a href="https://github.com/jsonx-org' + path + '/blob/master/LICENSE.txt">' + text + '</a>';
+
 var x = i;
 
             var p = path;
@@ -53,14 +62,10 @@ console.log(h + " -> \"" + href + "\"", x, p + " -> \"" + path + "\"");
             if (href.charAt(0) === '#')
               return '<a href="' + path + '#/?id=_' + href.substring(1) + '">' + text + '</a>';
 
-            if (href.startsWith("http"))
-              return '<a href="' + href + '">' + text + '</a>';
-
-            if (href.endsWith("issues"))
-              return '<a href="https://github.com/jsonx-org' + path + '/issues">' + text + '</a>';
-
-            if (href.endsWith("LICENSE.txt"))
-              return '<a href="https://github.com/jsonx-org' + path + '/blob/master/LICENSE.txt">' + text + '</a>';
+            if (path === "")
+              path = "/";
+            else
+              path = path + "#/";
 
             return '<a href="' + path + href + '">' + text + '</a>';;
           }
