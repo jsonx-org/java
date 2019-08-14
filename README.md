@@ -49,8 +49,8 @@ This document introduces the <ins>JSONx Framework for Java</ins>, and presents a
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [**Getting Started**](#63-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON -> XML](#631-json-xml)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML -> JSON](#632-xml-json)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON -> XML](#631-json-gt-xml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML -> JSON](#632-xml-gt-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
 <samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Integration for JAX-RS</ins>](#7-jsonx-integration-for-jax-rs)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
