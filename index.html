@@ -30,8 +30,11 @@
           link: function (href, title, text) {
 var h = href;
             var i;
-            for (i = 0; href.startsWith("../") || href.startsWith("/.."); ++i)
+            for (i = -1; href.startsWith("../") || href.startsWith("/.."); ++i)
               href = href.substring(3);
+
+            if (i === -1)
+              i = 0;
 
             var loc = location.href.replace("/#", "");
             var path = loc.substring(loc.indexOf('/', 8));
@@ -59,7 +62,7 @@ console.log(h + " -> \"" + href + "\"", x, p + " -> \"" + path + "\"");
             if (href.endsWith("LICENSE.txt"))
               return '<a href="https://github.com/jsonx-org' + path + '/blob/master/LICENSE.txt">' + text + '</a>';
 
-            return '<a href="/' + href + '">' + text + '</a>';;
+            return '<a href="' + path + href + '">' + text + '</a>';;
           }
         }
       }
