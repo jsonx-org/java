@@ -57,7 +57,7 @@ var x = i;
             for (var slash; (slash = path.lastIndexOf('/')) != -1 && i > 0; --i)
               path = path.substring(0, slash);
 
-console.log(h + " -> \"" + href + "\"", x, p + " -> \"" + path + "\"");
+console.log("[" + x + "] href: \"" + h + "\" -> \"" + href + "\", path: \"" + p + "\" -> \"" + path + "\"");
 
             if (href.charAt(0) === '#')
               return '<a href="' + path + '#/?id=_' + href.substring(1) + '">' + text + '</a>';
