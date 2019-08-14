@@ -13,7 +13,8 @@ This document presents sample applications for the <ins>JSONx Framework</ins>.
 
 <samp>&nbsp;&nbsp;</samp>1 [Samples](#1-samples)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Invoice](#11-invoice)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Consumer Driven Contracts](#12-consumer-driven-contracts)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Bank](#12-bank)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.3 [Consumer Driven Contracts](#13-consumer-driven-contracts)<br>
 <samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
 
@@ -29,7 +30,15 @@ This sample showcases the familiar **invoice** use-case, and introduces the foll
 
 _For the application code, see **[<ins>Invoice</ins>](invoice)**._
 
-### <b>1.2</b> Consumer Driven Contracts
+### <b>1.2</b> Bank
+
+This sample showcases JSON object inheritence in a use-case regarding bank account transactions, and introduces the following JSONx technologies:
+1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
+1. [<ins>JSONx Binding API</ins>][#binding-api].
+
+_For the application code, see **[<ins>Bank</ins>](bank)**._
+
+### <b>1.3</b> Consumer Driven Contracts
 
 The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 

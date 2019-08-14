@@ -18,7 +18,7 @@ This document specifies the <ins>JSONx Binding API</ins>, which offers facilitie
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document](#12-conventions-used-in-this-document)<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
 <samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Structural][#structural]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSON objects (`JxObject`)][#jxobject]<br>
@@ -832,7 +832,7 @@ Please make sure to update tests as appropriate.
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
 [#structural]: #51-structural
-[#jxobject]: #511-jxobject
+[#jxobject]: #511-json-objects-jxobject
 [#properties]: #512-property-annotations
 [#specialconsiderations1]: #5121-special-considerations
 [#arraytype]: #513-json-arrays-arraytype

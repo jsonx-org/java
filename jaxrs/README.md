@@ -17,7 +17,7 @@ This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offer
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
 <samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`JxObjectProvider`][#jxobjectprovider]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`BadRequestExceptionMapper`][#badrequestexceptionmapper]<br>

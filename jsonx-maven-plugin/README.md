@@ -17,7 +17,7 @@ This document specifies the <ins>JSONx Maven Plugin</ins>, which offers faciliti
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
 <samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Goals Overview](#51-goals-overview)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [Usage](#52-usage)<br>

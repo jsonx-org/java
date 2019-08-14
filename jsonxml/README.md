@@ -18,11 +18,11 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JSON-to-XML](#41-json-to-xml)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [XML-to-JSON](#42-xml-to-json)<br>
 <samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [JsonXml Schema][#jsonxschema]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [JsonXml Schema][#jsonxmlschema]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [`boolean` type][#booleantype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [`string` type][#stringtype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.3 [`number` type][#numbertype]<br>
@@ -257,7 +257,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#objecttype]: #514-object-type
 [#arraytype]: #515-array-type
 [#nullvalue]: #516-null-value
-[#jsonxmlmlapi]: #52-jsonxml-api
+[#jsonxmlapi]: #52-jsonxml-api
 [#jxconverter]: #521-jxconverter
 [#samples]: #6-sample-documents
 [#paypaljson]: #61-paypaljson

@@ -910,8 +910,8 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
 [jaxrs]: jaxrs
-[sample-cdc]: sample/tree/master/cdc
-[sample-invoice]: sample/tree/master/invoice
+[sample-cdc]: sample/cdc
+[sample-invoice]: sample/invoice
 [sample]: sample
 [schema]: ../../../schema
 [xmlschema]: http://www.w3.org/2001/XMLSchema
