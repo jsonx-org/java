@@ -32,19 +32,19 @@ This document specifies the <ins>JSONx Maven Plugin</ins>, which offers faciliti
 <samp>&nbsp;&nbsp;</samp>5 [Contributing](#5-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>6 [License](#6-license)
 
-### 1 Introduction
+### <b>1</b> Introduction
 
 The `jsonx-maven-plugin` plugin is used to generate JSONx and JSD bindings with the [JSONx Framework for Java][jsonx].
 
-### 1.1 Conventions Used in This Document
+### <b>1.1</b> Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 Purpose
+## <b>2</b> Purpose
 
 Provide schema validation, code generation, and other convenience utlities in a <ins>Maven plugin</ins>.
 
-## 3 Requirements
+## <b>3</b> Requirements
 
 1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
 
@@ -52,21 +52,21 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
-## 4 Specification
+## <b>4</b> Specification
 
-### 4.1 Goals Overview
+### <b>4.1</b> Goals Overview
 
 * [`jsonx:generate`](#jsonxgenerate) generates Java binding sources from <ins>JSD</ins> or <ins>JSDx</ins> schemas.
 * [`jsonx:convert`](#jsonxconvert) converts <ins>JSD</ins> schemas to <ins>JSDx</ins>, and vice versa.
 * [`jsonx:valdate`](#jsonxvalidate) validates <ins>JSD</ins> and <ins>JSDx</ins> schemas.
 
-### 4.2 Usage
+### <b>4.2</b> Usage
 
-#### 4.2.1 `jsonx:generate`
+#### <b>4.2.1</b> `jsonx:generate`
 
 The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used to generate Java binding sources for <ins>JSD</ins> or <ins>JSDx</ins> schemas specified in the `configuration`.
 
-##### 4.2.1.1 Configuration Parameters
+##### <b>4.2.1.1</b> Configuration Parameters
 
 | Name                          | Type    | Use      | Description                             |
 |:------------------------------|:--------|:---------|:----------------------------------------|
@@ -75,7 +75,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
 
-##### 4.2.1.2 Example
+##### <b>4.2.1.2</b> Example
 
 ```xml
 <plugin>
@@ -101,11 +101,11 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 </plugin>
 ```
 
-#### 4.2.2 `jsonx:convert`
+#### <b>4.2.2</b> `jsonx:convert`
 
 The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used to convert <ins>JSD</ins> schemas to <ins>JSDx</ins>, and vice versa.
 
-##### 4.2.2.1 Configuration Parameters
+##### <b>4.2.2.1</b> Configuration Parameters
 
 | Name                          | Type    | Use      | Description                             |
 |:------------------------------|:--------|:---------|:----------------------------------------|
@@ -113,7 +113,7 @@ The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
 
-##### 4.2.2.2 Example
+##### <b>4.2.2.2</b> Example
 
 ```xml
 <plugin>
@@ -138,18 +138,18 @@ The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used
 </plugin>
 ```
 
-#### 4.2.3 `jsonx:validate`
+#### <b>4.2.3</b> `jsonx:validate`
 
 The `jsonx:validate` goal is bound to the `compile` phase, and is used to validate <ins>JSD</ins> or <ins>JSDx</ins> schemas.
 
-##### 4.2.3.1 Configuration Parameters
+##### <b>4.2.3.1</b> Configuration Parameters
 
 | Name                          | Type    | Use      | Description                             |
 |:------------------------------|:--------|:---------|:----------------------------------------|
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
 
-##### 4.2.3.2 Example
+##### <b>4.2.3.2</b> Example
 
 ```xml
 <plugin>
@@ -174,13 +174,13 @@ The `jsonx:validate` goal is bound to the `compile` phase, and is used to valida
 </plugin>
 ```
 
-## 5 Contributing
+## <b>5</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 6 License
+## <b>6</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

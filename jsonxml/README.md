@@ -38,23 +38,23 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
 
-## 1 Introduction
+## <b>1</b> Introduction
 
 JsonXml is JSON expressed in XML. This document presents the structural part of JsonXml, as well as the normative specification of the <ins>JsonXml API</ins>. It also contains a directory of links to these related resources.
 
-### 1.1 Dependencies on Other Specifications
+### <b>1.1</b> Dependencies on Other Specifications
 
 The definition of the <ins>JsonXml API</ins> depends on the following specifications: [RFC4627][rfc4627] and [XMLSchema][xmlschema].
 
-### 1.2 Conventions Used in This Document
+### <b>1.2</b> Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 Purpose
+## <b>2</b> Purpose
 
 Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JsonXml documents</ins>.
 
-## 3 Requirements
+## <b>3</b> Requirements
 
 1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
@@ -62,49 +62,49 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
-## 4 Specification
+## <b>4</b> Specification
 
-### 4.1 <ins>JsonXml Schema</ins>
+### <b>4.1</b> <ins>JsonXml Schema</ins>
 
 The JsonXml Schema defines XML elements that represent an XML-equivalent of a JSON document. The JsonXml Schema represents the JSON value types as follows:
 
-#### 4.1.1 `boolean` Type
+#### <b>4.1.1</b> `boolean` Type
 
 The `false` and `true` string literals.
 
 <ins>Example</ins>: `true`
 
-#### 4.1.2 `string` Type
+#### <b>4.1.2</b> `string` Type
 
 A double-quoted string. A JSON string may require to be escaped to a string that is legal for XML. The escaped characters are [Predefined Entities in XML][xmlentities].
 
 <ins>Example</ins>: `"string"`
 
-#### 4.1.3 `number` Type
+#### <b>4.1.3</b> `number` Type
 
 A number that conforms to the [RFC4627][rfc4627] section 2.4.
 
 <ins>Example</ins>: `6.626E-34`
 
-#### 4.1.4 `object` Type
+#### <b>4.1.4</b> `object` Type
 
 A JSON object is represented by the `<o>` element. The `<o>` element does not have attributes, and may contain 0 or more `<p>` elements.
 
 A JSON object property is represented by the `<p>` element. The `<p>` element contains an attribute `n` that specifies the property's name. The content of the `<p>` element can be one of [`boolean` type][#booleantype], [`string` type][#stringtype], [`number` type][#numbertype], [`object` type][#objecttype], or [`array` type][#arraytype].
 
-#### 4.1.5 `array` Type
+#### <b>4.1.5</b> `array` Type
 
 A JSON array is represented by the `<a>` element. The `<a>` element does not have attributes, and may contain 0 or more space delimited members conforming to [`boolean` type][#booleantype], [`string` type][#stringtype], [`number` type][#numbertype], [`object` type][#objecttype], or [`array` type][#arraytype].
 
-#### 4.1.6 `null` Value
+#### <b>4.1.6</b> `null` Value
 
 The `null` JSON value is represented by the string `null`.
 
-### 4.2 <ins>JsonXml API</ins>
+### <b>4.2</b> <ins>JsonXml API</ins>
 
 The <ins>JsonXml API</ins> offers facilities for validating and converting JSON and JSONx documents.
 
-#### 4.2.1 `JxConverter`
+#### <b>4.2.1</b> `JxConverter`
 
 The `JxConverter` class contains utility methods for conversion of JSON documents to XML documents, and vice versa.
 
@@ -120,11 +120,11 @@ JxConverter.jsonToXml(new JsonReader(new StringReader(json), false), true);
 JxConverter.xmlToJson(new ByteArrayInputStream(xml.getBytes()), true);
 ```
 
-## 5 Sample Documents
+## <b>5</b> Sample Documents
 
 This section provides a sample JSON and its JSONx alternative.
 
-### 5.1 `paypal.json`
+### <b>5.1</b> `paypal.json`
 
 ```json
 {
@@ -162,7 +162,7 @@ This section provides a sample JSON and its JSONx alternative.
 }
 ```
 
-### 5.2 `paypal.xml`
+### <b>5.2</b> `paypal.xml`
 
 ```xml
 <o
@@ -203,25 +203,25 @@ This section provides a sample JSON and its JSONx alternative.
 </p></o>
 ```
 
-## 6 Related Resources for JsonXml
+## <b>6</b> Related Resources for JsonXml
 
-### 6.1 Schemas for JsonXml
+### <b>6.1</b> Schemas for JsonXml
 
-#### 6.1.1 JsonXml Schema 0.3
+#### <b>6.1.1</b> JsonXml Schema 0.3
 
 * A JsonXml schema document XSD [jsonxml-0.3.xsd][jsonxml-03] for JsonXml documents.
 
-#### 6.1.2 JsonXml Schema 0.2
+#### <b>6.1.2</b> JsonXml Schema 0.2
 
 * A JsonXml schema document XSD [jsonxml-0.2.xsd][jsonxml-02] for JsonXml documents.
 
-## 7 Contributing
+## <b>7</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 8 License
+## <b>8</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

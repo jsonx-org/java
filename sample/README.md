@@ -17,34 +17,34 @@ This document presents sample applications for the <ins>JSONx Framework</ins>.
 <samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
 
-## 1 Samples
+## <b>1</b> Samples
 
 The following are sample applications for the <ins>JSONx Framework</ins>.
 
-### 1.1 Invoice
+### <b>1.1</b> Invoice
 
 This sample showcases the familiar **invoice** use-case, and introduces the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSONx Binding API</ins>][#binding].
+1. [<ins>JSONx Binding API</ins>][#binding-api].
 
 _For the application code, see **[<ins>Invoice</ins>](invoice)**._
 
-### 1.2 Consumer Driven Contracts
+### <b>1.2</b> Consumer Driven Contracts
 
 The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
 _For the application code, see **[<ins>Consumer Driven Contracts</ins>](cdc)**._
 
-## 2 Contributing
+## <b>2</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 3 License
+## <b>3</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding]: ../../#4-jsonjava-binding-api
+[#binding-api]: ../../#4-jsonx-binding-api
 [#jsd]: ../../#3-json-schema-definition-language
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html

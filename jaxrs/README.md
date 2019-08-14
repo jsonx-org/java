@@ -24,21 +24,21 @@ This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offer
 <samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
 
-## 1 Introduction
+## <b>1</b> Introduction
 
 This document sets out the structural part of the <ins>JSONx Integration for JAX-RS</ins>. It also contains a directory of links to these related resources.
 
 The <ins>JSONx Integration for JAX-RS</ins> is implemented to the specification of the JAX-RS API. <ins>JSONx Integration for JAX-RS</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
 
-### 1.1 Conventions Used in This Document
+### <b>1.1</b> Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-### 2 Purpose
+### <b>2</b> Purpose
 
 Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-### 3 Requirements
+### <b>3</b> Requirements
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
@@ -46,17 +46,17 @@ Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java 
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
-## 4 Specification
+## <b>4</b> Specification
 
-### 4.1 `JxObjectProvider`
+### <b>4.1</b> `JxObjectProvider`
 
 A JAX-RS `Provider` that implements `MessageBodyReader` and `MessageBodyWriter` support for reading and writing JSON documents with the JSONx API.
 
-### 4.2 `BadRequestExceptionMapper`
+### <b>4.2</b> `BadRequestExceptionMapper`
 
 A JAX-RS `Provider` that implements an `ExceptionMapper` to present a JSON error body in case of a `BadRequestException`.
 
-## 5 Usage
+## <b>5</b> Usage
 
 The JAX-RS API requires `Provider`s to be decalred as either "singleton" instances, or by providing their class names for per-requests instantiations. The following example illustrates how to specify the `JxObjectProvider` and `BadRequestExceptionMapper` as singleton instances.
 
@@ -78,13 +78,13 @@ public class MyApplication extends javax.ws.rs.core.Application {
 }
 ```
 
-## 6 Contributing
+## <b>6</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 7 License
+## <b>7</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

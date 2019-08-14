@@ -23,21 +23,21 @@ This document specifies the <ins>JSONx Binding Generator</ins>, which offers fac
 <samp>&nbsp;&nbsp;</samp>5 [Contributing](#5-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>6 [License](#6-license)
 
-## 1 Introduction
+## <b>1</b> Introduction
 
 This document presents the functionality of the <ins>JSONx Binding Generator</ins>. It also contains a directory of links to these related resources.
 
 The <ins>JSONx Binding Generator</ins> consumes a JSD schema, and produces Java classes in the form of `.java` files. The generated classes have code that relies on the <ins>JSONx Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
-### 1.1 Conventions Used in This Document
+### <b>1.1</b> Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 Purpose
+## <b>2</b> Purpose
 
 Provide a <ins>binding generator</ins> utility for automatic generation of binding classes from a <ins>schema document</ins>.
 
-## 3 Requirements
+## <b>3</b> Requirements
 
 1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>binding API</ins>.
 
@@ -49,13 +49,13 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 1. The <ins>binding generator</ins> MUST be able to validate a <ins>schema document</ins>.
 
-## 4 Specification
+## <b>4</b> Specification
 
 The <ins>JSONx Binding Generator</ins> generates Java binding classes. The generated classes contain the full scope of specification of the JSD schema from which they are generated. This means that the generated classes can be converted back to the JSD from which they were created, and the normative scope of the schema will be preserved.
 
 A distinction has to be made between "normative scope" and "non-normative scope". When referring to a JSD schema, the term "normative scope" represents the structural scope, which isolates the part of the schema document that defines validation criteria for facets of JSON documents. The term "non-normative scope" includes the information in the JSD schema that does not have significance unto the validation for facets of JSON documents. An example of a "non-normative scope" is the name of a `<string name="someName" ...>` type as the root element of the schema. The <ins>JSONx Binding Generator</ins> discards this information when creating the Java binding classes.
 
-### 4.1 `Generator`
+### <b>4.1</b> `Generator`
 
 The `Generator` is a utility class that can be used on the CLI to generate Java binding classes from a JSD schema. The `Generator` class has the following usage specification:
 
@@ -72,7 +72,7 @@ Supported SCHEMA_FILE formats:
                  <JSD|JSDx>
 ```
 
-### 4.2 `Converter`
+### <b>4.2</b> `Converter`
 
 The `Converter` is a utility class that can be used on the CLI to convert JSD files to JSDx, and vice versa. The `Converter` class has the following usage specification:
 
@@ -85,13 +85,13 @@ Supported SCHEMA_IN|OUT formats:
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.
 
-## 5 Contributing
+## <b>5</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 6 License
+## <b>6</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

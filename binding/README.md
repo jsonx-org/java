@@ -54,7 +54,7 @@ This document specifies the <ins>JSONx Binding API</ins>, which offers facilitie
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`JxDecoder`](#423-jxdecoder)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3.1 [`DecodeException`](#4231-decodeexception)
 
-## 1 Introduction
+## <b>1</b> Introduction
 
 This document sets out the structural part of the <ins>JSONx Binding API</ins>. It also contains a directory of links to these related resources.
 
@@ -62,19 +62,19 @@ The <ins>JSONx Binding API</ins> is designed to bind JSON documents to Java obje
 
 Any application that consumes well-formed JSON can use the <ins>JSONx Binding API</ins> to interface with JSON with Java classes. The <ins>JSONx Binding API</ins> supports _all_ facilities of the structural and logical features of the [<ins>JSON Schema Definition Language</ins>][jsd].
 
-### 1.1 Dependencies on Other Specifications
+### <b>1.1</b> Dependencies on Other Specifications
 
 The definition of <ins>JSONx Binding API</ins> depends on the following specifications: [<ins>JSON Schema Definition Language</ins>][jsd].
 
-### 1.2 Conventions Used in This Document
+### <b>1.2</b> Conventions Used in This Document
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## 2 Purpose
+## <b>2</b> Purpose
 
 Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to and from strongly-typed Java classes.
 
-## 3 Requirements
+## <b>3</b> Requirements
 
 1. The <ins>binding API</ins> MUST be able to model the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable with the <ins>schema language</ins>.
 
@@ -90,15 +90,15 @@ Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to an
 
 1. The <ins>binding API</ins> MUST be straightforward, intuitive, and resilient to human error.
 
-## 4 Specification
+## <b>4</b> Specification
 
 The <ins>JSONx Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
 
-#### 4.1 Structural
+#### <b>4.1</b> Structural
 
 The <ins>Structural</ins> part of the <ins>JSONx Binding API</ins> is used to define rules that bind Java classes to JSON Schemas. The primitive JSON value types <samp>**boolean**</samp>, <samp>**number**</samp> and <samp>**string**</samp> are represented by their analogous Java types of `Boolean`, `Number`, and `String`. The <samp>**object**</samp> value type is represented by the `JxObject` interface, with properties defined with [Property Annotations][#properties]. The <samp>**array**</samp> value type is represented by the `@ArrayType`, `@ArrayProperty` and `@ArrayElement` annotations, with elements defined with [Element Annotations][#elements].
 
-##### 4.1.1 JSON objects (`JxObject`)
+##### <b>4.1.1</b> JSON objects (`JxObject`)
 
 An <samp>**object**</samp> definition in a JSD can be bound to a Java class that implements the `JxObject` interface. The `JxObject` interface does not define any methods, and is used to specify to the <ins>JSONx Binding API</ins> that the class supports JSON binding.
 
@@ -115,7 +115,7 @@ public class MyObject implements JxObject {
 }
 ```
 
-##### 4.1.2 Property Annotations
+##### <b>4.1.2</b> Property Annotations
 
 Property annotations are used to define property bindings in JSON objects. Property annotations annotate fields in a class to bind to JSON properties in a JSON object. There are 6 property annotations:
 
@@ -140,7 +140,7 @@ Property annotations define 3 common attributes:
 
    Whether the property is required or optional (`Use.REQUIRED` or `Use.OPTIONAL`). Default: `Use.REQUIRED`.
 
-###### 4.1.2.1 Special Considerations
+###### <b>4.1.2.1</b> Special Considerations
 
 Different combinations of `nullable()` and `use()` have different requirements regarding field's declared type:
 
@@ -160,7 +160,7 @@ Different combinations of `nullable()` and `use()` have different requirements r
 
   Declared type must be `Optional<>`, so as to support the presence of the property with a `null` value, as well as its absence.
 
-###### 4.1.3 JSON arrays (`@ArrayType`)
+###### <b>4.1.3</b> JSON arrays (`@ArrayType`)
 
 The `@ArrayType` annotation is used to annotate an annotation class that represents binding rules for a JSON array. The `@ArrayType` annotation describes the manifest of element members that are allowed to appear in the JSON array. The manifest of element members is represented by [Element Annotations][#elements].
 
@@ -190,11 +190,11 @@ public @interface Staff {
 }
 ```
 
-###### 4.1.3.1 Special Considerations
+###### <b>4.1.3.1</b> Special Considerations
 
 The `minIterate()` and `maxIterate()` attributes define the repetition cardinality of element types in a JSON array. The default for both attributes is `1`, which effectively removes the computational complexity of multi-iterable array definitions during parsing, marshaling, and validating JSON arrays. It is important to note that when set to non-`1` values, the computational complexity increases by one dimension. The value of `minIterate()` must be less than or equal to `maxIterate()`.
 
-##### 4.1.4 Element Annotations
+##### <b>4.1.4</b> Element Annotations
 
 Element annotations are used to define element bindings in JSON arrays. Element annotations specify the rules for parsing, marshaling and validating JSON arrays in string or Java object form. There are 6 element annotations:
 
@@ -240,15 +240,15 @@ Element annotations define 4 common attributes:
 
    The maximum inclusive number of occurrence of this element. Default: `Integer.MAX_VALUE`.
 
-##### 4.1.5 JSON Value Annotations
+##### <b>4.1.5</b> JSON Value Annotations
 
 In addition to the default attributes defined for [Property Annotations][#properties] and [Element Annotations][#elements], the <ins>JSONx Binding API</ins> defines specific attributes for JSON Value Types that map to analogous contstraint properties in the [<ins>JSON Schema Definition Language</ins>][jsd].
 
-##### 4.1.5.1 <samp>object</samp> Type
+##### <b>4.1.5.1</b> <samp>object</samp> Type
 
 A JSON <samp>**object**</samp> is represented by Java objects that implement the [`JxObject`][#jxobject] interface.
 
-###### 4.1.5.1.1 `@ObjectProperty`
+###### <b>4.1.5.1.1</b> `@ObjectProperty`
 
 The `@ObjectProperty` annotation is used to bind a JSON object type to a field in a `JxObject` subclass. The field's class type specifies the JSON binding class, which must be a subclass of the `JxObject` interface. If the field's class type does not inherit from the `JxObject` interface, the <ins>JSONx Binding API</ins> will throw a `ValidationException` during parsing or marshaling.
 
@@ -261,7 +261,7 @@ public class MyObject implements JxObject {
 }
 ```
 
-###### 4.1.5.1.2 `@ObjectElement`
+###### <b>4.1.5.1.2</b> `@ObjectElement`
 
 The `@ObjectElement` annotation is used to bind a JSON object type as a member type of a JSON array. The `@ObjectElement` defines the following additional attributes:
 
@@ -279,11 +279,11 @@ public class Company implements JxObject {
 }
 ```
 
-##### 4.1.5.2 <samp>array</samp> Type
+##### <b>4.1.5.2</b> <samp>array</samp> Type
 
 A JSON <samp>**array**</samp> is represented by instances of `java.util.List`.
 
-###### 4.1.5.2.1 `@ArrayProperty`
+###### <b>4.1.5.2.1</b> `@ArrayProperty`
 
 The `@ArrayProperty` annotation is used to bind a JSON array definition to a field defined in a subclass of a `JxObject`. The `@ArrayProperty` annotation allows one to declare JSON array binding rules specific to the field on which they are defined.
 
@@ -309,7 +309,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 4.1.5.2.2 `@ArrayElement`
+###### <b>4.1.5.2.2</b> `@ArrayElement`
 
 The `@ArrayElement` annotation is used to bind a JSON array definition as a member type of a JSON array. The `@ArrayElement` annotation allows one to declare JSON array binding rules that are specific only to the member element on which they are defined.
 
@@ -326,11 +326,11 @@ public class Company implements JxObject {
 }
 ```
 
-##### 4.1.5.3 <samp>boolean</samp> Type
+##### <b>4.1.5.3</b> <samp>boolean</samp> Type
 
 A JSON <samp>**boolean**</samp> is represented by instances of `java.lang.Boolean` and `boolean` (refer to [Special Considerations][#specialconsiderations1] to determine the appropriate declared type).
 
-###### 4.1.5.3.1 `@BooleanProperty`
+###### <b>4.1.5.3.1</b> `@BooleanProperty`
 
 ```java
 public class Company implements JxObject {
@@ -345,7 +345,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 4.1.5.3.2 `@BooleanElement`
+###### <b>4.1.5.3.2</b> `@BooleanElement`
 
 ```java
 public class Company implements JxObject {
@@ -355,7 +355,7 @@ public class Company implements JxObject {
 }
 ```
 
-##### 4.1.5.4 <samp>number</samp> Type
+##### <b>4.1.5.4</b> <samp>number</samp> Type
 
 A JSON <samp>**number**</samp> is represented by instances of `java.lang.Number` and the primitive numerical types (`byte`, `short`, `int`, `long`, `float`, and `double`-- refer to [Special Considerations][#specialconsiderations1] to determine the appropriate declared type).
 
@@ -374,7 +374,7 @@ The `@NumberProperty` and `@NumberElement` annotations define the following addi
    * Degenerate interval (left bounded): `[val]` or `[val,]`
    * Degenerate interval (right bounded): `[,val]`
 
-###### 4.1.5.4.1 `@NumberProperty`
+###### <b>4.1.5.4.1</b> `@NumberProperty`
 
 ```java
 public class Company implements JxObject {
@@ -389,7 +389,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 4.1.5.4.2 `@NumberElement`
+###### <b>4.1.5.4.2</b> `@NumberElement`
 
 ```java
 public class Company implements JxObject {
@@ -399,7 +399,7 @@ public class Company implements JxObject {
 }
 ```
 
-##### 4.1.5.5 <samp>string</samp> Type
+##### <b>4.1.5.5</b> <samp>string</samp> Type
 
 A JSON <samp>**string**</samp> is represented by instances of `java.lang.String`.
 
@@ -409,7 +409,7 @@ The `@StringProperty` and `@StringElement` annotations define the following addi
 
    Specifies the regex pattern.
 
-###### 4.1.5.5.1 `@StringProperty`
+###### <b>4.1.5.5.1</b> `@StringProperty`
 
 ```java
 public class Company implements JxObject {
@@ -424,7 +424,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 4.1.5.5.2 `@StringElement`
+###### <b>4.1.5.5.2</b> `@StringElement`
 
 ```java
 public class Company implements JxObject {
@@ -434,7 +434,7 @@ public class Company implements JxObject {
 }
 ```
 
-##### 4.1.5.6 <samp>any</samp> Type
+##### <b>4.1.5.6</b> <samp>any</samp> Type
 
 <samp>**any**</samp> represents a meta value type that is used to refer to actual JSON value types.
 
@@ -466,7 +466,7 @@ The `@AnyProperty` and `@AnyElement` annotations define the following additional
 
       A `Class<? extends JxObject>` specifying acceptable object classes.
 
-###### 4.1.5.6.1 `@AnyProperty`
+###### <b>4.1.5.6.1</b> `@AnyProperty`
 
 ```java
 public class Company implements JxObject {
@@ -481,7 +481,7 @@ public class Company implements JxObject {
 }
 ```
 
-###### 4.1.5.6.2 `@AnyElement`
+###### <b>4.1.5.6.2</b> `@AnyElement`
 
 ```java
 public class Company implements JxObject {
@@ -491,23 +491,23 @@ public class Company implements JxObject {
 }
 ```
 
-###### 4.1.5.7 `AnyObject`
+###### <b>4.1.5.7</b> `AnyObject`
 
 The `AnyObject` class is a JSON/Java binding that utilizes the `@AnyProperty` annotation to be able to represent any JSON object.
 
-###### 4.1.5.8 `@AnyArray`
+###### <b>4.1.5.8</b> `@AnyArray`
 
 The `AnyArray` annotation is a JSON/Java binding that utilizes the `@AnyElement` annotation to be able to represent any JSON array.
 
-#### 4.2 Functional
+#### <b>4.2</b> Functional
 
 The functional part of the <ins>JSONx Binding API</ins> is responsible for parsing, marshaling, and validating JSON documents in string or object form.
 
-##### 4.2.1 `ValidationException`
+##### <b>4.2.1</b> `ValidationException`
 
 The `ValidationException` represents an error in the use of the [Structural][#structural] part of the <ins>JSONx Binding API</ins>. The `ValidationException` is thrown when the binding model is evaluated during the process of parsing a JSON document string to binding classes, or marshaling binding classes to a JSON document string.
 
-##### 4.2.2 `JxEncoder`
+##### <b>4.2.2</b> `JxEncoder`
 
 The `JxEncoder` serializes Jx objects (that extend `JxObject`) and Jx arrays (with a provided annotation class that declares an `@ArrayType` annotation) to JSON documents. `JxEncoder` instances are differentiated by the `indent` value, which represents the number of spaces to use (as meaningless whitespace) when encoding JSON documents. The `JxEncoder` has a `protected` constructor, and exposes `static` fields and methods to obtain a `JxEncoder` instance so that instances can be cached.
 
@@ -557,11 +557,11 @@ Once a `JxEncoder` instance is obtained, it can be used to marshal binding objec
 
    Marshals the specified `JxObject`.
 
-##### 4.2.2.1 `EncodeException`
+##### <b>4.2.2.1</b> `EncodeException`
 
 Signals that an error has occurred while encoding a JSON document.
 
-##### 4.2.3 `JxDecoder`
+##### <b>4.2.3</b> `JxDecoder`
 
 The `JxDecoder` deserializes JSON documents to objects of `JxObject` classes, or to lists conforming to a provided annotation class that declares an `@ArrayType` annotation. The `JxDecoder` is an uninstantiable class that provides `static` methods for parsing JSON document strings.
 
@@ -573,7 +573,7 @@ The `JxDecoder` deserializes JSON documents to objects of `JxObject` classes, or
 
    Parses a JSON array from the supplied `JsonReader` as per the specification of the provided annotation class that declares an `ArrayType` annotation.
 
-##### 4.2.3.1 `DecodeException`
+##### <b>4.2.3.1</b> `DecodeException`
 
 Signals that an error has occurred while decoding a JSON document.
 
