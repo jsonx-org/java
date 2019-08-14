@@ -17,12 +17,13 @@ This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offer
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`JxObjectProvider`][#jxobjectprovider]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`BadRequestExceptionMapper`][#badrequestexceptionmapper]<br>
-<samp>&nbsp;&nbsp;</samp>5 [Usage][#usage]<br>
-<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`JxObjectProvider`][#jxobjectprovider]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`BadRequestExceptionMapper`][#badrequestexceptionmapper]<br>
+<samp>&nbsp;&nbsp;</samp>6 [Usage][#usage]<br>
+<samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
 
 ## <b>1</b> Introduction
 
@@ -34,11 +35,11 @@ The <ins>JSONx Integration for JAX-RS</ins> is implemented to the specification 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-### <b>2</b> Purpose
+## <b>2</b> Purpose
 
 Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-### <b>3</b> Requirements
+## <b>3</b> Requirements
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
@@ -46,17 +47,141 @@ Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java 
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
-## <b>4</b> Specification
+## <b>4</b> Getting Started
 
-### <b>4.1</b> `JxObjectProvider`
+The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` implementing the `MessageBodyReader` and `MessageBodyWriter` interfaces that can be registered with a JAX-RS runtime.
+
+The following illustrates example usage.
+
+1. Create a <ins>JSD</ins> in `src/main/resources/account.jsd`.
+
+   ```json
+   {
+     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+
+     "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
+     "id": { "jx:type": "object", "abstract": true, "properties": {
+       "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
+     "credentials": { "jx:type": "object", "properties": {
+       "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
+       "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
+     "account": { "jx:type": "object", "extends": "credentials", "properties": {
+       "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
+       "firstName": { "jx:type": "string", "nullable": false },
+       "lastName": { "jx:type": "string", "nullable": false } } }
+   }
+   ```
+
+1. **(Alternatively)** Create a <ins>JSDx</ins> in `src/main/resources/account.jsdx`.
+
+   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+
+   ```xml
+   <schema
+     xmlns="http://www.jsonx.org/schema-0.3.xsd"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+
+     <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
+     <object name="id" abstract="true">
+       <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
+     </object>
+     <object name="credentials">
+       <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
+       <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
+     </object>
+     <object name="account" extends="credentials">
+       <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
+       <property name="firstName" xsi:type="string" nullable="false"/>
+       <property name="lastName" xsi:type="string" nullable="false"/>
+     </object>
+
+   </schema>
+   ```
+
+1. Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
+
+   ```xml
+   <plugin>
+     <groupId>org.jsonx</groupId>
+     <artifactId>jsonx-maven-plugin</artifactId>
+     <version>0.3.1</version>
+     <executions>
+       <execution>
+         <goals>
+           <goal>generate</goal>
+         </goals>
+         <configuration>
+           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+           <prefix>com.example.jsonx.</prefix>
+           <schemas>
+             <schema>src/main/resources/account.jsonx</schema>
+           </schemas>
+         </configuration>
+       </execution>
+     </executions>
+   </plugin>
+   ```
+
+1. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, Java class files will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
+
+   The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
+
+   To <ins>parse</ins> JSON to <ins>JSONx</ins> Bindings:
+
+   ```java
+   String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
+   Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
+   ```
+
+   To <ins>marshal</ins> <ins>JSONx</ins> Bindings to JSON:
+
+   ```java
+   String json2 = JxEncoder.get().marshal(credentials);
+   assertEquals(json, json2);
+   ```
+
+1. Next, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
+
+   ```java
+   public class MyApplication extends javax.ws.rs.core.Application {
+     @Override
+     public Set<Object> getSingletons() {
+       return Collections.singleton(new JxObjectProvider(JxEncoder._2));
+     }
+   }
+
+   @Path("/account")
+   @RolesAllowed("registered")
+   public class AccountService {
+     @GET
+     @Produces("application/vnd.example.v1+json")
+     public Account get(@Context SecurityContext securityContext) {
+       Account account = new Account();
+       ...
+       return account;
+     }
+
+     @POST
+     @Consumes("application/vnd.example.v1+json")
+     public void post(@Context SecurityContext securityContext, Account account) {
+       ...
+     }
+   }
+   ```
+
+## <b>5</b> Specification
+
+### <b>5.1</b> `JxObjectProvider`
 
 A JAX-RS `Provider` that implements `MessageBodyReader` and `MessageBodyWriter` support for reading and writing JSON documents with the JSONx API.
 
-### <b>4.2</b> `BadRequestExceptionMapper`
+### <b>5.2</b> `BadRequestExceptionMapper`
 
 A JAX-RS `Provider` that implements an `ExceptionMapper` to present a JSON error body in case of a `BadRequestException`.
 
-## <b>5</b> Usage
+## <b>6</b> Usage
 
 The JAX-RS API requires `Provider`s to be decalred as either "singleton" instances, or by providing their class names for per-requests instantiations. The following example illustrates how to specify the `JxObjectProvider` and `BadRequestExceptionMapper` as singleton instances.
 
@@ -78,13 +203,13 @@ public class MyApplication extends javax.ws.rs.core.Application {
 }
 ```
 
-## <b>6</b> Contributing
+## <b>7</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>7</b> License
+## <b>8</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
@@ -92,9 +217,9 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#conventions]: #11-conventions-used-in-this-document
 [#purpose]: #2-purpose
 [#requirements]: #3-requirements
-[#specification]: #4-specification
-[#jxobjectprovider]: #41-jxobjectprovider
-[#badrequestexceptionmapper]: #42-badrequestexceptionmapper
-[#usage]: #5-usage
+[#specification]: #5-specification
+[#jxobjectprovider]: #51-jxobjectprovider
+[#badrequestexceptionmapper]: #52-badrequestexceptionmapper
+[#usage]: #6-usage
 
 [binding]: ../binding

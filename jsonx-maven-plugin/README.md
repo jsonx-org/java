@@ -17,20 +17,21 @@ This document specifies the <ins>JSONx Maven Plugin</ins>, which offers faciliti
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification](#4-specification)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Goals Overview](#41-goals-overview)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Usage](#42-usage)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`jsonx:generate`](#421-jsonxgenerate)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1.1 [Configuration Parameters](#4211-configuration-parameters)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1.2 [Example](#4212-example)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2 [`jsonx:convert`](#422-jsonxconvert)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2.1 [Configuration Parameters](#4221-configuration-parameters)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.2.2 [Example](#4222-example)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3 [`jsonx:validate`](#423-jsonxvalidate)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3.1 [Configuration Parameters](#4231-configuration-parameters)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.3.2 [Example](#4232-example)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Contributing](#5-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>6 [License](#6-license)
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Goals Overview](#51-goals-overview)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [Usage](#52-usage)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1 [`jsonx:generate`](#521-jsonxgenerate)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1.1 [Configuration Parameters](#5211-configuration-parameters)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1.2 [Example](#5212-example)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.2 [`jsonx:convert`](#522-jsonxconvert)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.2.1 [Configuration Parameters](#5221-configuration-parameters)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.2.2 [Example](#5222-example)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3 [`jsonx:validate`](#523-jsonxvalidate)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3.1 [Configuration Parameters](#5231-configuration-parameters)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3.2 [Example](#5232-example)<br>
+<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
 
 ### <b>1</b> Introduction
 
@@ -52,21 +53,48 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
-## <b>4</b> Specification
+## <b>4</b> Getting Started
 
-### <b>4.1</b> Goals Overview
+The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
+
+```xml
+<plugin>
+  <groupId>org.jsonx</groupId>
+  <artifactId>jsonx-maven-plugin</artifactId>
+  <version>0.3.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <phase>generate-sources</phase>
+      <configuration>
+        <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+        <prefix>com.example.json.</prefix>
+        <schemas>
+          <schema>src/main/resources/schema.jsd</schema> <!-- or schema.jsdx -->
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+## <b>5</b> Specification
+
+### <b>5.1</b> Goals Overview
 
 * [`jsonx:generate`](#jsonxgenerate) generates Java binding sources from <ins>JSD</ins> or <ins>JSDx</ins> schemas.
 * [`jsonx:convert`](#jsonxconvert) converts <ins>JSD</ins> schemas to <ins>JSDx</ins>, and vice versa.
 * [`jsonx:valdate`](#jsonxvalidate) validates <ins>JSD</ins> and <ins>JSDx</ins> schemas.
 
-### <b>4.2</b> Usage
+### <b>5.2</b> Usage
 
-#### <b>4.2.1</b> `jsonx:generate`
+#### <b>5.2.1</b> `jsonx:generate`
 
 The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used to generate Java binding sources for <ins>JSD</ins> or <ins>JSDx</ins> schemas specified in the `configuration`.
 
-##### <b>4.2.1.1</b> Configuration Parameters
+##### <b>5.2.1.1</b> Configuration Parameters
 
 | Name                          | Type    | Use      | Description                             |
 |:------------------------------|:--------|:---------|:----------------------------------------|
@@ -75,7 +103,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
 
-##### <b>4.2.1.2</b> Example
+##### <b>5.2.1.2</b> Example
 
 ```xml
 <plugin>
@@ -101,11 +129,11 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 </plugin>
 ```
 
-#### <b>4.2.2</b> `jsonx:convert`
+#### <b>5.2.2</b> `jsonx:convert`
 
 The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used to convert <ins>JSD</ins> schemas to <ins>JSDx</ins>, and vice versa.
 
-##### <b>4.2.2.1</b> Configuration Parameters
+##### <b>5.2.2.1</b> Configuration Parameters
 
 | Name                          | Type    | Use      | Description                             |
 |:------------------------------|:--------|:---------|:----------------------------------------|
@@ -113,7 +141,7 @@ The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
 
-##### <b>4.2.2.2</b> Example
+##### <b>5.2.2.2</b> Example
 
 ```xml
 <plugin>
@@ -138,18 +166,18 @@ The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used
 </plugin>
 ```
 
-#### <b>4.2.3</b> `jsonx:validate`
+#### <b>5.2.3</b> `jsonx:validate`
 
 The `jsonx:validate` goal is bound to the `compile` phase, and is used to validate <ins>JSD</ins> or <ins>JSDx</ins> schemas.
 
-##### <b>4.2.3.1</b> Configuration Parameters
+##### <b>5.2.3.1</b> Configuration Parameters
 
 | Name                          | Type    | Use      | Description                             |
 |:------------------------------|:--------|:---------|:----------------------------------------|
 | <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
 | <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
 
-##### <b>4.2.3.2</b> Example
+##### <b>5.2.3.2</b> Example
 
 ```xml
 <plugin>
@@ -174,13 +202,13 @@ The `jsonx:validate` goal is bound to the `compile` phase, and is used to valida
 </plugin>
 ```
 
-## <b>5</b> Contributing
+## <b>6</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>6</b> License
+## <b>7</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

@@ -17,11 +17,14 @@ This document specifies the <ins>JSONx Binding Generator</ins>, which offers fac
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification](#4-specification)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [`Generator`](#41-generator)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [`Converter`](#42-converter)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Contributing](#5-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>6 [License](#6-license)
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Generator](#41-generator)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Converter](#42-converter)<br>
+<samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`Generator`](#51-generator)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`Converter`](#52-converter)<br>
+<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
 
 ## <b>1</b> Introduction
 
@@ -49,13 +52,33 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 1. The <ins>binding generator</ins> MUST be able to validate a <ins>schema document</ins>.
 
-## <b>4</b> Specification
+## <b>4</b> Getting Started
+
+The <ins>JSD Binding Generator</ins> provides convenience utilities for generating bindings and converting <ins>schema document</ins>s. The following illustrates example usage of the `Generator` and `Converter` executable classes.
+
+### <b>4.1</b> `Generator`
+
+The following example generates binding classes (`.java` files) in `target/generated-sources/jsonx` for the <ins>schema document</ins> at `src/main/resources/example.jsd`, with prefix `org.example$`.
+
+```bash
+java -cp ... org.jsonx.Generator --prefix org.example$ -d target/generated-sources/jsonx src/main/resources/example.jsd
+```
+
+### <b>4.2</b> `Converter`
+
+The following example converts the JSD file at `src/main/resources/example.jsd` to a <ins>JSDx</ins> file in `target/generated-resources`.
+
+```bash
+java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated-resources/example.jsdx
+```
+
+## <b>5</b> Specification
 
 The <ins>JSONx Binding Generator</ins> generates Java binding classes. The generated classes contain the full scope of specification of the JSD schema from which they are generated. This means that the generated classes can be converted back to the JSD from which they were created, and the normative scope of the schema will be preserved.
 
 A distinction has to be made between "normative scope" and "non-normative scope". When referring to a JSD schema, the term "normative scope" represents the structural scope, which isolates the part of the schema document that defines validation criteria for facets of JSON documents. The term "non-normative scope" includes the information in the JSD schema that does not have significance unto the validation for facets of JSON documents. An example of a "non-normative scope" is the name of a `<string name="someName" ...>` type as the root element of the schema. The <ins>JSONx Binding Generator</ins> discards this information when creating the Java binding classes.
 
-### <b>4.1</b> `Generator`
+### <b>5.1</b> `Generator`
 
 The `Generator` is a utility class that can be used on the CLI to generate Java binding classes from a JSD schema. The `Generator` class has the following usage specification:
 
@@ -72,7 +95,7 @@ Supported SCHEMA_FILE formats:
                  <JSD|JSDx>
 ```
 
-### <b>4.2</b> `Converter`
+### <b>5.2</b> `Converter`
 
 The `Converter` is a utility class that can be used on the CLI to convert JSD files to JSDx, and vice versa. The `Converter` class has the following usage specification:
 
@@ -85,13 +108,13 @@ Supported SCHEMA_IN|OUT formats:
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.
 
-## <b>5</b> Contributing
+## <b>6</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>6</b> License
+## <b>7</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

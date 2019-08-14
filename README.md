@@ -31,36 +31,36 @@ This document introduces the <ins>JSONx Framework for Java</ins>, and presents a
 <samp>&nbsp;&nbsp;</samp>3 [<ins>JSON Schema Definition Language</ins>][#jsd]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [Purpose](#31-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [Requirements](#32-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [**Getting Started**](#33-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [Getting Started](#33-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [Specification](#34-specification)<br>
-<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>](#4-jsonjava-binding-api)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>](#4-jsonx-binding-api)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [**Getting Started**][#invoice-example]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [Getting Started][#invoice-example]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [Specification](#44-specification)<br>
 <samp>&nbsp;&nbsp;</samp>5 [<ins>JSD Binding Generator</ins>](#5-jsd-binding-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Purpose](#51-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [Requirements](#52-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3 [**Getting Started**](#53-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3 [Getting Started](#53-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.1 [Generator](#531-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.2 [Converter][#converter]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.4 [Specification](#54-specification)<br>
 <samp>&nbsp;&nbsp;</samp>6 [<ins>JsonXml</ins>](#6-jsonxml)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [**Getting Started**](#63-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON -> XML](#631-json-gt-xml)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML -> JSON](#632-xml-gt-json)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [Getting Started](#63-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON-to-XML](#631-json-to-xml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML-to-JSON](#632-xml-to-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
 <samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Integration for JAX-RS</ins>](#7-jsonx-integration-for-jax-rs)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.2 [Requirements](#72-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [**Getting Started**](#73-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [Getting Started](#73-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.4 [Specification](#74-specification)<br>
 <samp>&nbsp;&nbsp;</samp>8 [<ins>JSONx Maven Plugin</ins>](#8-jsonx-maven-plugin)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.1 [Purpose](#81-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.2 [Requirements](#82-requirements)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3 [**Getting Started**](#83-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3 [Getting Started](#83-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.4 [Specification](#84-specification)<br>
 <samp>&nbsp;&nbsp;</samp>9 [Contributing](#9-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>10 [License](#10-license)
@@ -679,13 +679,13 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
 
-#### <b>6.3.1</b> JSON -> XML
+#### <b>6.3.1</b> JSON-to-XML
 
 ```java
 String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
 ```
 
-#### <b>6.3.2</b> XML -> JSON
+#### <b>6.3.2</b> XML-to-JSON
 
 ```java
 String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));

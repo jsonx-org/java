@@ -18,25 +18,28 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
 <samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
 <samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Specification][#specification]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JsonXml Schema][#jsonxschema]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.1 [`boolean` type][#booleantype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.2 [`string` type][#stringtype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.3 [`number` type][#numbertype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.4 [`object` type][#objecttype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.5 [`array` type][#arraytype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1.6 [`null` value][#nullvalue]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [JsonXml API][#jsonxmlapi]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2.1 [`JxConverter`][#jxconverter]<br>
-<samp>&nbsp;&nbsp;</samp>5 [Sample Documents][#samples]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`paypal.json`][#paypaljson]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`paypal.xml`][#paypalxml]<br>
-<samp>&nbsp;&nbsp;</samp>6 [Related Resources for JsonXml][#resources]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Schemas for JsonXml][#jsonxml-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.1 [JsonXml 0.3][#jsonxml-03]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1.2 [JsonXml 0.2][#jsonxml-02]<br>
-<samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
+<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-gettingstarted)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JSON-to-XML](#41-json-to-xml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [XML-to-JSON](#42-xml-to-json)<br>
+<samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [JsonXml Schema][#jsonxschema]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [`boolean` type][#booleantype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [`string` type][#stringtype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.3 [`number` type][#numbertype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.4 [`object` type][#objecttype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.5 [`array` type][#arraytype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.6 [`null` value][#nullvalue]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [JsonXml API][#jsonxmlapi]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1 [`JxConverter`][#jxconverter]<br>
+<samp>&nbsp;&nbsp;</samp>6 [Sample Documents][#samples]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`paypal.json`][#paypaljson]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`paypal.xml`][#paypalxml]<br>
+<samp>&nbsp;&nbsp;</samp>7 [Related Resources for JsonXml][#resources]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Schemas for JsonXml][#jsonxml-schemas]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.1 [JsonXml 0.3][#jsonxml-03]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.2 [JsonXml 0.2][#jsonxml-02]<br>
+<samp>&nbsp;&nbsp;</samp>8 [Contributing](#8-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>9 [License](#9-license)
 
 ## <b>1</b> Introduction
 
@@ -62,49 +65,65 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
-## <b>4</b> Specification
+## <b>4</b> Getting Started
 
-### <b>4.1</b> <ins>JsonXml Schema</ins>
+The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
+
+### <b>4.1</b> JSON-to-XML
+
+```java
+String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
+```
+
+### <b>4.2</b> XML-to-JSON
+
+```java
+String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
+```
+
+## <b>5</b> Specification
+
+### <b>5.1</b> <ins>JsonXml Schema</ins>
 
 The JsonXml Schema defines XML elements that represent an XML-equivalent of a JSON document. The JsonXml Schema represents the JSON value types as follows:
 
-#### <b>4.1.1</b> `boolean` Type
+#### <b>5.1.1</b> `boolean` Type
 
 The `false` and `true` string literals.
 
 <ins>Example</ins>: `true`
 
-#### <b>4.1.2</b> `string` Type
+#### <b>5.1.2</b> `string` Type
 
 A double-quoted string. A JSON string may require to be escaped to a string that is legal for XML. The escaped characters are [Predefined Entities in XML][xmlentities].
 
 <ins>Example</ins>: `"string"`
 
-#### <b>4.1.3</b> `number` Type
+#### <b>5.1.3</b> `number` Type
 
 A number that conforms to the [RFC4627][rfc4627] section 2.4.
 
 <ins>Example</ins>: `6.626E-34`
 
-#### <b>4.1.4</b> `object` Type
+#### <b>5.1.4</b> `object` Type
 
 A JSON object is represented by the `<o>` element. The `<o>` element does not have attributes, and may contain 0 or more `<p>` elements.
 
 A JSON object property is represented by the `<p>` element. The `<p>` element contains an attribute `n` that specifies the property's name. The content of the `<p>` element can be one of [`boolean` type][#booleantype], [`string` type][#stringtype], [`number` type][#numbertype], [`object` type][#objecttype], or [`array` type][#arraytype].
 
-#### <b>4.1.5</b> `array` Type
+#### <b>5.1.5</b> `array` Type
 
 A JSON array is represented by the `<a>` element. The `<a>` element does not have attributes, and may contain 0 or more space delimited members conforming to [`boolean` type][#booleantype], [`string` type][#stringtype], [`number` type][#numbertype], [`object` type][#objecttype], or [`array` type][#arraytype].
 
-#### <b>4.1.6</b> `null` Value
+#### <b>5.1.6</b> `null` Value
 
 The `null` JSON value is represented by the string `null`.
 
-### <b>4.2</b> <ins>JsonXml API</ins>
+### <b>5.2</b> <ins>JsonXml API</ins>
 
 The <ins>JsonXml API</ins> offers facilities for validating and converting JSON and JSONx documents.
 
-#### <b>4.2.1</b> `JxConverter`
+#### <b>5.2.1</b> `JxConverter`
 
 The `JxConverter` class contains utility methods for conversion of JSON documents to XML documents, and vice versa.
 
@@ -120,11 +139,11 @@ JxConverter.jsonToXml(new JsonReader(new StringReader(json), false), true);
 JxConverter.xmlToJson(new ByteArrayInputStream(xml.getBytes()), true);
 ```
 
-## <b>5</b> Sample Documents
+## <b>6</b> Sample Documents
 
 This section provides a sample JSON and its JSONx alternative.
 
-### <b>5.1</b> `paypal.json`
+### <b>6.1</b> `paypal.json`
 
 ```json
 {
@@ -162,7 +181,7 @@ This section provides a sample JSON and its JSONx alternative.
 }
 ```
 
-### <b>5.2</b> `paypal.xml`
+### <b>6.2</b> `paypal.xml`
 
 ```xml
 <o
@@ -203,25 +222,25 @@ This section provides a sample JSON and its JSONx alternative.
 </p></o>
 ```
 
-## <b>6</b> Related Resources for JsonXml
+## <b>7</b> Related Resources for JsonXml
 
-### <b>6.1</b> Schemas for JsonXml
+### <b>7.1</b> Schemas for JsonXml
 
-#### <b>6.1.1</b> JsonXml Schema 0.3
+#### <b>7.1.1</b> JsonXml Schema 0.3
 
 * A JsonXml schema document XSD [jsonxml-0.3.xsd][jsonxml-03] for JsonXml documents.
 
-#### <b>6.1.2</b> JsonXml Schema 0.2
+#### <b>7.1.2</b> JsonXml Schema 0.2
 
 * A JsonXml schema document XSD [jsonxml-0.2.xsd][jsonxml-02] for JsonXml documents.
 
-## <b>7</b> Contributing
+## <b>8</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>8</b> License
+## <b>9</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
@@ -230,23 +249,23 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#conventions]: #12-conventions-used-in-this-document
 [#purpose]: #2-purpose
 [#requirements]: #3-requirements
-[#specification]: #4-specification
-[#jsonxmlschema]: #41-jsonxml-schema
-[#booleantype]: #411-boolean-type
-[#stringtype]: #412-string-type
-[#numbertype]: #413-number-type
-[#objecttype]: #414-object-type
-[#arraytype]: #415-array-type
-[#nullvalue]: #416-null-value
-[#jsonxmlmlapi]: #42-jsonxml-api
-[#jxconverter]: #421-jxconverter
-[#samples]: #5-sample-documents
-[#paypaljson]: #51-paypaljson
-[#paypalxml]: #52-paypalxml
-[#resources]: #6-related-resources-for-jsonxml
-[#jsonxml-schemas]: #61-schemas-for-jsonxml
-[#jsonxml-03]: #611-jsonxml-schema-03
-[#jsonxml-02]: #612-jsonxml-schema-02
+[#specification]: #5-specification
+[#jsonxmlschema]: #51-jsonxml-schema
+[#booleantype]: #511-boolean-type
+[#stringtype]: #512-string-type
+[#numbertype]: #513-number-type
+[#objecttype]: #514-object-type
+[#arraytype]: #515-array-type
+[#nullvalue]: #516-null-value
+[#jsonxmlmlapi]: #52-jsonxml-api
+[#jxconverter]: #521-jxconverter
+[#samples]: #6-sample-documents
+[#paypaljson]: #61-paypaljson
+[#paypalxml]: #62-paypalxml
+[#resources]: #7-related-resources-for-jsonxml
+[#jsonxml-schemas]: #71-schemas-for-jsonxml
+[#jsonxml-03]: #711-jsonxml-schema-03
+[#jsonxml-02]: #712-jsonxml-schema-02
 
 [api]: ../binding/
 [jsonxml-02]: http://www.jsonx.org/jsonxml-0.2.xsd
