@@ -39,11 +39,13 @@ var h = href;
             if (id > -1)
               path = path.substring(0, id);
 
+var x = i;
+
             var p = path;
             for (var slash; (slash = path.lastIndexOf('/')) != -1 && i > 0; --i)
               path = path.substring(0, slash);
 
-console.log(h + " -> \"" + href + "\"", p + " -> \"" + path + "\"");
+console.log(h + " -> \"" + href + "\"", x, p + " -> \"" + path + "\"");
 
             if (href.charAt(0) === '#')
               return '<a href="' + path + '#/?id=_' + href.substring(1) + '">' + text + '</a>';
