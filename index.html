@@ -14,15 +14,48 @@
     window.$docsify = {
       name: '<b>JSONx Framework for Java</b>',
       repo: 'jsonx-org/java',
-      homepage: 'https://raw.githubusercontent.com/jsonx-org/java/master/README.md',
+      homepage: 'README.md',
       relativePath: true,
+      alias: {
+        "/schema": "https://raw.githubusercontent.com/jsonx-org/schema/master/README.md",
+        "/binding": "https://raw.githubusercontent.com/jsonx-org/java/master/binding/README.md",
+        "/generator": "https://raw.githubusercontent.com/jsonx-org/java/master/generator/README.md",
+        "/jsonxml": "https://raw.githubusercontent.com/jsonx-org/java/master/jsonxml/README.md",
+        "/jsonx-maven-plugin": "https://raw.githubusercontent.com/jsonx-org/java/master/jsonx-maven-plugin/README.md",
+        "/jaxrs": "https://raw.githubusercontent.com/jsonx-org/java/master/jaxrs/README.md",
+        "/sample": "https://raw.githubusercontent.com/jsonx-org/java/master/sample/README.md"
+      },
       markdown: {
         renderer: {
           link: function (href, title, text) {
-            if (href.charAt(0) === '#')
-              return '<a href="#/?id=_' + href.substring(1) + '">' + text + '</a>';
+            var i;
+            for (i = -1; href.startsWith("../") || href.startsWith("/.."); ++i)
+              href = href.substring(3);
 
-            return '<a href="' + href + '">' + text + '</a>';
+            if (i == -1)
+              i = 0;
+
+            var path = location.href.substring(location.href.indexOf('/', 8));
+            var id = path.indexOf("?id=");
+            if (id > -1)
+              path = path.substring(0, id);
+
+            for (var slash; (slash = path.lastIndexOf('/')) != -1 && i > 0; --i)
+              path = path.substring(0, slash);
+
+            if (href.charAt(0) === '#')
+              return '<a href="' + path + '?id=_' + href.substring(1) + '">' + text + '</a>';
+
+            if (href.startsWith("http"))
+              return '<a href="' + href + '">' + text + '</a>';
+
+            if (href.endsWith("issues"))
+              return '<a href="https://github.com/jsonx-org/java/issues">' + text + '</a>';
+
+            if (href.endsWith("LICENSE.txt"))
+              return '<a href="https://github.com/jsonx-org/java/blob/master/LICENSE.txt">' + text + '</a>';
+
+            return '<a href="#/' + href.replace(/^\/?(\.\.\/?)+/g, "") + '">' + text + '</a>';;
           }
         }
       }
