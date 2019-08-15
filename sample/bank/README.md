@@ -17,7 +17,7 @@ This document presents the <ins>Bank Message</ins> sample application.
 <samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
 
-### 1 Bank
+### <b>1</b> Bank
 
 This sample is an introduction to the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
@@ -226,17 +226,17 @@ The following schema presents a message declaration for each type of identifier 
 
 _The code included in this module implements this example._
 
-## 2 Contributing
+## <b>2</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 3 License
+## <b>3</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding]: ../../../jsonx/#4-jsonjava-binding-api
-[#converter]: ../../../jsonx/#532-converter
-[#jsd]: ../../../jsonx/#3-json-schema-definition-language
-[jsonx-maven-plugin]: ../../../jsonx-maven-plugin/
+[#binding]: ../../../../#4-jsonx-binding-api
+[#converter]: ../../../../#532-converter
+[#jsd]: ../../../../#3-json-schema-definition-language
+[jsonx-maven-plugin]: ../../jsonx-maven-plugin/

@@ -17,7 +17,7 @@ This document presents the [<ins>Consumer Driven Contracts</ins>][cdc] sample ap
 <samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
 
-### 1 Consumer Driven Contracts
+### <b>1</b> Consumer Driven Contracts
 
 The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
@@ -169,17 +169,17 @@ With this approach, the **v2** evolution of the contract satisfies **Customer2**
 
 _The code included in this module implements this example._
 
-## 2 Contributing
+## <b>2</b> Contributing
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## 3 License
+## <b>3</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#converter]: ../../#532-converter
-[#jsd]: ../../#3-json-schema-definition-language
+[#converter]: ../../../../#532-converter
+[#jsd]: ../../../../#3-json-schema-definition-language
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [jsonx-maven-plugin]: ../../jsonx-maven-plugin/
