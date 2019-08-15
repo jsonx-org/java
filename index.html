@@ -15,6 +15,8 @@
       name: '<b>JSONx Framework for Java</b>',
       repo: 'jsonx-org/java',
       homepage: 'https://raw.githubusercontent.com/jsonx-org/java/master/README.md',
+      // homepage: 'README.md',
+      basePath: '/java/',
       relativePath: true,
       alias: {
         "/schema": "https://raw.githubusercontent.com/jsonx-org/schema/master/README.md",
@@ -23,7 +25,8 @@
         "/jsonxml": "https://raw.githubusercontent.com/jsonx-org/java/master/jsonxml/README.md",
         "/jsonx-maven-plugin": "https://raw.githubusercontent.com/jsonx-org/java/master/jsonx-maven-plugin/README.md",
         "/jaxrs": "https://raw.githubusercontent.com/jsonx-org/java/master/jaxrs/README.md",
-        "/sample": "https://raw.githubusercontent.com/jsonx-org/java/master/sample/README.md"
+        "/sample": "https://raw.githubusercontent.com/jsonx-org/java/master/sample/README.md",
+        "/sample/(.*)": "https://raw.githubusercontent.com/jsonx-org/java/master/sample/$1/README.md"
       },
       markdown: {
         renderer: {
@@ -48,8 +51,15 @@ var h = href;
             if (href.endsWith("issues"))
               return '<a href="https://github.com/jsonx-org' + path + '/issues">' + text + '</a>';
 
-            if (href.endsWith("LICENSE.txt"))
-              return '<a href="https://github.com/jsonx-org' + path + '/blob/master/LICENSE.txt">' + text + '</a>';
+            if (href.endsWith("LICENSE.txt")) {
+              var s = path.indexOf('/', 1);
+              if (s !== -1)
+                path = path.substring(0, s) + "/blob/master" + path.substring(s);
+              else
+                path = path + "/blob/master";
+
+              return '<a href="https://github.com/jsonx-org' + path + '/LICENSE.txt">' + text + '</a>';
+            }
 
 var x = i;
 
@@ -59,13 +69,17 @@ var x = i;
 
 console.log("[" + x + "] href: \"" + h + "\" -> \"" + href + "\", path: \"" + p + "\" -> \"" + path + "\"");
 
-            if (href.charAt(0) === '#')
-              return '<a href="' + path + '#/?id=_' + href.substring(1) + '">' + text + '</a>';
-
-            if (path === "")
-              path = "/";
+            var s = path.indexOf('/', 1);
+            if (s !== -1)
+              path = path.substring(0, s) + "/#" + path.substring(s);
             else
-              path = path + "#/";
+              path = path + "/#";
+
+            if (href.charAt(0) === '#')
+              return '<a href="' + path + '?id=_' + href.substring(1) + '">' + text + '</a>';
+
+            if (href.charAt(0) !== '/' && !path.endsWith('/'))
+              path += "/";
 
             return '<a href="' + path + href + '">' + text + '</a>';;
           }
