@@ -23,12 +23,12 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [XML-to-JSON](#42-xml-to-json)<br>
 <samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [JsonXml Schema][#jsonxmlschema]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [`boolean` type][#booleantype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [`string` type][#stringtype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.3 [`number` type][#numbertype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.4 [`object` type][#objecttype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.5 [`array` type][#arraytype]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.6 [`null` value][#nullvalue]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [`boolean`][#booleantype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [`string`][#stringtype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.3 [`number`][#numbertype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.4 [`object`][#objecttype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.5 [`array`][#arraytype]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.6 [`null`][#nullvalue]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [JsonXml API][#jsonxmlapi]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1 [`JxConverter`][#jxconverter]<br>
 <samp>&nbsp;&nbsp;</samp>6 [Sample Documents][#samples]<br>
