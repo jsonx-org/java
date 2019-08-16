@@ -32,9 +32,11 @@ var hh = href;
             for (d = 0; href.startsWith("../") || href.startsWith("/.."); ++d)
               href = href.substring(3);
 
+            var rootPath = "/java";
             var path = location.href.substring(location.href.indexOf('/', 8));
-            if (path.startsWith("/#"))
-              path = "/java" + path;
+            var isRoot = path.startsWith("/#");
+            if (isRoot)
+              path = rootPath + path;
 
             if (path.endsWith("/"))
               path = path.substring(0, path.length - 1);
@@ -79,6 +81,9 @@ console.log("[" + dd + "] href: \"" + hh + "\" -> \"" + href + "\", path: \"" + 
 
               return '<a href="https://github.com/jsonx-org' + path + 'LICENSE.txt">' + text + '</a>';
             }
+
+            if (isRoot)
+              path = path.substring(rootPath.length);
 
             if (href.charAt(0) === '#')
               return '<a href="' + path + '?id=_' + href.substring(1) + '">' + text + '</a>';
