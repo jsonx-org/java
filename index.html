@@ -28,11 +28,11 @@
               return '<a href="' + href + '">' + text + '</a>';
 
 var hh = href;
+            var path = location.href.substring(location.href.indexOf('/', 8));
             var d;
-            for (d = 0; href.startsWith("../") || href.startsWith("/.."); ++d)
+            for (d = path.startsWith("/#") ? -1 : 0; href.startsWith("../") || href.startsWith("/.."); ++d)
               href = href.substring(3);
 
-            var path = location.href.substring(location.href.indexOf('/', 8));
             if (path.endsWith("/"))
               path = path.substring(0, path.length - 1);
 
