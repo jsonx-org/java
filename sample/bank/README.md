@@ -31,198 +31,204 @@ This example presents a simple schema that represents a message with a bank acco
 
 The following schema presents a message declaration for each type of identifier with regex constraints.
 
-1. Create a <ins>JSD</ins> in `src/test/resources/message.jsd`:
+&nbsp;&nbsp;1.&nbsp;Create `message.jsd` or `message.jsdx` in `src/test/resources/`:
 
-   ```json
-   {
-     "doc": "Schema describing bank transactions",
-     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
-     "message": { "jx:type": "object", "abstract": true },
-     "swift": {
-       "jx:type": "object", "extends": "message", "properties": {
-         "type": { "jx:type": "string", "pattern": "swift", "nullable": false },
-         "code": { "jx:type": "string", "pattern": "[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?", "nullable": false }
-       }
-     },
-     "iban": {
-       "jx:type": "object", "extends": "message", "properties": {
-         "type": { "jx:type": "string", "pattern": "iban", "nullable": false },
-         "code": { "jx:type": "string", "pattern": "[A-Z]{2}\\d{2} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{0,2}", "nullable": false }
-       }
-     },
-     "ach": {
-       "jx:type": "object", "extends": "message", "properties": {
-         "type": { "jx:type": "string", "pattern": "ach", "nullable": false },
-         "code": { "jx:type": "string", "pattern": "\\w{1,17}", "nullable": false },
-         "routing": { "jx:type": "string", "pattern": "\\d{9}", "nullable": false }
-       }
-     }
-   }
-   ```
+<!-- tabs:start -->
 
-1. **(Alternatively)** Create a <ins>JSDx</ins> in `src/test/resources/message.jsdx`:
+###### **JSD**
 
-   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+```json
+{
+  "doc": "Schema describing bank transactions",
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "message": { "jx:type": "object", "abstract": true },
+  "swift": {
+    "jx:type": "object", "extends": "message", "properties": {
+      "type": { "jx:type": "string", "pattern": "swift", "nullable": false },
+      "code": { "jx:type": "string", "pattern": "[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?", "nullable": false }
+    }
+  },
+  "iban": {
+    "jx:type": "object", "extends": "message", "properties": {
+      "type": { "jx:type": "string", "pattern": "iban", "nullable": false },
+      "code": { "jx:type": "string", "pattern": "[A-Z]{2}\\d{2} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{0,2}", "nullable": false }
+    }
+  },
+  "ach": {
+    "jx:type": "object", "extends": "message", "properties": {
+      "type": { "jx:type": "string", "pattern": "ach", "nullable": false },
+      "code": { "jx:type": "string", "pattern": "\\w{1,17}", "nullable": false },
+      "routing": { "jx:type": "string", "pattern": "\\d{9}", "nullable": false }
+    }
+  }
+}
+```
 
-   ```xml
-   <schema
-     doc="Schema describing bank transactions"
-     xmlns="http://www.jsonx.org/schema-0.3.xsd"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
-     <object name="message" abstract="true"/>
-     <object name="swift" extends="message">
-       <property name="type" xsi:type="string" pattern="swift" nullable="false"/>
-       <property name="code" xsi:type="string" pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?" nullable="false"/>
-     </object>
-     <object name="iban" extends="message">
-       <property name="type" xsi:type="string" pattern="iban" nullable="false"/>
-       <property name="code" xsi:type="string" pattern="[A-Z]{2}\d{2} ?\d{4} ?\d{4} ?\d{4} ?\d{4} ?\d{0,2}" nullable="false"/>
-     </object>
-     <object name="ach" extends="message">
-       <property name="type" xsi:type="string" pattern="ach" nullable="false"/>
-       <property name="code" xsi:type="string" pattern="\w{1,17}" nullable="false"/>
-       <property name="routing" xsi:type="string" pattern="\d{9}" nullable="false"/>
-     </object>
-   </schema>
-   ```
+###### **JSDx**
 
-1. With the `message.jsd` or `message.jsdx`, you can use the [`jsonx-maven-plugin`][jsonx-maven-plugin] to automatically generate the Java class files. In your POM, add:
+```xml
+<schema
+  doc="Schema describing bank transactions"
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  <object name="message" abstract="true"/>
+  <object name="swift" extends="message">
+    <property name="type" xsi:type="string" pattern="swift" nullable="false"/>
+    <property name="code" xsi:type="string" pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?" nullable="false"/>
+  </object>
+  <object name="iban" extends="message">
+    <property name="type" xsi:type="string" pattern="iban" nullable="false"/>
+    <property name="code" xsi:type="string" pattern="[A-Z]{2}\d{2} ?\d{4} ?\d{4} ?\d{4} ?\d{4} ?\d{0,2}" nullable="false"/>
+  </object>
+  <object name="ach" extends="message">
+    <property name="type" xsi:type="string" pattern="ach" nullable="false"/>
+    <property name="code" xsi:type="string" pattern="\w{1,17}" nullable="false"/>
+    <property name="routing" xsi:type="string" pattern="\d{9}" nullable="false"/>
+  </object>
+</schema>
+```
 
-   ```xml
-   <plugin>
-     <groupId>org.jsonx</groupId>
-     <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.3.1</version>
-     <executions>
-       <execution>
-         <goals>
-           <goal>generate</goal>
-         </goals>
-         <phase>generate-test-sources</phase>
-         <configuration>
-           <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
-           <prefix>com.example.bank.</prefix>
-           <schemas>
-             <schema>src/test/resources/message.jsd</schema> <!-- or message.jsdx -->
-           </schemas>
-         </configuration>
-       </execution>
-     </executions>
-   </plugin>
-   ```
+<!-- tabs:end -->
 
-1. **(Alternatively)** Create the Java class files by hand:
+<sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
-   <sup>_**Note:** Set-ters and get-ters have been replaced with public fields for conciseness._</sup>
+&nbsp;&nbsp;2.&nbsp;With the `message.jsd` or `message.jsdx`, you can use the [`jsonx-maven-plugin`][jsonx-maven-plugin] to automatically generate the Java class files. In your POM, add:
 
-   ```java
-   import org.jsonx.*;
+```xml
+<plugin>
+  <groupId>org.jsonx</groupId>
+  <artifactId>jsonx-maven-plugin</artifactId>
+  <version>0.3.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <phase>generate-test-sources</phase>
+      <configuration>
+        <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
+        <prefix>com.example.bank.</prefix>
+        <schemas>
+          <schema>src/test/resources/message.jsd</schema> <!-- or message.jsdx -->
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
 
-   public abstract class Message implements JxObject {
-   }
-   ```
+&nbsp;&nbsp;3.&nbsp;**(Alternatively)** Create the Java class files by hand:
 
-   ```java
-   import org.jsonx.*;
+<sup>_**Note:** Set-ters and get-ters have been replaced with public fields for conciseness._</sup>
 
-   public class Swift extends Message {
-     @StringProperty(pattern="swift", nullable=false)
-     public String type;
+```java
+import org.jsonx.*;
 
-     @StringProperty(pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?", nullable=false)
-     public String code;
-   }
-   ```
+public abstract class Message implements JxObject {
+}
+```
 
-   ```java
-   import org.jsonx.*;
+```java
+import org.jsonx.*;
 
-   public class Iban extends Message {
-     @StringProperty(pattern="iban", nullable=false)
-     public String type;
+public class Swift extends Message {
+  @StringProperty(pattern="swift", nullable=false)
+  public String type;
 
-     @StringProperty(pattern="[A-Z]{2}\\d{2} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{0,2}", nullable=false)
-     public String code;
-   }
-   ```
+  @StringProperty(pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?", nullable=false)
+  public String code;
+}
+```
 
-   ```java
-   import org.jsonx.*;
+```java
+import org.jsonx.*;
 
-   public class Ach extends Message {
-     @StringProperty(pattern="ach", nullable=false)
-     public String type;
+public class Iban extends Message {
+  @StringProperty(pattern="iban", nullable=false)
+  public String type;
 
-     @StringProperty(pattern="\\w{1,17}", nullable=false)
-     public String code;
+  @StringProperty(pattern="[A-Z]{2}\\d{2} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{4} ?\\d{0,2}", nullable=false)
+  public String code;
+}
+```
 
-     @StringProperty(pattern="\\d{9}", nullable=false)
-     public String routing;
-   }
-   ```
+```java
+import org.jsonx.*;
 
-1. You can use these classes to represent `Message`s of type `Swift`, `Iban`, and `Ach`.
+public class Ach extends Message {
+  @StringProperty(pattern="ach", nullable=false)
+  public String type;
 
-   ```java
-   List<Message> messages = new ArrayList<>();
+  @StringProperty(pattern="\\w{1,17}", nullable=false)
+  public String code;
 
-   Swift swift = new Swift();
-   swift.setType("swift");
-   swift.setCode("CTBAAU2S");
-   messages.add(swift);
+  @StringProperty(pattern="\\d{9}", nullable=false)
+  public String routing;
+}
+```
 
-   Iban iban = new Iban();
-   iban.setType("iban");
-   iban.setCode("DE91 1000 0000 0123 4567 89");
-   messages.add(iban);
+&nbsp;&nbsp;4.&nbsp;You can use these classes to represent `Message`s of type `Swift`, `Iban`, and `Ach`.
 
-   Ach ach = new Ach();
-   ach.setType("ach");
-   ach.setCode("379272957729384");
-   ach.setRouting("021000021");
-   messages.add(ach);
-   ```
+```java
+List<Message> messages = new ArrayList<>();
 
-1. You can now <ins>marshal</ins> the Java objects to JSON:
+Swift swift = new Swift();
+swift.setType("swift");
+swift.setCode("CTBAAU2S");
+messages.add(swift);
 
-   ```java
-   for (Message message : messages) {
-     String json = JxEncoder._2.marshal(message);
-     System.out.println(json);
-   }
-   ```
+Iban iban = new Iban();
+iban.setType("iban");
+iban.setCode("DE91 1000 0000 0123 4567 89");
+messages.add(iban);
 
-   ... will produce:
+Ach ach = new Ach();
+ach.setType("ach");
+ach.setCode("379272957729384");
+ach.setRouting("021000021");
+messages.add(ach);
+```
 
-   ```json
-   {
-     "type": "swift",
-     "code": "CTBAAU2S"
-   }
-   {
-     "type": "iban",
-     "code": "DE91 1000 0000 0123 4567 89"
-   }
-   {
-     "type": "ach",
-     "code": "379272957729384",
-     "routing": "021000021"
-   }
-   ```
+&nbsp;&nbsp;5.&nbsp;You can now <ins>marshal</ins> the Java objects to JSON:
 
-1. You can also <ins>parse</ins> the JSON into Java objects:
+```java
+for (Message message : messages) {
+  String json = JxEncoder._2.marshal(message);
+  System.out.println(json);
+}
+```
 
-   ```java
-   for (Message message : messages) {
-     String json = JxEncoder._2.marshal(message);
-     System.out.println(json);
+... will produce:
 
-     Message json2 = JxDecoder.parseObject(message.getClass(), new JsonReader(new StringReader(json)));
-     assertEquals(json, json2);
-   }
-   ```
+```json
+{
+  "type": "swift",
+  "code": "CTBAAU2S"
+}
+{
+  "type": "iban",
+  "code": "DE91 1000 0000 0123 4567 89"
+}
+{
+  "type": "ach",
+  "code": "379272957729384",
+  "routing": "021000021"
+}
+```
+
+&nbsp;&nbsp;6.&nbsp;You can also <ins>parse</ins> the JSON into Java objects:
+
+```java
+for (Message message : messages) {
+  String json = JxEncoder._2.marshal(message);
+  System.out.println(json);
+
+  Message json2 = JxDecoder.parseObject(message.getClass(), new JsonReader(new StringReader(json)));
+  assertEquals(json, json2);
+}
+```
 
 _The code included in this module implements this example._
 

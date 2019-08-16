@@ -32,7 +32,8 @@ This document introduces the <ins>JSONx Framework for Java</ins>, and presents a
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [Purpose](#31-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [Requirements](#32-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [Getting Started](#33-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [Specification](#34-specification)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [JSD vs JSDx](#34-jsd-vs-jsdx)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.5 [Specification](#35-specification)<br>
 <samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>](#4-jsonx-binding-api)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
@@ -114,7 +115,11 @@ Version **v1** of the protocol defines the contract:
   }
   ```
 
-The <ins>JSD</ins> that describes the **Response** contract is:
+The schema that describes the **Response** contract is:
+
+<!-- tabs:start -->
+
+###### **JSD**
 
 ```json
 {
@@ -133,9 +138,7 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 }
 ```
 
-**(Alternatively)** The <ins>JSDx</ins> form of the **Response** contract is:
-
-<sub>_**Note:** The [Converter][#converter] utility automatically converts between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+###### **JSDx**
 
 ```xml
 <schema
@@ -158,6 +161,10 @@ The <ins>JSD</ins> that describes the **Response** contract is:
 </schema>
 ```
 
+<!-- tabs:end -->
+
+<sub>_**Note:** The [Converter][#converter] utility automatically converts between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+
 All actors -- **Producer**, **Consumer1**, and **Consumer2** -- agree on the contract, and implement and integrate the protocol into their systems. To assert receipt of contract-compliant documents, all actors use the contract definition to automatically validate received and sent messages.
 
 After many months of running in production, **Consumer2** issues a request to the **Producer** to provide additional information in the response. Specifically, **Consumer2** requests for the addition of another field in the JSON response:
@@ -177,6 +184,9 @@ After many months of running in production, **Consumer2** issues a request to th
 
 To satisfy **Consumer2**'s request, the contract is updated to support version **v2** of the **Response**:
 
+<!-- tabs:start -->
+
+###### **JSD**
 
 ```diff
 {
@@ -199,9 +209,7 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 }
 ```
 
-**(Alternatively)** The <ins>JSDx</ins> form of the change to the **Response** contract is:
-
-<sub>_**Note:** The [Converter][#converter] utility automatically converts between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+###### **JSDx**
 
 ```diff
 <schema
@@ -228,6 +236,10 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 </schema>
 ```
+
+<!-- tabs:end -->
+
+<sub>_**Note:** The [Converter][#converter] utility automatically converts between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
 With this approach, the **v2** evolution of the contract satisfies **Customer2**. And, since the contract also retains support for **v1**, integration with **Customer1** is unaffected.
 
@@ -259,90 +271,98 @@ Provide a <ins>schema language</ins> to describe normative contracts between pro
 
 The <ins>JSON Schema Definition Language</ins> can be expressed in 2 forms: <ins>JSD (Json Schema Document)</ins>, and <ins>JSDx (JSD in XML semantics)</ins>.
 
-1. Create `schema.jsd` with the following content:
+Create `schema.jsd` or `schema.jsdx` with the following content:
 
-   ```json
-   {
-     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+<!-- tabs:start -->
 
-     "myNumber": { "jx:type": "number", "range": "[-1,1)" },
-     "myString": { "jx:type": "string", "pattern": "[a-z]+" },
-     "myObject": {
-       "jx:type": "object", "properties": {
-         "myArray": {
-           "jx:type": "array", "elements": [
-             { "jx:type": "boolean" },
-             { "jx:type": "reference", "type": "myNumber" },
-             { "jx:type": "reference", "type": "myString" },
-             { "jx:type": "array", "elements": [
-               { "jx:type": "boolean" },
-               { "jx:type": "number", "range": "[0,100]", "scale": 0 },
-               { "jx:type": "string", "pattern": "[0-9]+" },
-               { "jx:type": "any", "types": "myNumber myString" } ]},
-           { "jx:type": "reference", "type": "myObject" },
-           { "jx:type": "any", "types": "myString myObject" }]
-         }
-       }
-     }
-   }
-   ```
+###### **JSD**
 
-   This example defines a schema with 3 types that express the following structure:
+```json
+{
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
-   1. Type **`myNumber`**: A `number` between the range -1 (inclusive) and 1 (exclusive).
-   1. Type **`myString`**: A `string` with the regex patter "[a-z]+".
-   1. Type **`myObject`**: An `object` that has one property:
-      1. "myArray": An `array` that defines a sequence of elements:
+  "myNumber": { "jx:type": "number", "range": "[-1,1)" },
+  "myString": { "jx:type": "string", "pattern": "[a-z]+" },
+  "myObject": {
+    "jx:type": "object", "properties": {
+      "myArray": {
+        "jx:type": "array", "elements": [
+          { "jx:type": "boolean" },
+          { "jx:type": "reference", "type": "myNumber" },
+          { "jx:type": "reference", "type": "myString" },
+          { "jx:type": "array", "elements": [
+            { "jx:type": "boolean" },
+            { "jx:type": "number", "range": "[0,100]", "scale": 0 },
+            { "jx:type": "string", "pattern": "[0-9]+" },
+            { "jx:type": "any", "types": "myNumber myString" } ]},
+        { "jx:type": "reference", "type": "myObject" },
+        { "jx:type": "any", "types": "myString myObject" }]
+      }
+    }
+  }
+}
+```
+
+###### **JSDx**
+
+```xml
+<schema
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+
+  <number name="myNumber" range="[-1,1)"/>
+  <string name="myString" pattern="[a-z]+"/>
+  <object name="myObject">
+    <property name="myArray" xsi:type="array">
+      <boolean/>
+      <reference type="myNumber"/>
+      <reference type="myString"/>
+      <array>
+        <boolean/>
+        <number range="[0,100]" scale="0"/>
+        <string pattern="[0-9]+"/>
+        <any types="myNumber myString"/>
+      </array>
+      <reference type="myObject"/>
+      <any types="myString myObject"/>
+    </property>
+  </object>
+
+</schema>
+```
+
+<!-- tabs:end -->
+
+<sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+
+This example defines a schema with 3 types that express the following structure:
+
+1. Type **`myNumber`**: A `number` between the range -1 (inclusive) and 1 (exclusive).
+1. Type **`myString`**: A `string` with the regex patter "[a-z]+".
+1. Type **`myObject`**: An `object` that has one property:
+   1. "myArray": An `array` that defines a sequence of elements:
+      1. `boolean`
+      1. **`myNumber`**
+      1. **`myString`**
+      1. An `array` with the following elements:
          1. `boolean`
-         1. **`myNumber`**
-         1. **`myString`**
-         1. An `array` with the following elements:
-            1. `boolean`
-            1. An integer `number` between 0 and 100.
-            1. A `string` of pattern "[0-9]+"
-            1. Either **`myNumber`** or **`myString`**.
-         1. `myObject`
-         1. Either **`myString`** or **`myObject`**.
+         1. An integer `number` between 0 and 100.
+         1. A `string` of pattern "[0-9]+"
+         1. Either **`myNumber`** or **`myString`**.
+      1. `myObject`
+      1. Either **`myString`** or **`myObject`**.
 
-1. **(Alternatively)** Can create an equivalent `schema.jsdx`:
+### <b>3.4</b> JSD vs JSDx
 
-   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+The <ins>JSDx</ins> format offers XML validation, and using an XML IDE like [oXygen XML Editor][oxygenxml] offers edit-time XML validation, such as:
 
-   ```xml
-   <schema
-     xmlns="http://www.jsonx.org/schema-0.3.xsd"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+<img src="https://user-images.githubusercontent.com/1258414/61751752-aae93800-ada9-11e9-88b1-65de08f125b5.png" width="75%">
 
-     <number name="myNumber" range="[-1,1)"/>
-     <string name="myString" pattern="[a-z]+"/>
-     <object name="myObject">
-       <property name="myArray" xsi:type="array">
-         <boolean/>
-         <reference type="myNumber"/>
-         <reference type="myString"/>
-         <array>
-           <boolean/>
-           <number range="[0,100]" scale="0"/>
-           <string pattern="[0-9]+"/>
-           <any types="myNumber myString"/>
-         </array>
-         <reference type="myObject"/>
-         <any types="myString myObject"/>
-       </property>
-     </object>
+When using the <ins>JSDx</ins> format with the [oXygen XML Editor][oxygenxml], the auto-completion features of the editor will guide you in writing the schema. With the <ins>JSDx</ins> format, the XML editor will also validate keys and keyrefs to ensure that declared types are referenced correctly.
 
-   </schema>
-   ```
-
-   The <ins>JSDx</ins> format offers XML validation, and using an XML IDE like [oXygen XML Editor][oxygenxml] offers edit-time XML validation, such as:
-
-   <img src="https://user-images.githubusercontent.com/1258414/61751752-aae93800-ada9-11e9-88b1-65de08f125b5.png" width="75%">
-
-   When using the <ins>JSDx</ins> format with the [oXygen XML Editor][oxygenxml], the auto-completion features of the editor will guide you in writing the schema. With the <ins>JSDx</ins> format, the XML editor will also validate keys and keyrefs to ensure that declared types are referenced correctly.
-
-### <b>3.4</b> Specification
+### <b>3.5</b> Specification
 
 _For a detailed specification of the <ins>schema language</ins>, see **[<ins>JSON Schema Definition Language</ins>][schema]**._
 
@@ -376,238 +396,244 @@ The <ins>JSONx Binding API</ins> uses annotations to bind class definitions to u
 
 The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
 
-1. Create a <ins>JSD</ins> in `src/main/resources/invoice.jsd`:
+&nbsp;&nbsp;1.&nbsp;Create `invoice.jsd` or `invoice.jsdx` in `src/main/resources/`:
 
-   ```json
-   {
-     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+<!-- tabs:start -->
 
-     "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
-     "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
-     "date": { "jx:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
-     "nonEmptyString": { "jx:type": "string", "pattern": "\\S|\\S.*\\S" },
-     "address": { "jx:type": "object", "properties": {
-       "name": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "address": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "city": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "postalCode": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
-       "country": { "jx:type": "reference", "type": "nonEmptyString" } }
-     },
-     "invoice": { "jx:type": "object", "properties": {
-       "number": { "jx:type": "reference", "type": "positiveInteger" },
-       "date": { "jx:type": "reference", "type": "date" },
-       "billingAddress": { "jx:type": "reference", "type": "address" },
-       "shippingAddress": { "jx:type": "reference", "type": "address" },
-       "billedItems": { "jx:type": "array", "nullable": false, "elements": [
-         { "jx:type": "reference", "type": "item" } ] } }
-     },
-     "item": { "jx:type": "object", "properties": {
-       "description": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "code": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "quantity": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "price": { "jx:type": "reference", "nullable": false, "type": "money" } }
-     }
-   }
-   ```
+###### **JSD**
 
-1. **(Alternatively)** Create a <ins>JSDx</ins> in `src/main/resources/invoice.jsdx`:
+```json
+{
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
-   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+  "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
+  "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
+  "date": { "jx:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
+  "nonEmptyString": { "jx:type": "string", "pattern": "\\S|\\S.*\\S" },
+  "address": { "jx:type": "object", "properties": {
+    "name": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "address": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "city": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "postalCode": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
+    "country": { "jx:type": "reference", "type": "nonEmptyString" } }
+  },
+  "invoice": { "jx:type": "object", "properties": {
+    "number": { "jx:type": "reference", "type": "positiveInteger" },
+    "date": { "jx:type": "reference", "type": "date" },
+    "billingAddress": { "jx:type": "reference", "type": "address" },
+    "shippingAddress": { "jx:type": "reference", "type": "address" },
+    "billedItems": { "jx:type": "array", "nullable": false, "elements": [
+      { "jx:type": "reference", "type": "item" } ] } }
+  },
+  "item": { "jx:type": "object", "properties": {
+    "description": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "code": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
+    "quantity": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
+    "price": { "jx:type": "reference", "nullable": false, "type": "money" } }
+  }
+}
+```
 
-   ```xml
-   <schema
-     xmlns="http://www.jsonx.org/schema-0.3.xsd"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+###### **JSDx**
 
-     <number name="money" range="[0,]" scale="2"/>
-     <number name="positiveInteger" range="[1,]" scale="0"/>
-     <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
-     <string name="nonEmptyString" pattern="\S|\S.*\S"/>
-     <object name="address">
-       <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="address" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="city" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="postalCode" xsi:type="reference" type="nonEmptyString" nullable="false" use="optional"/>
-       <property name="country" xsi:type="reference" type="nonEmptyString"/>
-     </object>
-     <object name="invoice">
-       <property name="number" xsi:type="reference" type="positiveInteger"/>
-       <property name="date" xsi:type="reference" type="date"/>
-       <property name="billingAddress" xsi:type="reference" type="address"/>
-       <property name="shippingAddress" xsi:type="reference" type="address"/>
-       <property name="billedItems" xsi:type="array" nullable="false">
-         <reference type="item"/>
-       </property>
-     </object>
-     <object name="item">
-       <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
-       <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
-       <property name="price" xsi:type="reference" type="money" nullable="false"/>
-     </object>
+```xml
+<schema
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
-   </schema>
-   ```
+  <number name="money" range="[0,]" scale="2"/>
+  <number name="positiveInteger" range="[1,]" scale="0"/>
+  <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
+  <string name="nonEmptyString" pattern="\S|\S.*\S"/>
+  <object name="address">
+    <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="address" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="city" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="postalCode" xsi:type="reference" type="nonEmptyString" nullable="false" use="optional"/>
+    <property name="country" xsi:type="reference" type="nonEmptyString"/>
+  </object>
+  <object name="invoice">
+    <property name="number" xsi:type="reference" type="positiveInteger"/>
+    <property name="date" xsi:type="reference" type="date"/>
+    <property name="billingAddress" xsi:type="reference" type="address"/>
+    <property name="shippingAddress" xsi:type="reference" type="address"/>
+    <property name="billedItems" xsi:type="array" nullable="false">
+      <reference type="item"/>
+    </property>
+  </object>
+  <object name="item">
+    <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
+    <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
+    <property name="price" xsi:type="reference" type="money" nullable="false"/>
+  </object>
 
-1. With the `invoice.jsd` or `invoice.jsdx`, you can use the [`jsonx-maven-plugin`][jsonx-maven-plugin] to automatically generate the Java class files. In your POM, add:
+</schema>
+```
 
-   ```xml
-   <plugin>
-     <groupId>org.jsonx</groupId>
-     <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.3.1</version>
-     <executions>
-       <execution>
-         <goals>
-           <goal>generate</goal>
-         </goals>
-         <phase>generate-sources</phase>
-         <configuration>
-           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-           <prefix>com.example.invoice.</prefix>
-           <schemas>
-             <schema>src/main/resources/invoice.jsd</schema> <!-- or invoice.jsdx -->
-           </schemas>
-         </configuration>
-       </execution>
-     </executions>
-   </plugin>
-   ```
+<!-- tabs:end -->
 
-1. **(Alternatively)** Create the Java class files by hand:
+<sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
-   <sup>_**Note:** Set-ters and get-ters have been replaced with public fields for conciseness._</sup>
+&nbsp;&nbsp;2.&nbsp;With the `invoice.jsd` or `invoice.jsdx`, you can use the [`jsonx-maven-plugin`][jsonx-maven-plugin] to automatically generate the Java class files. In your POM, add:
 
-   ```java
-   import org.jsonx.*;
+```xml
+<plugin>
+  <groupId>org.jsonx</groupId>
+  <artifactId>jsonx-maven-plugin</artifactId>
+  <version>0.3.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <phase>generate-sources</phase>
+      <configuration>
+        <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+        <prefix>com.example.invoice.</prefix>
+        <schemas>
+          <schema>src/main/resources/invoice.jsd</schema> <!-- or invoice.jsdx -->
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
 
-   public class Address implements JxObject {
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String name;
+&nbsp;&nbsp;3.&nbsp;**(Alternatively)** Create the Java class files by hand:
 
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String address;
+<sup>_**Note:** Set-ters and get-ters have been replaced with public fields for conciseness._</sup>
 
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String city;
+```java
+import org.jsonx.*;
 
-     @StringProperty(pattern="\\S|\\S.*\\S", use=Use.OPTIONAL, nullable=false)
-     public String postalCode;
+public class Address implements JxObject {
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String name;
 
-     @StringProperty(pattern="\\S|\\S.*\\S")
-     public String country;
-   }
-   ```
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String address;
 
-   ```java
-   import org.jsonx.*;
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String city;
 
-   public class Item implements JxObject {
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String description;
+  @StringProperty(pattern="\\S|\\S.*\\S", use=Use.OPTIONAL, nullable=false)
+  public String postalCode;
 
-     @NumberProperty(range="[1,]", scale=0, nullable=false)
-     public java.math.BigInteger code;
+  @StringProperty(pattern="\\S|\\S.*\\S")
+  public String country;
+}
+```
 
-     @NumberProperty(range="[1,]", scale=0, nullable=false)
-     public java.math.BigInteger quantity;
+```java
+import org.jsonx.*;
 
-     @NumberProperty(range="[1,]", scale=2, nullable=false)
-     public java.math.BigDecimal price;
-    }
-   ```
+public class Item implements JxObject {
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String description;
 
-   ```java
-   import org.jsonx.*;
+  @NumberProperty(range="[1,]", scale=0, nullable=false)
+  public java.math.BigInteger code;
 
-   public class Invoice implements JxObject {
-     @NumberProperty(range="[1,]", scale=0)
-     public java.math.BigInteger number;
+  @NumberProperty(range="[1,]", scale=0, nullable=false)
+  public java.math.BigInteger quantity;
 
-     @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")
-     public String date;
+  @NumberProperty(range="[1,]", scale=2, nullable=false)
+  public java.math.BigDecimal price;
+ }
+```
 
-     @ObjectProperty
-     public Address billingAddress;
+```java
+import org.jsonx.*;
 
-     @ObjectProperty
-     public Address shippingAddress;
+public class Invoice implements JxObject {
+  @NumberProperty(range="[1,]", scale=0)
+  public java.math.BigInteger number;
 
-     @ObjectElement(id=0, type=Item.class)
-     @ArrayProperty(elementIds={0}, nullable=false)
-     public java.util.List<Item> billedItems;
-   }
-   ```
+  @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")
+  public String date;
 
-1. You can use these classes to represent `Address`es, `Item`s, and `Invoice`s.
+  @ObjectProperty
+  public Address billingAddress;
 
-   ```java
-   Address address = new Address();
-   address.name = "John Doe";
-   address.address = "111 Wall St.";
-   address.city = "New York";
-   address.postalCode = "10043";
-   address.country = "USA";
+  @ObjectProperty
+  public Address shippingAddress;
 
-   Item item = new Item();
-   item.code = BigInteger.valueOf(123);
-   item.description = "Pocket Protector";
-   item.price = new BigDecimal("14.99");
-   item.quantity = BigInteger.valueOf(5);
+  @ObjectElement(id=0, type=Item.class)
+  @ArrayProperty(elementIds={0}, nullable=false)
+  public java.util.List<Item> billedItems;
+}
+```
 
-   Invoice invoice = new Invoice();
-   invoice.number = BigInteger.valueOf(14738);
-   invoice.date = "2019-05-13";
-   invoice.billingAddress = address;
-   invoice.shippingAddress = address;
-   invoice.billedItems = Collections.singletonList(item);
-   ```
+&nbsp;&nbsp;4.&nbsp;You can use these classes to represent `Address`es, `Item`s, and `Invoice`s.
 
-1. You can now <ins>marshal</ins> the Java objects to JSON:
+```java
+Address address = new Address();
+address.name = "John Doe";
+address.address = "111 Wall St.";
+address.city = "New York";
+address.postalCode = "10043";
+address.country = "USA";
 
-   ```java
+Item item = new Item();
+item.code = BigInteger.valueOf(123);
+item.description = "Pocket Protector";
+item.price = new BigDecimal("14.99");
+item.quantity = BigInteger.valueOf(5);
 
-   String json = JxEncoder._2.marshal(invoice);
-   System.out.println(json);
-   ```
+Invoice invoice = new Invoice();
+invoice.number = BigInteger.valueOf(14738);
+invoice.date = "2019-05-13";
+invoice.billingAddress = address;
+invoice.shippingAddress = address;
+invoice.billedItems = Collections.singletonList(item);
+```
 
-   ... will produce:
+&nbsp;&nbsp;5.&nbsp;You can now <ins>marshal</ins> the Java objects to JSON:
 
-   ```json
-   {
-     "number": 14738,
-     "date": "2019-05-13",
-     "billingAddress": {
-       "name": "John Doe",
-       "address": "111 Wall St.",
-       "city": "New York",
-       "postalCode": "10043",
-       "country": "USA"
-     },
-     "shippingAddress": {
-       "name": "John Doe",
-       "address": "111 Wall St.",
-       "city": "New York",
-       "postalCode": "10043",
-       "country": "USA"
-     },
-     "billedItems": [{
-       "description": "Pocket Protector",
-       "code": 123,
-       "quantity": 5,
-       "price": 14.99
-     }]
-   }
-   ```
+```java
 
-1. You can also <ins>parse</ins> the JSON into Java objects:
+String json = JxEncoder._2.marshal(invoice);
+System.out.println(json);
+```
 
-   ```java
-   Invoice invoice2 = JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json)));
-   assertEquals(invoice, invoice2);
-   ```
+... will produce:
+
+```json
+{
+  "number": 14738,
+  "date": "2019-05-13",
+  "billingAddress": {
+    "name": "John Doe",
+    "address": "111 Wall St.",
+    "city": "New York",
+    "postalCode": "10043",
+    "country": "USA"
+  },
+  "shippingAddress": {
+    "name": "John Doe",
+    "address": "111 Wall St.",
+    "city": "New York",
+    "postalCode": "10043",
+    "country": "USA"
+  },
+  "billedItems": [{
+    "description": "Pocket Protector",
+    "code": 123,
+    "quantity": 5,
+    "price": 14.99
+  }]
+}
+```
+
+&nbsp;&nbsp;6.&nbsp;You can also <ins>parse</ins> the JSON into Java objects:
+
+```java
+Invoice invoice2 = JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json)));
+assertEquals(invoice, invoice2);
+```
 
 _For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**._
 
@@ -717,123 +743,129 @@ The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` im
 
 The following illustrates example usage.
 
-1. Create a <ins>JSD</ins> in `src/main/resources/account.jsd`.
+&nbsp;&nbsp;1.&nbsp;Create `account.jsd` or `account.jsdx` in `src/main/resources/`.
 
-   ```json
-   {
-     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+<!-- tabs:start -->
 
-     "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
-     "id": { "jx:type": "object", "abstract": true, "properties": {
-       "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
-     "credentials": { "jx:type": "object", "properties": {
-       "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
-       "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
-     "account": { "jx:type": "object", "extends": "credentials", "properties": {
-       "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
-       "firstName": { "jx:type": "string", "nullable": false },
-       "lastName": { "jx:type": "string", "nullable": false } } }
-   }
-   ```
+###### **JSD**
 
-1. **(Alternatively)** Create a <ins>JSDx</ins> in `src/main/resources/account.jsdx`.
+```json
+{
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
-   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+  "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
+  "id": { "jx:type": "object", "abstract": true, "properties": {
+    "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
+  "credentials": { "jx:type": "object", "properties": {
+    "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
+    "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
+  "account": { "jx:type": "object", "extends": "credentials", "properties": {
+    "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
+    "firstName": { "jx:type": "string", "nullable": false },
+    "lastName": { "jx:type": "string", "nullable": false } } }
+}
+```
 
-   ```xml
-   <schema
-     xmlns="http://www.jsonx.org/schema-0.3.xsd"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+###### **JSDx**
 
-     <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
-     <object name="id" abstract="true">
-       <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
-     </object>
-     <object name="credentials">
-       <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
-       <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
-     </object>
-     <object name="account" extends="credentials">
-       <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
-       <property name="firstName" xsi:type="string" nullable="false"/>
-       <property name="lastName" xsi:type="string" nullable="false"/>
-     </object>
+```xml
+<schema
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
-   </schema>
-   ```
+  <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
+  <object name="id" abstract="true">
+    <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
+  </object>
+  <object name="credentials">
+    <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
+    <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
+  </object>
+  <object name="account" extends="credentials">
+    <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
+    <property name="firstName" xsi:type="string" nullable="false"/>
+    <property name="lastName" xsi:type="string" nullable="false"/>
+  </object>
 
-1. Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
+</schema>
+```
 
-   ```xml
-   <plugin>
-     <groupId>org.jsonx</groupId>
-     <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.3.1</version>
-     <executions>
-       <execution>
-         <goals>
-           <goal>generate</goal>
-         </goals>
-         <configuration>
-           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-           <prefix>com.example.jsonx.</prefix>
-           <schemas>
-             <schema>src/main/resources/account.jsonx</schema>
-           </schemas>
-         </configuration>
-       </execution>
-     </executions>
-   </plugin>
-   ```
+<!-- tabs:end -->
 
-1. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, Java class files will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
+<sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
-   The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
+&nbsp;&nbsp;2.&nbsp;Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
 
-   To <ins>parse</ins> JSON to <ins>JSONx</ins> Bindings:
+```xml
+<plugin>
+  <groupId>org.jsonx</groupId>
+  <artifactId>jsonx-maven-plugin</artifactId>
+  <version>0.3.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <configuration>
+        <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+        <prefix>com.example.jsonx.</prefix>
+        <schemas>
+          <schema>src/main/resources/account.jsonx</schema>
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
 
-   ```java
-   String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
-   Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
-   ```
+&nbsp;&nbsp;3.&nbsp;Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, Java class files will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
 
-   To <ins>marshal</ins> <ins>JSONx</ins> Bindings to JSON:
+The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
 
-   ```java
-   String json2 = JxEncoder.get().marshal(credentials);
-   assertEquals(json, json2);
-   ```
+To <ins>parse</ins> JSON to <ins>JSONx</ins> Bindings:
 
-1. Next, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
+```java
+String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
+Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
+```
 
-   ```java
-   public class MyApplication extends javax.ws.rs.core.Application {
-     @Override
-     public Set<Object> getSingletons() {
-       return Collections.singleton(new JxObjectProvider(JxEncoder._2));
-     }
-   }
+To <ins>marshal</ins> <ins>JSONx</ins> Bindings to JSON:
 
-   @Path("/account")
-   @RolesAllowed("registered")
-   public class AccountService {
-     @GET
-     @Produces("application/vnd.example.v1+json")
-     public Account get(@Context SecurityContext securityContext) {
-       Account account = new Account();
-       ...
-       return account;
-     }
+```java
+String json2 = JxEncoder.get().marshal(credentials);
+assertEquals(json, json2);
+```
 
-     @POST
-     @Consumes("application/vnd.example.v1+json")
-     public void post(@Context SecurityContext securityContext, Account account) {
-       ...
-     }
-   }
-   ```
+&nbsp;&nbsp;4.&nbsp;Next, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
+
+```java
+public class MyApplication extends javax.ws.rs.core.Application {
+  @Override
+  public Set<Object> getSingletons() {
+    return Collections.singleton(new JxObjectProvider(JxEncoder._2));
+  }
+}
+
+@Path("/account")
+@RolesAllowed("registered")
+public class AccountService {
+  @GET
+  @Produces("application/vnd.example.v1+json")
+  public Account get(@Context SecurityContext securityContext) {
+    Account account = new Account();
+    ...
+    return account;
+  }
+
+  @POST
+  @Consumes("application/vnd.example.v1+json")
+  public void post(@Context SecurityContext securityContext, Account account) {
+    ...
+  }
+}
+```
 
 ### <b>7.4</b> Specification
 
@@ -905,11 +937,11 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [binding]: binding
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [generator]: generator
-[jsonxml]: jsonxml
+[jaxrs]: jaxrs
 [jsonx-maven-plugin]: jsonx-maven-plugin
+[jsonxml]: jsonxml
 [maven]: https://maven.apache.org/
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
-[jaxrs]: jaxrs
 [sample-cdc]: sample/cdc
 [sample-invoice]: sample/invoice
 [sample]: sample

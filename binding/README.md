@@ -99,238 +99,244 @@ The <ins>JSONx Binding API</ins> uses annotations to bind class definitions to u
 
 The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
 
-1. Create a <ins>JSD</ins> in `src/main/resources/invoice.jsd`:
+&nbsp;&nbsp;1.&nbsp;Create `invoice.jsd` or `invoice.jsdx` in `src/main/resources/`:
 
-   ```json
-   {
-     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+<!-- tabs:start -->
 
-     "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
-     "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
-     "date": { "jx:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
-     "nonEmptyString": { "jx:type": "string", "pattern": "\\S|\\S.*\\S" },
-     "address": { "jx:type": "object", "properties": {
-       "name": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "address": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "city": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "postalCode": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
-       "country": { "jx:type": "reference", "type": "nonEmptyString" } }
-     },
-     "invoice": { "jx:type": "object", "properties": {
-       "number": { "jx:type": "reference", "type": "positiveInteger" },
-       "date": { "jx:type": "reference", "type": "date" },
-       "billingAddress": { "jx:type": "reference", "type": "address" },
-       "shippingAddress": { "jx:type": "reference", "type": "address" },
-       "billedItems": { "jx:type": "array", "nullable": false, "elements": [
-         { "jx:type": "reference", "type": "item" } ] } }
-     },
-     "item": { "jx:type": "object", "properties": {
-       "description": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
-       "code": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "quantity": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
-       "price": { "jx:type": "reference", "nullable": false, "type": "money" } }
-     }
-   }
-   ```
+###### **JSD**
 
-1. **(Alternatively)** Create a <ins>JSDx</ins> in `src/main/resources/invoice.jsdx`:
+```json
+{
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
-   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+  "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
+  "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
+  "date": { "jx:type": "string", "pattern": "-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))" },
+  "nonEmptyString": { "jx:type": "string", "pattern": "\\S|\\S.*\\S" },
+  "address": { "jx:type": "object", "properties": {
+    "name": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "address": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "city": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "postalCode": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString", "use": "optional" },
+    "country": { "jx:type": "reference", "type": "nonEmptyString" } }
+  },
+  "invoice": { "jx:type": "object", "properties": {
+    "number": { "jx:type": "reference", "type": "positiveInteger" },
+    "date": { "jx:type": "reference", "type": "date" },
+    "billingAddress": { "jx:type": "reference", "type": "address" },
+    "shippingAddress": { "jx:type": "reference", "type": "address" },
+    "billedItems": { "jx:type": "array", "nullable": false, "elements": [
+      { "jx:type": "reference", "type": "item" } ] } }
+  },
+  "item": { "jx:type": "object", "properties": {
+    "description": { "jx:type": "reference", "nullable": false, "type": "nonEmptyString" },
+    "code": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
+    "quantity": { "jx:type": "reference", "nullable": false, "type": "positiveInteger" },
+    "price": { "jx:type": "reference", "nullable": false, "type": "money" } }
+  }
+}
+```
 
-   ```xml
-   <schema
-     xmlns="http://www.jsonx.org/schema-0.3.xsd"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+###### **JSDx**
 
-     <number name="money" range="[0,]" scale="2"/>
-     <number name="positiveInteger" range="[1,]" scale="0"/>
-     <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
-     <string name="nonEmptyString" pattern="\S|\S.*\S"/>
-     <object name="address">
-       <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="address" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="city" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="postalCode" xsi:type="reference" type="nonEmptyString" nullable="false" use="optional"/>
-       <property name="country" xsi:type="reference" type="nonEmptyString"/>
-     </object>
-     <object name="invoice">
-       <property name="number" xsi:type="reference" type="positiveInteger"/>
-       <property name="date" xsi:type="reference" type="date"/>
-       <property name="billingAddress" xsi:type="reference" type="address"/>
-       <property name="shippingAddress" xsi:type="reference" type="address"/>
-       <property name="billedItems" xsi:type="array" nullable="false">
-         <reference type="item"/>
-       </property>
-     </object>
-     <object name="item">
-       <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
-       <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
-       <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
-       <property name="price" xsi:type="reference" type="money" nullable="false"/>
-     </object>
+```xml
+<schema
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
-   </schema>
-   ```
+  <number name="money" range="[0,]" scale="2"/>
+  <number name="positiveInteger" range="[1,]" scale="0"/>
+  <string name="date" pattern="-?\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\d|3[01])|(02-(0[1-9]|1\d|2\d))|((0[469]|11)-(0[1-9]|[12]\d|30)))"/>
+  <string name="nonEmptyString" pattern="\S|\S.*\S"/>
+  <object name="address">
+    <property name="name" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="address" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="city" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="postalCode" xsi:type="reference" type="nonEmptyString" nullable="false" use="optional"/>
+    <property name="country" xsi:type="reference" type="nonEmptyString"/>
+  </object>
+  <object name="invoice">
+    <property name="number" xsi:type="reference" type="positiveInteger"/>
+    <property name="date" xsi:type="reference" type="date"/>
+    <property name="billingAddress" xsi:type="reference" type="address"/>
+    <property name="shippingAddress" xsi:type="reference" type="address"/>
+    <property name="billedItems" xsi:type="array" nullable="false">
+      <reference type="item"/>
+    </property>
+  </object>
+  <object name="item">
+    <property name="description" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+    <property name="code" xsi:type="reference" type="positiveInteger" nullable="false"/>
+    <property name="quantity" xsi:type="reference" type="positiveInteger" nullable="false"/>
+    <property name="price" xsi:type="reference" type="money" nullable="false"/>
+  </object>
 
-1. With the `invoice.jsd` or `invoice.jsdx`, you can use the [`jsonx-maven-plugin`][jsonx-maven-plugin] to automatically generate the Java class files. In your POM, add:
+</schema>
+```
 
-   ```xml
-   <plugin>
-     <groupId>org.jsonx</groupId>
-     <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.3.1</version>
-     <executions>
-       <execution>
-         <goals>
-           <goal>generate</goal>
-         </goals>
-         <phase>generate-sources</phase>
-         <configuration>
-           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-           <prefix>com.example.invoice.</prefix>
-           <schemas>
-             <schema>src/main/resources/invoice.jsd</schema> <!-- or invoice.jsdx -->
-           </schemas>
-         </configuration>
-       </execution>
-     </executions>
-   </plugin>
-   ```
+<!-- tabs:end -->
 
-1. **(Alternatively)** Create the Java class files by hand:
+<sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
-   <sup>_**Note:** Set-ters and get-ters have been replaced with public fields for conciseness._</sup>
+&nbsp;&nbsp;2.&nbsp;With the `invoice.jsd` or `invoice.jsdx`, you can use the [`jsonx-maven-plugin`][jsonx-maven-plugin] to automatically generate the Java class files. In your POM, add:
 
-   ```java
-   import org.jsonx.*;
+```xml
+<plugin>
+  <groupId>org.jsonx</groupId>
+  <artifactId>jsonx-maven-plugin</artifactId>
+  <version>0.3.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <phase>generate-sources</phase>
+      <configuration>
+        <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+        <prefix>com.example.invoice.</prefix>
+        <schemas>
+          <schema>src/main/resources/invoice.jsd</schema> <!-- or invoice.jsdx -->
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
 
-   public class Address implements JxObject {
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String name;
+&nbsp;&nbsp;3.&nbsp;**(Alternatively)** Create the Java class files by hand:
 
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String address;
+<sup>_**Note:** Set-ters and get-ters have been replaced with public fields for conciseness._</sup>
 
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String city;
+```java
+import org.jsonx.*;
 
-     @StringProperty(pattern="\\S|\\S.*\\S", use=Use.OPTIONAL, nullable=false)
-     public String postalCode;
+public class Address implements JxObject {
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String name;
 
-     @StringProperty(pattern="\\S|\\S.*\\S")
-     public String country;
-   }
-   ```
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String address;
 
-   ```java
-   import org.jsonx.*;
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String city;
 
-   public class Item implements JxObject {
-     @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
-     public String description;
+  @StringProperty(pattern="\\S|\\S.*\\S", use=Use.OPTIONAL, nullable=false)
+  public String postalCode;
 
-     @NumberProperty(range="[1,]", scale=0, nullable=false)
-     public java.math.BigInteger code;
+  @StringProperty(pattern="\\S|\\S.*\\S")
+  public String country;
+}
+```
 
-     @NumberProperty(range="[1,]", scale=0, nullable=false)
-     public java.math.BigInteger quantity;
+```java
+import org.jsonx.*;
 
-     @NumberProperty(range="[1,]", scale=2, nullable=false)
-     public java.math.BigDecimal price;
-    }
-   ```
+public class Item implements JxObject {
+  @StringProperty(pattern="\\S|\\S.*\\S", nullable=false)
+  public String description;
 
-   ```java
-   import org.jsonx.*;
+  @NumberProperty(range="[1,]", scale=0, nullable=false)
+  public java.math.BigInteger code;
 
-   public class Invoice implements JxObject {
-     @NumberProperty(range="[1,]", scale=0)
-     public java.math.BigInteger number;
+  @NumberProperty(range="[1,]", scale=0, nullable=false)
+  public java.math.BigInteger quantity;
 
-     @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")
-     public String date;
+  @NumberProperty(range="[1,]", scale=2, nullable=false)
+  public java.math.BigDecimal price;
+ }
+```
 
-     @ObjectProperty
-     public Address billingAddress;
+```java
+import org.jsonx.*;
 
-     @ObjectProperty
-     public Address shippingAddress;
+public class Invoice implements JxObject {
+  @NumberProperty(range="[1,]", scale=0)
+  public java.math.BigInteger number;
 
-     @ObjectElement(id=0, type=Item.class)
-     @ArrayProperty(elementIds={0}, nullable=false)
-     public java.util.List<Item> billedItems;
-   }
-   ```
+  @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")
+  public String date;
 
-1. You can use these classes to represent `Address`es, `Item`s, and `Invoice`s.
+  @ObjectProperty
+  public Address billingAddress;
 
-   ```java
-   Address address = new Address();
-   address.name = "John Doe";
-   address.address = "111 Wall St.";
-   address.city = "New York";
-   address.postalCode = "10043";
-   address.country = "USA";
+  @ObjectProperty
+  public Address shippingAddress;
 
-   Item item = new Item();
-   item.code = BigInteger.valueOf(123);
-   item.description = "Pocket Protector";
-   item.price = new BigDecimal("14.99");
-   item.quantity = BigInteger.valueOf(5);
+  @ObjectElement(id=0, type=Item.class)
+  @ArrayProperty(elementIds={0}, nullable=false)
+  public java.util.List<Item> billedItems;
+}
+```
 
-   Invoice invoice = new Invoice();
-   invoice.number = BigInteger.valueOf(14738);
-   invoice.date = "2019-05-13";
-   invoice.billingAddress = address;
-   invoice.shippingAddress = address;
-   invoice.billedItems = Collections.singletonList(item);
-   ```
+&nbsp;&nbsp;4.&nbsp;You can use these classes to represent `Address`es, `Item`s, and `Invoice`s.
 
-1. You can now <ins>marshal</ins> the Java objects to JSON:
+```java
+Address address = new Address();
+address.name = "John Doe";
+address.address = "111 Wall St.";
+address.city = "New York";
+address.postalCode = "10043";
+address.country = "USA";
 
-   ```java
+Item item = new Item();
+item.code = BigInteger.valueOf(123);
+item.description = "Pocket Protector";
+item.price = new BigDecimal("14.99");
+item.quantity = BigInteger.valueOf(5);
 
-   String json = JxEncoder._2.marshal(invoice);
-   System.out.println(json);
-   ```
+Invoice invoice = new Invoice();
+invoice.number = BigInteger.valueOf(14738);
+invoice.date = "2019-05-13";
+invoice.billingAddress = address;
+invoice.shippingAddress = address;
+invoice.billedItems = Collections.singletonList(item);
+```
 
-   ... will produce:
+&nbsp;&nbsp;5.&nbsp;You can now <ins>marshal</ins> the Java objects to JSON:
 
-   ```json
-   {
-     "number": 14738,
-     "date": "2019-05-13",
-     "billingAddress": {
-       "name": "John Doe",
-       "address": "111 Wall St.",
-       "city": "New York",
-       "postalCode": "10043",
-       "country": "USA"
-     },
-     "shippingAddress": {
-       "name": "John Doe",
-       "address": "111 Wall St.",
-       "city": "New York",
-       "postalCode": "10043",
-       "country": "USA"
-     },
-     "billedItems": [{
-       "description": "Pocket Protector",
-       "code": 123,
-       "quantity": 5,
-       "price": 14.99
-     }]
-   }
-   ```
+```java
 
-1. You can also <ins>parse</ins> the JSON into Java objects:
+String json = JxEncoder._2.marshal(invoice);
+System.out.println(json);
+```
 
-   ```java
-   Invoice invoice2 = JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json)));
-   assertEquals(invoice, invoice2);
-   ```
+... will produce:
+
+```json
+{
+  "number": 14738,
+  "date": "2019-05-13",
+  "billingAddress": {
+    "name": "John Doe",
+    "address": "111 Wall St.",
+    "city": "New York",
+    "postalCode": "10043",
+    "country": "USA"
+  },
+  "shippingAddress": {
+    "name": "John Doe",
+    "address": "111 Wall St.",
+    "city": "New York",
+    "postalCode": "10043",
+    "country": "USA"
+  },
+  "billedItems": [{
+    "description": "Pocket Protector",
+    "code": 123,
+    "quantity": 5,
+    "price": 14.99
+  }]
+}
+```
+
+&nbsp;&nbsp;6.&nbsp;You can also <ins>parse</ins> the JSON into Java objects:
+
+```java
+Invoice invoice2 = JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json)));
+assertEquals(invoice, invoice2);
+```
 
 _For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**._
 

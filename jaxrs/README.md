@@ -53,123 +53,129 @@ The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` im
 
 The following illustrates example usage.
 
-1. Create a <ins>JSD</ins> in `src/main/resources/account.jsd`.
+&nbsp;&nbsp;1.&nbsp;Create `account.jsd` or `account.jsdx` in `src/main/resources/`.
 
-   ```json
-   {
-     "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-     "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+<!-- tabs:start -->
 
-     "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
-     "id": { "jx:type": "object", "abstract": true, "properties": {
-       "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
-     "credentials": { "jx:type": "object", "properties": {
-       "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
-       "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
-     "account": { "jx:type": "object", "extends": "credentials", "properties": {
-       "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
-       "firstName": { "jx:type": "string", "nullable": false },
-       "lastName": { "jx:type": "string", "nullable": false } } }
-   }
-   ```
+###### **JSD**
 
-1. **(Alternatively)** Create a <ins>JSDx</ins> in `src/main/resources/account.jsdx`.
+```json
+{
+  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
 
-   <sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
+  "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
+  "id": { "jx:type": "object", "abstract": true, "properties": {
+    "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
+  "credentials": { "jx:type": "object", "properties": {
+    "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
+    "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
+  "account": { "jx:type": "object", "extends": "credentials", "properties": {
+    "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
+    "firstName": { "jx:type": "string", "nullable": false },
+    "lastName": { "jx:type": "string", "nullable": false } } }
+}
+```
 
-   ```xml
-   <schema
-     xmlns="http://www.jsonx.org/schema-0.3.xsd"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+###### **JSDx**
 
-     <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
-     <object name="id" abstract="true">
-       <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
-     </object>
-     <object name="credentials">
-       <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
-       <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
-     </object>
-     <object name="account" extends="credentials">
-       <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
-       <property name="firstName" xsi:type="string" nullable="false"/>
-       <property name="lastName" xsi:type="string" nullable="false"/>
-     </object>
+```xml
+<schema
+  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
-   </schema>
-   ```
+  <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
+  <object name="id" abstract="true">
+    <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
+  </object>
+  <object name="credentials">
+    <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
+    <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
+  </object>
+  <object name="account" extends="credentials">
+    <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
+    <property name="firstName" xsi:type="string" nullable="false"/>
+    <property name="lastName" xsi:type="string" nullable="false"/>
+  </object>
 
-1. Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
+</schema>
+```
 
-   ```xml
-   <plugin>
-     <groupId>org.jsonx</groupId>
-     <artifactId>jsonx-maven-plugin</artifactId>
-     <version>0.3.1</version>
-     <executions>
-       <execution>
-         <goals>
-           <goal>generate</goal>
-         </goals>
-         <configuration>
-           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-           <prefix>com.example.jsonx.</prefix>
-           <schemas>
-             <schema>src/main/resources/account.jsonx</schema>
-           </schemas>
-         </configuration>
-       </execution>
-     </executions>
-   </plugin>
-   ```
+<!-- tabs:end -->
 
-1. Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, Java class files will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
+<sub>_**Note:** You can use the [Converter][#converter] utility to automatically convert between <ins>JSD</ins> and <ins>JSDx</ins>._</sub>
 
-   The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
+&nbsp;&nbsp;2.&nbsp;Add the [`org.jsonx:jsonx-maven-plugin`][jsonx-maven-plugin] to the POM.
 
-   To <ins>parse</ins> JSON to <ins>JSONx</ins> Bindings:
+```xml
+<plugin>
+  <groupId>org.jsonx</groupId>
+  <artifactId>jsonx-maven-plugin</artifactId>
+  <version>0.3.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+      <configuration>
+        <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
+        <prefix>com.example.jsonx.</prefix>
+        <schemas>
+          <schema>src/main/resources/account.jsonx</schema>
+        </schemas>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
 
-   ```java
-   String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
-   Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
-   ```
+&nbsp;&nbsp;3.&nbsp;Upon successful execution of the [`jsonx-maven-plugin`][jsonx-maven-plugin] plugin, Java class files will be generated in `generated-sources/jsonx`. Add this path to your Build Paths in your IDE to integrate into your project.
 
-   To <ins>marshal</ins> <ins>JSONx</ins> Bindings to JSON:
+The generated classes can be instantiated as any other Java objects. They are strongly typed, and will guide you in proper construction of a JSON message. The following APIs can be used for parsing and marshalling <ins>JSONx</ins> to and from JSON:
 
-   ```java
-   String json2 = JxEncoder.get().marshal(credentials);
-   assertEquals(json, json2);
-   ```
+To <ins>parse</ins> JSON to <ins>JSONx</ins> Bindings:
 
-1. Next, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
+```java
+String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
+Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
+```
 
-   ```java
-   public class MyApplication extends javax.ws.rs.core.Application {
-     @Override
-     public Set<Object> getSingletons() {
-       return Collections.singleton(new JxObjectProvider(JxEncoder._2));
-     }
-   }
+To <ins>marshal</ins> <ins>JSONx</ins> Bindings to JSON:
 
-   @Path("/account")
-   @RolesAllowed("registered")
-   public class AccountService {
-     @GET
-     @Produces("application/vnd.example.v1+json")
-     public Account get(@Context SecurityContext securityContext) {
-       Account account = new Account();
-       ...
-       return account;
-     }
+```java
+String json2 = JxEncoder.get().marshal(credentials);
+assertEquals(json, json2);
+```
 
-     @POST
-     @Consumes("application/vnd.example.v1+json")
-     public void post(@Context SecurityContext securityContext, Account account) {
-       ...
-     }
-   }
-   ```
+&nbsp;&nbsp;4.&nbsp;Next, register the `JxObjectProvider` provider in the JAX-RS appilcation singletons, and implement the `AccountService`:
+
+```java
+public class MyApplication extends javax.ws.rs.core.Application {
+  @Override
+  public Set<Object> getSingletons() {
+    return Collections.singleton(new JxObjectProvider(JxEncoder._2));
+  }
+}
+
+@Path("/account")
+@RolesAllowed("registered")
+public class AccountService {
+  @GET
+  @Produces("application/vnd.example.v1+json")
+  public Account get(@Context SecurityContext securityContext) {
+    Account account = new Account();
+    ...
+    return account;
+  }
+
+  @POST
+  @Consumes("application/vnd.example.v1+json")
+  public void post(@Context SecurityContext securityContext, Account account) {
+    ...
+  }
+}
+```
 
 ## <b>5</b> Specification
 
