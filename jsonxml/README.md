@@ -13,15 +13,15 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Introduction</ins>][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications][#dependencies]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Purpose</ins>][#purpose]<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>Requirements</ins>][#requirements]<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>Getting Started</ins>](#4-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [JSON-to-XML](#41-json-to-xml)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [XML-to-JSON](#42-xml-to-json)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>Specification</ins>][#specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [JsonXml Schema][#jsonxmlschema]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [`boolean`][#booleantype]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [`string`][#stringtype]<br>
@@ -31,17 +31,17 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.6 [`null`][#nullvalue]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [JsonXml API][#jsonxmlapi]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1 [`JxConverter`][#jxconverter]<br>
-<samp>&nbsp;&nbsp;</samp>6 [Sample Documents][#samples]<br>
+<samp>&nbsp;&nbsp;</samp>6 [<ins>Sample Documents</ins>][#samples]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [`paypal.json`][#paypaljson]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`paypal.xml`][#paypalxml]<br>
-<samp>&nbsp;&nbsp;</samp>7 [Related Resources for JsonXml][#resources]<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>Related Resources for JsonXml</ins>][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Schemas for JsonXml][#jsonxml-schemas]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.1 [JsonXml 0.3][#jsonxml-03]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.2 [JsonXml 0.2][#jsonxml-02]<br>
-<samp>&nbsp;&nbsp;</samp>8 [Contributing](#8-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>9 [License](#9-license)
+<samp>&nbsp;&nbsp;</samp>8 [<ins>Contributing</ins>](#8-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>9 [<ins>License</ins>](#9-license)
 
-## <b>1</b> Introduction
+## <b>1</b> <ins>Introduction</ins>
 
 JsonXml is JSON expressed in XML. This document presents the structural part of JsonXml, as well as the normative specification of the <ins>JsonXml API</ins>. It also contains a directory of links to these related resources.
 
@@ -53,11 +53,11 @@ The definition of the <ins>JsonXml API</ins> depends on the following specificat
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## <b>2</b> Purpose
+## <b>2</b> <ins>Purpose</ins>
 
 Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JsonXml documents</ins>.
 
-## <b>3</b> Requirements
+## <b>3</b> <ins>Requirements</ins>
 
 1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
@@ -65,7 +65,7 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
-## <b>4</b> Getting Started
+## <b>4</b> <ins>Getting Started</ins>
 
 The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
 
@@ -81,7 +81,7 @@ String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")
 String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
 ```
 
-## <b>5</b> Specification
+## <b>5</b> <ins>Specification</ins>
 
 ### <b>5.1</b> <ins>JsonXml Schema</ins>
 
@@ -139,7 +139,7 @@ JxConverter.jsonToXml(new JsonReader(new StringReader(json), false), true);
 JxConverter.xmlToJson(new ByteArrayInputStream(xml.getBytes()), true);
 ```
 
-## <b>6</b> Sample Documents
+## <b>6</b> <ins>Sample Documents</ins>
 
 This section provides a sample JSON and its JSONx alternative.
 
@@ -222,7 +222,7 @@ This section provides a sample JSON and its JSONx alternative.
 </p></o>
 ```
 
-## <b>7</b> Related Resources for JsonXml
+## <b>7</b> <ins>Related Resources for JsonXml</ins>
 
 ### <b>7.1</b> Schemas for JsonXml
 
@@ -234,13 +234,13 @@ This section provides a sample JSON and its JSONx alternative.
 
 * A JsonXml schema document XSD [jsonxml-0.2.xsd][jsonxml-02] for JsonXml documents.
 
-## <b>8</b> Contributing
+## <b>8</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>9</b> License
+## <b>9</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

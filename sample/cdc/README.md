@@ -13,11 +13,11 @@ This document presents the [<ins>Consumer Driven Contracts</ins>][cdc] sample ap
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Consumer Driven Contracts](#1-consumer-driven-contracts)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Consumer Driven Contracts</ins>](#1-consumer-driven-contracts)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Contributing</ins>](#2-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>License</ins>](#3-license)<br>
 
-### <b>1</b> Consumer Driven Contracts
+### <b>1</b> <ins>Consumer Driven Contracts</ins>
 
 The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
@@ -180,13 +180,13 @@ With this approach, the **v2** evolution of the contract satisfies **Customer2**
 
 _The code included in this module implements this example._
 
-## <b>2</b> Contributing
+## <b>2</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>3</b> License
+## <b>3</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

@@ -11,14 +11,14 @@ This document presents sample applications for the <ins>JSONx Framework</ins>.
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Samples](#1-samples)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Samples</ins>](#1-samples)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Invoice](#11-invoice)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Bank](#12-bank)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.3 [Consumer Driven Contracts](#13-consumer-driven-contracts)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Contributing</ins>](#2-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>License</ins>](#3-license)<br>
 
-## <b>1</b> Samples
+## <b>1</b> <ins>Samples</ins>
 
 The following are sample applications for the <ins>JSONx Framework</ins>.
 
@@ -44,13 +44,13 @@ The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Drive
 
 _For the application code, see **[<ins>Consumer Driven Contracts</ins>](cdc)**._
 
-## <b>2</b> Contributing
+## <b>2</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>3</b> License
+## <b>3</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

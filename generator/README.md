@@ -13,20 +13,20 @@ This document specifies the <ins>JSONx Binding Generator</ins>, which offers fac
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Introduction</ins>](#1-introduction)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Purpose</ins>](#2-purpose)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>Requirements</ins>](#3-requirements)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>Getting Started</ins>](#4-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Generator](#41-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Converter](#42-converter)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>Specification</ins>](#5-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`Generator`](#51-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`Converter`](#52-converter)<br>
-<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
+<samp>&nbsp;&nbsp;</samp>6 [<ins>Contributing</ins>](#6-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>License</ins>](#7-license)
 
-## <b>1</b> Introduction
+## <b>1</b> <ins>Introduction</ins>
 
 This document presents the functionality of the <ins>JSONx Binding Generator</ins>. It also contains a directory of links to these related resources.
 
@@ -36,11 +36,11 @@ The <ins>JSONx Binding Generator</ins> consumes a JSD schema, and produces Java 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## <b>2</b> Purpose
+## <b>2</b> <ins>Purpose</ins>
 
 Provide a <ins>binding generator</ins> utility for automatic generation of binding classes from a <ins>schema document</ins>.
 
-## <b>3</b> Requirements
+## <b>3</b> <ins>Requirements</ins>
 
 1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>binding API</ins>.
 
@@ -52,9 +52,9 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 1. The <ins>binding generator</ins> MUST be able to validate a <ins>schema document</ins>.
 
-## <b>4</b> Getting Started
+## <b>4</b> <ins>Getting Started</ins>
 
-The <ins>JSD Binding Generator</ins> provides convenience utilities for generating bindings and converting <ins>schema document</ins>s. The following illustrates example usage of the `Generator` and `Converter` executable classes.
+The <ins>JSONx Binding Generator</ins> provides convenience utilities for generating bindings and converting <ins>schema document</ins>s. The following illustrates example usage of the `Generator` and `Converter` executable classes.
 
 ### <b>4.1</b> `Generator`
 
@@ -72,7 +72,7 @@ The following example converts the JSD file at `src/main/resources/example.jsd` 
 java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated-resources/example.jsdx
 ```
 
-## <b>5</b> Specification
+## <b>5</b> <ins>Specification</ins>
 
 The <ins>JSONx Binding Generator</ins> generates Java binding classes. The generated classes contain the full scope of specification of the JSD schema from which they are generated. This means that the generated classes can be converted back to the JSD from which they were created, and the normative scope of the schema will be preserved.
 
@@ -108,13 +108,13 @@ Supported SCHEMA_IN|OUT formats:
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.
 
-## <b>6</b> Contributing
+## <b>6</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>7</b> License
+## <b>7</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

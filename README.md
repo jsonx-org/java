@@ -13,7 +13,7 @@
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
 | [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
-| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [JSONx Binding API][binding]. |
+| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [<ins>JSONx Binding API</ins>][#binding]. |
 | [sample][sample] | Sample applications. |
 
 ## Abstract
@@ -24,49 +24,49 @@ This document introduces the <ins>JSONx Framework for Java</ins>, and presents a
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Introduction</ins>](#1-introduction)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Use-Cases](#2-use-cases)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Use-Cases</ins>](#2-use-cases)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>2.1 [Consumer Driven Contracts](#21-consumer-driven-contracts)<br>
 <samp>&nbsp;&nbsp;</samp>3 [<ins>JSON Schema Definition Language</ins>][#jsd]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.1 [Purpose](#31-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.2 [Requirements](#32-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [Getting Started](#33-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [JSD vs JSDx](#34-jsd-vs-jsdx)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.5 [Specification](#35-specification)<br>
-<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>](#4-jsonx-binding-api)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.5 [<ins>Specification</ins>](#35-specification)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>][#binding]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [Getting Started][#invoice-example]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.4 [Specification](#44-specification)<br>
-<samp>&nbsp;&nbsp;</samp>5 [<ins>JSD Binding Generator</ins>](#5-jsd-binding-generator)<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>JSONx Binding Generator</ins>](#5-jsonx-binding-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Purpose](#51-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [Requirements](#52-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3 [Getting Started](#53-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.1 [Generator](#531-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.2 [Converter][#converter]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.4 [Specification](#54-specification)<br>
-<samp>&nbsp;&nbsp;</samp>6 [<ins>JsonXml</ins>](#6-jsonxml)<br>
+<samp>&nbsp;&nbsp;</samp>6 [<ins>JSONx Integration for JAX-RS</ins>](#6-jsonx-integration-for-jax-rs)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [Getting Started](#63-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [JSON-to-XML](#631-json-to-xml)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [XML-to-JSON](#632-xml-to-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
-<samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Integration for JAX-RS</ins>](#7-jsonx-integration-for-jax-rs)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Maven Plugin</ins>](#7-jsonx-maven-plugin)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.2 [Requirements](#72-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [Getting Started](#73-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.4 [Specification](#74-specification)<br>
-<samp>&nbsp;&nbsp;</samp>8 [<ins>JSONx Maven Plugin</ins>](#8-jsonx-maven-plugin)<br>
+<samp>&nbsp;&nbsp;</samp>8 [<ins>JsonXml</ins>](#8-jsonxml)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.1 [Purpose](#81-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.2 [Requirements](#82-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3 [Getting Started](#83-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3.1 [JSON-to-XML](#831-json-to-xml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3.2 [XML-to-JSON](#832-xml-to-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.4 [Specification](#84-specification)<br>
-<samp>&nbsp;&nbsp;</samp>9 [Contributing](#9-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>10 [License](#10-license)
+<samp>&nbsp;&nbsp;</samp>9 [<ins>Contributing</ins>](#9-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>10 [<ins>License</ins>](#10-license)
 
-## <b>1</b> Introduction
+## <b>1</b> <ins>Introduction</ins>
 
 The <ins>JSONx Framework for Java</ins> was created to help developers address common problems and use-cases when working with JSON documents. The <ins>JSONx Framework for Java</ins> offers <ins>structural</ins> and <ins>functional</ins> patterns that systematically reduce errors and pain-points commonly encountered when developing software that interfaces with JSON. The <ins>structural</ins> patterns are defined in the [<ins>JSON Schema Definition Language</ins>][schema], which is a programming-language-agnostic <ins>schema language</ins> used to describe constraints and document the meaning, usage and relationships of the constituent parts of JSON documents. The <ins>functional</ins> patterns are reference implementations of the specification of the <ins>schema language</ins>, providing utilities that address common use-cases for applications that use JSON in one way or another. Common use-cases include:
 
@@ -78,7 +78,7 @@ The <ins>JSONx Framework for Java</ins> was created to help developers address c
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## <b>2</b> Use-Cases
+## <b>2</b> <ins>Use-Cases</ins>
 
 The following sections lists common use-cases where <ins>JSONx Framework for Java</ins> can be used.
 
@@ -641,9 +641,9 @@ _For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**.
 
 _For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSONx Binding API</ins>][binding]**._
 
-## <b>5</b> <ins>JSD Binding Generator</ins>
+## <b>5</b> <ins>JSONx Binding Generator</ins>
 
-Consumes a JSD schema, and generates classes that use the <ins>JSONx Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
+Consumes a JSD schema, and generates classes that use the [<ins>JSONx Binding API</ins>][#binding] to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
 ### <b>5.1</b> Purpose
 
@@ -663,7 +663,7 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 ### <b>5.3</b> Getting Started
 
-The <ins>JSD Binding Generator</ins> provides convenience utilities for generating bindings and converting <ins>schema document</ins>s. The following illustrates example usage of the `Generator` and `Converter` executable classes.
+The <ins>JSONx Binding Generator</ins> provides convenience utilities for generating bindings and converting <ins>schema document</ins>s. The following illustrates example usage of the `Generator` and `Converter` executable classes.
 
 #### <b>5.3.1</b> `Generator`
 
@@ -683,53 +683,17 @@ java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated
 
 ### <b>5.4</b> Specification
 
-_For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSD Binding Generator</ins>][generator]**._
+_For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSONx Binding Generator</ins>][generator]**._
 
-## <b>6</b> <ins>JsonXml</ins>
-
-Offers facilities for converting JSON documents to XML, and vice-versa.
-
-### <b>6.1</b> Purpose
-
-Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JsonXml documents</ins>.
-
-### <b>6.2</b> Requirements
-
-1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
-
-1. The <ins>JsonXml documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
-
-1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
-
-### <b>6.3</b> Getting Started
-
-The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
-
-#### <b>6.3.1</b> JSON-to-XML
-
-```java
-String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
-```
-
-#### <b>6.3.2</b> XML-to-JSON
-
-```java
-String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
-```
-
-### <b>6.4</b> Specification
-
-_For a detailed specification of JsonXml, see **[<ins>JsonXml</ins>][jsonxml]**._
-
-## <b>7</b> <ins>JSONx Integration for JAX-RS</ins>
+## <b>6</b> <ins>JSONx Integration for JAX-RS</ins>
 
 Implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in the JAX-RS API to integrate with JAX-RS server runtimes.
 
-### <b>7.1</b> Purpose
+### <b>6.1</b> Purpose
 
 Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-### <b>7.2</b> Requirements
+### <b>6.2</b> Requirements
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
@@ -737,7 +701,7 @@ Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java 
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
-### <b>7.3</b> Getting Started
+### <b>6.3</b> Getting Started
 
 The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` implementing the `MessageBodyReader` and `MessageBodyWriter` interfaces that can be registered with a JAX-RS runtime.
 
@@ -867,19 +831,19 @@ public class AccountService {
 }
 ```
 
-### <b>7.4</b> Specification
+### <b>6.4</b> Specification
 
 _For a detailed specification of <ins>JSONx Integration for JAX-RS</ins>, see **[<ins>JSONx Integration for JAX-RS</ins>][jaxrs]**._
 
-## <b>8</b> <ins>JSONx Maven Plugin</ins>
+## <b>7</b> <ins>JSONx Maven Plugin</ins>
 
 A Maven plugin for generating JSONx and JSD bindings.
 
-### <b>8.1</b> Purpose
+### <b>7.1</b> Purpose
 
 Provide schema <ins>validation</ins>, schema <ins>conversion</ins>, and Java binding source <ins>generation</ins> in a <ins>Maven plugin</ins>.
 
-### <b>8.2</b> Requirements
+### <b>7.2</b> Requirements
 
 1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for the generation of Java binding sources from a specified <ins>schema document</ins>.
 
@@ -889,7 +853,7 @@ Provide schema <ins>validation</ins>, schema <ins>conversion</ins>, and Java bin
 
 1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
-### <b>8.3</b> Getting Started
+### <b>7.3</b> Getting Started
 
 The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
 
@@ -916,11 +880,47 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 </plugin>
 ```
 
-### <b>8.4</b> Specification
+### <b>7.4</b> Specification
 
 _For a detailed specification of the Maven plugin, see **[<ins>JSONx Maven Plugin</ins>][jsonx-maven-plugin]**._
 
-## <b>9</b> Contributing
+## <b>8</b> <ins>JsonXml</ins>
+
+Offers facilities for converting JSON documents to XML, and vice-versa.
+
+### <b>8.1</b> Purpose
+
+Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JsonXml documents</ins>.
+
+### <b>8.2</b> Requirements
+
+1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+
+1. The <ins>JsonXml documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
+
+1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
+
+### <b>8.3</b> Getting Started
+
+The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
+
+#### <b>8.3.1</b> JSON-to-XML
+
+```java
+String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
+```
+
+#### <b>8.3.2</b> XML-to-JSON
+
+```java
+String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
+```
+
+### <b>8.4</b> Specification
+
+_For a detailed specification of JsonXml, see **[<ins>JsonXml</ins>][jsonxml]**._
+
+## <b>9</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
@@ -930,6 +930,7 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
+[#binding]: #4-jsonx-binding-api
 [#converter]: #532-converter
 [#invoice-example]: #43-getting-started
 [#jsd]: #3-json-schema-definition-language

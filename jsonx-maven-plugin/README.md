@@ -9,16 +9,16 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSONx Binding API][api].
+This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSONx Binding API][binding].
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Introduction</ins>](#1-introduction)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document](#11-conventions-used-in-this-document)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Purpose</ins>](#2-purpose)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>Requirements</ins>](#3-requirements)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>Getting Started</ins>](#4-getting-started)<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>Specification</ins>](#5-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Goals Overview](#51-goals-overview)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [Usage](#52-usage)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.1 [`jsonx:generate`](#521-jsonxgenerate)<br>
@@ -30,10 +30,10 @@ This document specifies the <ins>JSONx Maven Plugin</ins>, which offers faciliti
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3 [`jsonx:validate`](#523-jsonxvalidate)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3.1 [Configuration Parameters](#5231-configuration-parameters)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3.2 [Example](#5232-example)<br>
-<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
+<samp>&nbsp;&nbsp;</samp>6 [<ins>Contributing</ins>](#6-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>License</ins>](#7-license)
 
-### <b>1</b> Introduction
+### <b>1</b> <ins>Introduction</ins>
 
 The `jsonx-maven-plugin` plugin is used to generate JSONx and JSD bindings with the [JSONx Framework for Java][jsonx].
 
@@ -41,11 +41,11 @@ The `jsonx-maven-plugin` plugin is used to generate JSONx and JSD bindings with 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## <b>2</b> Purpose
+## <b>2</b> <ins>Purpose</ins>
 
 Provide schema validation, code generation, and other convenience utlities in a <ins>Maven plugin</ins>.
 
-## <b>3</b> Requirements
+## <b>3</b> <ins>Requirements</ins>
 
 1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for the generation of binding classes from a specified <ins>schema document</ins>.
 
@@ -53,7 +53,7 @@ Provide schema validation, code generation, and other convenience utlities in a 
 
 1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
-## <b>4</b> Getting Started
+## <b>4</b> <ins>Getting Started</ins>
 
 The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
 
@@ -80,7 +80,7 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 </plugin>
 ```
 
-## <b>5</b> Specification
+## <b>5</b> <ins>Specification</ins>
 
 ### <b>5.1</b> Goals Overview
 
@@ -202,15 +202,15 @@ The `jsonx:validate` goal is bound to the `compile` phase, and is used to valida
 </plugin>
 ```
 
-## <b>6</b> Contributing
+## <b>6</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>7</b> License
+## <b>7</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[api]: ../../binding/
+[binding]: ../../binding/
 [jsonx]: ../../

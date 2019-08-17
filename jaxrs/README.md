@@ -13,19 +13,19 @@ This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offer
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction][#introduction]<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Introduction</ins>][#introduction]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Conventions Used in This Document][#conventions]<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose][#purpose]<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements][#requirements]<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Specification][#specification]<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Purpose</ins>][#purpose]<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>Requirements</ins>][#requirements]<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>Getting Started</ins>](#4-getting-started)<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>Specification</ins>][#specification]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [`JxObjectProvider`][#jxobjectprovider]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2 [`BadRequestExceptionMapper`][#badrequestexceptionmapper]<br>
-<samp>&nbsp;&nbsp;</samp>6 [Usage][#usage]<br>
-<samp>&nbsp;&nbsp;</samp>7 [Contributing](#7-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>8 [License](#8-license)
+<samp>&nbsp;&nbsp;</samp>6 [<ins>Usage</ins>][#usage]<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>Contributing</ins>](#7-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>8 [<ins>License</ins>](#8-license)
 
-## <b>1</b> Introduction
+## <b>1</b> <ins>Introduction</ins>
 
 This document sets out the structural part of the <ins>JSONx Integration for JAX-RS</ins>. It also contains a directory of links to these related resources.
 
@@ -35,11 +35,11 @@ The <ins>JSONx Integration for JAX-RS</ins> is implemented to the specification 
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## <b>2</b> Purpose
+## <b>2</b> <ins>Purpose</ins>
 
 Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-## <b>3</b> Requirements
+## <b>3</b> <ins>Requirements</ins>
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
@@ -47,7 +47,7 @@ Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java 
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
-## <b>4</b> Getting Started
+## <b>4</b> <ins>Getting Started</ins>
 
 The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` implementing the `MessageBodyReader` and `MessageBodyWriter` interfaces that can be registered with a JAX-RS runtime.
 
@@ -177,7 +177,7 @@ public class AccountService {
 }
 ```
 
-## <b>5</b> Specification
+## <b>5</b> <ins>Specification</ins>
 
 ### <b>5.1</b> `JxObjectProvider`
 
@@ -187,7 +187,7 @@ A JAX-RS `Provider` that implements `MessageBodyReader` and `MessageBodyWriter` 
 
 A JAX-RS `Provider` that implements an `ExceptionMapper` to present a JSON error body in case of a `BadRequestException`.
 
-## <b>6</b> Usage
+## <b>6</b> <ins>Usage</ins>
 
 The JAX-RS API requires `Provider`s to be decalred as either "singleton" instances, or by providing their class names for per-requests instantiations. The following example illustrates how to specify the `JxObjectProvider` and `BadRequestExceptionMapper` as singleton instances.
 
@@ -209,13 +209,13 @@ public class MyApplication extends javax.ws.rs.core.Application {
 }
 ```
 
-## <b>7</b> Contributing
+## <b>7</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>8</b> License
+## <b>8</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 

@@ -13,15 +13,15 @@ This document presents the <ins>Invoice</ins> sample application.
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Invoice](#1-invoice)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Contributing](#2-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>3 [License](#3-license)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Invoice</ins>](#1-invoice)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Contributing</ins>](#2-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>License</ins>](#3-license)<br>
 
-### <b>1</b> Invoice
+### <b>1</b> <ins>Invoice</ins>
 
 This sample is an introduction to the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSONx Binding API</ins>][#binding].
+1. [<ins>JSONx Binding API</ins>][#binding-api].
 
 The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
 
@@ -266,17 +266,17 @@ assertEquals(invoice, invoice2);
 
 _The code included in this module implements this example._
 
-## <b>2</b> Contributing
+## <b>2</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>3</b> License
+## <b>3</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding]: ../../../../#4-jsonx-binding-api
+[#binding-api]: ../../../../#4-jsonx-binding-api
 [#converter]: ../../../../#532-converter
 [#jsd]: ../../../../#3-json-schema-definition-language
 [jsonx-maven-plugin]: ../../jsonx-maven-plugin/

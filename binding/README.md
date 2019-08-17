@@ -13,13 +13,13 @@ This document specifies the <ins>JSONx Binding API</ins>, which offers facilitie
 
 ## Table of Contents
 
-<samp>&nbsp;&nbsp;</samp>1 [Introduction](#1-introduction)<br>
+<samp>&nbsp;&nbsp;</samp>1 [<ins>Introduction</ins>](#1-introduction)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.1 [Dependencies on Other Specifications](#11-dependencies-on-other-specifications)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>1.2 [Conventions Used in This Document](#12-conventions-used-in-this-document)<br>
-<samp>&nbsp;&nbsp;</samp>2 [Purpose](#2-purpose)<br>
-<samp>&nbsp;&nbsp;</samp>3 [Requirements](#3-requirements)<br>
-<samp>&nbsp;&nbsp;</samp>4 [Getting Started](#4-getting-started)<br>
-<samp>&nbsp;&nbsp;</samp>5 [Specification](#5-specification)<br>
+<samp>&nbsp;&nbsp;</samp>2 [<ins>Purpose</ins>](#2-purpose)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>Requirements</ins>](#3-requirements)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>Getting Started</ins>](#4-getting-started)<br>
+<samp>&nbsp;&nbsp;</samp>5 [<ins>Specification</ins>](#5-specification)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1 [Structural][#structural]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.1 [JSON objects (<code>JxObject</code>)][#jxobject]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.1.2 [Property Annotations][#properties]<br>
@@ -54,10 +54,10 @@ This document specifies the <ins>JSONx Binding API</ins>, which offers facilitie
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.2.1 [<code>EncodeException</code>](#5221-encodeexception)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3 [<code>JxDecoder</code>](#523-jxdecoder)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.2.3.1 [<code>DecodeException</code>](#5231-decodeexception)<br>
-<samp>&nbsp;&nbsp;</samp>6 [Contributing](#6-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>7 [License](#7-license)
+<samp>&nbsp;&nbsp;</samp>6 [<ins>Contributing</ins>](#6-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>License</ins>](#7-license)
 
-## <b>1</b> Introduction
+## <b>1</b> <ins>Introduction</ins>
 
 This document sets out the structural part of the <ins>JSONx Binding API</ins>. It also contains a directory of links to these related resources.
 
@@ -73,11 +73,11 @@ The definition of <ins>JSONx Binding API</ins> depends on the following specific
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
-## <b>2</b> Purpose
+## <b>2</b> <ins>Purpose</ins>
 
 Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to and from strongly-typed Java classes.
 
-## <b>3</b> Requirements
+## <b>3</b> <ins>Requirements</ins>
 
 1. The <ins>binding API</ins> MUST be able to model the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable with the <ins>schema language</ins>.
 
@@ -93,7 +93,7 @@ Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to an
 
 1. The <ins>binding API</ins> MUST be straightforward, intuitive, and resilient to human error.
 
-## <b>4</b> Getting Started
+## <b>4</b> <ins>Getting Started</ins>
 
 The <ins>JSONx Binding API</ins> uses annotations to bind class definitions to usage, constraints and relationships specifiable in the <ins>schema language</ins>.
 
@@ -340,7 +340,7 @@ assertEquals(invoice, invoice2);
 
 _For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**._
 
-## <b>5</b> Specification
+## <b>5</b> <ins>Specification</ins>
 
 The <ins>JSONx Binding API</ins> is comprised of Java classes, interfaces, and annotations that belong to the `org.jsonx` package. The API consists of two logical parts: <ins>Structural</ins> and <ins>Functional</ins>.
 
@@ -827,13 +827,13 @@ The `JxDecoder` deserializes JSON documents to objects of `JxObject` classes, or
 
 Signals that an error has occurred while decoding a JSON document.
 
-### <b>6</b> Contributing
+### <b>6</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-### <b>7</b> License
+### <b>7</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
