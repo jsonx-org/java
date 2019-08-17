@@ -88,6 +88,7 @@ console.log("[" + dd + "] href: \"" + hh + "\" -> \"" + href + "\", path: \"" + 
             if (href.charAt(0) === '#')
               return '<a href="' + path + '?id=_' + href.substring(1) + '">' + text + '</a>';
 
+            href = href.replace("/tree/master", "/#");
             if (href.charAt(0) === '/')
               href = href.substring(1);
 
