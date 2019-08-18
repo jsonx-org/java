@@ -3,16 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <title>JSONx Framework for Java</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="description" content="JSONx Framework for Java">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <style>
+    img#logo {
+      width: 32px;
+      margin-left: 12px;
+      filter: drop-shadow(0px 0px .5px #fff);
+      vertical-align: middle;
+    }
+
+    div#headerbar {
+      font-size: 1.25em;
+      color: #fff;
+      padding-left: 12px;
+      position: fixed;
+      height: 64px;
+      line-height: 64px;
+      background-color: #24292e;
+      z-index: 100;
+      width: 100%;
+    }
+
+    div#headerbar > a:hover {
+      color: #bebfc1;
+    }
+
+    a.github-corner, aside.sidebar, section.content {
+      margin-top: 64px;
+    }
+
+    .sidebar {
+      padding-top: 12px;
+    }
+
+    div.sidebar-nav > ul > li:first-child > a {
+      font-size: 1.25em;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    div#headerbar > nav {
+      display: contents;
+    }
+
+    ul.nav {
+      position: absolute;
+      right: 0px;
+    }
+
+    ul.dropdown {
+      width: 140px;
+    }
+
+    ul.dropdown > li {
+      color: #000;
+    }
+
+li {
+ display: block;
+ transition-duration: 0.5s;
+}
+
+ul.nav > li, ul.dropdown > li {
+  padding: initial;
+}
+
+li:hover {
+  cursor: pointer;
+}
+
+ul li ul {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: all 0.5s ease;
+  margin-top: 1rem;
+  left: 0;
+  display: none;
+}
+
+ul li:hover > ul, ul li ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+}
+
+ul li ul li {
+  clear: both;
+  width: 100%;
+}
+
+ul.nav > li > a, ul.dropdown > li > a {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+  </style>
 </head>
 <body>
+  <div id="headerbar">
+    <a href="/"><img id="logo" src="https://avatars2.githubusercontent.com/u/50137952?s=200&v=4"></a>
+    <nav role="nav">
+      <ul class="nav">
+        <li><a href="/schema/">JSON Schema Definition Language</a></li>
+        <li><a href="/java/">JSONx for Java</a>
+          <ul class="dropdown">
+            <li><a href="/java/#/binding">Binding API</a></li>
+            <li><a href="/java/#/generator">Binding Generator</a></li>
+            <li><a href="/java/#/jaxrs">JAX-RS Provider</a></li>
+            <li><a href="/java/#/jsonxml">JsonXml</a></li>
+          </ul>
+        </li>
+        <li><a href="/javascript/">JSONx for JavaScript</a></li>
+      </ul>
+    </nav>
+  </div>
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: '<b>JSONx Framework for Java</b>',
+      name: '',
       repo: 'jsonx-org/java',
       // basePath: '/java/',
       // homepage: 'README.md',
