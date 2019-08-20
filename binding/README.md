@@ -617,7 +617,7 @@ The `@NumberProperty` and `@NumberElement` annotations define the following addi
 
 1. `range()`
 
-   Specifies the value range in [interval notation][interval-notation]:
+   Specifies the value range in [interval notation<sup>❐</sup>][interval-notation]:
    * Open (exclusive) interval: `(min,max)`
    * Closed (inclusive) interal: `[min,max]`
    * Half-open or half-closed interval: `[min,max)`
@@ -858,5 +858,6 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#anyproperty]: #51561-anyproperty
 [#anyelement]: #51562-anyelement
 
-[interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics)#Classification_of_intervals
 [schema]: ../../../../schema
+
+[interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics)#Classification_of_intervals

@@ -11,14 +11,14 @@
 |:-|:-|
 | [binding][binding] | API to bind Java classes to JSON objects whose structure is expressed in the<br>[<ins>JSON Schema Definition Language</ins>][schema]. |
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
-| [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
 | [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [<ins>JSONx Binding API</ins>][#binding]. |
+| [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [sample][sample] | Sample applications. |
 
 ## Abstract
 
-The <ins>JSONx Framework for Java</ins> provides a reference implementation processor, validator, and binding API for the [<ins>JSON Schema Definition Language (JSD)</ins>][schema], which is a <ins>schema language</ins> for JSON designed in close resemblance to the [XMLSchema][xmlschema] specification. The framework also provides a collection of <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON documents.
+The <ins>JSONx Framework for Java</ins> provides a reference implementation processor, validator, and binding API for the [<ins>JSON Schema Definition Language (JSD)</ins>][schema], which is a <ins>schema language</ins> for JSON designed in close resemblance to the [XMLSchema<sup>❐</sup>][xmlschema] specification. The framework also provides a collection of <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON documents.
 
 This document introduces the <ins>JSONx Framework for Java</ins>, and presents a directory of links to its constituent parts and related resources.
 
@@ -84,7 +84,7 @@ The following sections lists common use-cases where <ins>JSONx Framework for Jav
 
 ### <b>2.1</b> Consumer Driven Contracts
 
-The <ins>JSONx Framework for Java</ins> was created specifically with [<ins>Consumer Driven Contracts</ins>][cdc] in mind. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with a model that includes the capacity to evolve based on schema versioning. Additionally, the <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
+The <ins>JSONx Framework for Java</ins> was created specifically with [<ins>Consumer Driven Contracts</ins><sup>❐</sup>][cdc] in mind. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with a model that includes the capacity to evolve based on schema versioning. Additionally, the <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
 The following example illustrates a simple protocol that uses the CDC approach, and consists of the actors:
 
@@ -356,11 +356,11 @@ This example defines a schema with 3 types that express the following structure:
 
 ### <b>3.4</b> JSD vs JSDx
 
-The <ins>JSDx</ins> format offers XML validation, and using an XML IDE like [oXygen XML Editor][oxygenxml] offers edit-time XML validation, such as:
+The <ins>JSDx</ins> format offers XML validation, and using an XML IDE like [oXygen XML Editor<sup>❐</sup>][oxygenxml] offers edit-time XML validation, such as:
 
 <img src="https://user-images.githubusercontent.com/1258414/61751752-aae93800-ada9-11e9-88b1-65de08f125b5.png" width="75%">
 
-When using the <ins>JSDx</ins> format with the [oXygen XML Editor][oxygenxml], the auto-completion features of the editor will guide you in writing the schema. With the <ins>JSDx</ins> format, the XML editor will also validate keys and keyrefs to ensure that declared types are referenced correctly.
+When using the <ins>JSDx</ins> format with the [oXygen XML Editor<sup>❐</sup>][oxygenxml], the auto-completion features of the editor will guide you in writing the schema. With the <ins>JSDx</ins> format, the XML editor will also validate keys and keyrefs to ensure that declared types are referenced correctly.
 
 ### <b>3.5</b> Specification
 
@@ -936,15 +936,15 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#jsd]: #3-json-schema-definition-language
 
 [binding]: binding
-[cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [generator]: generator
 [jaxrs]: jaxrs
 [jsonx-maven-plugin]: jsonx-maven-plugin
 [jsonxml]: jsonxml
-[maven]: https://maven.apache.org/
-[oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
 [sample-cdc]: sample/cdc
 [sample-invoice]: sample/invoice
 [sample]: sample
 [schema]: ../../../schema
+
+[cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
+[oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html
 [xmlschema]: http://www.w3.org/2001/XMLSchema

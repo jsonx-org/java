@@ -9,7 +9,7 @@
 
 ## Abstract
 
-This document presents the [<ins>Consumer Driven Contracts</ins>][cdc] sample application.
+This document presents the [<ins>Consumer Driven Contracts</ins><sup>❐</sup>][cdc] sample application.
 
 ## Table of Contents
 
@@ -19,9 +19,9 @@ This document presents the [<ins>Consumer Driven Contracts</ins>][cdc] sample ap
 
 ### <b>1</b> <ins>Consumer Driven Contracts</ins>
 
-The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
+The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins><sup>❐</sup>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
-The following example illustrates a simple protocol that uses the [<ins>Consumer Driven Contracts</ins>][cdc] approach, and consists of the actors:
+The following example illustrates a simple protocol that uses the [<ins>Consumer Driven Contracts</ins><sup>❐</sup>][cdc] approach, and consists of the actors:
 
 1. **Producer**: Representing the provider of the <ins>ProductSearch</ins> service.
 1. **Consumer1**: The first consumer of the <ins>ProductSearch</ins> service.
@@ -192,5 +192,6 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 [#converter]: ../../../../#532-converter
 [#jsd]: ../../../../#3-json-schema-definition-language
-[cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [jsonx-maven-plugin]: ../../jsonx-maven-plugin/
+
+[cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html

@@ -40,7 +40,7 @@ _For the application code, see **[<ins>Bank</ins>](bank)**._
 
 ### <b>1.3</b> Consumer Driven Contracts
 
-The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
+The <ins>JSONx Framework</ins> was created specifically for [<ins>Consumer Driven Contracts</ins><sup>❐</sup>][cdc]. With the [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd], one can create a <ins>Consumer Driven Contract (CDC)</ins> with an evolution model based on schema versioning. The <ins>JSD</ins> can be used by producers and consumers to validate documents in a communication protocol.
 
 _For the application code, see **[<ins>Consumer Driven Contracts</ins>](cdc)**._
 
@@ -56,4 +56,5 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 [#binding-api]: ../../#4-jsonx-binding-api
 [#jsd]: ../../#3-json-schema-definition-language
+
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html

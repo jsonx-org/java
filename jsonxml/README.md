@@ -47,7 +47,7 @@ JsonXml is JSON expressed in XML. This document presents the structural part of 
 
 ### <b>1.1</b> Dependencies on Other Specifications
 
-The definition of the <ins>JsonXml API</ins> depends on the following specifications: [RFC4627][rfc4627] and [XMLSchema][xmlschema].
+The definition of the <ins>JsonXml API</ins> depends on the following specifications: [RFC4627<sup>❐</sup>][rfc4627] and [XMLSchema<sup>❐</sup>][xmlschema].
 
 ### <b>1.2</b> Conventions Used in This Document
 
@@ -95,13 +95,13 @@ The `false` and `true` string literals.
 
 #### <b>5.1.2</b> `string` Type
 
-A double-quoted string. A JSON string may require to be escaped to a string that is legal for XML. The escaped characters are [Predefined Entities in XML][xmlentities].
+A double-quoted string. A JSON string may require to be escaped to a string that is legal for XML. The escaped characters are [Predefined Entities in XML<sup>❐</sup>][xmlentities].
 
 <ins>Example</ins>: `"string"`
 
 #### <b>5.1.3</b> `number` Type
 
-A number that conforms to the [RFC4627][rfc4627] section 2.4.
+A number that conforms to the [RFC4627<sup>❐</sup>][rfc4627] section 2.4.
 
 <ins>Example</ins>: `6.626E-34`
 
@@ -228,11 +228,11 @@ This section provides a sample JSON and its JSONx alternative.
 
 #### <b>7.1.1</b> JsonXml Schema 0.3
 
-* A JsonXml schema document XSD [jsonxml-0.3.xsd][jsonxml-03] for JsonXml documents.
+* A JsonXml schema document XSD [jsonxml-0.3.xsd<sup>❐</sup>][jsonxml-03] for JsonXml documents.
 
 #### <b>7.1.2</b> JsonXml Schema 0.2
 
-* A JsonXml schema document XSD [jsonxml-0.2.xsd][jsonxml-02] for JsonXml documents.
+* A JsonXml schema document XSD [jsonxml-0.2.xsd<sup>❐</sup>][jsonxml-02] for JsonXml documents.
 
 ## <b>8</b> <ins>Contributing</ins>
 
@@ -268,6 +268,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#jsonxml-02]: #712-jsonxml-schema-02
 
 [api]: ../binding/
+
 [jsonxml-02]: http://www.jsonx.org/jsonxml-0.2.xsd
 [jsonxml-03]: http://www.jsonx.org/jsonxml-0.3.xsd
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
