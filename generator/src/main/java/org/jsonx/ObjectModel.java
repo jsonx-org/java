@@ -323,7 +323,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return;
 
     if (superObject instanceof Deferred)
-      superObject = ((Deferred<Model>)superObject).resolve();
+      superObject = ((Deferred<?>)superObject).resolve();
 
     for (final Map.Entry<String,Member> member : members.entrySet())
       if (member.getValue() instanceof Deferred)
