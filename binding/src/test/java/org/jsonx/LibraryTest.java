@@ -191,8 +191,6 @@ public class LibraryTest {
       assertTrue(e.getMessage().startsWith("Unknown property: \"extra\""));
     }
 
-    JxDecoder.parseObject(Publishing.class, new JsonReader(new StringReader(json)), (o,p,v) -> {
-      return o instanceof Publishing;
-    });
+    JxDecoder.parseObject(Publishing.class, new JsonReader(new StringReader(json)), (o,p,v) -> o instanceof Publishing);
   }
 }

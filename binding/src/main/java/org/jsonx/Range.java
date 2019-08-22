@@ -120,7 +120,7 @@ public class Range implements Cloneable, Serializable {
   }
 
   @Override
-  protected Range clone() {
+  public Range clone() {
     try {
       return (Range)super.clone();
     }

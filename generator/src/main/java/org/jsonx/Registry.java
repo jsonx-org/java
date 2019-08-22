@@ -212,7 +212,7 @@ class Registry {
   }
 
   Type getType(final String packageName, final String compoundName, final String superCompoundName) {
-    return getType(Kind.CLASS, packageName, compoundName, packageName, superCompoundName, (Type)null);
+    return getType(Kind.CLASS, packageName, compoundName, packageName, superCompoundName, null);
   }
 
   Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type genericType) {
@@ -243,7 +243,7 @@ class Registry {
   }
 
   Type getType(final Class<?> cls) {
-    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), (Type)null);
+    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()), null);
   }
 
   Type getType(final Class<?> ... genericClasses) {
@@ -301,11 +301,7 @@ class Registry {
       for (final Model member : getModels())
         member.getDeclaredTypes(types);
 
-    final String classPrefix = Strings.getCommonPrefix(types.stream().map(t -> t.getPackage()).toArray(String[]::new));
-    if (classPrefix == null)
-      return null;
-
-    return classPrefix;
+    return Strings.getCommonPrefix(types.stream().map(Registry.Type::getPackage).toArray(String[]::new));
   }
 
   private static class ReferrerManifest {

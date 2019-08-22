@@ -28,19 +28,9 @@ import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer {
-  private static final ThreadLocal<Integer> count = new ThreadLocal<Integer>() {
-    @Override
-    protected Integer initialValue() {
-      return 0;
-    }
-  };
+  private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
 
-  private static final ThreadLocal<Set<Member>> exclude = new ThreadLocal<Set<Member>>() {
-    @Override
-    protected Set<Member> initialValue() {
-      return new HashSet<>();
-    }
-  };
+  private static final ThreadLocal<Set<Member>> exclude = ThreadLocal.withInitial(() -> new HashSet<>());
 
   static Registry.Type getGreatestCommonSuperType(final List<Member> members) {
     if (members.size() == 0)

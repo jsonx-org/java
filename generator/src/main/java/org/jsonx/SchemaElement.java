@@ -24,7 +24,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -397,12 +396,7 @@ public final class SchemaElement extends Element implements Declarer {
         members.add(model);
 
     if (!registry.isFromJsd) {
-      members.sort(new Comparator<Model>() {
-        @Override
-        public int compare(final Model o1, final Model o2) {
-          return o1.compareTo(o2);
-        }
-      });
+      members.sort((o1, o2) -> o1.compareTo(o2));
     }
 
     return members;

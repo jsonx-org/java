@@ -44,9 +44,7 @@ abstract class Codec {
     this.name = JsdUtil.getName(name, field);
     if (Map.class.isAssignableFrom(field.getType())) {
       this.setMethod = null;
-      this.putMethod = Throwing.rethrow((o,n,v) -> {
-        ((Map<String,Object>)field.get(o)).put(n, v);
-      });
+      this.putMethod = Throwing.rethrow((o,n,v) -> ((Map<String,Object>)field.get(o)).put(n, v));
       this.optional = use == Use.OPTIONAL;
       this.genericType = Classes.getGenericClasses(field)[1];
     }
@@ -98,7 +96,7 @@ abstract class Codec {
     }
     catch (final IllegalArgumentException e) {
       if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
-        throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? ArrayUtil.toString(setMethod.getParameterTypes(), ',', c -> c.getName()) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+        throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? ArrayUtil.toString(setMethod.getParameterTypes(), ',', Class::getName) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
 
       throw new UnsupportedOperationException(e);
     }

@@ -41,43 +41,40 @@ import org.libj.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Member extends Element {
-  static final Function<Binding,String> elementXPath = new Function<Binding,String>() {
-    @Override
-    public String apply(final Binding t) {
-      final String name;
-      if (t instanceof $Array)
-        name = (($Array)t).getName$().text();
-      else if (t instanceof $Boolean)
-        name = (($Boolean)t).getName$().text();
-      else if (t instanceof $Number)
-        name = (($Number)t).getName$().text();
-      else if (t instanceof $Object)
-        name = (($Object)t).getName$().text();
-      else if (t instanceof $String)
-        name = (($String)t).getName$().text();
-      else if (t instanceof $Reference)
-        name = (($Reference)t).getName$().text();
-      else if (t instanceof Schema.Array)
-        name = ((Schema.Array)t).getName$().text();
-      else if (t instanceof Schema.Boolean)
-        name = ((Schema.Boolean)t).getName$().text();
-      else if (t instanceof Schema.Number)
-        name = ((Schema.Number)t).getName$().text();
-      else if (t instanceof Schema.Object)
-        name = ((Schema.Object)t).getName$().text();
-      else if (t instanceof Schema.String)
-        name = ((Schema.String)t).getName$().text();
-      else
-        name = null;
+  static final Function<Binding,String> elementXPath = t -> {
+    final String name;
+    if (t instanceof $Array)
+      name = (($Array)t).getName$().text();
+    else if (t instanceof $Boolean)
+      name = (($Boolean)t).getName$().text();
+    else if (t instanceof $Number)
+      name = (($Number)t).getName$().text();
+    else if (t instanceof $Object)
+      name = (($Object)t).getName$().text();
+    else if (t instanceof $String)
+      name = (($String)t).getName$().text();
+    else if (t instanceof $Reference)
+      name = (($Reference)t).getName$().text();
+    else if (t instanceof Schema.Array)
+      name = ((Schema.Array)t).getName$().text();
+    else if (t instanceof Schema.Boolean)
+      name = ((Schema.Boolean)t).getName$().text();
+    else if (t instanceof Schema.Number)
+      name = ((Schema.Number)t).getName$().text();
+    else if (t instanceof Schema.Object)
+      name = ((Schema.Object)t).getName$().text();
+    else if (t instanceof Schema.String)
+      name = ((Schema.String)t).getName$().text();
+    else
+      name = null;
 
-      if (name == null)
-        return t.name().getLocalPart();
+    if (name == null)
+      return t.name().getLocalPart();
 
-      final StringBuilder builder = new StringBuilder();
-      builder.append(t.name().getLocalPart());
-      builder.append("[@").append("name=\"").append(Strings.escapeForJava(name)).append("\"]");
-      return builder.toString();
-    }
+    final StringBuilder builder = new StringBuilder();
+    builder.append(t.name().getLocalPart());
+    builder.append("[@").append("name=\"").append(Strings.escapeForJava(name)).append("\"]");
+    return builder.toString();
   };
 
   static Integer parseMaxCardinality(final int minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {

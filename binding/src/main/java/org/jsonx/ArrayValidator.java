@@ -69,8 +69,8 @@ class ArrayValidator {
 
     List<Object> deflate() {
       for (int i = 0; i < size(); ++i) {
-        final Object member = get(i);
-        target.set(i, member instanceof Relation ? ((Relation)member).deflate() : member);
+        final Relation member = get(i);
+        target.set(i, member.deflate());
       }
 
       return target;

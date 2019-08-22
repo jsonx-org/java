@@ -63,7 +63,7 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = "[" + CollectionUtil.toString(list, listDelimiter) + "]";
     }
     else if (trial instanceof StringTrial || trial instanceof AnyTrial && trial.value() instanceof String) {
-      expected = StringCodec.encodeObject((String)trial.value()).toString();
+      expected = StringCodec.encodeObject((String)trial.value());
     }
     else {
       expected = String.valueOf(trial.value());
@@ -74,15 +74,14 @@ class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       actual = null;
     }
     else if (trial instanceof ObjectTrial) {
-      final String json = String.valueOf(value);
-      if (!json.endsWith("}"))
-        throw new IllegalStateException("Expected a '}' character at the end of the encoding of a binding object: " + json);
+      if (!value.endsWith("}"))
+        throw new IllegalStateException("Expected a '}' character at the end of the encoding of a binding object: " + value);
 
-      final int nl = json.lastIndexOf('\n');
-      actual = json.replace("\n" + Strings.repeat(" ", json.length() - nl - 2), "\n");
+      final int nl = value.lastIndexOf('\n');
+      actual = value.replace("\n" + Strings.repeat(" ", value.length() - nl - 2), "\n");
     }
     else {
-      actual = String.valueOf(value);
+      actual = value;
     }
 
     assertEquals(expected, actual);
