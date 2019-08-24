@@ -65,7 +65,7 @@ final class NumberModel extends Model {
       xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Number.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Number.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Number.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Number.MaxOccurs$(jsd.getMaxOccurs()));
@@ -88,7 +88,7 @@ final class NumberModel extends Model {
       xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getScale() != null)
-      xsb.setScale$(new xL0gluGCXAA.$NumberMember.Scale$(jsd.getScale().intValue()));
+      xsb.setScale$(new xL0gluGCXAA.$NumberMember.Scale$(jsd.getScale()));
 
     if (jsd.getRange() != null)
       xsb.setRange$(new xL0gluGCXAA.$NumberMember.Range$(jsd.getRange()));
@@ -166,7 +166,7 @@ final class NumberModel extends Model {
   }
 
   private static int parseScale(final xL0gluGCXAA.$NumberMember.Scale$ scale) {
-    return scale == null || scale.text() == null ? Integer.MAX_VALUE : scale.text();
+    return scale == null || scale.text() == null ? Integer.MAX_VALUE : scale.text().intValue();
   }
 
   private static Range parseRange(final String range) throws ParseException {

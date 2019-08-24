@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 
 import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.IllegalAnnotationException;
@@ -61,7 +62,7 @@ final class BooleanModel extends Model {
       xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Boolean.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Boolean.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Boolean.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Boolean.MaxOccurs$(jsd.getMaxOccurs()));

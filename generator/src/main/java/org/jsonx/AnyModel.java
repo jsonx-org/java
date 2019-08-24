@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -66,7 +67,7 @@ final class AnyModel extends Referrer<AnyModel> {
       xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Any.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Any.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Any.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Any.MaxOccurs$(jsd.getMaxOccurs()));

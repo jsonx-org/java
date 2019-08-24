@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
+import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ final class Reference extends Member {
       xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Reference.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));

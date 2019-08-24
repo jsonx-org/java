@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.Map;
 
 import org.jsonx.www.schema_0_3.xL0gluGCXAA;
@@ -62,7 +63,7 @@ final class StringModel extends Model {
       xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.String.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.String.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.String.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.String.MaxOccurs$(jsd.getMaxOccurs()));

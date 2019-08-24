@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
+import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,9 +78,9 @@ abstract class Member extends Element {
     return builder.toString();
   };
 
-  static Integer parseMaxCardinality(final int minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {
+  static Integer parseMaxCardinality(final BigInteger minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {
     final Integer max = "unbounded".equals(maxCardinality.text()) ? Integer.MAX_VALUE : Integer.parseInt(maxCardinality.text());
-    if (minCardinality > max)
+    if (minCardinality.intValue() > max)
       throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
 
     return max == dflt ? null : max;
@@ -113,7 +114,7 @@ abstract class Member extends Element {
   }
 
   Member(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs) {
-    this(registry, declarer, id, doc, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality(minOccurs.text().intValue(), maxOccurs, "Occurs", Integer.MAX_VALUE));
+    this(registry, declarer, id, doc, null, nullable == null ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality((BigInteger)minOccurs.text(), maxOccurs, "Occurs", Integer.MAX_VALUE));
   }
 
   Member(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final yAA.$String use) {

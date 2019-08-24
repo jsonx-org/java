@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -74,7 +75,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Array.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Array.MinOccurs$(Integer.parseInt(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Array.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Array.MaxOccurs$(jsd.getMaxOccurs()));
@@ -97,7 +98,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getMinIterate() != null)
-      xsb.setMinIterate$(new xL0gluGCXAA.$ArrayMember.MinIterate$(Integer.parseInt(jsd.getMinIterate())));
+      xsb.setMinIterate$(new xL0gluGCXAA.$ArrayMember.MinIterate$(new BigInteger(jsd.getMinIterate())));
 
     if (jsd.getMaxIterate() != null)
       xsb.setMaxIterate$(new xL0gluGCXAA.$ArrayMember.MaxIterate$(jsd.getMaxIterate()));
@@ -275,6 +276,10 @@ final class ArrayModel extends Referrer<ArrayModel> {
   final List<Member> members;
   final Integer minIterate;
   final Integer maxIterate;
+
+  private static Integer parseIterate(final BigInteger minIterate) {
+    return minIterate == null ? null : parseIterate(minIterate.intValue());
+  }
 
   private static Integer parseIterate(final Integer minIterate) {
     return minIterate == null || minIterate == 1 ? null : minIterate;
