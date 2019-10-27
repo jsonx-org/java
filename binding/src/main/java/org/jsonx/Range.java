@@ -125,7 +125,7 @@ public class Range implements Cloneable, Serializable {
       return (Range)super.clone();
     }
     catch (final CloneNotSupportedException e) {
-      throw new IllegalStateException(e);
+      throw new RuntimeException(e);
     }
   }
 
