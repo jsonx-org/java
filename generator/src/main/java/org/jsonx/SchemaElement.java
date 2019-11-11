@@ -119,10 +119,8 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
-    try (final InputStream in = url.openStream()) {
-      final xL0gluGCXAA.Schema schema = (xL0gluGCXAA.Schema)Bindings.parse(in, getErrorHandler());
-      return new SchemaElement(schema, prefix);
-    }
+    final xL0gluGCXAA.Schema schema = (xL0gluGCXAA.Schema)Bindings.parse(url, getErrorHandler());
+    return new SchemaElement(schema, prefix);
   }
 
   /**

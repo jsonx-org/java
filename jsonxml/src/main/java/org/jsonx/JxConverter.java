@@ -29,7 +29,7 @@ import javax.xml.parsers.SAXParser;
 import org.libj.util.Strings;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
-import org.openjax.xml.sax.Parsers;
+import org.openjax.xml.sax.SAXParsers;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -51,7 +51,7 @@ public final class JxConverter {
       if (threadLocal == null)
         threadLocal = weakParsers[validating ? 0 : 1] = new ThreadLocal<>();
 
-      parser = Parsers.newParser(validating);
+      parser = SAXParsers.newParser(validating);
       threadLocal.set(new WeakReference<>(parser));
     }
 

@@ -19,7 +19,6 @@ package org.jsonx;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
@@ -76,9 +75,7 @@ public class SchemaTest {
   }
 
   private static xL0gluGCXAA.Schema newControlBinding(final String fileName) throws IOException, SAXException {
-    try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
-      return (xL0gluGCXAA.Schema)Bindings.parse(in);
-    }
+    return (xL0gluGCXAA.Schema)Bindings.parse(ClassLoader.getSystemClassLoader().getResource(fileName));
   }
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
@@ -196,7 +193,7 @@ public class SchemaTest {
     logger.info("  7) Validate XML");
     writeFile("out-" + fileName, xml);
     try {
-      Validator.validate(xml, false);
+      Validator.validate(xml);
     }
     catch (final SAXException e) {
       logger.error(xml);
