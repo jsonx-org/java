@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -40,11 +41,10 @@ public class ValidateMojo extends PatternSetMojo {
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     try {
-      final List<URL> fileSets = configuration.getFileSets();
-      for (final URL schema : fileSets)
+      for (final URL schema : configuration.getFileSets())
         SchemaElement.parse(schema, "");
 
-      for (final String schema : schemas)
+      for (final String schema : new LinkedHashSet<>(schemas))
         SchemaElement.parse(new URL(schema), "");
     }
     catch (final  IOException e) {
