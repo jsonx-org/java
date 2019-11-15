@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
       ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null, -1);
     }
     catch (final IOException e) {
-      throw new IllegalStateException(e);
+      throw new UncheckedIOException(e);
     }
 
     if (trialType == TrialType.MAX_OCCURS) {
