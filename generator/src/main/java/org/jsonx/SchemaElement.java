@@ -78,13 +78,13 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a {@code SchemaElement} from the content of the specified file that
+   * Creates a {@link SchemaElement} from the content of the specified file that
    * is expected to be in JSD format.
    *
-   * @param url The {@code URL} of the content to parse.
+   * @param url The {@link URL} of the content to parse.
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
-   * @return The {@code SchemaElement} instance.
+   * @return The {@link SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
@@ -104,13 +104,13 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a {@code SchemaElement} from the content of the specified file that
+   * Creates a {@link SchemaElement} from the content of the specified file that
    * is expected to be in JSDx format.
    *
-   * @param url The {@code URL} of the content to parse.
+   * @param url The {@link URL} of the content to parse.
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
-   * @return The {@code SchemaElement} instance.
+   * @return The {@link SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a parse error has occurred.
    * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException}
@@ -124,15 +124,15 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a {@code SchemaElement} from the contents of the specified
+   * Creates a {@link SchemaElement} from the contents of the specified
    * {@code file}. The supported content formats are JSDx and JSD. If the
    * supplied file is not in one of the supported formats, an
-   * {@code IllegalArgumentException} is thrown.
+   * {@link IllegalArgumentException} is thrown.
    *
    * @param url The file from which to read the contents.
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
-   * @return A {@code SchemaElement} from the contents of the specified
+   * @return A {@link SchemaElement} from the contents of the specified
    *         {@code file}.
    * @throws IllegalArgumentException If the format of the content of the
    *           specified file is malformed, or is not JSDx or JSD.
@@ -183,7 +183,7 @@ public final class SchemaElement extends Element implements Declarer {
   private final String version;
 
   /**
-   * Creates a new {@code SchemaElement} from the specified XML binding, and
+   * Creates a new {@link SchemaElement} from the specified XML binding, and
    * with the provided package / class name prefix string.
    *
    * @param schema The XML binding (XSB).
@@ -265,7 +265,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} from the specified JSD binding, and with the
+   * Creates a new {@link SchemaElement} from the specified JSD binding, and with the
    * provided package / class name prefix string.
    *
    * @param schema The JSD binding.
@@ -293,12 +293,12 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} by scanning the specified package in the
+   * Creates a new {@link SchemaElement} by scanning the specified package in the
    * provided class loader, filtered with the given class predicate.
    *
    * @param pkg The package to be scanned for JSD bindings.
-   * @param classLoader The {@code ClassLoader} containing the defined package.
-   * @param filter The class {@code Predicate} allowing filtration of scanned
+   * @param classLoader The {@link ClassLoader} containing the defined package.
+   * @param filter The class {@link Predicate} allowing filtration of scanned
    *          classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
@@ -309,7 +309,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} by scanning the specified package in the
+   * Creates a new {@link SchemaElement} by scanning the specified package in the
    * provided class loader.
    * <p>
    * This constructor is equivalent to calling:
@@ -319,7 +319,7 @@ public final class SchemaElement extends Element implements Declarer {
    * </blockquote>
    *
    * @param pkg The package to be scanned for JSD bindings.
-   * @param classLoader The {@code ClassLoader} containing the defined package.
+   * @param classLoader The {@link ClassLoader} containing the defined package.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
@@ -328,7 +328,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} by scanning the specified package, filtered
+   * Creates a new {@link SchemaElement} by scanning the specified package, filtered
    * with the given class predicate.
    * <p>
    * This constructor is equivalent to calling:
@@ -338,7 +338,7 @@ public final class SchemaElement extends Element implements Declarer {
    * </blockquote>
    *
    * @param pkg The package to be scanned for JSD bindings.
-   * @param filter The class {@code Predicate} allowing filtration of scanned
+   * @param filter The class {@link Predicate} allowing filtration of scanned
    *          classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
@@ -348,7 +348,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} by scanning the specified package.
+   * Creates a new {@link SchemaElement} by scanning the specified package.
    * <p>
    * This constructor is equivalent to calling:
    * <p>
@@ -365,7 +365,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} by scanning the specified classes.
+   * Creates a new {@link SchemaElement} by scanning the specified classes.
    *
    * @param classes The classes to scan.
    */
@@ -374,7 +374,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@code SchemaElement} by scanning the specified classes.
+   * Creates a new {@link SchemaElement} by scanning the specified classes.
    *
    * @param classes The classes to scan.
    */

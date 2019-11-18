@@ -47,10 +47,10 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   protected final JxEncoder encoder;
 
   /**
-   * Creates a new {@code JxObjectProvider} with the specified {@code JxEncoder}
+   * Creates a new {@link JxObjectProvider} with the specified {@link JxEncoder}
    * instance to be used for encoding bindings to JSON documents.
    *
-   * @param encoder The {@code JxEncoder} instance.
+   * @param encoder The {@link JxEncoder} instance.
    */
   public JxObjectProvider(final JxEncoder encoder) {
     this.encoder = encoder;

@@ -29,7 +29,7 @@ public class ParseException extends Exception {
   private final int errorOffset;
 
   /**
-   * Constructs a {@code ParseException} with the specified detail message and
+   * Constructs a {@link ParseException} with the specified detail message and
    * offset. A detail message is a String that describes this particular
    * exception.
    *
@@ -42,6 +42,8 @@ public class ParseException extends Exception {
   }
 
   /**
+   * Returns the position where the error was found.
+   *
    * @return The position where the error was found.
    */
   public int getErrorOffset() {

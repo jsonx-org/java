@@ -39,33 +39,33 @@ import org.libj.util.function.TriObjBiIntConsumer;
 public class JxEncoder {
   private static final HashMap<Integer,JxEncoder> instances = new HashMap<>();
 
-  /** {@code JxEncoder} that does not indent JSON values */
+  /** {@link JxEncoder} that does not indent JSON values */
   public static final JxEncoder _0 = get(0);
 
-  /** {@code JxEncoder} that indents JSON values with 1 space */
+  /** {@link JxEncoder} that indents JSON values with 1 space */
   public static final JxEncoder _1 = get(1);
 
-  /** {@code JxEncoder} that indents JSON values with 2 spaces */
+  /** {@link JxEncoder} that indents JSON values with 2 spaces */
   public static final JxEncoder _2 = get(2);
 
-  /** {@code JxEncoder} that indents JSON values with 3 spaces */
+  /** {@link JxEncoder} that indents JSON values with 3 spaces */
   public static final JxEncoder _3 = get(3);
 
-  /** {@code JxEncoder} that indents JSON values with 4 spaces */
+  /** {@link JxEncoder} that indents JSON values with 4 spaces */
   public static final JxEncoder _4 = get(4);
 
-  /** {@code JxEncoder} that indents JSON values with 8 spaces */
+  /** {@link JxEncoder} that indents JSON values with 8 spaces */
   public static final JxEncoder _8 = get(8);
 
   private static JxEncoder global = _0;
 
   /**
-   * Returns the {@code JxEncoder} for the specified number of spaces to be used
+   * Returns the {@link JxEncoder} for the specified number of spaces to be used
    * when indenting values during serialization to JSON documents.
    *
    * @param indent The number of spaces to be used when indenting values during
    *          serialization to JSON documents.
-   * @return The {@code JxEncoder} for the specified number of spaces to be used
+   * @return The {@link JxEncoder} for the specified number of spaces to be used
    *         when indenting values during serialization to JSON documents.
    * @throws IllegalArgumentException If {@code indent < 0}.
    */
@@ -81,7 +81,9 @@ public class JxEncoder {
   }
 
   /**
-   * @return The global {@code JxEncoder}.
+   * Returns the global {@link JxEncoder}.
+   *
+   * @return The global {@link JxEncoder}.
    * @see #set(JxEncoder)
    */
   public static JxEncoder get() {
@@ -89,9 +91,9 @@ public class JxEncoder {
   }
 
   /**
-   * Set the global {@code JxEncoder}.
+   * Set the global {@link JxEncoder}.
    *
-   * @param encoder The {@code JxEncoder}.
+   * @param encoder The {@link JxEncoder}.
    * @see #get()
    */
   public static void set(final JxEncoder encoder) {
@@ -104,7 +106,7 @@ public class JxEncoder {
   private final boolean validate;
 
   /**
-   * Creates a new {@code JxEncoder} for the specified number of spaces to be
+   * Creates a new {@link JxEncoder} for the specified number of spaces to be
    * used when indenting values during serialization to JSON documents.
    *
    * @param indent The number of spaces to be used when indenting values during
@@ -116,7 +118,7 @@ public class JxEncoder {
   }
 
   /**
-   * Creates a new {@code JxEncoder} for the specified number of spaces to be
+   * Creates a new {@link JxEncoder} for the specified number of spaces to be
    * used when indenting values during serialization to JSON documents.
    *
    * @param indent The number of spaces to be used when indenting values during
@@ -460,13 +462,13 @@ public class JxEncoder {
   }
 
   /**
-   * Marshals the specified {@code JxObject}, performing callbacks to the
-   * provided {@code TriObjBiIntConsumer} for each encoded field.
+   * Marshals the specified {@link JxObject}, performing callbacks to the
+   * provided {@link TriObjBiIntConsumer} for each encoded field.
    *
-   * @param object The {@code JxObject}.
-   * @param onFieldEncode The {@code TriObjBiIntConsumer} to be called for each
+   * @param object The {@link JxObject}.
+   * @param onFieldEncode The {@link TriObjBiIntConsumer} to be called for each
    *          encoded field.
-   * @return A JSON document from the marshaled {@code JxObject}.
+   * @return A JSON document from the marshaled {@link JxObject}.
    * @throws EncodeException If an encode error has occurred.
    */
   String marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode) {
@@ -479,10 +481,10 @@ public class JxEncoder {
   }
 
   /**
-   * Marshals the specified {@code JxObject}.
+   * Marshals the specified {@link JxObject}.
    *
-   * @param object The {@code JxObject}.
-   * @return A JSON document from the marshaled {@code JxObject}.
+   * @param object The {@link JxObject}.
+   * @return A JSON document from the marshaled {@link JxObject}.
    * @throws EncodeException If an encode error has occurred.
    */
   public String marshal(final JxObject object) {
@@ -495,10 +497,10 @@ public class JxEncoder {
    * type {@link ArrayType} that specifies the model of the list being
    * marshaled.
    *
-   * @param list The {@code List}.
+   * @param list The {@link List}.
    * @param arrayAnnotationType The annotation type that declares an
    *          {@link ArrayType} annotation.
-   * @return A JSON document from the marshaled {@code List}.
+   * @return A JSON document from the marshaled {@link List}.
    * @throws EncodeException If an encode error has occurred.
    */
   public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {

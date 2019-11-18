@@ -28,7 +28,7 @@ class AttributeMap extends ObservableMap<String,Object> {
   private final String prefix;
 
   /**
-   * Creates a new {@code AttributeMap} with the specified prefix. For each
+   * Creates a new {@link AttributeMap} with the specified prefix. For each
    * invocation of {@link #put(String,Object)} and {@link #remove(Object)}, the
    * provided {@code key} is prepended with {@code prefix} (if {@code prefix} is
    * not null).
@@ -41,7 +41,7 @@ class AttributeMap extends ObservableMap<String,Object> {
   }
 
   /**
-   * Creates a new {@code AttributeMap} with a null prefix.
+   * Creates a new {@link AttributeMap} with a null prefix.
    */
   AttributeMap() {
     this(null);

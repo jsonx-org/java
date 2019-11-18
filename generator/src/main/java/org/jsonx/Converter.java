@@ -57,7 +57,7 @@ public final class Converter {
   /**
    * Converts a JDS file to the JSDx format.
    *
-   * @param url The {@code URL} of the content to convert.
+   * @param url The {@link URL} of the content to convert.
    * @return The converted file in JSDx format.
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
@@ -72,7 +72,7 @@ public final class Converter {
   /**
    * Converts a JDSx file to the JSD format.
    *
-   * @param url The {@code URL} of the content to convert.
+   * @param url The {@link URL} of the content to convert.
    * @return The converted file in JSD format.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a parse error has occurred.
@@ -84,7 +84,7 @@ public final class Converter {
   /**
    * Converts a JDS or JSDx file to the other format.
    *
-   * @param url The {@code URL} of the content to convert.
+   * @param url The {@link URL} of the content to convert.
    * @return The converted format.
    * @throws IllegalArgumentException If the format of the content of the
    *           specified file is malformed, or is not JSDx or JSD.

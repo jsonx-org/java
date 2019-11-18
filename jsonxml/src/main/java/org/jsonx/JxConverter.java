@@ -181,12 +181,12 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSONx document from the specified {@code InputStream} to a JSON
+   * Converts a JSONx document from the specified {@link InputStream} to a JSON
    * document.
    * <p>
    * <i><b>Note:</b> This method is thread safe.</i>
    *
-   * @param in The {@code InputStream} for the JSONx document to be converted.
+   * @param in The {@link InputStream} for the JSONx document to be converted.
    * @param validate If {@code true}, the JSONx document will be validated
    *          during the conversion process.
    * @return A JSON document equivalent of the JSONx document.
@@ -346,7 +346,7 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSON document from the specified {@code JsonReader} to a JSONx
+   * Converts a JSON document from the specified {@link JsonReader} to a JSONx
    * document without declaring the XML namespace.
    * <p>
    * This method is equivalent to calling
@@ -357,7 +357,7 @@ public final class JxConverter {
    * <p>
    * <i><b>Note:</b> This method is thread safe.</i>
    *
-   * @param reader The {@code JsonReader} for the JSON document to be converted.
+   * @param reader The {@link JsonReader} for the JSON document to be converted.
    *          declare the {@code xmlns} and {@code xsi:schemaLocation}
    *          attributes in the root element.
    * @return A JSONx document equivalent of the JSON document.
@@ -369,12 +369,12 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSON document from the specified {@code JsonReader} to a JSONx
+   * Converts a JSON document from the specified {@link JsonReader} to a JSONx
    * document.
    * <p>
    * <i><b>Note:</b> This method is thread safe.</i>
    *
-   * @param reader The {@code JsonReader} for the JSON document to be converted.
+   * @param reader The {@link JsonReader} for the JSON document to be converted.
    * @param declareNamespace If {@code true}, the resulting JSONx document will
    *          declare the {@code xmlns} and {@code xsi:schemaLocation}
    *          attributes in the root element.
