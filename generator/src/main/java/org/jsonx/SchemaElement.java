@@ -492,7 +492,7 @@ public final class SchemaElement extends Element implements Declarer {
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
 
-      final String annotation = classSpec.getAnnotation();
+      final StringBuilder annotation = classSpec.getAnnotation();
       if (annotation != null)
         builder.append('\n').append(annotation);
 

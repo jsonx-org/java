@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -314,7 +315,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final Map<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
     for (final Annotation elementAnnotation : JsdUtil.flatten(annotations)) {
-      if (elementAnnotation instanceof ArrayProperty || elementAnnotation instanceof ArrayType)
+      if (elementAnnotation instanceof ArrayProperty || elementAnnotation instanceof ArrayType || elementAnnotation instanceof Retention)
         continue;
 
       final int id;

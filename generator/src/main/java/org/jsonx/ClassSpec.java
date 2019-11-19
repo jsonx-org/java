@@ -16,8 +16,12 @@
 
 package org.jsonx;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Iterator;
 import java.util.TreeMap;
+
+import org.libj.util.Strings;
 
 class ClassSpec {
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
@@ -42,20 +46,28 @@ class ClassSpec {
     return referrer != null && referrer.doc != null ? "/** " + referrer.doc.trim() + " **/" : null;
   }
 
-  String getAnnotation() {
-    if (referrer == null || referrer.getClassAnnotation() == null)
-      return null;
+  StringBuilder getAnnotation() {
+    StringBuilder builder = null;
+    if (type.getKind() == Registry.Kind.ANNOTATION) {
+      builder = new StringBuilder();
+      builder.append('@').append(Retention.class.getName()).append('(').append(RetentionPolicy.class.getName()).append('.').append(RetentionPolicy.RUNTIME).append(')');
+    }
 
-    final StringBuilder builder = new StringBuilder();
+    if (referrer == null || referrer.getClassAnnotation() == null || referrer.getClassAnnotation().size() == 0)
+      return builder;
+
+    if (builder == null)
+      builder = new StringBuilder();
+
     final Iterator<AnnotationType> iterator = referrer.getClassAnnotation().iterator();
-    for (int i = 0; iterator.hasNext(); ++i) {
-      if (i > 0)
+    while (iterator.hasNext()) {
+      if (builder.length() > 0)
         builder.append('\n');
 
       builder.append(iterator.next());
     }
 
-    return builder.toString();
+    return builder.length() == 0 ? null : builder;
   }
 
   void add(final ClassSpec classSpec) {
@@ -83,9 +95,9 @@ class ClassSpec {
       if (i > 0)
         builder.append('\n');
 
-      final String annotation = memberClass.getAnnotation();
+      final StringBuilder annotation = memberClass.getAnnotation();
       if (annotation != null)
-        builder.append("\n  ").append(annotation.replace("\n", "\n  "));
+        builder.append("\n  ").append(Strings.replace(annotation, "\n", "\n  "));
 
       final String memberDoc = memberClass.getDoc();
       if (memberDoc != null)
