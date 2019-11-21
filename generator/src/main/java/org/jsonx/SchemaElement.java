@@ -500,6 +500,9 @@ public final class SchemaElement extends Element implements Declarer {
       if (doc != null)
         builder.append('\n').append(doc);
 
+      if (canonicalPackageName != null)
+        builder.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
+
       builder.append("\npublic ").append(classSpec);
       sources.put(type.getName(), builder.toString());
     }

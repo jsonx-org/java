@@ -1,5 +1,6 @@
 package org.jsonx;
 
+@java.lang.SuppressWarnings("all")
 public class schema {
   public static class Any extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="any", nullable=false)

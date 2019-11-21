@@ -62,7 +62,12 @@ public class SchemaTest {
     generatedResourcesDir.mkdirs();
     try {
       schemaXsd = new URL("http://www.jsonx.org/schema.xsd");
-      Files.walk(generatedSourcesDir.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).filter(f -> !f.equals(generatedSourcesDir)).forEach(File::delete);
+      Files
+        .walk(generatedSourcesDir.toPath())
+        .sorted(Comparator.reverseOrder())
+        .map(Path::toFile)
+        .filter(f -> !f.equals(generatedSourcesDir))
+        .forEach(File::delete);
     }
     catch (final IOException e) {
       throw new ExceptionInInitializerError(e);
