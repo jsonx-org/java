@@ -152,7 +152,7 @@ abstract class Member extends Element {
    * pertaining to this {@link Member}.
    *
    * @param attributes The target {@code attributes} parameter.
-   * @param owner The {@link Member} that owns {@code this}.
+   * @param owner The {@link Member} that owns this {@link Member}.
    */
   void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     if (nullable != null)
@@ -218,9 +218,13 @@ abstract class Member extends Element {
   }
 
   /**
-   * Intended to be overridden by each concrete subclass, this method returns a
-   * list of {@link AnnotationType} objects representing the annotations of
-   * {@code this} element.
+   * Returns a list of {@link AnnotationType} objects representing the
+   * annotations of this {@link Member}.
+   * <p>
+   * Intended to be overridden by each concrete subclass, this method
+   *
+   * @return A list of {@link AnnotationType} objects representing the
+   *         annotations of this {@link Member}.
    */
   List<AnnotationType> toElementAnnotations() {
     return null;
@@ -229,7 +233,7 @@ abstract class Member extends Element {
   /**
    * Intended to be overridden by each concrete subclass, this method collects
    * all {@link Registry.Type} declarations of elements that are members of
-   * {@code this} element.
+   * this {@link Member}.
    *
    * @param types The {@link Set} into which the {@link Registry.Type}
    *          declarations must be added.
