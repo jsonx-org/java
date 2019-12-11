@@ -184,7 +184,7 @@ public final class JxConverter {
    * Converts a JSONx document from the specified {@link InputStream} to a JSON
    * document.
    * <p>
-   * <i><b>Note:</b> This method is thread safe.</i>
+   * <b>Note:</b> This method is thread safe.
    *
    * @param in The {@link InputStream} for the JSONx document to be converted.
    * @param validate If {@code true}, the JSONx document will be validated
@@ -350,12 +350,12 @@ public final class JxConverter {
    * document without declaring the XML namespace.
    * <p>
    * This method is equivalent to calling
-   * <p>
-   * <blockquote>
+   *
+   * <pre>
    * {@code jsonToJsonx(reader, false)}
-   * </blockquote>
-   * <p>
-   * <i><b>Note:</b> This method is thread safe.</i>
+   * </pre>
+   *
+   * <b>Note:</b> This method is thread safe.
    *
    * @param reader The {@link JsonReader} for the JSON document to be converted.
    *          declare the {@code xmlns} and {@code xsi:schemaLocation}
@@ -372,7 +372,7 @@ public final class JxConverter {
    * Converts a JSON document from the specified {@link JsonReader} to a JSONx
    * document.
    * <p>
-   * <i><b>Note:</b> This method is thread safe.</i>
+   * <b>Note:</b> This method is thread safe.
    *
    * @param reader The {@link JsonReader} for the JSON document to be converted.
    * @param declareNamespace If {@code true}, the resulting JSONx document will

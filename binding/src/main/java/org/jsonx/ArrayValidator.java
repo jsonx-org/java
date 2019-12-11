@@ -112,10 +112,10 @@ class ArrayValidator {
    * Creates a signature of the start of an iteration of element attributes at
    * the specified member index, annotation index, and annotation occurrence.
    * <p>
-   * <i><b>Note</b>: For performance reasons, each of the arguments are
-   * converted to an unsigned short, which reduces their max value to 65535.
-   * This value represents the maximum number of members, annotations and
-   * occurrences that are supported by the {@link ArrayValidator}.</i>
+   * <b>Note</b>: For performance reasons, each of the arguments are converted
+   * to an unsigned short, which reduces their max value to 65535. This value
+   * represents the maximum number of members, annotations and occurrences that
+   * are supported by the {@link ArrayValidator}.
    *
    * @param index The index of the member.
    * @param a The index of the annotation.

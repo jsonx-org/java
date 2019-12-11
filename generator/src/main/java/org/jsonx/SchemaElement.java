@@ -309,14 +309,14 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in the
-   * provided class loader.
+   * Creates a new {@link SchemaElement} by scanning the specified package in
+   * the provided class loader.
    * <p>
    * This constructor is equivalent to calling:
-   * <p>
-   * <blockquote>
+   *
+   * <pre>
    * {@code new Schema(pkg, classLoader, null)}
-   * </blockquote>
+   * </pre>
    *
    * @param pkg The package to be scanned for JSD bindings.
    * @param classLoader The {@link ClassLoader} containing the defined package.
@@ -328,14 +328,14 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified package, filtered
-   * with the given class predicate.
+   * Creates a new {@link SchemaElement} by scanning the specified package,
+   * filtered with the given class predicate.
    * <p>
    * This constructor is equivalent to calling:
-   * <p>
-   * <blockquote>
+   *
+   * <pre>
    * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), filter)}
-   * </blockquote>
+   * </pre>
    *
    * @param pkg The package to be scanned for JSD bindings.
    * @param filter The class {@link Predicate} allowing filtration of scanned
@@ -351,10 +351,10 @@ public final class SchemaElement extends Element implements Declarer {
    * Creates a new {@link SchemaElement} by scanning the specified package.
    * <p>
    * This constructor is equivalent to calling:
-   * <p>
-   * <blockquote>
+   *
+   * <pre>
    * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), null)}
-   * </blockquote>
+   * </pre>
    *
    * @param pkg The package to be scanned for JSD bindings.
    * @throws IOException If an I/O error has occurred.
