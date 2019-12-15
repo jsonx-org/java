@@ -75,13 +75,9 @@ public class Individual implements JxObject {
 
   @Override
   public int hashCode() {
-    int hashCode = 0;
-    if (name != null)
-      hashCode = hashCode * 31 + name.hashCode();
-
-    if (address != null)
-      hashCode = hashCode * 31 + address.hashCode();
-
+    int hashCode = super.hashCode();
+    hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
+    hashCode = 31 * hashCode + (address == null ? 0 : address.hashCode());
     return hashCode;
   }
 

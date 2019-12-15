@@ -143,10 +143,10 @@ public class Range implements Cloneable, Serializable {
 
   @Override
   public int hashCode() {
-    int hashCode = 43729;
-    hashCode = 31 * hashCode + (min == null ? 0 : min.hashCode() ^ 7);
+    int hashCode = 1;
+    hashCode = 31 * hashCode + (min == null ? 0 : min.hashCode());
     hashCode = 31 * hashCode + Boolean.hashCode(minInclusive);
-    hashCode = 31 * hashCode + (max == null ? 0 : max.hashCode() ^ 7);
+    hashCode = 31 * hashCode + (max == null ? 0 : max.hashCode());
     hashCode = 31 * hashCode + Boolean.hashCode(maxInclusive);
     return hashCode;
   }

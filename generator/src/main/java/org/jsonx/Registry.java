@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -185,7 +186,9 @@ class Registry {
 
     @Override
     public int hashCode() {
-      return toString().hashCode();
+      int hashCode = 31 + name.hashCode();
+      hashCode = 31 * hashCode + Arrays.hashCode(genericTypes);
+      return hashCode;
     }
 
     @Override

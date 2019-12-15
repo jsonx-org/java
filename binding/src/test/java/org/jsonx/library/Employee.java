@@ -47,10 +47,8 @@ public class Employee extends Individual {
 
   @Override
   public int hashCode() {
-    int hashCode = 0;
-    if (emergencyContact != null)
-      hashCode = hashCode * 31 + emergencyContact.hashCode();
-
-    return hashCode * 31 + super.hashCode();
+    int hashCode = super.hashCode();
+    hashCode = 31 * hashCode + (emergencyContact == null ? 0 : emergencyContact.hashCode());
+    return hashCode;
   }
 }

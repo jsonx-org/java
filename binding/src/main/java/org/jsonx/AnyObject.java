@@ -32,7 +32,7 @@ public class AnyObject implements JxObject {
 
   @Override
   public int hashCode() {
-    return properties.hashCode();
+    return 31 + properties.hashCode();
   }
 
   @Override

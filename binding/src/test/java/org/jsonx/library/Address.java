@@ -17,6 +17,8 @@
 package org.jsonx.library;
 
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
 
 import org.jsonx.JxEncoder;
 import org.jsonx.JxObject;
@@ -122,25 +124,13 @@ public class Address implements JxObject {
 
   @Override
   public int hashCode() {
-    int hashCode = 0;
-    if (number != null)
-      hashCode = hashCode * 31 + number.hashCode();
-
-    if (street != null)
-      hashCode = hashCode * 31 + street.hashCode();
-
-    if (city != null)
-      hashCode = hashCode * 31 + city.hashCode();
-
-    if (postalCode != null)
-      hashCode = hashCode * 31 + postalCode.hashCode();
-
-    if (locality != null)
-      hashCode = hashCode * 31 + locality.hashCode();
-
-    if (country != null)
-      hashCode = hashCode * 31 + country.hashCode();
-
+    int hashCode = 1;
+    hashCode = 31 * hashCode + (number == null ? 0 : number.hashCode());
+    hashCode = 31 * hashCode + (street == null ? 0 : street.hashCode());
+    hashCode = 31 * hashCode + (city == null ? 0 : city.hashCode());
+    hashCode = 31 * hashCode + (postalCode == null ? 0 : postalCode.hashCode());
+    hashCode = 31 * hashCode + (locality == null ? 0 : locality.hashCode());
+    hashCode = 31 * hashCode + (country == null ? 0 : country.hashCode());
     return hashCode;
   }
 

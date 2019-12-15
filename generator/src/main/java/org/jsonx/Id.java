@@ -60,7 +60,7 @@ class Id {
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return 31 + id.hashCode();
   }
 
   @Override
