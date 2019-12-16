@@ -29,9 +29,9 @@ import java.util.Set;
 
 import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.IllegalAnnotationException;
+import org.libj.lang.Strings;
 import org.libj.util.Classes;
 import org.libj.util.Iterators;
-import org.libj.util.Strings;
 import org.openjax.xml.api.XmlElement;
 
 final class ObjectModel extends Referrer<ObjectModel> {

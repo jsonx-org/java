@@ -21,10 +21,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.function.Function;
 
+import org.libj.lang.Identifiers;
+import org.libj.lang.Strings;
 import org.libj.util.Annotations;
 import org.libj.util.FixedOrderComparator;
-import org.libj.util.Identifiers;
-import org.libj.util.Strings;
 
 final class JsdUtil {
   static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "names", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");

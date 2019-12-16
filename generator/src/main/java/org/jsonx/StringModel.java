@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.IllegalAnnotationException;
-import org.libj.util.Strings;
+import org.libj.lang.Strings;
 
 final class StringModel extends Model {
   private static xL0gluGCXAA.Schema.String type(final String name) {

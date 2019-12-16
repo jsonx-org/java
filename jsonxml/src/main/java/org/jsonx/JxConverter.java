@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 
-import org.libj.util.Strings;
+import org.libj.lang.Strings;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
 import org.openjax.xml.sax.SAXParsers;

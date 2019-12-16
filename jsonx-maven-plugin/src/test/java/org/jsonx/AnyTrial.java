@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.libj.util.Strings;
+import org.libj.lang.Strings;
 
 class AnyTrial extends PropertyTrial<Object> {
   static String createName(final AnyProperty property) {

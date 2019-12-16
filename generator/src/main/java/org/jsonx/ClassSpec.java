@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import org.libj.util.Strings;
+import org.libj.lang.Strings;
 
 class ClassSpec {
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();

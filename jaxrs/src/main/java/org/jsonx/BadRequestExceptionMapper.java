@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.libj.util.Strings;
+import org.libj.lang.Strings;
 
 /**
  * A JAX-RS {@link Provider} that implements an {@link ExceptionMapper} to

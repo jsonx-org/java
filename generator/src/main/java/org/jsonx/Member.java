@@ -37,8 +37,8 @@ import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Object;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.$String;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.Schema;
+import org.libj.lang.Strings;
 import org.libj.util.CollectionUtil;
-import org.libj.util.Strings;
 import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Member extends Element {

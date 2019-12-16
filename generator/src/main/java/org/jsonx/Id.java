@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.CRC32;
 
-import org.libj.util.Strings;
+import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 class Id {
