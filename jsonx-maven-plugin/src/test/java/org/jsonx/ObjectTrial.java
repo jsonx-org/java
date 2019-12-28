@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import org.libj.util.Classes;
 
-class ObjectTrial extends PropertyTrial<Object> {
+final class ObjectTrial extends PropertyTrial<Object> {
   static Object createValid(final Class<?> type) {
     try {
       final Object object = type.getDeclaredConstructor().newInstance();
@@ -100,7 +100,7 @@ class ObjectTrial extends PropertyTrial<Object> {
     }
   }
 
-  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final ObjectProperty property) {
+  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final ObjectProperty property) {
     logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new ObjectTrial(ValidCase.CASE, field, object, createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()), property));
     if (property.use() == Use.REQUIRED) {

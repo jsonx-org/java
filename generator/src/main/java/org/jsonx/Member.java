@@ -72,10 +72,7 @@ abstract class Member extends Element {
     if (name == null)
       return t.name().getLocalPart();
 
-    final StringBuilder builder = new StringBuilder();
-    builder.append(t.name().getLocalPart());
-    builder.append("[@").append("name=\"").append(Strings.escapeForJava(name)).append("\"]");
-    return builder.toString();
+    return t.name().getLocalPart() + "[@" + "name=\"" + Strings.escapeForJava(name) + "\"]";
   };
 
   static Integer parseMaxCardinality(final BigInteger minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {
@@ -83,7 +80,7 @@ abstract class Member extends Element {
     if (minCardinality.intValue() > max)
       throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
 
-    return max == dflt ? null : max;
+    return max.equals(dflt) ? null : max;
   }
 
   private static void checkMinMaxOccurs(final String source, final Integer minOccurs, final Integer maxOccurs) {
@@ -238,7 +235,7 @@ abstract class Member extends Element {
    * @param types The {@link Set} into which the {@link Registry.Type}
    *          declarations must be added.
    */
-  void getDeclaredTypes(final Set<Registry.Type> types) {
+  void getDeclaredTypes(final Set<? super Registry.Type> types) {
   }
 
   String nameName() {

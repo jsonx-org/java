@@ -22,7 +22,10 @@ import java.io.IOException;
 /**
  * Utility for generating Java source code from JSD or JSDx schema files.
  */
-public class Generator {
+public final class Generator {
+  private Generator() {
+  }
+
   private static void trapPrintUsage() {
     System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>");
     System.err.println();
@@ -47,11 +50,14 @@ public class Generator {
     for (int i = 0; i < args.length; ++i) {
       if ("--prefix".equals(args[i]))
         prefix = args[++i];
-      else if ("-d".equals(args[i]) && i < args.length)
+      else if ("-d".equals(args[i]))
         destDir = new File(args[++i]).getAbsoluteFile();
       else
         schemaFile = new File(args[i]).getAbsoluteFile();
     }
+
+    if (schemaFile == null)
+      trapPrintUsage();
 
     SchemaElement.parse(schemaFile.toURI().toURL(), prefix).toSource(destDir);
   }

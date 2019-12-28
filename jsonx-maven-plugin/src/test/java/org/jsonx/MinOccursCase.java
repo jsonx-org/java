@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-class MinOccursCase extends FailureCase<ArrayTrial<Object>> {
+final class MinOccursCase extends FailureCase<ArrayTrial<Object>> {
   static final MinOccursCase CASE = new MinOccursCase();
 
   @Override

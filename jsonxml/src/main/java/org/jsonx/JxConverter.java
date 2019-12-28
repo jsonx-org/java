@@ -41,7 +41,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class JxConverter {
   @SuppressWarnings("unchecked")
   private static final ThreadLocal<WeakReference<SAXParser>>[] weakParsers = new ThreadLocal[2];
-  private static final Pattern pattern = Pattern.compile("(?<value>null|false|true|-?(([0-9])|([1-9][0-9]+))(\\.[\\.0-9]+)?([eE][+-]?(([0-9])|([1-9][0-9]+)))?|\"(\\\\.|[^\"])*\")(?<ws>\\s+|$)");
+  private static final Pattern pattern = Pattern.compile("(?<value>null|false|true|-?(([0-9])|([1-9][0-9]+))(\\.[.0-9]+)?([eE][+-]?(([0-9])|([1-9][0-9]+)))?|\"(\\\\.|[^\"])*\")(?<ws>\\s+|$)");
 
   private static SAXParser getParser(final boolean validating) throws SAXException {
     ThreadLocal<WeakReference<SAXParser>> threadLocal = weakParsers[validating ? 0 : 1];
@@ -199,9 +199,9 @@ public final class JxConverter {
     final StringBuilder builder = new StringBuilder();
     parser.parse(Objects.requireNonNull(in), new DefaultHandler() {
       private final ArrayDeque<String> stack = new ArrayDeque<>();
-      private StringBuilder characters = null;
-      private StringBuilder prevWs = null;
-      private String prevElem = null;
+      private StringBuilder characters;
+      private StringBuilder prevWs;
+      private String prevElem;
 
       @Override
       public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
@@ -236,7 +236,7 @@ public final class JxConverter {
       }
 
       @Override
-      public void endElement(final String uri, final String localName, final String qName) throws SAXException {
+      public void endElement(final String uri, final String localName, final String qName) {
         processCharacters(false);
         stack.pop();
         if (prevWs != null) {
@@ -254,7 +254,7 @@ public final class JxConverter {
       }
 
       @Override
-      public void characters(final char[] ch, final int start, final int length) throws SAXException {
+      public void characters(final char[] ch, final int start, final int length) {
         final String value = new String(ch, start, length);
         if (characters == null)
           characters = new StringBuilder(value);

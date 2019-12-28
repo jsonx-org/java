@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.libj.lang.Strings;
 
-class AnyTrial extends PropertyTrial<Object> {
+final class AnyTrial extends PropertyTrial<Object> {
   static String createName(final AnyProperty property) {
     return Strings.isRegex(property.name()) ? StringTrial.createValid(property.name()) : property.name();
   }
@@ -58,7 +58,7 @@ class AnyTrial extends PropertyTrial<Object> {
     return createValid(annotation, AnyType.all);
   }
 
-  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final AnyProperty property) {
+  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final AnyProperty property) {
     logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new AnyTrial(ValidCase.CASE, field, object, createValid(property), property));
     if (property.nullable()) {

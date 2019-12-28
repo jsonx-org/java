@@ -20,7 +20,7 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class Asserting {
+abstract class Asserting {
   static final Logger logger = LoggerFactory.getLogger(Asserting.class);
 
   static void assertEquals(final String message, final Object expected, final Object actual) {

@@ -21,8 +21,6 @@ import java.util.function.Function;
 import org.libj.util.RefDigraph;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
-  private static final long serialVersionUID = 4143833580153219718L;
-
   private final String selfLinkErrorPrefix;
 
   StrictRefDigraph(final String selfLinkErrorPrefix, final Function<T,R> reference) {
@@ -36,5 +34,10 @@ class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
       throw new ValidationException(selfLinkErrorPrefix + ": " + reference.apply(from) + " -> " + to);
 
     return super.add(from, to);
+  }
+
+  @Override
+  public StrictRefDigraph<T,R> clone() {
+    return (StrictRefDigraph<T,R>)super.clone();
   }
 }

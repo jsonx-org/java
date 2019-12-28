@@ -24,6 +24,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -265,8 +266,8 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} from the specified JSD binding, and with the
-   * provided package / class name prefix string.
+   * Creates a new {@link SchemaElement} from the specified JSD binding, and
+   * with the provided package / class name prefix string.
    *
    * @param schema The JSD binding.
    * @param prefix The class name prefix to be prepended to the names of
@@ -278,7 +279,7 @@ public final class SchemaElement extends Element implements Declarer {
     this(jsdToXsb(schema), prefix);
   }
 
-  private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
+  private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     final Set<Class<?>> classes = new HashSet<>();
     PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
       if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
@@ -293,8 +294,8 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in the
-   * provided class loader, filtered with the given class predicate.
+   * Creates a new {@link SchemaElement} by scanning the specified package in
+   * the provided class loader, filtered with the given class predicate.
    *
    * @param pkg The package to be scanned for JSD bindings.
    * @param classLoader The {@link ClassLoader} containing the defined package.
@@ -304,7 +305,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws PackageNotFoundException If the specified package is not found.
    * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
    */
-  public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
+  public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
   }
 
@@ -370,7 +371,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param classes The classes to scan.
    */
   public SchemaElement(final Class<?> ... classes) {
-    this(CollectionUtil.asCollection(new IdentityHashSet<Class<?>>(classes.length), classes));
+    this(CollectionUtil.asCollection(new IdentityHashSet<>(classes.length), classes));
   }
 
   /**
@@ -394,7 +395,7 @@ public final class SchemaElement extends Element implements Declarer {
         members.add(model);
 
     if (!registry.isFromJsd) {
-      members.sort((o1, o2) -> o1.compareTo(o2));
+      members.sort(Comparator.naturalOrder());
     }
 
     return members;
@@ -484,10 +485,10 @@ public final class SchemaElement extends Element implements Declarer {
     }
 
     final Map<String,String> sources = new HashMap<>();
+    final StringBuilder builder = new StringBuilder();
     for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) {
       final Registry.Type type = entry.getKey();
       final ClassSpec classSpec = entry.getValue();
-      final StringBuilder builder = new StringBuilder();
       final String canonicalPackageName = type.getCanonicalPackage();
       if (canonicalPackageName != null)
         builder.append("package ").append(canonicalPackageName).append(";\n");
@@ -505,6 +506,7 @@ public final class SchemaElement extends Element implements Declarer {
 
       builder.append("\npublic ").append(classSpec);
       sources.put(type.getName(), builder.toString());
+      builder.setLength(0);
     }
 
     return sources;

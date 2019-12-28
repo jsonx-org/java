@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Object>> {
+final class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Object>> {
   static final RequiredNotNullableCase CASE = new RequiredNotNullableCase();
 
   @Override

@@ -28,7 +28,7 @@ import org.openjax.json.JsonReader;
 class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
-  private short cursor = 0;
+  private short cursor;
 
   ArrayDecodeIterator(final JsonReader reader) {
     this.reader = reader;
@@ -48,7 +48,7 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected int nextIndex() throws IOException {
+  protected int nextIndex() {
     return cursor;
   }
 

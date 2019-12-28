@@ -395,7 +395,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return ArrayElement.class;
   }
 
-  private boolean referencesResolved = false;
+  private boolean referencesResolved;
 
   @Override
   void resolveReferences() {
@@ -413,7 +413,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  void getDeclaredTypes(final Set<Registry.Type> types) {
+  void getDeclaredTypes(final Set<? super Registry.Type> types) {
     if (classType() != null)
       types.add(classType());
 
@@ -465,7 +465,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return element;
   }
 
-  private void renderAnnotations(final AttributeMap attributes, final List<AnnotationType> annotations) {
+  private void renderAnnotations(final AttributeMap attributes, final List<? super AnnotationType> annotations) {
     final int[] indices = new int[members.size()];
     for (int i = 0, index = 0; i < members.size(); ++i) {
       indices[i] = index;
@@ -500,7 +500,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       attributes.put("maxIterate", String.valueOf(maxIterate));
   }
 
-  private static int writeElementAnnotations(final List<AnnotationType> annotations, final Member member, final int index, final Member owner) {
+  private static int writeElementAnnotations(final List<? super AnnotationType> annotations, final Member member, final int index, final Member owner) {
     final AttributeMap attributes = new AttributeMap();
     attributes.put("id", index);
 

@@ -25,7 +25,7 @@ import org.openjax.json.JsonUtil;
 
 import com.google.common.base.Strings;
 
-class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
+final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   static final ValidCase<Object> CASE = new ValidCase<>();
   private static final String listDelimiter = "," + Strings.repeat(" ", JxEncoder.get().indent);
 

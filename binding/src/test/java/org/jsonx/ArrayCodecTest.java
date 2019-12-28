@@ -55,9 +55,9 @@ public class ArrayCodecTest {
   private static final Logger logger = LoggerFactory.getLogger(ArrayCodecTest.class);
 
   private static final Map<Class<? extends Annotation>,IdToElement> classToIdToElement = new HashMap<>();
-  private static boolean debugPass = false;
-  private static boolean debugFail = false;
-  private static boolean skipDecode = false;
+  private static final boolean debugPass = false;
+  private static final boolean debugFail = false;
+  private static final boolean skipDecode = false;
 
   private static void testDecode(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String expected) throws DecodeException, IOException {
     if (skipDecode)
@@ -109,7 +109,7 @@ public class ArrayCodecTest {
     final int i = Integer.parseInt(index.remove(0));
     final Annotation annotation = idToElement.get(i);
     if (index.size() > 0) {
-      assertEquals(String.valueOf(i), ArrayElement.class, annotation.annotationType());
+      assertSame(String.valueOf(i), ArrayElement.class, annotation.annotationType());
       return getAnnotation(getIdToElement(((ArrayElement)annotation).type()), index);
     }
 

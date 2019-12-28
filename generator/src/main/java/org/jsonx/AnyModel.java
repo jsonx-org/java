@@ -441,7 +441,7 @@ final class AnyModel extends Referrer<AnyModel> {
     return null;
   }
 
-  private boolean referencesResolved = false;
+  private boolean referencesResolved;
 
   @Override
   void resolveReferences() {

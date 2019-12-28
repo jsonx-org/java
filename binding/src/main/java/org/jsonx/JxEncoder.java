@@ -29,7 +29,6 @@ import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.ArrayUtil;
 import org.libj.util.Classes;
-import org.libj.util.function.TriObjBiIntConsumer;
 
 /**
  * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx
@@ -150,7 +149,7 @@ public class JxEncoder {
         return method.invoke(object);
 
       Map<?,?> optionalMap = null;
-      Map<?,?> map = null;
+      Map<?,?> map;
       for (final Field field : object.getClass().getFields()) {
         if (!Map.class.isAssignableFrom(field.getType()))
           continue;
@@ -241,7 +240,7 @@ public class JxEncoder {
   }
 
   @SuppressWarnings("unchecked")
-  private Error encodeProperty(final Field field, final Annotation annotation, final String name, final Object object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
+  private Error encodeProperty(final Field field, final Annotation annotation, final String name, final Object object, final OnFieldEncode onFieldEncode, final StringBuilder builder, final int depth) {
     try {
       if (annotation instanceof ArrayProperty) {
         final Object encoded = ArrayCodec.encodeObject(field, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
@@ -282,7 +281,7 @@ public class JxEncoder {
           return error;
       }
     }
-    catch (final ValidationException e) {
+    catch (final EncodeException | ValidationException e) {
       throw e;
     }
     catch (final Exception e) {
@@ -328,7 +327,7 @@ public class JxEncoder {
     return null;
   }
 
-  Error marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final StringBuilder builder, final int depth) {
+  Error marshal(final JxObject object, final OnFieldEncode onFieldEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
     final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
@@ -440,7 +439,7 @@ public class JxEncoder {
     return null;
   }
 
-  private Error appendValue(final StringBuilder builder, final String name, final Object value, final Field field, final Annotation annotation, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode, final int depth) {
+  private Error appendValue(final StringBuilder builder, final String name, final Object value, final Field field, final Annotation annotation, final OnFieldEncode onFieldEncode, final int depth) {
     if (indent > 0)
       builder.append('\n').append(ArrayUtil.createRepeat(' ', depth * 2));
 
@@ -463,15 +462,15 @@ public class JxEncoder {
 
   /**
    * Marshals the specified {@link JxObject}, performing callbacks to the
-   * provided {@link TriObjBiIntConsumer} for each encoded field.
+   * provided {@link OnFieldEncode} for each encoded field.
    *
    * @param object The {@link JxObject}.
-   * @param onFieldEncode The {@link TriObjBiIntConsumer} to be called for each
+   * @param onFieldEncode The {@link OnFieldEncode} to be called for each
    *          encoded field.
    * @return A JSON document from the marshaled {@link JxObject}.
    * @throws EncodeException If an encode error has occurred.
    */
-  String marshal(final JxObject object, final TriObjBiIntConsumer<Field,String,Relations> onFieldEncode) {
+  String marshal(final JxObject object, final OnFieldEncode onFieldEncode) {
     final StringBuilder builder = new StringBuilder();
     final Error error = marshal(object, onFieldEncode, builder, 1);
     if (validate && error != null)

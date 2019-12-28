@@ -24,7 +24,7 @@ import org.libj.util.Characters;
 
 import com.mifmif.common.regex.Generex;
 
-class StringTrial extends PropertyTrial<String> {
+final class StringTrial extends PropertyTrial<String> {
   private static final int stringLength = 12;
   private static final char[] ascii = new char[95];
 
@@ -44,7 +44,7 @@ class StringTrial extends PropertyTrial<String> {
     return builder.toString();
   }
 
-  private static class StringGen {
+  private static final class StringGen {
     private final String pattern;
     private final Generex generex;
 
@@ -83,7 +83,7 @@ class StringTrial extends PropertyTrial<String> {
     }
   }
 
-  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final StringProperty property) {
+  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final StringProperty property) {
     logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new StringTrial(ValidCase.CASE, field, object, createValid(property.pattern()), property));
     if (property.pattern().length() > 0)

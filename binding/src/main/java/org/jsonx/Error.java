@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import org.libj.lang.Strings;
 import org.libj.util.Annotations;
@@ -156,8 +157,7 @@ final class Error {
       }
 
       str = String.format(message, args);
-      for (int i = 0; i < args.length; ++i)
-        args[i] = null;
+      Arrays.fill(args, null);
     }
     else {
       str = message;

@@ -87,7 +87,7 @@ final class Reference extends Member {
 
   final Model model;
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference binding, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference binding, final Supplier<? extends Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
   }
 
@@ -96,7 +96,7 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference binding, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference binding, final Supplier<? extends Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
   }
 
@@ -105,7 +105,7 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXAA.$MaxOccurs maxOccurs, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXAA.$MaxOccurs maxOccurs, final Supplier<? extends Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, doc, nullable, minOccurs, maxOccurs, model.get()));
   }
 
@@ -114,7 +114,7 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Supplier<? extends Model> model) {
     return new Deferred<>(name, () -> new Reference(registry, declarer, name, nullable, use, model.get()));
   }
 
@@ -123,7 +123,7 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Supplier<Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Supplier<? extends Model> model) {
     return new Deferred<>(null, () -> new Reference(registry, declarer, nullable, minOccurs, maxOccurs, model.get()));
   }
 

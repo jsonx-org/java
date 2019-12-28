@@ -174,7 +174,7 @@ public class SchemaTest {
     }
   }
 
-  public static void test(final String fileName, final String packageName) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public static void test(final String fileName, final String packageName) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String prefix = packageName + ".";
 
     logger.info(fileName + "...");
@@ -214,7 +214,7 @@ public class SchemaTest {
     testSettings(fileName, packageName, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     for (final Settings settings : SchemaTest.settings) {
       final String prefix = packageName + ".";
 
@@ -294,37 +294,37 @@ public class SchemaTest {
   }
 
   @Test
-  public void testArray() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testArray() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("array.jsdx", "org.jsonx");
   }
 
   @Test
-  public void testDataType() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testDataType() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("datatype.jsdx", "org.jsonx.datatype");
   }
 
   @Test
-  public void testStructure() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testStructure() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("structure.jsdx", "org.jsonx.structure");
   }
 
   @Test
-  public void testTemplate() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testTemplate() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("template.jsdx", "org.jsonx");
   }
 
   @Test
-  public void testReference() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testReference() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("reference.jsdx", "org.jsonx.reference");
   }
 
   @Test
-  public void testReserved() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testReserved() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("reserved.jsdx", "org.jsonx.reserved");
   }
 
   @Test
-  public void testComplete() throws ClassNotFoundException, CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  public void testComplete() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     test("complete.jsdx", "org.jsonx.complete");
   }
 }

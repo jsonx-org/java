@@ -273,7 +273,7 @@ class Registry {
         this.classPrefix = "";
       }
       else {
-        final int index = prefix.lastIndexOf('.', prefix.length() - 1);
+        final int index = prefix.lastIndexOf('.');
         this.packageName = prefix.substring(0, index);
         this.classPrefix = prefix.substring(index + 1);
       }
@@ -412,6 +412,6 @@ class Registry {
     if (member instanceof ObjectModel)
       return numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(AnyModel.class) || referrers.hasReferrerType(ArrayModel.class);
 
-    return numReferrers >= settings.getTemplateThreshold() || referrers.hasReferrerType(AnyModel.class);
+    return numReferrers >= settings.getTemplateThreshold() || referrers != null && referrers.hasReferrerType(AnyModel.class);
   }
 }

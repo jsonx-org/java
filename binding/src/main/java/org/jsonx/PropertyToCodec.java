@@ -31,7 +31,7 @@ class PropertyToCodec {
   }
 
   Codec get(final String name) {
-    Codec codec = nameToCodec.get(name);
+    final Codec codec = nameToCodec.get(name);
     if (codec != null)
       return codec;
 

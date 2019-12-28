@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-class MaxOccursCase extends FailureCase<ArrayTrial<Object>> {
+final class MaxOccursCase extends FailureCase<ArrayTrial<Object>> {
   static final MaxOccursCase CASE = new MaxOccursCase();
 
   @Override

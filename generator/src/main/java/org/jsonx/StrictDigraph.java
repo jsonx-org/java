@@ -19,8 +19,6 @@ package org.jsonx;
 import org.libj.util.Digraph;
 
 class StrictDigraph<T> extends Digraph<T> {
-  private static final long serialVersionUID = 4143833580153219718L;
-
   private final String selfLinkErrorPrefix;
 
   StrictDigraph(final String selfLinkErrorPrefix) {
@@ -33,5 +31,10 @@ class StrictDigraph<T> extends Digraph<T> {
       throw new ValidationException(selfLinkErrorPrefix + ": " + from + " -> " + to);
 
     return super.add(from, to);
+  }
+
+  @Override
+  public StrictDigraph<T> clone() {
+    return (StrictDigraph<T>)super.clone();
   }
 }

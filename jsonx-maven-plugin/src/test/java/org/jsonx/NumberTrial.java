@@ -25,8 +25,8 @@ import java.util.Optional;
 
 import org.libj.util.Classes;
 
-class NumberTrial extends PropertyTrial<Number> {
-  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
+final class NumberTrial extends PropertyTrial<Number> {
+  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
     try {
       logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
       final Range range = property.range().length() == 0 ? null : new Range(property.range());

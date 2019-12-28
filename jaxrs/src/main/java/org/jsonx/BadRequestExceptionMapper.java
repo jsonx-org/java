@@ -31,15 +31,17 @@ import org.libj.lang.Strings;
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
   @Override
   public Response toResponse(final BadRequestException exception) {
-    final StringBuilder builder = new StringBuilder("{\"status\":").append(exception.getResponse().getStatus());
-    final String message = exception.getMessage();
-    if (message != null) {
-      final String prefix = "HTTP " + exception.getResponse().getStatus() + " ";
-      builder.append(",\"message\":\"").append(message.startsWith(prefix) ? message.substring(prefix.length()) : message).append('"');
-      if (exception.getCause() instanceof DecodeException)
-        builder.append(",\"cause\":\"").append(Strings.escapeForJava(exception.getCause().getMessage())).append('"');
-    }
+    try (final Response response = exception.getResponse()) {
+      final StringBuilder builder = new StringBuilder("{\"status\":").append(response.getStatus());
+      final String message = exception.getMessage();
+      if (message != null) {
+        final String prefix = "HTTP " + response.getStatus() + " ";
+        builder.append(",\"message\":\"").append(message.startsWith(prefix) ? message.substring(prefix.length()) : message).append('"');
+        if (exception.getCause() instanceof DecodeException)
+          builder.append(",\"cause\":\"").append(Strings.escapeForJava(exception.getCause().getMessage())).append('"');
+      }
 
-    return Response.fromResponse(exception.getResponse()).entity(builder.append('}').toString()).build();
+      return Response.fromResponse(response).entity(builder.append('}').toString()).build();
+    }
   }
 }

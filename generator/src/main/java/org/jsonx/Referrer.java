@@ -29,10 +29,9 @@ import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer {
   private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
+  private static final ThreadLocal<Set<Member>> exclude = ThreadLocal.withInitial(HashSet::new);
 
-  private static final ThreadLocal<Set<Member>> exclude = ThreadLocal.withInitial(() -> new HashSet<>());
-
-  static Registry.Type getGreatestCommonSuperType(final List<Member> members) {
+  static Registry.Type getGreatestCommonSuperType(final List<? extends Member> members) {
     if (members.size() == 0)
       throw new IllegalArgumentException("members.size() == 0");
 

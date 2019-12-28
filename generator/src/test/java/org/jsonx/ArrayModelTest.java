@@ -29,11 +29,11 @@ public class ArrayModelTest {
   private static class Number extends $Number {
     private static final long serialVersionUID = 763116191728279846L;
 
-    public Number() {
+    private Number() {
     }
 
     @SuppressWarnings("unused")
-    public Number(final $Number inherits) {
+    private Number(final $Number inherits) {
       super(inherits);
     }
 

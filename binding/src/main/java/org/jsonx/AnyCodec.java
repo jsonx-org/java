@@ -27,7 +27,14 @@ import org.openjax.json.JsonReader;
 
 class AnyCodec extends Codec {
   static Object decode(final Annotation annotation, final String token, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final t[] types = annotation.annotationType() == AnyElement.class ? ((AnyElement)annotation).types() : annotation.annotationType() == AnyProperty.class ? ((AnyProperty)annotation).types() : null;
+    final t[] types;
+    if (annotation.annotationType() == AnyElement.class)
+      types = ((AnyElement)annotation).types();
+    else if (annotation.annotationType() == AnyProperty.class)
+      types = ((AnyProperty)annotation).types();
+    else
+      throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
+
     final char firstChar = token.charAt(0);
     Error error = null;
     if (firstChar == '[') {
@@ -119,9 +126,15 @@ class AnyCodec extends Codec {
     if (object == null)
       return JsdUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL;
 
+    Relations relations = null;
+    StringBuilder builder = null;
     for (final t type : types.length > 0 ? types : new t[] {AnyType.fromObject(object)}) {
       if (object instanceof List && AnyType.isEnabled(type.arrays())) {
-        final Relations relations = new Relations();
+        if (relations == null)
+          relations = new Relations();
+        else
+          relations.clear();
+
         if ((error = ArrayCodec.encodeArray(null, type.arrays(), object, type.arrays().getAnnotation(ArrayType.class).elementIds()[0], relations, null, validate, null)) == null)
           return relations;
       }
@@ -136,7 +149,11 @@ class AnyCodec extends Codec {
           return encoded;
       }
       else if (object instanceof JxObject && AnyType.isEnabled(type.objects())) {
-        final StringBuilder builder = new StringBuilder();
+        if (builder == null)
+          builder = new StringBuilder();
+        else
+          builder.setLength(0);
+
         if ((error = jxEncoder.marshal((JxObject)object, null, builder, depth)) == null)
           return builder.toString();
       }

@@ -27,7 +27,7 @@ class ArrayCreateIterator extends ArrayIterator {
   private final TrialType trialType;
   private short cursor = 0;
   private Annotation annotation;
-  private Annotation lastAnnotation;
+  private final Annotation lastAnnotation;
 
   ArrayCreateIterator(final IdToElement idToElement, final int[] elementIds, final TrialType trialType) {
     this.trialType = trialType;

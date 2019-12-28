@@ -35,12 +35,12 @@ public class BadRequestExceptionMapperTest {
     when(response.getStatus()).thenReturn(400);
     when(response.getStatusInfo()).thenReturn(statusType);
     final BadRequestException exception = new BadRequestException(response, new DecodeException(null, 0));
-    try {
-      new BadRequestExceptionMapper().toResponse(exception);
+    try (final Response res = new BadRequestExceptionMapper().toResponse(exception)) {
+      fail("Expected RuntimeException with ClassNotFoundException");
     }
     catch (final RuntimeException e) {
       // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
-      assertEquals(ClassNotFoundException.class, e.getCause().getClass());
+      assertSame(ClassNotFoundException.class, e.getCause().getClass());
     }
   }
 }

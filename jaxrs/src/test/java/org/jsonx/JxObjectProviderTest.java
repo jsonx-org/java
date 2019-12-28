@@ -73,7 +73,7 @@ public class JxObjectProviderTest {
     assertTrue(provider.isWriteable(Message.class, Message.class, null, null));
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
     assertEquals(-1, provider.getSize(jxObject, Message.class, Message.class, null, null));
-    provider.writeTo(jxObject, Message.class, Message.class, null, null, new MultivaluedHashMap<String,Object>(), out);
+    provider.writeTo(jxObject, Message.class, Message.class, null, null, new MultivaluedHashMap<>(), out);
 
     assertEquals(data, new String(out.toByteArray()));
   }
@@ -97,7 +97,7 @@ public class JxObjectProviderTest {
     }
     catch (final RuntimeException e) {
       // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
-      assertEquals(ClassNotFoundException.class, e.getCause().getClass());
+      assertSame(ClassNotFoundException.class, e.getCause().getClass());
       boolean pass = false;
       for (final StackTraceElement el : e.getStackTrace()) {
         if (BadRequestException.class.getName().equals(el.getClassName())) {
@@ -113,7 +113,7 @@ public class JxObjectProviderTest {
 
     assertTrue(provider.isWriteable(List.class, Message.class, annotations, null));
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    provider.writeTo(jxObject, List.class, List.class, annotations, null, new MultivaluedHashMap<String,Object>(), out);
+    provider.writeTo(jxObject, List.class, List.class, annotations, null, new MultivaluedHashMap<>(), out);
 
     assertEquals(data, new String(out.toByteArray()));
   }

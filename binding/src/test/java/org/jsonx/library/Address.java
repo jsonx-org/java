@@ -17,8 +17,6 @@
 package org.jsonx.library;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Objects;
 
 import org.jsonx.JxEncoder;
 import org.jsonx.JxObject;

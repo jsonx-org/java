@@ -23,7 +23,7 @@ import java.util.zip.CRC32;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
-class Id {
+final class Id {
   private static String hash(final Object ... variables) {
     final CRC32 crc = new CRC32();
     final byte[] bytes = Arrays.toString(variables).getBytes();

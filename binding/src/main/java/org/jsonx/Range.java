@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import org.libj.util.Numbers;
 import org.openjax.json.JsonUtil;
@@ -138,7 +139,7 @@ public class Range implements Cloneable, Serializable {
       return false;
 
     final Range that = (Range)obj;
-    return (min != null ? min.equals(that.min) : that.min == null) && (max != null ? max.equals(that.max) : that.max == null) && minInclusive == that.minInclusive && maxInclusive == that.maxInclusive;
+    return Objects.equals(min, that.min) && Objects.equals(max, that.max) && minInclusive == that.minInclusive && maxInclusive == that.maxInclusive;
   }
 
   @Override

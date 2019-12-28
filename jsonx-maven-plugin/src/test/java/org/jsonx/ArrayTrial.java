@@ -30,7 +30,7 @@ import java.util.Optional;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 
-class ArrayTrial<T> extends PropertyTrial<T> {
+final class ArrayTrial<T> extends PropertyTrial<T> {
   static Object createValid(final Class<? extends Annotation> arrayAnnotationType, final int minIterate, final int maxIterate, final int[] elementIds, final IdToElement idToElement) {
     return createArray(arrayAnnotationType, minIterate, maxIterate, elementIds, idToElement, null);
   }
@@ -108,7 +108,7 @@ class ArrayTrial<T> extends PropertyTrial<T> {
     return relations.deflate();
   }
 
-  static void add(final List<PropertyTrial<?>> trials, final Field field, final Object object, final ArrayProperty property) {
+  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final ArrayProperty property) {
     logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
     trials.add(new ArrayTrial<>(ValidCase.CASE, field, object, createValid(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement()), property));
     final Object testNullable = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.NULLABLE);

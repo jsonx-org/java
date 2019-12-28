@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-class NullableCase extends FailureCase<ArrayTrial<Object>> {
+final class NullableCase extends FailureCase<ArrayTrial<Object>> {
   static final NullableCase CASE = new NullableCase();
 
   @Override

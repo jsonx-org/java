@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import org.jsonx.ArrayValidator.Relations;
 
-class OptionalNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
+final class OptionalNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
   static final OptionalNullableCase CASE = new OptionalNullableCase();
 
   @Override

@@ -28,7 +28,7 @@ import org.libj.util.DelegateList;
 import org.libj.util.Numbers;
 import org.libj.util.function.TriPredicate;
 
-class ArrayValidator {
+final class ArrayValidator {
   static class Relation {
     final Object member;
     final Annotation annotation;
@@ -50,7 +50,7 @@ class ArrayValidator {
 
   static class Relations extends DelegateList<Relation> {
     Relations() {
-      super(new ArrayList<Relation>());
+      super(new ArrayList<>());
     }
 
     private Relations(final List<Relation> target) {

@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-class ScaleCase extends FailureCase<NumberTrial> {
+final class ScaleCase extends FailureCase<NumberTrial> {
   static final ScaleCase CASE = new ScaleCase();
 
   @Override

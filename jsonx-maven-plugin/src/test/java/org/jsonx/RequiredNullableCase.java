@@ -18,7 +18,7 @@ package org.jsonx;
 
 import org.jsonx.ArrayValidator.Relations;
 
-class RequiredNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
+final class RequiredNullableCase extends SuccessCase<PropertyTrial<? super Object>> {
   static final RequiredNullableCase CASE = new RequiredNullableCase();
 
   @Override

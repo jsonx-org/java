@@ -22,7 +22,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 
-import org.jsonx.JxConverter;
 import org.junit.Test;
 import org.libj.io.Streams;
 import org.libj.net.MemoryURLStreamHandler;

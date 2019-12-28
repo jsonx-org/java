@@ -59,12 +59,11 @@ class ClassSpec {
     if (builder == null)
       builder = new StringBuilder();
 
-    final Iterator<AnnotationType> iterator = referrer.getClassAnnotation().iterator();
-    while (iterator.hasNext()) {
+    for (final AnnotationType annotation : referrer.getClassAnnotation()) {
       if (builder.length() > 0)
         builder.append('\n');
 
-      builder.append(iterator.next());
+      builder.append(annotation);
     }
 
     return builder.length() == 0 ? null : builder;
@@ -97,19 +96,19 @@ class ClassSpec {
 
       final StringBuilder annotation = memberClass.getAnnotation();
       if (annotation != null)
-        builder.append("\n  ").append(Strings.replace(annotation, "\n", "\n  "));
+        builder.append("\n  ").append(Strings.indent(annotation, 2));
 
       final String memberDoc = memberClass.getDoc();
       if (memberDoc != null)
         builder.append("\n  ").append(memberDoc);
 
-      builder.append("\n  public static ").append(memberClass.toString().replace("\n", "\n  "));
+      builder.append("\n  public static ").append(Strings.indent(memberClass.toString(), 2));
     }
 
     if (referrer != null) {
       final String code = referrer.toSource(settings);
       if (code != null && code.length() > 0)
-        builder.append("\n  ").append(code.replace("\n", "\n  "));
+        builder.append("\n  ").append(Strings.indent(code, 2));
     }
 
     return builder.append("\n}").toString();

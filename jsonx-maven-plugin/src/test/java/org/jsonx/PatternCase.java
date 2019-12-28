@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-class PatternCase extends FailureCase<StringTrial> {
+final class PatternCase extends FailureCase<StringTrial> {
   static final PatternCase CASE = new PatternCase();
 
   @Override

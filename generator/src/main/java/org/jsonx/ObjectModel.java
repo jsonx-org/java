@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -315,7 +316,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return ObjectElement.class;
   }
 
-  private boolean referencesResolved = false;
+  private boolean referencesResolved;
 
   @Override
   void resolveReferences() {
@@ -333,7 +334,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  void getDeclaredTypes(final Set<Registry.Type> types) {
+  void getDeclaredTypes(final Set<? super Registry.Type> types) {
     types.add(type());
     if (superObject != null)
       superObject.getDeclaredTypes(types);
@@ -400,7 +401,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   String toSource(final Settings settings) {
     final StringBuilder builder = new StringBuilder();
-    if (members != null && members.size() > 0) {
+    final boolean hasMembers = members != null && members.size() > 0;
+    if (hasMembers) {
       final Iterator<Member> iterator = members.values().iterator();
       for (int i = 0; iterator.hasNext(); ++i) {
         if (i > 0)
@@ -410,43 +412,44 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
     }
 
-    final Registry.Type type = classType();
-    if (members.size() > 0) {
+    if (hasMembers)
       builder.append("\n\n");
 
-      builder.append('@').append(Override.class.getName());
-      builder.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
-      builder.append("\n  if (obj == this)");
-      builder.append("\n    return true;");
-      builder.append("\n\n  if (!(obj instanceof ").append(type.getCanonicalName()).append(')').append((type.getSuperType() != null ? " || !super.equals(obj)" : "")).append(')');
-      builder.append("\n    return false;\n");
-      if (members != null && members.size() > 0) {
-        builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
-        for (final Member member : members.values()) {
-          final String instanceName = JsdUtil.toInstanceName(member.name);
-          builder.append("\n  if (that.").append(instanceName).append(" != null ? !that.").append(instanceName).append(".equals(").append(instanceName).append(") : ").append(instanceName).append(" != null)");
-          builder.append("\n    return false;\n");
-        }
+    final Registry.Type type = classType();
+    builder.append('@').append(Override.class.getName());
+    builder.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
+    builder.append("\n  if (obj == this)");
+    builder.append("\n    return true;");
+    builder.append("\n\n  if (!(obj instanceof ").append(type.getCanonicalName()).append(')').append((type.getSuperType() != null ? " || !super.equals(obj)" : "")).append(')');
+    builder.append("\n    return false;\n");
+    if (hasMembers) {
+      builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
+      for (final Member member : members.values()) {
+        final String instanceName = JsdUtil.toInstanceName(member.name);
+        builder.append("\n  if (that.").append(instanceName).append(" != null ? !that.").append(instanceName).append(".equals(").append(instanceName).append(") : ").append(instanceName).append(" != null)");
+        builder.append("\n    return false;\n");
       }
-      builder.append("\n  return true;");
-      builder.append("\n}");
+    }
+    builder.append("\n  return true;");
+    builder.append("\n}");
 
-      builder.append("\n\n@").append(Override.class.getName());
-      builder.append("\npublic int hashCode() {");
-      if (members != null && members.size() > 0) {
-        builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
-        for (final Member member : members.values()) {
-          final String instanceName = JsdUtil.toInstanceName(member.name);
-          builder.append("\n  hashCode = 31 * hashCode + (").append(instanceName).append(" == null ? 0 : ").append(instanceName).append(".hashCode());");
-        }
-
-        builder.append("\n  return hashCode;");
+    builder.append("\n\n@").append(Override.class.getName());
+    builder.append("\npublic int hashCode() {");
+    if (hasMembers) {
+      builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
+      for (final Member member : members.values()) {
+        final String instanceName = JsdUtil.toInstanceName(member.name);
+        builder.append("\n  hashCode = 31 * hashCode + ").append(Objects.class.getName()).append(".hashCode(").append(instanceName).append(");");
       }
-      else {
-        builder.append("\n  return ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
-      }
-      builder.append("\n}");
 
+      builder.append("\n  return hashCode;");
+    }
+    else {
+      builder.append("\n  return ").append(type.getName().hashCode()).append((type.getSuperType() != null ? " * 31 + super.hashCode()" : "")).append(';');
+    }
+    builder.append("\n}");
+
+    if (type.getSuperType() == null) {
       builder.append("\n\n@").append(Override.class.getName());
       builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
       builder.append("\n  return ").append(JxEncoder.class.getName()).append(".get().marshal(this);");

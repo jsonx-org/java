@@ -26,8 +26,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jsonx.JxConverter;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
 import org.openjax.json.JsonReader;
 import org.xml.sax.SAXException;
@@ -156,8 +156,8 @@ class ClassTrial extends Trial {
     catch (final Throwable t) {
 //      invoke(trial);
       logger.info(String.format("%06d", count) + " onEncode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
-      logger.error("  Value: " + String.valueOf(value).replace("\n", "\n  "));
-      logger.error("  JSON: " + String.valueOf(json).replace("\n", "\n  "));
+      logger.error("  Value: " + Strings.indent(String.valueOf(value), 2));
+      logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
       logger.error(t.getMessage(), t);
       throw t;
     }
@@ -194,8 +194,8 @@ class ClassTrial extends Trial {
     }
     catch (final Throwable t) {
       logger.info(String.format("%06d", count) + " onDecode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
-      logger.error("  Value: " + String.valueOf(object[0]).replace("\n", "\n  "));
-      logger.error("  JSON: " + String.valueOf(json).replace("\n", "\n  "));
+      logger.error("  Value: " + Strings.indent(String.valueOf(object[0]), 2));
+      logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
       logger.error(t.getMessage(), t);
       throw t;
     }
