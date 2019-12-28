@@ -48,7 +48,7 @@
     <property name="emptyArray" xsi:type="reference" type="rootArrayBool" doc="Property 3"/>
     <property names="any\d" xsi:type="any" types="rootNumberReal" use="optional" doc="Property 4"/>
   </object>
-  <object name="simple-booleans" doc="Oblect with simple booleans">
+  <object name="simple-booleans" doc="Object with simple booleans">
     <property name="booleanRefDefault" xsi:type="reference" type="rootBoolean"/>
     <property name="booleanRefOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
     <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
@@ -223,7 +223,7 @@
       <string/>
       <number scale="0" range="[-99999,99999]"/>
     </property>
-    <property name="arrayBooleanNumebr" xsi:type="array">
+    <property name="arrayBooleanNumber" xsi:type="array">
       <any/>
       <boolean/>
       <number scale="0" range="[-9999999,9999999]"/>

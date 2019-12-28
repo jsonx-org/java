@@ -598,12 +598,12 @@ public class schema {
     @org.jsonx.StringProperty(pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
     private java.lang.String range;
 
-    /**        Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interal: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val] **/
+    /**        Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interval: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val] **/
     public void setRange(final java.lang.String range) {
       this.range = range;
     }
 
-    /**        Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interal: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val] **/
+    /**        Specifies the value range in interval notation:       Open (exclusive) interval: (min,max)       Closed (inclusive) interval: [min,max]       Half-open or half-closed interval: [min,max)       Degenerate interval: [val] **/
     public java.lang.String getRange() {
       return range;
     }

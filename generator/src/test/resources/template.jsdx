@@ -20,16 +20,16 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
   <array name="arrayDepthFour" minIterate="4" maxIterate="4" doc="Array template">
-    <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10" doc="Referene to arrayDepthThree"/>
+    <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10" doc="Reference to arrayDepthThree"/>
     <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8" doc="Referene to arrayDepthTwo"/>
     <reference type="rootBoolean" doc="Referene to rootBoolean"/>
-    <reference type="rootBoolean" nullable="false" doc="Not-nullable referene to rootBoolean"/>
+    <reference type="rootBoolean" nullable="false" doc="Not-nullable reference to rootBoolean"/>
   </array>
   <array name="arrayDepthOne" doc="Array with a depth of one">
     <reference type="rootBoolean" minOccurs="5" maxOccurs="6" nullable="false" doc="Reference to rootBoolean"/>
   </array>
   <array name="arrayDepthThree" minIterate="3" maxIterate="3" doc="Array with a depth of three">
-    <reference type="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4" doc="Refenre to arrayDepthTwo"/>
+    <reference type="arrayDepthTwo" nullable="false" minOccurs="3" maxOccurs="4" doc="Reference to arrayDepthTwo"/>
     <reference type="rootNumber" nullable="false" doc="Reference to rootNumber"/>
     <reference type="rootString" doc="Reference to rootString"/>
   </array>
@@ -50,8 +50,8 @@
     <property name="arrayThree" xsi:type="reference" type="arrayDepthThree" use="optional" nullable="false" doc="Reference to arrayDepthThree"/>
     <property name="arrayFour" xsi:type="reference" type="arrayDepthFour" use="optional" doc="Reference to arrayDepthFour"/>
     <property names="any2\*" xsi:type="any" types="rootString rootNumber" doc="Property with regex name and type 'rootString' or 'rootNumber'"/>
-    <property name="booleanDirectOptional" xsi:type="boolean" use="optional" doc="Propery of boolean type"/>
-    <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false" doc="Propery preferencing rootBoolean"/>
+    <property name="booleanDirectOptional" xsi:type="boolean" use="optional" doc="Property of boolean type"/>
+    <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false" doc="Property preferencing rootBoolean"/>
     <property names="any3*" xsi:type="any" types="rootNumber rootBoolean" nullable="false" doc="Property with regex name accepting type 'rootNumber' or 'rootBoolean'"/>
     <property names="any4+" xsi:type="any" types="rootString arrayDepthOne" nullable="false" doc="Property with regex name accepting type 'rootString' or 'arrayDepthOne'"/>
     <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional" doc="Propery preferencing rootBoolean"/>

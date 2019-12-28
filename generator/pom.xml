@@ -29,7 +29,7 @@
   <description>
     The JSD Binding Generator consumes a JSD schema, and produces Java classes in the form of .java
     files. The generated classes have code that relies on the JSON/Java Binding API to achieve
-    binding between JSON documents conforming to a JSD schema, and Java object represetations of
+    binding between JSON documents conforming to a JSD schema, and Java object representations of
     these documents.
   </description>
   <build>

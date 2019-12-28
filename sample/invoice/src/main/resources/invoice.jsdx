@@ -33,7 +33,7 @@
   <object name="invoice" doc="An invoice">
     <property name="number" xsi:type="reference" type="positiveInteger" doc="Invoice number"/>
     <property name="date" xsi:type="reference" type="date" doc="Date of invoice"/>
-    <property name="billingAddress" xsi:type="reference" type="address" doc="Billindg address"/>
+    <property name="billingAddress" xsi:type="reference" type="address" doc="Billing address"/>
     <property name="shippingAddress" xsi:type="reference" type="address" doc="Shipping address"/>
     <property name="billedItems" xsi:type="array" nullable="false" doc="Array of billed items">
       <reference type="item" doc="Billed item"/>
