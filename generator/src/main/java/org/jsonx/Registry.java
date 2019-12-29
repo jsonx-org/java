@@ -405,12 +405,12 @@ class Registry {
       return false;
 
     final ReferrerManifest referrers = refToReferrers.get(member.id.toString());
-    final int numReferrers = referrers == null ? 0 : referrers.getNumReferrers();
+    final int numReferrers = referrers != null ? referrers.getNumReferrers() : 0;
     if (member instanceof ArrayModel)
       return ((ArrayModel)member).classType() != null;
 
     if (member instanceof ObjectModel)
-      return numReferrers == 0 || numReferrers > 1 || referrers.hasReferrerType(AnyModel.class) || referrers.hasReferrerType(ArrayModel.class);
+      return numReferrers == 0 || numReferrers > 1 || referrers != null && (referrers.hasReferrerType(AnyModel.class) || referrers.hasReferrerType(ArrayModel.class));
 
     return numReferrers >= settings.getTemplateThreshold() || referrers != null && referrers.hasReferrerType(AnyModel.class);
   }

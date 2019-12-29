@@ -227,8 +227,7 @@ class ClassTrial extends Trial {
     else if (trial.kase instanceof FailureCase) {
       if (e == null)
         assertNotNull(trial.getClass().getSimpleName(), e);
-
-      if (!(e instanceof EncodeException))
+      else if (!(e instanceof EncodeException))
         throw e;
 
       ((FailureCase<PropertyTrial<T>>)trial.kase).onEncode(trial, (EncodeException)e);

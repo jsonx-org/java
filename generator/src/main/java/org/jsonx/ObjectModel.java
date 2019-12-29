@@ -150,6 +150,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return model != null ? registry.reference(model, null) : registry.declare(id).value(new ObjectModel(registry, declarer, cls, null, null), null);
   }
 
+  @SuppressWarnings("null")
   static String getFullyQualifiedName(final xL0gluGCXAA.$Object binding) {
     final StringBuilder builder = new StringBuilder();
     xL0gluGCXAA.$Object owner = binding;

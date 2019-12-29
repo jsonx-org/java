@@ -126,6 +126,7 @@ final class StringTrial extends PropertyTrial<String> {
     return new StringGen(pattern).random();
   }
 
+  @SuppressWarnings("null")
   private static String createInvalid(final String regex) {
     String fail = null;
     for (int i = 0; i < 1000; ++i) {

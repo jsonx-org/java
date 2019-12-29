@@ -136,7 +136,7 @@ final class JsdUtil {
     if (annotation == null)
       throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
 
-    if (elementIds.length == 0)
+    if (elementIds == null || elementIds.length == 0)
       throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES));
 
     return elementIds;

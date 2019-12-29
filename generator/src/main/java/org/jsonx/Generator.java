@@ -40,6 +40,7 @@ public final class Generator {
     System.exit(1);
   }
 
+  @SuppressWarnings("null")
   public static void main(final String[] args) throws IOException {
     if (args.length == 0 || args[0] == null || args[0].length() == 0)
       trapPrintUsage();

@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -41,13 +42,13 @@ public class ValidateMojo extends PatternSetMojo {
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     try {
-      for (final URL schema : configuration.getFileSets())
-        SchemaElement.parse(schema, "");
+      for (final URI schema : configuration.getFileSets())
+        SchemaElement.parse(schema.toURL(), "");
 
       for (final String schema : new LinkedHashSet<>(schemas))
         SchemaElement.parse(new URL(schema), "");
     }
-    catch (final  IOException e) {
+    catch (final IOException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);
     }
   }

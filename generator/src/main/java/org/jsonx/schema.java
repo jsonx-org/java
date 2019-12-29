@@ -523,7 +523,7 @@ public class schema {
     }
   }
 
-  public static abstract class Documented implements org.jsonx.JxObject {
+  public abstract static class Documented implements org.jsonx.JxObject {
     @org.jsonx.StringProperty
     private java.lang.String doc;
 
@@ -565,7 +565,7 @@ public class schema {
     }
   }
 
-  public static abstract class Member extends org.jsonx.schema.Documented {
+  public abstract static class Member extends org.jsonx.schema.Documented {
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -767,7 +767,7 @@ public class schema {
     }
   }
 
-  public static abstract class Object extends org.jsonx.schema.Member {
+  public abstract static class Object extends org.jsonx.schema.Member {
     public static class Properties implements org.jsonx.JxObject {
       @org.jsonx.AnyProperty(name=".*", types={@org.jsonx.t(objects=org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects=org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects=org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects=org.jsonx.schema.StringProperty.class)}, nullable=false)
       public final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _2e_2a = new java.util.LinkedHashMap<>();
@@ -1017,7 +1017,7 @@ public class schema {
     }
   }
 
-  public static abstract class Reference extends org.jsonx.schema.Member {
+  public abstract static class Reference extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="reference", nullable=false)
     private java.lang.String jx_3aType;
 

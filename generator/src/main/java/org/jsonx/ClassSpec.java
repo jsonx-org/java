@@ -73,11 +73,13 @@ class ClassSpec {
     nameToClassSpec.put(classSpec.type.getName(), classSpec);
   }
 
-  @Override
-  public String toString() {
+  private String toString(final ClassSpec parent) {
     final StringBuilder builder = new StringBuilder();
     if (referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract)
       builder.append("abstract ");
+
+    if (parent != null)
+      builder.append("static ");
 
     builder.append(type.getKind()).append(' ').append(type.getSimpleName());
     if (type.getKind() == Registry.Kind.CLASS && referrer != null) {
@@ -102,7 +104,7 @@ class ClassSpec {
       if (memberDoc != null)
         builder.append("\n  ").append(memberDoc);
 
-      builder.append("\n  public static ").append(Strings.indent(memberClass.toString(), 2));
+      builder.append("\n  public ").append(Strings.indent(memberClass.toString(this), 2));
     }
 
     if (referrer != null) {
@@ -112,5 +114,10 @@ class ClassSpec {
     }
 
     return builder.append("\n}").toString();
+  }
+
+  @Override
+  public String toString() {
+    return toString(null);
   }
 }

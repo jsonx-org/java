@@ -394,6 +394,7 @@ final class AnyModel extends Referrer<AnyModel> {
     final List<String> values = new ArrayList<>();
     attributes.put("types", values);
 
+    StringBuilder builder = null;
     for (final Member type : types) {
       if (type instanceof ArrayModel) {
         values.add("@" + t.class.getName() + "(arrays=" + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
@@ -405,7 +406,11 @@ final class AnyModel extends Referrer<AnyModel> {
         final NumberModel model = (NumberModel)type;
         final AttributeMap numberAttrs = new AttributeMap();
         model.toAnnotationAttributes(numberAttrs, this);
-        final StringBuilder builder = new StringBuilder();
+        if (builder == null)
+          builder = new StringBuilder();
+        else
+          builder.setLength(0);
+
         builder.append('@').append(NumberType.class.getName());
         if (numberAttrs.size() > 0) {
           builder.append('(');
