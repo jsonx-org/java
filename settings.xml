@@ -25,7 +25,6 @@
       </activation>
       <properties>
         <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
-        <gpg.executable>${env.GPG_EXECUTABLE}</gpg.executable>
         <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
       </properties>
       <repositories>
