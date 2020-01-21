@@ -22,12 +22,6 @@ import org.junit.Test;
 
 public class EncodeExceptionTest {
   @Test
-  public void testDefault() {
-    final EncodeException e = new EncodeException();
-    assertNull(e.getMessage());
-  }
-
-  @Test
   public void testError() {
     final Error error = Error.ILLEGAL_VALUE_NULL;
     final EncodeException e = new EncodeException(error);

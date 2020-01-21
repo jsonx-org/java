@@ -29,21 +29,29 @@ public class DecodeException extends Exception {
    */
   private final int errorOffset;
 
+  DecodeException(final Error error) {
+    this(error.toString(), error.offset, null);
+  }
+
   /**
-   * Constructs a ParseException with the specified detail message and offset. A
-   * detail message is a String that describes this particular exception.
+   * Creates a new {@link DecodeException} with the specified detail message and
+   * offset.
    *
-   * @param message The detail message.
+   * @param message The detail message that describes this particular exception.
    * @param errorOffset The position where the error is found while parsing.
    */
   public DecodeException(final String message, final int errorOffset) {
     this(message, errorOffset, null);
   }
 
-  public DecodeException(final Error error) {
-    this(error.toString(), error.offset, null);
-  }
-
+  /**
+   * Creates a new {@link DecodeException} with the specified detail message,
+   * offset, and cause.
+   *
+   * @param message The detail message that describes this particular exception.
+   * @param errorOffset The position where the error is found while parsing.
+   * @param cause The cause.
+   */
   public DecodeException(final String message, final int errorOffset, final Throwable cause) {
     super(message != null ? message + " [errorOffset: " + errorOffset + "]" : "[errorOffset: " + errorOffset + "]", cause);
     this.errorOffset = errorOffset;

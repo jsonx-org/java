@@ -26,21 +26,18 @@ import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonUtil;
 
 class NumberCodec extends PrimitiveCodec<Number> {
-  static Number decodeArray(final int scale, final String token) {
-    final char ch;
-    if ((ch = token.charAt(0)) != '-' && (ch < '0' || '9' < ch))
-      return null;
-
-    return NumberCodec.decodeObject(scale, token);
-  }
-
-  static Number decodeObject(final int scale, final String json) {
+  private static Number decodeObject(final int scale, final String json) {
     try {
       return scale == 0 ? JsonUtil.parseInteger(json) : JsonUtil.parseDecimal(json);
     }
     catch (final JsonParseException e) {
       return null;
     }
+  }
+
+  static Number decodeArray(final int scale, final String token) {
+    final char ch;
+    return (ch = token.charAt(0)) != '-' && (ch < '0' || '9' < ch) ? null : decodeObject(scale, token);
   }
 
   static Error encodeArray(final Annotation annotation, final int scale, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
@@ -131,7 +128,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
     if (error != null)
       return error;
 
-    // FIXME: decode() is done here and in the caller's scope
+    // FIXME: decodeObject() called twice via ObjectCodec#71 and ObjectCodec#75
     if (range != null && !range.isValid(parse(json)))
       return Error.RANGE_NOT_MATCHED(range, json, offset);
 

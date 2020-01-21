@@ -23,22 +23,40 @@ package org.jsonx;
 public class EncodeException extends RuntimeException {
   private static final long serialVersionUID = -5907473656780591942L;
 
-  public EncodeException() {
-    this(null, null);
-  }
-
-  public EncodeException(final Error error) {
+  /**
+   * Creates a new {@link EncodeException} with the specified {@link Error}.
+   *
+   * @param error The {@link Error}.
+   */
+  EncodeException(final Error error) {
     this(error.toString(), null);
   }
 
+  /**
+   * Creates a new {@link EncodeException} with the specified detail message.
+   *
+   * @param message The detail message.
+   */
   public EncodeException(final String message) {
     this(message, null);
   }
 
+  /**
+   * Creates a new {@link EncodeException} with the specified cause.
+   *
+   * @param cause The cause.
+   */
   public EncodeException(final Throwable cause) {
     this(null, cause);
   }
 
+  /**
+   * Creates a new {@link EncodeException} with the specified detail message and
+   * cause.
+   *
+   * @param message The detail message.
+   * @param cause The cause.
+   */
   public EncodeException(final String message, final Throwable cause) {
     super(message, cause);
   }

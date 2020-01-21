@@ -16,6 +16,9 @@
 
 package org.jsonx;
 
+/**
+ * Enum representing the "use" specification for properties.
+ */
 public enum Use {
   OPTIONAL,
   REQUIRED
