@@ -14,6 +14,7 @@
 # program. If not, see <http://opensource.org/licenses/MIT/>.
 
 dist: trusty
+sudo: required
 language: java
 jdk:
 - openjdk8
