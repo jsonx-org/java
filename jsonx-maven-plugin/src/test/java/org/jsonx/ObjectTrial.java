@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
-import org.libj.util.Classes;
+import org.libj.lang.Classes;
 
 final class ObjectTrial extends PropertyTrial<Object> {
   static Object createValid(final Class<?> type) {

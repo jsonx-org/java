@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 
+import org.libj.lang.Classes;
 import org.libj.util.ArrayUtil;
-import org.libj.util.Classes;
 import org.libj.util.function.Throwing;
 import org.libj.util.function.TriConsumer;
 import org.libj.util.function.TriPredicate;

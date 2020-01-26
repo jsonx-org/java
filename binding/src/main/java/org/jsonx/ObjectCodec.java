@@ -25,7 +25,7 @@ import java.util.Map;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.libj.util.Classes;
+import org.libj.lang.Classes;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 

@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.$MaxOccurs;
-import org.libj.util.Classes;
+import org.libj.lang.Classes;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;

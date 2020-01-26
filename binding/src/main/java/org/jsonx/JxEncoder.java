@@ -27,8 +27,8 @@ import java.util.Optional;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Classes;
 import org.libj.util.ArrayUtil;
-import org.libj.util.Classes;
 
 /**
  * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx

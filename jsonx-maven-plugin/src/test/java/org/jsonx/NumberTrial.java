@@ -23,7 +23,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
-import org.libj.util.Classes;
+import org.libj.lang.Classes;
 
 final class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
