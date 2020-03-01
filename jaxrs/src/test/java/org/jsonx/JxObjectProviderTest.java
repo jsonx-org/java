@@ -30,7 +30,6 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.junit.Test;
-import org.openjax.json.JsonParseException;
 
 public class JxObjectProviderTest {
   private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder._0);
@@ -81,9 +80,8 @@ public class JxObjectProviderTest {
   private static boolean isBadRequestException(final RuntimeException e) {
     // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
     assertSame(ClassNotFoundException.class, e.getCause().getClass());
-    boolean pass = false;
-    for (final StackTraceElement el : e.getStackTrace())
-      if (BadRequestException.class.getName().equals(el.getClassName()))
+    for (final StackTraceElement element : e.getStackTrace())
+      if (BadRequestException.class.getName().equals(element.getClassName()))
         return true;
 
     return false;
@@ -97,7 +95,7 @@ public class JxObjectProviderTest {
     assertTrue(provider.isReadable(List.class, List.class, annotations, null));
     try {
       provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream("nf989349".getBytes()));
-      fail("Expected JsonParseException");
+      fail("Expected JsonParseException -> BadRequestException -> RuntimeException");
     }
     catch (final RuntimeException e) {
       assertTrue(isBadRequestException(e));
@@ -105,7 +103,7 @@ public class JxObjectProviderTest {
 
     try {
       provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream("[]".getBytes()));
-      fail("Expected DecodeException");
+      fail("Expected DecodeException -> BadRequestException -> RuntimeException");
     }
     catch (final RuntimeException e) {
       assertTrue(isBadRequestException(e));
