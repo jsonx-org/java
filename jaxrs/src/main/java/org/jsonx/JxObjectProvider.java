@@ -33,6 +33,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
 /**
@@ -104,7 +105,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
 
       throw new IllegalArgumentException("Illegal type: " + type.getName());
     }
-    catch (final DecodeException e) {
+    catch (final JsonParseException | DecodeException e) {
       throw new BadRequestException(e);
     }
   }
