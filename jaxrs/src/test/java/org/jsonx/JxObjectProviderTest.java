@@ -78,6 +78,17 @@ public class JxObjectProviderTest {
     assertEquals(data, new String(out.toByteArray()));
   }
 
+  private static boolean isBadRequestException(final RuntimeException e) {
+    // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
+    assertSame(ClassNotFoundException.class, e.getCause().getClass());
+    boolean pass = false;
+    for (final StackTraceElement el : e.getStackTrace())
+      if (BadRequestException.class.getName().equals(el.getClassName()))
+        return true;
+
+    return false;
+  }
+
   @Test
   @SuppressWarnings("unchecked")
   public void testArrayType() throws IOException, ClassNotFoundException, NoSuchFieldException {
@@ -88,7 +99,8 @@ public class JxObjectProviderTest {
       provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream("nf989349".getBytes()));
       fail("Expected JsonParseException");
     }
-    catch (final JsonParseException e) {
+    catch (final RuntimeException e) {
+      assertTrue(isBadRequestException(e));
     }
 
     try {
@@ -96,17 +108,7 @@ public class JxObjectProviderTest {
       fail("Expected DecodeException");
     }
     catch (final RuntimeException e) {
-      // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
-      assertSame(ClassNotFoundException.class, e.getCause().getClass());
-      boolean pass = false;
-      for (final StackTraceElement el : e.getStackTrace()) {
-        if (BadRequestException.class.getName().equals(el.getClassName())) {
-          pass = true;
-          break;
-        }
-      }
-
-      assertTrue(pass);
+      assertTrue(isBadRequestException(e));
     }
 
     final List<?> jxObject = (List<?>)provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream(data.getBytes()));
