@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.PatternSyntaxException;
 
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Binding;
@@ -39,6 +40,7 @@ import org.jsonx.www.schema_0_3.xL0gluGCXAA.$String;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.Schema;
 import org.libj.lang.Strings;
 import org.libj.util.CollectionUtil;
+import org.libj.util.Patterns;
 import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Member extends Element {
@@ -86,6 +88,15 @@ abstract class Member extends Element {
   private static void checkMinMaxOccurs(final String source, final Integer minOccurs, final Integer maxOccurs) {
     if (minOccurs != null && maxOccurs != null && minOccurs > maxOccurs)
       throw new ValidationException(source + ": minOccurs=\"" + minOccurs + "\" > maxOccurs=\"" + maxOccurs + "\"");
+  }
+
+  static boolean isMultiRegex(final String str) {
+    try {
+      return Patterns.unescape(str) == null;
+    }
+    catch (final PatternSyntaxException e) {
+      return false;
+    }
   }
 
   final Registry registry;
@@ -177,7 +188,7 @@ abstract class Member extends Element {
     if (!name.equals(instanceName) && !attributes.containsKey("name"))
       attributes.put("name", "\"" + Strings.escapeForJava(name) + "\"");
 
-    final boolean isRegex = this instanceof AnyModel && Strings.isRegex(name);
+    final boolean isRegex = this instanceof AnyModel && isMultiRegex(name);
     final Registry.Type type;
     if (isRegex)
       type = registry.getType(LinkedHashMap.class, registry.getType(String.class), type());

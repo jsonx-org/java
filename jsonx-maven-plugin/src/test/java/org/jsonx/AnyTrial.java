@@ -20,11 +20,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.libj.lang.Strings;
-
 final class AnyTrial extends PropertyTrial<Object> {
   static String createName(final AnyProperty property) {
-    return Strings.isRegex(property.name()) ? StringTrial.createValid(property.name()) : property.name();
+    final boolean isRegex = Member.isMultiRegex(property.name());
+    return isRegex ? StringTrial.createValid(property.name()) : property.name();
   }
 
   static Object createValid(final AnyProperty property) {

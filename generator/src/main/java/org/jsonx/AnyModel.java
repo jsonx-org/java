@@ -27,7 +27,6 @@ import java.util.Map;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
-import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
@@ -155,7 +154,7 @@ final class AnyModel extends Referrer<AnyModel> {
     super(registry, declarer, property.nullable(), property.use(), null);
     this.types = getMemberTypes(property.types());
     final Class<?> requiredFieldType = property.types().length == 0 ? Object.class : getFieldType(property.types());
-    final boolean isRegex = Strings.isRegex(property.name());
+    final boolean isRegex = isMultiRegex(property.name());
     if (isRegex && !Map.class.isAssignableFrom(field.getType()))
       throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + AnyProperty.class.getSimpleName() + " of type " + field.getType().getName() + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
 
