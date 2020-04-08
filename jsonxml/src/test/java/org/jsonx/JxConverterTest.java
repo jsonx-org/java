@@ -41,7 +41,9 @@ public class JxConverterTest {
         final String test = JxConverter.jsonxToJson(url.openStream(), true);
         if (!control.equals(test)) {
           System.err.println(jsonx);
+          System.err.flush();
           System.out.println(test);
+          System.out.flush();
           assertEquals(control, test);
         }
 
