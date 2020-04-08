@@ -256,8 +256,6 @@ public class JxEncoder {
           return error;
       }
       else if (annotation instanceof AnyProperty) {
-        if ("content".equals(name))
-          System.out.println();
         final Object encoded = AnyCodec.encodeObject(annotation, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, this, depth, validate);
         if (encoded instanceof Error)
           return (Error)encoded;
