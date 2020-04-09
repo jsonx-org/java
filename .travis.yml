@@ -25,9 +25,9 @@ script:
       [ "$TRAVIS_BRANCH" = "master" ] &&
       [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     eval "$SIGNING_KEY" &> /dev/null &&
-    mvn -e -U -s settings.xml -DskipRTests -DrepoToken=$REPO_TOKEN clean deploy -P javadoc,report,deploy;
+    mvn -e -U -B -s settings.xml -DskipRTests -DrepoToken=$REPO_TOKEN deploy -P javadoc,report,deploy;
   else
-    mvn -e -U -s settings.xml -DskipRTests clean install;
+    mvn -e -U -B -s settings.xml -DskipRTests install;
   fi'
 cache:
   directories:
