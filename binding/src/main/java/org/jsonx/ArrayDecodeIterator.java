@@ -28,7 +28,7 @@ import org.openjax.json.JsonReader;
 class ArrayDecodeIterator extends ArrayIterator {
   private final JsonReader reader;
   private final ArrayIntList indexes = new ArrayIntList();
-  private short cursor;
+  private int cursor;
 
   ArrayDecodeIterator(final JsonReader reader) {
     this.reader = reader;
@@ -87,7 +87,7 @@ class ArrayDecodeIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
 
     if (value == null)
-      return Error.CONTENT_NOT_EXPECTED(token, -1);
+      return Error.CONTENT_NOT_EXPECTED(token, null);
 
     if (value instanceof Error)
       return (Error)value;

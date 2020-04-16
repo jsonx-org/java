@@ -78,7 +78,7 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
 
     final Relations relations = new Relations();
     try {
-      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null, -1);
+      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, false, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null, -1);
     }
     catch (final IOException e) {
       throw new UncheckedIOException(e);
