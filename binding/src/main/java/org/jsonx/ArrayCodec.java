@@ -54,20 +54,20 @@ class ArrayCodec extends Codec {
   static Object decodeObject(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
     final Relations relations = new Relations();
-    final Error error = ArrayValidator.validate(iterator, 1, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode, -1);
+    final Error error = ArrayValidator.validate(iterator, 1, false, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode, -1);
     if (error != null)
       return error;
 
     final String token = reader.readToken();
     if (!"]".equals(token))
-      return Error.EXPECTED_ARRAY(token, reader.getPosition());
+      return Error.EXPECTED_ARRAY(token, reader);
 
     return relations.deflate();
   }
 
   static Error encodeArray(final Annotation annotation, final Class<? extends Annotation> type, final Object object, final int index, final Relations relations, IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (!(object instanceof List))
-      return Error.CONTENT_NOT_EXPECTED(object, -1);
+      return Error.CONTENT_NOT_EXPECTED(object, null);
 
     final int[] elementIds;
     if (type == ArrayType.class) {

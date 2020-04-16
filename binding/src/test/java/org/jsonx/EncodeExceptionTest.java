@@ -23,7 +23,7 @@ import org.junit.Test;
 public class EncodeExceptionTest {
   @Test
   public void testError() {
-    final Error error = Error.ILLEGAL_VALUE_NULL;
+    final Error error = Error.ILLEGAL_VALUE_NULL();
     final EncodeException e = new EncodeException(error);
     assertEquals(error.toString(), e.getMessage());
   }

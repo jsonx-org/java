@@ -22,47 +22,57 @@ import java.util.Arrays;
 
 import org.libj.lang.Strings;
 import org.libj.util.Annotations;
+import org.openjax.json.JsonReader;
 
 final class Error {
   static final Error NULL = new Error(null);
-  static final Error LOOP = new Error("Loop detected");
-  static final Error NOT_A_STRING = new Error("Is not a string");
-  static final Error ILLEGAL_VALUE_NULL = new Error("Illegal value: null");
+
+  static Error LOOP() {
+    return new Error("Loop detected");
+  }
+
+  static Error NOT_A_STRING() {
+    return new Error("Is not a string");
+  }
+
+  static Error ILLEGAL_VALUE_NULL() {
+    return new Error("Illegal value: null");
+  }
 
   static Error INVALID_FIELD(final Field field, final Error error) {
     return new Error("%s: %s", field, error);
   }
 
-  static Error EXPECTED_ARRAY(final String token, final int offset) {
-    return new Error(offset, "Expected ']', but got '%s'", token);
+  static Error EXPECTED_ARRAY(final String token, final JsonReader reader) {
+    return new Error(reader, "Expected ']', but got '%s'", token);
   }
 
-  static Error CONTENT_NOT_EXPECTED(final Object content, final int offset) {
-    return new Error(offset, "Content is not expected: %s", content);
+  static Error CONTENT_NOT_EXPECTED(final Object content, final JsonReader reader) {
+    return new Error(reader, "Content is not expected: %s", content);
   }
 
-  static Error EXPECTED_TYPE(final String name, final String elementName, final String token, final int offset) {
-    return new Error(offset, "Expected \"%s\" to be a \"%s\", but got: %s", name, elementName, token);
+  static Error EXPECTED_TYPE(final String name, final String elementName, final String token, final JsonReader reader) {
+    return new Error(reader, "Expected \"%s\" to be a \"%s\", but got: %s", name, elementName, token);
   }
 
-  static Error EXPECTED_TOKEN(final String name, final String elementName, final String token, final int offset) {
-    return new Error(offset, "Expected \"%s\" to be a \"%s\", but got token: \"%s\"", name, elementName, token);
+  static Error EXPECTED_TOKEN(final String name, final String elementName, final String token, final JsonReader reader) {
+    return new Error(reader, "Expected \"%s\" to be a \"%s\", but got token: \"%s\"", name, elementName, token);
   }
 
-  static Error UNKNOWN_PROPERTY(final String propertyName, final int offset) {
-    return new Error(offset, "Unknown property: \"%s\"", propertyName);
+  static Error UNKNOWN_PROPERTY(final String propertyName, final JsonReader reader) {
+    return new Error(reader, "Unknown property: \"%s\"", propertyName);
   }
 
-  static Error RANGE_NOT_MATCHED(final Object range, final Object object, final int offset) {
-    return new Error(offset, "Range %s does not match: %s", range, object);
+  static Error RANGE_NOT_MATCHED(final Object range, final Object object, final JsonReader reader) {
+    return new Error(reader, "Range %s does not match: %s", range, object);
   }
 
-  static Error SCALE_NOT_VALID(final int scale, final Object object, final int offset) {
-    return new Error(offset, "Unsatisfied scale=\"%d\": %s", scale, object);
+  static Error SCALE_NOT_VALID(final int scale, final Object object, final JsonReader reader) {
+    return new Error(reader, "Unsatisfied scale=\"%d\": %s", scale, object);
   }
 
-  static Error BOOLEAN_NOT_VALID(final String token, final int offset) {
-    return new Error(offset, "Not a valid boolean token: %s", token);
+  static Error BOOLEAN_NOT_VALID(final String token, final JsonReader reader) {
+    return new Error(reader, "Not a valid boolean token: %s", token);
   }
 
   static Error PROPERTY_NOT_NULLABLE(final String name, final Annotation annotation) {
@@ -77,8 +87,8 @@ final class Error {
     return new Error("Property \"%s\" is required: %s", name, value);
   }
 
-  static Error PATTERN_NOT_MATCHED(final String pattern, final String string, final int offset) {
-    return new Error(offset, "Pattern \"%s\" does not match: \"%s\"", pattern, string);
+  static Error PATTERN_NOT_MATCHED(final String pattern, final String string, final JsonReader reader) {
+    return new Error(reader, "Pattern \"%s\" does not match: \"%s\"", pattern, string);
   }
 
   static Error PATTERN_NOT_MATCHED_ANNOTATION(final Annotation annotation, final String string) {
@@ -101,33 +111,48 @@ final class Error {
     return new Error("Invalid content was found starting with member index=%d: %s: No members are expected at this point: %s", index, annotation, object);
   }
 
-  private final Object[] args;
+  private JsonReader reader;
+  private final int offset;
   private final String message;
-  final int offset;
+  private final Object[] args;
   private Error next;
   private String rendered;
 
-  private Error(final String message) {
-    this.offset = -1;
-    this.message = message;
-    this.args = null;
+  boolean isBefore(final Error error) {
+    return offset < error.offset;
   }
 
-  private Error(final int offset, final String message, final Object ... args) {
-    this.offset = offset;
-    this.message = message;
-    this.args = args;
+  private Error(final String message) {
+    this(null, message, (Object[])null);
   }
 
   private Error(final String message, final Object ... args) {
-    this.offset = -1;
+    this(null, message, args);
+  }
+
+  private Error(final JsonReader reader, final String message, final Object ... args) {
+    this.reader = reader;
+    this.offset = reader != null ? reader.getPosition() - 1 : -1;
     this.message = message;
     this.args = args;
+  }
+
+  Error setReader(final JsonReader reader) {
+    this.reader = reader;
+    return this;
   }
 
   Error append(final Error error) {
     this.next = error;
     return this;
+  }
+
+  public JsonReader getReader() {
+    return this.reader;
+  }
+
+  public int getOffset() {
+    return this.offset;
   }
 
   @Override

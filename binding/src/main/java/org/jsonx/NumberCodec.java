@@ -23,6 +23,7 @@ import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.util.Annotations;
 import org.openjax.json.JsonParseException;
+import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;
 
 class NumberCodec extends PrimitiveCodec<Number> {
@@ -42,7 +43,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   static Error encodeArray(final Annotation annotation, final int scale, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!(object instanceof Number))
-      return Error.CONTENT_NOT_EXPECTED(object, -1);
+      return Error.CONTENT_NOT_EXPECTED(object, null);
 
     if (validate) {
       final Error error = NumberCodec.validate(annotation, (Number)object, scale, range);
@@ -66,18 +67,18 @@ class NumberCodec extends PrimitiveCodec<Number> {
 
   private static Error validate(final Annotation annotation, final Number object, final int scale, final String range) {
     if (scale != 0) {
-      final Error error = isScaleValid(object.toString(), scale, -1);
+      final Error error = isScaleValid(object.toString(), scale, null);
       if (error != null)
         return error;
     }
     else if (object.longValue() != object.doubleValue()) {
-      return Error.SCALE_NOT_VALID(scale, object, -1);
+      return Error.SCALE_NOT_VALID(scale, object, null);
     }
 
     if (range.length() > 0) {
       try {
         if (!new Range(range).isValid(object))
-          return Error.RANGE_NOT_MATCHED(range, object, -1);
+          return Error.RANGE_NOT_MATCHED(range, object, null);
       }
       catch (final ParseException e) {
         throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES), e);
@@ -111,26 +112,26 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return firstChar == '-' || '0' <= firstChar && firstChar <= '9';
   }
 
-  private static Error isScaleValid(final String value, final int scale, final int offset) {
+  private static Error isScaleValid(final String value, final int scale, final JsonReader reader) {
     if (scale == Integer.MAX_VALUE)
       return null;
 
     final int dot = value.indexOf('.');
     if (scale != 0 ? value.length() - 1 - dot > scale : dot != -1)
-      return Error.SCALE_NOT_VALID(scale, value, offset);
+      return Error.SCALE_NOT_VALID(scale, value, reader);
 
     return null;
   }
 
   @Override
-  Error validate(final String json, final int offset) {
-    final Error error = isScaleValid(json, scale, offset);
+  Error validate(final String json, final JsonReader reader) {
+    final Error error = isScaleValid(json, scale, reader);
     if (error != null)
       return error;
 
     // FIXME: decodeObject() called twice via ObjectCodec#71 and ObjectCodec#75
     if (range != null && !range.isValid(parse(json)))
-      return Error.RANGE_NOT_MATCHED(range, json, offset);
+      return Error.RANGE_NOT_MATCHED(range, json, reader);
 
     return null;
   }

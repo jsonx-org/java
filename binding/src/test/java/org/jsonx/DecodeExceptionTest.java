@@ -18,32 +18,48 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
+import java.io.StringReader;
+
 import org.junit.Test;
+import org.openjax.json.JsonReader;
 
 public class DecodeExceptionTest {
+  private static final String message = "hello world";
+  private static final int offset = 37;
+  private static final JsonReader reader = new JsonReader(new StringReader(message)) {
+    @Override
+    public int getPosition() {
+      return offset + 1;
+    }
+  };
+
   @Test
   public void testError() {
-    final Error error = Error.ILLEGAL_VALUE_NULL;
+    final Error error = Error.ILLEGAL_VALUE_NULL();
     final DecodeException e = new DecodeException(error);
     assertTrue(e.getMessage().startsWith(error.toString()));
-    assertEquals(-1, error.offset);
+    assertEquals(-1, error.getOffset());
   }
 
   @Test
   public void testMessageOffset() {
     final String message = "hello world";
     final int offset = 37;
-    final DecodeException e = new DecodeException(message, offset);
+    final JsonReader reader = new JsonReader(new StringReader(message)) {
+      @Override
+      public int getPosition() {
+        return offset + 1;
+      }
+    };
+    final DecodeException e = new DecodeException(message, reader);
     assertTrue(e.getMessage().startsWith(message));
     assertEquals(offset, e.getErrorOffset());
   }
 
   @Test
   public void testMessageOffsetCause() {
-    final String message = "hello world";
-    final int offset = 37;
     final Exception cause = new NullPointerException();
-    final DecodeException e = new DecodeException(message, offset, cause);
+    final DecodeException e = new DecodeException(message, reader, cause);
     assertTrue(e.getMessage().startsWith(message));
     assertEquals(offset, e.getErrorOffset());
     assertEquals(cause, e.getCause());

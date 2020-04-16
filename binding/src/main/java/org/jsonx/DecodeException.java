@@ -16,21 +16,35 @@
 
 package org.jsonx;
 
+import java.io.IOException;
+
+import org.libj.io.Readers;
+import org.openjax.json.JsonReader;
+
 /**
  * Signals that an error has occurred while decoding a JSON document to binding
  * classes.
  */
-public class DecodeException extends Exception {
-  private static final long serialVersionUID = 7087309932016830988L;
+public class DecodeException extends ParseException {
+  private static final long serialVersionUID = -8659795467901573156L;
 
-  /**
-   * The zero-based character offset into the string being parsed at which the
-   * error was found during parsing.
-   */
-  private final int errorOffset;
+  private static int getErrorOffset(final JsonReader reader) {
+    return reader != null ? reader.getPosition() - 1 : -1;
+  }
+
+  private static String readerToString(final JsonReader reader) throws IOException {
+    final int index = reader.getIndex();
+    reader.setIndex(-1);
+    final String json = Readers.readFully(reader);
+    reader.setIndex(index);
+    return json;
+  }
+
+  private final JsonReader reader;
 
   DecodeException(final Error error) {
-    this(error.toString(), error.offset, null);
+    super(error.toString(), getErrorOffset(error.getReader()), null);
+    this.reader = error.getReader();
   }
 
   /**
@@ -38,10 +52,10 @@ public class DecodeException extends Exception {
    * offset.
    *
    * @param message The detail message that describes this particular exception.
-   * @param errorOffset The position where the error is found while parsing.
+   * @param reader The {@link JsonReader} in which the error was found while parsing.
    */
-  public DecodeException(final String message, final int errorOffset) {
-    this(message, errorOffset, null);
+  public DecodeException(final String message, final JsonReader reader) {
+    this(message, reader, null);
   }
 
   /**
@@ -49,20 +63,19 @@ public class DecodeException extends Exception {
    * offset, and cause.
    *
    * @param message The detail message that describes this particular exception.
-   * @param errorOffset The position where the error is found while parsing.
+   * @param reader The {@link JsonReader} in which the error was found while parsing.
    * @param cause The cause.
    */
-  public DecodeException(final String message, final int errorOffset, final Throwable cause) {
-    super(message != null ? message + " [errorOffset: " + errorOffset + "]" : "[errorOffset: " + errorOffset + "]", cause);
-    this.errorOffset = errorOffset;
+  public DecodeException(final String message, final JsonReader reader, final Throwable cause) {
+    super(message, getErrorOffset(reader), cause);
+    this.reader = reader;
   }
 
-  /**
-   * Returns the position where the error was found.
-   *
-   * @return The position where the error was found.
-   */
-  public int getErrorOffset() {
-    return errorOffset;
+  public JsonReader getReader() {
+    return this.reader;
+  }
+
+  public String getEncoded() throws IOException {
+    return reader == null ? null : readerToString(reader);
   }
 }

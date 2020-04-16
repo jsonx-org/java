@@ -33,11 +33,24 @@ public class ParseException extends Exception {
    * offset. A detail message is a String that describes this particular
    * exception.
    *
-   * @param string The detail message.
+   * @param message The detail message.
    * @param errorOffset The position where the error is found while parsing.
    */
-  public ParseException(final String string, final int errorOffset) {
-    super(string + " [errorOffset: " + errorOffset + "]");
+  public ParseException(final String message, final int errorOffset) {
+    this(message, errorOffset, null);
+  }
+
+  /**
+   * Constructs a {@link ParseException} with the specified detail message and
+   * offset. A detail message is a String that describes this particular
+   * exception.
+   *
+   * @param message The detail message.
+   * @param errorOffset The position where the error is found while parsing.
+   * @param cause The cause.
+   */
+  public ParseException(final String message, final int errorOffset, final Throwable cause) {
+    super(message != null ? message + " [errorOffset: " + errorOffset + "]" : "[errorOffset: " + errorOffset + "]", cause);
     this.errorOffset = errorOffset;
   }
 

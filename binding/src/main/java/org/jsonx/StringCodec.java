@@ -22,6 +22,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;
 
 class StringCodec extends PrimitiveCodec<String> {
@@ -47,11 +48,11 @@ class StringCodec extends PrimitiveCodec<String> {
 
   static Error encodeArray(final Annotation annotation, final String pattern, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!(object instanceof String))
-      return Error.CONTENT_NOT_EXPECTED(object, -1);
+      return Error.CONTENT_NOT_EXPECTED(object, null);
 
     final String string = (String)object;
     if (validate && pattern.length() != 0 && !string.matches(pattern))
-      return Error.PATTERN_NOT_MATCHED(pattern, string, -1);
+      return Error.PATTERN_NOT_MATCHED(pattern, string, null);
 
     relations.set(index, new Relation(object, annotation));
     return null;
@@ -88,15 +89,15 @@ class StringCodec extends PrimitiveCodec<String> {
   }
 
   @Override
-  Error validate(final String json, final int offset) {
+  Error validate(final String json, final JsonReader reader) {
     if ((json.charAt(0) != '"' || json.charAt(json.length() - 1) != '"') && (json.charAt(0) != '\'' || json.charAt(json.length() - 1) != '\''))
-      return Error.NOT_A_STRING;
+      return Error.NOT_A_STRING();
 
     final String value = json.substring(1, json.length() - 1);
     if (pattern != null) {
       try {
         if (!value.matches(pattern))
-          return Error.PATTERN_NOT_MATCHED(pattern, value, offset);
+          return Error.PATTERN_NOT_MATCHED(pattern, value, reader);
       }
       catch (final PatternSyntaxException e) {
         throw new ValidationException("Malformed pattern: " + pattern);

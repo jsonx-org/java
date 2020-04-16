@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -374,10 +375,14 @@ final class AnyModel extends Referrer<AnyModel> {
     final Map<String,Object> attributes = super.toAttributes(owner, packageName);
     if (types != null) {
       final StringBuilder builder = new StringBuilder();
-      for (final Member type : types)
-        builder.append(Registry.getSubName(type.id.toString(), packageName)).append(' ');
+      final Iterator<Member> iterator = types.iterator();
+      for (int i = 0; iterator.hasNext(); ++i) {
+        if (i > 0)
+          builder.append(' ');
 
-      builder.setLength(builder.length() - 1);
+        builder.append(Registry.getSubName(iterator.next().id.toString(), packageName));
+      }
+
       attributes.put("types", builder.toString());
     }
 
@@ -413,11 +418,16 @@ final class AnyModel extends Referrer<AnyModel> {
         builder.append('@').append(NumberType.class.getName());
         if (numberAttrs.size() > 0) {
           builder.append('(');
-          for (final Map.Entry<String,Object> entry : numberAttrs.entrySet())
-            builder.append(entry.getKey()).append('=').append(entry.getValue()).append(", ");
+          final Iterator<Map.Entry<String,Object>> iterator = numberAttrs.entrySet().iterator();
+          for (int i = 0; iterator.hasNext(); ++i) {
+            if (i > 0)
+              builder.append(", ");
 
-          builder.setLength(builder.length() - 1);
-          builder.setCharAt(builder.length() - 1, ')');
+            final Map.Entry<String,Object> entry = iterator.next();
+            builder.append(entry.getKey()).append('=').append(entry.getValue());
+          }
+
+          builder.append(')');
         }
 
         values.add("@" + t.class.getName() + "(numbers=" + builder.toString() + ")");

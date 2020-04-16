@@ -44,7 +44,7 @@ class AnyCodec extends Codec {
           if (!(value instanceof Error))
             return value;
 
-          if (error == null || error.offset < ((Error)value).offset)
+          if (error == null || error.isBefore((Error)value))
             error = (Error)value;
         }
       }
@@ -56,7 +56,7 @@ class AnyCodec extends Codec {
           if (!(value instanceof Error))
             return value;
 
-          if (error == null || error.offset < ((Error)value).offset)
+          if (error == null || error.isBefore((Error)value))
             error = (Error)value;
         }
       }
@@ -81,7 +81,7 @@ class AnyCodec extends Codec {
       }
     }
 
-    return error != null ? error : Error.CONTENT_NOT_EXPECTED(token, reader.getPosition());
+    return error != null ? error : Error.CONTENT_NOT_EXPECTED(token, reader);
   }
 
   static Error encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
@@ -124,7 +124,7 @@ class AnyCodec extends Codec {
   static Object encodeObject(final Annotation annotation, final t[] types, final Object object, final JxEncoder jxEncoder, final int depth, final boolean validate) throws EncodeException, ValidationException {
     Error error = null;
     if (object == null)
-      return JsdUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL;
+      return JsdUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL();
 
     Relations relations = null;
     StringBuilder builder = null;

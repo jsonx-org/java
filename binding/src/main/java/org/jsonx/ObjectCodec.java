@@ -55,7 +55,7 @@ class ObjectCodec extends Codec {
           if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
             continue;
 
-          return abort(Error.UNKNOWN_PROPERTY(propertyName, reader.getPosition()), reader, index);
+          return abort(Error.UNKNOWN_PROPERTY(propertyName, reader), reader, index);
         }
 
         final Object value;
@@ -68,7 +68,7 @@ class ObjectCodec extends Codec {
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec<?> primitiveCodec = (PrimitiveCodec<?>)codec;
-          final Error error = primitiveCodec.matches(token, reader.getPosition());
+          final Error error = primitiveCodec.matches(token, reader);
           if (error != null)
             return abort(error, reader, index);
 
@@ -85,7 +85,7 @@ class ObjectCodec extends Codec {
             final char firstChar = token.charAt(0);
             if (codec instanceof ObjectCodec) {
               if (firstChar != '{')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader.getPosition()), reader, index);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader), reader, index);
 
               final ObjectCodec objectCodec = (ObjectCodec)codec;
               value = decodeObject(objectCodec.type, reader, null);
@@ -94,7 +94,7 @@ class ObjectCodec extends Codec {
             }
             else if (codec instanceof ArrayCodec) {
               if (firstChar != '[')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader.getPosition()), reader, index);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader), reader, index);
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
               value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, onPropertyDecode);
@@ -137,7 +137,7 @@ class ObjectCodec extends Codec {
 
   static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof JxObject))
-      return Error.CONTENT_NOT_EXPECTED(object, -1);
+      return Error.CONTENT_NOT_EXPECTED(object, null);
 
     relations.set(index, new Relation(object, annotation));
     return null;

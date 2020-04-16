@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.openjax.json.JsonReader;
 
 class BooleanCodec extends PrimitiveCodec<Boolean> {
   static Boolean decodeArray(final String token) {
@@ -29,7 +30,7 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
 
   static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof Boolean))
-      return Error.CONTENT_NOT_EXPECTED(object, -1);
+      return Error.CONTENT_NOT_EXPECTED(object, null);
 
     relations.set(index, new Relation(object, annotation));
     return null;
@@ -49,8 +50,8 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
   }
 
   @Override
-  Error validate(final String json, final int offset) {
-    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json, offset) : null;
+  Error validate(final String json, final JsonReader reader) {
+    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json, reader) : null;
   }
 
   @Override

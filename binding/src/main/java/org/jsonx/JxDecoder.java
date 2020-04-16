@@ -55,15 +55,14 @@ public final class JxDecoder {
   public static <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"{".equals(token))
-      throw new DecodeException("Expected '{', but got '" + token + "'", reader.getPosition() - 1);
+      throw new DecodeException("Expected '{', but got '" + token + "'", reader);
 
     final Object object = ObjectCodec.decodeObject(type, reader, onPropertyDecode);
     if (object instanceof Error)
-      throw new DecodeException((Error)object);
+      throw new DecodeException(((Error)object).setReader(reader));
 
     return (T)object;
   }
-
 
   /**
    * Parses a JSON object at the supplied {@link JsonReader} as per the
@@ -85,28 +84,30 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON array from the supplied {@link JsonReader} as per the
-   * specification of the provided annotation class that declares
-   * an {@link ArrayType} annotation.
+   * specification of the provided annotation class that declares an
+   * {@link ArrayType} annotation.
    *
-   * @param annotationType The annotation class that declares
-   *          an {@link ArrayType} annotation.
+   * @param annotationType The annotation class that declares an
+   *          {@link ArrayType} annotation.
    * @param reader The {@link JsonReader} containing the JSON array.
    * @return A {@link List} representing the parsed JSON array.
    * @throws DecodeException If an exception has occurred while decoding a JSON
    *           document.
    * @throws JsonParseException If the content is not well formed.
+   * @throws NullPointerException If @{@code reader} or {@code annotationType}
+   *           is null.
    * @throws IOException If an I/O error has occurred.
    */
   public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     final String token = reader.readToken();
     if (!"[".equals(token))
-      throw new DecodeException("Expected '[', but got '" + token + "'", reader.getPosition() - 1);
+      throw new DecodeException("Expected '[', but got '" + token + "'", reader);
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, null);
     if (array instanceof Error)
-      throw new DecodeException((Error)array);
+      throw new DecodeException(((Error)array).setReader(reader));
 
     return (List<?>)array;
   }

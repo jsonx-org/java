@@ -18,16 +18,18 @@ package org.jsonx;
 
 import java.lang.reflect.Field;
 
+import org.openjax.json.JsonReader;
+
 abstract class PrimitiveCodec<T> extends Codec {
   PrimitiveCodec(final Field field, final String name, final boolean property, final Use use) {
     super(field, name, property, use);
   }
 
-  final Error matches(final String json, final int offset) {
-    return test(json.charAt(0)) ? validate(json, offset) : Error.EXPECTED_TYPE(name, elementName(), json, offset);
+  final Error matches(final String json, final JsonReader reader) {
+    return test(json.charAt(0)) ? validate(json, reader) : Error.EXPECTED_TYPE(name, elementName(), json, reader);
   }
 
   abstract boolean test(char firstChar);
-  abstract Error validate(String json, int offset);
+  abstract Error validate(String json, JsonReader reader);
   abstract T parse(String json);
 }

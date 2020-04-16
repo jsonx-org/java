@@ -34,7 +34,7 @@ public class BadRequestExceptionMapperTest {
     final Response response = mock(Response.class);
     when(response.getStatus()).thenReturn(400);
     when(response.getStatusInfo()).thenReturn(statusType);
-    final BadRequestException exception = new BadRequestException(response, new DecodeException(null, 0));
+    final BadRequestException exception = new BadRequestException(response, new DecodeException((String)null, null));
     try (final Response res = new BadRequestExceptionMapper().toResponse(exception)) {
       fail("Expected RuntimeException with ClassNotFoundException");
     }
