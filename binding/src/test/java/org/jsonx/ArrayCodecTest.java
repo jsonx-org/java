@@ -134,6 +134,7 @@ public class ArrayCodecTest {
     testDecode(annotationType, jxObject, members, expected);
   }
 
+  @SuppressWarnings("unused")
   private static void test(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
     final Relations relations = new Relations();
     final Error error = ArrayValidator.validate(annotationType, members, relations, true, null);
