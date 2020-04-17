@@ -22,10 +22,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA;
 import org.libj.lang.IllegalAnnotationException;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 final class NumberModel extends Model {
   private static xL0gluGCXAA.Schema.Number type(final String name) {
@@ -157,7 +157,7 @@ final class NumberModel extends Model {
     }
   }
 
-  private static ValidationException createValidationException(final Binding xsb, final String range, final ParseException e) {
+  private static ValidationException createValidationException(final $AnySimpleType xsb, final String range, final ParseException e) {
     return new ValidationException(Bindings.getXPath(xsb, elementXPath) + "/@range=" + range, e);
   }
 

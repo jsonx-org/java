@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.regex.PatternSyntaxException;
 
 import org.jaxsb.runtime.Attribute;
-import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Boolean;
@@ -42,9 +41,10 @@ import org.libj.lang.Strings;
 import org.libj.util.CollectionUtil;
 import org.libj.util.Patterns;
 import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 abstract class Member extends Element {
-  static final Function<Binding,String> elementXPath = t -> {
+  static final Function<$AnySimpleType,String> elementXPath = t -> {
     final String name;
     if (t instanceof $Array)
       name = (($Array)t).getName$().text();
