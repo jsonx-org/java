@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.libj.util.function.Throwing;
 import org.openjax.json.JsonParseException;
@@ -88,6 +89,7 @@ public class ParseArrayTest {
   }
 
   @Test
+  @Ignore("Causes java.lang.OutOfMemoryError: Java heap space in Travis CI")
   public void test10000000() {
     assertLength(10000000);
   }
