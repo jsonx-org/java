@@ -329,32 +329,32 @@ class Registry {
   private final ArrayList<Runnable> deferredReferences = new ArrayList<>();
   final Type OBJECT = getType(Object.class);
 
-  Value declare(final xL0gluGCXAA.Schema.Boolean binding) {
-    return new Value(binding.getName$().text());
+  Value declare(final xL0gluGCXAA.Schema.Boolean xsb) {
+    return new Value(xsb.getName$().text());
   }
 
-  Value declare(final xL0gluGCXAA.Schema.Number binding) {
-    return new Value(binding.getName$().text());
+  Value declare(final xL0gluGCXAA.Schema.Number xsb) {
+    return new Value(xsb.getName$().text());
   }
 
-  Value declare(final xL0gluGCXAA.Schema.String binding) {
-    return new Value(binding.getName$().text());
+  Value declare(final xL0gluGCXAA.Schema.String xsb) {
+    return new Value(xsb.getName$().text());
   }
 
-  Value declare(final xL0gluGCXAA.Schema.Array binding) {
-    return new Value(binding.getName$().text());
+  Value declare(final xL0gluGCXAA.Schema.Array xsb) {
+    return new Value(xsb.getName$().text());
   }
 
-  Value declare(final xL0gluGCXAA.Schema.Object binding) {
-    return new Value(binding.getName$().text());
+  Value declare(final xL0gluGCXAA.Schema.Object xsb) {
+    return new Value(xsb.getName$().text());
   }
 
   Value declare(final Id id) {
     return new Value(id.toString());
   }
 
-  Value declare(final xL0gluGCXAA.$Object binding) {
-    return new Value(ObjectModel.getFullyQualifiedName(binding));
+  Value declare(final xL0gluGCXAA.$Object xsb) {
+    return new Value(ObjectModel.getFullyQualifiedName(xsb));
   }
 
   <T extends Member>T reference(final T model, final Referrer<?> referrer) {

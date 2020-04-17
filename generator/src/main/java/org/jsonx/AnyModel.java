@@ -106,12 +106,12 @@ final class AnyModel extends Referrer<AnyModel> {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Any binding) {
-    return registry.reference(new AnyModel(registry, referrer, binding), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Any xsb) {
+    return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Any binding) {
-    return registry.reference(new AnyModel(registry, referrer, binding), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Any xsb) {
+    return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
   }
 
   private static final xL0gluGCXAA.$Reference anonymousReference = new xL0gluGCXAA.$Reference() {
@@ -141,14 +141,14 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private final List<Member> types;
 
-  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Any binding) {
-    super(registry, declarer, binding.getDoc$(), binding.getNames$(), binding.getNullable$(), binding.getUse$(), null);
-    this.types = getTypes(binding.getTypes$());
+  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Any xsb) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null);
+    this.types = getTypes(xsb.getTypes$());
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Any binding) {
-    super(registry, declarer, binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
-    this.types = getTypes(binding.getTypes$());
+  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Any xsb) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
+    this.types = getTypes(xsb.getTypes$());
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Field field) {

@@ -91,12 +91,12 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static StringModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.String binding) {
-    return registry.declare(binding).value(new StringModel(registry, declarer, binding), null);
+  static StringModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.String xsb) {
+    return registry.declare(xsb).value(new StringModel(registry, declarer, xsb), null);
   }
 
-  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.Schema.String binding) {
-    final StringModel model = new StringModel(registry, referrer, binding);
+  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.Schema.String xsb) {
+    final StringModel model = new StringModel(registry, referrer, xsb);
     final Id id = model.id;
 
     final StringModel registered = (StringModel)registry.getModel(id);
@@ -119,12 +119,12 @@ final class StringModel extends Model {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.String binding) {
-    return registry.reference(new StringModel(registry, referrer, binding), referrer);
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.String xsb) {
+    return registry.reference(new StringModel(registry, referrer, xsb), referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$String binding) {
-    return registry.reference(new StringModel(registry, referrer, binding), referrer);
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$String xsb) {
+    return registry.reference(new StringModel(registry, referrer, xsb), referrer);
   }
 
   private static String parsePattern(final String pattern) {
@@ -137,19 +137,19 @@ final class StringModel extends Model {
 
   final String pattern;
 
-  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.String binding) {
-    super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
-    this.pattern = parsePattern(binding.getPattern$());
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.String xsb) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$());
+    this.pattern = parsePattern(xsb.getPattern$());
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$String binding) {
-    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.pattern = parsePattern(binding.getPattern$());
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$String xsb) {
+    super(registry, declarer, Id.hashed("s", parsePattern(xsb.getPattern$())), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$());
+    this.pattern = parsePattern(xsb.getPattern$());
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.String binding) {
-    super(registry, declarer, Id.hashed("s", parsePattern(binding.getPattern$())), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.pattern = parsePattern(binding.getPattern$());
+  private StringModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.String xsb) {
+    super(registry, declarer, Id.hashed("s", parsePattern(xsb.getPattern$())), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$());
+    this.pattern = parsePattern(xsb.getPattern$());
   }
 
   private StringModel(final Registry registry, final Declarer declarer, final StringProperty property, final Field field) {

@@ -86,7 +86,7 @@ final class JsdUtil {
 
   private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
     try {
-      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(toClassName(propertyName)), parameterType == null ? null : new Class<?> [] {parameterType});
+      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(toClassName(propertyName)), parameterType == null ? null : new Class<?>[] {parameterType});
     }
     catch (final NoSuchMethodException e) {
       return null;

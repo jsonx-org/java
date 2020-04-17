@@ -87,21 +87,21 @@ final class Reference extends Member {
 
   final Model model;
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference binding, final Supplier<? extends Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference xsb, final Supplier<? extends Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, xsb, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference binding, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference xsb, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$());
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference binding, final Supplier<? extends Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, binding, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference xsb, final Supplier<? extends Model> model) {
+    return new Deferred<>(null, () -> new Reference(registry, declarer, xsb, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference binding, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
+  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference xsb, final Model model) {
+    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$());
     this.model = model;
   }
 

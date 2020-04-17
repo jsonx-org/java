@@ -124,8 +124,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return xsb;
   }
 
-  static ArrayModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Array binding) {
-    return registry.declare(binding).value(new ArrayModel(registry, declarer, binding), null);
+  static ArrayModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Array xsb) {
+    return registry.declare(xsb).value(new ArrayModel(registry, declarer, xsb), null);
   }
 
   private static ArrayModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Annotation annotation, final int minIterate, final int maxIterate, final Class<? extends Annotation> annotationType, final Id id, final Registry.Type type) {
@@ -197,12 +197,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return new Reference(registry, referrer, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), model);
   }
 
-  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Array binding) {
-    return registry.reference(new ArrayModel(registry, referrer, binding), referrer);
+  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Array xsb) {
+    return registry.reference(new ArrayModel(registry, referrer, xsb), referrer);
   }
 
-  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array binding) {
-    return registry.reference(new ArrayModel(registry, referrer, binding), referrer);
+  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array xsb) {
+    return registry.reference(new ArrayModel(registry, referrer, xsb), referrer);
   }
 
   private void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
@@ -210,9 +210,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
     attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + ArrayUtil.toString(indices, ", ") + "}");
   }
 
-  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final xL0gluGCXAA.$ArrayMember binding) {
+  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final xL0gluGCXAA.$ArrayMember xsb) {
     final List<Member> members = new ArrayList<>();
-    final Iterator<? super xL0gluGCXAA.$Member> iterator = Iterators.filter(binding.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
+    final Iterator<? super xL0gluGCXAA.$Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (iterator.hasNext()) {
       final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)iterator.next();
       if (member instanceof xL0gluGCXAA.$Array.Any) {
@@ -286,28 +286,28 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return minIterate == null || minIterate == 1 ? null : minIterate;
   }
 
-  private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Array binding) {
-    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(binding.getName$().text())), binding.getDoc$());
-    this.members = parseMembers(registry, this, binding);
-    this.minIterate = parseIterate(binding.getMinIterate$().text());
-    this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
+  private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Array xsb) {
+    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$());
+    this.members = parseMembers(registry, this, xsb);
+    this.minIterate = parseIterate(xsb.getMinIterate$().text());
+    this.maxIterate = parseIterate(parseMaxCardinality(xsb.getMinIterate$().text(), xsb.getMaxIterate$(), "Iterate", 1));
   }
 
-  private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array binding) {
-    super(registry, declarer, binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$(), null);
-    this.members = parseMembers(registry, this, binding);
-    this.minIterate = parseIterate(binding.getMinIterate$().text());
-    this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
+  private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array xsb) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), null);
+    this.members = parseMembers(registry, this, xsb);
+    this.minIterate = parseIterate(xsb.getMinIterate$().text());
+    this.maxIterate = parseIterate(parseMaxCardinality(xsb.getMinIterate$().text(), xsb.getMaxIterate$(), "Iterate", 1));
   }
 
-  private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Array binding) {
-    super(registry, declarer, binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$(), null);
+  private ArrayModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Array xsb) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
     if (this.maxOccurs != null && this.minOccurs != null && this.minOccurs > this.maxOccurs)
-      throw new ValidationException(Bindings.getXPath(binding, elementXPath) + ": minOccurs=\"" + this.minOccurs + "\" > maxOccurs=\"" + this.maxOccurs + "\"");
+      throw new ValidationException(Bindings.getXPath(xsb, elementXPath) + ": minOccurs=\"" + this.minOccurs + "\" > maxOccurs=\"" + this.maxOccurs + "\"");
 
-    this.members = parseMembers(registry, this, binding);
-    this.minIterate = parseIterate(binding.getMinIterate$().text());
-    this.maxIterate = parseIterate(parseMaxCardinality(binding.getMinIterate$().text(), binding.getMaxIterate$(), "Iterate", 1));
+    this.members = parseMembers(registry, this, xsb);
+    this.minIterate = parseIterate(xsb.getMinIterate$().text());
+    this.maxIterate = parseIterate(parseMaxCardinality(xsb.getMinIterate$().text(), xsb.getMaxIterate$(), "Iterate", 1));
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final Annotation arrayAnnotation, final int minIterate, final int maxIterate, final int[] elementIds, final Annotation[] annotations, final Registry.Type type, final String declaringTypeName) {

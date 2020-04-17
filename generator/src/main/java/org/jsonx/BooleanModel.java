@@ -87,8 +87,8 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Boolean binding) {
-    return registry.declare(binding).value(new BooleanModel(registry, declarer, binding), null);
+  static BooleanModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Boolean xsb) {
+    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb), null);
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Field field) {
@@ -107,24 +107,24 @@ final class BooleanModel extends Model {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Boolean binding) {
-    return registry.reference(new BooleanModel(registry, referrer, binding), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Boolean xsb) {
+    return registry.reference(new BooleanModel(registry, referrer, xsb), referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Boolean binding) {
-    return registry.reference(new BooleanModel(registry, referrer, binding), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Boolean xsb) {
+    return registry.reference(new BooleanModel(registry, referrer, xsb), referrer);
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Boolean binding) {
-    super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
+  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Boolean xsb) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$());
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Boolean binding) {
-    super(registry, declarer, ID, binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
+  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Boolean xsb) {
+    super(registry, declarer, ID, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$());
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Boolean binding) {
-    super(registry, declarer, ID, binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
+  private BooleanModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Boolean xsb) {
+    super(registry, declarer, ID, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$());
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final BooleanProperty property, final Field field) {

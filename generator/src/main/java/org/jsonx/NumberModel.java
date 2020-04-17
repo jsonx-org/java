@@ -96,25 +96,25 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Number binding) {
-    return registry.declare(binding).value(new NumberModel(registry, declarer, binding), null);
+  static NumberModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Number xsb) {
+    return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb), null);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Number binding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Number xsb) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, binding), referrer);
+      return registry.reference(new NumberModel(registry, referrer, xsb), referrer);
     }
     catch (final ParseException e) {
-      throw createValidationException(binding, binding.getRange$().text(), e);
+      throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Number binding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Number xsb) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, binding), referrer);
+      return registry.reference(new NumberModel(registry, referrer, xsb), referrer);
     }
     catch (final ParseException e) {
-      throw createValidationException(binding, binding.getRange$().text(), e);
+      throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
@@ -157,8 +157,8 @@ final class NumberModel extends Model {
     }
   }
 
-  private static ValidationException createValidationException(final Binding binding, final String range, final ParseException e) {
-    return new ValidationException(Bindings.getXPath(binding, elementXPath) + "/@range=" + range, e);
+  private static ValidationException createValidationException(final Binding xsb, final String range, final ParseException e) {
+    return new ValidationException(Bindings.getXPath(xsb, elementXPath) + "/@range=" + range, e);
   }
 
   private static ValidationException createValidationException(final Class<?> cls, final String range, final ParseException e) {
@@ -180,27 +180,27 @@ final class NumberModel extends Model {
   final int scale;
   final Range range;
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Number binding) {
-    super(registry, declarer, Id.named(binding.getName$()), binding.getDoc$());
-    this.scale = parseScale(binding.getScale$());
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Number xsb) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$());
+    this.scale = parseScale(xsb.getScale$());
     try {
-      this.range = parseRange(binding.getRange$());
+      this.range = parseRange(xsb.getRange$());
     }
     catch (final ParseException e) {
-      throw createValidationException(binding, binding.getRange$().text(), e);
+      throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Number binding) throws ParseException {
-    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getDoc$(), binding.getName$(), binding.getNullable$(), binding.getUse$());
-    this.scale = parseScale(binding.getScale$());
-    this.range = parseRange(binding.getRange$());
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Number xsb) throws ParseException {
+    super(registry, declarer, Id.hashed("n", parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$());
+    this.scale = parseScale(xsb.getScale$());
+    this.range = parseRange(xsb.getRange$());
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Number binding) throws ParseException {
-    super(registry, declarer, Id.hashed("n", parseScale(binding.getScale$()), parseRange(binding.getRange$())), binding.getDoc$(), binding.getNullable$(), binding.getMinOccurs$(), binding.getMaxOccurs$());
-    this.scale = parseScale(binding.getScale$());
-    this.range = parseRange(binding.getRange$());
+  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Number xsb) throws ParseException {
+    super(registry, declarer, Id.hashed("n", parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$());
+    this.scale = parseScale(xsb.getScale$());
+    this.range = parseRange(xsb.getRange$());
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) throws ParseException {
