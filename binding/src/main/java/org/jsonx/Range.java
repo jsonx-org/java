@@ -40,7 +40,7 @@ public class Range implements Cloneable, Serializable {
         builder.append(ch);
       }
 
-      return builder.length() == 0 ? null : JsonUtil.parseDecimal(builder.toString());
+      return builder.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, builder.toString());
     }
     catch (final NumberFormatException e) {
       final ParseException pe = new ParseException(string, start);
