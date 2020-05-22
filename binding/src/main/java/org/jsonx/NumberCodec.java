@@ -33,7 +33,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
     try {
       return scale == 0 ? JsonUtil.parseNumber(BigInteger.class, json) : JsonUtil.parseNumber(BigDecimal.class, json);
     }
-    catch (final JsonParseException e) {
+    catch (final JsonParseException | NumberFormatException e) {
       return null;
     }
   }
