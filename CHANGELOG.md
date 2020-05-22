@@ -1,6 +1,23 @@
 # Changes by Version
 
-## v0.3.1 (2019-07-21)
+## [v0.3.2](https://github.com/jsonx-org/java/compare/3700771ef1a771f12b0f0ba92b93d9601be5ba2c..HEAD) (2020-05-23)
+* Improve handling of `InvocationTargetException`.
+* Improve position correctness in `Error` instances.
+* Add condition to skip validation in `ArrayValidator.validate(...)`.
+* Better handling logic edges when parsing arrays in `ArrayValidator`.
+* Provide subject `JsonReader` to `DecodeException`.
+* Provide reference to `JsonReader` in `Error` instances.
+* Add `OnFieldEncode` callback to `JxEncoder`.
+* Improve `ParseException`.
+* Improve `BadRequestExceptionMapper`.
+* Use revised `JsonUtil.parseNumber(Class,String)`.
+* Improve code format of generated Jx bindings.
+* Improve performance of `Generator`.
+* General API improvements across the codebase.
+* Improve tests.
+* Improve javadocs and xmldocs.
+
+## [v0.3.1](https://github.com/jsonx-org/java/compare/54e5e19f9540b68baebffbc380fbc266c3367cd2..3700771ef1a771f12b0f0ba92b93d9601be5ba2c) (2019-07-21)
 * Fix unescape property name when converting from **JSD** to **JSDx**.
 * Fix `mkdirs` for parent dir of output file in `JxConverter`.
 * Implement `convert` & `validate` goals in `jsonx-maven-plugin`.
