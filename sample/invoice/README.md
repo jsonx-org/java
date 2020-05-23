@@ -112,7 +112,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <executions>
     <execution>
       <goals>

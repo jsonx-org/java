@@ -61,7 +61,7 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <executions>
     <execution>
       <goals>
@@ -109,7 +109,7 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <executions>
     <execution>
       <phase>generate-sources</phase>
@@ -147,7 +147,7 @@ The `jsonx:convert` goal is bound to the `generate-resources` phase, and is used
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.1-SNAPSHOT</version>
+  <version>0.3.2</version>
   <executions>
     <execution>
       <phase>generate-resources</phase>
@@ -183,7 +183,7 @@ The `jsonx:validate` goal is bound to the `compile` phase, and is used to valida
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.1-SNAPSHOT</version>
+  <version>0.3.2</version>
   <executions>
     <execution>
       <phase>generate-resources</phase>

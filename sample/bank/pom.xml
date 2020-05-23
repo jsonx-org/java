@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx.sample</groupId>
     <artifactId>sample</artifactId>
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.2</version>
   </parent>
   <artifactId>bank</artifactId>
   <name>JSONx Sample Bank</name>
