@@ -1,6 +1,8 @@
 # Changes by Version
 
-## [v0.3.2](https://github.com/jsonx-org/java/compare/3700771ef1a771f12b0f0ba92b93d9601be5ba2c..HEAD) (2020-05-23)
+## [v0.4.0-SNAPSHOT](https://github.com/jsonx-org/java/compare/4b757400a236b064e1623de9fd72f3896d6559d6..HEAD)
+
+## [v0.3.2](https://github.com/jsonx-org/java/compare/3700771ef1a771f12b0f0ba92b93d9601be5ba2c..4b757400a236b064e1623de9fd72f3896d6559d6) (2020-05-23)
 * Improve handling of `InvocationTargetException`.
 * Improve position correctness in `Error` instances.
 * Add condition to skip validation in `ArrayValidator.validate(...)`.

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.3.2</version>
+    <version>0.4.0-SNAPSHOT</version>
   </parent>
   <artifactId>jsonxml</artifactId>
   <name>JsonXml</name>
@@ -35,12 +35,12 @@
     <dependency>
       <groupId>org.openjax</groupId>
       <artifactId>json</artifactId>
-      <version>0.9.3</version>
+      <version>0.9.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.openjax.xml</groupId>
       <artifactId>sax</artifactId>
-      <version>0.9.4</version>
+      <version>0.9.5-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
