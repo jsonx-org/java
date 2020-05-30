@@ -38,6 +38,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Numbers;
+import org.libj.lang.ParseException;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 final class NumberModel extends Model {

@@ -27,6 +27,7 @@ import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Annotations;
 import org.libj.lang.Classes;
+import org.libj.lang.ParseException;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;

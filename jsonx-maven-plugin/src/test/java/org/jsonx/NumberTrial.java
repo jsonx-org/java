@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.libj.lang.Classes;
+import org.libj.lang.ParseException;
 
 final class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final NumberProperty property) {

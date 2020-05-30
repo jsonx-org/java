@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.libj.lang.Numbers;
+import org.libj.lang.ParseException;
 import org.openjax.json.JsonUtil;
 
 public class Range implements Cloneable, Serializable {

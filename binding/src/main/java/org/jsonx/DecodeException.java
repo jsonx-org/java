@@ -19,6 +19,7 @@ package org.jsonx;
 import java.io.IOException;
 
 import org.libj.io.Readers;
+import org.libj.lang.ParseException;
 import org.openjax.json.JsonReader;
 
 /**

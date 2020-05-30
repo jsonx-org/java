@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.Registry.Wildcard;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
