@@ -289,6 +289,10 @@ class Registry {
 
     private IdentityHashMap<Wildcard,Generic> wildcardToGeneric;
 
+    public Generic asGeneric() {
+      return asGeneric(null);
+    }
+
     public Generic asGeneric(final Wildcard wildcard) {
       if (wildcardToGeneric == null)
         wildcardToGeneric = new IdentityHashMap<>(Wildcard.values().length);

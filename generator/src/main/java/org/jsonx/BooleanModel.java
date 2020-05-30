@@ -82,7 +82,8 @@ final class BooleanModel extends Model {
       xsb.setUse$(new $Boolean.Use$($Boolean.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.TypeFieldBinding binding : jsd.getBindings()) {
+      for (final schema.TypeBinding element : jsd.getBindings()) {
+        final schema.TypeFieldBinding binding = (schema.TypeFieldBinding)element;
         final $TypeFieldBinding bind = new $Boolean.Binding();
         bind.setLang$(new $Binding.Lang$(binding.getLang()));
         if (binding.getType() != null)

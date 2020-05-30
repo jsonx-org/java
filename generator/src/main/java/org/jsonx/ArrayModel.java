@@ -431,7 +431,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   Registry.Type typeDefault() {
     // type can be null if there is a loop in the type graph
     final Registry.Type type = getGreatestCommonSuperType(members);
-    return registry.getType(defaultClass(), (type == null ? registry.OBJECT : !type.isArray() && type.isPrimitive() ? type.getWrapper() : type).asGeneric(Wildcard.EXTENDS));
+    return registry.getType(defaultClass(), (type == null ? registry.OBJECT : !type.isArray() && type.isPrimitive() ? type.getWrapper() : type).asGeneric());
   }
 
   @Override

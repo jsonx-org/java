@@ -151,15 +151,15 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.FieldBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.FieldBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.FieldBinding> bindings;
+    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -244,15 +244,15 @@ public class schema {
     @org.jsonx.ObjectElement(id=1, type=org.jsonx.schema.ArrayElement.class, minOccurs=0, nullable=false)
     @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.AnyElement.class, minOccurs=0, nullable=false)
     @org.jsonx.ArrayProperty(name="elements", elementIds={0, 1, 2, 3, 4, 5, 6}, maxIterate=2147483647, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.Member> getElements() {
+    public java.util.List<org.jsonx.schema.Member> getElements() {
       return elements;
     }
 
-    public void setElements(final java.util.List<? extends org.jsonx.schema.Member> elements) {
+    public void setElements(final java.util.List<org.jsonx.schema.Member> elements) {
       this.elements = elements;
     }
 
-    private java.util.List<? extends org.jsonx.schema.Member> elements;
+    private java.util.List<org.jsonx.schema.Member> elements;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -392,15 +392,15 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.FieldBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.FieldBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.FieldBinding> bindings;
+    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -496,15 +496,15 @@ public class schema {
     private java.lang.String jx3aType;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.TypeBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.TypeBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.TypeBinding> bindings;
+    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -632,8 +632,8 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.TypeFieldBinding> getBindings() {
-      return (java.util.List<? extends org.jsonx.schema.TypeFieldBinding>)super.getBindings();
+    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
+      return (java.util.List<org.jsonx.schema.TypeBinding>)super.getBindings();
     }
 
     @java.lang.Override
@@ -823,15 +823,15 @@ public class schema {
     private java.math.BigInteger scale;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.TypeBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.TypeBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.TypeBinding> bindings;
+    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -971,8 +971,8 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.TypeFieldBinding> getBindings() {
-      return (java.util.List<? extends org.jsonx.schema.TypeFieldBinding>)super.getBindings();
+    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
+      return (java.util.List<org.jsonx.schema.TypeBinding>)super.getBindings();
     }
 
     @java.lang.Override
@@ -1216,15 +1216,15 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.FieldBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.FieldBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.FieldBinding> bindings;
+    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1453,15 +1453,15 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.FieldBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.FieldBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.FieldBinding> bindings;
+    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1595,15 +1595,15 @@ public class schema {
     private java.lang.String pattern;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.TypeBinding> getBindings() {
+    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<? extends org.jsonx.schema.TypeBinding> bindings) {
+    public void setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
       this.bindings = bindings;
     }
 
-    private java.util.List<? extends org.jsonx.schema.TypeBinding> bindings;
+    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1737,8 +1737,8 @@ public class schema {
     private java.lang.String use;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<? extends org.jsonx.schema.TypeFieldBinding> getBindings() {
-      return (java.util.List<? extends org.jsonx.schema.TypeFieldBinding>)super.getBindings();
+    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
+      return (java.util.List<org.jsonx.schema.TypeBinding>)super.getBindings();
     }
 
     @java.lang.Override

@@ -88,7 +88,8 @@ final class NumberModel extends Model {
       xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.TypeFieldBinding binding : jsd.getBindings()) {
+      for (final schema.TypeBinding element : jsd.getBindings()) {
+        final schema.TypeFieldBinding binding = (schema.TypeFieldBinding)element;
         final $TypeFieldBinding bind = new $Number.Binding();
         bind.setLang$(new $Binding.Lang$(binding.getLang()));
         if (binding.getType() != null)
