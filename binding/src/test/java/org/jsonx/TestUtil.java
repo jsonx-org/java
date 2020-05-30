@@ -16,10 +16,17 @@
 
 package org.jsonx;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import org.libj.lang.Strings;
+
 final class TestUtil {
+  static Method getMethod(final Class<?> cls, final String propertyName) throws NoSuchMethodException {
+    return cls.getMethod("get" + Strings.flipFirstCap(propertyName));
+  }
+
   @SafeVarargs
   static <T>List<T> l(final T ... members) {
     return Arrays.asList(members);

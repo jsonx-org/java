@@ -20,7 +20,7 @@ final class MinOccursCase extends FailureCase<ArrayTrial<Object>> {
   static final MinOccursCase CASE = new MinOccursCase();
 
   @Override
-  void onEncode(final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
+  void onEncode(final JxObject binding, final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().endsWith("Content is not complete"));
   }
 

@@ -68,13 +68,19 @@ public class ArrayCodecTest {
       final Method method = jxObject.getClass().getMethod("set" + annotationType.getSimpleName(), List.class);
       in = (JxObject)method.invoke(jxObject, members);
     }
-    catch (final IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-      throw new IllegalStateException(e);
+    catch (final IllegalAccessException | NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
     }
 
     try {
       final String inJson = in.toString();
-      final Object out = JxDecoder.parseObject(in.getClass(), new JsonReader(new StringReader(inJson)));
+      final Object out = JxDecoder.VALIDATING.parseObject(in.getClass(), new JsonReader(new StringReader(inJson)));
       final String outJson = out.toString();
       assertEquals(inJson, outJson);
       if (expected != null)
@@ -118,9 +124,9 @@ public class ArrayCodecTest {
 
   private static void test(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String[] expected) throws DecodeException, IOException {
     final IdToElement idToElement = getIdToElement(annotationType);
-    final List<Annotation> annotations = new ArrayList<>();
+    final ArrayList<Annotation> annotations = new ArrayList<>();
     for (final String term : expected) {
-      final List<String> index = new ArrayList<>(Arrays.asList(term.split("\\.")));
+      final ArrayList<String> index = new ArrayList<>(Arrays.asList(term.split("\\.")));
       annotations.add(getAnnotation(idToElement, index));
     }
 
@@ -156,19 +162,20 @@ public class ArrayCodecTest {
       assertEquals(expected, errorString);
 
     if (errorString == null) {
-      final List<Object> flatMembers = CollectionUtil.flatten(members, new ArrayList<>(), true);
+      final ArrayList<Object> flatMembers = CollectionUtil.flatten(members, new ArrayList<>(), true);
       assertEquals("Number of members not matched", flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
       if (!debugPass) {
         for (int i = 0; i < annotations.length; ++i) {
           final Relation relation = flatRelations.get(i);
           assertEquals(i + ": " + flatRelations.toString(), annotations[i], relation.annotation);
+          final Object member = flatMembers.get(i);
           if (relation.member instanceof Relations) {
-            assertTrue(flatMembers.get(i) instanceof List);
-            assertMembersEqual((List<?>)flatMembers.get(i), (Relations)relation.member);
+            assertTrue(member instanceof List);
+            assertMembersEqual((List<?>)member, (Relations)relation.member);
           }
           else {
-            assertEquals(flatMembers.get(i), relation.member);
+            assertEquals(member instanceof String ? "\"" + member + "\"" : member, relation.member);
           }
         }
       }
@@ -185,7 +192,7 @@ public class ArrayCodecTest {
         assertMembersEqual((List<?>)member, (Relations)relation.member);
       }
       else {
-        assertEquals(member, relation.member);
+        assertEquals(member instanceof String ? "\"" + member + "\"" : member, relation.member);
       }
     }
   }
@@ -223,7 +230,7 @@ public class ArrayCodecTest {
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
-      assertEquals("Invalid range attribute: @" + NumberElement.class.getName() + "(id=0, scale=2147483647, range=\"xxxx\", minOccurs=1, maxOccurs=1, nullable=true)", e.getMessage());
+      assertEquals("Invalid range attribute: @" + NumberElement.class.getName() + "(id=0, range=\"xxxx\", maxOccurs=1)", e.getMessage());
     }
 
     try {
@@ -231,7 +238,7 @@ public class ArrayCodecTest {
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
-      assertEquals("minOccurs must be less than or equal to maxOccurs: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=0, nullable=false)", e.getMessage());
+      assertEquals("minOccurs must be less than or equal to maxOccurs: @" + BooleanElement.class.getName() + "(id=0, maxOccurs=0, nullable=false)", e.getMessage());
     }
 
     try {
@@ -247,7 +254,7 @@ public class ArrayCodecTest {
       fail("Expected ValidationException");
     }
     catch (final ValidationException e) {
-      assertEquals("elementIds property cannot be empty: " + ArrayError4.class.getName() + ": @" + ArrayType.class.getName() + "(elementIds={}, minIterate=1, maxIterate=1)", e.getMessage());
+      assertEquals("elementIds property cannot be empty: " + ArrayError4.class.getName() + ": @" + ArrayType.class.getName() + "(elementIds={})", e.getMessage());
     }
 
     try {
@@ -267,7 +274,7 @@ public class ArrayCodecTest {
     test(ArrayAny.class, array, l(Boolean.TRUE), a("0"));
     test(ArrayAny.class, array, l(Boolean.TRUE, BigInteger.ONE), a("0", "1"));
     test(ArrayAny.class, array, l(Boolean.TRUE, BigInteger.ONE, "string"), a("0", "1", "2"));
-    test(ArrayAny.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @org.jsonx.AnyElement(id=0, types={@org.jsonx.t(booleans=true, numbers=@org.jsonx.NumberType(scale=-2147483648, range=\" \"), objects=org.jsonx.JxObject.class, strings=\" \", arrays=java.lang.annotation.Annotation.class)}, minOccurs=0, maxOccurs=2147483647, nullable=false): Illegal value: null");
+    test(ArrayAny.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @org.jsonx.AnyElement(id=0, types={@org.jsonx.t(booleans=@org.jsonx.BooleanType())}, minOccurs=0, nullable=false): Illegal value: null");
 
     test(ArrayAny.class, array, l(BigInteger.ONE), a("1"));
     test(ArrayAny.class, array, l(BigInteger.ONE, Boolean.TRUE), a("1", "0"));
@@ -286,7 +293,7 @@ public class ArrayCodecTest {
     test(ArrayLoop.class, array, l(Boolean.TRUE), a("0"));
     test(ArrayLoop.class, array, l(Boolean.TRUE, BigInteger.ONE), a("0", "1"));
     test(ArrayLoop.class, array, l(Boolean.TRUE, BigInteger.ONE, "string"), a("0", "1", "2"));
-    test(ArrayLoop.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2147483647, nullable=false): Illegal value: null");
+    test(ArrayLoop.class, array, l((Boolean)null), "Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, nullable=false): Illegal value: null");
 
     test(ArrayLoop.class, array, l(BigInteger.ONE), a("1"));
     test(ArrayLoop.class, array, l(BigInteger.ONE, Boolean.TRUE), a("1", "0"));
@@ -307,34 +314,34 @@ public class ArrayCodecTest {
     test(Array1d1.class, array, l(true, null), a("0", "0"));
     test(Array1d1.class, array, l(true, null, true), a("0", "0", "0"));
     test(Array1d1.class, array, l(true, null, true, null), a("0", "0", "0", "0"));
-    test(Array1d1.class, array, l(true, null, true, null, true), "Invalid content was found starting with member index=4: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=2, nullable=true): No members are expected at this point: true");
-    test(Array1d1.class, array, l(true, null, true, true, null, true), "Invalid content was found starting with member index=4: @" + BooleanElement.class.getName() + "(id=0, minOccurs=1, maxOccurs=2, nullable=true): No members are expected at this point: null");
+    test(Array1d1.class, array, l(true, null, true, null, true), "Invalid content was found starting with member index=4: @" + BooleanElement.class.getName() + "(id=0, maxOccurs=2): No members are expected at this point: true");
+    test(Array1d1.class, array, l(true, null, true, true, null, true), "Invalid content was found starting with member index=4: @" + BooleanElement.class.getName() + "(id=0, maxOccurs=2): No members are expected at this point: null");
   }
 
   @Test
   public void testArray1d2() throws DecodeException, IOException {
     final TestArray array = new TestArray();
 
-    test(Array1d2.class, array, l(), "Invalid content was found in empty array: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
-    test(Array1d2.class, array, l(true), "Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
-    test(Array1d2.class, array, l(true, false), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(), "Invalid content was found in empty array: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(true), "Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(true, false), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Content is not complete");
     test(Array1d2.class, array, l(true, false, true), a("1", "1", "1"));
-    test(Array1d2.class, array, l(true, false, null), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Illegal value: null");
-    test(Array1d2.class, array, l(true, null, false), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2, nullable=true): Content is not complete");
-    test(Array1d2.class, array, l(null, false, true), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2, nullable=true): Content is not complete");
+    test(Array1d2.class, array, l(true, false, null), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Illegal value: null");
+    test(Array1d2.class, array, l(true, null, false), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2): Content is not complete");
+    test(Array1d2.class, array, l(null, false, true), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=2): Content is not complete");
     test(Array1d2.class, array, l(true, false, null, true), a("1", "1", "0", "1"));
     test(Array1d2.class, array, l(true, null, false, true), a("1", "0", "1", "1"));
     test(Array1d2.class, array, l(null, true, false, true), a("0", "1", "1", "1"));
     test(Array1d2.class, array, l(true, false, true, false), a("0", "1", "1", "1"));
-    test(Array1d2.class, array, l(true, false, true, null), "Invalid content was found starting with member index=3: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
-    test(Array1d2.class, array, l(null, null, null, true, false, true), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Illegal value: null");
+    test(Array1d2.class, array, l(true, false, true, null), "Invalid content was found starting with member index=3: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(null, null, null, true, false, true), "Invalid content was found starting with member index=2: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Illegal value: null");
     test(Array1d2.class, array, l(null, true, null, false, true), a("0", "1", "0", "1", "1"));
     test(Array1d2.class, array, l(null, true, null, false, null, true), a("0", "1", "0", "1", "0", "1"));
     test(Array1d2.class, array, l(null, true, null, false, null, null, true), a("0", "1", "0", "1", "0", "0", "1"));
     test(Array1d2.class, array, l(null, true, null, null, false, null, true), a("0", "1", "0", "0", "1", "0", "1"));
     test(Array1d2.class, array, l(null, true, null, null, false, null, null, true), a("0", "1", "0", "0", "1", "0", "0", "1"));
     test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true), a("0", "0", "1", "0", "0", "1", "0", "0", "1"));
-    test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true, null), "Invalid content was found starting with member index=9: @" + BooleanElement.class.getName() + "(id=1, minOccurs=1, maxOccurs=1, nullable=false): Content is not complete");
+    test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true, null), "Invalid content was found starting with member index=9: @" + BooleanElement.class.getName() + "(id=1, maxOccurs=1, nullable=false): Content is not complete");
     test(Array1d2.class, array, l(null, null, true, null, null, false, null, null, true, false), a("0", "0", "1", "0", "0", "1", "0", "0", "1", "1"));
   }
 
@@ -395,14 +402,14 @@ public class ArrayCodecTest {
     test(Array1d3.class, array, l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE), a("0", "1", "1", "2", "4", "4"));
     test(Array1d3.class, array, l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), a("0", "0", "1", "1", "4", "4"));
     test(Array1d3.class, array, l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), a("1", "1", "2", "2", "4", "4"));
-    test(Array1d3.class, array, l(null, BigDecimals.TWO), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: 2");
-    test(Array1d3.class, array, l(null, "abc", BigInteger.valueOf(5), null, BigDecimals.TWO), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array1d3.class, array, l(true, "abc", true), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array1d3.class, array, l(true, "abc", "abc"), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array1d3.class, array, l(true, "abc", "abc", BigDecimals.PI, BigDecimal.TEN, null), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array1d3.class, array, l(null, "111", null), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: 111");
-    test(Array1d3.class, array, l(true, true, true, true), "Invalid content was found starting with member index=3: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not expected: true");
-    test(Array1d3.class, array, l(null, "abc", "111", "abc"), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
+    test(Array1d3.class, array, l(null, BigDecimals.TWO), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: 2");
+    test(Array1d3.class, array, l(null, "abc", BigInteger.valueOf(5), null, BigDecimals.TWO), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array1d3.class, array, l(true, "abc", true), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array1d3.class, array, l(true, "abc", "abc"), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array1d3.class, array, l(true, "abc", "abc", BigDecimals.PI, BigDecimal.TEN, null), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array1d3.class, array, l(null, "111", null), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: 111");
+    test(Array1d3.class, array, l(true, true, true, true), "Invalid content was found starting with member index=3: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3): Content is not expected: true");
+    test(Array1d3.class, array, l(null, "abc", "111", "abc"), "Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
   }
 
   @Test
@@ -411,39 +418,39 @@ public class ArrayCodecTest {
 
     test(Array2d1.class, array, l(l()), a("0"));
     test(Array2d1.class, array, l(l(), l()), a("0", "0"));
-    test(Array2d1.class, array, l(l(), l(), l()), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: []");
+    test(Array2d1.class, array, l(l(), l(), l()), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: []");
     test(Array2d1.class, array, l(l(null, "abc", null)), a("0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, "abc", null), l(null, "abc", null)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, "abc", null), l(null, "abc", null), l(null, "abc", null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, abc, n...");
+    test(Array2d1.class, array, l(l(null, "abc", null), l(null, "abc", null), l(null, "abc", null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, abc, n...");
     test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, abc, 1]");
+    test(Array2d1.class, array, l(l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE), l(null, "abc", BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, abc, 1]");
     test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, abc, n...");
+    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE), l(true, "abc", null, BigInteger.ONE)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [true, abc, n...");
     test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
+    test(Array2d1.class, array, l(l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO), l(true, null, "abc", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
     test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
+    test(Array2d1.class, array, l(l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO), l(true, null, "abc", "abc", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
     test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4"));
     test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0", "0.0", "0.1", "0.1", "0.2", "0.4"));
-    test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
+    test(Array2d1.class, array, l(l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO), l(true, null, "abc", "123", BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [true, null, ...");
     test(Array2d1.class, array, l(l(null, null, null, null, null)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, null, null, null, null), l(null, null, null, null, null)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, null, null, null, null), l(null, null, null, null, null), l(null, null, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
+    test(Array2d1.class, array, l(l(null, null, null, null, null), l(null, null, null, null, null), l(null, null, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
     test(Array2d1.class, array, l(l(null, null, null, null)), a("0", "0.0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, null, null, null), l(null, null, null, null)), a("0", "0.0", "0.1", "0.1", "0.4", "0", "0.0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, null, null, null), l(null, null, null, null), l(null, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
+    test(Array2d1.class, array, l(l(null, null, null, null), l(null, null, null, null), l(null, null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
     test(Array2d1.class, array, l(l(null, null, null)), a("0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, null, null), l(null, null, null)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, null, null), l(null, null, null), l(null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
+    test(Array2d1.class, array, l(l(null, null, null), l(null, null, null), l(null, null, null)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, ...");
     test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, 2]");
+    test(Array2d1.class, array, l(l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO), l(null, null, BigDecimals.TWO)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, 2]");
     test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN)), a("0", "0.1", "0.1", "0.4", "0", "0.1", "0.1", "0.4"));
-    test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, 10]");
+    test(Array2d1.class, array, l(l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN), l(null, null, BigDecimal.TEN)), "Invalid content was found starting with member index=2: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): No members are expected at this point: [null, null, 10]");
     test(Array2d1.class, array, l(l(null, null, null, BigDecimals.TWO)), a("0", "0.0", "0.1", "0.1", "0.4"));
     test(Array2d1.class, array, l(l(null, null, null, BigDecimals.TWO, BigDecimal.TEN)), a("0", "0.0", "0.1", "0.1", "0.3", "0.4"));
     test(Array2d1.class, array, l(l(null, null, null, BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.4", "0.4"));
@@ -454,13 +461,13 @@ public class ArrayCodecTest {
     test(Array2d1.class, array, l(l(null, "abc", null, "123", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.1", "0.1", "0.2", "0.4", "0.4"));
     test(Array2d1.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4"));
     test(Array2d1.class, array, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE)), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4"));
-    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ZERO, BigDecimal.valueOf(100))), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array2d1.class, array, l(l(true, "abc", BigDecimals.PI, BigDecimal.TEN, null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array2d1.class, array, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: 111");
-    test(Array2d1.class, array, l(l("abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array2d1.class, array, l(l(true)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3, nullable=true): Content is not complete");
-    test(Array2d1.class, array, l(l(null, "abc", "111", "abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: abc");
-    test(Array2d1.class, array, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=1, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: 111");
+    test(Array2d1.class, array, l(l(true, "abc", null, BigInteger.ZERO, BigDecimal.valueOf(100))), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array2d1.class, array, l(l(true, "abc", BigDecimals.PI, BigDecimal.TEN, null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array2d1.class, array, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: 111");
+    test(Array2d1.class, array, l(l("abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array2d1.class, array, l(l(true)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=0: @" + StringElement.class.getName() + "(id=1, pattern=\"[a-z]+\", minOccurs=2, maxOccurs=3): Content is not complete");
+    test(Array2d1.class, array, l(l(null, "abc", "111", "abc")), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: abc");
+    test(Array2d1.class, array, l(l(null, "111", null)), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, maxOccurs=1, nullable=false): Invalid content was found starting with member index=1: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: 111");
   }
 
   @Test
@@ -554,14 +561,14 @@ public class ArrayCodecTest {
     test(Array2d2.class, array, l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.TEN), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7", "8"));
     test(Array2d2.class, array, l(l(null, "abc", null), null, l(null, "ABC", null), BigDecimal.ONE), a("0", "0.1", "0.1", "0.4", "1", "2", "4", "4", "7", "9"));
 
-    test(Array2d2.class, array, l(true, l(), BigInteger.ZERO, BigInteger.ONE, BigIntegers.TWO), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
-    test(Array2d2.class, array, l(true, l(null, "abc"), "abc", BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
-    test(Array2d2.class, array, l(true, l(null, "ABC", "ABC", BigInteger.TEN), "abc", BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
-    test(Array2d2.class, array, l(true, l(null, "ABC", "ABC", BigInteger.TEN), BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
-    test(Array2d2.class, array, l(l(null, "abc", "abc", BigInteger.TEN), false, l(BigInteger.ZERO, "123")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: false");
-    test(Array2d2.class, array, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimals.PI, "abc")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: false");
+    test(Array2d2.class, array, l(true, l(), BigInteger.ZERO, BigInteger.ONE, BigIntegers.TWO), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(true, l(null, "abc"), "abc", BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(true, l(null, "ABC", "ABC", BigInteger.TEN), "abc", BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(true, l(null, "ABC", "ABC", BigInteger.TEN), BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO, BigInteger.ONE), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: true");
+    test(Array2d2.class, array, l(l(null, "abc", "abc", BigInteger.TEN), false, l(BigInteger.ZERO, "123")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: false");
+    test(Array2d2.class, array, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimals.PI, "abc")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: false");
 
-    test(Array2d2.class, array, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimal.ZERO, null, null, "abc")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: false");
+    test(Array2d2.class, array, l(l(null, "abc", null, BigDecimal.TEN), false, l("ABC", "ABC", null, BigDecimal.ZERO, null, null, "abc")), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: false");
   }
 
   @Test
@@ -607,7 +614,7 @@ public class ArrayCodecTest {
     test(Array3d.class, array, l(l(null, null, "abc", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "ABC", "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.0", "0.0", "0.1", "0.1", "0.4", "0.4", "1", "1.2", "1.3", "1.3", "1.4", "1.4", "1.7", "1.7"));
     test(Array3d.class, array, l(l(null, null, "123", "abc", BigDecimals.PI, BigInteger.ONE), l(l(null, null, "123", "ABC", BigDecimals.PI, BigInteger.ONE))), a("0", "0.1", "0.1", "0.2", "0.2", "0.4", "0.4", "1", "1.2", "1.4", "1.4", "1.5", "1.5", "1.7", "1.7"));
 
-    test(Array3d.class, array, l(true), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Content is not expected: true");
-    test(Array3d.class, array, l(l(true, "abc", "abc", BigDecimals.PI), l(l(null, "abc"), false, l(BigInteger.ZERO, "abc"))), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minIterate=1, maxIterate=1, minOccurs=0, maxOccurs=2147483647, nullable=false): Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3, nullable=true): Content is not expected: [null, abc]");
+    test(Array3d.class, array, l(true), "Invalid content was found starting with member index=0: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Content is not expected: true");
+    test(Array3d.class, array, l(l(true, "abc", "abc", BigDecimals.PI), l(l(null, "abc"), false, l(BigInteger.ZERO, "abc"))), "Invalid content was found starting with member index=1: @" + ArrayElement.class.getName() + "(id=0, type=" + Array1d3.class.getName() + ".class, elementIds={}, minOccurs=0, nullable=false): Invalid content was found starting with member index=0: @" + BooleanElement.class.getName() + "(id=0, minOccurs=0, maxOccurs=3): Content is not expected: [null, abc]");
   }
 }

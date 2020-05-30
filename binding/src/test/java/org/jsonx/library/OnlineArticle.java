@@ -20,9 +20,9 @@ import org.jsonx.StringProperty;
 import org.libj.net.URLs;
 
 public class OnlineArticle extends Publication {
-  @StringProperty(pattern=URLs.REGEX)
   private String url;
 
+  @StringProperty(name="url", pattern=URLs.REGEX)
   public String getUrl() {
     return this.url;
   }

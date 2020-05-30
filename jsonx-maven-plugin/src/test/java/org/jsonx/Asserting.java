@@ -17,19 +17,43 @@
 package org.jsonx;
 
 import org.junit.Assert;
+import org.libj.lang.ObjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
 
 abstract class Asserting {
   static final Logger logger = LoggerFactory.getLogger(Asserting.class);
 
   static void assertEquals(final String message, final Object expected, final Object actual) {
-    final boolean equals = expected == null ? actual == null : expected.equals(actual);
-    if (!equals)
+    if ((expected == null) != (actual == null))
       Assert.assertEquals(message, expected, actual);
 
-    if (expected != null)
-      Assert.assertEquals(expected.hashCode(), actual.hashCode());
+    if (expected == null || actual == null)
+      return;
+
+    final boolean equals = ObjectUtil.equals(expected, actual);
+    if (!equals) {
+      if (message != null)
+        System.err.println(message);
+      System.err.println(ObjectUtil.toString(expected));
+      System.err.println(ObjectUtil.toString(actual));
+      if (expected.getClass().isArray())
+        Assert.assertTrue(message, equals);
+      else
+        Assert.assertEquals(message, expected, actual);
+    }
+
+    final int expectedHashCode = ObjectUtil.hashCode(expected);
+    final int actualHashCode = ObjectUtil.hashCode(actual);
+    if (!Objects.equal(expectedHashCode, actualHashCode)) {
+      if (message != null)
+        System.err.println(message);
+      System.err.println(ObjectUtil.toString(expected));
+      System.err.println(ObjectUtil.toString(actual));
+      Assert.assertEquals(message, expectedHashCode, actualHashCode);
+    }
   }
 
   static void assertEquals(final Object expected, final Object actual) {

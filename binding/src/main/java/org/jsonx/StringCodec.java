@@ -17,20 +17,21 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Executable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Classes;
+import org.libj.util.Patterns;
 import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;
 
-class StringCodec extends PrimitiveCodec<String> {
-  static String decodeArray(final String token) {
-    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decodeObject(token) : null;
-  }
-
-  static String decodeObject(final String json) {
+class StringCodec extends PrimitiveCodec {
+  static Object decodeObject(final Class<?> type, final Executable decode, final String json) {
     final StringBuilder unescaped = new StringBuilder(json.length() - 2);
     for (int i = 1, len = json.length() - 1; i < len; ++i) {
       char ch = json.charAt(i);
@@ -43,44 +44,90 @@ class StringCodec extends PrimitiveCodec<String> {
       unescaped.append(ch);
     }
 
-    return unescaped.toString();
+    final String string = unescaped.toString();
+    final Object value;
+    if (decode != null) {
+      try {
+        value = JsdUtil.invoke(decode, string);
+      }
+      catch (final Exception e) {
+        return Error.CONTENT_NOT_EXPECTED(json, null);
+      }
+    }
+    else {
+      value = string;
+    }
+
+    try {
+      return value == null || Classes.isInstance(type, value) ? value : Classes.newInstance(type, value);
+    }
+    catch (final IllegalAccessException | InstantiationException e) {
+      throw new RuntimeException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
+    }
   }
 
-  static Error encodeArray(final Annotation annotation, final String pattern, final Object object, final int index, final Relations relations, final boolean validate) {
-    if (!(object instanceof String))
+  static Object decodeArray(final Class<?> type, final String decode, final String token) {
+    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decodeObject(type, getMethod(decodeToMethod, decode, String.class), token) : null;
+  }
+
+  static Error encodeArray(final Annotation annotation, final String pattern, final Class<?> type, final String encode, Object object, final int index, final Relations relations, final boolean validate) {
+    if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null);
 
-    final String string = (String)object;
-    if (validate && pattern.length() != 0 && !string.matches(pattern))
+    final Executable method = getMethod(encodeToMethod, encode, type);
+    if (method != null)
+      object = JsdUtil.invoke(method, object);
+
+    final String string = object.toString();
+    if (validate && !pattern.isEmpty() && !Patterns.compile(pattern).matcher(string).matches())
       return Error.PATTERN_NOT_MATCHED(pattern, string, null);
 
-    relations.set(index, new Relation(object, annotation));
+    relations.set(index, new Relation(encodeObject(string), annotation));
     return null;
   }
 
-  static String encodeObject(final String string) throws EncodeException {
-    return JsonUtil.escape(string).insert(0, '"').append('"').toString();
+  static String encodeObject(final String value) throws EncodeException {
+    return JsonUtil.escape(value).insert(0, '"').append('"').toString();
   }
 
-  static Object encodeObject(final Annotation annotation, final String pattern, final String object, final boolean validate) throws EncodeException {
+  static Object encodeObject(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException {
+    if (!Classes.isInstance(type, object))
+      return Error.CONTENT_NOT_EXPECTED(object, null);
+
+    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    if (method != null)
+      object = JsdUtil.invoke(method, object);
+
+    final String str = object == null ? null : object.toString();
     if (validate) {
-      final Error error = validate(annotation, object, pattern);
+      final Error error = validate(annotation, getMethod, str, pattern);
       if (error != null)
         return error;
     }
 
-    return encodeObject(object);
+    return encodeObject(str);
   }
 
-  private static Error validate(final Annotation annotation, final String object, final String pattern) {
-    return pattern.length() > 0 && !object.matches(pattern) ? Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, object) : null;
+  private static Error validate(final Annotation annotation, final Method getMethod, final String object, final String pattern) {
+    return pattern.isEmpty() || Patterns.compile(pattern).matcher(object).matches() ? null : Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, getMethod, object);
   }
 
-  private final String pattern;
+  private final Pattern pattern;
 
-  StringCodec(final StringProperty property, final Field field) {
-    super(field, property.name(), property.nullable(), property.use());
-    this.pattern = property.pattern().length() == 0 ? null : property.pattern();
+  StringCodec(final StringProperty property, final Method getMethod, final Method setMethod) {
+    super(getMethod, setMethod, property.name(), property.nullable(), property.use(), property.decode());
+    try {
+      this.pattern = property.pattern().isEmpty() ? null : Patterns.compile(property.pattern());
+    }
+    catch (final PatternSyntaxException e) {
+      throw new ValidationException("Malformed pattern: " + property.pattern());
+    }
   }
 
   @Override
@@ -94,22 +141,15 @@ class StringCodec extends PrimitiveCodec<String> {
       return Error.NOT_A_STRING();
 
     final String value = json.substring(1, json.length() - 1);
-    if (pattern != null) {
-      try {
-        if (!value.matches(pattern))
-          return Error.PATTERN_NOT_MATCHED(pattern, value, reader);
-      }
-      catch (final PatternSyntaxException e) {
-        throw new ValidationException("Malformed pattern: " + pattern);
-      }
-    }
+    if (pattern != null && !pattern.matcher(value).matches())
+      return Error.PATTERN_NOT_MATCHED(pattern.pattern(), value, reader);
 
     return null;
   }
 
   @Override
-  String parse(final String json) {
-    return decodeObject(json);
+  Object parseValue(final String json) {
+    return decodeObject(type, decode, json);
   }
 
   @Override

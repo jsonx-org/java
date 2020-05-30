@@ -16,20 +16,22 @@
 
 package org.jsonx;
 
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_3.xL0gluGCXAA.$MaxOccurs;
-import org.w3.www._2001.XMLSchema.yAA;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer {
   private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
-  private static final ThreadLocal<Set<Member>> exclude = ThreadLocal.withInitial(HashSet::new);
+  private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
 
   static Registry.Type getGreatestCommonSuperType(final List<? extends Member> members) {
     if (members.size() == 0)
@@ -38,10 +40,10 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     try {
       count.set(count.get() + 1);
       int start = 0;
-      if (exclude.get().contains(members.get(0)))
+      if (visited.get().contains(members.get(0)))
         start = 1;
       else
-        exclude.get().add(members.get(0));
+        visited.get().add(members.get(0));
 
       if (members.size() == start)
         return null;
@@ -52,8 +54,8 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       Registry.Type gct = members.get(start).type();
       for (int i = start + 1; i < members.size() && gct != null; ++i) {
         final Member member = members.get(i);
-        if (!exclude.get().contains(member)) {
-          exclude.get().add(member);
+        if (!visited.get().contains(member)) {
+          visited.get().add(member);
           gct = gct.getGreatestCommonSuperType(member.type());
         }
       }
@@ -63,52 +65,64 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     finally {
       count.set(count.get() - 1);
       if (count.get() == 0)
-        exclude.get().clear();
+        visited.get().clear();
     }
   }
 
   private final Registry.Type type;
 
-  Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final $String use, final Registry.Type type) {
-    super(registry, declarer, Id.named(type), doc, name, nullable, use);
+  Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $AnySimpleType name, final $Boolean nullable, final $String use, final Registry.Type type, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+    super(registry, declarer, Id.named(type), doc, name, nullable, use, fieldName, typeBinding);
     this.type = type;
   }
 
   Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Registry.Type type) {
-    super(registry, declarer, Id.named(type), doc, nullable, minOccurs, maxOccurs);
+    super(registry, declarer, Id.named(type), doc, nullable, minOccurs, maxOccurs, null);
     this.type = type;
   }
 
   Referrer(final Registry registry, final Declarer declarer, final Registry.Type type, final $Documented.Doc$ doc) {
-    super(registry, declarer, Id.named(type), doc);
+    super(registry, declarer, Id.named(type), doc, null);
     this.type = type;
   }
 
-  Referrer(final Registry registry, final Declarer declarer, final Boolean nullable, final Use use, final Registry.Type type) {
-    super(registry, declarer, Id.named(type), nullable, use);
+  Referrer(final Registry registry, final Declarer declarer, final Id id, final Registry.Type type) {
+    super(registry, declarer, id, null, null, null, null);
     this.type = type;
   }
 
-  private Member getReference(final Id id) {
+  Referrer(final Registry registry, final Declarer declarer, final Boolean nullable, final Use use, final String fieldName, final Registry.Type type) {
+    super(registry, declarer, Id.named(type), nullable, use, fieldName, null);
+    this.type = type;
+  }
+
+  private Member getReference(final Id id, final boolean isFromSchema) {
     if (registry.isPending(id))
-      return new Deferred<>(null, () -> registry.getModel(id));
+      return new Deferred<>(isFromSchema, null, null, () -> registry.getModel(id));
 
     final Model model = registry.getModel(id);
     if (model == null)
-      return new Deferred<>(null, () -> registry.getModel(id));
+      return new Deferred<>(isFromSchema, null, null, () -> registry.getModel(id));
 
     return model;
   }
 
   final Member getReference(final $String type) {
-    return type == null ? null : getReference(Id.named(type));
+    return type == null ? null : getReference(Id.named(type), true);
   }
 
-  final Registry.Type classType() {
+  @Override
+  public final Registry.Type classType() {
     return type;
+  }
+
+  @Override
+  Class<? extends Annotation> typeAnnotation() {
+    throw new UnsupportedOperationException();
   }
 
   abstract List<AnnotationType> getClassAnnotation();
   abstract String toSource(Settings settings);
   abstract void resolveReferences();
+  abstract void resolveOverrides();
 }

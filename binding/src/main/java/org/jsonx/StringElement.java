@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Repeatable(StringElements.class)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StringElement {
@@ -31,4 +31,8 @@ public @interface StringElement {
   String pattern() default "";
   int minOccurs() default 1;
   int maxOccurs() default Integer.MAX_VALUE;
+
+  Class<?> type() default String.class;
+  String decode() default "";
+  String encode() default "";
 }

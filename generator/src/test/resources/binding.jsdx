@@ -1,0 +1,498 @@
+<!--
+  Copyright (c) 2020 JSONx
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<schema
+  doc="Schema focusing on bindings"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
+
+  <boolean name="defaultBoolean"/>
+  <boolean name="primitiveBoolean">
+    <binding lang="java" type="boolean"/>
+  </boolean>
+  <boolean name="intBoolean"> <!-- This is actually an invalid type definition, which won't execute cause java.lang.Integer.parseInt("false") will lead to NumberFormatException -->
+    <binding lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/>
+  </boolean>
+  <boolean name="StringBoolean">
+    <binding lang="java" type="java.lang.String"/>
+  </boolean>
+  
+  <number name="defaultDecimal"/>
+  <number name="defaultInteger" scale="0"/>
+  <number name="byte" scale="0" range="[-128,127]">
+    <binding lang="java" type="byte"/>
+  </number>
+  <number name="Byte" scale="0" range="[-128,127]">
+    <binding lang="java" type="java.lang.Byte"/>
+  </number>
+  <number name="short" scale="0" range="[-32768,32767]">
+    <binding lang="java" type="short"/>
+  </number>
+  <number name="Short" scale="0" range="[-32768,32767]">
+    <binding lang="java" type="java.lang.Short"/>
+  </number>
+  <number name="int" scale="0" range="[-2147483648,2147483647]">
+    <binding lang="java" type="int"/>
+  </number>
+  <number name="Integer" scale="0" range="[-2147483648,2147483647]">
+    <binding lang="java" type="java.lang.Integer"/>
+  </number>
+  <number name="long" scale="0" range="[-9223372036854775808,9223372036854775807]">
+    <binding lang="java" type="long" decode="java.lang.Long.parseLong"/>
+  </number>
+  <number name="Long" scale="0" range="[-9223372036854775808,9223372036854775807]">
+    <binding lang="java" type="java.lang.Long" decode="java.lang.Long.valueOf"/>
+  </number>
+  <number name="float">
+    <binding lang="java" type="float"/>
+  </number>
+  <number name="Float">
+    <binding lang="java" type="java.lang.Float"/>
+  </number>
+  <number name="double">
+    <binding lang="java" type="double"/>
+  </number>
+  <number name="Double">
+    <binding lang="java" type="java.lang.Double"/>
+  </number>
+  <number name="StringDecimal">
+    <binding lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/>
+  </number>
+  <number name="CharSequenceDecimal">
+    <binding lang="java" type="java.lang.CharSequence"/>
+  </number>
+  
+  <string name="defaultString"/>
+  <string name="charArray">
+    <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
+  </string>
+  <string name="charSequence">
+    <binding lang="java" type="java.lang.CharSequence"/>
+  </string>
+  <string name="stringBigDecimal">
+    <binding lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString"/>
+  </string>
+  <string name="iso8601">
+    <binding lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/>
+  </string>
+  <string name="uuid">
+    <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/>
+  </string>
+
+  <array name="arrayReferences">
+    <reference type="defaultBoolean"/>
+    <reference type="primitiveBoolean" nullable="false"/>
+    <reference type="intBoolean" nullable="false"/>
+    <reference type="StringBoolean"/>
+
+    <reference type="defaultDecimal"/>
+    <reference type="defaultInteger"/>
+    <reference type="byte" nullable="false"/>
+    <reference type="Byte"/>
+    <reference type="short" nullable="false"/>
+    <reference type="Short"/>
+    <reference type="int" nullable="false"/>
+    <reference type="Integer"/>
+    <reference type="long" nullable="false"/>
+    <reference type="Long"/>
+    <reference type="float" nullable="false"/>
+    <reference type="Float"/>
+    <reference type="double" nullable="false"/>
+    <reference type="Double"/>
+    <reference type="StringDecimal"/>
+    <reference type="CharSequenceDecimal"/>
+
+    <reference type="defaultString"/>
+    <reference type="charArray" nullable="false"/>
+    <reference type="charSequence"/>
+    <reference type="stringBigDecimal"/>
+    <reference type="iso8601" nullable="false"/>
+    <reference type="uuid"/>
+  </array>
+
+  <array name="arrayDirect">
+    <any types="Byte Integer Long Float Double"/>
+    
+    <boolean/>
+    <boolean nullable="false">
+      <binding lang="java" type="boolean"/>
+    </boolean>
+    <boolean nullable="false">
+      <binding lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/>
+    </boolean>
+    <boolean>
+      <binding lang="java" type="java.lang.String"/>
+    </boolean>
+
+    <number scale="0" nullable="false">
+      <binding lang="java" type="byte"/>
+    </number>
+    <number scale="0">
+      <binding lang="java" type="java.lang.Byte"/>
+    </number>
+    <number scale="0" nullable="false">
+      <binding lang="java" type="short"/>
+    </number>
+    <number scale="0">
+      <binding lang="java" type="java.lang.Short"/>
+    </number>
+    <number scale="0" nullable="false">
+      <binding lang="java" type="int"/>
+    </number>
+    <number scale="0">
+      <binding lang="java" type="java.lang.Integer"/>
+    </number>
+    <number scale="0" nullable="false">
+      <binding lang="java" type="long"/>
+    </number>
+    <number scale="0">
+      <binding lang="java" type="java.lang.Long"/>
+    </number>
+    <number nullable="false">
+      <binding lang="java" type="float"/>
+    </number>
+    <number>
+      <binding lang="java" type="java.lang.Float"/>
+    </number>
+    <number nullable="false">
+      <binding lang="java" type="double"/>
+    </number>
+    <number>
+      <binding lang="java" type="java.lang.Double"/>
+    </number>
+    <number>
+      <binding lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/>
+    </number>
+    <number>
+      <binding lang="java" type="java.lang.CharSequence"/>
+    </number>
+
+    <string/>
+    <string>
+      <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
+    </string>
+    <string>
+      <binding lang="java" type="java.lang.CharSequence"/>
+    </string>
+    <string>
+      <binding lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString"/>
+    </string>
+    <string nullable="false">
+      <binding lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/>
+    </string>
+    <string>
+      <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/>
+    </string>
+  </array>
+
+  <object name="objRefs">
+    <property names="any.*" xsi:type="any" types="Byte Integer Long Float Double">
+      <binding lang="java" field="objRefAny"/>
+    </property>
+
+    <property name="arrayDirect" xsi:type="reference" type="arrayDirect">
+      <binding lang="java" field="objRefArrayDirect"/>
+    </property>
+    <property name="arrayReferences" xsi:type="reference" type="arrayReferences">
+      <binding lang="java" field="objRefArrayReferences"/>
+    </property>
+
+    <property name="defaultBoolean" xsi:type="reference" type="defaultBoolean">
+      <binding lang="java" field="objRefDefaultBoolean"/>
+    </property>
+    <property name="primitiveBoolean" xsi:type="reference" type="primitiveBoolean" nullable="false">
+      <binding lang="java" field="objRefPrimitiveBoolean"/>
+    </property>
+    <property name="intBoolean" xsi:type="reference" type="intBoolean" nullable="false">
+      <binding lang="java" field="objRefIntBoolean"/>
+    </property>
+    <property name="StringBoolean" xsi:type="reference" type="StringBoolean">
+      <binding lang="java" field="objRefStringBoolean"/>
+    </property>
+    
+    <property name="defaultDecimal" xsi:type="reference" type="defaultDecimal">
+      <binding lang="java" field="objRefDefaultDecimal"/>
+    </property>
+    <property name="defaultInteger" xsi:type="reference" type="defaultInteger">
+      <binding lang="java" field="objRefDefaultInteger"/>
+    </property>
+    <property name="byte" xsi:type="reference" type="byte" nullable="false">
+      <binding lang="java" field="objRefBytePrimitive"/>
+    </property>
+    <property name="Byte" xsi:type="reference" type="Byte">
+      <binding lang="java" field="objRefByteBoxed"/>
+    </property>
+    <property name="short" xsi:type="reference" type="short" nullable="false">
+      <binding lang="java" field="objRefShortPrimitive"/>
+    </property>
+    <property name="Short" xsi:type="reference" type="Short">
+      <binding lang="java" field="objRefShortBoxed"/>
+    </property>
+    <property name="int" xsi:type="reference" type="int" nullable="false">
+      <binding lang="java" field="objRefIntPrimitive"/>
+    </property>
+    <property name="Integer" xsi:type="reference" type="Integer">
+      <binding lang="java" field="objRefIntegerBoxed"/>
+    </property>
+    <property name="long" xsi:type="reference" type="long" nullable="false">
+      <binding lang="java" field="objRefLongPrimitive"/>
+    </property>
+    <property name="Long" xsi:type="reference" type="Long">
+      <binding lang="java" field="objRefLongBoxed"/>
+    </property>
+    <property name="float" xsi:type="reference" type="float" nullable="false">
+      <binding lang="java" field="objRefFloatPrimitive"/>
+    </property>
+    <property name="Float" xsi:type="reference" type="Float">
+      <binding lang="java" field="objRefFloatBoxed"/>
+    </property>
+    <property name="double" xsi:type="reference" type="double" nullable="false">
+      <binding lang="java" field="objRefDoublePrimitive"/>
+    </property>
+    <property name="Double" xsi:type="reference" type="Double">
+      <binding lang="java" field="objRefDoubleBoxed"/>
+    </property>
+    <property name="StringDecimal" xsi:type="reference" type="StringDecimal">
+      <binding lang="java" field="objRefStringDecimal"/>
+    </property>
+    <property name="CharSequenceDecimal" xsi:type="reference" type="CharSequenceDecimal">
+      <binding lang="java" field="objRefCharSequenceDecimal"/>
+    </property>
+    
+    <property name="defaultString" xsi:type="reference" type="defaultString">
+      <binding lang="java" field="objRefDefaultString"/>
+    </property>
+    <property name="charArray" xsi:type="reference" type="charArray">
+      <binding lang="java" field="objRefCharArray"/>
+    </property>
+    <property name="charSequence" xsi:type="reference" type="charSequence">
+      <binding lang="java" field="objRefCharSequence"/>
+    </property>
+    <property name="stringBigDecimal" xsi:type="reference" type="stringBigDecimal">
+      <binding lang="java" field="objRefStringBigDecimal"/>
+    </property>
+    <property name="iso8601" xsi:type="reference" type="iso8601" nullable="false">
+      <binding lang="java" field="objRefIso8601"/>
+    </property>
+    <property name="uuid" xsi:type="reference" type="uuid">
+      <binding lang="java" field="objRefUuid"/>
+    </property>
+
+    <property name="object" xsi:type="reference" type="objRefs">
+      <binding lang="java" field="objRefObject"/>
+    </property>
+  </object>
+
+  <object name="objDir">
+    <property name="arrayDirect" xsi:type="array">
+      <boolean/>
+      <boolean nullable="false">
+        <binding lang="java" type="boolean"/>
+      </boolean>
+      <boolean nullable="false">
+        <binding lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/>
+      </boolean>
+      <boolean>
+        <binding lang="java" type="java.lang.String"/>
+      </boolean>
+
+      <number scale="0" nullable="false">
+        <binding lang="java" type="byte"/>
+      </number>
+      <number scale="0">
+        <binding lang="java" type="java.lang.Byte"/>
+      </number>
+      <number scale="0" nullable="false">
+        <binding lang="java" type="short"/>
+      </number>
+      <number scale="0">
+        <binding lang="java" type="java.lang.Short"/>
+      </number>
+      <number scale="0" nullable="false">
+        <binding lang="java" type="int"/>
+      </number>
+      <number scale="0">
+        <binding lang="java" type="java.lang.Integer"/>
+      </number>
+      <number scale="0" nullable="false">
+        <binding lang="java" type="long"/>
+      </number>
+      <number scale="0">
+        <binding lang="java" type="java.lang.Long"/>
+      </number>
+      <number nullable="false">
+        <binding lang="java" type="float"/>
+      </number>
+      <number>
+        <binding lang="java" type="java.lang.Float"/>
+      </number>
+      <number nullable="false">
+        <binding lang="java" type="double"/>
+      </number>
+      <number>
+        <binding lang="java" type="java.lang.Double"/>
+      </number>
+      <number>
+        <binding lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/>
+      </number>
+      <number>
+        <binding lang="java" type="java.lang.CharSequence"/>
+      </number>
+      
+      <string/>
+      <string>
+        <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
+      </string>
+      <string>
+        <binding lang="java" type="java.lang.CharSequence"/>
+      </string>
+      <string>
+        <binding lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString"/>
+      </string>
+      <string nullable="false">
+        <binding lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/>
+      </string>
+      <string>
+        <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/>
+      </string>
+
+      <binding lang="java" field="objDirArrayDirect"/>
+    </property>
+
+    <property name="arrayReferences" xsi:type="array">
+      <reference type="arrayDirect"/>
+      <reference type="arrayReferences"/>
+
+      <reference type="defaultBoolean"/>
+      <reference type="primitiveBoolean" nullable="false"/>
+      <reference type="intBoolean" nullable="false"/>
+      <reference type="StringBoolean"/>
+
+      <reference type="defaultDecimal"/>
+      <reference type="defaultInteger"/>
+      <reference type="byte" nullable="false"/>
+      <reference type="Byte"/>
+      <reference type="short" nullable="false"/>
+      <reference type="Short"/>
+      <reference type="int" nullable="false"/>
+      <reference type="Integer"/>
+      <reference type="long" nullable="false"/>
+      <reference type="Long"/>
+      <reference type="float" nullable="false"/>
+      <reference type="Float"/>
+      <reference type="double" nullable="false"/>
+      <reference type="Double"/>
+      <reference type="StringDecimal"/>
+      <reference type="CharSequenceDecimal"/>
+
+      <reference type="defaultString"/>
+      <reference type="charArray" nullable="false"/>
+      <reference type="charSequence"/>
+      <reference type="stringBigDecimal"/>
+      <reference type="iso8601" nullable="false"/>
+      <reference type="uuid"/>
+
+      <binding lang="java" field="objDirArrayReferences"/>
+    </property>
+
+    <property name="defaultBoolean" xsi:type="boolean">
+      <binding lang="java" field="objDirDefaultBoolean"/>
+    </property>
+    <property name="primitiveBoolean" xsi:type="boolean" nullable="false" doc="objDirPrimitiveBoolean">
+      <binding lang="java" type="boolean" field="objDirPrimitiveBoolean"/>
+    </property>
+    <property name="intBoolean" xsi:type="boolean" nullable="false">
+      <binding lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf" field="objDirIntBoolean"/>
+    </property>
+    <property name="StringBoolean" xsi:type="boolean">
+      <binding lang="java" type="java.lang.String" field="objDirStringBoolean"/>
+    </property>
+    
+    <property name="defaultDecimal" xsi:type="number">
+      <binding lang="java" field="objDirDefaultDecimal"/>
+    </property>
+    <property name="defaultInteger" scale="0" xsi:type="number">
+      <binding lang="java" field="objDirDefaultInteger"/>
+    </property>
+    <property name="byte" xsi:type="number" scale="0" nullable="false">
+      <binding lang="java" type="byte" field="objDirBytePrimitive"/>
+    </property>
+    <property name="Byte" xsi:type="number" scale="0">
+      <binding lang="java" type="java.lang.Byte" field="objDirByteBoxed"/>
+    </property>
+    <property name="short" xsi:type="number" scale="0" nullable="false">
+      <binding lang="java" type="short" field="objDirShortPrimitive"/>
+    </property>
+    <property name="Short" xsi:type="number" scale="0">
+      <binding lang="java" type="java.lang.Short" field="objDirShortBoxed"/>
+    </property>
+    <property name="int" xsi:type="number" scale="0" nullable="false">
+      <binding lang="java" type="int" field="objDirIntPrimitive"/>
+    </property>
+    <property name="Integer" xsi:type="number" scale="0">
+      <binding lang="java" type="java.lang.Integer" field="objDirIntegerBoxed"/>
+    </property>
+    <property name="long" xsi:type="number" scale="0" nullable="false">
+      <binding lang="java" type="long" field="objDirLongPrimitive"/>
+    </property>
+    <property name="Long" xsi:type="number" scale="0">
+      <binding lang="java" type="java.lang.Long" field="objDirLongBoxed"/>
+    </property>
+    <property name="float" xsi:type="number" nullable="false">
+      <binding lang="java" type="float" field="objDirFloatPrimitive"/>
+    </property>
+    <property name="Float" xsi:type="number">
+      <binding lang="java" type="java.lang.Float" field="objDirFloatBoxed"/>
+    </property>
+    <property name="double" xsi:type="number" nullable="false">
+      <binding lang="java" type="double" field="objDirDoublePrimitive"/>
+    </property>
+    <property name="Double" xsi:type="number">
+      <binding lang="java" type="java.lang.Double" field="objDirDoubleBoxed"/>
+    </property>
+    <property name="StringDecimal" xsi:type="number">
+      <binding lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;" field="objDirStringDecimal"/>
+    </property>
+    <property name="CharSequenceDecimal" xsi:type="number">
+      <binding lang="java" type="java.lang.CharSequence" field="objDirCharSequenceDecimal"/>
+    </property>
+    
+    <property name="defaultString" xsi:type="string">
+      <binding lang="java" field="objDirDefaultString"/>
+    </property>
+    <property name="charArray" xsi:type="string">
+      <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString" field="objDirCharArray"/>
+    </property>
+    <property name="charSequence" xsi:type="string">
+      <binding lang="java" type="java.lang.CharSequence" field="objDirCharSequence"/>
+    </property>
+    <property name="stringBigDecimal" xsi:type="string">
+      <binding lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString" field="objDirStringBigDecimal"/>
+    </property>
+    <property name="iso8601" xsi:type="string" nullable="false">
+      <binding lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601" field="objDirIso8601"/>
+    </property>
+    <property name="uuid" xsi:type="string">
+      <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull" field="objDirUuid"/>
+    </property>
+
+    <property name="object" xsi:type="object" extends="objDir">
+      <binding lang="java" field="objDirObject"/>
+    </property>
+  </object>
+
+</schema>

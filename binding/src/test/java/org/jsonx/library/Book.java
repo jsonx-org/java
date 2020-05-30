@@ -24,10 +24,11 @@ import org.jsonx.NumberElement;
 import org.jsonx.StringElement;
 import org.jsonx.StringProperty;
 
+@SuppressWarnings("javadoc")
 public class Book extends Publication {
-  @StringProperty(pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d")
   private String isbn;
 
+  @StringProperty(name="isbn", pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d")
   public String getIsbn() {
     return this.isbn;
   }
@@ -36,6 +37,8 @@ public class Book extends Publication {
     this.isbn = isbn;
   }
 
+  private List<Object> index;
+
   /**
    * [[1, "Part 1, Chapter 1"], [2, "Part 1, Chapter 2"], [3, "Part 1, Chapter 3"],
    *  [1, "Part 2, Chapter 1"], [2, "Part 2, Chapter 2"], [3, "Part 2, Chapter 3"]...]
@@ -43,9 +46,7 @@ public class Book extends Publication {
   @StringElement(id=3, pattern="(\\S)|(\\S.*\\S)", nullable=false, maxOccurs=1)
   @NumberElement(id=2, range="[1,]", nullable=false, maxOccurs=1)
   @ArrayElement(id=1, nullable=false, elementIds={2, 3})
-  @ArrayProperty(elementIds={1})
-  private List<Object> index;
-
+  @ArrayProperty(name="index", elementIds={1})
   public List<Object> getIndex() {
     return this.index;
   }

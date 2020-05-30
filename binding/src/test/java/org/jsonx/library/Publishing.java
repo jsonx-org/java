@@ -24,9 +24,9 @@ import org.jsonx.NumberProperty;
 import org.jsonx.StringProperty;
 
 public class Publishing implements JxObject {
-  @NumberProperty(scale=0)
   private BigInteger year;
 
+  @NumberProperty(name="year", scale=0)
   public BigInteger getYear() {
     return this.year;
   }
@@ -35,9 +35,9 @@ public class Publishing implements JxObject {
     this.year = year;
   }
 
-  @StringProperty(pattern="\\S+ \\S+")
   private String publisher;
 
+  @StringProperty(name="publisher", pattern="\\S+ \\S+")
   public String getPublisher() {
     return this.publisher;
   }

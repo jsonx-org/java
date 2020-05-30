@@ -28,9 +28,9 @@ import org.jsonx.StringProperty;
 import org.jsonx.Use;
 
 public abstract class Publication implements JxObject {
-  @StringProperty
   private String title;
 
+  @StringProperty(name="title")
   public String getTitle() {
     return this.title;
   }
@@ -39,10 +39,10 @@ public abstract class Publication implements JxObject {
     this.title = title;
   }
 
-  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
-  @ArrayProperty(use=Use.OPTIONAL, elementIds=1)
   private Optional<List<String>> authors;
 
+  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
+  @ArrayProperty(name="authors", use=Use.OPTIONAL, elementIds=1)
   public Optional<List<String>> getAuthors() {
     return this.authors;
   }
@@ -51,10 +51,10 @@ public abstract class Publication implements JxObject {
     this.authors = authors;
   }
 
-  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
-  @ArrayProperty(use=Use.OPTIONAL, elementIds=1)
   private Optional<List<String>> editors;
 
+  @StringElement(id=1, pattern="\\S+ \\S+", nullable=false)
+  @ArrayProperty(name="editors", use=Use.OPTIONAL, elementIds=1)
   public Optional<List<String>> getEditors() {
     return this.editors;
   }
@@ -63,10 +63,10 @@ public abstract class Publication implements JxObject {
     this.editors = editors;
   }
 
-  @ObjectElement(id=1, type=Publishing.class, nullable=false)
-  @ArrayProperty(elementIds=1)
   private List<Publishing> publishings;
 
+  @ObjectElement(id=1, type=Publishing.class, nullable=false)
+  @ArrayProperty(name="publishings", elementIds=1)
   public List<Publishing> getPublishings() {
     return this.publishings;
   }

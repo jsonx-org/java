@@ -30,7 +30,7 @@ public final class Generator {
     System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>");
     System.err.println();
     System.err.println("Mandatory arguments:");
-    System.err.println("  -d <destDir>       Specify the destination directory.");
+    System.err.println("  -d <DEST_DIR>      Specify the destination directory.");
     System.err.println();
     System.err.println("Optional arguments:");
     System.err.println("  --prefix <PREFIX>  Package prefix for generated classes.");

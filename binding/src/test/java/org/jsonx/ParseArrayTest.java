@@ -56,7 +56,7 @@ public class ParseArrayTest {
         return ',';
       }
     }))) {
-      JxDecoder.parseArray(LongArray.class, reader);
+      JxDecoder.VALIDATING.parseArray(LongArray.class, reader);
     }
     catch (final DecodeException | IOException | JsonParseException e) {
       Throwing.rethrow(e);

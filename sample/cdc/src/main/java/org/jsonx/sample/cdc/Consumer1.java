@@ -27,7 +27,7 @@ public class Consumer1 {
   public static Product1 getProductFromProducer() throws DecodeException, IOException {
     final String response = Producer.getProduct("v1");
     try (final JsonReader reader = new JsonReader(new StringReader(response))) {
-      return JxDecoder.parseObject(Product1.class, reader);
+      return JxDecoder.VALIDATING.parseObject(Product1.class, reader);
     }
   }
 }

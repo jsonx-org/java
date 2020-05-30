@@ -17,6 +17,6 @@
 package org.jsonx;
 
 abstract class FailureCase<T extends PropertyTrial<?>> extends Case<T> {
-  abstract void onEncode(T trial, EncodeException e) throws Exception;
+  abstract void onEncode(JxObject binding, T trial, EncodeException e) throws Exception;
   abstract boolean onDecode(T trial, DecodeException e) throws Exception;
 }

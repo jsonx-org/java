@@ -25,8 +25,8 @@ import org.openjax.xml.api.XmlElement;
 final class Deferred<T extends Member> extends Member {
   private final Supplier<? extends T> supplier;
 
-  Deferred(final String name, final Supplier<? extends T> supplier) {
-    super(null, null, null, null, name, null, null, null, null);
+  Deferred(final boolean isFromSchema, final String name, final String fieldName, final Supplier<? extends T> supplier) {
+    super(null, null, isFromSchema, null, null, name, null, null, null, null, fieldName, null);
     this.supplier = supplier;
   }
 
@@ -35,12 +35,17 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  Registry.Type type() {
+  Registry.Type typeDefault() {
     throw new UnsupportedOperationException();
   }
 
   @Override
   String elementName() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  Class<?> defaultClass() {
     throw new UnsupportedOperationException();
   }
 
@@ -51,6 +56,11 @@ final class Deferred<T extends Member> extends Member {
 
   @Override
   Class<? extends Annotation> elementAnnotation() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  Class<? extends Annotation> typeAnnotation() {
     throw new UnsupportedOperationException();
   }
 

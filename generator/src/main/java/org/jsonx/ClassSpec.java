@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -90,12 +91,13 @@ class ClassSpec {
     }
 
     builder.append(" {");
-    final Iterator<ClassSpec> iterator = nameToClassSpec.values().iterator();
+    final Collection<ClassSpec> classSpecs = nameToClassSpec.values();
+    final Iterator<ClassSpec> iterator = classSpecs.iterator();
     for (int i = 0; iterator.hasNext(); ++i) {
-      final ClassSpec memberClass = iterator.next();
       if (i > 0)
         builder.append('\n');
 
+      final ClassSpec memberClass = iterator.next();
       final StringBuilder annotation = memberClass.getAnnotation();
       if (annotation != null)
         builder.append("\n  ").append(Strings.indent(annotation, 2));
@@ -109,8 +111,12 @@ class ClassSpec {
 
     if (referrer != null) {
       final String code = referrer.toSource(settings);
-      if (code != null && code.length() > 0)
+      if (code != null && code.length() > 0) {
+        if (classSpecs.size() > 0)
+          builder.append('\n');
+
         builder.append("\n  ").append(Strings.indent(code, 2));
+      }
     }
 
     return builder.append("\n}").toString();

@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 JSONx
+/* Copyright (c) 2020 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,20 +16,25 @@
 
 package org.jsonx;
 
-final class PatternCase extends FailureCase<StringTrial> {
-  static final PatternCase CASE = new PatternCase();
+class Spec<T> {
+  static <T>Spec<T> from(final T spec, final T value) {
+    return new Spec<>(spec, value);
+  }
 
-  @Override
-  void onEncode(final JxObject binding, final StringTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name + " " + e.getMessage(), e.getMessage().contains(" Pattern does not match: "));
+  final T set;
+  final T get;
+
+  /**
+   * @param set The raw value set from the specification.
+   * @param get The calculated value to be gotten from this {@link Spec}.
+   */
+  private Spec(final T set, final T get) {
+    this.set = set;
+    this.get = get;
   }
 
   @Override
-  boolean onDecode(final StringTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Pattern \"" + trial.pattern + "\" does not match: "));
-    return true;
-  }
-
-  private PatternCase() {
+  public String toString() {
+    return "set: " + set + "\nget: " + get;
   }
 }

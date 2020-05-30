@@ -16,24 +16,38 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.SecureRandom;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 abstract class PropertyTrial<T> extends Trial {
-  static void setField(final Field field, final Object object, final String name, final Object value) {
+  @SuppressWarnings("unchecked")
+  static void setField(final Method getMethod, final Method setMethod, final Object object, final String name, final Object value) {
     try {
-      if (Map.class.isAssignableFrom(field.getType()))
-        field.getType().getMethod("put", Object.class, Object.class).invoke(field.get(object), name, value);
-      else if (Optional.class.equals(field.getType()) && value != null && !(value instanceof Optional))
-        field.set(object, Optional.ofNullable(value));
+      if (Map.class.isAssignableFrom(getMethod.getReturnType())) {
+        Map<Object,Object> map = (Map<Object,Object>)getMethod.invoke(object);
+        if (map == null)
+          setMethod.invoke(object, map = new LinkedHashMap<>());
+
+        map.put(name, value);
+      }
+      else if (getMethod.getReturnType() == Optional.class && value != null && !(value instanceof Optional))
+        setMethod.invoke(object, Optional.ofNullable(value));
       else
-        field.set(object, value);
+        setMethod.invoke(object, value);
     }
-    catch (final IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      throw new IllegalStateException(e);
+    catch (final IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
     }
   }
 
@@ -44,21 +58,46 @@ abstract class PropertyTrial<T> extends Trial {
   static final SecureRandom random = new SecureRandom();
 
   final Case<? extends PropertyTrial<? super T>> kase;
-  final Field field;
+  final Method getMethod;
+  final Method setMethod;
   final Object object;
   private final Object value;
+  private final Object encodedValue;
   final String name;
   final Use use;
+  final Class<?> type;
+  final Executable decode;
+  final Executable encode;
+  final boolean isStringDefaultType;
 
-  PropertyTrial(final Case<? extends PropertyTrial<? super T>> kase, final Field field, final Object object, final Object value, final String name, final Use use) {
+  PropertyTrial(final Case<? extends PropertyTrial<? super T>> kase, final Class<?> type, final Method getMethod, final Method setMethod, final Object object, final Object value, final String name, final Use use, final String decode, final String encode, final boolean isStringDefaultType) {
     this.kase = kase;
-    this.field = field;
+    this.getMethod = getMethod;
+    this.setMethod = setMethod;
     this.object = object;
-    this.value = value;
-    this.name = JsdUtil.getName(name, field);
+    this.name = name;
     this.use = use;
+    this.isStringDefaultType = isStringDefaultType;
 
-    field.setAccessible(true);
+    this.type = type;
+    this.decode = decode == null || decode.length() == 0 ? null : JsdUtil.parseExecutable(decode, String.class);
+    this.encode = encode == null || encode.length() == 0 ? null : JsdUtil.parseExecutable(encode, type);
+    this.value = value;
+    if (value == null || this.encode == null) {
+      this.encodedValue = value;
+    }
+    else {
+      if (!(value instanceof Optional))
+        this.encodedValue = JsdUtil.invoke(this.encode, value);
+      else if (((Optional<?>)value).isPresent())
+        this.encodedValue = JsdUtil.invoke(this.encode, ((Optional<?>)value).get());
+      else
+        this.encodedValue = value;
+    }
+  }
+
+  final Object encodedValue() {
+    return encodedValue;
   }
 
   final Object rawValue() {

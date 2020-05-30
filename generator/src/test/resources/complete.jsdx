@@ -16,9 +16,9 @@
 -->
 <schema
   doc="Schema intended to provide a complete set of variations of declarations"
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
   <array name="rootArrayBool" doc="Root array boolean">
     <boolean doc="Plain boolean"/>
   </array>
@@ -31,28 +31,73 @@
       </array>
       <array minOccurs="2" maxOccurs="13" minIterate="2" maxIterate="3" doc="Another array">
         <reference type="rootArrayBool" minOccurs="2" nullable="false" doc="Reference to array bool"/>
-        <reference type="rootBoolean" maxOccurs="15" doc="Reference to root boolean"/>
+        <reference type="StringBoolean" maxOccurs="15" doc="Reference to root boolean"/>
       </array>
     </array>
   </array>
   <array name="simple-rootBooleanArray" doc="Simple root boolean array">
     <reference type="simple-rootBooleanArray" maxOccurs="3" doc="Simple reference to boolean array"/>
   </array>
-  <boolean name="rootBoolean" doc="Root boolean type"/>
-  <number name="rootNumberInteger" scale="0" range="(2,9)" doc="Root number integer"/>
-  <number name="rootNumberReal" range="[2.3392E2,9.87832e3)" doc="Root number real"/>
+  <boolean name="defaultBoolean" doc="Default boolean type"/>
+  <boolean name="primitiveBoolean" doc="Primitive boolean type">
+    <binding lang="java" type="boolean"/>
+  </boolean>
+  <boolean name="intBoolean">
+    <binding lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/>
+  </boolean>
+  <boolean name="StringBoolean">
+    <binding lang="java" type="java.lang.String"/>
+  </boolean>
+  <number name="defaultDecimal" doc="Default decimal"/>
+  <number name="defaultInteger" scale="0" doc="Default integer"/>
+  <number name="long" scale="0" range="[-9223372036854775808,9223372036854775807]">
+    <binding lang="java" type="long" decode="java.lang.Long.parseLong"/>
+  </number>
+  <number name="StringDecimal">
+    <binding lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/>
+  </number>
+  <number name="rootNumberInteger" scale="0" range="(2,9)" doc="Root number integer">
+    <binding lang="java" type="java.lang.Integer"/>
+  </number>
+  <number name="rootNumberReal" range="[2.3392E2,9.87832e3)" doc="Root number real">
+    <binding lang="java" type="java.lang.Float"/>
+  </number>
+  <number name="rootNumberPrimitive" range="[2.3392E2,9.87832e3)" doc="Root number real">
+    <binding lang="java" type="double"/>
+  </number>
+  <string name="charArray">
+    <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
+  </string>
+  <string name="iso8601">
+    <binding lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/>
+  </string>
   <string name="rootString" pattern="[a-z]+" doc="Root string"/>
+  <string name="uuid" pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}">
+    <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/>
+  </string>
   <object name="cls-abstractObject" abstract="true" doc="Abstract object">
-    <property name="booleanPropertyOptional" xsi:type="reference" type="rootBoolean" use="optional" doc="Property 1"/>
-    <property name="booleanPropertyOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false" doc="Property 2"/>
-    <property name="emptyArray" xsi:type="reference" type="rootArrayBool" doc="Property 3"/>
+    <property name="booleanPropertyOptional" xsi:type="reference" type="defaultBoolean" use="optional" doc="Property 1">
+      <binding lang="java" field="boolPropOpt"/>
+    </property>
+    <property name="booleanPropertyNotNullable" xsi:type="reference" type="primitiveBoolean" nullable="false" doc="Property 2"/>
+    <property name="emptyArray" xsi:type="reference" type="rootArrayBool" doc="Property 3">
+      <binding lang="java" field="arrayEmpty"/>
+    </property>
     <property names="any\d" xsi:type="any" types="rootNumberReal" use="optional" doc="Property 4"/>
   </object>
   <object name="simple-booleans" doc="Object with simple booleans">
-    <property name="booleanRefDefault" xsi:type="reference" type="rootBoolean"/>
-    <property name="booleanRefOptional" xsi:type="reference" type="rootBoolean" use="optional"/>
-    <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="rootBoolean" use="optional" nullable="false"/>
-    <property names="any\s" xsi:type="any" types="rootNumberInteger"/>
+    <property name="booleanRefDefault" xsi:type="reference" type="defaultBoolean">
+      <binding lang="java" field="boolRefDef"/>
+    </property>
+    <property name="intBoolean" xsi:type="reference" type="intBoolean" nullable="false">
+      <binding lang="java" field="simpleIntBoolean"/>
+    </property>
+    <property name="booleanRefOptional" xsi:type="reference" type="StringBoolean" use="optional"/>
+    <property name="booleanRefNotNullable" xsi:type="reference" type="primitiveBoolean" nullable="false"/>
+    <property name="booleanRefOptionalNotNullable" xsi:type="reference" type="defaultBoolean" use="optional" nullable="false"/>
+    <property names="any\s" xsi:type="any" types="defaultInteger">
+      <binding lang="java" field="anyNumberInteger"/>
+    </property>
     <property name="booleanDefault" xsi:type="boolean"/>
     <property name="booleanOptional" xsi:type="boolean" use="optional"/>
     <property name="booleanOptionalNotNullable" xsi:type="boolean" use="optional" nullable="false"/>
@@ -62,14 +107,16 @@
     <property name="booleanRefArrayOptional" xsi:type="reference" type="simple-rootBooleanArray" use="optional"/>
     <property name="booleanRefArrayOptionalNotNullable" xsi:type="reference" type="simple-rootBooleanArray" use="optional" nullable="false"/>
     <property name="booleanArrayDefault" xsi:type="array">
-      <any types="rootNumberInteger simple-booleansArray"/>
-      <reference type="rootBoolean" minOccurs="1" maxOccurs="3"/>
+      <any types="defaultDecimal simple-booleansArray"/>
+      <reference type="primitiveBoolean" minOccurs="1" maxOccurs="3" nullable="false"/>
+      <binding lang="java" field="boolArray"/>
     </property>
     <property name="booleanArray" xsi:type="array">
       <boolean nullable="false"/>
     </property>
     <property name="booleanArrayOptional" xsi:type="array" use="optional">
       <boolean/>
+      <binding lang="java" field="boolArrayOpt"/>
     </property>
     <property name="booleanArrayOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <boolean/>
@@ -77,26 +124,37 @@
   </object>
   <object name="simple-numbers" doc="Object with simple numbers">
     <property name="numberRefDefault" xsi:type="reference" type="rootNumberInteger"/>
-    <property name="numberRefOptional" xsi:type="reference" type="rootNumberInteger" use="optional"/>
+    <property name="numberRefOptional" xsi:type="reference" type="defaultDecimal" use="optional"/>
+    <property name="numberRefNullable" xsi:type="reference" type="rootNumberPrimitive" nullable="false"/>
     <property name="numberRefOptionalNotNullable" xsi:type="reference" type="rootNumberReal" use="optional" nullable="false"/>
-    <property names="any[a-z]+" xsi:type="any" types="rootNumberInteger"/>
-    <property name="numberDefault" xsi:type="number"/>
+    <property names="any[a-z]+" xsi:type="any" types="StringDecimal">
+      <binding lang="java" field="anyRootNum"/>
+    </property>
+    <property name="numberDefault" xsi:type="number" scale="0" nullable="false">
+      <binding lang="java" field="numDef" type="short"/>
+    </property>
     <property name="numberOptional" xsi:type="number" use="optional"/>
     <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
-    <property name="numberMin" xsi:type="number" range="[0e2,]"/>
-    <property name="numberMax" xsi:type="number" range="[,0E1]"/>
+    <property name="numberMin" xsi:type="number" range="[0e2,]" nullable="false">
+      <binding lang="java" field="numMin" type="double"/>
+    </property>
+    <property name="numberMax" xsi:type="number" range="[,0E1]" scale="0">
+      <binding lang="java" field="numMax" type="java.lang.Integer"/>
+    </property>
     <property name="numberInteger" xsi:type="number" scale="0"/>
-    <property name="numberScale" xsi:type="number" scale="1"/>
+    <property name="numberScale" xsi:type="number" scale="1">
+      <binding lang="java" field="numScale"/>
+    </property>
   </object>
   <object name="simple-numbersArray" doc="Object with simple number arrays">
-    <property name="numberArrayRefDefault" xsi:type="array">
-      <reference type="rootNumberInteger" maxOccurs="3"/>
+    <property name="numberArrayRefLong" xsi:type="array">
+      <reference type="long" maxOccurs="3" nullable="false"/>
     </property>
     <property name="numberArrayRefOptional" xsi:type="array" use="optional">
-      <reference type="rootNumberReal" maxOccurs="3"/>
+      <reference type="rootNumberPrimitive" maxOccurs="3" nullable="false"/>
     </property>
     <property name="numberArrayRefOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
-      <reference type="rootNumberInteger" maxOccurs="3"/>
+      <reference type="defaultInteger" maxOccurs="3"/>
     </property>
     <property name="numberArrayDefault" xsi:type="array">
       <number minOccurs="2" maxOccurs="10"/>
@@ -157,27 +215,33 @@
     </property>
     <property name="numberArray4" xsi:type="array" minIterate="4" maxIterate="8">
       <number minOccurs="1"/>
-      <number minOccurs="2"/>
+      <number minOccurs="2" range="[0,10]" scale="0" nullable="false">
+        <binding lang="java" type="byte"/>
+      </number>
       <number minOccurs="3"/>
       <number minOccurs="4"/>
     </property>
     <property name="objectArray1" xsi:type="array">
       <reference type="simple-numbersArray" minOccurs="2" maxOccurs="3"/>
+      <binding lang="java" field="same1"/>
     </property>
     <property name="objectArraySame2" xsi:type="array">
       <reference type="simple-booleans" minOccurs="2" maxOccurs="4"/>
       <reference type="simple-booleans" minOccurs="2" maxOccurs="5"/>
+      <binding lang="java" field="same2"/>
     </property>
     <property name="objectArraySame3" xsi:type="array">
       <reference type="simple-booleans" minOccurs="2" maxOccurs="6"/>
       <reference type="simple-booleans" minOccurs="2" maxOccurs="7"/>
       <reference type="simple-booleans" minOccurs="2" maxOccurs="8"/>
+      <binding lang="java" field="same3"/>
     </property>
     <property name="objectArraySame4" xsi:type="array" minIterate="2" maxIterate="4">
       <reference type="simple-booleans" minOccurs="2" maxOccurs="9"/>
       <reference type="simple-booleans" minOccurs="3" maxOccurs="3"/>
       <reference type="simple-booleans" minOccurs="3" maxOccurs="4"/>
       <reference type="simple-booleans" minOccurs="3" maxOccurs="5"/>
+      <binding lang="java" field="same4"/>
     </property>
     <property name="objectArrayDiff2" xsi:type="array">
       <reference type="simple-numbersArray" minOccurs="3" maxOccurs="6"/>
@@ -202,8 +266,11 @@
       <reference type="simple-numbersArray" minOccurs="5" maxOccurs="8"/>
     </property>
     <property name="numberArrayMin" xsi:type="array">
-      <number range="(0,)" minOccurs="2"/>
+      <number range="(0,)" minOccurs="2">
+        <binding lang="java" type="java.lang.Double"/>
+      </number>
       <number range="[,0]" minOccurs="2"/>
+      <binding lang="java" field="numArrMin"/>
     </property>
     <property name="numberArrayForm" xsi:type="array">
       <number scale="0"/>
@@ -212,7 +279,10 @@
     <property name="numberArrayForm2" xsi:type="array">
       <number scale="0"/>
       <any/>
-      <number scale="0"/>
+      <number scale="0" nullable="false">
+        <binding lang="java" type="int"/>
+      </number>
+      <binding lang="java" field="numForm2"/>
     </property>
     <property name="arrayNumberString" xsi:type="array">
       <number scale="0" range="[-999,999]"/>
@@ -220,7 +290,9 @@
       <any/>
     </property>
     <property name="arrayStringNumber" xsi:type="array">
-      <string/>
+      <string>
+        <binding lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/>
+      </string>
       <number scale="0" range="[-99999,99999]"/>
     </property>
     <property name="arrayBooleanNumber" xsi:type="array">
@@ -235,11 +307,13 @@
     <property name="arrayBooleanString" xsi:type="array">
       <boolean/>
       <string/>
+      <binding lang="java" field="arrBoolStr"/>
     </property>
     <property name="arrayStringBoolean" xsi:type="array">
       <string/>
       <boolean/>
       <any/>
+      <binding lang="java" field="anotherArray"/>
     </property>
     <property name="arrayArray" xsi:type="array">
       <array nullable="false">
@@ -265,30 +339,45 @@
       </array>
       <string/>
       <boolean nullable="false"/>
+      <binding lang="java" field="arrArr"/>
     </property>
   </object>
   <object name="simple-strings" doc="Object with simple strings">
-    <property name="stringRefDefault" xsi:type="reference" type="rootString"/>
-    <property name="stringRefOptional" xsi:type="reference" type="rootString" use="optional"/>
-    <property name="stringRefOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
-    <property name="stringDefault" xsi:type="string"/>
+    <property name="stringRefDefault" xsi:type="reference" type="uuid">
+      <binding lang="java" field="uuid"/>
+    </property>
+    <property name="stringRefOptional" xsi:type="reference" type="charArray" use="optional"/>
+    <property name="stringRefNotNullable" xsi:type="reference" type="iso8601" nullable="false"/>
+    <property name="stringDefault" xsi:type="string">
+      
+    </property>
     <property name="stringOptional" xsi:type="string" use="optional"/>
-    <property names="any[0-9a-f]+" xsi:type="any"/>
-    <property names="any\\d" xsi:type="any"/>
+    <property names="any[0-9a-f]+" xsi:type="any">
+      <binding lang="java" field="anyAny1"/>
+    </property>
+    <property names="any\\d" xsi:type="any">
+      <binding lang="java" field="anyAny2"/>
+    </property>
     <property name="stringOptionalNotNullable" xsi:type="string" use="optional" nullable="false"/>
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>
-    <property name="stringUrlDecode" xsi:type="string"/>
-    <property name="stringUrlEncode" xsi:type="string"/>
+    <property name="stringUrlDecode" xsi:type="string">
+      <binding lang="java" field="strUrlDec" decode="org.libj.net.URIComponent.decode"/>
+    </property>
+    <property name="stringUrlEncode" xsi:type="string">
+      <binding lang="java" field="strUrlEnc" decode="org.libj.net.URIComponent.encode"/>
+    </property>
   </object>
   <object name="simple-stringsArray" doc="Object with simple string arrays">
     <property name="stringArrayRefDefault" xsi:type="array">
       <reference type="rootMultiArray"/>
     </property>
     <property name="stringArrayRefOptional" xsi:type="array" use="optional">
-      <reference type="rootString"/>
+      <reference type="iso8601" nullable="false"/>
+      <binding lang="java" field="strArrRefOpt"/>
     </property>
     <property name="stringArrayRefOptionalNotNullable" xsi:type="array" use="optional" nullable="false">
       <reference type="rootString"/>
+      <binding lang="java" field="strArrRefOptNotNull"/>
     </property>
     <property name="stringArrayDefault" xsi:type="array">
       <string nullable="false" minOccurs="5" maxOccurs="9"/>
@@ -305,39 +394,63 @@
     </property>
     <property name="stringArrayUrl" xsi:type="array" minIterate="2" maxIterate="5">
       <string maxOccurs="1" nullable="false"/>
+      <string maxOccurs="1">
+        <binding lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/>
+      </string>
       <string maxOccurs="1"/>
-      <string maxOccurs="1"/>
+      <binding lang="java" field="strArrUrl"/>
     </property>
   </object>
   <object name="xyz-objects" doc="Object other objects">
     <property name="objectDefault" xsi:type="object"/>
     <property name="objectOptional" xsi:type="object" use="optional"/>
     <property name="objectOptionalNotNullable" xsi:type="object" use="optional" nullable="false"/>
-    <property name="objectOptional2" xsi:type="object" use="optional"/>
+    <property name="objectOptional2" xsi:type="object" use="optional">
+      <binding lang="java" field="objOpt2"/>
+    </property>
     <property name="objectOptionalNullable2" xsi:type="object" use="optional"/>
     <property name="objectExtendsAbstract" xsi:type="object" extends="xyz-objects">
-      <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
+      <property name="objectStringNotNullable" xsi:type="reference" type="iso8601" nullable="false"/>
       <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
-      <property name="objectNumberOptional" xsi:type="number" use="optional"/>
-      <property name="objectNumberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
+      <property name="objectNumberOptional" xsi:type="number" scale="0" use="optional">
+        <binding lang="java" field="numOptFloat" type="java.lang.Short"/>
+      </property>
+      <property name="objectNumberOptionalNotNullable" xsi:type="number" use="optional" nullable="false">
+        <binding lang="java" field="numOptShort" type="java.lang.Float"/>
+      </property>
       <property names=".*any6" xsi:type="any"/>
       <property names="an\+y7" xsi:type="any"/>
       <property names="a+ny8" xsi:type="any"/>
-      <property name="objectExtendsBooleans" xsi:type="object" extends="simple-booleans"/>
-      <property name="objectExtendsBooleansOptional2" xsi:type="object" extends="simple-booleans" use="optional"/>
-      <property name="objectExtendsBooleansOptionalNullable2" xsi:type="object" extends="simple-booleans" use="optional"/>
+      <property name="objectExtendsBooleans" xsi:type="object" extends="simple-booleans">
+        <binding lang="java" field="objEB"/>
+      </property>
+      <property name="objectExtendsBooleansOptional2" xsi:type="object" extends="simple-booleans" use="optional">
+        <binding lang="java" field="objEBO2"/>
+      </property>
+      <property name="objectExtendsBooleansOptionalNullable2" xsi:type="object" extends="simple-booleans" use="optional">
+        <binding lang="java" field="objEBON2"/>
+      </property>
       <property name="objectExtendsBooleans3" xsi:type="object" extends="simple-booleans"/>
       <property name="objectOptionalExtendsAbstract" xsi:type="object" extends="cls-abstractObject" use="optional">
-        <property name="objectStringOptional" xsi:type="reference" type="rootString" use="optional"/>
-        <property name="objectNumber" xsi:type="number" scale="5"/>
+        <property name="objectStringNotNullable" xsi:type="reference" type="iso8601" nullable="false">
+          <binding lang="java" field="objStrNum"/>
+        </property>
+        <property name="objectNumber" xsi:type="number" scale="5">
+          <binding lang="java" field="objNum"/>
+        </property>
+        <binding lang="java" field="objOEA"/>
       </property>
       <property name="objectOptionalNotNullableExtendsAbstract" xsi:type="object" extends="cls-abstractObject" use="optional" nullable="false">
-        <property name="objectStringOptionalNotNullable" xsi:type="reference" type="rootString" use="optional" nullable="false"/>
-        <property name="objectNumber" xsi:type="number" scale="9"/>
+        <property name="objectStringOptionalNotNullable" xsi:type="reference" type="charArray" use="optional" nullable="false"/>
+        <property name="objectNumber" xsi:type="number" scale="9">
+          <binding lang="java" field="numOptShort" type="java.lang.Double"/>
+        </property>
       </property>
     </property>
     <property name="objectExtendsStrings" xsi:type="object" extends="simple-strings">
-      <property name="additionalString" xsi:type="string"/>
+      <property name="additionalString" xsi:type="string">
+        <binding lang="java" field="charArray" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
+      </property>
     </property>
   </object>
   <object name="xyz-objectsArray" extends="cls-abstractObject" doc="Object extending an abstract object">

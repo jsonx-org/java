@@ -19,12 +19,11 @@ package org.jsonx;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Optional;
 
 import org.jsonx.ArrayValidator.Relation;
@@ -78,64 +77,85 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
 
     final Relations relations = new Relations();
     try {
-      ArrayValidator.validate(new ArrayCreateIterator(idToElement, elementIds, trialType), 1, false, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null, -1);
+      ArrayValidator.validate(new ArrayCreateIterator(idToElement, trialType), 1, false, idToElement.get(elementIds), 0, minIterate, maxIterate, 1, idToElement, relations, true, null, -1);
     }
     catch (final IOException e) {
       throw new UncheckedIOException(e);
     }
 
     if (trialType == TrialType.MAX_OCCURS) {
-      final Map<Annotation,Integer> annotationToCount = new HashMap<>();
+      final HashMap<Annotation,Integer> annotationToCount = new HashMap<>();
       ListIterator<Relation> iterator = relations.listIterator();
       while (iterator.hasNext()) {
         final Relation relation = iterator.next();
+        if (relation.annotation instanceof AnyElement)
+          continue;
+
+        final int maxOccurs = JsdUtil.getMaxOccurs(relation.annotation);
+        if (maxOccurs == Integer.MAX_VALUE)
+          continue;
+
         final Integer count = annotationToCount.get(relation.annotation);
         annotationToCount.put(relation.annotation, (count == null ? 0 : count) + 1);
       }
 
-      iterator = relations.listIterator();
-      while (iterator.hasNext()) {
-        final Relation relation = iterator.next();
-        final Integer count = annotationToCount.get(relation.annotation);
+      if (annotationToCount.size() == 0) {
+        logger.warn("Could not create TrialType.MAX_OCCURS");
+        return null;
+      }
+
+      iterator = relations.listIterator(relations.size());
+      while (iterator.hasPrevious()) {
+        final Relation relation = iterator.previous();
+        Integer count = annotationToCount.get(relation.annotation);
+        if (count == null)
+          continue;
+
         final int maxOccurs = JsdUtil.getMaxOccurs(relation.annotation);
-        if (count >= maxOccurs) {
-          iterator.remove();
-          annotationToCount.put(relation.annotation, count - 1);
+        for (; count <= maxOccurs; ++count) {
+          final Object validNonNullMember = createValidNonNullArrayMember(relation.annotation);
+          assertNotNull(validNonNullMember);
+          iterator.add(new Relation(validNonNullMember, relation.annotation));
         }
+
+        break;
       }
     }
 
     return relations.deflate();
   }
 
-  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final ArrayProperty property) {
-    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
-    trials.add(new ArrayTrial<>(ValidCase.CASE, field, object, createValid(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement()), property));
+  static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final ArrayProperty property) {
+    logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
+    trials.add(new ArrayTrial<>(ValidCase.CASE, getMethod, setMethod, object, createValid(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement()), property));
     final Object testNullable = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.NULLABLE);
     if (testNullable != null)
-      trials.add(new ArrayTrial<>(NullableCase.CASE, field, object, testNullable, property));
+      trials.add(new ArrayTrial<>(NullableCase.CASE, getMethod, setMethod, object, testNullable, property));
 
     final Object testMinOccurs = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.MIN_OCCURS);
     if (testMinOccurs != null)
-      trials.add(new ArrayTrial<>(MinOccursCase.CASE, field, object, testMinOccurs, property));
+      trials.add(new ArrayTrial<>(MinOccursCase.CASE, getMethod, setMethod, object, testMinOccurs, property));
 
     final Object testMaxOccurs = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.MAX_OCCURS);
     if (testMaxOccurs != null)
-      trials.add(new ArrayTrial<>(MaxOccursCase.CASE, field, object, testMaxOccurs, property));
+      trials.add(new ArrayTrial<>(MaxOccursCase.CASE, getMethod, setMethod, object, testMaxOccurs, property));
+
+    if (getMethod.getReturnType().isPrimitive())
+      return;
 
     if (property.use() == Use.REQUIRED) {
-      trials.add(new ArrayTrial<>(getNullableCase(property.nullable()), field, object, null, property));
+      trials.add(new ArrayTrial<>(getNullableCase(property.nullable()), getMethod, setMethod, object, null, property));
     }
     else if (property.nullable()) {
-      trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, null, property));
-      trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, getMethod, setMethod, object, null, property));
+      trials.add(new ArrayTrial<>(OptionalNullableCase.CASE, getMethod, setMethod, object, Optional.ofNullable(null), property));
     }
     else {
-      trials.add(new ArrayTrial<>(OptionalNotNullableCase.CASE, field, object, null, property));
+      trials.add(new ArrayTrial<>(OptionalNotNullableCase.CASE, getMethod, setMethod, object, null, property));
     }
   }
 
-  private ArrayTrial(final Case<? extends PropertyTrial<? super T>> kase, final Field field, final Object object, final T value, final ArrayProperty property) {
-    super(kase, field, object, value, property.name(), property.use());
+  private ArrayTrial(final Case<? extends PropertyTrial<? super T>> kase, final Method getMethod, final Method setMethod, final Object object, final T value, final ArrayProperty property) {
+    super(kase, JsdUtil.getRealType(getMethod), getMethod, setMethod, object, value, property.name(), property.use(), null, null, false);
   }
 }

@@ -19,9 +19,9 @@ package org.jsonx.library;
 import org.jsonx.ObjectProperty;
 
 public class Employee extends Individual {
-  @ObjectProperty
   private Individual emergencyContact;
 
+  @ObjectProperty(name="emergencyContact")
   public Individual getEmergencyContact() {
     return this.emergencyContact;
   }
@@ -48,7 +48,9 @@ public class Employee extends Individual {
   @Override
   public int hashCode() {
     int hashCode = super.hashCode();
-    hashCode = 31 * hashCode + (emergencyContact == null ? 0 : emergencyContact.hashCode());
+    if (emergencyContact != null)
+      hashCode = 31 * hashCode + emergencyContact.hashCode();
+
     return hashCode;
   }
 }

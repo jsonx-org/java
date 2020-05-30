@@ -20,16 +20,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class TestArray implements JxObject {
-  @AnyElement(id=2, types={@t(strings=".*")}, minOccurs=0, nullable=false)
+  @AnyElement(id=2, types={@t(strings=@StringType)}, minOccurs=0, nullable=false)
   @AnyElement(id=1, types={@t(numbers=@NumberType)}, minOccurs=0, nullable=false)
-  @AnyElement(id=0, types={@t(booleans=true)}, minOccurs=0, nullable=false)
+  @AnyElement(id=0, types={@t(booleans=@BooleanType)}, minOccurs=0, nullable=false)
   @ArrayType(elementIds={0, 1, 2}, minIterate=0, maxIterate=Integer.MAX_VALUE)
   @interface ArrayAny {
   }
 
-  @ArrayProperty(type=ArrayAny.class, use=Use.OPTIONAL)
   private Optional<List<Boolean>> arrayAny;
 
+  @ArrayProperty(name="arrayAny", type=ArrayAny.class, use=Use.OPTIONAL)
   public Optional<List<Boolean>> getArrayAny() {
     return this.arrayAny;
   }
@@ -51,9 +51,9 @@ public class TestArray implements JxObject {
   @interface ArrayLoop {
   }
 
-  @ArrayProperty(type=ArrayLoop.class, use=Use.OPTIONAL)
   private Optional<List<Boolean>> arrayLoop;
 
+  @ArrayProperty(name="arrayLoop", type=ArrayLoop.class, use=Use.OPTIONAL)
   public Optional<List<Boolean>> getArrayLoop() {
     return this.arrayLoop;
   }
@@ -73,9 +73,9 @@ public class TestArray implements JxObject {
   @interface Array1d1 {
   }
 
-  @ArrayProperty(type=Array1d1.class, use=Use.OPTIONAL)
   private Optional<List<Boolean>> array1d1;
 
+  @ArrayProperty(name="array1d1", type=Array1d1.class, use=Use.OPTIONAL)
   public Optional<List<Boolean>> getArray1d1() {
     return this.array1d1;
   }
@@ -96,9 +96,9 @@ public class TestArray implements JxObject {
   @interface Array1d2 {
   }
 
-  @ArrayProperty(type=Array1d2.class, use=Use.OPTIONAL)
   private Optional<List<Boolean>> array1d2;
 
+  @ArrayProperty(name="array1d2", type=Array1d2.class, use=Use.OPTIONAL)
   public Optional<List<Boolean>> getArray1d2() {
     return this.array1d2;
   }
@@ -122,9 +122,9 @@ public class TestArray implements JxObject {
   @interface Array1d3 {
   }
 
-  @ArrayProperty(type=Array1d3.class, use=Use.OPTIONAL)
   private Optional<List<Object>> array1d3;
 
+  @ArrayProperty(name="array1d3", type=Array1d3.class, use=Use.OPTIONAL)
   public Optional<List<Object>> getArray1d3() {
     return this.array1d3;
   }
@@ -144,9 +144,9 @@ public class TestArray implements JxObject {
   @interface Array2d1 {
   }
 
-  @ArrayProperty(type=Array2d1.class, use=Use.OPTIONAL)
   private Optional<List<Object>> array2d1;
 
+  @ArrayProperty(name="array2d1", type=Array2d1.class, use=Use.OPTIONAL)
   public Optional<List<Object>> getArray2d1() {
     return this.array2d1;
   }
@@ -175,9 +175,9 @@ public class TestArray implements JxObject {
   @interface Array2d2 {
   }
 
-  @ArrayProperty(type=Array2d2.class, use=Use.OPTIONAL)
   private Optional<List<Object>> array2d2;
 
+  @ArrayProperty(name="array2d2", type=Array2d2.class, use=Use.OPTIONAL)
   public Optional<List<Object>> getArray2d2() {
     return this.array2d2;
   }
@@ -198,9 +198,9 @@ public class TestArray implements JxObject {
   @interface Array3d {
   }
 
-  @ArrayProperty(type=Array3d.class, use=Use.OPTIONAL)
   private Optional<List<Object>> array3d;
 
+  @ArrayProperty(name="array3d", type=Array3d.class, use=Use.OPTIONAL)
   public Optional<List<Object>> getArray3d() {
     return this.array3d;
   }

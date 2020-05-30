@@ -22,9 +22,9 @@ import org.jsonx.ObjectProperty;
 import org.jsonx.StringProperty;
 
 public class Individual implements JxObject {
-  @StringProperty(pattern="\\S+ \\S+")
   private String name;
 
+  @StringProperty(name="name", pattern="\\S+ \\S+")
   public String getName() {
     return this.name;
   }
@@ -33,9 +33,9 @@ public class Individual implements JxObject {
     this.name = name;
   }
 
-  @StringProperty(pattern="[MF]")
   private String gender;
 
+  @StringProperty(name="gender", pattern="[MF]")
   public String getGender() {
     return this.gender;
   }
@@ -44,9 +44,9 @@ public class Individual implements JxObject {
     this.gender = gender;
   }
 
-  @ObjectProperty
   private Address address;
 
+  @ObjectProperty(name="address")
   public Address getAddress() {
     return this.address;
   }
@@ -76,8 +76,12 @@ public class Individual implements JxObject {
   @Override
   public int hashCode() {
     int hashCode = super.hashCode();
-    hashCode = 31 * hashCode + (name == null ? 0 : name.hashCode());
-    hashCode = 31 * hashCode + (address == null ? 0 : address.hashCode());
+    if (name != null)
+      hashCode = 31 * hashCode + name.hashCode();
+
+    if (address != null)
+      hashCode = 31 * hashCode + address.hashCode();
+
     return hashCode;
   }
 

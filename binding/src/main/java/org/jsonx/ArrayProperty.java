@@ -22,10 +22,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ArrayProperty {
-  String name() default "";
+  String name();
   boolean nullable() default true;
   Use use() default Use.REQUIRED;
 

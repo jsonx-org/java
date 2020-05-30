@@ -26,7 +26,7 @@ final class OptionalNullableCase extends SuccessCase<PropertyTrial<? super Objec
 
   @Override
   void onEncode(final PropertyTrial<? super Object> trial, final Relations relations, final String value) throws Exception {
-    if (Map.class.isAssignableFrom(trial.field.getType()) || trial.rawValue() instanceof Optional)
+    if (Map.class.isAssignableFrom(trial.getMethod.getReturnType()) || trial.rawValue() instanceof Optional)
       assertEquals("null", value);
     else if (trial.rawValue() == null)
       assertNull(value);

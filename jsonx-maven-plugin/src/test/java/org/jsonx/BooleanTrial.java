@@ -16,31 +16,41 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
 final class BooleanTrial extends PropertyTrial<Boolean> {
-  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final BooleanProperty property) {
-    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
-    trials.add(new BooleanTrial(ValidCase.CASE, field, object, createValid(), property));
+  static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final BooleanProperty property) {
+    logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
+    trials.add(new BooleanTrial(ValidCase.CASE, getMethod, setMethod, object, createValid(JsdUtil.getRealType(getMethod), property.decode()), property));
+    if (getMethod.getReturnType().isPrimitive())
+      return;
+
     if (property.use() == Use.REQUIRED) {
-      trials.add(new BooleanTrial(getNullableCase(property.nullable()), field, object, null, property));
+      trials.add(new BooleanTrial(getNullableCase(property.nullable()), getMethod, setMethod, object, null, property));
     }
     else if (property.nullable()) {
-      trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, null, property));
-      trials.add(new BooleanTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      trials.add(new BooleanTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, null, property));
+      trials.add(new BooleanTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, Optional.ofNullable(null), property));
     }
     else {
-      trials.add(new BooleanTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      trials.add(new BooleanTrial(OptionalNotNullableCase.CASE, getMethod, setMethod, object, null, property));
     }
   }
 
-  static Object createValid() {
-    return Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE;
+  static Object createValid(final Class<?> type, final String decode) {
+    final Boolean value = Math.random() < 0.5 ? Boolean.TRUE : Boolean.FALSE;
+    if (decode != null && decode.length() > 0)
+      return JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), String.valueOf(value));
+
+    if (type.isAssignableFrom(String.class))
+      return value.toString();
+
+    return value;
   }
 
-  private BooleanTrial(final Case<? extends PropertyTrial<? super Boolean>> kase, final Field field, final Object object, final Object value, final BooleanProperty property) {
-    super(kase, field, object, value, property.name(), property.use());
+  private BooleanTrial(final Case<? extends PropertyTrial<? super Boolean>> kase, final Method getMethod, final Method setMethod, final Object object, final Object value, final BooleanProperty property) {
+    super(kase, JsdUtil.getRealType(getMethod), getMethod, setMethod, object, value, property.name(), property.use(), property.decode(), property.encode(), false);
   }
 }

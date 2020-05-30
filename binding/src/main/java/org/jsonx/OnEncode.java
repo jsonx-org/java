@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 JSONx
+/* Copyright (c) 2019 LibJ
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,20 +16,24 @@
 
 package org.jsonx;
 
-final class PatternCase extends FailureCase<StringTrial> {
-  static final PatternCase CASE = new PatternCase();
+import java.lang.reflect.Method;
 
-  @Override
-  void onEncode(final JxObject binding, final StringTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name + " " + e.getMessage(), e.getMessage().contains(" Pattern does not match: "));
-  }
+import org.jsonx.ArrayValidator.Relations;
 
-  @Override
-  boolean onDecode(final StringTrial trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().startsWith("Pattern \"" + trial.pattern + "\" does not match: "));
-    return true;
-  }
-
-  private PatternCase() {
-  }
+/**
+ * Interface to be used as a callback during the encoding of JSON form Jx
+ * objects.
+ */
+@FunctionalInterface
+public interface OnEncode {
+  /**
+   * Performs the callback.
+   *
+   * @param getMethod The "get" method whose return value is to be encoded.
+   * @param name The name of the property, or {@code null} for array members.
+   * @param relations The {@link Relations} if encoded in an array.
+   * @param start The starting index of the encoded value in the JSON document.
+   * @param end The ending index of the encoded value in the JSON document.
+   */
+  void accept(Method getMethod, String name, Relations relations, int start, int end);
 }

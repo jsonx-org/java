@@ -30,6 +30,15 @@ import org.openjax.json.JsonReader;
  * an {@link ArrayType} annotation.
  */
 public final class JxDecoder {
+  public static final JxDecoder VALIDATING = new JxDecoder(true);
+  public static final JxDecoder NON_VALIDATING = new JxDecoder(false);
+
+  private final boolean validate;
+
+  private JxDecoder(final boolean validate) {
+    this.validate = validate;
+  }
+
   /**
    * Parses a JSON object from the supplied {@link JsonReader} as per the
    * specification of the provided {@link JxObject} class.
@@ -52,12 +61,12 @@ public final class JxDecoder {
    * @throws IOException If an I/O error has occurred.
    */
   @SuppressWarnings("unchecked")
-  public static <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
+  public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"{".equals(token))
       throw new DecodeException("Expected '{', but got '" + token + "'", reader);
 
-    final Object object = ObjectCodec.decodeObject(type, reader, onPropertyDecode);
+    final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
     if (object instanceof Error)
       throw new DecodeException(((Error)object).setReader(reader));
 
@@ -78,7 +87,7 @@ public final class JxDecoder {
    *           document.
    * @throws IOException If an I/O error has occurred.
    */
-  public static <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
+  public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
     return parseObject(type, reader, null);
   }
 
@@ -98,20 +107,17 @@ public final class JxDecoder {
    *           is null.
    * @throws IOException If an I/O error has occurred.
    */
-  public static List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
+  public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     final String token = reader.readToken();
     if (!"[".equals(token))
       throw new DecodeException("Expected '[', but got '" + token + "'", reader);
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
-    final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, null);
+    final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, null);
     if (array instanceof Error)
       throw new DecodeException(((Error)array).setReader(reader));
 
     return (List<?>)array;
-  }
-
-  private JxDecoder() {
   }
 }

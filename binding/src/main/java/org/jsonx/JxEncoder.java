@@ -17,18 +17,19 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.util.ArrayUtil;
+import org.libj.util.Patterns;
 
 /**
  * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx
@@ -142,130 +143,116 @@ public class JxEncoder {
     }
   }
 
-  private static Object getValue(final Object object, final String propertyName, final Use use) {
-    final Method method = JsdUtil.getGetMethod(object.getClass(), propertyName);
+  private static Object getValue(final Object object, final Method getMethod, final Annotation annotation, final String propertyName, final Use use) {
     try {
-      if (method != null)
-        return method.invoke(object);
+      if (annotation instanceof AnyProperty && Map.class.isAssignableFrom(getMethod.getReturnType())) {
+        final Map<?,?> map = (Map<?,?>)getMethod.invoke(object);
+        if (map == null)
+          return null;
 
-      Map<?,?> optionalMap = null;
-      Map<?,?> map;
-      for (final Field field : object.getClass().getFields()) {
-        if (!Map.class.isAssignableFrom(field.getType()))
-          continue;
-
-        final AnyProperty property = field.getAnnotation(AnyProperty.class);
-        if (property == null)
-          continue;
-
-        if (!propertyName.equals(property.name()))
-          continue;
-
-        map = (Map<?,?>)field.get(object);
-        for (final Map.Entry<?,?> entry : map.entrySet())
-          if (entry.getKey() instanceof String && ((String)entry.getKey()).matches(propertyName))
+        final Pattern pattern = Patterns.compile(propertyName);
+        for (final Object key : map.keySet())
+          if (key instanceof String && pattern.matcher((String)key).matches())
             return map;
 
-        if (use == Use.OPTIONAL)
-          optionalMap = map;
+        return use == Use.OPTIONAL ? map : null;
       }
 
-      return optionalMap;
+      return getMethod.invoke(object);
     }
-    catch (final IllegalAccessException | InvocationTargetException e) {
-      throw new IllegalStateException(e);
+    catch (final IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
     }
   }
 
-  private Error encodeNonArray(final boolean isProperty, final Field field, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
-    if (field == null && object == null) {
+  private Error encodeNonArray(final Method getMethod, final Annotation annotation, final Object object, final StringBuilder builder, final int depth) {
+    if (getMethod == null && object == null) {
       if (validate && !JsdUtil.isNullable(annotation))
         return Error.MEMBER_NOT_NULLABLE(annotation);
 
       builder.append("null");
+      return null;
+    }
+
+    if (annotation instanceof StringElement || annotation instanceof BooleanElement || annotation instanceof NumberElement) {
+      builder.append(object);
+      return null;
+    }
+
+    final Class<?> type;
+    final boolean isOptional;
+    if (getMethod == null) {
+      isOptional = false;
+      type = object.getClass();
     }
     else {
-      final Class<?> type;
-      final boolean isOptional;
-      if (field == null) {
-        isOptional = false;
-        type = object.getClass();
-      }
-      else {
-        type = (isOptional = Optional.class.isAssignableFrom(field.getType())) ? Classes.getGenericClasses(field)[0] : field.getType();
-      }
-
-      final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
-      if (String.class.isAssignableFrom(type)) {
-        final Object encoded = StringCodec.encodeObject(annotation, isProperty ? ((StringProperty)annotation).pattern() : ((StringElement)annotation).pattern(), (String)value, validate);
-        if (encoded instanceof Error)
-          return (Error)encoded;
-
-        builder.append(encoded);
-      }
-      else if (Boolean.class.isAssignableFrom(type) && (annotation instanceof BooleanProperty || annotation instanceof BooleanElement)) {
-        builder.append(BooleanCodec.encodeObject((Boolean)value));
-      }
-      else if (Number.class.isAssignableFrom(type)) {
-        final int scale;
-        final String range;
-        if (isProperty) {
-          final NumberProperty property = (NumberProperty)annotation;
-          scale = property.scale();
-          range = property.range();
-        }
-        else {
-          final NumberElement element = (NumberElement)annotation;
-          scale = element.scale();
-          range = element.range();
-        }
-
-        final Object encoded = NumberCodec.encodeObject(annotation, scale, range, (Number)value, validate);
-        if (encoded instanceof Error)
-          return (Error)encoded;
-
-        builder.append(encoded);
-      }
-      else if (JxObject.class.isAssignableFrom(type)) {
-        final Error error = marshal((JxObject)value, null, builder, depth + 1);
-        if (error != null)
-          return error;
-      }
-      else {
-        throw new UnsupportedOperationException("Unsupported object type: " + type.getName());
-      }
+      isOptional = getMethod.getReturnType() == Optional.class;
+      type = isOptional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
     }
 
+    final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
+
+    if (annotation instanceof ObjectProperty || annotation instanceof ObjectElement) {
+      return marshal((JxObject)value, null, builder, depth + 1);
+    }
+
+    final Object encoded;
+    if (annotation instanceof BooleanProperty) {
+      final BooleanProperty property = (BooleanProperty)annotation;
+      encoded = BooleanCodec.encodeObject(JsdUtil.getRealType(getMethod), property.encode(), value);
+    }
+    else if (annotation instanceof NumberProperty) {
+      final NumberProperty property = (NumberProperty)annotation;
+      encoded = NumberCodec.encodeObject(annotation, property.scale(), property.range(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
+    }
+    else if (annotation instanceof StringProperty) {
+      final StringProperty property = (StringProperty)annotation;
+      encoded = StringCodec.encodeObject(annotation, getMethod, property.pattern(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
+    }
+    else {
+      throw new UnsupportedOperationException("Unsupported type: " + type.getName());
+    }
+
+    if (encoded instanceof Error)
+      return (Error)encoded;
+
+    builder.append(encoded);
     return null;
   }
 
   @SuppressWarnings("unchecked")
-  private Error encodeProperty(final Field field, final Annotation annotation, final String name, final Object object, final OnFieldEncode onFieldEncode, final StringBuilder builder, final int depth) {
+  private Error encodeProperty(final Method getMethod, final Annotation annotation, final String name, final Object object, final OnEncode onEncode, final StringBuilder builder, final int depth) {
     try {
       if (annotation instanceof ArrayProperty) {
-        final Object encoded = ArrayCodec.encodeObject(field, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
+        final Object encoded = ArrayCodec.encodeObject(getMethod, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
         if (encoded instanceof Error)
           return (Error)encoded;
 
         final Relations relations = (Relations)encoded;
-        if (onFieldEncode != null)
-          onFieldEncode.accept(field, name, relations, -1, -1);
+        if (onEncode != null)
+          onEncode.accept(getMethod, name, relations, -1, -1);
 
-        final Error error = encodeArray(relations, builder, depth);
+        final Error error = encodeArray(getMethod, relations, builder, depth);
         if (error != null)
           return error;
       }
       else if (annotation instanceof AnyProperty) {
-        final Object encoded = AnyCodec.encodeObject(annotation, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, this, depth, validate);
+        final Object encoded = AnyCodec.encodeObject(annotation, getMethod, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, this, depth, validate);
         if (encoded instanceof Error)
           return (Error)encoded;
 
         if (encoded instanceof Relations) {
           final Relations relations = (Relations)encoded;
-          if (onFieldEncode != null)
-            onFieldEncode.accept(field, name, relations, -1, -1);
+          if (onEncode != null)
+            onEncode.accept(getMethod, name, relations, -1, -1);
 
-          final Error error = encodeArray(relations, builder, depth);
+          final Error error = encodeArray(getMethod, relations, builder, depth);
           if (error != null)
             return error;
         }
@@ -274,7 +261,7 @@ public class JxEncoder {
         }
       }
       else {
-        final Error error = encodeNonArray(true, field, annotation, object, builder, depth);
+        final Error error = encodeNonArray(getMethod, annotation, object, builder, depth);
         if (error != null)
           return error;
       }
@@ -283,38 +270,31 @@ public class JxEncoder {
       throw e;
     }
     catch (final Exception e) {
-      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(field), e);
+      throw new ValidationException("Invalid method: " + JsdUtil.getFullyQualifiedMethodName(getMethod), e);
     }
 
     return null;
   }
 
-  private Error encodeArray(final Relations relations, final StringBuilder builder, final int depth) {
+  private Error encodeArray(final Method getMethod, final Relations relations, final StringBuilder builder, final int depth) {
     builder.append('[');
     for (int i = 0; i < relations.size(); ++i) {
       if (i > 0)
         builder.append(comma);
 
       final Relation relation = relations.get(i);
+      final Annotation annotation = relation.annotation;
+      final Object member = relation.member;
       final Error error;
-      if (relation.annotation instanceof ArrayElement || relation.annotation instanceof ArrayType || relation.annotation instanceof AnyElement && relation.member instanceof Relations) {
-        error = encodeArray((Relations)relation.member, builder, depth);
+      if (annotation instanceof ArrayElement || annotation instanceof ArrayType || annotation instanceof AnyElement && member instanceof Relations) {
+        error = encodeArray(getMethod, (Relations)member, builder, depth);
       }
-      else if (relation.annotation instanceof AnyElement) {
-        final Object encoded = AnyCodec.encodeObject(relation.annotation, ((AnyElement)relation.annotation).types(), relation.member, this, depth, validate);
-        if (encoded instanceof Error) {
-          error = (Error)encoded;
-        }
-        else if (encoded instanceof Relations) {
-          error = encodeArray((Relations)encoded, builder, depth);
-        }
-        else {
-          error = null;
-          builder.append(encoded);
-        }
+      else if (annotation instanceof AnyElement) {
+        error = null;
+        builder.append(member);
       }
       else {
-        error = encodeNonArray(false, null, relation.annotation, relation.member, builder, depth);
+        error = encodeNonArray(null, annotation, member, builder, depth);
       }
 
       if (error != null)
@@ -325,81 +305,82 @@ public class JxEncoder {
     return null;
   }
 
-  Error marshal(final JxObject object, final OnFieldEncode onFieldEncode, final StringBuilder builder, final int depth) {
+  Error marshal(final JxObject object, final OnEncode onEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
-    final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
-    for (int i = 0; i < fields.length; ++i) {
-      final Field field = fields[i];
+    final Method[] methods = object.getClass().getMethods();
+    Classes.sortDeclarativeOrder(methods);
+    for (final Method getMethod : methods) {
+      if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
+        continue;
+
       Annotation annotation = null;
       String name = null;
       boolean nullable = false;
       Use use = null;
-      final Annotation[] annotations = field.getAnnotations();
+      final Annotation[] annotations = getMethod.getAnnotations();
       for (int j = 0; j < annotations.length; ++j) {
         annotation = annotations[j];
         if (annotation instanceof AnyProperty) {
           final AnyProperty property = (AnyProperty)annotation;
-          name = JsdUtil.getName(property.name(), field);
+          name = property.name();
           nullable = property.nullable();
           use = property.use();
           break;
         }
-
-        if (annotation instanceof ArrayProperty) {
+        else if (annotation instanceof ArrayProperty) {
           final ArrayProperty property = (ArrayProperty)annotation;
-          name = JsdUtil.getName(property.name(), field);
+          name = property.name();
           nullable = property.nullable();
           use = property.use();
           break;
         }
-
-        if (annotation instanceof ObjectProperty) {
+        else if (annotation instanceof ObjectProperty) {
           final ObjectProperty property = (ObjectProperty)annotation;
-          name = JsdUtil.getName(property.name(), field);
+          name = property.name();
           nullable = property.nullable();
           use = property.use();
           break;
         }
-
-        if (annotation instanceof BooleanProperty) {
+        else if (annotation instanceof BooleanProperty) {
           final BooleanProperty property = (BooleanProperty)annotation;
-          name = JsdUtil.getName(property.name(), field);
+          name = property.name();
           nullable = property.nullable();
           use = property.use();
           break;
         }
-
-        if (annotation instanceof NumberProperty) {
+        else if (annotation instanceof NumberProperty) {
           final NumberProperty property = (NumberProperty)annotation;
-          name = JsdUtil.getName(property.name(), field);
+          name = property.name();
           nullable = property.nullable();
           use = property.use();
           break;
         }
-
-        if (annotation instanceof StringProperty) {
+        else if (annotation instanceof StringProperty) {
           final StringProperty property = (StringProperty)annotation;
-          name = JsdUtil.getName(property.name(), field);
+          name = property.name();
           nullable = property.nullable();
           use = property.use();
           break;
         }
       }
 
-      if (nullable && use == Use.OPTIONAL && !Optional.class.equals(field.getType()))
-        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
+      if (nullable && use == Use.OPTIONAL && getMethod.getReturnType() != Optional.class)
+        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true && use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
+
+      if (getMethod.getReturnType().isPrimitive() && (nullable || use == Use.OPTIONAL))
+        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type: " + getMethod.getReturnType());
 
       if (name == null)
         continue;
 
-      final Object value = getValue(object, name, use);
+      final Object value = getValue(object, getMethod, annotation, name, use);
       if (value != null || nullable && use == Use.REQUIRED) {
-        if (!Map.class.isAssignableFrom(field.getType())) {
+        if (!Map.class.isAssignableFrom(getMethod.getReturnType())) {
           if (hasProperties)
-            builder.append(',');
+            builder.append(comma);
 
-          final Error error = appendValue(builder, name, value, field, annotation, onFieldEncode, depth);
+          final Error error = appendValue(builder, name, value, getMethod, annotation, onEncode, depth);
           if (error != null)
             return error;
 
@@ -412,9 +393,9 @@ public class JxEncoder {
               return Error.PROPERTY_NOT_NULLABLE((String)entry.getKey(), annotation);
 
             if (hasProperties)
-              builder.append(',');
+              builder.append(comma);
 
-            final Error error = appendValue(builder, (String)entry.getKey(), entry.getValue(), field, annotation, onFieldEncode, depth);
+            final Error error = appendValue(builder, (String)entry.getKey(), entry.getValue(), getMethod, annotation, onEncode, depth);
             if (error != null)
               return error;
 
@@ -423,10 +404,10 @@ public class JxEncoder {
         }
       }
       else if (validate && use == Use.REQUIRED) {
-        return Error.PROPERTY_REQUIRED(name, field);
+        return Error.PROPERTY_REQUIRED(name, getMethod);
       }
-      else if (onFieldEncode != null) {
-        onFieldEncode.accept(field, null, null, -1, -1);
+      else if (onEncode != null) {
+        onEncode.accept(getMethod, null, null, -1, -1);
       }
     }
 
@@ -437,7 +418,7 @@ public class JxEncoder {
     return null;
   }
 
-  private Error appendValue(final StringBuilder builder, final String name, final Object value, final Field field, final Annotation annotation, final OnFieldEncode onFieldEncode, final int depth) {
+  private Error appendValue(final StringBuilder builder, final String name, final Object value, final Method getMethod, final Annotation annotation, final OnEncode onEncode, final int depth) {
     if (indent > 0)
       builder.append('\n').append(ArrayUtil.createRepeat(' ', depth * 2));
 
@@ -447,30 +428,29 @@ public class JxEncoder {
       builder.append("null");
     }
     else {
-      final Error error = encodeProperty(field, annotation, name, value, onFieldEncode, builder, depth);
+      final Error error = encodeProperty(getMethod, annotation, name, value, onEncode, builder, depth);
       if (error != null)
         return error;
     }
 
-    if (onFieldEncode != null)
-      onFieldEncode.accept(field, name, null, start, builder.length());
+    if (onEncode != null)
+      onEncode.accept(getMethod, name, null, start, builder.length());
 
     return null;
   }
 
   /**
    * Marshals the specified {@link JxObject}, performing callbacks to the
-   * provided {@link OnFieldEncode} for each encoded field.
+   * provided {@link OnEncode} for each encoded field.
    *
    * @param object The {@link JxObject}.
-   * @param onFieldEncode The {@link OnFieldEncode} to be called for each
-   *          encoded field.
+   * @param onEncode The {@link OnEncode} to be called for each encoded property.
    * @return A JSON document from the marshaled {@link JxObject}.
    * @throws EncodeException If an encode error has occurred.
    */
-  String marshal(final JxObject object, final OnFieldEncode onFieldEncode) {
+  String marshal(final JxObject object, final OnEncode onEncode) {
     final StringBuilder builder = new StringBuilder();
-    final Error error = marshal(object, onFieldEncode, builder, 1);
+    final Error error = marshal(object, onEncode, builder, 1);
     if (validate && error != null)
       throw new EncodeException(error.toString());
 
@@ -507,7 +487,7 @@ public class JxEncoder {
     if (validate && error != null)
       throw new EncodeException(error);
 
-    encodeArray(relations, builder, 0);
+    encodeArray(null, relations, builder, 0);
     return builder.toString();
   }
 }

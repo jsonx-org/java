@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 
-import org.libj.util.Annotations;
+import org.libj.lang.Annotations;
+import org.libj.lang.Numbers;
+import org.libj.lang.Throwables;
 import org.libj.util.DelegateList;
-import org.libj.util.Numbers;
-import org.libj.util.Throwables;
 import org.libj.util.function.TriPredicate;
 
 final class ArrayValidator {
@@ -178,36 +178,36 @@ final class ArrayValidator {
       }
       else if (annotation instanceof ArrayElement) {
         final ArrayElement element = (ArrayElement)annotation;
-        minOccurs = element.minOccurs();
-        maxOccurs = element.maxOccurs();
+        minOccurs = validate ? element.minOccurs() : 0;
+        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
         codecType = ArrayCodec.class;
       }
       else if (annotation instanceof BooleanElement) {
         final BooleanElement element = (BooleanElement)annotation;
-        minOccurs = element.minOccurs();
-        maxOccurs = element.maxOccurs();
+        minOccurs = validate ? element.minOccurs() : 0;
+        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
         codecType = BooleanCodec.class;
       }
       else if (annotation instanceof NumberElement) {
         final NumberElement element = (NumberElement)annotation;
-        minOccurs = element.minOccurs();
-        maxOccurs = element.maxOccurs();
+        minOccurs = validate ? element.minOccurs() : 0;
+        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
         codecType = NumberCodec.class;
       }
       else if (annotation instanceof ObjectElement) {
         final ObjectElement element = (ObjectElement)annotation;
-        minOccurs = element.minOccurs();
-        maxOccurs = element.maxOccurs();
+        minOccurs = validate ? element.minOccurs() : 0;
+        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
         codecType = ObjectCodec.class;
       }
       else if (annotation instanceof StringElement) {
         final StringElement element = (StringElement)annotation;
-        minOccurs = element.minOccurs();
-        maxOccurs = element.maxOccurs();
+        minOccurs = validate ? element.minOccurs() : 0;
+        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
         codecType = StringCodec.class;
       }
@@ -216,10 +216,10 @@ final class ArrayValidator {
       }
 
       if (minOccurs < 0)
-        throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES));
+        throw new ValidationException("minOccurs must be a non-negative integer: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES, true));
 
       if (maxOccurs < minOccurs)
-        throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES));
+        throw new ValidationException("minOccurs must be less than or equal to maxOccurs: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES, true));
 
       Error error;
       if (iterator.nextIsNull()) {
@@ -307,7 +307,7 @@ final class ArrayValidator {
   static Error validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final Annotation[] annotations = idToElement.get(elementIds);
     try {
-      return validate( new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 1, false, annotations, 0, idToElement.getMinIterate(), idToElement.getMaxIterate(), 1, idToElement, relations, validate, onPropertyDecode, -1);
+      return validate(new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 1, false, annotations, 0, idToElement.getMinIterate(), idToElement.getMaxIterate(), 1, idToElement, relations, validate, onPropertyDecode, -1);
     }
     catch (final IOException e) {
       throw new IllegalStateException("Should not happen, as this method is only called for encode", e);

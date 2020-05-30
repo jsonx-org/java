@@ -19,14 +19,12 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-@Target({})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface t {
+  BooleanType booleans() default @BooleanType(decode="\0");
+  NumberType numbers() default @NumberType(decode="\0");
+  StringType strings() default @StringType(decode="\0");
   Class<? extends Annotation> arrays() default Annotation.class;
-  boolean booleans() default false;
-  NumberType numbers() default @NumberType(range="\0", scale=Integer.MIN_VALUE);
-  String strings() default "\0";
   Class<? extends JxObject> objects() default JxObject.class;
 }

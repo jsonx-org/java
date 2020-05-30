@@ -17,22 +17,31 @@
 package org.jsonx;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 /**
  * A {@link JxObject} that represents any JSON object.
  */
 public class AnyObject implements JxObject {
+  private LinkedHashMap<String,Object> properties;
+
   @AnyProperty(name=".*")
-  public final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
+  public LinkedHashMap<String,Object> getProperties() {
+    return this.properties;
+  }
+
+  public void setProperties(final LinkedHashMap<String,Object> properties) {
+    this.properties = properties;
+  }
 
   @Override
   public boolean equals(final Object obj) {
-    return obj == this || obj instanceof AnyObject && properties.equals(((AnyObject)obj).properties);
+    return obj == this || obj instanceof AnyObject && Objects.equals(properties, ((AnyObject)obj).properties);
   }
 
   @Override
   public int hashCode() {
-    return 31 + properties.hashCode();
+    return properties != null ? 31 + properties.hashCode() : 1;
   }
 
   @Override

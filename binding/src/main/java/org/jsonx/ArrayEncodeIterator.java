@@ -51,25 +51,29 @@ class ArrayEncodeIterator extends ArrayIterator {
 
   @Override
   protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+    if (codecType == BooleanCodec.class) {
+      final BooleanElement element = (BooleanElement)annotation;
+      return BooleanCodec.encodeArray(annotation, element.type(), element.encode(), current, index, relations);
+    }
+
+    if (codecType == NumberCodec.class) {
+      final NumberElement element = (NumberElement)annotation;
+      return NumberCodec.encodeArray(annotation,  element.scale(), element.range(), element.type(), element.encode(), current, index, relations, validate);
+    }
+
+    if (codecType == StringCodec.class) {
+      final StringElement element = (StringElement)annotation;
+      return StringCodec.encodeArray(annotation, element.pattern(), element.type(), element.encode(), current, index, relations, validate);
+    }
+
     if (codecType == AnyCodec.class)
       return AnyCodec.encodeArray((AnyElement)annotation, current, index, relations, idToElement, validate, onPropertyDecode);
 
     if (codecType == ArrayCodec.class)
       return ArrayCodec.encodeArray(annotation, ((ArrayElement)annotation).type(), current, index, relations, idToElement, validate, onPropertyDecode);
 
-    if (codecType == BooleanCodec.class)
-      return BooleanCodec.encodeArray(annotation, current, index, relations);
-
-    if (codecType == NumberCodec.class) {
-      final NumberElement element = (NumberElement)annotation;
-      return NumberCodec.encodeArray(annotation, element.scale(), element.range(), current, index, relations, validate);
-    }
-
     if (codecType == ObjectCodec.class)
       return ObjectCodec.encodeArray(annotation, current, index, relations);
-
-    if (codecType == StringCodec.class)
-      return StringCodec.encodeArray(annotation, ((StringElement)annotation).pattern(), current, index, relations, validate);
 
     throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
   }

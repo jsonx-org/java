@@ -34,10 +34,10 @@ public class AnyObjectTest {
 
   private static void testArray(final String fileName) throws DecodeException, IOException {
     try (final JsonReader reader = test(fileName)) {
-      final List<?> array0 = JxDecoder.parseArray(AnyArray.class, reader);
+      final List<?> array0 = JxDecoder.VALIDATING.parseArray(AnyArray.class, reader);
       reader.reset();
 
-      final List<?> array1 = JxDecoder.parseArray(AnyArray.class, reader);
+      final List<?> array1 = JxDecoder.VALIDATING.parseArray(AnyArray.class, reader);
       reader.reset();
 
       assertEquals(array0, array1);
@@ -50,10 +50,10 @@ public class AnyObjectTest {
 
   private static void testObject(final String fileName) throws DecodeException, IOException {
     try (final JsonReader reader = test(fileName)) {
-      final AnyObject object0 = JxDecoder.parseObject(AnyObject.class, reader);
+      final AnyObject object0 = JxDecoder.VALIDATING.parseObject(AnyObject.class, reader);
       reader.reset();
 
-      final AnyObject object1 = JxDecoder.parseObject(AnyObject.class, reader);
+      final AnyObject object1 = JxDecoder.VALIDATING.parseObject(AnyObject.class, reader);
       reader.reset();
 
       assertEquals(object0, object1);

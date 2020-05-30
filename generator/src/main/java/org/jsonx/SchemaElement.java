@@ -18,7 +18,6 @@ package org.jsonx;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
@@ -38,7 +37,9 @@ import java.util.stream.Collectors;
 
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
-import org.jsonx.www.schema_0_3.xL0gluGCXAA;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.net.URLs;
@@ -55,25 +56,30 @@ import org.xml.sax.SAXException;
  * The root {@link Element} of a JSON Schema Document.
  */
 public final class SchemaElement extends Element implements Declarer {
-  private static xL0gluGCXAA.Schema jsdToXsb(final schema.Schema jsd) {
-    final xL0gluGCXAA.Schema xsb = new xL0gluGCXAA.Schema();
-    for (final Map.Entry<String,Object> entry : jsd._5ba_2dZA_2dZ___5d_5b_2dA_2dZA_2dZ_5cD___5d_2a.entrySet()) {
-      if (entry.getValue() instanceof schema.Array)
-        xsb.addArray((xL0gluGCXAA.Schema.Array)ArrayModel.jsdToXsb((schema.Array)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.Boolean)
-        xsb.addBoolean((xL0gluGCXAA.Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.Number)
-        xsb.addNumber((xL0gluGCXAA.Schema.Number)NumberModel.jsdToXsb((schema.Number)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.ObjectType)
-        xsb.addObject((xL0gluGCXAA.Schema.Object)ObjectModel.jsdToXsb((schema.Object)entry.getValue(), entry.getKey()));
-      else if (entry.getValue() instanceof schema.String)
-        xsb.addString((xL0gluGCXAA.Schema.String)StringModel.jsdToXsb((schema.String)entry.getValue(), entry.getKey()));
-      else
-        throw new UnsupportedOperationException("Unsupported type: " + entry.getValue().getClass().getName());
+  private static Schema jsdToXsb(final schema.Schema jsd) {
+    final Schema xsb = new Schema();
+    final LinkedHashMap<String,? extends schema.Member> declarations = jsd.getDeclarations();
+    if (declarations != null) {
+      for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) {
+        final String name = entry.getKey();
+        final schema.Member declaration = entry.getValue();
+        if (declaration instanceof schema.Array)
+          xsb.addArray((Schema.Array)ArrayModel.jsdToXsb((schema.Array)declaration, name));
+        else if (declaration instanceof schema.Boolean)
+          xsb.addBoolean((Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)declaration, name));
+        else if (declaration instanceof schema.Number)
+          xsb.addNumber((Schema.Number)NumberModel.jsdToXsb((schema.Number)declaration, name));
+        else if (declaration instanceof schema.ObjectType)
+          xsb.addObject((Schema.Object)ObjectModel.jsdToXsb((schema.Object)declaration, name));
+        else if (declaration instanceof schema.String)
+          xsb.addString((Schema.String)StringModel.jsdToXsb((schema.String)declaration, name));
+        else
+          throw new UnsupportedOperationException("Unsupported type: " + declaration.getClass().getName());
+      }
     }
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
 
     return xsb;
   }
@@ -92,8 +98,8 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
-    try (final InputStream in = url.openStream()) {
-      final schema.Schema schema = JxDecoder.parseObject(schema.Schema.class, new JsonReader(new InputStreamReader(in)));
+    try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
+      final schema.Schema schema = JxDecoder.VALIDATING.parseObject(schema.Schema.class, in);
       return new SchemaElement(schema, prefix);
     }
   }
@@ -120,7 +126,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
-    final xL0gluGCXAA.Schema schema = (xL0gluGCXAA.Schema)Bindings.parse(url, getErrorHandler());
+    final Schema schema = (Schema)Bindings.parse(url, getErrorHandler());
     return new SchemaElement(schema, prefix);
   }
 
@@ -193,26 +199,26 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
-  public SchemaElement(final xL0gluGCXAA.Schema schema, final String prefix) throws ValidationException {
-    super(schema.getDoc$());
+  public SchemaElement(final Schema schema, final String prefix) throws ValidationException {
+    super(null, schema.getDoc$());
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);
 
-    final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
-      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
-      if (member instanceof xL0gluGCXAA.Schema.Array)
-        ArrayModel.declare(registry, this, (xL0gluGCXAA.Schema.Array)member);
-      else if (member instanceof xL0gluGCXAA.Schema.Boolean)
-        BooleanModel.declare(registry, this, (xL0gluGCXAA.Schema.Boolean)member);
-      else if (member instanceof xL0gluGCXAA.Schema.Number)
-        NumberModel.declare(registry, this, (xL0gluGCXAA.Schema.Number)member);
-      else if (member instanceof xL0gluGCXAA.Schema.String)
-        StringModel.declare(registry, this, (xL0gluGCXAA.Schema.String)member);
-      else if (member instanceof xL0gluGCXAA.Schema.Object)
-        ObjectModel.declare(registry, this, (xL0gluGCXAA.Schema.Object)member);
+      final $Member member = ($Member)elementIterator.next();
+      if (member instanceof Schema.Array)
+        ArrayModel.declare(registry, this, (Schema.Array)member);
+      else if (member instanceof Schema.Boolean)
+        BooleanModel.declare(registry, this, (Schema.Boolean)member);
+      else if (member instanceof Schema.Number)
+        NumberModel.declare(registry, this, (Schema.Number)member);
+      else if (member instanceof Schema.String)
+        StringModel.declare(registry, this, (Schema.String)member);
+      else if (member instanceof Schema.Object)
+        ObjectModel.declare(registry, this, (Schema.Object)member);
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
@@ -222,34 +228,38 @@ public final class SchemaElement extends Element implements Declarer {
         ((Referrer<?>)model).resolveReferences();
 
     registry.resolveReferences();
+
+    for (final Model model : registry.getModels())
+      if (model instanceof Referrer)
+        ((Referrer<?>)model).resolveOverrides();
   }
 
-  private static void assertNoCycle(final xL0gluGCXAA.Schema schema) throws ValidationException {
-    final Function<xL0gluGCXAA.$Member,String> memberToName = obj -> {
-      if (obj instanceof xL0gluGCXAA.Schema.Array)
-        return ((xL0gluGCXAA.Schema.Array)obj).getName$().text();
+  private static void assertNoCycle(final Schema schema) throws ValidationException {
+    final Function<$Member,String> memberToName = obj -> {
+      if (obj instanceof Schema.Array)
+        return ((Schema.Array)obj).getName$().text();
 
-      if (obj instanceof xL0gluGCXAA.Schema.Boolean)
-        return ((xL0gluGCXAA.Schema.Boolean)obj).getName$().text();
+      if (obj instanceof Schema.Boolean)
+        return ((Schema.Boolean)obj).getName$().text();
 
-      if (obj instanceof xL0gluGCXAA.Schema.Number)
-        return ((xL0gluGCXAA.Schema.Number)obj).getName$().text();
+      if (obj instanceof Schema.Number)
+        return ((Schema.Number)obj).getName$().text();
 
-      if (obj instanceof xL0gluGCXAA.Schema.String)
-        return ((xL0gluGCXAA.Schema.String)obj).getName$().text();
+      if (obj instanceof Schema.String)
+        return ((Schema.String)obj).getName$().text();
 
-      if (obj instanceof xL0gluGCXAA.Schema.Object)
-        return ((xL0gluGCXAA.Schema.Object)obj).getName$().text();
+      if (obj instanceof Schema.Object)
+        return ((Schema.Object)obj).getName$().text();
 
       throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
     };
-    final StrictRefDigraph<xL0gluGCXAA.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", memberToName);
+    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", memberToName);
 
-    final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
-      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
-      if (member instanceof xL0gluGCXAA.Schema.Object) {
-        final xL0gluGCXAA.Schema.Object object = (xL0gluGCXAA.Schema.Object)member;
+      final $Member member = ($Member)elementIterator.next();
+      if (member instanceof Schema.Object) {
+        final Schema.Object object = (Schema.Object)member;
         if (object.getExtends$() != null)
           digraph.add(object, object.getExtends$().text());
         else
@@ -260,7 +270,7 @@ public final class SchemaElement extends Element implements Declarer {
       }
     }
 
-    final List<xL0gluGCXAA.$Member> cycle = digraph.getCycle();
+    final List<$Member> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(memberToName).collect(Collectors.joining(" -> ")));
   }
@@ -280,7 +290,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
-    final Set<Class<?>> classes = new HashSet<>();
+    final HashSet<Class<?>> classes = new HashSet<>();
     PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
       if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
         classes.add(c);
@@ -366,7 +376,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified classes.
+   * Creates a new {@link SchemaElement} by scanning the provided classes.
    *
    * @param classes The classes to scan.
    */
@@ -375,30 +385,43 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified classes.
+   * Creates a new {@link SchemaElement} by scanning the provided classes.
    *
    * @param classes The classes to scan.
    */
   public SchemaElement(final Collection<Class<?>> classes) {
-    super(null);
-    final Registry registry = new Registry(this, classes);
-    this.registry = registry;
-    final QName name = xL0gluGCXAA.Schema.class.getAnnotation(QName.class);
+    super(null, null);
+    this.registry = new Registry(this, classes);
+    final QName name = Schema.class.getAnnotation(QName.class);
     this.version = name.namespaceURI().substring(0, name.namespaceURI().lastIndexOf('.'));
-    registry.resolveReferences();
+
+    this.registry.resolveReferences();
+    final int len = registry.getModels().size();
+    final Model[] models = registry.getModels().toArray(new Model[len]);
+    for (int i = 0; i < len; ++i)
+      if (models[i] instanceof Referrer)
+        ((Referrer<?>)models[i]).resolveOverrides();
+
+    this.registry.resolveReferences();
   }
 
   private List<Model> rootMembers(final Settings settings) {
-    final List<Model> members = new ArrayList<>();
+    final ArrayList<Model> members = new ArrayList<>();
     for (final Model model : registry.getModels())
       if (registry.isRootMember(model, settings))
         members.add(model);
 
-    if (!registry.isFromJsd) {
+    if (!registry.isFromJsd)
       members.sort(Comparator.naturalOrder());
-    }
 
     return members;
+  }
+
+  private static final Id ID = Id.named(SchemaElement.class);
+
+  @Override
+  public Id id() {
+    return ID;
   }
 
   @Override
@@ -414,7 +437,7 @@ public final class SchemaElement extends Element implements Declarer {
       elements = null;
     }
 
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     attributes.put("xmlns", version + ".xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", version + ".xsd " + version + ".xsd");
@@ -435,12 +458,13 @@ public final class SchemaElement extends Element implements Declarer {
     if (members.size() == 0)
       return null;
 
-    final Map<String,Object> properties = new LinkedHashMap<>(toAttributes(owner, packageName));
+    final Map<String,Object> properties = new LinkedHashMap<>(toXmlAttributes(owner, packageName));
     properties.put("jx:ns", version + ".jsd");
     properties.put("jx:schemaLocation", version + ".jsd " + version + ".jsd");
     for (final Model member : members) {
-      final String name = member.id.toString();
-      properties.put(packageName.length() > 0 && name.startsWith(packageName) ? name.substring(packageName.length() + 1) : name, member.toJson(settings, this, packageName));
+      final String id = member.id().toString();
+      final String name = packageName.length() > 0 && id.startsWith(packageName) ? id.substring(packageName.length() + 1) : id;
+      properties.put(name, member.toJson(settings, this, packageName));
     }
 
     return properties;
@@ -512,6 +536,11 @@ public final class SchemaElement extends Element implements Declarer {
     return sources;
   }
 
+  @Override
+  public Registry.Type classType() {
+    throw new UnsupportedOperationException();
+  }
+
   public Map<String,String> toSource(final File dir) throws IOException {
     return toSource(dir, Settings.DEFAULT);
   }
@@ -525,5 +554,20 @@ public final class SchemaElement extends Element implements Declarer {
     }
 
     return sources;
+  }
+
+  @Override
+  public String elementName() {
+    return "schema";
+  }
+
+  @Override
+  public Declarer declarer() {
+    return null;
+  }
+
+  @Override
+  public String displayName() {
+    return "";
   }
 }

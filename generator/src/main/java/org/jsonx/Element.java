@@ -18,13 +18,15 @@ package org.jsonx;
 
 import java.util.Map;
 
-import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 
 abstract class Element {
+  private final String name;
   final String doc;
 
-  Element(final $Documented.Doc$ doc) {
+  Element(final String name, final $Documented.Doc$ doc) {
+    this.name = name;
     this.doc = doc == null || doc.text() == null || doc.text().length() == 0 ? null : doc.text();
   }
 
@@ -37,12 +39,16 @@ abstract class Element {
    * @param packageName The package name declared in the schema element.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
+  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
     final AttributeMap attributes = new AttributeMap();
     if (doc != null)
       attributes.put("doc", doc);
 
     return attributes;
+  }
+
+  public final String name() {
+    return name;
   }
 
   abstract XmlElement toXml(Settings settings, Element owner, String packageName);

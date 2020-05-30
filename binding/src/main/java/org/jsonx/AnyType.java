@@ -19,19 +19,23 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import org.libj.util.Numbers;
+import org.libj.lang.Numbers;
 
 final class AnyType {
   static boolean isEnabled(final Class<?> annotation) {
     return annotation != JxObject.class && annotation != Annotation.class;
   }
 
-  static boolean isEnabled(final NumberType number) {
-    return number.scale() != Integer.MIN_VALUE || !"\0".equals(number.range());
+  static boolean isEnabled(final BooleanType booleanType) {
+    return !"\0".equals(booleanType.decode());
   }
 
-  static boolean isEnabled(final String pattern) {
-    return !"\0".equals(pattern);
+  static boolean isEnabled(final NumberType numberType) {
+    return !"\0".equals(numberType.decode());
+  }
+
+  static boolean isEnabled(final StringType stringType) {
+    return !"\0".equals(stringType.decode());
   }
 
   static t fromToken(final String token) {
@@ -41,30 +45,128 @@ final class AnyType {
     if (Numbers.isNumber(token))
       return numbers;
 
-    if (token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"')
+    if (token.length() > 1 && token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"')
       return strings;
 
     throw new UnsupportedOperationException("Unsupported token: " + token);
   }
 
   static t fromObject(final Object obj) {
-    if (obj instanceof List)
-      return arrays;
-
     if (obj instanceof Boolean)
       return booleans;
 
     if (obj instanceof Number)
       return numbers;
 
+    if (obj instanceof CharSequence)
+      return strings;
+
+    if (obj instanceof List)
+      return arrays;
+
     if (obj instanceof JxObject)
       return objects;
 
-    if (obj instanceof String)
-      return strings;
-
-    throw new UnsupportedOperationException("Unsupported object type: " + obj.getClass().getName());
+    throw new UnsupportedOperationException("Unsupported type: " + obj.getClass().getName());
   }
+
+  private static final StringType defaultStringType = new StringType() {
+    @Override
+    public Class<? extends Annotation> annotationType() {
+      return StringType.class;
+    }
+
+    @Override
+    public String pattern() {
+      return "";
+    }
+
+    @Override
+    public Class<?> type() {
+      return String.class;
+    }
+
+    @Override
+    public String decode() {
+      return "\0";
+    }
+
+    @Override
+    public String encode() {
+      return "";
+    }
+  };
+
+  private static final StringType wildcardStringType = new StringType() {
+    @Override
+    public Class<? extends Annotation> annotationType() {
+      return StringType.class;
+    }
+
+    @Override
+    public String pattern() {
+      return "";
+    }
+
+    @Override
+    public Class<?> type() {
+      return String.class;
+    }
+
+    @Override
+    public String decode() {
+      return "";
+    }
+
+    @Override
+    public String encode() {
+      return "";
+    }
+  };
+
+  private static final BooleanType defaultBooleanType = new BooleanType() {
+    @Override
+    public Class<? extends Annotation> annotationType() {
+      return BooleanType.class;
+    }
+
+    @Override
+    public Class<?> type() {
+      return Boolean.class;
+    }
+
+    @Override
+    public String decode() {
+      return "\0";
+    }
+
+    @Override
+    public String encode() {
+      return "";
+    }
+  };
+
+  private static final BooleanType wildcardBooleanType = new BooleanType() {
+    @Override
+    public Class<? extends Annotation> annotationType() {
+      return BooleanType.class;
+    }
+
+    @Override
+    public Class<?> type() {
+      return Boolean.class;
+    }
+
+    @Override
+    public String decode() {
+      return "";
+    }
+
+    @Override
+    public String encode() {
+      return "";
+    }
+  };
 
   private static final NumberType defaultNumberType = new NumberType() {
     @Override
@@ -74,12 +176,27 @@ final class AnyType {
 
     @Override
     public int scale() {
-      return Integer.MIN_VALUE;
+      return Integer.MAX_VALUE;
     }
 
     @Override
     public String range() {
+      return "";
+    }
+
+    @Override
+    public Class<?> type() {
+      return Number.class;
+    }
+
+    @Override
+    public String decode() {
       return "\0";
+    }
+
+    @Override
+    public String encode() {
+      return "";
     }
   };
 
@@ -98,6 +215,21 @@ final class AnyType {
     public String range() {
       return "";
     }
+
+    @Override
+    public Class<?> type() {
+      return Number.class;
+    }
+
+    @Override
+    public String decode() {
+      return "";
+    }
+
+    @Override
+    public String encode() {
+      return "";
+    }
   };
 
   static final t arrays = new t() {
@@ -112,8 +244,8 @@ final class AnyType {
     }
 
     @Override
-    public boolean booleans() {
-      return false;
+    public BooleanType booleans() {
+      return defaultBooleanType;
     }
 
     @Override
@@ -122,8 +254,8 @@ final class AnyType {
     }
 
     @Override
-    public String strings() {
-      return "\0";
+    public StringType strings() {
+      return defaultStringType;
     }
 
     @Override
@@ -144,8 +276,8 @@ final class AnyType {
     }
 
     @Override
-    public boolean booleans() {
-      return true;
+    public BooleanType booleans() {
+      return wildcardBooleanType;
     }
 
     @Override
@@ -154,8 +286,8 @@ final class AnyType {
     }
 
     @Override
-    public String strings() {
-      return "\0";
+    public StringType strings() {
+      return defaultStringType;
     }
 
     @Override
@@ -176,8 +308,8 @@ final class AnyType {
     }
 
     @Override
-    public boolean booleans() {
-      return false;
+    public BooleanType booleans() {
+      return defaultBooleanType;
     }
 
     @Override
@@ -186,8 +318,8 @@ final class AnyType {
     }
 
     @Override
-    public String strings() {
-      return "\0";
+    public StringType strings() {
+      return defaultStringType;
     }
 
     @Override
@@ -208,8 +340,8 @@ final class AnyType {
     }
 
     @Override
-    public boolean booleans() {
-      return false;
+    public BooleanType booleans() {
+      return defaultBooleanType;
     }
 
     @Override
@@ -218,8 +350,8 @@ final class AnyType {
     }
 
     @Override
-    public String strings() {
-      return "\0";
+    public StringType strings() {
+      return defaultStringType;
     }
 
     @Override
@@ -240,8 +372,8 @@ final class AnyType {
     }
 
     @Override
-    public boolean booleans() {
-      return false;
+    public BooleanType booleans() {
+      return defaultBooleanType;
     }
 
     @Override
@@ -250,8 +382,8 @@ final class AnyType {
     }
 
     @Override
-    public String strings() {
-      return ".*";
+    public StringType strings() {
+      return wildcardStringType;
     }
 
     @Override

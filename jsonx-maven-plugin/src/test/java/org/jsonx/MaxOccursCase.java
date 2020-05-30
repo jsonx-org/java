@@ -20,13 +20,13 @@ final class MaxOccursCase extends FailureCase<ArrayTrial<Object>> {
   static final MaxOccursCase CASE = new MaxOccursCase();
 
   @Override
-  void onEncode(final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().endsWith("Content is not complete"));
+  void onEncode(final JxObject binding, final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
+    assertTrue(e.getMessage(), e.getMessage().contains("No members are expected at this point"));
   }
 
   @Override
   boolean onDecode(final ArrayTrial<Object> trial, final DecodeException e) throws Exception {
-    assertTrue(trial.name, e.getMessage().contains("Content is not complete"));
+    assertTrue(e.getMessage(), e.getMessage().contains("No members are expected at this point"));
     return true;
   }
 

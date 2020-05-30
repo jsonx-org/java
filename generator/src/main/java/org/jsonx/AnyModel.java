@@ -17,7 +17,7 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,58 +25,79 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.jsonx.www.schema_0_3.xL0gluGCXAA;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$AnyMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldBinding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference.Name$;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.openjax.json.JsonUtil;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
-  private static xL0gluGCXAA.$Any property(final schema.AnyProperty jsd, final String name) {
-    final xL0gluGCXAA.$Any xsb = new xL0gluGCXAA.$Any() {
+  private static $Any property(final schema.AnyProperty jsd, final String name) {
+    final $Any xsb = new $Any() {
       private static final long serialVersionUID = 650722913732574568L;
 
       @Override
-      protected xL0gluGCXAA.$Member inherits() {
-        return new xL0gluGCXAA.$ObjectMember.Property();
+      protected $Member inherits() {
+        return new $ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setNames$(new xL0gluGCXAA.$Any.Names$(JsonUtil.unescape(name)));
+      xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name)));
 
     if (jsd.getTypes() != null)
-      xsb.setTypes$(new xL0gluGCXAA.$Any.Types$(jsd.getTypes().split(" ")));
+      xsb.setTypes$(new $Any.Types$(jsd.getTypes().split(" ")));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXAA.$Any.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new $Any.Nullable$(jsd.getNullable()));
 
     if (jsd.getUse() != null)
-      xsb.setUse$(new xL0gluGCXAA.$Any.Use$(xL0gluGCXAA.$Any.Use$.Enum.valueOf(jsd.getUse())));
+      xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(jsd.getUse())));
+
+    if (jsd.getBindings() != null) {
+      for (final schema.FieldBinding binding : jsd.getBindings()) {
+        final $Any.Binding bin = new $Any.Binding();
+        bin.setLang$(new $Binding.Lang$(binding.getLang()));
+        bin.setField$(new $Any.Binding.Field$(binding.getField()));
+        xsb.addBinding(bin);
+      }
+    }
 
     return xsb;
   }
 
-  private static xL0gluGCXAA.$ArrayMember.Any element(final schema.AnyElement jsd) {
-    final xL0gluGCXAA.$ArrayMember.Any xsb = new xL0gluGCXAA.$ArrayMember.Any();
+  private static $ArrayMember.Any element(final schema.AnyElement jsd) {
+    final $ArrayMember.Any xsb = new $ArrayMember.Any();
 
     if (jsd.getTypes() != null)
-      xsb.setTypes$(new xL0gluGCXAA.$ArrayMember.Any.Types$(jsd.getTypes().split(" ")));
+      xsb.setTypes$(new $ArrayMember.Any.Types$(jsd.getTypes().split(" ")));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Any.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new $ArrayMember.Any.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Any.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new $ArrayMember.Any.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Any.MaxOccurs$(jsd.getMaxOccurs()));
+      xsb.setMaxOccurs$(new $ArrayMember.Any.MaxOccurs$(jsd.getMaxOccurs()));
+
+    // There is no element binding for "any"
 
     return xsb;
   }
 
-  static xL0gluGCXAA.$AnyMember jsdToXsb(final schema.Any jsd, final String name) {
-    final xL0gluGCXAA.$AnyMember xsb;
+  static $AnyMember jsdToXsb(final schema.Any jsd, final String name) {
+    final $AnyMember xsb;
     if (jsd instanceof schema.AnyProperty)
       xsb = property((schema.AnyProperty)jsd, name);
     else if (jsd instanceof schema.AnyElement)
@@ -85,90 +106,98 @@ final class AnyModel extends Referrer<AnyModel> {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
 
     return xsb;
   }
 
-  static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Field field) {
-    final AnyModel model = new AnyModel(registry, referrer, property, field);
-    final Id id = model.id;
+  static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Method getMethod, final String fieldName) {
+    final AnyModel model = new AnyModel(registry, referrer, property, getMethod, fieldName);
+    final Id id = model.id();
 
     final AnyModel registered = (AnyModel)registry.getModel(id);
-    return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+    return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyElement element) {
     final AnyModel model = new AnyModel(registry, referrer, element);
-    final Id id = model.id;
+    final Id id = model.id();
 
     final AnyModel registered = (AnyModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Any xsb) {
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb) {
     return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Any xsb) {
-    return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, getBinding(xsb.getBinding())), referrer);
   }
 
-  private static final xL0gluGCXAA.$Reference anonymousReference = new xL0gluGCXAA.$Reference() {
-    private static final long serialVersionUID = 7585066984559415750L;
-    private final Name$ name = new Name$("");
+  private static final Name$ anonymousReferenceName = new Name$("");
 
-    @Override
-    protected xL0gluGCXAA.$Member inherits() {
-      return null;
-    }
+  private static $Reference newRnonymousReference(final Boolean nullable, Use use) {
+    return new $Reference() {
+      private static final long serialVersionUID = 7585066984559415750L;
 
-    @Override
-    public Name$ getName$() {
-      return name;
-    }
+      @Override
+      protected $Member inherits() {
+        return null;
+      }
 
-    @Override
-    public Nullable$ getNullable$() {
-      return null;
-    }
+      @Override
+      public Name$ getName$() {
+        return anonymousReferenceName;
+      }
 
-    @Override
-    public Use$ getUse$() {
-      return null;
-    }
-  };
+      @Override
+      public Nullable$ getNullable$() {
+        return nullable == null ? null : new Nullable$(nullable);
+      }
+
+      @Override
+      public Use$ getUse$() {
+        return use == null ? null : new Use$(use == Use.REQUIRED ? Use$.required : Use$.optional);
+      }
+    };
+  }
 
   private final List<Member> types;
 
-  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Any xsb) {
-    super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null);
-    this.types = getTypes(xsb.getTypes$());
+  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
+    validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Any xsb) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
-    this.types = getTypes(xsb.getTypes$());
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
+    validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Field field) {
-    super(registry, declarer, property.nullable(), property.use(), null);
+  private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Method getMethod, final String fieldName) {
+    super(registry, declarer, property.nullable(), property.use(), null, null);
     this.types = getMemberTypes(property.types());
-    final Class<?> requiredFieldType = property.types().length == 0 ? Object.class : getFieldType(property.types());
+    final Class<?> requiredFieldType = property.types().length == 0 ? defaultClass() : getFieldType(property.types());
     final boolean isRegex = isMultiRegex(property.name());
-    if (isRegex && !Map.class.isAssignableFrom(field.getType()))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + AnyProperty.class.getSimpleName() + " of type " + field.getType().getName() + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
+    if (isRegex && !Map.class.isAssignableFrom(getMethod.getReturnType()))
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
 
-    if (!isAssignable(field, requiredFieldType, isRegex, property.nullable(), property.use()))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + AnyProperty.class.getSimpleName() + " of type " + field.getType().getName() + " is not assignable for the specified types attribute");
+    if (!isAssignable(getMethod, true, requiredFieldType, isRegex, property.nullable(), property.use()))
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
+
+    validateTypeBinding();
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyElement element) {
-    super(registry, declarer, element.nullable(), null, null);
+    super(registry, declarer, element.nullable(), null, null, null);
     this.types = getMemberTypes(element.types());
+    validateTypeBinding();
   }
 
-  private List<Member> getTypes(final $IDREFS refs) {
+  private List<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
     final List<String> idrefs;
     if (refs == null || (idrefs = refs.text()).size() == 0)
       return null;
@@ -176,7 +205,7 @@ final class AnyModel extends Referrer<AnyModel> {
     final List<Member> types = new ArrayList<>(idrefs.size());
     for (final String idref : idrefs) {
       final Id id = Id.hashed(idref);
-      types.add(Reference.defer(registry, this, anonymousReference, () -> {
+      types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
         final Member model = registry.getModel(id);
         if (model == null)
           throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
@@ -188,49 +217,22 @@ final class AnyModel extends Referrer<AnyModel> {
     return types;
   }
 
-  private static final BooleanElement anonymousBooleanElement = new BooleanElement() {
-    @Override
-    public Class<? extends Annotation> annotationType() {
-      return BooleanElement.class;
-    }
-
-    @Override
-    public int id() {
-      return -1;
-    }
-
-    @Override
-    public boolean nullable() {
-      return true;
-    }
-
-    @Override
-    public int minOccurs() {
-      return 1;
-    }
-
-    @Override
-    public int maxOccurs() {
-      return Integer.MAX_VALUE;
-    }
-  };
-
   private static Class<?> getFieldType(final t[] types) {
     if (types.length == 0)
       return null;
 
-    final List<Class<?>> members = new ArrayList<>(types.length);
+    final ArrayList<Class<?>> members = new ArrayList<>(types.length);
     for (final t type : types) {
       if (AnyType.isEnabled(type.arrays()))
         members.add(List.class);
-      else if (type.booleans())
+      else if (AnyType.isEnabled(type.booleans()))
         members.add(Boolean.class);
       else if (AnyType.isEnabled(type.numbers()))
-        members.add(Number.class);
+        members.add(type.numbers().type());
       else if (AnyType.isEnabled(type.objects()))
         members.add(type.objects());
       else if (AnyType.isEnabled(type.strings()))
-        members.add(String.class);
+        members.add(type.strings().type());
     }
 
     return Classes.getGreatestCommonSuperclass(members.toArray(new Class[members.size()]));
@@ -240,29 +242,29 @@ final class AnyModel extends Referrer<AnyModel> {
     if (types.length == 0)
       return null;
 
-    final List<Member> members = new ArrayList<>(types.length);
+    final ArrayList<Member> members = new ArrayList<>(types.length);
     for (final t type : types) {
       Member member = null;
       if (AnyType.isEnabled(type.arrays()))
         member = ArrayModel.referenceOrDeclare(registry, this, type.arrays());
 
-      if (type.booleans()) {
+      if (AnyType.isEnabled(type.booleans())) {
         if (member != null)
-          throw new ValidationException("@" + t.class.getName() + " can only specify one type");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"booleans\" and \"" + member.elementName() + "s\"");
 
-        member = BooleanModel.referenceOrDeclare(registry, this, anonymousBooleanElement).model;
+        member = BooleanModel.referenceOrDeclare(registry, this, type.booleans());
       }
 
       if (AnyType.isEnabled(type.numbers())) {
         if (member != null)
-          throw new ValidationException("@" + t.class.getName() + " can only specify one type");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"numbers\" and \"" + member.elementName() + "s\"");
 
         member = NumberModel.referenceOrDeclare(registry, this, type.numbers());
       }
 
       if (AnyType.isEnabled(type.objects())) {
         if (member != null)
-          throw new ValidationException("@" + t.class.getName() + " can only specify one type");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"objects\" and \"" + member.elementName() + "s\"");
 
         member = ObjectModel.referenceOrDeclare(registry, this, new ObjectElement() {
           @Override
@@ -299,7 +301,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
       if (AnyType.isEnabled(type.strings())) {
         if (member != null)
-          throw new ValidationException("@" + t.class.getName() + " can only specify one type");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"strings\" and \"" + member.elementName() + "s\"");
 
         member = StringModel.referenceOrDeclare(registry, this, new StringElement() {
           @Override
@@ -319,7 +321,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
           @Override
           public String pattern() {
-            return type.strings();
+            return type.strings().pattern();
           }
 
           @Override
@@ -331,11 +333,26 @@ final class AnyModel extends Referrer<AnyModel> {
           public int maxOccurs() {
             return Integer.MAX_VALUE;
           }
+
+          @Override
+          public Class<?> type() {
+            return type.strings().type();
+          }
+
+          @Override
+          public String decode() {
+            return type.strings().decode();
+          }
+
+          @Override
+          public String encode() {
+            return type.strings().encode();
+          }
         }).model;
       }
 
       if (member == null)
-        throw new ValidationException("@" + t.class.getName() + " is empty");
+        throw new ValidationException("@" + t.class.getName() + " does not specify a type");
 
       members.add(member);
     }
@@ -343,11 +360,20 @@ final class AnyModel extends Referrer<AnyModel> {
     return members;
   }
 
+  @Override
+  void resolveOverrides() {
+  }
+
   private Registry.Type type;
 
   @Override
-  Registry.Type type() {
-    return type == null ? type = (this.types == null ? registry.getType(Object.class) : getGreatestCommonSuperType(this.types)) : type;
+  Registry.Type typeDefault() {
+    return type == null ? type = (this.types == null ? registry.OBJECT : getGreatestCommonSuperType(this.types)) : type;
+  }
+
+  @Override
+  String isValid(final Binding.Type typeBinding) {
+    return typeBinding.type == null ? null : "Cannot override the type for \"any\"";
   }
 
   @Override
@@ -356,8 +382,13 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  String elementName() {
+  public String elementName() {
     return "any";
+  }
+
+  @Override
+  Class<?> defaultClass() {
+    return Object.class;
   }
 
   @Override
@@ -371,8 +402,8 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     if (types != null) {
       final StringBuilder builder = new StringBuilder();
       final Iterator<Member> iterator = types.iterator();
@@ -380,7 +411,7 @@ final class AnyModel extends Referrer<AnyModel> {
         if (i > 0)
           builder.append(' ');
 
-        builder.append(Registry.getSubName(iterator.next().id.toString(), packageName));
+        builder.append(Registry.getSubName(iterator.next().id().toString(), packageName));
       }
 
       attributes.put("types", builder.toString());
@@ -403,22 +434,22 @@ final class AnyModel extends Referrer<AnyModel> {
       if (type instanceof ArrayModel) {
         values.add("@" + t.class.getName() + "(arrays=" + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
       }
-      else if (type instanceof BooleanModel) {
-        values.add("@" + t.class.getName() + "(booleans=true)");
+      else if (type instanceof ObjectModel) {
+        values.add("@" + t.class.getName() + "(objects=" + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
       }
-      else if (type instanceof NumberModel) {
-        final NumberModel model = (NumberModel)type;
-        final AttributeMap numberAttrs = new AttributeMap();
-        model.toAnnotationAttributes(numberAttrs, this);
+      else if (type instanceof BooleanModel || type instanceof NumberModel || type instanceof StringModel) {
+        final Model model = (Model)type;
+        final AttributeMap attrs = new AttributeMap();
+        model.toAnnotationAttributes(attrs, this);
         if (builder == null)
           builder = new StringBuilder();
         else
           builder.setLength(0);
 
-        builder.append('@').append(NumberType.class.getName());
-        if (numberAttrs.size() > 0) {
+        builder.append('@').append(type.typeAnnotation().getName());
+        if (attrs.size() > 0) {
           builder.append('(');
-          final Iterator<Map.Entry<String,Object>> iterator = numberAttrs.entrySet().iterator();
+          final Iterator<Map.Entry<String,Object>> iterator = attrs.entrySet().iterator();
           for (int i = 0; iterator.hasNext(); ++i) {
             if (i > 0)
               builder.append(", ");
@@ -430,14 +461,7 @@ final class AnyModel extends Referrer<AnyModel> {
           builder.append(')');
         }
 
-        values.add("@" + t.class.getName() + "(numbers=" + builder.toString() + ")");
-      }
-      else if (type instanceof ObjectModel) {
-        values.add("@" + t.class.getName() + "(objects=" + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
-      }
-      else if (type instanceof StringModel) {
-        final String pattern = ((StringModel)type).pattern;
-        values.add("@" + t.class.getName() + "(strings=\"" + (pattern == null ? ".*" : pattern) + "\")");
+        values.add("@" + t.class.getName() + "(" + type.elementName() + "s=" + builder.toString() + ")");
       }
       else {
         throw new UnsupportedOperationException("Unsupported type: " + type.getClass().getName());

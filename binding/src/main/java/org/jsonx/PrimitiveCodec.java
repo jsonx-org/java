@@ -16,20 +16,52 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
+import org.libj.lang.Classes;
 import org.openjax.json.JsonReader;
 
-abstract class PrimitiveCodec<T> extends Codec {
-  PrimitiveCodec(final Field field, final String name, final boolean property, final Use use) {
-    super(field, name, property, use);
+abstract class PrimitiveCodec extends Codec {
+  static Executable getMethod(final Map<String,Executable> codecToMethod, final String identifier, final Class<?> parameterType) {
+    if (identifier.isEmpty())
+      return null;
+
+    final String key = identifier + "(" + parameterType.getName() + ")";
+    Executable method = codecToMethod.get(key);
+    if (method == null)
+      codecToMethod.put(key, method = JsdUtil.parseExecutable(identifier, parameterType));
+
+    return method;
+  }
+
+  static final Map<String,Executable> decodeToMethod = new HashMap<>();
+  static final Map<String,Executable> encodeToMethod = new HashMap<>();
+
+  final Class<?> type;
+  final Executable decode;
+
+  PrimitiveCodec(final Method getMethod, final Method setMethod, final String name, final boolean property, final Use use, final String decode) {
+    super(getMethod, setMethod, name, property, use);
+    this.decode = getMethod(decodeToMethod, decode, String.class);
+    this.type = getMethod.getReturnType() == Optional.class ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
   }
 
   final Error matches(final String json, final JsonReader reader) {
     return test(json.charAt(0)) ? validate(json, reader) : Error.EXPECTED_TYPE(name, elementName(), json, reader);
   }
 
-  abstract boolean test(char firstChar);
+  final Object parse(final String json) {
+    if (getMethod.getReturnType().isPrimitive() && (nullable || use == Use.OPTIONAL))
+      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type: " + getMethod.getReturnType());
+
+    return parseValue(json);
+  }
+
+  abstract Object parseValue(String json);
   abstract Error validate(String json, JsonReader reader);
-  abstract T parse(String json);
+  abstract boolean test(char firstChar);
 }

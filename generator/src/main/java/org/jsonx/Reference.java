@@ -18,57 +18,81 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.jsonx.www.schema_0_3.xL0gluGCXAA;
-import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Documented;
+import org.jsonx.Registry.Type;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldBinding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ReferenceMember;
+import org.libj.util.CollectionUtil;
+import org.libj.util.Iterators;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 
 final class Reference extends Member {
-  private static xL0gluGCXAA.$ArrayMember.Reference element(final schema.ReferenceElement jsd) {
-    final xL0gluGCXAA.$ArrayMember.Reference xsb = new xL0gluGCXAA.$ArrayMember.Reference();
+  private static $ArrayMember.Reference element(final schema.ReferenceElement jsd) {
+    final $ArrayMember.Reference xsb = new $ArrayMember.Reference();
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Reference.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new $ArrayMember.Reference.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new $ArrayMember.Reference.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));
+      xsb.setMaxOccurs$(new $ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));
+
+    // There is no element binding for "array"
 
     return xsb;
   }
 
-  private static xL0gluGCXAA.$Reference property(final schema.ReferenceProperty jsd, final String name) {
-    final xL0gluGCXAA.$Reference xsb = new xL0gluGCXAA.$Reference() {
+  private static $Reference property(final schema.ReferenceProperty jsd, final String name) {
+    final $Reference xsb = new $Reference() {
       private static final long serialVersionUID = 9188863837584292929L;
 
       @Override
-      protected xL0gluGCXAA.$Member inherits() {
-        return new xL0gluGCXAA.$ObjectMember.Property();
+      protected $Member inherits() {
+        return new $ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL0gluGCXAA.$Reference.Name$(name));
+      xsb.setName$(new $Reference.Name$(name));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXAA.$Reference.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new $Reference.Nullable$(jsd.getNullable()));
 
     if (jsd.getUse() != null)
-      xsb.setUse$(new xL0gluGCXAA.$Reference.Use$(xL0gluGCXAA.$Reference.Use$.Enum.valueOf(jsd.getUse())));
+      xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(jsd.getUse())));
+
+    if (jsd.getBindings() != null) {
+      for (final schema.FieldBinding binding : jsd.getBindings()) {
+        final $Reference.Binding bin = new $Reference.Binding();
+        bin.setLang$(new $Binding.Lang$(binding.getLang()));
+        bin.setField$(new $Reference.Binding.Field$(binding.getField()));
+        xsb.addBinding(bin);
+      }
+    }
 
     return xsb;
   }
 
-  static xL0gluGCXAA.$ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
-    final xL0gluGCXAA.$ReferenceMember xsb;
+  static $ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
+    final $ReferenceMember xsb;
     if (jsd instanceof schema.ReferenceElement)
       xsb = element((schema.ReferenceElement)jsd);
     else if (jsd instanceof schema.ReferenceProperty)
@@ -77,63 +101,63 @@ final class Reference extends Member {
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getType() != null)
-      xsb.setType$(new xL0gluGCXAA.$ReferenceMember.Type$(jsd.getType()));
+      xsb.setType$(new $ReferenceMember.Type$(jsd.getType()));
 
     return xsb;
   }
 
   final Model model;
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference xsb, final Supplier<? extends Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, xsb, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Array.Reference xsb, final Supplier<? extends Model> model) {
+    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Reference xsb, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$());
+  private Reference(final Registry registry, final Declarer declarer, final $Array.Reference xsb, final Model model) {
+    super(registry, declarer, true, Id.hashed("r", model.typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), model.typeBinding);
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference xsb, final Supplier<? extends Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, xsb, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Reference xsb, final Supplier<? extends Model> model) {
+    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get(), getBinding(xsb.getBinding())));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Reference xsb, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$());
+  private Reference(final Registry registry, final Declarer declarer, final $Reference xsb, final Model model, final $FieldBinding binding) {
+    super(registry, declarer, true, Id.hashed("r", model.typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), binding == null ? null : binding.getField$(), model.typeBinding);
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXAA.$MaxOccurs maxOccurs, final Supplier<? extends Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, doc, nullable, minOccurs, maxOccurs, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Supplier<? extends Model> model) {
+    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, doc, nullable, minOccurs, maxOccurs, model.get()));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final xL0gluGCXAA.$MaxOccurs maxOccurs, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), doc, nullable, minOccurs, maxOccurs);
+  private Reference(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Model model) {
+    super(registry, declarer, true, Id.hashed("r", model.typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), doc, nullable, minOccurs, maxOccurs, model.typeBinding);
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Supplier<? extends Model> model) {
-    return new Deferred<>(name, () -> new Reference(registry, declarer, name, nullable, use, model.get()));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final String fieldName, final Binding.Type typeBinding, final Supplier<? extends Model> model) {
+    return new Deferred<>(false, name, fieldName, () -> new Reference(registry, declarer, name, nullable, use, fieldName, typeBinding, model.get()));
   }
 
-  Reference(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, name, nullable, use, null, null);
+  Reference(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final String fieldName, final Binding.Type typeBinding, final Model model) {
+    super(registry, declarer, false, Id.hashed("r", typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), null, name, nullable, use, null, null, fieldName, typeBinding);
     this.model = model;
   }
 
   static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Supplier<? extends Model> model) {
-    return new Deferred<>(null, () -> new Reference(registry, declarer, nullable, minOccurs, maxOccurs, model.get()));
+    return new Deferred<>(false, null, null, () -> new Reference(registry, declarer, nullable, minOccurs, maxOccurs, model.get()));
   }
 
   Reference(final Registry registry, final Declarer declarer, final boolean nullable, final Integer minOccurs, final Integer maxOccurs, final Model model) {
-    super(registry, declarer, Id.hashed("r", model.id, model.minOccurs, model.maxOccurs, model.nullable, model.use), null, null, nullable, null, minOccurs, maxOccurs);
+    super(registry, declarer, false, Id.hashed("r", model.typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), null, null, nullable, null, minOccurs, maxOccurs, null, model.typeBinding);
     this.model = model;
   }
 
   @Override
-  Registry.Type type() {
+  Registry.Type typeDefault() {
     return model.type();
   }
 
@@ -148,6 +172,16 @@ final class Reference extends Member {
   }
 
   @Override
+  public String displayName() {
+    return model != null ? model.displayName() + "[ref]" : elementName();
+  }
+
+  @Override
+  Class<?> defaultClass() {
+    return model.defaultClass();
+  }
+
+  @Override
   Class<? extends Annotation> propertyAnnotation() {
     return model.propertyAnnotation();
   }
@@ -158,10 +192,45 @@ final class Reference extends Member {
   }
 
   @Override
+  Class<? extends Annotation> typeAnnotation() {
+    return model.typeAnnotation();
+  }
+
+  private Map<String,Object> getBindingAttributes(final Element owner) {
+    final Map<String,Object> bindingAttributes = Binding.toXmlAttributes(owner, typeBinding, fieldBinding);
+    if (bindingAttributes == null)
+      return null;
+
+    bindingAttributes.remove("type");
+    bindingAttributes.remove("decode");
+    bindingAttributes.remove("encode");
+    // If there's only lang="java", then remove the binding element
+    return bindingAttributes.size() <= 1 ? null : bindingAttributes;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
   XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,Object> attributes = toAttributes(owner, packageName);
+    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+    final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
     if (!registry.isRootMember(model, settings)) {
       final XmlElement element = model.toXml(settings, owner, packageName);
+      if (element.getElements() != null) {
+        final XmlElement lastElement = Iterators.<XmlElement>lastElement(element.getElements().iterator());
+        if ("binding".equals(lastElement.getName())) {
+          // Remove "field", because the type of the reference cannot define a "field"
+          lastElement.getAttributes().remove("field");
+          if (bindingAttributes != null)
+            lastElement.getAttributes().putAll(bindingAttributes);
+        }
+        else if (bindingAttributes != null) {
+          element.getElements().add(new XmlElement("binding", bindingAttributes));
+        }
+      }
+      else if (bindingAttributes != null) {
+        element.setElements(CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes)));
+      }
+
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
@@ -171,24 +240,26 @@ final class Reference extends Member {
       element.getAttributes().remove("nullable");
       element.getAttributes().remove("use");
       element.getAttributes().putAll(attributes);
+
       return element;
     }
 
     if (model != null) {
-      final String subName = Registry.getSubName(model.id.toString(), packageName);
+      final String subName = Registry.getSubName(model.id().toString(), packageName);
       attributes.put("type", subName);
     }
 
+    final List<XmlElement> bindingXmls = bindingAttributes == null ? null : CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes));
     if (!(owner instanceof ObjectModel))
-      return new XmlElement(elementName(), attributes, null);
+      return new XmlElement(elementName(), attributes, bindingXmls);
 
     attributes.put("xsi:type", elementName());
-    return new XmlElement("property", attributes, null);
+    return new XmlElement("property", attributes, bindingXmls);
   }
 
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,Object> properties = new LinkedHashMap<>();
+    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
     properties.put("jx:type", elementName());
 
     final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
@@ -196,6 +267,10 @@ final class Reference extends Member {
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
+    final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
+    if (bindingAttributes != null)
+      properties.put("bindings", Collections.singletonList(bindingAttributes));
+
     return properties;
   }
 
@@ -208,5 +283,10 @@ final class Reference extends Member {
   @Override
   List<AnnotationType> toElementAnnotations() {
     return model.toElementAnnotations();
+  }
+
+  @Override
+  Type typeBinding() {
+    return model.typeBinding();
   }
 }

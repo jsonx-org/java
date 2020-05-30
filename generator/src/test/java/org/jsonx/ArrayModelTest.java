@@ -21,8 +21,8 @@ import static org.junit.Assert.*;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Member;
-import org.jsonx.www.schema_0_3.xL0gluGCXAA.$Number;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
 import org.junit.Test;
 
 public class ArrayModelTest {
@@ -32,7 +32,6 @@ public class ArrayModelTest {
     private Number() {
     }
 
-    @SuppressWarnings("unused")
     private Number(final $Number inherits) {
       super(inherits);
     }

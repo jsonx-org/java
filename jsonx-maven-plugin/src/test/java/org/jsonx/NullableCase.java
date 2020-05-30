@@ -20,7 +20,7 @@ final class NullableCase extends FailureCase<ArrayTrial<Object>> {
   static final NullableCase CASE = new NullableCase();
 
   @Override
-  void onEncode(final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
+  void onEncode(final JxObject binding, final ArrayTrial<Object> trial, final EncodeException e) throws Exception {
     assertTrue(e.getMessage().endsWith("Illegal value: null"));
   }
 

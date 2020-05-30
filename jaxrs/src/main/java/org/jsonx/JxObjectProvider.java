@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -46,15 +47,19 @@ import org.openjax.json.JsonReader;
 @Produces(MediaType.APPLICATION_JSON)
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
   protected final JxEncoder encoder;
+  private final JxDecoder decoder;
 
   /**
    * Creates a new {@link JxObjectProvider} with the specified {@link JxEncoder}
    * instance to be used for encoding bindings to JSON documents.
    *
    * @param encoder The {@link JxEncoder} instance.
+   * @param decoder The {@link JxDecoder} instance.
+   * @throws NullPointerException If {@code encoder} or {@code decoder} is null.
    */
-  public JxObjectProvider(final JxEncoder encoder) {
-    this.encoder = encoder;
+  public JxObjectProvider(final JxEncoder encoder, final JxDecoder decoder) {
+    this.encoder = Objects.requireNonNull(encoder);
+    this.decoder = Objects.requireNonNull(decoder);
   }
 
   @Override
@@ -87,7 +92,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
     try {
       if (JxObject.class.isAssignableFrom(type))
-        return JxDecoder.parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
+        return decoder.parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
 
       for (final Annotation annotation : annotations) {
         final Class<? extends Annotation> annotationType;
@@ -100,7 +105,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
         }
 
         if (annotationType != null)
-          return JxDecoder.parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
+          return decoder.parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
       }
 
       throw new IllegalArgumentException("Illegal type: " + type.getName());

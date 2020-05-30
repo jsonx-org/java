@@ -24,9 +24,9 @@ import org.jsonx.NumberProperty;
 import org.jsonx.StringProperty;
 
 public class Address implements JxObject {
-  @NumberProperty(scale=0, range="[0,]")
   private BigInteger number;
 
+  @NumberProperty(name="number", scale=0, range="[0,]")
   public BigInteger getNumber() {
     return this.number;
   }
@@ -35,9 +35,9 @@ public class Address implements JxObject {
     this.number = number;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String street;
 
+  @StringProperty(name="street", pattern="(\\S)|(\\S.*\\S)")
   public String getStreet() {
     return this.street;
   }
@@ -46,9 +46,9 @@ public class Address implements JxObject {
     this.street = street;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String city;
 
+  @StringProperty(name="city", pattern="(\\S)|(\\S.*\\S)")
   public String getCity() {
     return this.city;
   }
@@ -57,9 +57,9 @@ public class Address implements JxObject {
     this.city = city;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String postalCode;
 
+  @StringProperty(name="postalCode", pattern="(\\S)|(\\S.*\\S)")
   public String getPostalCode() {
     return this.postalCode;
   }
@@ -68,9 +68,9 @@ public class Address implements JxObject {
     this.postalCode = postalCode;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String locality;
 
+  @StringProperty(name="locality", pattern="(\\S)|(\\S.*\\S)")
   public String getLocality() {
     return this.locality;
   }
@@ -79,9 +79,9 @@ public class Address implements JxObject {
     this.locality = locality;
   }
 
-  @StringProperty(pattern="(\\S)|(\\S.*\\S)")
   private String country;
 
+  @StringProperty(name="country", pattern="(\\S)|(\\S.*\\S)")
   public String getCountry() {
     return this.country;
   }
@@ -123,12 +123,24 @@ public class Address implements JxObject {
   @Override
   public int hashCode() {
     int hashCode = 1;
-    hashCode = 31 * hashCode + (number == null ? 0 : number.hashCode());
-    hashCode = 31 * hashCode + (street == null ? 0 : street.hashCode());
-    hashCode = 31 * hashCode + (city == null ? 0 : city.hashCode());
-    hashCode = 31 * hashCode + (postalCode == null ? 0 : postalCode.hashCode());
-    hashCode = 31 * hashCode + (locality == null ? 0 : locality.hashCode());
-    hashCode = 31 * hashCode + (country == null ? 0 : country.hashCode());
+    if (number != null)
+      hashCode = 31 * hashCode + number.hashCode();
+
+    if (street != null)
+      hashCode = 31 * hashCode + street.hashCode();
+
+    if (city != null)
+      hashCode = 31 * hashCode + city.hashCode();
+
+    if (postalCode != null)
+      hashCode = 31 * hashCode + postalCode.hashCode();
+
+    if (locality != null)
+      hashCode = 31 * hashCode + locality.hashCode();
+
+    if (country != null)
+      hashCode = 31 * hashCode + country.hashCode();
+
     return hashCode;
   }
 

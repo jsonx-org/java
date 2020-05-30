@@ -21,9 +21,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberType {
   int scale() default Integer.MAX_VALUE;
   String range() default "";
+
+  Class<?> type() default Number.class;
+  String decode() default "";
+  String encode() default "";
 }

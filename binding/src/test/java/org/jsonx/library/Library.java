@@ -33,9 +33,9 @@ import org.jsonx.Use;
 
 public class Library implements JxObject {
   public static class Journal extends Publication {
-    @StringProperty
     private Optional<String> subject;
 
+    @StringProperty(name="subject")
     public Optional<String> getSubject() {
       return this.subject;
     }
@@ -44,9 +44,9 @@ public class Library implements JxObject {
       this.subject = subject;
     }
 
-    @BooleanProperty(use=Use.OPTIONAL)
     private Optional<Boolean> openAccess;
 
+    @BooleanProperty(name="openAccess", use=Use.OPTIONAL)
     public Optional<Boolean> getOpenAccess() {
       return this.openAccess;
     }
@@ -56,9 +56,9 @@ public class Library implements JxObject {
     }
   }
 
-  @ObjectProperty(use=Use.OPTIONAL)
   private Optional<Address> address;
 
+  @ObjectProperty(name="address", use=Use.OPTIONAL)
   public Optional<Address> getAddress() {
     return this.address;
   }
@@ -67,9 +67,9 @@ public class Library implements JxObject {
     this.address = address;
   }
 
-  @BooleanProperty(name="handicap", use=Use.OPTIONAL, nullable=false)
   private Boolean _handicap;
 
+  @BooleanProperty(name="handicap", use=Use.OPTIONAL, nullable=false)
   public Boolean getHandicap() {
     return this._handicap;
   }
@@ -78,11 +78,11 @@ public class Library implements JxObject {
     this._handicap = handicap;
   }
 
-  @StringElement(id=2, pattern="\\d{2}:\\d{2}", nullable=false, minOccurs=2, maxOccurs=2)
-  @ArrayElement(id=1, nullable=false, elementIds=2, minOccurs=7, maxOccurs=7)
-  @ArrayProperty(elementIds=1)
   private List<List<String>> schedule;
 
+  @StringElement(id=2, pattern="\\d{2}:\\d{2}", nullable=false, minOccurs=2, maxOccurs=2)
+  @ArrayElement(id=1, nullable=false, elementIds=2, minOccurs=7, maxOccurs=7)
+  @ArrayProperty(name="schedule", elementIds=1)
   public List<List<String>> getSchedule() {
     return this.schedule;
   }
@@ -91,10 +91,10 @@ public class Library implements JxObject {
     this.schedule = schedule;
   }
 
-  @ObjectElement(id=1, type=Book.class, nullable=false)
-  @ArrayProperty(elementIds=1)
   private List<Book> books;
 
+  @ObjectElement(id=1, type=Book.class, nullable=false)
+  @ArrayProperty(name="books", elementIds=1)
   public List<Book> getBooks() {
     return this.books;
   }
@@ -103,10 +103,10 @@ public class Library implements JxObject {
     this.books = books;
   }
 
-  @ObjectElement(id=1, type=OnlineArticle.class, nullable=false)
-  @ArrayProperty(elementIds=1)
   private List<OnlineArticle> articles;
 
+  @ObjectElement(id=1, type=OnlineArticle.class, nullable=false)
+  @ArrayProperty(name="article", elementIds=1)
   public List<OnlineArticle> getArticles() {
     return this.articles;
   }
@@ -115,10 +115,10 @@ public class Library implements JxObject {
     this.articles = articles;
   }
 
-  @ObjectElement(id=1, type=Journal.class, nullable=false)
-  @ArrayProperty(elementIds=1)
   private List<Journal> journals;
 
+  @ObjectElement(id=1, type=Journal.class, nullable=false)
+  @ArrayProperty(name="journals", elementIds=1)
   public List<Journal> getJournals() {
     return this.journals;
   }
@@ -132,9 +132,9 @@ public class Library implements JxObject {
   public @interface Staff {
   }
 
-  @ArrayProperty(type=Staff.class)
   private List<Employee> staff;
 
+  @ArrayProperty(name="staff", type=Staff.class)
   public List<Employee> getStaff() {
     return this.staff;
   }

@@ -23,4 +23,10 @@ package org.jsonx;
  * @see Referrer
  */
 interface Declarer {
+  Registry.Type classType();
+  Declarer declarer();
+  String elementName();
+  String name();
+  String displayName();
+  Id id();
 }

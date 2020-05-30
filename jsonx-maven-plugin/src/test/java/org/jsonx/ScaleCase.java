@@ -20,7 +20,7 @@ final class ScaleCase extends FailureCase<NumberTrial> {
   static final ScaleCase CASE = new ScaleCase();
 
   @Override
-  void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
+  void onEncode(final JxObject binding, final NumberTrial trial, final EncodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().startsWith("Unsatisfied scale=\""));
   }
 

@@ -20,7 +20,7 @@ final class RangeCase extends FailureCase<NumberTrial> {
   static final RangeCase CASE = new RangeCase();
 
   @Override
-  void onEncode(final NumberTrial trial, final EncodeException e) throws Exception {
+  void onEncode(final JxObject binding, final NumberTrial trial, final EncodeException e) throws Exception {
     assertTrue(trial.name, e.getMessage().startsWith("Range " + trial.range + " does not match: "));
   }
 

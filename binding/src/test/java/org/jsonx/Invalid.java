@@ -34,9 +34,9 @@ public class Invalid {
   }
 
   public static class InvalidName implements JxObject {
-    @BooleanProperty(name="foo")
     private Boolean invalidName;
 
+    @BooleanProperty(name="foo")
     public Boolean getInvalidName() {
       return this.invalidName;
     }
@@ -47,9 +47,9 @@ public class Invalid {
   }
 
   public static class InvalidType implements JxObject {
-    @BooleanProperty(use=Use.OPTIONAL)
     private Boolean invalidType;
 
+    @BooleanProperty(name="invalidType", use=Use.OPTIONAL)
     public Boolean getInvalidType() {
       return this.invalidType;
     }
@@ -60,9 +60,9 @@ public class Invalid {
   }
 
   public static class Bool implements JxObject {
-    @BooleanProperty(use=Use.OPTIONAL, nullable=false)
     private Number invalidType;
 
+    @BooleanProperty(name="invalidType", use=Use.OPTIONAL, nullable=false)
     public Number getInvalidType() {
       return this.invalidType;
     }
@@ -71,9 +71,9 @@ public class Invalid {
       this.invalidType = invalidType;
     }
 
-    @NumberProperty(use=Use.OPTIONAL, nullable=false)
     private Boolean invalidAnnotation;
 
+    @NumberProperty(name="invalidAnnotation", use=Use.OPTIONAL, nullable=false)
     public Boolean getInvalidAnnotation() {
       return this.invalidAnnotation;
     }
@@ -84,9 +84,9 @@ public class Invalid {
   }
 
   public static class NumRange implements JxObject {
-    @NumberProperty(use=Use.OPTIONAL, scale=0, range="[-3,")
     private Optional<Byte> invalidRange;
 
+    @NumberProperty(name="invalidRange", use=Use.OPTIONAL, scale=0, range="[-3,")
     public Optional<Byte> getInvalidRange() {
       return this.invalidRange;
     }
@@ -96,10 +96,49 @@ public class Invalid {
     }
   }
 
+  public static class NumPrimitiveUse implements JxObject {
+    private byte number;
+
+    @NumberProperty(name="number", use=Use.OPTIONAL, nullable=false)
+    public byte getNumber() {
+      return this.number;
+    }
+
+    public void setNumber(final byte number) {
+      this.number = number;
+    }
+  }
+
+  public static class NumPrimitiveNullable implements JxObject {
+    private int number;
+
+    @NumberProperty(name="number")
+    public int getNumber() {
+      return this.number;
+    }
+
+    public void setNumber(final int number) {
+      this.number = number;
+    }
+  }
+
+  public static class NumPrimitiveScale implements JxObject {
+    private long number;
+
+    @NumberProperty(name="number", nullable=false, scale=1)
+    public long getNumber() {
+      return this.number;
+    }
+
+    public void setNumber(final long number) {
+      this.number = number;
+    }
+  }
+
   public static class Num implements JxObject {
-    @NumberProperty(use=Use.OPTIONAL, nullable=false)
     private Boolean invalidType;
 
+    @NumberProperty(name="invalidType", use=Use.OPTIONAL, nullable=false)
     public Boolean getInvalidType() {
       return this.invalidType;
     }
@@ -108,9 +147,9 @@ public class Invalid {
       this.invalidType = invalidType;
     }
 
-    @StringProperty(use=Use.OPTIONAL, nullable=false)
     private Number invalidAnnotation;
 
+    @StringProperty(name="invalidAnnotation", use=Use.OPTIONAL, nullable=false)
     public Number getInvalidAnnotation() {
       return this.invalidAnnotation;
     }
@@ -119,9 +158,9 @@ public class Invalid {
       this.invalidAnnotation = invalidAnnotation;
     }
 
-    @NumberProperty(use=Use.OPTIONAL, scale=-1)
     private Optional<BigDecimal> invalidScale;
 
+    @NumberProperty(name="invalidScale", use=Use.OPTIONAL, scale=-1)
     public Optional<BigDecimal> getInvalidScale() {
       return this.invalidScale;
     }
@@ -132,9 +171,9 @@ public class Invalid {
   }
 
   public static class Str implements JxObject {
-    @StringProperty(use=Use.OPTIONAL)
     private Optional<Number> invalidType;
 
+    @StringProperty(name="invalidType", use=Use.OPTIONAL)
     public Optional<Number> getInvalidType() {
       return this.invalidType;
     }
@@ -143,9 +182,9 @@ public class Invalid {
       this.invalidType = invalidType;
     }
 
-    @BooleanProperty(use=Use.OPTIONAL)
     private Optional<String> invalidAnnotation;
 
+    @BooleanProperty(name="invalidAnnotation", use=Use.OPTIONAL)
     public Optional<String> getInvalidAnnotation() {
       return this.invalidAnnotation;
     }
@@ -154,9 +193,9 @@ public class Invalid {
       this.invalidAnnotation = invalidAnnotation;
     }
 
-    @StringProperty(use=Use.OPTIONAL, pattern="[0-9]{{2,4}")
     private Optional<String> invalidPattern;
 
+    @StringProperty(name="invalidPattern", use=Use.OPTIONAL, pattern="[0-9]{{2,4}")
     public Optional<String> getInvalidPattern() {
       return this.invalidPattern;
     }
@@ -167,9 +206,9 @@ public class Invalid {
   }
 
   public static class ArrAnnotationType implements JxObject {
-    @ArrayProperty(use=Use.OPTIONAL, type=Override.class)
     private Optional<List<?>> invalidAnnotationType;
 
+    @ArrayProperty(name="invalidAnnotationType", use=Use.OPTIONAL, type=Override.class)
     public Optional<List<?>> getInvalidAnnotationType() {
       return this.invalidAnnotationType;
     }
@@ -180,10 +219,10 @@ public class Invalid {
   }
 
   public static class Arr implements JxObject {
-    @StringElement(id=0)
-    @ArrayProperty(use=Use.OPTIONAL, elementIds={0})
     private Optional<Number> invalidType;
 
+    @StringElement(id=0)
+    @ArrayProperty(name="invalidType", use=Use.OPTIONAL, elementIds={0})
     public Optional<Number> getInvalidType() {
       return this.invalidType;
     }
@@ -192,9 +231,9 @@ public class Invalid {
       this.invalidType = invalidType;
     }
 
-    @BooleanProperty(use=Use.OPTIONAL, nullable=false)
     private List<?> invalidAnnotation;
 
+    @BooleanProperty(name="invalidAnnotation", use=Use.OPTIONAL, nullable=false)
     public List<?> getInvalidAnnotation() {
       return this.invalidAnnotation;
     }

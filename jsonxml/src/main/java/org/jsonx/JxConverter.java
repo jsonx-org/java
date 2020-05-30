@@ -98,7 +98,7 @@ public final class JxConverter {
         }
 
         final char c0 = token.charAt(0);
-        if (!"{".equals(prev) && !"[".equals(prev) || c0 != '{' && c0 != '[')
+        if (!"{".equals(prev) && !"[".equals(prev) && c0 != '{' && c0 != '[')
           builder.append(' ');
 
         if (ws != null)
@@ -117,9 +117,9 @@ public final class JxConverter {
   private static void appendObject(final JsonReader reader, final boolean declareNamespace, final StringBuilder builder) throws IOException {
     builder.append("<o");
     if (declareNamespace) {
-      builder.append(" xmlns=\"http://www.jsonx.org/jsonxml-0.3.xsd\"");
+      builder.append(" xmlns=\"http://www.jsonx.org/jsonxml-0.4.xsd\"");
       builder.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-      builder.append(" xsi:schemaLocation=\"http://www.jsonx.org/jsonx-0.3.xsd http://www.jsonx.org/jsonx-0.3.xsd\"");
+      builder.append(" xsi:schemaLocation=\"http://www.jsonx.org/jsonx-0.4.xsd http://www.jsonx.org/jsonx-0.4.xsd\"");
     }
 
     builder.append('>');
@@ -208,7 +208,13 @@ public final class JxConverter {
         final boolean hasMembers = processCharacters(true);
         stack.push(localName);
         if (!hasMembers && "m".equals(prevElem) || "p".equals(prevElem)) {
-          builder.append(',');
+          // FIXME: Not sure why this check is necessary here. If we remove this check, we get
+          // FIXME: situations with ...[,true] or ...{,"x":null}. Need to remove this
+          // FIXME: check and debug to figure out what's going on.
+          final char ch = builder.charAt(builder.length() - 1);
+          if (ch != '[' && ch != '{')
+            builder.append(',');
+
           prevElem = null;
         }
 
@@ -273,7 +279,13 @@ public final class JxConverter {
           }
 
           if ("m".equals(prevElem) || "p".equals(prevElem)) {
-            builder.append(',');
+            // FIXME: Not sure why this check is necessary here. If we remove this check, we get
+            // FIXME: situations with ...[,true] or ...{,"x":null}. Need to remove this
+            // FIXME: check and debug to figure out what's going on.
+            final char ch = builder.charAt(builder.length() - 1);
+            if (ch != '[' && ch != '{')
+              builder.append(',');
+
             prevElem = null;
           }
 
@@ -312,7 +324,7 @@ public final class JxConverter {
                 builder.append(CharacterDatas.unescapeFromElem(value));
 
               final String ws = matcher.group("ws");
-              if (ws != null)
+              if (ws != null && !ws.isEmpty())
                 prevWs = ws;
             }
 

@@ -49,9 +49,9 @@ public class LibraryTest {
     final JsonReader reader = new JsonReader(new StringReader(json));
     final Object decoded;
     if (annotationType != null)
-      decoded = JxDecoder.parseArray(annotationType, reader);
+      decoded = JxDecoder.VALIDATING.parseArray(annotationType, reader);
     else
-      decoded = JxDecoder.parseObject(((JxObject)obj).getClass(), reader);
+      decoded = JxDecoder.VALIDATING.parseObject(((JxObject)obj).getClass(), reader);
 
     assertEquals(obj.toString(), decoded.toString());
   }
@@ -177,20 +177,20 @@ public class LibraryTest {
 
     final String json = encoder.marshal(library);
     logger.info(json);
-    JxDecoder.parseObject(Library.class, new JsonReader(new StringReader(json)));
+    JxDecoder.VALIDATING.parseObject(Library.class, new JsonReader(new StringReader(json)));
   }
 
   @Test
   public void testOnPropertyDecode() throws DecodeException, IOException {
     final String json = "{\"year\":2003,\"publisher\":\"Science Publisher\",\"extra\":false}";
     try {
-      JxDecoder.parseObject(Publishing.class, new JsonReader(new StringReader(json)));
+      JxDecoder.VALIDATING.parseObject(Publishing.class, new JsonReader(new StringReader(json)));
       fail("Expected DecodeException");
     }
     catch (final DecodeException e) {
       assertTrue(e.getMessage().startsWith("Unknown property: \"extra\""));
     }
 
-    JxDecoder.parseObject(Publishing.class, new JsonReader(new StringReader(json)), (o,p,v) -> o instanceof Publishing);
+    JxDecoder.VALIDATING.parseObject(Publishing.class, new JsonReader(new StringReader(json)), (o,p,v) -> o instanceof Publishing);
   }
 }

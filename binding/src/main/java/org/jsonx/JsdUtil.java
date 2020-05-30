@@ -17,20 +17,25 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Optional;
 import java.util.function.Function;
 
+import org.libj.lang.Annotations;
+import org.libj.lang.Classes;
 import org.libj.lang.Identifiers;
 import org.libj.lang.Strings;
-import org.libj.util.Annotations;
 import org.libj.util.FixedOrderComparator;
 
 final class JsdUtil {
-  static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "names", "xsi:type", "abstract", "extends", "type", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable");
-  private static final char prefix = '\0';
-  private static final Function<Character,String> substitutions = c -> c == null ? "_" : c != '_' ? "_" + Integer.toHexString(c) : "__";
-  private static final Function<Character,String> substitutions2 = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? "_" + Integer.toHexString(c) : "__";
+  static final FixedOrderComparator<String> ATTRIBUTES = new FixedOrderComparator<>("id", "name", "names", "xsi:type", "abstract", "extends", "lang", "type", "field", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable", "decode", "encode");
+  private static final char prefix = '_';
+  private static final Function<Character,String> classSubs = c -> c == null ? "_" : c != '_' ? Integer.toHexString(c) : "__";
+  private static final Function<Character,String> camelSubs = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? Integer.toHexString(c) : "__";
 
   /**
    * Returns the name of this member as a valid Java Identifier in:
@@ -45,7 +50,18 @@ final class JsdUtil {
    * @return The name of this member as a valid Java Identifier.
    */
   private static String toIdentifier(final String name, final Boolean classCase) {
-    return name.length() == 0 ? "_$" : classCase == null ? Identifiers.toCamelCase(name, prefix, substitutions2) : classCase ? Identifiers.toClassCase(name, prefix, substitutions) : Identifiers.toInstanceCase(name, prefix, substitutions);
+    if (name.length() == 0)
+      return "_$";
+
+    if (classCase == null)
+      return Identifiers.toCamelCase(name, prefix, camelSubs);
+
+    if (classCase) {
+      final String str = Identifiers.toClassCase(name, prefix, classSubs);
+      return str.charAt(0) == prefix && name.charAt(0) != prefix ? str.substring(1) : str;
+    }
+
+    return Identifiers.toInstanceCase(name, prefix, classSubs);
   }
 
   static String toIdentifier(final String name) {
@@ -60,6 +76,14 @@ final class JsdUtil {
     return toIdentifier(name, false);
   }
 
+  static String getFieldName(final Method getMethod) {
+    return Identifiers.toInstanceCase(getMethod.getName().substring(3));
+  }
+
+  static Class<?> getRealType(final Method getMethod) {
+    return getMethod.getReturnType() == Optional.class ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
+  }
+
   static String flipName(String name) {
     int i = name.lastIndexOf('$');
     if (i != -1)
@@ -72,40 +96,33 @@ final class JsdUtil {
     return i == -1 ? Strings.flipFirstCap(name) : name.substring(0, i + 1) + Strings.flipFirstCap(name.substring(i + 1));
   }
 
-  static Method getGetMethod(final Class<?> cls, final String propertyName) {
-    return getMethod(cls, propertyName, null);
-  }
-
-  static Method getSetMethod(final Field field, final String propertyName) {
-    return getMethod(field.getDeclaringClass(), propertyName, field.getType());
-  }
-
   static String fixReserved(final String name) {
     return "Class".equalsIgnoreCase(name) ? "0lass" : name;
   }
 
-  private static Method getMethod(final Class<?> cls, final String propertyName, final Class<?> parameterType) {
-    try {
-      return cls.getMethod((parameterType == null ? "get" : "set") + fixReserved(toClassName(propertyName)), parameterType == null ? null : new Class<?>[] {parameterType});
-    }
-    catch (final NoSuchMethodException e) {
-      return null;
-    }
+  static String getFullyQualifiedMethodName(final Method getMethod) {
+    return getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "()";
   }
 
-  static String getFullyQualifiedFieldName(final Field field) {
-    return field.getDeclaringClass().getName() + "#" + field.getName();
+  static Method findSetMethod(final Method[] methods, final Method getMethod) {
+    final String getMethodName = getMethod.getName();
+    final String setMethodName = getMethodName.startsWith("get") ? "set" + getMethodName.substring(3) : getMethodName;
+    for (final Method method : methods)
+      if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == getMethod.getReturnType() && setMethodName.equals(method.getName()))
+        return method;
+
+    return null;
   }
 
-  static int[] digest(final Field field, final IdToElement idToElement) {
-    final ArrayProperty property = field.getAnnotation(ArrayProperty.class);
+  static int[] digest(final Method getMethod, final IdToElement idToElement) {
+    final ArrayProperty property = getMethod.getAnnotation(ArrayProperty.class);
     if (property == null)
-      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedFieldName(field));
+      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedMethodName(getMethod));
 
     if (property.type() != ArrayType.class)
       return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
 
-    return digest(field.getAnnotations(), getFullyQualifiedFieldName(field), idToElement);
+    return digest(getMethod.getAnnotations(), getFullyQualifiedMethodName(getMethod), idToElement);
   }
 
   static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
@@ -137,7 +154,7 @@ final class JsdUtil {
       throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
 
     if (elementIds == null || elementIds.length == 0)
-      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES));
+      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES, true));
 
     return elementIds;
   }
@@ -230,32 +247,41 @@ final class JsdUtil {
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
-  static String getName(final Field field) {
-    for (final Annotation annotation : field.getAnnotations()) {
-      if (annotation instanceof AnyProperty)
-        return getName(((AnyProperty)annotation).name(), field);
+  static String getEncode(final Annotation annotation) {
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).encode();
 
-      if (annotation instanceof ArrayProperty)
-        return getName(((ArrayProperty)annotation).name(), field);
+    if (annotation instanceof NumberElement)
+      return ((NumberElement)annotation).encode();
 
-      if (annotation instanceof BooleanProperty)
-        return getName(((BooleanProperty)annotation).name(), field);
-
-      if (annotation instanceof NumberProperty)
-        return getName(((NumberProperty)annotation).name(), field);
-
-      if (annotation instanceof ObjectProperty)
-        return getName(((ObjectProperty)annotation).name(), field);
-
-      if (annotation instanceof StringProperty)
-        return getName(((StringProperty)annotation).name(), field);
-    }
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).encode();
 
     return null;
   }
 
-  static String getName(final String name, final Field field) {
-    return name.length() > 0 ? name : field.getName();
+  static String getName(final Method getMethod) {
+    for (final Annotation annotation : getMethod.getAnnotations()) {
+      if (annotation instanceof AnyProperty)
+        return ((AnyProperty)annotation).name();
+
+      if (annotation instanceof ArrayProperty)
+        return ((ArrayProperty)annotation).name();
+
+      if (annotation instanceof BooleanProperty)
+        return ((BooleanProperty)annotation).name();
+
+      if (annotation instanceof NumberProperty)
+        return ((NumberProperty)annotation).name();
+
+      if (annotation instanceof ObjectProperty)
+        return ((ObjectProperty)annotation).name();
+
+      if (annotation instanceof StringProperty)
+        return ((StringProperty)annotation).name();
+    }
+
+    return null;
   }
 
   static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
@@ -310,6 +336,69 @@ final class JsdUtil {
     final Annotation[] flattened = flatten(annotations, index + 1, depth + repeatable.length);
     System.arraycopy(repeatable, 0, flattened, depth, repeatable.length);
     return flattened;
+  }
+
+  static Executable parseExecutable(final String identifier, final Class<?> parameterType) {
+    try {
+      final int i = identifier.lastIndexOf('.');
+      final String className = identifier.substring(0, i);
+      final String methodName = identifier.substring(i + 1);
+      final Executable method;
+      if ("this".equals(className)) {
+        method = Classes.getCompatibleMethod(parameterType, methodName);
+        if (method != null && Modifier.isStatic(method.getModifiers()))
+          throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) is static");
+      }
+      else {
+        final Class<?> cls = Class.forName(className);
+        if (methodName.equals("<init>")) {
+          method = Classes.getCompatibleConstructor(cls, parameterType);
+        }
+        else {
+          method = Classes.getCompatibleMethod(cls, methodName, parameterType);
+          if (method != null && !Modifier.isStatic(method.getModifiers()))
+            throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) is not static");
+        }
+      }
+
+      if (method != null)
+        return method;
+    }
+    catch (final ClassNotFoundException e) {
+      throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found", e);
+    }
+
+    parseExecutable(identifier, parameterType);
+    throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found");
+  }
+
+  static Class<?> getReturnType(final Executable executable) {
+    if (executable instanceof Constructor)
+      return ((Constructor<?>)executable).getDeclaringClass();
+
+    return ((Method)executable).getReturnType();
+  }
+
+  static Object invoke(final Executable executable, final Object arg) {
+    try {
+      if (executable instanceof Constructor)
+        return ((Constructor<?>)executable).newInstance(arg);
+
+      final Method method = (Method)executable;
+      if (Modifier.isStatic(method.getModifiers()))
+        return method.invoke(null, arg);
+
+      return method.invoke(arg);
+    }
+    catch (final IllegalAccessException | InstantiationException e) {
+      throw new UnsupportedOperationException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
+    }
   }
 
   private JsdUtil() {

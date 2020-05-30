@@ -32,12 +32,18 @@ public class DecodeException extends ParseException {
     return reader != null ? reader.getPosition() - 1 : -1;
   }
 
-  private static String readerToString(final JsonReader reader) throws IOException {
+  private static String readerToString(final JsonReader reader) {
     final int index = reader.getIndex();
     reader.setIndex(-1);
-    final String json = Readers.readFully(reader);
+    final StringBuilder builder = new StringBuilder();
+    try {
+      Readers.readFully(reader, builder);
+    }
+    catch (final IOException e) {
+    }
+
     reader.setIndex(index);
-    return json;
+    return builder.toString();
   }
 
   private final JsonReader reader;
@@ -75,7 +81,7 @@ public class DecodeException extends ParseException {
     return this.reader;
   }
 
-  public String getEncoded() throws IOException {
+  public String getContent() {
     return reader == null ? null : readerToString(reader);
   }
 }

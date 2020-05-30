@@ -16,9 +16,10 @@
 
 package org.jsonx;
 
+import static org.jsonx.TestUtil.*;
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -35,30 +36,78 @@ import org.jsonx.library.Library.Staff;
 import org.junit.Test;
 
 public class JsdUtilTest {
-  private static class TestBinding implements JxObject {
-    @AnyProperty(name="any")
+  @SuppressWarnings("unused")
+  private static class TestObject implements JxObject {
     public Object _any;
 
-    @ArrayProperty(name="array")
+    @AnyProperty(name="any")
+    public Object getAny() {
+      return this._any;
+    }
+
+    public void setAny(final Object _any) {
+      this._any = _any;
+    }
+
     public List<?> _array;
 
-    @BooleanProperty(name="boolean")
+    @ArrayProperty(name="array")
+    public List<?> getArray() {
+      return this._array;
+    }
+
+    public void setArray(final List<?> _array) {
+      this._array = _array;
+    }
+
     public Boolean _boolean;
 
-    @NumberProperty(name="number")
+    @BooleanProperty(name="boolean")
+    public Boolean getBoolean() {
+      return this._boolean;
+    }
+
+    public void setBoolean(final Boolean _boolean) {
+      this._boolean = _boolean;
+    }
+
     public BigInteger _number;
 
+    @NumberProperty(name="number")
+    public BigInteger getNumber() {
+      return this._number;
+    }
+
+    public void setNumber(final BigInteger _number) {
+      this._number = _number;
+    }
+
+    public TestObject _object;
+
     @ObjectProperty(name="object")
-    public TestBinding _object;
+    public TestObject getObject() {
+      return this._object;
+    }
+
+    public void setObject(final TestObject _object) {
+      this._object = _object;
+    }
+
+    public String _string;
 
     @StringProperty(name="string")
-    public String _string;
+    public String getString() {
+      return this._string;
+    }
+
+    public void setString(final String _string) {
+      this._string = _string;
+    }
   }
 
-  private static void testGetField(final String name) throws NoSuchFieldException {
-    final String fieldName = "_" + name;
-    final Field field = TestBinding.class.getField(fieldName);
-    final String propertyName = JsdUtil.getName(field);
+  private static void testGetField(final String name) throws NoSuchMethodException {
+    final Method getMethod = getMethod(TestObject.class, name);
+    final String propertyName = JsdUtil.getName(getMethod);
     assertEquals(name, propertyName);
   }
 
@@ -66,21 +115,21 @@ public class JsdUtilTest {
   public void testToIdentifier() {
     assertEquals("_$", JsdUtil.toIdentifier(""));
     assertEquals("helloWorld", JsdUtil.toIdentifier("helloWorld"));
-    assertEquals("_32HelloWorld", JsdUtil.toIdentifier("2HelloWorld"));
+    assertEquals("_2HelloWorld", JsdUtil.toIdentifier("2HelloWorld"));
   }
 
   @Test
   public void testToInstanceName() {
     assertEquals("_$", JsdUtil.toInstanceName(""));
     assertEquals("helloWorld", JsdUtil.toInstanceName("HelloWorld"));
-    assertEquals("_32HelloWorld", JsdUtil.toInstanceName("2HelloWorld"));
+    assertEquals("_2HelloWorld", JsdUtil.toInstanceName("2HelloWorld"));
   }
 
   @Test
   public void testToClassName() {
     assertEquals("_$", JsdUtil.toClassName(""));
     assertEquals("HelloWorld", JsdUtil.toClassName("helloWorld"));
-    assertEquals("_32helloWorld", JsdUtil.toClassName("2helloWorld"));
+    assertEquals("2helloWorld", JsdUtil.toClassName("2helloWorld"));
   }
 
   @Test
@@ -103,7 +152,7 @@ public class JsdUtilTest {
   }
 
   @Test
-  public void testGetField() throws NoSuchFieldException {
+  public void testGetField() throws NoSuchMethodException {
     testGetField("any");
     testGetField("array");
     testGetField("boolean");
@@ -131,12 +180,12 @@ public class JsdUtilTest {
   }
 
   @Test
-  public void testGetName() throws NoSuchFieldException {
-    assertNull(JsdUtil.getName(NoProperty.class.getDeclaredField("noProperty")));
-    assertEquals("foo", JsdUtil.getName(InvalidName.class.getDeclaredField("invalidName")));
-    assertEquals("invalidAnnotation", JsdUtil.getName(Bool.class.getDeclaredField("invalidAnnotation")));
-    assertEquals("invalidAnnotation", JsdUtil.getName(Num.class.getDeclaredField("invalidAnnotation")));
-    assertEquals("invalidAnnotationType", JsdUtil.getName(ArrAnnotationType.class.getDeclaredField("invalidAnnotationType")));
-    assertEquals("address", JsdUtil.getName(Library.class.getDeclaredField("address")));
+  public void testGetName() throws NoSuchMethodException {
+    assertNull(JsdUtil.getName(getMethod(NoProperty.class, "noProperty")));
+    assertEquals("foo", JsdUtil.getName(getMethod(InvalidName.class, "invalidName")));
+    assertEquals("invalidAnnotation", JsdUtil.getName(getMethod(Bool.class, "invalidAnnotation")));
+    assertEquals("invalidAnnotation", JsdUtil.getName(getMethod(Num.class, "invalidAnnotation")));
+    assertEquals("invalidAnnotationType", JsdUtil.getName(getMethod(ArrAnnotationType.class, "invalidAnnotationType")));
+    assertEquals("address", JsdUtil.getName(getMethod(Library.class, "address")));
   }
 }

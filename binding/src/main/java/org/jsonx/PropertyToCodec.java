@@ -16,18 +16,21 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.libj.util.Patterns;
 
 class PropertyToCodec {
   private final Map<String,Codec> anyToCodec = new HashMap<>();
   private final Map<String,Codec> nameToCodec = new HashMap<>();
-  final Map<Field,Codec> fieldToCodec = new HashMap<>();
+  final Map<Method,Codec> getMethodToCodec = new HashMap<>();
 
   void add(final Codec codec) {
-    (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(JsdUtil.getName(codec.name, codec.field), codec);
-    fieldToCodec.put(codec.field, codec);
+    (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(codec.name, codec);
+    getMethodToCodec.put(codec.getMethod, codec);
   }
 
   Codec get(final String name) {
@@ -35,9 +38,11 @@ class PropertyToCodec {
     if (codec != null)
       return codec;
 
-    for (final Map.Entry<String,Codec> entry : anyToCodec.entrySet())
-      if (name.matches(entry.getKey()))
+    for (final Map.Entry<String,Codec> entry : anyToCodec.entrySet()) {
+      final Pattern pattern = Patterns.compile(entry.getKey());
+      if (pattern.matcher(name).matches())
         return entry.getValue();
+    }
 
     return null;
   }

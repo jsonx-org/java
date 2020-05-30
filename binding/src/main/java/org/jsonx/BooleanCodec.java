@@ -17,31 +17,54 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Classes;
 import org.openjax.json.JsonReader;
 
-class BooleanCodec extends PrimitiveCodec<Boolean> {
-  static Boolean decodeArray(final String token) {
-    return "true".equals(token) ? Boolean.TRUE : "false".equals(token) ? Boolean.FALSE : null;
+class BooleanCodec extends PrimitiveCodec {
+  static Object decodeArray(final Class<?> type, final String decode, final String token) {
+    return decodeObject(type, decode == null || decode.isEmpty() ? null : getMethod(decodeToMethod, decode, String.class), token);
   }
 
-  static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
-    if (!(object instanceof Boolean))
+  private static Object decodeObject(final Class<?> type, final Executable decode, final String json) {
+    return decode != null ? JsdUtil.invoke(decode, json) : Classes.isAssignableFrom(type, String.class) ? json : "true".equals(json) ? Boolean.TRUE : "false".equals(json) ? Boolean.FALSE : null;
+  }
+
+  static Error encodeArray(final Annotation annotation, final Class<?> type, final String encode, Object object, final int index, final Relations relations) {
+    if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null);
+
+    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    if (method != null)
+      object = JsdUtil.invoke(method, object);
 
     relations.set(index, new Relation(object, annotation));
     return null;
   }
 
-  static String encodeObject(final Boolean object) throws EncodeException, ValidationException {
-    return String.valueOf(object);
+  static Object encodeObject(final Class<?> type, final String encode, Object object) throws EncodeException, ValidationException {
+    if (!Classes.isInstance(type, object))
+      return Error.CONTENT_NOT_EXPECTED(object, null);
+
+    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    if (method != null)
+      return JsdUtil.invoke(method, object);
+
+    if (object instanceof Boolean)
+      return String.valueOf(object);
+
+    if (object instanceof String)
+      return object;
+
+    throw new IllegalArgumentException("Illegal argument class: " + object.getClass());
   }
 
-  BooleanCodec(final BooleanProperty property, final Field field) {
-    super(field, property.name(), property.nullable(), property.use());
+  BooleanCodec(final BooleanProperty property, final Method getMethod, final Method setMethod) {
+    super(getMethod, setMethod, property.name(), property.nullable(), property.use(), property.decode());
   }
 
   @Override
@@ -55,8 +78,8 @@ class BooleanCodec extends PrimitiveCodec<Boolean> {
   }
 
   @Override
-  Boolean parse(final String json) {
-    return decodeArray(json);
+  Object parseValue(final String json) {
+    return decodeObject(type, decode, json);
   }
 
   @Override

@@ -17,11 +17,11 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import org.libj.lang.Annotations;
 import org.libj.lang.Strings;
-import org.libj.util.Annotations;
 import org.openjax.json.JsonReader;
 
 final class Error {
@@ -39,8 +39,8 @@ final class Error {
     return new Error("Illegal value: null");
   }
 
-  static Error INVALID_FIELD(final Field field, final Error error) {
-    return new Error("%s: %s", field, error);
+  static Error INVALID_FIELD(final Method getMethod, final Error error) {
+    return new Error("%s: %s", getMethod, error);
   }
 
   static Error EXPECTED_ARRAY(final String token, final JsonReader reader) {
@@ -91,8 +91,8 @@ final class Error {
     return new Error(reader, "Pattern \"%s\" does not match: \"%s\"", pattern, string);
   }
 
-  static Error PATTERN_NOT_MATCHED_ANNOTATION(final Annotation annotation, final String string) {
-    return new Error("%s: Pattern does not match: \"%s\"", annotation, string);
+  static Error PATTERN_NOT_MATCHED_ANNOTATION(final Annotation annotation, final Method getMethod, final String string) {
+    return new Error("%s: %s: Pattern does not match: \"%s\"", annotation, getMethod, string);
   }
 
   static Error INVALID_CONTENT_WAS_FOUND(final int index, final Annotation annotation) {
@@ -168,9 +168,9 @@ final class Error {
         if (arg instanceof Number || arg instanceof Boolean)
           obj = arg;
         else if (arg instanceof Annotation)
-          obj = Annotations.toSortedString((Annotation)arg, JsdUtil.ATTRIBUTES);
-        else if (arg instanceof Field)
-          obj = ((Field)arg).getDeclaringClass().getName() + "#" + ((Field)arg).getName();
+          obj = Annotations.toSortedString((Annotation)arg, JsdUtil.ATTRIBUTES, true);
+        else if (arg instanceof Method)
+          obj = ((Method)arg).getDeclaringClass().getName() + "." + ((Method)arg).getName() + "()";
         else if (arg instanceof Class)
           obj = ((Class<?>)arg).getSimpleName();
         else if (arg instanceof Error)

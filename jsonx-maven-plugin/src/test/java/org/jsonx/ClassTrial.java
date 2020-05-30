@@ -19,14 +19,15 @@ package org.jsonx;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Classes;
 import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
 import org.openjax.json.JsonReader;
@@ -36,7 +37,7 @@ class ClassTrial extends Trial {
   private static final JxEncoder validEncoder = JxEncoder.get();
   private static final JxEncoder invalidEncoder = new JxEncoder(validEncoder.indent, false);
 
-  private final List<PropertyTrial<?>> trials = new ArrayList<>();
+  private final ArrayList<PropertyTrial<?>> trials = new ArrayList<>();
   private final JxObject binding;
 
   private int count = 0;
@@ -50,40 +51,45 @@ class ClassTrial extends Trial {
   }
 
   private void createObjectFields(final Object target) {
-    for (final Field field : target.getClass().getDeclaredFields()) {
-      final AnyProperty anyProperty = field.getAnnotation(AnyProperty.class);
+    final Method[] methods = target.getClass().getDeclaredMethods();
+    Classes.sortDeclarativeOrder(methods);
+    for (final Method getMethod : methods) {
+      if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
+        continue;
+
+      final AnyProperty anyProperty = getMethod.getAnnotation(AnyProperty.class);
       if (anyProperty != null) {
-        AnyTrial.add(trials, field, binding, anyProperty);
+        AnyTrial.add(trials, getMethod, JsdUtil.findSetMethod(methods, getMethod), binding, anyProperty);
         continue;
       }
 
-      final ArrayProperty arrayProperty = field.getAnnotation(ArrayProperty.class);
+      final ArrayProperty arrayProperty = getMethod.getAnnotation(ArrayProperty.class);
       if (arrayProperty != null) {
-        ArrayTrial.add(trials, field, binding, arrayProperty);
+        ArrayTrial.add(trials, getMethod, JsdUtil.findSetMethod(methods, getMethod), binding, arrayProperty);
         continue;
       }
 
-      final BooleanProperty booleanProperty = field.getAnnotation(BooleanProperty.class);
+      final BooleanProperty booleanProperty = getMethod.getAnnotation(BooleanProperty.class);
       if (booleanProperty != null) {
-        BooleanTrial.add(trials, field, binding, booleanProperty);
+        BooleanTrial.add(trials, getMethod, JsdUtil.findSetMethod(methods, getMethod), binding, booleanProperty);
         continue;
       }
 
-      final NumberProperty numberProperty = field.getAnnotation(NumberProperty.class);
+      final NumberProperty numberProperty = getMethod.getAnnotation(NumberProperty.class);
       if (numberProperty != null) {
-        NumberTrial.add(trials, field, binding, numberProperty);
+        NumberTrial.add(trials, getMethod, JsdUtil.findSetMethod(methods, getMethod), binding, numberProperty);
         continue;
       }
 
-      final ObjectProperty objectProperty = field.getAnnotation(ObjectProperty.class);
+      final ObjectProperty objectProperty = getMethod.getAnnotation(ObjectProperty.class);
       if (objectProperty != null) {
-        ObjectTrial.add(trials, field, target, objectProperty);
+        ObjectTrial.add(trials, getMethod, JsdUtil.findSetMethod(methods, getMethod), target, objectProperty);
         continue;
       }
 
-      final StringProperty stringProperty = field.getAnnotation(StringProperty.class);
+      final StringProperty stringProperty = getMethod.getAnnotation(StringProperty.class);
       if (stringProperty != null) {
-        StringTrial.add(trials, field, target, stringProperty);
+        StringTrial.add(trials, getMethod, JsdUtil.findSetMethod(methods, getMethod), target, stringProperty);
         continue;
       }
     }
@@ -92,7 +98,7 @@ class ClassTrial extends Trial {
   public int run() throws Exception {
     for (final PropertyTrial<?> trial : trials)
       if (trial.kase instanceof ValidCase)
-        PropertyTrial.setField(trial.field, trial.object, trial.name, trial.rawValue());
+        PropertyTrial.setField(trial.getMethod, trial.setMethod, trial.object, trial.name, trial.rawValue());
 
     for (final PropertyTrial<?> trial : trials)
       invoke(trial);
@@ -100,7 +106,7 @@ class ClassTrial extends Trial {
     return count;
   }
 
-  private static void testJsonx(final String json) throws IOException, SAXException {
+  static void testJsonx(final String json) throws IOException, SAXException {
     final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(json)));
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
     try (final InputStream in = url.openStream()) {
@@ -113,18 +119,31 @@ class ClassTrial extends Trial {
     }
   }
 
+  private class Bounds {
+    private Method getMethod;
+    private String name;
+    private int start;
+    private int end;
+    private Bounds(final Method getMethod, final String name, final int start, final int end) {
+      this.getMethod = getMethod;
+      this.name = name;
+      this.start = start;
+      this.end = end;
+    }
+  }
+
   private String testEncode(final PropertyTrial<?> trial, final Relations[] relations) throws Exception {
-    PropertyTrial.setField(trial.field, trial.object, trial.name, trial.rawValue());
+    PropertyTrial.setField(trial.getMethod, trial.setMethod, trial.object, trial.name, trial.rawValue());
 
     String json = null;
     String value = null;
     Exception exception = null;
     try {
-      final int[] bounds = {-1, -1};
-      json = validEncoder.marshal(binding, (f,n,r,s,e) -> {
-        if (f.equals(trial.field) && trial.name.equals(n)) {
-          if (bounds[0] != -1)
-            throw new IllegalStateException();
+      final AtomicReference<Bounds> bounds = new AtomicReference<>();
+      json = validEncoder.marshal(binding, (g,n,r,s,e) -> {
+        if (g.equals(trial.getMethod) && trial.name.equals(n)) {
+          if (bounds.get() != null)
+            throw new IllegalStateException(String.valueOf(bounds.get()));
 
           if (r != null) {
             if (relations[0] != null)
@@ -133,14 +152,14 @@ class ClassTrial extends Trial {
             relations[0] = r;
           }
 
-          bounds[0] = s;
-          bounds[1] = e;
+          if (s != -1)
+            bounds.set(new Bounds(g, n, s, e));
         }
       });
 
       testJsonx(json);
 
-      value = bounds[0] == -1 && bounds[1] == -1 ? null : json.substring(bounds[0], bounds[1]);
+      value = bounds.get() == null ? null : json.substring(bounds.get().start, bounds.get().end);
     }
     catch (final Exception e) {
       exception = e;
@@ -150,16 +169,23 @@ class ClassTrial extends Trial {
     assertFalse(value != null && value.startsWith("[") && relations[0] == null);
 
     try {
-      onEncode(trial, relations[0], value, exception);
+      onEncode(binding, trial, relations[0], value, exception);
       ++count;
     }
     catch (final Throwable t) {
 //      invoke(trial);
-      logger.info(String.format("%06d", count) + " onEncode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
+      logger.info(String.format("%06d", count) + " onEncode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
       logger.error("  Value: " + Strings.indent(String.valueOf(value), 2));
       logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
       logger.error(t.getMessage(), t);
       throw t;
+    }
+
+    if (json.contains("\"-")) {
+      if (exception != null)
+        invalidEncoder.marshal(binding);
+      else
+        validEncoder.marshal(binding);
     }
 
     return json;
@@ -170,7 +196,7 @@ class ClassTrial extends Trial {
     Exception exception = null;
     JxObject decoded = null;
     try {
-      decoded = JxDecoder.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,n,v) -> {
+      decoded = JxDecoder.VALIDATING.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,n,v) -> {
         if (n.equals(trial.name)) {
           if (object[0] != null)
             throw new IllegalStateException();
@@ -193,7 +219,7 @@ class ClassTrial extends Trial {
       ++count;
     }
     catch (final Throwable t) {
-      logger.info(String.format("%06d", count) + " onDecode(" + trial.field.getDeclaringClass().getSimpleName() + "#" + trial.field.getName() + ", " + trial.kase.getClass().getSimpleName() + ")");
+      logger.info(String.format("%06d", count) + " onDecode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
       logger.error("  Value: " + Strings.indent(String.valueOf(object[0]), 2));
       logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
       logger.error(t.getMessage(), t);
@@ -204,7 +230,7 @@ class ClassTrial extends Trial {
   }
 
   private int invoke(final PropertyTrial<?> trial) throws Exception {
-    final Object before = trial.field.get(trial.object);
+    final Object before = trial.getMethod.invoke(trial.object);
 
     final Relations[] relations = {null};
     final String json = testEncode(trial, relations);
@@ -212,12 +238,12 @@ class ClassTrial extends Trial {
     if (decoded != null)
       assertEquals(binding, decoded);
 
-    trial.field.set(trial.object, before);
+    trial.setMethod.invoke(trial.object, before);
     return count;
   }
 
   @SuppressWarnings("unchecked")
-  private static <T>void onEncode(final PropertyTrial<T> trial, final Relations relations, final String value, final Exception e) throws Exception {
+  private static <T>void onEncode(final JxObject binding, final PropertyTrial<T> trial, final Relations relations, final String value, final Exception e) throws Exception {
     if (trial.kase instanceof SuccessCase) {
       if (e != null)
         throw e;
@@ -226,11 +252,11 @@ class ClassTrial extends Trial {
     }
     else if (trial.kase instanceof FailureCase) {
       if (e == null)
-        assertNotNull(trial.getClass().getSimpleName(), e);
+        assertNotNull(trial.kase.getClass().getSimpleName() + " " + trial.name + " " + value, e);
       else if (!(e instanceof EncodeException))
         throw e;
 
-      ((FailureCase<PropertyTrial<T>>)trial.kase).onEncode(trial, (EncodeException)e);
+      ((FailureCase<PropertyTrial<T>>)trial.kase).onEncode(binding, trial, (EncodeException)e);
     }
     else {
       throw new UnsupportedOperationException("Unsupported " + Case.class.getSimpleName() + " type: " + trial.kase.getClass().getName());
@@ -246,7 +272,7 @@ class ClassTrial extends Trial {
       return ((SuccessCase<PropertyTrial<T>>)trial.kase).onDecode(trial, relations, value);
     }
     else if (trial.kase instanceof FailureCase) {
-      assertNotNull(e);
+      assertNotNull(trial.kase.getClass().getSimpleName() + " " + trial.name + " " + value, e);
       if (!(e instanceof DecodeException))
         throw e;
 

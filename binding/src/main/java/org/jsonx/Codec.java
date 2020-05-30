@@ -16,52 +16,44 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.libj.lang.Classes;
-import org.libj.util.ArrayUtil;
-import org.libj.util.function.Throwing;
-import org.libj.util.function.TriConsumer;
 import org.libj.util.function.TriPredicate;
 
 abstract class Codec {
-  final Field field;
-  private final Method setMethod;
-  private final TriConsumer<JxObject,String,Object> putMethod;
+  private final boolean isMap;
+  final Method getMethod;
+  final Method setMethod;
   final boolean optional;
   final String name;
-  private final boolean nullable;
-  private final Use use;
-  private final Class<?> genericType;
+  final boolean nullable;
+  final Use use;
+  final Class<?> genericType;
 
-  @SuppressWarnings("unchecked")
-  Codec(final Field field, final String name, final boolean nullable, final Use use) {
-    this.field = field;
-    this.name = JsdUtil.getName(name, field);
-    if (Map.class.isAssignableFrom(field.getType())) {
-      this.setMethod = null;
-      this.putMethod = Throwing.rethrow((o, n, v) -> ((Map<String,Object>)field.get(o)).put(n, v));
+  Codec(final Method getMethod, final Method setMethod, final String name, final boolean nullable, final Use use) {
+    this.getMethod = getMethod;
+    this.setMethod = setMethod;
+    this.name = name;
+    if (isMap = Map.class.isAssignableFrom(getMethod.getReturnType())) {
       this.optional = use == Use.OPTIONAL;
-      this.genericType = Classes.getGenericClasses(field)[1];
+      this.genericType = Objects.requireNonNull(Classes.getGenericParameters(getMethod)[1]);
     }
     else {
-      this.setMethod = JsdUtil.getSetMethod(field, this.name);
-      this.putMethod = null;
-      this.optional = Optional.class.isAssignableFrom(field.getType());
-      this.genericType = optional ? Classes.getGenericClasses(field)[0] : null;
+      this.optional = getMethod.getReturnType() == Optional.class;
+      this.genericType = optional ? Classes.getGenericParameters(getMethod)[0] : null;
     }
 
     this.nullable = nullable;
     this.use = use;
     if (nullable && use == Use.OPTIONAL && !optional)
-      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(field) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
+      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
   }
-
-  abstract String elementName();
 
   final Error validateUse(final Object value) {
     return value == null && !nullable && use == Use.REQUIRED ? Error.PROPERTY_REQUIRED(name, value) : null;
@@ -71,34 +63,45 @@ abstract class Codec {
     return use == Use.OPTIONAL && nullable ? Optional.empty() : null;
   }
 
-  final void set(final JxObject object, final String name, final Object value, final TriPredicate<? super JxObject,? super String,Object> onPropertyDecode) throws InvocationTargetException {
+  @SuppressWarnings("unchecked")
+  final void set(final JxObject object, final String name, final Object value, final TriPredicate<? super JxObject,? super String,Object> onPropertyDecode) {
     try {
-      if (setMethod != null) {
-        if (!optional || value instanceof Optional)
-          setMethod.invoke(object, value);
-        else if (value != null && !genericType.isInstance(value))
-          throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? ArrayUtil.toString(setMethod.getParameterTypes(), ',', Class::getName) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" of value: " + value);
-        else
-          setMethod.invoke(object, Optional.ofNullable(value));
-      }
-      else {
+      if (isMap) {
         if (value != null && !genericType.isInstance(value))
-          throw new ValidationException(object.getClass().getName() + "#" + field.getName() + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" of value: " + value);
+          throw new ValidationException(object.getClass().getName() + "." + getMethod.getName() + "() is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
 
-        putMethod.accept(object, name, value);
+        Map<String,Object> map = (Map<String,Object>)getMethod.invoke(object);
+        if (map == null)
+          setMethod.invoke(object, map = new LinkedHashMap<>());
+
+        map.put(name, value);
       }
+      else if (!optional || value instanceof Optional)
+        setMethod.invoke(object, value);
+      else if (value != null && !genericType.isInstance(value))
+        throw new ValidationException(object.getClass().getName() + ": " + getMethod + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+      else
+        setMethod.invoke(object, Optional.ofNullable(value));
 
       if (onPropertyDecode != null)
         onPropertyDecode.test(object, name, value);
     }
     catch (final IllegalAccessException e) {
-      throw new IllegalStateException(e);
+      throw new RuntimeException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
     }
     catch (final IllegalArgumentException e) {
       if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
-        throw new ValidationException(object.getClass().getName() + "#" + setMethod.getName() + "(" + (setMethod.getParameterTypes().length > 0 ? ArrayUtil.toString(setMethod.getParameterTypes(), ',', Class::getName) : "") + ") is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+        throw new ValidationException(object.getClass().getName() + "." + getMethod.getName() + "():" + getMethod.getReturnType().getName() + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
 
       throw new UnsupportedOperationException(e);
     }
   }
+
+  abstract String elementName();
 }

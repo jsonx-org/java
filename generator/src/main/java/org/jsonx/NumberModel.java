@@ -17,114 +17,171 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_3.xL0gluGCXAA;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
+import org.libj.lang.Numbers;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 final class NumberModel extends Model {
-  private static xL0gluGCXAA.Schema.Number type(final String name) {
-    final xL0gluGCXAA.Schema.Number xsb = new xL0gluGCXAA.Schema.Number();
-    if (name != null)
-      xsb.setName$(new xL0gluGCXAA.Schema.Number.Name$(name));
+  private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
+    final $TypeBinding xsb = new $ArrayMember.Number.Binding();
+    xsb.setLang$(new $Binding.Lang$(jsd.getLang()));
+    if (jsd.getType() != null)
+      xsb.setType$(new $TypeBinding.Type$(jsd.getType()));
+
+    if (jsd.getDecode() != null)
+      xsb.setDecode$(new $TypeBinding.Decode$(jsd.getDecode()));
+
+    if (jsd.getEncode() != null)
+      xsb.setEncode$(new $TypeBinding.Encode$(jsd.getEncode()));
 
     return xsb;
   }
 
-  private static xL0gluGCXAA.$Number property(final schema.NumberProperty jsd, final String name) {
-    final xL0gluGCXAA.$Number xsb = new xL0gluGCXAA.$Number() {
+  private static Schema.Number type(final schema.Number jsd, final String name) {
+    final Schema.Number xsb = new Schema.Number();
+    if (name != null)
+      xsb.setName$(new Schema.Number.Name$(name));
+
+    if (jsd.getBindings() != null)
+      for (final schema.TypeBinding binding : jsd.getBindings())
+        xsb.addBinding(typeBinding(binding));
+
+    return xsb;
+  }
+
+  private static $Number property(final schema.NumberProperty jsd, final String name) {
+    final $Number xsb = new $Number() {
       private static final long serialVersionUID = -346722555715286411L;
 
       @Override
-      protected xL0gluGCXAA.$Member inherits() {
-        return new xL0gluGCXAA.$ObjectMember.Property();
+      protected $Member inherits() {
+        return new $ObjectMember.Property();
       }
     };
 
     if (name != null)
-      xsb.setName$(new xL0gluGCXAA.$Number.Name$(name));
+      xsb.setName$(new $Number.Name$(name));
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXAA.$Number.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new $Number.Nullable$(jsd.getNullable()));
 
     if (jsd.getUse() != null)
-      xsb.setUse$(new xL0gluGCXAA.$Number.Use$(xL0gluGCXAA.$Number.Use$.Enum.valueOf(jsd.getUse())));
+      xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(jsd.getUse())));
+
+    if (jsd.getBindings() != null) {
+      for (final schema.TypeFieldBinding binding : jsd.getBindings()) {
+        final $TypeFieldBinding bind = new $Number.Binding();
+        bind.setLang$(new $Binding.Lang$(binding.getLang()));
+        if (binding.getType() != null)
+          bind.setType$(new $TypeBinding.Type$(binding.getType()));
+
+        if (binding.getDecode() != null)
+          bind.setDecode$(new $TypeBinding.Decode$(binding.getDecode()));
+
+        if (binding.getEncode() != null)
+          bind.setEncode$(new $TypeBinding.Encode$(binding.getEncode()));
+
+        if (binding.getField() != null)
+          bind.setField$(new $TypeFieldBinding.Field$(binding.getField()));
+
+        xsb.addBinding(bind);
+      }
+    }
 
     return xsb;
   }
 
-  private static xL0gluGCXAA.$ArrayMember.Number element(final schema.NumberElement jsd) {
-    final xL0gluGCXAA.$ArrayMember.Number xsb = new xL0gluGCXAA.$ArrayMember.Number();
+  private static $ArrayMember.Number element(final schema.NumberElement jsd) {
+    final $ArrayMember.Number xsb = new $ArrayMember.Number();
 
     if (jsd.getNullable() != null)
-      xsb.setNullable$(new xL0gluGCXAA.$ArrayMember.Number.Nullable$(jsd.getNullable()));
+      xsb.setNullable$(new $ArrayMember.Number.Nullable$(jsd.getNullable()));
 
     if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new xL0gluGCXAA.$ArrayMember.Number.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+      xsb.setMinOccurs$(new $ArrayMember.Number.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
 
     if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new xL0gluGCXAA.$ArrayMember.Number.MaxOccurs$(jsd.getMaxOccurs()));
+      xsb.setMaxOccurs$(new $ArrayMember.Number.MaxOccurs$(jsd.getMaxOccurs()));
+
+
+    if (jsd.getBindings() != null)
+      for (final schema.TypeBinding binding : jsd.getBindings())
+        xsb.addBinding(typeBinding(binding));
 
     return xsb;
   }
 
-  static xL0gluGCXAA.$NumberMember jsdToXsb(final schema.Number jsd, final String name) {
-    final xL0gluGCXAA.$NumberMember xsb;
+  static $NumberMember jsdToXsb(final schema.Number jsd, final String name) {
+    final $NumberMember xsb;
     if (jsd instanceof schema.NumberProperty)
       xsb = property((schema.NumberProperty)jsd, name);
     else if (jsd instanceof schema.NumberElement)
       xsb = element((schema.NumberElement)jsd);
     else if (name != null)
-      xsb = type(name);
+      xsb = type(jsd, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
     if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(jsd.getDoc()));
+      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
 
     if (jsd.getScale() != null)
-      xsb.setScale$(new xL0gluGCXAA.$NumberMember.Scale$(jsd.getScale()));
+      xsb.setScale$(new $NumberMember.Scale$(jsd.getScale()));
 
     if (jsd.getRange() != null)
-      xsb.setRange$(new xL0gluGCXAA.$NumberMember.Range$(jsd.getRange()));
+      xsb.setRange$(new $NumberMember.Range$(jsd.getRange()));
 
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Number xsb) {
+  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
     return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb), null);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Number xsb) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, xsb), referrer);
+      return registry.reference(newNumberModel(registry, referrer, xsb), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final xL0gluGCXAA.$Array.Number xsb) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, xsb), referrer);
+      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
-  static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Field field) {
+  static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberProperty property, final Method getMethod, final String fieldName) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, property, field);
-      final Id id = model.id;
+      final NumberModel model = newNumberModel(registry, referrer, property, getMethod, fieldName);
+      final Id id = model.id();
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
-      return new Reference(registry, referrer, JsdUtil.getName(property.name(), field), property.nullable(), property.use(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
+      return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
     catch (final ParseException e) {
       throw createValidationException(property.annotationType(), property.range(), e);
@@ -133,8 +190,8 @@ final class NumberModel extends Model {
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range());
-      final Id id = model.id;
+      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), getDefaultClass(element.scale()), Number.class));
+      final Id id = model.id();
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
@@ -146,8 +203,9 @@ final class NumberModel extends Model {
 
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, null, type.scale(), type.range());
-      final Id id = model.id;
+      // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
+      final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), getDefaultClass(type.scale()), Number.class));
+      final Id id = model.id();
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
@@ -165,7 +223,7 @@ final class NumberModel extends Model {
     throw new ValidationException(cls.getName() + " Invalid range=\"" + range + "\"", e);
   }
 
-  private static int parseScale(final xL0gluGCXAA.$NumberMember.Scale$ scale) {
+  private static int parseScale(final $NumberMember.Scale$ scale) {
     return scale == null || scale.text() == null ? Integer.MAX_VALUE : scale.text().intValue();
   }
 
@@ -173,15 +231,19 @@ final class NumberModel extends Model {
     return range == null || range.length() == 0 ? null : new Range(range);
   }
 
-  private static Range parseRange(final xL0gluGCXAA.$NumberMember.Range$ range) throws ParseException {
+  private static Range parseRange(final $NumberMember.Range$ range) throws ParseException {
     return range == null ? null : parseRange(range.text());
+  }
+
+  private static Class<?> getDefaultClass(final int scale) {
+    return scale == 0 ? BigInteger.class : BigDecimal.class;
   }
 
   final int scale;
   final Range range;
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.Schema.Number xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$());
+  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), getBinding(registry, xsb.getBinding()));
     this.scale = parseScale(xsb.getScale$());
     try {
       this.range = parseRange(xsb.getRange$());
@@ -189,43 +251,91 @@ final class NumberModel extends Model {
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
+
+    validateTypeBinding();
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Number xsb) throws ParseException {
-    super(registry, declarer, Id.hashed("n", parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$());
+  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb) throws ParseException {
+    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+    if (binding == null)
+      return new NumberModel(registry, declarer, xsb, null, null);
+
+    return new NumberModel(registry, declarer, xsb, binding.getField$(), Binding.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
+  }
+
+  private NumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $FieldIdentifier fieldName, final Binding.Type typeBinding) throws ParseException {
+    super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), fieldName, typeBinding);
     this.scale = parseScale(xsb.getScale$());
     this.range = parseRange(xsb.getRange$());
+
+    validateTypeBinding();
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final xL0gluGCXAA.$Array.Number xsb) throws ParseException {
-    super(registry, declarer, Id.hashed("n", parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$());
+  private NumberModel(final Registry registry, final Declarer declarer, final $Array.Number xsb, final Binding.Type typeBinding) throws ParseException {
+    super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), typeBinding);
     this.scale = parseScale(xsb.getScale$());
     this.range = parseRange(xsb.getRange$());
+
+    validateTypeBinding();
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Field field) throws ParseException {
-    super(registry, declarer, Id.hashed("n", property.scale(), parseRange(property.range())), property.nullable(), property.use());
-    if (!isAssignable(field, Number.class, false, property.nullable(), property.use()) || field.getType() == char.class || field.getType() == boolean.class || field.getType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
-      throw new IllegalAnnotationException(property, field.getDeclaringClass().getName() + "." + field.getName() + ": @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Number type with use=\"required\" or nullable=false, or of primitive numeric type with use=\"required\" and nullable=false, or of Optional<? extends Number> type with use=\"optional\" and nullable=true");
+  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName) throws ParseException {
+    final Binding.Type typeBinding = Binding.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), getDefaultClass(property.scale()));
+    return new NumberModel(registry, declarer, property, getMethod, fieldName, typeBinding);
+  }
+
+  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName, final Binding.Type typeBinding) throws ParseException {
+    super(registry, declarer, Id.hashed("n", typeBinding, property.scale(), parseRange(property.range())), property.nullable(), property.use(), fieldName, typeBinding);
+    // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
+    if (!isAssignable(getMethod, true, defaultClass(), false, property.nullable(), property.use()) && !isAssignable(getMethod, true, CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.scale = property.scale();
     this.range = parseRange(property.range());
+
+    validateTypeBinding();
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Boolean nullable, final int scale, final String range) throws ParseException {
-    super(registry, declarer, Id.hashed("n", scale, parseRange(range)), nullable, null);
+  private NumberModel(final Registry registry, final Declarer declarer, final Boolean nullable, final int scale, final String range, final Binding.Type typeBinding) throws ParseException {
+    super(registry, declarer, Id.hashed("n", typeBinding, scale, parseRange(range)), nullable, null, null, typeBinding);
     this.scale = scale;
     this.range = parseRange(range);
+
+    validateTypeBinding();
   }
 
   @Override
-  Registry.Type type() {
-    return registry.getType(scale == 0 ? BigInteger.class : BigDecimal.class);
+  Registry.Type typeDefault() {
+    return registry.getType(getDefaultClass(scale));
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  String isValid(final Binding.Type typeBinding) {
+    if (typeBinding.type == null)
+      return null;
+
+    if ((scale != Integer.MAX_VALUE || range != null) && !registry.getType(Number.class).isAssignableFrom(typeBinding.type))
+      return "Constraint definitions in \"" + (name() != null ? name() : id().toString()) + "\" are not enforcable with type binding \"" + typeBinding.type + "\" for \"" + elementName() + "\"; either choose a type binding that is assignable to " + defaultClass() + ", or remove the constraint definitions";
+
+    if (scale == 0)
+      return null;
+
+    final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
+    if (cls != null && defaultClass().isAssignableFrom(cls) && Numbers.isExactType((Class<? extends Number>)cls))
+      return "The inexact \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id().toString()) + "\" cannot be represented with exact type: " + typeBinding.type.getName();
+
+    return null;
   }
 
   @Override
   String elementName() {
     return "number";
+  }
+
+  @Override
+  Class<?> defaultClass() {
+    return Number.class;
   }
 
   @Override
@@ -239,8 +349,13 @@ final class NumberModel extends Model {
   }
 
   @Override
-  Map<String,Object> toAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toAttributes(owner, packageName);
+  Class<? extends Annotation> typeAnnotation() {
+    return NumberType.class;
+  }
+
+  @Override
+  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     if (scale != Integer.MAX_VALUE)
       attributes.put("scale", scale);
 
@@ -258,5 +373,9 @@ final class NumberModel extends Model {
 
     if (range != null)
       attributes.put("range", "\"" + range.toString() + "\"");
+
+    final Registry.Type type = type();
+    if (type != null && (owner instanceof AnyModel || owner instanceof ArrayModel))
+      attributes.put("type", type + ".class");
   }
 }

@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import org.libj.util.Numbers;
+import org.libj.lang.Numbers;
 import org.openjax.json.JsonUtil;
 
 public class Range implements Cloneable, Serializable {
@@ -139,15 +139,31 @@ public class Range implements Cloneable, Serializable {
       return false;
 
     final Range that = (Range)obj;
-    return Objects.equals(min, that.min) && Objects.equals(max, that.max) && minInclusive == that.minInclusive && maxInclusive == that.maxInclusive;
+    if (!Objects.equals(min, that.min))
+      return false;
+
+    if (!Objects.equals(max, that.max))
+      return false;
+
+    if (minInclusive != that.minInclusive)
+      return false;
+
+    if (maxInclusive != that.maxInclusive)
+      return false;
+
+    return true;
   }
 
   @Override
   public int hashCode() {
     int hashCode = 1;
-    hashCode = 31 * hashCode + (min == null ? 0 : min.hashCode());
+    if (min != null)
+      hashCode = 31 * hashCode + min.hashCode();
+
     hashCode = 31 * hashCode + Boolean.hashCode(minInclusive);
-    hashCode = 31 * hashCode + (max == null ? 0 : max.hashCode());
+    if (max != null)
+      hashCode = 31 * hashCode + max.hashCode();
+
     hashCode = 31 * hashCode + Boolean.hashCode(maxInclusive);
     return hashCode;
   }

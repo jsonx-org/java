@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -26,27 +26,30 @@ import java.util.Optional;
 import org.libj.lang.Classes;
 
 final class NumberTrial extends PropertyTrial<Number> {
-  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final NumberProperty property) {
+  static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final NumberProperty property) {
     try {
-      logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
+      logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
       final Range range = property.range().length() == 0 ? null : new Range(property.range());
-      trials.add(new NumberTrial(ValidCase.CASE, field, object, toProperForm(field, property.scale(), makeValid(range)), property));
+      trials.add(new NumberTrial(ValidCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale(), makeValid(range)), property));
 
       if (property.range().length() > 0)
-        trials.add(new NumberTrial(RangeCase.CASE, field, object, toProperForm(field, property.scale(), makeInvalid(range)), property));
+        trials.add(new NumberTrial(RangeCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale(), makeInvalid(range)), property));
 
-      if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(field.getType()))
-        trials.add(new NumberTrial(ScaleCase.CASE, field, object, toProperForm(field, property.scale() + 1, makeValid(range)), property));
+      if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(getMethod.getReturnType()))
+        trials.add(new NumberTrial(ScaleCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale() + 1, makeValid(range)), property));
+
+      if (getMethod.getReturnType().isPrimitive())
+        return;
 
       if (property.use() == Use.REQUIRED) {
-        trials.add(new NumberTrial(getNullableCase(property.nullable()), field, object, null, property));
+        trials.add(new NumberTrial(getNullableCase(property.nullable()), getMethod, setMethod, object, null, property));
       }
       else if (property.nullable()) {
-        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, null, property));
-        trials.add(new NumberTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+        trials.add(new NumberTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, null, property));
+        trials.add(new NumberTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, Optional.ofNullable(null), property));
       }
       else {
-        trials.add(new NumberTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+        trials.add(new NumberTrial(OptionalNotNullableCase.CASE, getMethod, setMethod, object, null, property));
       }
     }
     catch (final ParseException e) {
@@ -54,16 +57,16 @@ final class NumberTrial extends PropertyTrial<Number> {
     }
   }
 
-  static Number createValid(final Field field, final String range, final int scale) {
+  static Object createValid(final Class<?> type, final String decode, final String range, final int scale) {
     try {
-      return toProperForm(field, scale, range.length() == 0 ? null : makeValid(new Range(range)));
+      return toProperForm(type, decode, scale, range.length() == 0 ? null : makeValid(new Range(range)));
     }
     catch (final ParseException e) {
       throw new IllegalArgumentException(e);
     }
   }
 
-  static Number createValid(final String range, final int scale) {
+  private static Number createValid(final String range, final int scale) {
     try {
       return setScale(range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)), scale);
     }
@@ -93,41 +96,42 @@ final class NumberTrial extends PropertyTrial<Number> {
     return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.toBigInteger() : value.setScale(scale, RoundingMode.HALF_EVEN);
   }
 
-  private static Number toProperForm(final Field field, final int scale, final BigDecimal value) {
-    final boolean isOptional = Optional.class.isAssignableFrom(field.getType());
-    final Class<?> type = isOptional ? Classes.getGenericClasses(field)[0] : field.getType();
-    if (BigDecimal.class.isAssignableFrom(type))
-      return setScale(value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value, scale);
-
+  private static Object toProperForm(final Class<?> type, final String decode, final int scale, final BigDecimal value) {
+    final Number result;
     if (BigInteger.class.isAssignableFrom(type))
-      return value == null ? BigInteger.valueOf(random.nextLong()) : value.toBigInteger();
+      result = value == null ? BigInteger.valueOf(random.nextLong()) : value.toBigInteger();
+    else if (type == Long.class || type == long.class)
+      result = value == null ? random.nextLong() : value.longValue();
+    else if (type == Integer.class || type == int.class)
+      result = value == null ? random.nextInt() : value.intValue();
+    else if (type == Short.class || type == short.class)
+      result = value == null ? (short)random.nextInt() : value.shortValue();
+    else if (type == Byte.class || type == byte.class)
+      result = value == null ? (byte)random.nextInt() : value.byteValue();
+    else if (type == Double.class || type == double.class)
+      result = value == null ? random.nextDouble() * random.nextLong() : value.doubleValue();
+    else if (type == Float.class || type == float.class)
+      result = value == null ? random.nextFloat() * random.nextInt() : value.floatValue();
+    else
+      result = setScale(value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value, scale);
 
-    if (Long.class.isAssignableFrom(type))
-      return value == null ? random.nextLong() : value.longValue();
+    if (decode != null && !decode.isEmpty())
+      return JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), String.valueOf(result));
 
-    if (Integer.class.isAssignableFrom(type))
-      return value == null ? random.nextInt() : value.intValue();
+    if (Classes.isAssignableFrom(type, result.getClass()))
+      return result;
 
-    if (Short.class.isAssignableFrom(type))
-      return value == null ? (short)random.nextInt() : value.shortValue();
+    if (type.isAssignableFrom(String.class))
+      return result.toString();
 
-    if (Byte.class.isAssignableFrom(type))
-      return value == null ? (byte)random.nextInt() : value.byteValue();
-
-    if (Double.class.isAssignableFrom(type))
-      return value == null ? random.nextDouble() * random.nextLong() : value.doubleValue();
-
-    if (Float.class.isAssignableFrom(type))
-      return value == null ? random.nextFloat() * random.nextInt() : value.floatValue();
-
-    throw new UnsupportedOperationException("Unsupported type: " + field.getType().getName());
+    throw new IllegalArgumentException();
   }
 
   final int scale;
   final Range range;
 
-  private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Field field, final Object object, final Object value, final NumberProperty property) throws ParseException {
-    super(kase, field, object, value, property.name(), property.use());
+  private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Method getMethod, final Method setMethod, final Object object, final Object value, final NumberProperty property) throws ParseException {
+    super(kase, JsdUtil.getRealType(getMethod), getMethod, setMethod, object, value, property.name(), property.use(), property.decode(), property.encode(), false);
     this.scale = property.scale();
     this.range = property.range().length() == 0 ? null : new Range(property.range());
   }

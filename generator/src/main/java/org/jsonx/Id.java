@@ -20,11 +20,12 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.CRC32;
 
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
 final class Id {
-  private static String hash(final Object ... variables) {
+  static String hash(final Object ... variables) {
     final CRC32 crc = new CRC32();
     final byte[] bytes = Arrays.toString(variables).getBytes();
     crc.update(bytes, 0, bytes.length);
@@ -32,6 +33,9 @@ final class Id {
   }
 
   static Id hashed(final String prefix, final Object ... variables) {
+    if (!"!".equals(prefix) && !"a".equals(prefix) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Binding.Type || variables[0] instanceof $Binding))
+      throw new IllegalArgumentException("First variable expected to be Binding, but was: " + Arrays.toString(variables));
+
     return variables == null || variables.length == 0 ? new Id(prefix) : new Id(prefix + hash(variables));
   }
 

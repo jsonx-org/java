@@ -18,7 +18,7 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.jsonx.ArrayValidator.Relation;
@@ -27,7 +27,7 @@ import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 
 class ArrayCodec extends Codec {
-  static Object decodeArray(final ArrayElement element, final Class<? extends Annotation> type, final String token, final JsonReader reader, IdToElement idToElement, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  static Object decodeArray(final ArrayElement element, final Class<? extends Annotation> type, IdToElement idToElement, final String token, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     if (!"[".equals(token))
       return null;
 
@@ -48,13 +48,13 @@ class ArrayCodec extends Codec {
       throw new IllegalStateException();
     }
 
-    return ArrayCodec.decodeObject(idToElement.get(elementIds), minIterate, maxIterate, idToElement, reader, onPropertyDecode);
+    return ArrayCodec.decodeObject(idToElement.get(elementIds), minIterate, maxIterate, idToElement, reader, validate, onPropertyDecode);
   }
 
-  static Object decodeObject(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  static Object decodeObject(final Annotation[] annotations, final int minIterate, final int maxIterate, final IdToElement idToElement, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final ArrayDecodeIterator iterator = new ArrayDecodeIterator(reader);
     final Relations relations = new Relations();
-    final Error error = ArrayValidator.validate(iterator, 1, false, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, true, onPropertyDecode, -1);
+    final Error error = ArrayValidator.validate(iterator, 1, false, annotations, 0, minIterate, maxIterate, 1, idToElement, relations, validate, onPropertyDecode, -1);
     if (error != null)
       return error;
 
@@ -92,13 +92,13 @@ class ArrayCodec extends Codec {
     return null;
   }
 
-  static Object encodeObject(final Field field, final List<Object> value, final boolean validate) throws EncodeException {
+  static Object encodeObject(final Method getMethod, final List<Object> value, final boolean validate) throws EncodeException {
     final Relations relations = new Relations();
     final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsdUtil.digest(field, idToElement);
+    final int[] elementIds = JsdUtil.digest(getMethod, idToElement);
     final Error error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
     if (validate && error != null)
-      return Error.INVALID_FIELD(field, error);
+      return Error.INVALID_FIELD(getMethod, error);
 
     return relations;
   }
@@ -106,9 +106,9 @@ class ArrayCodec extends Codec {
   final Annotation[] annotations;
   final IdToElement idToElement = new IdToElement();
 
-  ArrayCodec(final ArrayProperty property, final Field field) {
-    super(field, property.name(), property.nullable(), property.use());
-    final int[] elementIds = JsdUtil.digest(field, idToElement);
+  ArrayCodec(final ArrayProperty property, final Method getMethod, final Method setMethod) {
+    super(getMethod, setMethod, property.name(), property.nullable(), property.use());
+    final int[] elementIds = JsdUtil.digest(getMethod, idToElement);
     this.annotations = idToElement.get(elementIds);
   }
 

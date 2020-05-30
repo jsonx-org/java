@@ -16,78 +16,92 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.libj.lang.Classes;
+import org.libj.util.function.PentaConsumer;
 
 final class ObjectTrial extends PropertyTrial<Object> {
   static Object createValid(final Class<?> type) {
     try {
       final Object object = type.getDeclaredConstructor().newInstance();
-      final Field[] fields = Classes.getDeclaredFieldsDeep(object.getClass());
-      for (int i = 0; i < fields.length; ++i) {
-        final Field field = fields[i];
-        field.setAccessible(true);
-        final AnyProperty anyProperty = field.getAnnotation(AnyProperty.class);
+      final Method[] methods = object.getClass().getMethods();
+      Classes.sortDeclarativeOrder(methods);
+      for (final Method getMethod : methods) {
+        if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
+          continue;
+
+        final AnyProperty anyProperty = getMethod.getAnnotation(AnyProperty.class);
         if (anyProperty != null) {
-          if (anyProperty.use() == Use.REQUIRED || Math.random() < 0.4)
-            setField(field, object, AnyTrial.createName(anyProperty), AnyTrial.createValid(anyProperty));
+          if (anyProperty.use() == Use.REQUIRED || Math.random() < 0.4) {
+            final AtomicReference<Object> ref = new AtomicReference<>();
+            AnyTrial.createValid(anyProperty, new PentaConsumer<Object,Class<?>,String,String,Annotation>() {
+              @Override
+              public void accept(final Object value, final Class<?> type, final String decode, final String encode, final Annotation typeAnnotation) {
+                ref.set(value);
+              }
+            });
+            setField(getMethod, JsdUtil.findSetMethod(methods, getMethod), object, AnyTrial.createName(anyProperty), ref.get());
+          }
 
           continue;
         }
 
-        final String name = JsdUtil.getName(field);
-        final ArrayProperty arrayProperty = field.getAnnotation(ArrayProperty.class);
+        final String name = JsdUtil.getName(getMethod);
+        final ArrayProperty arrayProperty = getMethod.getAnnotation(ArrayProperty.class);
         if (arrayProperty != null) {
           if (arrayProperty.use() == Use.REQUIRED || Math.random() < 0.4) {
             final IdToElement idToElement;
             final int[] elementIds;
             if (arrayProperty.type() == ArrayType.class) {
               idToElement = new IdToElement();
-              elementIds = JsdUtil.digest(field, idToElement);
+              elementIds = JsdUtil.digest(getMethod, idToElement);
             }
             else {
               idToElement = null;
               elementIds = null;
             }
 
-            setField(field, object, name, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.minIterate(), arrayProperty.maxIterate(), elementIds, idToElement));
+            setField(getMethod, JsdUtil.findSetMethod(methods, getMethod), object, name, ArrayTrial.createValid(arrayProperty.type(), arrayProperty.minIterate(), arrayProperty.maxIterate(), elementIds, idToElement));
           }
 
           continue;
         }
 
-        final BooleanProperty booleanProperty = field.getAnnotation(BooleanProperty.class);
+        final BooleanProperty booleanProperty = getMethod.getAnnotation(BooleanProperty.class);
         if (booleanProperty != null) {
           if (booleanProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, name, BooleanTrial.createValid());
+            setField(getMethod, JsdUtil.findSetMethod(methods, getMethod), object, name, BooleanTrial.createValid(JsdUtil.getRealType(getMethod), booleanProperty.decode()));
 
           continue;
         }
 
-        final NumberProperty numberProperty = field.getAnnotation(NumberProperty.class);
+        final NumberProperty numberProperty = getMethod.getAnnotation(NumberProperty.class);
         if (numberProperty != null) {
           if (numberProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, name, NumberTrial.createValid(field, numberProperty.range(), numberProperty.scale()));
+            setField(getMethod, JsdUtil.findSetMethod(methods, getMethod), object, name, NumberTrial.createValid(JsdUtil.getRealType(getMethod), numberProperty.decode(), numberProperty.range(), numberProperty.scale()));
 
           continue;
         }
 
-        final ObjectProperty objectProperty = field.getAnnotation(ObjectProperty.class);
+        final ObjectProperty objectProperty = getMethod.getAnnotation(ObjectProperty.class);
         if (objectProperty != null) {
           if (objectProperty.use() == Use.REQUIRED || Math.random() < 0.4)
-            setField(field, object, name, ObjectTrial.createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()));
+            setField(getMethod, JsdUtil.findSetMethod(methods, getMethod), object, name, ObjectTrial.createValid(JsdUtil.getRealType(getMethod)));
 
           continue;
         }
 
-        final StringProperty stringProperty = field.getAnnotation(StringProperty.class);
+        final StringProperty stringProperty = getMethod.getAnnotation(StringProperty.class);
         if (stringProperty != null) {
           if (stringProperty.use() == Use.REQUIRED || Math.random() < 0.5)
-            setField(field, object, name, StringTrial.createValid(stringProperty.pattern()));
+            setField(getMethod, JsdUtil.findSetMethod(methods, getMethod), object, name, StringTrial.createValid(JsdUtil.getRealType(getMethod), stringProperty.decode(), stringProperty.pattern()));
 
           continue;
         }
@@ -95,27 +109,36 @@ final class ObjectTrial extends PropertyTrial<Object> {
 
       return object;
     }
-    catch (final IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-      throw new UnsupportedOperationException(e);
+    catch (final IllegalAccessException | InstantiationException | NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
     }
   }
 
-  static void add(final List<? super PropertyTrial<?>> trials, final Field field, final Object object, final ObjectProperty property) {
-    logger.debug("Adding: " + field.getDeclaringClass() + "#" + field.getName());
-    trials.add(new ObjectTrial(ValidCase.CASE, field, object, createValid(Optional.class.isAssignableFrom(field.getType()) ? Classes.getGenericClasses(field)[0] : field.getType()), property));
+  static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final ObjectProperty property) {
+    logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
+    trials.add(new ObjectTrial(ValidCase.CASE, getMethod, setMethod, object, createValid(JsdUtil.getRealType(getMethod)), property));
+    if (getMethod.getReturnType().isPrimitive())
+      return;
+
     if (property.use() == Use.REQUIRED) {
-      trials.add(new ObjectTrial(getNullableCase(property.nullable()), field, object, null, property));
+      trials.add(new ObjectTrial(getNullableCase(property.nullable()), getMethod, setMethod, object, null, property));
     }
     else if (property.nullable()) {
-      trials.add(new ObjectTrial(OptionalNullableCase.CASE, field, object, null, property));
-      trials.add(new ObjectTrial(OptionalNullableCase.CASE, field, object, Optional.ofNullable(null), property));
+      trials.add(new ObjectTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, null, property));
+      trials.add(new ObjectTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, Optional.ofNullable(null), property));
     }
     else {
-      trials.add(new ObjectTrial(OptionalNotNullableCase.CASE, field, object, null, property));
+      trials.add(new ObjectTrial(OptionalNotNullableCase.CASE, getMethod, setMethod, object, null, property));
     }
   }
 
-  private ObjectTrial(final Case<? extends PropertyTrial<? super Object>> kase, final Field field, final Object object, final Object value, final ObjectProperty property) {
-    super(kase, field, object, value, property.name(), property.use());
+  private ObjectTrial(final Case<? extends PropertyTrial<? super Object>> kase, final Method getMethod, final Method setMethod, final Object object, final Object value, final ObjectProperty property) {
+    super(kase, JsdUtil.getRealType(getMethod), getMethod, setMethod, object, value, property.name(), property.use(), null, null, false);
   }
 }

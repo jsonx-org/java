@@ -16,6 +16,7 @@
 
 package org.jsonx;
 
+import static org.jsonx.TestUtil.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidName\": true}";
-        JxDecoder.parseObject(Invalid.InvalidName.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.InvalidName.class, new JsonReader(new StringReader(json)));
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -71,7 +72,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": true}";
-        JxDecoder.parseObject(Invalid.InvalidType.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.InvalidType.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -82,7 +83,7 @@ public class InvalidTest {
 
   public static class Bool {
     @Test
-    public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
+    public void testInvalidType() throws DecodeException, IOException, NoSuchMethodException {
       final Invalid.Bool binding = new Invalid.Bool();
       binding.setInvalidType(7);
 
@@ -91,21 +92,21 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Bool.class, "invalidType")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidType\": true}";
-        JxDecoder.parseObject(Invalid.Bool.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"boolean\" with value:"));
+        assertTrue(e.getMessage(), e.getMessage().contains("is not compatible with property \"invalidType\" of type \"boolean\" with value:"));
       }
     }
 
     @Test
-    public void testInvalidAnnotation() throws IOException, NoSuchFieldException {
+    public void testInvalidAnnotation() throws IOException, NoSuchMethodException {
       final Invalid.Bool binding = new Invalid.Bool();
       binding.setInvalidAnnotation(true);
 
@@ -114,23 +115,92 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Bool.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Bool.class, "invalidAnnotation")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidAnnotation\": true}";
-        JxDecoder.parseObject(Invalid.Bool.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, new JsonReader(new StringReader(json)));
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
-        assertTrue(e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"number\", but got: true"));
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"number\", but got: true"));
       }
     }
   }
 
   public static class Num {
     @Test
-    public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
+    public void testInvalidPrimitiveUse() throws DecodeException, IOException {
+      final Invalid.NumPrimitiveUse binding = new Invalid.NumPrimitiveUse();
+      binding.setNumber(Byte.MAX_VALUE);
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage(), e.getMessage().contains("Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type"));
+      }
+
+      try {
+        final String json = "{\"number\": 127}";
+        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, new JsonReader(new StringReader(json)));
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage(), e.getMessage().contains("Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type"));
+      }
+    }
+
+    @Test
+    public void testInvalidPrimitiveNullable() throws DecodeException, IOException {
+      final Invalid.NumPrimitiveNullable binding = new Invalid.NumPrimitiveNullable();
+      binding.setNumber(Byte.MAX_VALUE);
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage(), e.getMessage().contains("Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type"));
+      }
+
+      try {
+        final String json = "{\"number\": 127}";
+        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, new JsonReader(new StringReader(json)));
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage(), e.getMessage().contains("Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type"));
+      }
+    }
+
+    @Test
+    public void testInvalidPrimitiveScale() throws DecodeException, IOException {
+      final Invalid.NumPrimitiveScale binding = new Invalid.NumPrimitiveScale();
+      binding.setNumber(Byte.MAX_VALUE);
+
+      try {
+        validEncoder.marshal(binding);
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage(), e.getMessage().contains("is not compatible with scale="));
+      }
+
+      try {
+        final String json = "{\"number\": 127}";
+        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveScale.class, new JsonReader(new StringReader(json)));
+        fail("Expected ValidationException");
+      }
+      catch (final ValidationException e) {
+        assertTrue(e.getMessage(), e.getMessage().contains("is not compatible with scale="));
+      }
+    }
+
+    @Test
+    public void testInvalidType() throws DecodeException, IOException, NoSuchMethodException {
       final Invalid.Num binding = new Invalid.Num();
       binding.setInvalidType(true);
 
@@ -139,21 +209,21 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Num.class, "invalidType")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidType\": 7}";
-        JxDecoder.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"number\" with value:"));
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Num.class, "invalidType")) + " is not of a type that extends java.lang.Number", e.getMessage());
       }
     }
 
     @Test
-    public void testInvalidAnnotation() throws IOException, NoSuchFieldException {
+    public void testInvalidAnnotation() throws IOException, NoSuchMethodException {
       final Invalid.Num binding = new Invalid.Num();
       binding.setInvalidAnnotation(7);
 
@@ -162,16 +232,16 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Num.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Num.class, "invalidAnnotation")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidAnnotation\": true}";
-        JxDecoder.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
-        assertTrue(e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"string\", but got: true"));
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"string\", but got: true"));
       }
     }
 
@@ -190,7 +260,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidForm\": 10.9}";
-        JxDecoder.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -210,23 +280,23 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().startsWith("Invalid range attribute:"));
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Invalid range attribute:"));
       }
 
       try {
         final String json = "{\"invalidRange\": 7}";
-        JxDecoder.parseObject(Invalid.NumRange.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.NumRange.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().startsWith("Invalid range attribute:"));
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Invalid range attribute:"));
       }
     }
   }
 
   public static class Str {
     @Test
-    public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
+    public void testInvalidType() throws DecodeException, IOException, NoSuchMethodException {
       final Invalid.Str binding = new Invalid.Str();
       binding.setInvalidType(Optional.of(7));
 
@@ -235,21 +305,21 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Str.class, "invalidType")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidType\": \"foo\"}";
-        JxDecoder.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"string\" with value:"));
+        assertTrue(e.getMessage(), e.getMessage().contains("is not compatible with property \"invalidType\" of type \"string\" with value:"));
       }
     }
 
     @Test
-    public void testInvalidAnnotation() throws IOException, NoSuchFieldException {
+    public void testInvalidAnnotation() throws IOException, NoSuchMethodException {
       final Invalid.Str binding = new Invalid.Str();
       binding.setInvalidAnnotation(Optional.of("foo"));
 
@@ -258,21 +328,21 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Str.class, "invalidAnnotation")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidAnnotation\": \"foo\"}";
-        JxDecoder.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
-        assertTrue(e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"boolean\", but got: \"foo\""));
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"boolean\", but got: \"foo\""));
       }
     }
 
     @Test
-    public void testInvalidPattern() throws DecodeException, IOException, NoSuchFieldException {
+    public void testInvalidPattern() throws DecodeException, IOException, NoSuchMethodException {
       final Invalid.Str binding = new Invalid.Str();
       binding.setInvalidPattern(Optional.of("foo"));
 
@@ -281,12 +351,12 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Str.class.getDeclaredField("invalidPattern")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Str.class, "invalidPattern")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidPattern\": \"foo\"}";
-        JxDecoder.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -297,7 +367,7 @@ public class InvalidTest {
 
   public static class Arr {
     @Test
-    public void testInvalidType() throws DecodeException, IOException, NoSuchFieldException {
+    public void testInvalidType() throws DecodeException, IOException, NoSuchMethodException {
       final Invalid.Arr binding = new Invalid.Arr();
       binding.setInvalidType(Optional.of(7));
 
@@ -306,21 +376,21 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidType")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Arr.class, "invalidType")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidType\": [\"foo\"]}";
-        JxDecoder.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertTrue(e.getMessage().contains("is not compatible with property \"invalidType\" of type \"array\" with value:"));
+        assertTrue(e.getMessage(), e.getMessage().contains("is not compatible with property \"invalidType\" of type \"array\" with value:"));
       }
     }
 
     @Test
-    public void testInvalidAnnotation() throws IOException, NoSuchFieldException {
+    public void testInvalidAnnotation() throws IOException, NoSuchMethodException {
       final Invalid.Arr binding = new Invalid.Arr();
       binding.setInvalidAnnotation(Collections.emptyList());
 
@@ -329,16 +399,16 @@ public class InvalidTest {
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
-        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedFieldName(Invalid.Arr.class.getDeclaredField("invalidAnnotation")), e.getMessage());
+        assertEquals("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod(Invalid.Arr.class, "invalidAnnotation")), e.getMessage());
       }
 
       try {
         final String json = "{\"invalidAnnotation\": []}";
-        JxDecoder.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
-        assertTrue(e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"boolean\", but got: ["));
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Expected \"invalidAnnotation\" to be a \"boolean\", but got: ["));
       }
     }
 
@@ -357,7 +427,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidPattern\": \"foo\"}";
-        JxDecoder.parseObject(Invalid.ArrAnnotationType.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.ArrAnnotationType.class, new JsonReader(new StringReader(json)));
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {

@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 LibJ
+/* Copyright (c) 2020 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,24 +16,15 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Field;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jsonx.ArrayValidator.Relations;
-
-/**
- * Interface to be used as a callback during the encoding of JSON form Jx
- * objects.
- */
-@FunctionalInterface
-public interface OnFieldEncode {
-  /**
-   * Performs the callback.
-   *
-   * @param field The field with the value to be encoded.
-   * @param name The name of the property, or {@code null} for array members.
-   * @param relations The {@link Relations} if encoded in an array.
-   * @param start The starting index of the encoded value in the JSON document.
-   * @param end The ending index of the encoded value in the JSON document.
-   */
-  void accept(Field field, String name, Relations relations, int start, int end);
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface BooleanType {
+  Class<?> type() default Boolean.class;
+  String decode() default "";
+  String encode() default "";
 }

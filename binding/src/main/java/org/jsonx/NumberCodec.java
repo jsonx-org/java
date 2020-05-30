@@ -17,19 +17,22 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
-import org.libj.util.Annotations;
+import org.libj.lang.Annotations;
+import org.libj.lang.Classes;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;
 
-class NumberCodec extends PrimitiveCodec<Number> {
-  private static Number decodeObject(final int scale, final String json) {
+class NumberCodec extends PrimitiveCodec {
+  private static Number parseDefaultNumber(final int scale, final String json) {
     try {
       return scale == 0 ? JsonUtil.parseNumber(BigInteger.class, json) : JsonUtil.parseNumber(BigDecimal.class, json);
     }
@@ -38,38 +41,69 @@ class NumberCodec extends PrimitiveCodec<Number> {
     }
   }
 
-  static Number decodeArray(final int scale, final String token) {
-    final char ch;
-    return (ch = token.charAt(0)) != '-' && (ch < '0' || '9' < ch) ? null : decodeObject(scale, token);
+  private static Number parseNumber(final Class<? extends Number> type, final int scale, final String json) {
+    try {
+      return type.isPrimitive() || !Modifier.isAbstract(type.getModifiers()) ? JsonUtil.parseNumber(type, json) : parseDefaultNumber(scale, json);
+    }
+    catch (final JsonParseException | NumberFormatException e) {
+      return null;
+    }
   }
 
-  static Error encodeArray(final Annotation annotation, final int scale, final String range, final Object object, final int index, final Relations relations, final boolean validate) {
-    if (!(object instanceof Number))
+  @SuppressWarnings("unchecked")
+  private static Object decodeObject(final Class<?> type, final int scale, final Executable decode, final String json) {
+    return decode != null ? JsdUtil.invoke(decode, json) : type.isAssignableFrom(String.class) ? json : parseNumber((Class<? extends Number>)type, scale, json);
+  }
+
+  static Object decodeArray(final Class<?> type, final int scale, final String decode, String token) {
+    final char ch = token.charAt(0);
+    if (ch != '-' && (ch < '0' || '9' < ch))
+      return null;
+
+    return decodeObject(type, scale, getMethod(decodeToMethod, decode, String.class), token);
+  }
+
+  static Error encodeArray(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final int index, final Relations relations, final boolean validate) {
+    if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null);
 
-    if (validate) {
-      final Error error = NumberCodec.validate(annotation, (Number)object, scale, range);
+    if (validate && (scale != Integer.MAX_VALUE || (range != null && !range.isEmpty()))) {
+      if (!Classes.isAssignableFrom(Number.class, object.getClass()))
+        throw new ValidationException("Invalid array member: " + annotation + ": Value conditions can only be defined if \"type\" is a subclass of: " + Number.class.getName());
+
+      final Error error = NumberCodec.validate(annotation, (Number)object, scale, range, type);
       if (error != null)
         return error;
     }
+
+    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    if (method != null)
+      object = JsdUtil.invoke(method, object);
 
     relations.set(index, new Relation(object, annotation));
     return null;
   }
 
-  static Object encodeObject(final Annotation annotation, final int scale, final String range, final Number object, final boolean validate) throws EncodeException, ValidationException {
-    if (validate) {
-      final Error error = validate(annotation, object, scale, range);
+  static Object encodeObject(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException, ValidationException {
+    if (!Classes.isInstance(type, object))
+      return Error.CONTENT_NOT_EXPECTED(object, null);
+
+    if (validate && object instanceof Number) {
+      final Error error = validate(annotation, (Number)object, scale, range, type);
       if (error != null)
         return error;
     }
 
+    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    if (method != null)
+      object = JsdUtil.invoke(method, object);
+
     return String.valueOf(object);
   }
 
-  private static Error validate(final Annotation annotation, final Number object, final int scale, final String range) {
+  private static Error validate(final Annotation annotation, final Number object, final int scale, final String range, final Class<?> type) {
     if (scale != 0) {
-      final Error error = isScaleValid(object.toString(), scale, null);
+      final Error error = isScaleValid(object.toString(), scale, type, null, annotation);
       if (error != null)
         return error;
     }
@@ -83,7 +117,7 @@ class NumberCodec extends PrimitiveCodec<Number> {
           return Error.RANGE_NOT_MATCHED(range, object, null);
       }
       catch (final ParseException e) {
-        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES), e);
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(annotation, JsdUtil.ATTRIBUTES, true), e);
       }
     }
 
@@ -93,8 +127,8 @@ class NumberCodec extends PrimitiveCodec<Number> {
   private final int scale;
   private final Range range;
 
-  NumberCodec(final NumberProperty property, final Field field) {
-    super(field, property.name(), property.nullable(), property.use());
+  NumberCodec(final NumberProperty property, final Method getMethod, final Method setMethod) {
+    super(getMethod, setMethod, property.name(), property.nullable(), property.use(), property.decode());
     this.scale = property.scale();
     if (property.range().length() == 0) {
       this.range = null;
@@ -104,9 +138,12 @@ class NumberCodec extends PrimitiveCodec<Number> {
         this.range = new Range(property.range());
       }
       catch (final ParseException e) {
-        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES), e);
+        throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES, true), e);
       }
     }
+
+    if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type))
+      throw new ValidationException("Invalid property: " + property + ": Conditions can only be defined if return type of " + getMethod + " is a subclass of: " + Number.class.getName());
   }
 
   @Override
@@ -114,33 +151,35 @@ class NumberCodec extends PrimitiveCodec<Number> {
     return firstChar == '-' || '0' <= firstChar && firstChar <= '9';
   }
 
-  private static Error isScaleValid(final String value, final int scale, final JsonReader reader) {
+  private static Error isScaleValid(final String value, final int scale, final Class<?> type, final JsonReader reader, final Object source) {
     if (scale == Integer.MAX_VALUE)
       return null;
 
-    final int dot = value.indexOf('.');
-    if (scale != 0 ? value.length() - 1 - dot > scale : dot != -1)
-      return Error.SCALE_NOT_VALID(scale, value, reader);
+    if (scale > 0 && (type.isPrimitive() ? type == byte.class || type == short.class || type == int.class || type == long.class : type == Byte.class || type == Short.class || type == Integer.class || type == Long.class))
+      throw new ValidationException("Type \"" + type.getName() + "\" is not compatible with scale=" + scale + ": " + (source instanceof Annotation ? Annotations.toSortedString((Annotation)source, JsdUtil.ATTRIBUTES, true) : JsdUtil.getFullyQualifiedMethodName((Method)source)));
 
-    return null;
+    final int dot = value.indexOf('.');
+    if (dot == -1 || scale != 0 && value.length() - 1 - dot <= scale)
+      return null;
+
+    return Error.SCALE_NOT_VALID(scale, value, reader);
   }
 
   @Override
   Error validate(final String json, final JsonReader reader) {
-    final Error error = isScaleValid(json, scale, reader);
+    final Error error = isScaleValid(json, scale, type, reader, getMethod);
     if (error != null)
       return error;
 
-    // FIXME: decodeObject() called twice via ObjectCodec#71 and ObjectCodec#75
-    if (range != null && !range.isValid(parse(json)))
+    if (range != null && !range.isValid(parseDefaultNumber(scale, json)))
       return Error.RANGE_NOT_MATCHED(range, json, reader);
 
     return null;
   }
 
   @Override
-  Number parse(final String json) {
-    return decodeObject(scale, json);
+  Object parseValue(final String json) {
+    return decodeObject(type, scale, decode, json);
   }
 
   @Override
