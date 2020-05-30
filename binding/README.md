@@ -6,6 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/binding.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/binding)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/binding.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/binding)
+![Snapshot Version](https://img.shields.io/nexus/s/org.jsonx/binding?label=maven-snapshot&server=https%3A%2F%2Foss.sonatype.org)
 
 ## Abstract
 
