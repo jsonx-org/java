@@ -67,15 +67,6 @@ final class NumberTrial extends PropertyTrial<Number> {
     }
   }
 
-  private static Number createValid(final String range, final int scale) {
-    try {
-      return setScale(range.length() == 0 ? BigDecimal.valueOf(PropertyTrial.random.nextDouble() * PropertyTrial.random.nextLong()) : makeValid(new Range(range)), scale);
-    }
-    catch (final ParseException e) {
-      throw new IllegalArgumentException(e);
-    }
-  }
-
   private static BigDecimal makeValid(final Range range) {
     if (range == null)
       return null;

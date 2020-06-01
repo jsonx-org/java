@@ -78,10 +78,10 @@ final class AnyTrial extends PropertyTrial<Object> {
           return;
 
         if (property.nullable()) {
-          trials.add(new AnyTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, null, null, null, null, typeAnnotation.annotationType() == StringType.class, property));
+          trials.add(new AnyTrial(OptionalNullableCase.CASE, getMethod, setMethod, object, null, null, null, null, typeAnnotation != null && typeAnnotation.annotationType() == StringType.class, property));
         }
         else if (property.use() == Use.OPTIONAL) {
-          trials.add(new AnyTrial(OptionalNotNullableCase.CASE, getMethod, setMethod, object, null, null, null, null, typeAnnotation.annotationType() == StringType.class, property));
+          trials.add(new AnyTrial(OptionalNotNullableCase.CASE, getMethod, setMethod, object, null, null, null, null, typeAnnotation != null && typeAnnotation.annotationType() == StringType.class, property));
         }
       }
     };
