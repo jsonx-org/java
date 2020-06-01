@@ -32,6 +32,8 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
 import org.libj.util.CollectionUtil;
 import org.openjax.xml.api.XmlElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -40,6 +42,8 @@ import org.w3.www._2001.XMLSchema.yAA.$String;
 import sun.reflect.generics.reflectiveObjects.WildcardTypeImpl;
 
 abstract class Model extends Member implements Comparable<Model> {
+  private static final Logger logger = LoggerFactory.getLogger(Model.class);
+
   static Class<?> toClass(final Type type) {
     if (type instanceof Class)
       return (Class<?>)type;
@@ -102,8 +106,38 @@ abstract class Model extends Member implements Comparable<Model> {
 
     // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence
     final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
-    final Executable decodeMethod = typeBinding.decode == null ? null : JsdUtil.parseExecutable(typeBinding.decode, String.class);
-    final Executable encodeMethod = cls == null || typeBinding.encode == null ? null : JsdUtil.parseExecutable(typeBinding.encode, cls);
+    Executable decodeMethod = null;
+    boolean preventDefault = false;
+    if (typeBinding.decode != null) {
+      try {
+        decodeMethod = JsdUtil.parseExecutable(typeBinding.decode, String.class);
+      }
+      catch (final ValidationException e) {
+        preventDefault = true;
+        if (e.getCause() instanceof ClassNotFoundException)
+          logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
+        else
+          throw e;
+      }
+    }
+
+    Executable encodeMethod = null;
+    if (cls != null && typeBinding.encode != null) {
+      try {
+        encodeMethod = JsdUtil.parseExecutable(typeBinding.encode, cls);
+      }
+      catch (final ValidationException e) {
+        preventDefault = true;
+        if (e.getCause() instanceof ClassNotFoundException)
+          logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
+        else
+          throw e;
+      }
+    }
+
+    if (preventDefault)
+      return;
+
     String error = null;
 
     if (cls != null) {
