@@ -633,7 +633,7 @@ public class schema {
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return (java.util.List<org.jsonx.schema.TypeBinding>)super.getBindings();
+      return super.getBindings();
     }
 
     @java.lang.Override
@@ -972,7 +972,7 @@ public class schema {
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return (java.util.List<org.jsonx.schema.TypeBinding>)super.getBindings();
+      return super.getBindings();
     }
 
     @java.lang.Override
@@ -1738,7 +1738,7 @@ public class schema {
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return (java.util.List<org.jsonx.schema.TypeBinding>)super.getBindings();
+      return super.getBindings();
     }
 
     @java.lang.Override

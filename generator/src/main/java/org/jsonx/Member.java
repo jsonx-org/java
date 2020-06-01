@@ -273,10 +273,13 @@ abstract class Member extends Element {
     final String arrayOverrideSafeTypeName = override != null && isArrayOverride(override) ? override.type().toCanonicalString() : typeName;
 
     builder.append("public ").append(arrayOverrideSafeTypeName).append(" get").append(classCase).append("() {\n  return ");
-    if (override != null)
-      builder.append("(").append(arrayOverrideSafeTypeName).append(")super.get").append(classCase).append("()");
-    else
+    if (override == null)
       builder.append(instanceCase);
+    else if (isArrayOverride(override))
+      builder.append("super.get").append(classCase).append("()");
+    else
+      builder.append("(").append(arrayOverrideSafeTypeName).append(")super.get").append(classCase).append("()");
+
     builder.append(";\n}\n\n");
 
     if (override == null || !isArrayOverride(override)) {
