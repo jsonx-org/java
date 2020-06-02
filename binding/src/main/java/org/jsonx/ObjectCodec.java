@@ -116,7 +116,6 @@ class ObjectCodec extends Codec {
       // If this {...} contained properties, check each method of the target object
       // to ensure that no properties are missing (i.e. use=required).
       final Method[] methods = type.getMethods();
-      Classes.sortDeclarativeOrder(methods);
       for (final Method getMethod : methods) {
         if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
           continue;
@@ -170,7 +169,6 @@ class ObjectCodec extends Codec {
 
     propertyToCodec = new PropertyToCodec();
     final Method[] methods = cls.getMethods();
-    Classes.sortDeclarativeOrder(methods);
     for (final Method getMethod : methods) {
       if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;
