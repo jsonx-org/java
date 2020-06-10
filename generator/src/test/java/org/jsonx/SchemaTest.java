@@ -35,12 +35,17 @@ import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.libj.jci.CompilationException;
 import org.libj.jci.InMemoryCompiler;
 import org.libj.lang.Classes;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.net.MemoryURLStreamHandler;
+import org.libj.net.URLs;
 import org.libj.test.AssertXml;
+import org.libj.test.JUnitUtil;
+import org.libj.util.StringPaths;
 import org.openjax.json.JSON;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.XmlElement;
@@ -49,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
+@RunWith(Parameterized.class)
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
   private static final boolean testJson = true;
@@ -78,10 +84,6 @@ public class SchemaTest {
       settings.add(new Settings(i));
 
     settings.add(new Settings(Integer.MAX_VALUE));
-  }
-
-  private static Schema newControlBinding(final String fileName) throws IOException, SAXException {
-    return (Schema)Bindings.parse(ClassLoader.getSystemClassLoader().getResource(fileName));
   }
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
@@ -199,11 +201,15 @@ public class SchemaTest {
     }
   }
 
-  public static void test(final String fileName, final String packageName) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  private static final String packagePrefix = "org.jsonx.";
+
+  private static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+    final String fileName = URLs.getName(resource);
+    final String packageName = packagePrefix + StringPaths.getSimpleName(fileName);
     final String prefix = packageName + ".";
 
     logger.info(fileName + "...");
-    final Schema controlBinding = newControlBinding(fileName);
+    final Schema controlBinding = (Schema)Bindings.parse(resource);
     if (testJson) {
       final String jsd = testJson(fileName, controlBinding, prefix);
       testConverter(jsd);
@@ -232,10 +238,10 @@ public class SchemaTest {
     logger.info("  10) Java(1) == Java(2)");
     assertSources(test1Sources, test2Sources, false);
 
-    testSettings(fileName, packageName, test1Sources);
+    testSettings(resource, fileName, packageName, test1Sources);
   }
 
-  private static void testSettings(final String fileName, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  private static void testSettings(final URL resource, final String fileName, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     for (final Settings settings : SchemaTest.settings) {
       final String prefix = packageName + ".";
       final int templateThreshold = settings.getTemplateThreshold();
@@ -244,7 +250,7 @@ public class SchemaTest {
       final String outFile1 = "sa-" + outFile;
       final String outFile2 = "sb-" + outFile;
       logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + " " + outFile2);
-      final Schema controlBinding = newControlBinding(fileName);
+      final Schema controlBinding = (Schema)Bindings.parse(resource);
       final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       final String xml1 = toXml(controlSchema, settings).toString();
       validate(xml1, outFile1);
@@ -323,48 +329,16 @@ public class SchemaTest {
     assertEquals(jsdx, jsdx2);
   }
 
-  @Test
-  public void testArray() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("array.jsdx", "org.jsonx.array");
+  @Parameterized.Parameters(name = "{0}")
+  public static URL[] resources() throws IOException {
+    return JUnitUtil.getResources("", ".*\\.jsdx");
   }
 
-  @Test
-  public void testBinding() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("binding.jsdx", "org.jsonx.binding");
-  }
+  @Parameterized.Parameter(0)
+  public URL resource;
 
   @Test
-  public void testDataType() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("datatype.jsdx", "org.jsonx.datatype");
-  }
-
-  @Test
-  public void testOverride() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("override.jsdx", "org.jsonx.override");
-  }
-
-  @Test
-  public void testStructure() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("structure.jsdx", "org.jsonx.structure");
-  }
-
-  @Test
-  public void testTemplate() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("template.jsdx", "org.jsonx.template");
-  }
-
-  @Test
-  public void testReference() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("reference.jsdx", "org.jsonx.reference");
-  }
-
-  @Test
-  public void testReserved() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("reserved.jsdx", "org.jsonx.reserved");
-  }
-
-  @Test
-  public void testComplete() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test("complete.jsdx", "org.jsonx.complete");
+  public void test() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+    test(resource);
   }
 }
