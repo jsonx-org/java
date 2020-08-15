@@ -2,10 +2,10 @@
 
 > **JSON Schema for the enterprise**
 
-[![Build Status](https://travis-ci.org/jsonx-org/java.svg?EKkC4CBk)](https://travis-ci.org/jsonx-org/java)
-[![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg?EKkC4CBk)](https://coveralls.io/github/jsonx-org/java)
-[![Javadocs](https://www.javadoc.io/badge/org.jsonx/generator.svg?EKkC4CBk)](https://www.javadoc.io/doc/org.jsonx/generator)
-[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/generator.svg?EKkC4CBk)](https://mvnrepository.com/artifact/org.jsonx/generator)
+[![Build Status](https://travis-ci.org/jsonx-org/java.svg?branch=master)](https://travis-ci.org/jsonx-org/java)
+[![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg)](https://coveralls.io/github/jsonx-org/java)
+[![Javadocs](https://www.javadoc.io/badge/org.jsonx/generator.svg)](https://www.javadoc.io/doc/org.jsonx/generator)
+[![Released Version](https://img.shields.io/maven-central/v/org.jsonx/generator.svg)](https://mvnrepository.com/artifact/org.jsonx/generator)
 ![Snapshot Version](https://img.shields.io/nexus/s/org.jsonx/generator?label=maven-snapshot&server=https%3A%2F%2Foss.sonatype.org)
 
 ## Abstract
