@@ -39,7 +39,10 @@ final class OptionalNullableCase extends SuccessCase<PropertyTrial<? super Objec
     if (trial.value() != null)
       throw new IllegalStateException(OptionalNullableCase.class.getSimpleName() + " must be used with null or Optional.empty() value");
 
-    assertEquals(trial.rawValue(), value);
+    // Excuse this assertion for properties that have special decode functions
+    if (trial.decode == null)
+      assertEquals(trial.rawValue(), value);
+
     return true;
   }
 

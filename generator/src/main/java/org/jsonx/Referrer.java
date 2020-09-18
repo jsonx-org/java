@@ -81,8 +81,8 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     this.type = type;
   }
 
-  Referrer(final Registry registry, final Declarer declarer, final Registry.Type type, final $Documented.Doc$ doc) {
-    super(registry, declarer, Id.named(type), doc, null);
+  Referrer(final Registry registry, final Declarer declarer, final Registry.Type type, final $Documented.Doc$ doc, final String name) {
+    super(registry, declarer, Id.named(type), doc, name, null);
     this.type = type;
   }
 

@@ -245,7 +245,7 @@ final class NumberModel extends Model {
   final Range range;
 
   private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), getBinding(registry, xsb.getBinding()));
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
     this.scale = parseScale(xsb.getScale$());
     try {
       this.range = parseRange(xsb.getRange$());

@@ -203,7 +203,7 @@ final class StringModel extends Model {
   final String pattern;
 
   private StringModel(final Registry registry, final Declarer declarer, final Schema.String xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), getBinding(registry, xsb.getBinding()));
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
     this.pattern = parseString(xsb.getPattern$());
 
     validateTypeBinding();

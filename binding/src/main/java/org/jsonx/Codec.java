@@ -16,6 +16,7 @@
 
 package org.jsonx;
 
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -103,5 +104,7 @@ abstract class Codec {
     }
   }
 
+  abstract Class<?> type();
+  abstract Executable decode();
   abstract String elementName();
 }

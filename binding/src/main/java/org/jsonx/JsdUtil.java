@@ -368,7 +368,6 @@ final class JsdUtil {
       throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found", e);
     }
 
-    parseExecutable(identifier, parameterType);
     throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found");
   }
 

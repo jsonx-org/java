@@ -16,7 +16,6 @@
 
 package org.jsonx;
 
-import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -32,8 +31,6 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
 import org.libj.util.CollectionUtil;
 import org.openjax.xml.api.XmlElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -42,8 +39,6 @@ import org.w3.www._2001.XMLSchema.yAA.$String;
 import sun.reflect.generics.reflectiveObjects.WildcardTypeImpl;
 
 abstract class Model extends Member implements Comparable<Model> {
-  private static final Logger logger = LoggerFactory.getLogger(Model.class);
-
   static Class<?> toClass(final Type type) {
     if (type instanceof Class)
       return (Class<?>)type;
@@ -92,81 +87,6 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls == null || cls.isAssignableFrom(genericTypes[0]);
   }
 
-  final void validateTypeBinding() {
-    if (typeBinding == null || typeBinding.type == null)
-      return;
-
-    if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray()) {
-      if (use.set == Use.OPTIONAL)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" with primitive type \"" + typeBinding.type.getCompoundName() + "\" with use=optional");
-
-      if (nullable == null && !(declarer instanceof SchemaElement))
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" with primitive type \"" + typeBinding.type.getCompoundName() + "\" with nullable=true");
-    }
-
-    // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence
-    final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
-    Executable decodeMethod = null;
-    boolean preventDefault = false;
-    if (typeBinding.decode != null) {
-      try {
-        decodeMethod = JsdUtil.parseExecutable(typeBinding.decode, String.class);
-      }
-      catch (final ValidationException e) {
-        preventDefault = true;
-        if (e.getCause() instanceof ClassNotFoundException)
-          logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
-        else
-          throw e;
-      }
-    }
-
-    Executable encodeMethod = null;
-    if (cls != null && typeBinding.encode != null) {
-      try {
-        encodeMethod = JsdUtil.parseExecutable(typeBinding.encode, cls);
-      }
-      catch (final ValidationException e) {
-        preventDefault = true;
-        if (e.getCause() instanceof ClassNotFoundException)
-          logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
-        else
-          throw e;
-      }
-    }
-
-    if (preventDefault)
-      return;
-
-    String error = null;
-
-    if (cls != null) {
-      if (decodeMethod != null) {
-        if (!Classes.isAssignableFrom(cls, JsdUtil.getReturnType(decodeMethod))) {
-          error = "The return type of \"decode\" method \"" + decodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to: " + typeBinding.type.getName();
-        }
-      }
-      else if (encodeMethod == null) {
-        if (!Classes.isAssignableFrom(defaultClass(), cls) && !Classes.isAssignableFrom(CharSequence.class, cls)) {
-          error = "The type binding \"" + typeBinding.type.getName() + "\" in " + JsdUtil.flipName(id().toString()) + " is not \"encode\" compatible with " + defaultClass().getName() + " or " + CharSequence.class.getName();
-        }
-      }
-    }
-    else if (encodeMethod != null && !Classes.isAssignableFrom(CharSequence.class, JsdUtil.getReturnType(encodeMethod))) {
-      error = "The return type of \"encode\" method \"" + encodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to:" + CharSequence.class.getName();
-    }
-    else if (decodeMethod != null && !Classes.isAssignableFrom(defaultClass(), JsdUtil.getReturnType(decodeMethod))) {
-      error = "The return type of \"decode\" method \"" + decodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to: " + defaultClass().getName();
-    }
-
-    if (error != null)
-      throw new ValidationException(error);
-
-    error = isValid(typeBinding);
-    if (error != null)
-      throw new ValidationException(error);
-  }
-
   Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
     super(registry, declarer, true, id, doc, name, nullable, use, fieldName, typeBinding);
   }
@@ -175,8 +95,8 @@ abstract class Model extends Member implements Comparable<Model> {
     super(registry, declarer, true, id, doc, nullable, minOccurs, maxOccurs, typeBinding);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final Binding.Type typeBinding) {
-    super(registry, declarer, true, id, doc, null, null, null, null, null, null, typeBinding);
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final String name, final Binding.Type typeBinding) {
+    super(registry, declarer, true, id, doc, name, null, null, null, null, null, typeBinding);
   }
 
   Model(final Registry registry, final Declarer declarer, final Id id, final Boolean nullable, final Use use, final String fieldName, final Binding.Type typeBinding) {
@@ -228,6 +148,4 @@ abstract class Model extends Member implements Comparable<Model> {
 
     return properties;
   }
-
-  abstract String isValid(Binding.Type typeBinding);
 }

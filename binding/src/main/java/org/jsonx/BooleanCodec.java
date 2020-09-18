@@ -79,7 +79,7 @@ class BooleanCodec extends PrimitiveCodec {
 
   @Override
   Object parseValue(final String json) {
-    return decodeObject(type, decode, json);
+    return decodeObject(type(), decode(), json);
   }
 
   @Override

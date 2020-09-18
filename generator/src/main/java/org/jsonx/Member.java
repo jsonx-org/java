@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,13 +41,18 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$String;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.libj.lang.Classes;
 import org.libj.lang.Strings;
 import org.libj.util.CollectionUtil;
 import org.libj.util.Patterns;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 abstract class Member extends Element {
+  private static final Logger logger = LoggerFactory.getLogger(Model.class);
+
   static <T extends $Binding>T getBinding(final List<T> bindings) {
     if (bindings == null)
       return null;
@@ -124,7 +130,12 @@ abstract class Member extends Element {
 
   static String fullyQualifiedDisplayName(final Declarer member) {
     final StringBuilder builder = new StringBuilder();
-    builder.append(member.declarer().id().toString()).append("[" + member.declarer().displayName() + "]");
+    if (!(member.declarer() instanceof SchemaElement)) {
+      builder.append(JsdUtil.flipName(member.declarer().id().toString()));
+      if (!member.declarer().displayName().isEmpty())
+        builder.append(" (" + member.declarer().displayName() + ")");
+    }
+
     if (builder.length() > 0)
       builder.append('.');
 
@@ -164,6 +175,82 @@ abstract class Member extends Element {
 
   Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
     this(registry, declarer, isFromSchema, id, doc, (String)name.text(), nullable == null || nullable.isDefault() ? null : nullable.text(), use == null || use.isDefault() ? null : Use.valueOf(use.text().toUpperCase()), null, null, fieldName == null ? null : fieldName.text(), typeBinding);
+  }
+
+  final void validateTypeBinding() {
+    if (typeBinding == null || typeBinding.type == null)
+      return;
+
+    final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
+    if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
+      if (use.set == Use.OPTIONAL)
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompoundName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+
+      if (!(declarer instanceof SchemaElement) && nullable.get == null && !hasDecodeBinding)
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompoundName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+    }
+
+    // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence
+    final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
+    Executable decodeMethod = null;
+    boolean preventDefault = false;
+    if (typeBinding.decode != null) {
+      try {
+        decodeMethod = JsdUtil.parseExecutable(typeBinding.decode, String.class);
+      }
+      catch (final ValidationException e) {
+        preventDefault = true;
+        if (e.getCause() instanceof ClassNotFoundException)
+          logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
+        else
+          throw e;
+      }
+    }
+
+    Executable encodeMethod = null;
+    if (cls != null && typeBinding.encode != null) {
+      try {
+        encodeMethod = JsdUtil.parseExecutable(typeBinding.encode, cls);
+      }
+      catch (final ValidationException e) {
+        preventDefault = true;
+        if (e.getCause() instanceof ClassNotFoundException)
+          logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
+        else
+          throw e;
+      }
+    }
+
+    if (preventDefault)
+      return;
+
+    String error = null;
+
+    if (cls != null) {
+      if (decodeMethod != null) {
+        if (!Classes.isAssignableFrom(cls, JsdUtil.getReturnType(decodeMethod))) {
+          error = "The return type of \"decode\" method \"" + decodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to: " + typeBinding.type.getName();
+        }
+      }
+      else if (encodeMethod == null) {
+        if (!Classes.isAssignableFrom(defaultClass(), cls) && !Classes.isAssignableFrom(CharSequence.class, cls)) {
+          error = "The type binding \"" + typeBinding.type.getName() + "\" in " + JsdUtil.flipName(id().toString()) + " is not \"encode\" compatible with " + defaultClass().getName() + " or " + CharSequence.class.getName();
+        }
+      }
+    }
+    else if (encodeMethod != null && !Classes.isAssignableFrom(CharSequence.class, JsdUtil.getReturnType(encodeMethod))) {
+      error = "The return type of \"encode\" method \"" + encodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to:" + CharSequence.class.getName();
+    }
+    else if (decodeMethod != null && !Classes.isAssignableFrom(defaultClass(), JsdUtil.getReturnType(decodeMethod))) {
+      error = "The return type of \"decode\" method \"" + decodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to: " + defaultClass().getName();
+    }
+
+    if (error != null)
+      throw new ValidationException(error);
+
+    error = isValid(typeBinding);
+    if (error != null)
+      throw new ValidationException(error);
   }
 
   public final Declarer declarer() {
@@ -389,6 +476,7 @@ abstract class Member extends Element {
   }
 
   abstract Registry.Type typeDefault();
+  abstract String isValid(Binding.Type typeBinding);
   abstract String elementName();
   abstract Class<?> defaultClass();
   abstract Class<? extends Annotation> propertyAnnotation();

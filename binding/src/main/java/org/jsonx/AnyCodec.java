@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -185,6 +186,16 @@ class AnyCodec extends Codec {
   AnyCodec(final AnyProperty property, final Method getMethod, final Method setMethod) {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use());
     this.property = property;
+  }
+
+  @Override
+  Class<?> type() {
+    return null;
+  }
+
+  @Override
+  Executable decode() {
+    return null;
   }
 
   @Override

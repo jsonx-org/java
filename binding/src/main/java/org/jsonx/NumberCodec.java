@@ -143,7 +143,7 @@ class NumberCodec extends PrimitiveCodec {
       }
     }
 
-    if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type))
+    if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type()))
       throw new ValidationException("Invalid property: " + property + ": Conditions can only be defined if return type of " + getMethod + " is a subclass of: " + Number.class.getName());
   }
 
@@ -168,7 +168,7 @@ class NumberCodec extends PrimitiveCodec {
 
   @Override
   Error validate(final String json, final JsonReader reader) {
-    final Error error = isScaleValid(json, scale, type, reader, getMethod);
+    final Error error = isScaleValid(json, scale, type(), reader, getMethod);
     if (error != null)
       return error;
 
@@ -180,7 +180,7 @@ class NumberCodec extends PrimitiveCodec {
 
   @Override
   Object parseValue(final String json) {
-    return decodeObject(type, scale, decode, json);
+    return decodeObject(type(), scale, decode(), json);
   }
 
   @Override

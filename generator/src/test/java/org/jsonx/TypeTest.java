@@ -45,6 +45,11 @@ public class TypeTest {
       }
 
       @Override
+      String isValid(final Binding.Type typeBinding) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
       Class<? extends Annotation> propertyAnnotation() {
         return null;
       }

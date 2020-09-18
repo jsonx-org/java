@@ -16,31 +16,27 @@
 
 package org.jsonx;
 
-class Spec<T> {
-  /**
-   * Creates a new {@link Spec} with the specified {@code set} and {@code get}
-   * values.
-   *
-   * @param <T> The type parameter of the arguments.
-   * @param set The raw value set from the specification.
-   * @param get The calculated value to be gotten from this {@link Spec}.
-   * @return A new {@link Spec} with the specified {@code set} and {@code get}
-   *         values.
-   */
-  static <T>Spec<T> from(final T set, final T get) {
-    return new Spec<>(set, get);
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.libj.math.BigDecimals;
+import org.libj.math.BigIntegers;
+
+public final class TestHelper {
+  public static BigInteger stringToBigIntegerOrNull(final String str) {
+    return str == null ? null : BigIntegers.intern(str);
   }
 
-  final T set;
-  final T get;
-
-  private Spec(final T set, final T get) {
-    this.set = set;
-    this.get = get;
+  public static BigDecimal stringToBigDecimalOrNull(final String str) {
+    return str == null ? null : BigDecimals.intern(str);
   }
 
-  @Override
-  public String toString() {
-    return "set: " + set + "\nget: " + get;
+  public static URL stringToUrlOrNull(final String str) throws MalformedURLException {
+    return str == null ? null : new URL(str);
+  }
+
+  private TestHelper() {
   }
 }

@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.jsonx.Binding.Type;
 import org.openjax.xml.api.XmlElement;
 
 final class Deferred<T extends Member> extends Member {
@@ -36,6 +37,11 @@ final class Deferred<T extends Member> extends Member {
 
   @Override
   Registry.Type typeDefault() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  String isValid(final Binding.Type typeBinding) {
     throw new UnsupportedOperationException();
   }
 

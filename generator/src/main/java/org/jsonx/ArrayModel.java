@@ -310,7 +310,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final Schema.Array xsb) {
-    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$());
+    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$(), xsb.getName$().text());
     this.members = parseMembers(registry, this, xsb);
     this.minIterate = parseIterate(xsb.getMinIterate$().text());
     this.maxIterate = parseIterate(parseMaxCardinality(xsb.getMinIterate$().text(), xsb.getMaxIterate$(), "Iterate", 1));

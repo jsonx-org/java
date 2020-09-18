@@ -20,6 +20,7 @@ import static org.jsonx.JsdUtil.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
@@ -67,7 +68,7 @@ class ObjectCodec extends Codec {
           if (error != null)
             return abort(error, reader, index);
 
-          value = codec.toNull();
+          value = codec.decode() == null ? codec.toNull() : JsdUtil.invoke(codec.decode(), null);
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec primitiveCodec = (PrimitiveCodec)codec;
@@ -203,6 +204,16 @@ class ObjectCodec extends Codec {
   ObjectCodec(final ObjectProperty property, final Method getMethod, final Method setMethod) {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use());
     this.type = (Class<? extends JxObject>)(optional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType());
+  }
+
+  @Override
+  Class<?> type() {
+    return null;
+  }
+
+  @Override
+  Executable decode() {
+    return null;
   }
 
   @Override

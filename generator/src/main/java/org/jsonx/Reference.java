@@ -127,6 +127,7 @@ final class Reference extends Member {
   private Reference(final Registry registry, final Declarer declarer, final $Reference xsb, final Model model, final $FieldBinding binding) {
     super(registry, declarer, true, Id.hashed("r", model.typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), binding == null ? null : binding.getField$(), model.typeBinding);
     this.model = model;
+    validateTypeBinding();
   }
 
   static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Supplier<? extends Model> model) {
@@ -162,6 +163,11 @@ final class Reference extends Member {
   }
 
   @Override
+  String isValid(final Binding.Type typeBinding) {
+    return model.isValid(typeBinding);
+  }
+
+  @Override
   String nameName() {
     return model.nameName();
   }
@@ -173,7 +179,7 @@ final class Reference extends Member {
 
   @Override
   public String displayName() {
-    return model != null ? model.displayName() + "[ref]" : elementName();
+    return name() != null ? name() : model != null ? model.displayName() : elementName();
   }
 
   @Override

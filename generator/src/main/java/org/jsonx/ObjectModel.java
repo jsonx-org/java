@@ -326,7 +326,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private final Map<String,PropertySpec> getMethodToPropertySpec;
 
   private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb) {
-    super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$());
+    super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text());
     this.isAbstract = xsb.getAbstract$().text();
     this.superObject = getReference(xsb.getExtends$());
     this.properties = parseProperties(xsb);
@@ -353,7 +353,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
    * Returns the {@link Property} matching the provided name in the inheritance
    * chain of this {@link ObjectModel}.
    * <p>
-   * <b>Note</b>: This method is intended to be called after
+   * <b>Note:</b> This method is intended to be called after
    * {@link #resolveReferences()} is called. Otherwise, {@link #superObject}
    * values may be instances of {@link Deferred}.
    *
@@ -606,6 +606,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   public String elementName() {
     return "object";
+  }
+
+  @Override
+  public String displayName() {
+    return name() != null && !name().isEmpty() ? name() : JsdUtil.flipName(id().toString());
   }
 
   @Override

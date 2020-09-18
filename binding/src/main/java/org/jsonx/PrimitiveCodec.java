@@ -41,8 +41,8 @@ abstract class PrimitiveCodec extends Codec {
   static final Map<String,Executable> decodeToMethod = new HashMap<>();
   static final Map<String,Executable> encodeToMethod = new HashMap<>();
 
-  final Class<?> type;
-  final Executable decode;
+  private final Class<?> type;
+  private final Executable decode;
 
   PrimitiveCodec(final Method getMethod, final Method setMethod, final String name, final boolean property, final Use use, final String decode) {
     super(getMethod, setMethod, name, property, use);
@@ -50,13 +50,23 @@ abstract class PrimitiveCodec extends Codec {
     this.type = getMethod.getReturnType() == Optional.class ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
   }
 
+  @Override
+  Class<?> type() {
+    return this.type;
+  }
+
+  @Override
+  Executable decode() {
+    return this.decode;
+  }
+
   final Error matches(final String json, final JsonReader reader) {
     return test(json.charAt(0)) ? validate(json, reader) : Error.EXPECTED_TYPE(name, elementName(), json, reader);
   }
 
   final Object parse(final String json) {
-    if (getMethod.getReturnType().isPrimitive() && (nullable || use == Use.OPTIONAL))
-      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type: " + getMethod.getReturnType());
+    if (getMethod.getReturnType().isPrimitive() && (nullable || use == Use.OPTIONAL) && decode() == null)
+      throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) and primitive type: " + getMethod.getReturnType() + " must declare a \"decode\" binding to handle null values");
 
     return parseValue(json);
   }

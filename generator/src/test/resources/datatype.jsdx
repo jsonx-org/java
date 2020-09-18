@@ -72,7 +72,7 @@
     <binding lang="java" type="boolean" encode="java.lang.String.valueOf"/>
   </boolean>
   <boolean name="StringBoolean">
-    <binding lang="java" type="java.lang.String" decode="java.lang.String.valueOf"/>
+    <binding lang="java" type="java.lang.String"/>
   </boolean>
   <number name="defaultDecimal" doc="Default decimal type"/>
   <number name="defaultInteger" scale="0" doc="Default integer type"/>
@@ -87,13 +87,13 @@
   </number>
   <number name="numRange" range="[1e10,]" doc="Template for number type with range"/>
   <number name="cachedInteger" scale="0" range="[1,]" doc="Template for integer number type with range">
-    <binding lang="java" decode="org.libj.math.BigIntegers.of"/>
+    <binding lang="java" decode="org.jsonx.TestHelper.stringToBigIntegerOrNull"/>
   </number>
   <number name="plainDecimal" scale="2" doc="Template cached BigDecimal">
     <binding lang="java" encode="this.toPlainString"/>
   </number>
   <number name="cachedPlainDecimal" scale="3" range="[-2.222e-12,]" doc="First template for real number type with range">
-    <binding lang="java" decode="org.libj.math.BigDecimals.of" encode="this.toPlainString"/>
+    <binding lang="java" decode="org.jsonx.TestHelper.stringToBigDecimalOrNull" encode="this.toPlainString"/>
   </number>
   <number name="defaultDecimalRange2" scale="3" range="[-2.222e-12,]" doc="Second template for real number type with range"/>
 
@@ -105,10 +105,10 @@
     <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/>
   </string>
   <string name="url" pattern="((https?|ftp)://jsonx.org/[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)" doc="URL pattern with URL type">
-    <binding lang="java" type="java.net.URL" decode="java.net.URL.&lt;init&gt;"/>
+    <binding lang="java" type="java.net.URL" decode="org.jsonx.TestHelper.stringToUrlOrNull"/>
   </string>
-  <string name="StringBigDecimal" pattern="\d+(\.\d+)?([eE][+-]?\d{1,5})?" doc="An integer with BigDecimal type represented as a string">
-    <binding lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;"/>
+  <string name="StringBigDecimal" pattern="\d+(\.\d+)?([eE][+-]?[1-9]\d{0,5})?" doc="An integer with BigDecimal type represented as a string">
+    <binding lang="java" type="java.math.BigDecimal" decode="org.jsonx.TestHelper.stringToBigDecimalOrNull"/>
   </string>
   <string name="nonEmptyString" pattern="(\S)|(\S.*\S)" doc="Non-empty string"/>
   <object name="objTest" doc="Object with array references">

@@ -34,6 +34,7 @@ import java.util.Map;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -58,17 +59,17 @@ import org.xml.sax.SAXException;
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
   private static final boolean testJson = true;
-  private static final URL schemaXsd;
+  private static final URL schemaXsd = URLs.create("http://www.jsonx.org/schema.xsd");
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
   private static final ArrayList<Settings> settings = new ArrayList<>();
 
-  static {
+  @BeforeClass
+  public static void beforeClass() {
     generatedSourcesDir.mkdirs();
     generatedResourcesDir.mkdirs();
     try {
-      schemaXsd = new URL("http://www.jsonx.org/schema.xsd");
       Files
         .walk(generatedSourcesDir.toPath())
         .sorted(Comparator.reverseOrder())

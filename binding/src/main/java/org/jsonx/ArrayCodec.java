@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -110,6 +111,16 @@ class ArrayCodec extends Codec {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use());
     final int[] elementIds = JsdUtil.digest(getMethod, idToElement);
     this.annotations = idToElement.get(elementIds);
+  }
+
+  @Override
+  Class<?> type() {
+    return null;
+  }
+
+  @Override
+  Executable decode() {
+    return null;
   }
 
   @Override
