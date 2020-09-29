@@ -37,7 +37,7 @@ final class JsdUtil {
   private static final char prefix = '_';
   private static final Function<Character,String> classSubs = c -> c == null ? "_" : c != '_' ? Integer.toHexString(c) : "__";
   private static final Function<Character,String> camelSubs = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? Integer.toHexString(c) : "__";
-  private static final String[] reservedWords = {"com", "java", "org"}; // FIXME: This does not consider root package names of types declared in <binding> tags
+  private static final String[] reservedWords = {"java", "org"}; // FIXME: This does not consider root package names of types declared in <binding> tags
 
   /**
    * Returns the name of this member as a valid Java Identifier in:

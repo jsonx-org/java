@@ -121,7 +121,6 @@ public class JsdUtilTest {
   @Test
   public void testToInstanceName() {
     assertEquals("_$", JsdUtil.toInstanceName(""));
-    assertEquals("_com", JsdUtil.toInstanceName("com"));
     assertEquals("_java", JsdUtil.toInstanceName("java"));
     assertEquals("_org", JsdUtil.toInstanceName("org"));
     assertEquals("helloWorld", JsdUtil.toInstanceName("HelloWorld"));
