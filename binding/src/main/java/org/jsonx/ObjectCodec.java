@@ -53,6 +53,8 @@ class ObjectCodec extends Codec {
 
         final String propertyName = token.substring(1, token.length() - 1);
         token = reader.readToken();
+        if (token == null)
+          return abort(Error.UNEXPECTED_END_OF_DOCUMENT(reader), reader, index);
 
         final Codec codec = propertyToCodec.get(propertyName);
         if (codec == null) {

@@ -95,6 +95,10 @@ final class Error {
     return new Error("%s: %s: Pattern does not match: \"%s\"", annotation, getMethod, string);
   }
 
+  static Error UNEXPECTED_END_OF_DOCUMENT(final JsonReader reader) {
+    return new Error(reader, "Unexpected end of document");
+  }
+
   static Error INVALID_CONTENT_WAS_FOUND(final int index, final Annotation annotation) {
     return new Error("Invalid content was found starting with member index=%d: %s: ", index, annotation);
   }
