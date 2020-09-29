@@ -22,6 +22,7 @@ import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -36,6 +37,7 @@ final class JsdUtil {
   private static final char prefix = '_';
   private static final Function<Character,String> classSubs = c -> c == null ? "_" : c != '_' ? Integer.toHexString(c) : "__";
   private static final Function<Character,String> camelSubs = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? Integer.toHexString(c) : "__";
+  private static final String[] reservedWords = {"com", "java", "org"}; // FIXME: This does not consider root package names of types declared in <binding> tags
 
   /**
    * Returns the name of this member as a valid Java Identifier in:
@@ -72,8 +74,9 @@ final class JsdUtil {
     return toIdentifier(name, true);
   }
 
-  static String toInstanceName(final String name) {
-    return toIdentifier(name, false);
+  static String toInstanceName(String name) {
+    name = toIdentifier(name, false);
+    return Arrays.binarySearch(reservedWords, name) < 0 ? name : "_" + name;
   }
 
   static String getFieldName(final Method getMethod) {
