@@ -483,11 +483,14 @@ public class JxEncoder {
   public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
     final StringBuilder builder = new StringBuilder();
     final Relations relations = new Relations();
-    final Error error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
+    Error error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
     if (validate && error != null)
       throw new EncodeException(error);
 
-    encodeArray(null, relations, builder, 0);
+    error = encodeArray(null, relations, builder, 0);
+    if (validate && error != null)
+      throw new EncodeException(error);
+
     return builder.toString();
   }
 }
