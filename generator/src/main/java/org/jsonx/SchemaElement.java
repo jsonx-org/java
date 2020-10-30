@@ -482,29 +482,33 @@ public final class SchemaElement extends Element implements Declarer {
     return toSource(Settings.DEFAULT);
   }
 
+  private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Settings settings, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {
+    final Registry.Type declaringType = type.getDeclaringType();
+    if (declaringType == null) {
+      typeToJavaClass.put(type, classSpec);
+      return;
+    }
+
+    ClassSpec parent = all.get(declaringType);
+    if (parent == null) {
+      parent = new ClassSpec(declaringType, settings);
+      addParents(declaringType, parent, settings, typeToJavaClass, all);
+      all.put(declaringType, parent);
+    }
+
+    parent.add(classSpec);
+  }
+
   public Map<String,String> toSource(final Settings settings) {
     final Map<Registry.Type,ClassSpec> all = new HashMap<>();
     final Map<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
     for (final Model member : registry.getModels()) {
       if (member instanceof Referrer && ((Referrer<?>)member).classType() != null) {
         final Referrer<?> model = (Referrer<?>)member;
+        final Registry.Type type = model.classType();
         final ClassSpec classSpec = new ClassSpec(model, settings);
-        if (model.classType().getDeclaringType() != null) {
-          final Registry.Type declaringType = model.classType().getDeclaringType();
-          ClassSpec parent = all.get(declaringType);
-          if (parent == null) {
-            parent = new ClassSpec(declaringType, settings);
-            typeToJavaClass.put(declaringType, parent);
-            all.put(declaringType, parent);
-          }
-
-          parent.add(classSpec);
-        }
-        else {
-          typeToJavaClass.put(model.classType(), classSpec);
-        }
-
-        all.put(model.classType(), classSpec);
+        addParents(type, classSpec, settings, typeToJavaClass, all);
+        all.put(type, classSpec);
       }
     }
 
