@@ -21,8 +21,8 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.libj.math.BigDecimals;
-import org.libj.math.BigIntegers;
+import org.libj.lang.BigDecimals;
+import org.libj.lang.BigIntegers;
 
 public final class TestHelper {
   public static BigInteger stringToBigIntegerOrNull(final String str) {
