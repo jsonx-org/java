@@ -54,12 +54,12 @@ class AttributeMap extends ObservableMap<String,Object> {
   }
 
   @Override
-  protected boolean beforePut(final String key, final Object oldValue, final Object newValue) {
+  protected Object beforePut(final String key, final Object oldValue, final Object newValue, final Object preventDefault) {
     // Commented out, because <binding field="..."> may end up being overwritten for non-root-based reference/model pairs
     // if (oldValue != null && !oldValue.equals(newValue) && !"xsi:schemaLocation".equals(key))
     //   throw new IllegalArgumentException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
 
     target.put(prefix != null ? prefix + key : key, newValue);
-    return false;
+    return preventDefault;
   }
 }
