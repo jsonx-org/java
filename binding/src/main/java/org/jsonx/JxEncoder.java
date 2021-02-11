@@ -94,10 +94,11 @@ public class JxEncoder {
    * Set the global {@link JxEncoder}.
    *
    * @param encoder The {@link JxEncoder}.
+   * @return The provided {@link JxEncoder}.
    * @see #get()
    */
-  public static void set(final JxEncoder encoder) {
-    global = encoder;
+  public static JxEncoder set(final JxEncoder encoder) {
+    return global = encoder;
   }
 
   final int indent;

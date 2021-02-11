@@ -33,6 +33,44 @@ public final class JxDecoder {
   public static final JxDecoder VALIDATING = new JxDecoder(true);
   public static final JxDecoder NON_VALIDATING = new JxDecoder(false);
 
+  private static JxDecoder global = NON_VALIDATING;
+
+  /**
+   * Returns the {@link JxDecoder} for the provided validation boolean,
+   * specifying whether the {@link JxDecoder} is to validate JSON documents
+   * while parsing.
+   *
+   * @param validating Whether the {@link JxDecoder} is to validate JSON
+   *          documents while parsing.
+   * @return The {@link JxDecoder} for the provided validation boolean,
+   *         specifying whether the {@link JxDecoder} is to validate JSON
+   *         documents while parsing.
+   */
+  public static JxDecoder get(final boolean validating) {
+    return validating ? VALIDATING : NON_VALIDATING;
+  }
+
+  /**
+   * Returns the global {@link JxDecoder}.
+   *
+   * @return The global {@link JxDecoder}.
+   * @see #set(JxDecoder)
+   */
+  public static JxDecoder get() {
+    return global;
+  }
+
+  /**
+   * Set the global {@link JxDecoder}.
+   *
+   * @param decoder The {@link JxDecoder}.
+   * @return The provided {@link JxDecoder}.
+   * @see #get()
+   */
+  public static JxDecoder set(final JxDecoder decoder) {
+    return global = decoder;
+  }
+
   private final boolean validate;
 
   private JxDecoder(final boolean validate) {
