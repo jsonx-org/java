@@ -19,19 +19,17 @@ package org.jsonx.sample.invoice;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 import org.jsonx.DecodeException;
 import org.jsonx.JxDecoder;
 import org.jsonx.JxEncoder;
 import org.junit.Test;
-import org.openjax.json.JsonReader;
 
 public class InvoiceSampleTest {
   @Test
   public void test() throws DecodeException, IOException {
     final Invoice invoice = InvoiceSample.createInvoice();
     final String json = JxEncoder._2.marshal(invoice);
-    assertEquals(invoice, JxDecoder.VALIDATING.parseObject(Invoice.class, new JsonReader(new StringReader(json))));
+    assertEquals(invoice, JxDecoder.VALIDATING.parseObject(Invoice.class, json));
   }
 }

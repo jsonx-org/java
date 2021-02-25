@@ -58,7 +58,7 @@ class ArrayEncodeIterator extends ArrayIterator {
 
     if (codecType == NumberCodec.class) {
       final NumberElement element = (NumberElement)annotation;
-      return NumberCodec.encodeArray(annotation,  element.scale(), element.range(), element.type(), element.encode(), current, index, relations, validate);
+      return NumberCodec.encodeArray(annotation, element.scale(), element.range(), element.type(), element.encode(), current, index, relations, validate);
     }
 
     if (codecType == StringCodec.class) {

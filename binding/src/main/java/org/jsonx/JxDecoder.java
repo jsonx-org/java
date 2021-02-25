@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
@@ -112,6 +113,33 @@ public final class JxDecoder {
   }
 
   /**
+   * Parses a JSON object from the supplied {@link JsonReader} as per the
+   * specification of the provided {@link JxObject} class.
+   *
+   * @param <T> The type parameter for the return object of {@link JxObject}
+   *          class.
+   * @param type The class for the return object.
+   * @param json The string document containing a JSON object.
+   * @param onPropertyDecode Callback predicate to be called for each decoded
+   *          JSON properties, accepting arguments of:
+   *          <ol>
+   *          <li>The {@link JxObject}.</li>
+   *          <li>The property name.</li>
+   *          <li>The property value.</li>
+   *          </ol>
+   * @return A {@link JxObject} of the specified type representing the parsed
+   *         JSON object.
+   * @throws DecodeException If an exception has occurred while decoding a JSON
+   *           document.
+   * @throws IOException If an I/O error has occurred.
+   */
+  public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
+    try (final JsonReader in = new JsonReader(new StringReader(json))) {
+      return parseObject(type, in, onPropertyDecode);
+    }
+  }
+
+  /**
    * Parses a JSON object at the supplied {@link JsonReader} as per the
    * specification of the provided {@link JxObject} class.
    *
@@ -127,6 +155,26 @@ public final class JxDecoder {
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
     return parseObject(type, reader, null);
+  }
+
+  /**
+   * Parses a JSON object at the supplied {@link JsonReader} as per the
+   * specification of the provided {@link JxObject} class.
+   *
+   * @param <T> The type parameter for the return object of {@link JxObject}
+   *          class.
+   * @param type The class for the return object.
+   * @param json The string document containing a JSON object.
+   * @return A {@link JxObject} of the specified type representing the parsed
+   *         JSON object.
+   * @throws DecodeException If an exception has occurred while decoding a JSON
+   *           document.
+   * @throws IOException If an I/O error has occurred.
+   */
+  public <T extends JxObject>T parseObject(final Class<T> type, final String json) throws DecodeException, IOException {
+    try (final JsonReader in = new JsonReader(new StringReader(json))) {
+      return parseObject(type, in);
+    }
   }
 
   /**
@@ -157,5 +205,27 @@ public final class JxDecoder {
       throw new DecodeException(((Error)array).setReader(reader));
 
     return (List<?>)array;
+  }
+
+  /**
+   * Parses a JSON array from the supplied string document as per the
+   * specification of the provided annotation class that declares an
+   * {@link ArrayType} annotation.
+   *
+   * @param annotationType The annotation class that declares an
+   *          {@link ArrayType} annotation.
+   * @param json The string document containing a JSON array.
+   * @return A {@link List} representing the parsed JSON array.
+   * @throws DecodeException If an exception has occurred while decoding a JSON
+   *           document.
+   * @throws JsonParseException If the content is not well formed.
+   * @throws NullPointerException If @{@code reader} or {@code annotationType}
+   *           is null.
+   * @throws IOException If an I/O error has occurred.
+   */
+  public List<?> parseArray(final Class<? extends Annotation> annotationType, final String json) throws DecodeException, JsonParseException, IOException {
+    try (final JsonReader in = new JsonReader(new StringReader(json))) {
+      return parseArray(annotationType, in);
+    }
   }
 }

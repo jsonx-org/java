@@ -139,7 +139,7 @@ To <ins>parse</ins> JSON to <ins>JSONx</ins> Bindings:
 
 ```java
 String json = "{\"email\":\"john@doe\",\"password\":\"066b91577bc547e21aa329c74d74b0e53e29534d4cc0ad455abba050121a9557\"}";
-Credentials credentials = JxDecoder.parseObject(Credentials.class, new JsonReader(new StringReader(json)));
+Credentials credentials = JxDecoder.parseObject(Credentials.class, json);
 ```
 
 To <ins>marshal</ins> <ins>JSONx</ins> Bindings to JSON:

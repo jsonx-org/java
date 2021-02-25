@@ -20,7 +20,6 @@ import static org.jsonx.TestUtil.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,7 +46,6 @@ import org.libj.lang.BigDecimals;
 import org.libj.lang.BigIntegers;
 import org.libj.lang.Strings;
 import org.libj.util.CollectionUtil;
-import org.openjax.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +78,7 @@ public class ArrayCodecTest {
 
     try {
       final String inJson = in.toString();
-      final Object out = JxDecoder.VALIDATING.parseObject(in.getClass(), new JsonReader(new StringReader(inJson)));
+      final Object out = JxDecoder.VALIDATING.parseObject(in.getClass(), inJson);
       final String outJson = out.toString();
       assertEquals(inJson, outJson);
       if (expected != null)

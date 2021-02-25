@@ -20,13 +20,11 @@ import static org.jsonx.TestUtil.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.Test;
-import org.openjax.json.JsonReader;
 
 public class InvalidTest {
   private static final JxEncoder validEncoder = new JxEncoder(2, true);
@@ -47,7 +45,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidName\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.InvalidName.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.InvalidName.class, json);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -72,7 +70,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.InvalidType.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.InvalidType.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -97,7 +95,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -120,7 +118,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, json);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -145,7 +143,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"number\": 127}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -168,7 +166,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"number\": 127}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -191,7 +189,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"number\": 127}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveScale.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveScale.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -214,7 +212,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": 7}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -237,7 +235,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, json);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -260,7 +258,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidForm\": 10.9}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, json);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -285,7 +283,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidRange\": 7}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumRange.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.NumRange.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -310,7 +308,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -333,7 +331,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, json);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -356,7 +354,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidPattern\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -381,7 +379,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": [\"foo\"]}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -404,7 +402,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": []}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, json);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -427,7 +425,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidPattern\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.ArrAnnotationType.class, new JsonReader(new StringReader(json)));
+        JxDecoder.VALIDATING.parseObject(Invalid.ArrAnnotationType.class, json);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {

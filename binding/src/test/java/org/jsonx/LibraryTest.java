@@ -19,7 +19,6 @@ package org.jsonx;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import org.jsonx.library.Library;
 import org.jsonx.library.OnlineArticle;
 import org.jsonx.library.Publishing;
 import org.junit.Test;
-import org.openjax.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,12 +44,11 @@ public class LibraryTest {
 
   private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
     final String json = annotationType != null ? encoder.marshal((List<?>)obj, annotationType) : encoder.marshal((JxObject)obj);
-    final JsonReader reader = new JsonReader(new StringReader(json));
     final Object decoded;
     if (annotationType != null)
-      decoded = JxDecoder.VALIDATING.parseArray(annotationType, reader);
+      decoded = JxDecoder.VALIDATING.parseArray(annotationType, json);
     else
-      decoded = JxDecoder.VALIDATING.parseObject(((JxObject)obj).getClass(), reader);
+      decoded = JxDecoder.VALIDATING.parseObject(((JxObject)obj).getClass(), json);
 
     assertEquals(obj.toString(), decoded.toString());
   }
@@ -177,20 +174,20 @@ public class LibraryTest {
 
     final String json = encoder.marshal(library);
     logger.info(json);
-    JxDecoder.VALIDATING.parseObject(Library.class, new JsonReader(new StringReader(json)));
+    JxDecoder.VALIDATING.parseObject(Library.class, json);
   }
 
   @Test
   public void testOnPropertyDecode() throws DecodeException, IOException {
     final String json = "{\"year\":2003,\"publisher\":\"Science Publisher\",\"extra\":false}";
     try {
-      JxDecoder.VALIDATING.parseObject(Publishing.class, new JsonReader(new StringReader(json)));
+      JxDecoder.VALIDATING.parseObject(Publishing.class, json);
       fail("Expected DecodeException");
     }
     catch (final DecodeException e) {
       assertTrue(e.getMessage().startsWith("Unknown property: \"extra\""));
     }
 
-    JxDecoder.VALIDATING.parseObject(Publishing.class, new JsonReader(new StringReader(json)), (o,p,v) -> o instanceof Publishing);
+    JxDecoder.VALIDATING.parseObject(Publishing.class, json, (o,p,v) -> o instanceof Publishing);
   }
 }

@@ -226,7 +226,7 @@ for (Message message : messages) {
   String json = JxEncoder._2.marshal(message);
   System.out.println(json);
 
-  Message json2 = JxDecoder.parseObject(message.getClass(), new JsonReader(new StringReader(json)));
+  Message json2 = JxDecoder.parseObject(message.getClass(), json);
   assertEquals(json, json2);
 }
 ```

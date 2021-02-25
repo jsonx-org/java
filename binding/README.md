@@ -335,7 +335,7 @@ System.out.println(json);
 &nbsp;&nbsp;6.&nbsp;You can also <ins>parse</ins> the JSON into Java objects:
 
 ```java
-Invoice invoice2 = JxDecoder.parseObject(Invoice.class, new JsonReader(new StringReader(json)));
+Invoice invoice2 = JxDecoder.parseObject(Invoice.class, json);
 assertEquals(invoice, invoice2);
 ```
 
