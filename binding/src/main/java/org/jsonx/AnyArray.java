@@ -17,7 +17,7 @@
 package org.jsonx;
 
 /**
- * An @{@link ArrayType} that represents any JSON array.
+ * An {@link ArrayType} that represents any JSON array.
  */
 @AnyElement(id=0, minOccurs=0)
 @ArrayType(elementIds = 0)

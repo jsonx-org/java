@@ -95,9 +95,10 @@ public final class JxDecoder {
    *          </ol>
    * @return A {@link JxObject} of the specified type representing the parsed
    *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding a JSON
-   *           document.
+   * @throws DecodeException If an exception has occurred while decoding the
+   *           JSON object.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code type} or {@code reader} is null.
    */
   @SuppressWarnings("unchecked")
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
@@ -129,9 +130,10 @@ public final class JxDecoder {
    *          </ol>
    * @return A {@link JxObject} of the specified type representing the parsed
    *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding a JSON
-   *           document.
+   * @throws DecodeException If an exception has occurred while decoding the
+   *           JSON object.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code type} or {@code json} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new StringReader(json))) {
@@ -149,9 +151,10 @@ public final class JxDecoder {
    * @param reader The {@link JsonReader} containing the JSON object.
    * @return A {@link JxObject} of the specified type representing the parsed
    *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding a JSON
-   *           document.
+   * @throws DecodeException If an exception has occurred while decoding the
+   *           JSON object.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code type} or {@code reader} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
     return parseObject(type, reader, null);
@@ -167,9 +170,10 @@ public final class JxDecoder {
    * @param json The string document containing a JSON object.
    * @return A {@link JxObject} of the specified type representing the parsed
    *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding a JSON
-   *           document.
+   * @throws DecodeException If an exception has occurred while decoding the
+   *           JSON object.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code type} or {@code json} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new StringReader(json))) {
@@ -186,12 +190,12 @@ public final class JxDecoder {
    *          {@link ArrayType} annotation.
    * @param reader The {@link JsonReader} containing the JSON array.
    * @return A {@link List} representing the parsed JSON array.
-   * @throws DecodeException If an exception has occurred while decoding a JSON
-   *           document.
+   * @throws DecodeException If an exception has occurred while decoding the
+   *           JSON array.
    * @throws JsonParseException If the content is not well formed.
-   * @throws NullPointerException If @{@code reader} or {@code annotationType}
-   *           is null.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code annotationType} or {@code reader} is
+   *           null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     final String token = reader.readToken();
@@ -216,12 +220,12 @@ public final class JxDecoder {
    *          {@link ArrayType} annotation.
    * @param json The string document containing a JSON array.
    * @return A {@link List} representing the parsed JSON array.
-   * @throws DecodeException If an exception has occurred while decoding a JSON
-   *           document.
+   * @throws DecodeException If an exception has occurred while decoding the
+   *           JSON array.
    * @throws JsonParseException If the content is not well formed.
-   * @throws NullPointerException If @{@code reader} or {@code annotationType}
-   *           is null.
    * @throws IOException If an I/O error has occurred.
+   * @throws NullPointerException If {@code annotationType} or {@code json} is
+   *           null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final String json) throws DecodeException, JsonParseException, IOException {
     try (final JsonReader in = new JsonReader(new StringReader(json))) {
