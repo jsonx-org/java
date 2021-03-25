@@ -734,7 +734,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   String toSource(final Settings settings) {
     final StringBuilder builder = new StringBuilder();
-    final boolean hasMembers = numNonOverrideMembers() > 0;
     if (properties != null && properties.size() > 0) {
       for (final Property property : properties.values()) {
         if (builder.length() > 0)
@@ -757,6 +756,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
       builder.append(" || !super.equals(obj)");
 
     builder.append(")\n    return false;\n");
+
+    final boolean hasMembers = numNonOverrideMembers() > 0;
     if (hasMembers) {
       builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
       for (final Property property : properties.values()) {
@@ -822,7 +823,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (type.getSuperType() == null) {
       builder.append("\n\n@").append(Override.class.getName());
       builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
-      builder.append("\n  return ").append(JxEncoder.class.getName()).append(".get().marshal(this);");
+      builder.append("\n  return ").append(JxEncoder.class.getName()).append(".get().toString(this);");
       builder.append("\n}");
     }
 

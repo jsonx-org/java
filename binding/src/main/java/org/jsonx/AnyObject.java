@@ -46,6 +46,6 @@ public class AnyObject implements JxObject {
 
   @Override
   public String toString() {
-    return JxEncoder.get().marshal(this);
+    return JxEncoder.get().toString(this);
   }
 }

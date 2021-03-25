@@ -372,12 +372,13 @@ abstract class Member extends Element {
     if (override == null || !isArrayOverride(override)) {
       if (doc != null)
         builder.append(doc).append('\n');
-      builder.append("public void set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
+      builder.append("public ").append(declarer.classType().getSimpleName()).append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
       if (override != null)
         builder.append("super.set").append(classCase).append('(').append(instanceCase).append(")");
       else
         builder.append("this.").append(instanceCase).append(" = ").append(instanceCase);
-      builder.append(";\n}");
+      builder.append(";\n");
+      builder.append("  return this;\n}");
     }
 
     if (override == null)

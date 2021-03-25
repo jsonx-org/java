@@ -8,8 +8,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public Any setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -19,8 +20,9 @@ public class schema {
       return types;
     }
 
-    public void setTypes(final java.lang.String types) {
+    public Any setTypes(final java.lang.String types) {
       this.types = types;
+      return this;
     }
 
     private java.lang.String types;
@@ -62,8 +64,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public AnyElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -73,8 +76,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public AnyElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -84,8 +88,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public AnyElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -133,8 +138,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public AnyProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -144,8 +150,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public AnyProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -155,8 +162,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
+    public AnyProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
@@ -204,8 +212,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public Array setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -217,8 +226,9 @@ public class schema {
     }
 
     /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
-    public void setMinIterate(final java.lang.String minIterate) {
+    public Array setMinIterate(final java.lang.String minIterate) {
       this.minIterate = minIterate;
+      return this;
     }
 
     private java.lang.String minIterate;
@@ -230,8 +240,9 @@ public class schema {
     }
 
     /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
-    public void setMaxIterate(final java.lang.String maxIterate) {
+    public Array setMaxIterate(final java.lang.String maxIterate) {
       this.maxIterate = maxIterate;
+      return this;
     }
 
     private java.lang.String maxIterate;
@@ -248,8 +259,9 @@ public class schema {
       return elements;
     }
 
-    public void setElements(final java.util.List<org.jsonx.schema.Member> elements) {
+    public Array setElements(final java.util.List<org.jsonx.schema.Member> elements) {
       this.elements = elements;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.Member> elements;
@@ -303,8 +315,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public ArrayElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -314,8 +327,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public ArrayElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -325,8 +339,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public ArrayElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -374,8 +389,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public ArrayProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -385,8 +401,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public ArrayProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -396,8 +413,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
+    public ArrayProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
@@ -447,8 +465,9 @@ public class schema {
     }
 
     /** Specifies the language to which this binding applies. **/
-    public void setLang(final java.lang.String lang) {
+    public Binding setLang(final java.lang.String lang) {
       this.lang = lang;
+      return this;
     }
 
     private java.lang.String lang;
@@ -479,7 +498,7 @@ public class schema {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return org.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().toString(this);
     }
   }
 
@@ -489,8 +508,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public Boolean setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -500,8 +520,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
+    public Boolean setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.TypeBinding> bindings;
@@ -543,8 +564,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public BooleanElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -554,8 +576,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public BooleanElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -565,8 +588,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public BooleanElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -614,8 +638,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public BooleanProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -625,8 +650,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public BooleanProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -675,8 +701,9 @@ public class schema {
     }
 
     /** Defines text comments. Optional. **/
-    public void setDoc(final java.lang.String doc) {
+    public Documented setDoc(final java.lang.String doc) {
       this.doc = doc;
+      return this;
     }
 
     private java.lang.String doc;
@@ -707,7 +734,7 @@ public class schema {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return org.jsonx.JxEncoder.get().marshal(this);
+      return org.jsonx.JxEncoder.get().toString(this);
     }
   }
 
@@ -720,8 +747,9 @@ public class schema {
     }
 
     /** Specifies the "field" identifier. **/
-    public void setField(final java.lang.String field) {
+    public FieldBinding setField(final java.lang.String field) {
       this.field = field;
+      return this;
     }
 
     private java.lang.String field;
@@ -782,8 +810,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public Number setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -803,8 +832,9 @@ public class schema {
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
            Degenerate interval: [val] **/
-    public void setRange(final java.lang.String range) {
+    public Number setRange(final java.lang.String range) {
       this.range = range;
+      return this;
     }
 
     private java.lang.String range;
@@ -816,8 +846,9 @@ public class schema {
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public void setScale(final java.math.BigInteger scale) {
+    public Number setScale(final java.math.BigInteger scale) {
       this.scale = scale;
+      return this;
     }
 
     private java.math.BigInteger scale;
@@ -827,8 +858,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
+    public Number setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.TypeBinding> bindings;
@@ -882,8 +914,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public NumberElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -893,8 +926,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public NumberElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -904,8 +938,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public NumberElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -953,8 +988,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public NumberProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -964,8 +1000,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public NumberProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -1013,8 +1050,9 @@ public class schema {
         return properties;
       }
 
-      public void setProperties(final java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> properties) {
+      public Properties setProperties(final java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> properties) {
         this.properties = properties;
+        return this;
       }
 
       private java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> properties;
@@ -1045,7 +1083,7 @@ public class schema {
 
       @java.lang.Override
       public java.lang.String toString() {
-        return org.jsonx.JxEncoder.get().marshal(this);
+        return org.jsonx.JxEncoder.get().toString(this);
       }
     }
 
@@ -1054,8 +1092,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public Object setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -1067,8 +1106,9 @@ public class schema {
     }
 
     /** Specifies the name of the type to extend. Optional. **/
-    public void setExtends(final java.lang.String _extends) {
+    public Object setExtends(final java.lang.String _extends) {
       this._extends = _extends;
+      return this;
     }
 
     private java.lang.String _extends;
@@ -1078,8 +1118,9 @@ public class schema {
       return properties;
     }
 
-    public void setProperties(final org.jsonx.schema.Object.Properties properties) {
+    public Object setProperties(final org.jsonx.schema.Object.Properties properties) {
       this.properties = properties;
+      return this;
     }
 
     private org.jsonx.schema.Object.Properties properties;
@@ -1127,8 +1168,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public ObjectElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -1138,8 +1180,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public ObjectElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -1149,8 +1192,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public ObjectElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -1198,8 +1242,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public ObjectProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -1209,8 +1254,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public ObjectProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -1220,8 +1266,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
+    public ObjectProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
@@ -1271,8 +1318,9 @@ public class schema {
     }
 
     /** Specifies whether the object is abstract. Default: false. **/
-    public void setAbstract(final java.lang.Boolean _abstract) {
+    public ObjectType setAbstract(final java.lang.Boolean _abstract) {
       this._abstract = _abstract;
+      return this;
     }
 
     private java.lang.Boolean _abstract;
@@ -1308,8 +1356,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public Reference setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -1321,8 +1370,9 @@ public class schema {
     }
 
     /** Specifies the name of the referenced type. Required. **/
-    public void setType(final java.lang.String type) {
+    public Reference setType(final java.lang.String type) {
       this.type = type;
+      return this;
     }
 
     private java.lang.String type;
@@ -1364,8 +1414,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public ReferenceElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -1375,8 +1426,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public ReferenceElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -1386,8 +1438,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public ReferenceElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -1435,8 +1488,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public ReferenceProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -1446,8 +1500,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public ReferenceProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -1457,8 +1512,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
+    public ReferenceProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
@@ -1506,8 +1562,9 @@ public class schema {
       return jx3aNs;
     }
 
-    public void setJx3aNs(final java.lang.String jx3aNs) {
+    public Schema setJx3aNs(final java.lang.String jx3aNs) {
       this.jx3aNs = jx3aNs;
+      return this;
     }
 
     private java.lang.String jx3aNs;
@@ -1517,8 +1574,9 @@ public class schema {
       return jx3aSchemaLocation;
     }
 
-    public void setJx3aSchemaLocation(final java.lang.String jx3aSchemaLocation) {
+    public Schema setJx3aSchemaLocation(final java.lang.String jx3aSchemaLocation) {
       this.jx3aSchemaLocation = jx3aSchemaLocation;
+      return this;
     }
 
     private java.lang.String jx3aSchemaLocation;
@@ -1528,8 +1586,9 @@ public class schema {
       return declarations;
     }
 
-    public void setDeclarations(final java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> declarations) {
+    public Schema setDeclarations(final java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> declarations) {
       this.declarations = declarations;
+      return this;
     }
 
     private java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> declarations;
@@ -1577,8 +1636,9 @@ public class schema {
       return jx3aType;
     }
 
-    public void setJx3aType(final java.lang.String jx3aType) {
+    public String setJx3aType(final java.lang.String jx3aType) {
       this.jx3aType = jx3aType;
+      return this;
     }
 
     private java.lang.String jx3aType;
@@ -1588,8 +1648,9 @@ public class schema {
       return pattern;
     }
 
-    public void setPattern(final java.lang.String pattern) {
+    public String setPattern(final java.lang.String pattern) {
       this.pattern = pattern;
+      return this;
     }
 
     private java.lang.String pattern;
@@ -1599,8 +1660,9 @@ public class schema {
       return bindings;
     }
 
-    public void setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
+    public String setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
       this.bindings = bindings;
+      return this;
     }
 
     private java.util.List<org.jsonx.schema.TypeBinding> bindings;
@@ -1648,8 +1710,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public StringElement setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -1659,8 +1722,9 @@ public class schema {
       return minOccurs;
     }
 
-    public void setMinOccurs(final java.lang.String minOccurs) {
+    public StringElement setMinOccurs(final java.lang.String minOccurs) {
       this.minOccurs = minOccurs;
+      return this;
     }
 
     private java.lang.String minOccurs;
@@ -1670,8 +1734,9 @@ public class schema {
       return maxOccurs;
     }
 
-    public void setMaxOccurs(final java.lang.String maxOccurs) {
+    public StringElement setMaxOccurs(final java.lang.String maxOccurs) {
       this.maxOccurs = maxOccurs;
+      return this;
     }
 
     private java.lang.String maxOccurs;
@@ -1719,8 +1784,9 @@ public class schema {
       return nullable;
     }
 
-    public void setNullable(final java.lang.Boolean nullable) {
+    public StringProperty setNullable(final java.lang.Boolean nullable) {
       this.nullable = nullable;
+      return this;
     }
 
     private java.lang.Boolean nullable;
@@ -1730,8 +1796,9 @@ public class schema {
       return use;
     }
 
-    public void setUse(final java.lang.String use) {
+    public StringProperty setUse(final java.lang.String use) {
       this.use = use;
+      return this;
     }
 
     private java.lang.String use;
@@ -1781,8 +1848,9 @@ public class schema {
     }
 
     /** Specifies the "type" qualified identifier. **/
-    public void setType(final java.lang.String type) {
+    public TypeBinding setType(final java.lang.String type) {
       this.type = type;
+      return this;
     }
 
     private java.lang.String type;
@@ -1794,8 +1862,9 @@ public class schema {
     }
 
     /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    public void setDecode(final java.lang.String decode) {
+    public TypeBinding setDecode(final java.lang.String decode) {
       this.decode = decode;
+      return this;
     }
 
     private java.lang.String decode;
@@ -1807,8 +1876,9 @@ public class schema {
     }
 
     /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    public void setEncode(final java.lang.String encode) {
+    public TypeBinding setEncode(final java.lang.String encode) {
       this.encode = encode;
+      return this;
     }
 
     private java.lang.String encode;
@@ -1866,8 +1936,9 @@ public class schema {
     }
 
     /** Specifies the "field" identifier. **/
-    public void setField(final java.lang.String field) {
+    public TypeFieldBinding setField(final java.lang.String field) {
       this.field = field;
+      return this;
     }
 
     private java.lang.String field;

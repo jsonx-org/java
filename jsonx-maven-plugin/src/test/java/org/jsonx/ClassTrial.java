@@ -140,7 +140,7 @@ class ClassTrial extends Trial {
     Exception exception = null;
     try {
       final AtomicReference<Bounds> bounds = new AtomicReference<>();
-      json = validEncoder.marshal(binding, (g,n,r,s,e) -> {
+      json = validEncoder.toString(binding, (g,n,r,s,e) -> {
         if (g.equals(trial.getMethod) && trial.name.equals(n)) {
           if (bounds.get() != null)
             throw new IllegalStateException(String.valueOf(bounds.get()));
@@ -163,7 +163,7 @@ class ClassTrial extends Trial {
     }
     catch (final Exception e) {
       exception = e;
-      json = invalidEncoder.marshal(binding);
+      json = invalidEncoder.toString(binding);
     }
 
     assertFalse(value != null && value.startsWith("[") && relations[0] == null);
@@ -183,9 +183,9 @@ class ClassTrial extends Trial {
 
     if (json.contains("\"-")) {
       if (exception != null)
-        invalidEncoder.marshal(binding);
+        invalidEncoder.toString(binding);
       else
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
     }
 
     return json;

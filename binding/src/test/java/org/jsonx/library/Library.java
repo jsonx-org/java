@@ -145,6 +145,6 @@ public class Library implements JxObject {
 
   @Override
   public String toString() {
-    return JxEncoder._2.marshal(this);
+    return JxEncoder._2.toString(this);
   }
 }

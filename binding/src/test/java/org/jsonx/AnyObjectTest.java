@@ -43,7 +43,7 @@ public class AnyObjectTest {
       assertEquals(array0, array1);
 
       final String expected = Readers.readFully(reader);
-      final String actual = JxEncoder.get().marshal(array0, AnyArray.class);
+      final String actual = JxEncoder.get().toString(array0, AnyArray.class);
       assertEquals(expected, actual);
     }
   }

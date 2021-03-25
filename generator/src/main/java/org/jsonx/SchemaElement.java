@@ -500,19 +500,19 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   public Map<String,String> toSource(final Settings settings) {
-    final Map<Registry.Type,ClassSpec> all = new HashMap<>();
-    final Map<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
+    final HashMap<Registry.Type,ClassSpec> all = new HashMap<>();
+    final HashMap<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
     for (final Model member : registry.getModels()) {
-      if (member instanceof Referrer && ((Referrer<?>)member).classType() != null) {
-        final Referrer<?> model = (Referrer<?>)member;
-        final Registry.Type type = model.classType();
-        final ClassSpec classSpec = new ClassSpec(model, settings);
+      final Referrer<?> referrer;
+      final Registry.Type type;
+      if (member instanceof Referrer && (type = (referrer = (Referrer<?>)member).classType()) != null) {
+        final ClassSpec classSpec = new ClassSpec(referrer, settings);
         addParents(type, classSpec, settings, typeToJavaClass, all);
         all.put(type, classSpec);
       }
     }
 
-    final Map<String,String> sources = new HashMap<>();
+    final HashMap<String,String> sources = new HashMap<>();
     final StringBuilder builder = new StringBuilder();
     for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) {
       final Registry.Type type = entry.getKey();

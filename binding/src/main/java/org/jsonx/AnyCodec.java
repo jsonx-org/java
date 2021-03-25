@@ -149,7 +149,7 @@ class AnyCodec extends Codec {
         else
           builder.setLength(0);
 
-        if ((error = jxEncoder.marshal((JxObject)object, null, builder, depth)) == null)
+        if ((error = jxEncoder.toString((JxObject)object, null, builder, depth)) == null)
           return builder.toString();
       }
       else if (AnyType.isEnabled(type.booleans()) && Classes.isAssignableFrom(type.booleans().type(), object.getClass())) {

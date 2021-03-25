@@ -124,7 +124,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
     byte[] bytes = null;
     if (t instanceof JxObject) {
-      bytes = encoder.marshal((JxObject)t).getBytes();
+      bytes = encoder.toString((JxObject)t).getBytes();
     }
     else if (t instanceof List) {
       for (final Annotation annotation : annotations) {
@@ -138,7 +138,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
         }
 
         if (annotationType != null) {
-          bytes = encoder.marshal((List<?>)t, annotationType).getBytes();
+          bytes = encoder.toString((List<?>)t, annotationType).getBytes();
           break;
         }
       }

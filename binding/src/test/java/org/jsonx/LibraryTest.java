@@ -43,7 +43,7 @@ public class LibraryTest {
   private static final JxEncoder encoder = JxEncoder._2;
 
   private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
-    final String json = annotationType != null ? encoder.marshal((List<?>)obj, annotationType) : encoder.marshal((JxObject)obj);
+    final String json = annotationType != null ? encoder.toString((List<?>)obj, annotationType) : encoder.toString((JxObject)obj);
     final Object decoded;
     if (annotationType != null)
       decoded = JxDecoder.VALIDATING.parseArray(annotationType, json);
@@ -172,7 +172,7 @@ public class LibraryTest {
 
     library.setStaff(Collections.singletonList(createEmployee()));
 
-    final String json = encoder.marshal(library);
+    final String json = encoder.toString(library);
     logger.info(json);
     JxDecoder.VALIDATING.parseObject(Library.class, json);
   }

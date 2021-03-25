@@ -36,7 +36,7 @@ public class InvalidTest {
       binding.setInvalidName(true);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -61,7 +61,7 @@ public class InvalidTest {
       binding.setInvalidType(true);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -86,7 +86,7 @@ public class InvalidTest {
       binding.setInvalidType(7);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -109,7 +109,7 @@ public class InvalidTest {
       binding.setInvalidAnnotation(true);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -134,7 +134,7 @@ public class InvalidTest {
       binding.setNumber(Byte.MAX_VALUE);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -157,7 +157,7 @@ public class InvalidTest {
       binding.setNumber(Byte.MAX_VALUE);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -180,7 +180,7 @@ public class InvalidTest {
       binding.setNumber(Byte.MAX_VALUE);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -203,7 +203,7 @@ public class InvalidTest {
       binding.setInvalidType(true);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -226,7 +226,7 @@ public class InvalidTest {
       binding.setInvalidAnnotation(7);
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -249,7 +249,7 @@ public class InvalidTest {
       binding.setInvalidScale(Optional.of(BigDecimal.valueOf(5.8)));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected EncodeException");
       }
       catch (final EncodeException e) {
@@ -274,7 +274,7 @@ public class InvalidTest {
       binding.setInvalidRange(Optional.of((byte)7));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -299,7 +299,7 @@ public class InvalidTest {
       binding.setInvalidType(Optional.of(7));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -322,7 +322,7 @@ public class InvalidTest {
       binding.setInvalidAnnotation(Optional.of("foo"));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -345,7 +345,7 @@ public class InvalidTest {
       binding.setInvalidPattern(Optional.of("foo"));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -370,7 +370,7 @@ public class InvalidTest {
       binding.setInvalidType(Optional.of(7));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -393,7 +393,7 @@ public class InvalidTest {
       binding.setInvalidAnnotation(Collections.emptyList());
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -416,7 +416,7 @@ public class InvalidTest {
       binding.setInvalidAnnotationType(Optional.of(Collections.emptyList()));
 
       try {
-        validEncoder.marshal(binding);
+        validEncoder.toString(binding);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
