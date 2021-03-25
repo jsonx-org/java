@@ -200,7 +200,7 @@ public class JxEncoder {
     final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
 
     if (annotation instanceof ObjectProperty || annotation instanceof ObjectElement) {
-      return marshal((JxObject)value, null, builder, depth + 1);
+      return toString((JxObject)value, null, builder, depth + 1);
     }
 
     final Object encoded;
@@ -306,7 +306,7 @@ public class JxEncoder {
     return null;
   }
 
-  Error marshal(final JxObject object, final OnEncode onEncode, final StringBuilder builder, final int depth) {
+  Error toString(final JxObject object, final OnEncode onEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
     final Method[] methods = object.getClass().getMethods();
@@ -441,17 +441,19 @@ public class JxEncoder {
   }
 
   /**
-   * Marshals the specified {@link JxObject}, performing callbacks to the
-   * provided {@link OnEncode} for each encoded field.
+   * Marshals the specified {@link JxObject} to a {@link String}, performing
+   * callbacks to the provided {@link OnEncode} for each encoded field.
    *
    * @param object The {@link JxObject}.
-   * @param onEncode The {@link OnEncode} to be called for each encoded property.
-   * @return A JSON document from the marshaled {@link JxObject}.
+   * @param onEncode The {@link OnEncode} to be called for each encoded
+   *          property.
+   * @return The {@link String} form of the marshaled {@link JxObject} JSON
+   *         document.
    * @throws EncodeException If an encode error has occurred.
    */
-  String marshal(final JxObject object, final OnEncode onEncode) {
+  String toString(final JxObject object, final OnEncode onEncode) {
     final StringBuilder builder = new StringBuilder();
-    final Error error = marshal(object, onEncode, builder, 1);
+    final Error error = toString(object, onEncode, builder, 1);
     if (validate && error != null)
       throw new EncodeException(error.toString());
 
@@ -459,29 +461,31 @@ public class JxEncoder {
   }
 
   /**
-   * Marshals the specified {@link JxObject}.
+   * Marshals the specified {@link JxObject} to a {@link String}.
    *
    * @param object The {@link JxObject}.
-   * @return A JSON document from the marshaled {@link JxObject}.
+   * @return The {@link String} form of the marshaled {@link JxObject} JSON
+   *         document.
    * @throws EncodeException If an encode error has occurred.
    */
-  public String marshal(final JxObject object) {
-    return marshal(object, null);
+  public String toString(final JxObject object) {
+    return toString(object, null);
   }
 
   /**
-   * Marshals the supplied {@code list} to the specification of the provided
-   * annotation type. The provided annotation type must declare an annotation of
-   * type {@link ArrayType} that specifies the model of the list being
-   * marshaled.
+   * Marshals the given {@link List list} to a {@link String}, based on the
+   * specification of the provided annotation type. The provided annotation type
+   * must declare an annotation of type {@link ArrayType} that specifies the
+   * model of the list being marshaled.
    *
    * @param list The {@link List}.
    * @param arrayAnnotationType The annotation type that declares an
    *          {@link ArrayType} annotation.
-   * @return A JSON document from the marshaled {@link List}.
+   * @return The {@link String} form of the marshaled {@link JxObject} JSON
+   *         document.
    * @throws EncodeException If an encode error has occurred.
    */
-  public String marshal(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
+  public String toString(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
     final StringBuilder builder = new StringBuilder();
     final Relations relations = new Relations();
     Error error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
