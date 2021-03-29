@@ -39,43 +39,107 @@ import org.libj.util.Patterns;
 public class JxEncoder {
   private static final HashMap<Integer,JxEncoder> instances = new HashMap<>();
 
-  /** {@link JxEncoder} that does not indent JSON values */
-  public static final JxEncoder _0 = get(0);
+  public static final class VALIDATING {
+    /** Validating {@link JxEncoder} that does not indent JSON values */
+    public static final JxEncoder _0 = get(0);
 
-  /** {@link JxEncoder} that indents JSON values with 1 space */
-  public static final JxEncoder _1 = get(1);
+    /** Validating {@link JxEncoder} that indents JSON values with 1 space */
+    public static final JxEncoder _1 = get(1);
 
-  /** {@link JxEncoder} that indents JSON values with 2 spaces */
-  public static final JxEncoder _2 = get(2);
+    /** Validating {@link JxEncoder} that indents JSON values with 2 spaces */
+    public static final JxEncoder _2 = get(2);
 
-  /** {@link JxEncoder} that indents JSON values with 3 spaces */
-  public static final JxEncoder _3 = get(3);
+    /** Validating {@link JxEncoder} that indents JSON values with 3 spaces */
+    public static final JxEncoder _3 = get(3);
 
-  /** {@link JxEncoder} that indents JSON values with 4 spaces */
-  public static final JxEncoder _4 = get(4);
+    /** Validating {@link JxEncoder} that indents JSON values with 4 spaces */
+    public static final JxEncoder _4 = get(4);
 
-  /** {@link JxEncoder} that indents JSON values with 8 spaces */
-  public static final JxEncoder _8 = get(8);
+    /** Validating {@link JxEncoder} that indents JSON values with 8 spaces */
+    public static final JxEncoder _8 = get(8);
 
-  private static JxEncoder global = _0;
+    /**
+     * Returns the validating {@link JxEncoder} for the specified number of
+     * spaces to be used when indenting values during serialization to JSON
+     * documents.
+     *
+     * @param indent The number of spaces to be used when indenting values
+     *          during serialization to JSON documents.
+     * @return The validating {@link JxEncoder} for the specified number of
+     *         spaces to be used when indenting values during serialization to
+     *         JSON documents.
+     * @throws IllegalArgumentException If {@code indent < 0}.
+     */
+    public static JxEncoder get(final int indent) {
+      return JxEncoder.get(indent, true);
+    }
+
+    private VALIDATING() {
+    }
+  }
+
+  public static final class NON_VALIDATING {
+    /** Non-validating {@link JxEncoder} that does not indent JSON values */
+    public static final JxEncoder _0 = get(0);
+
+    /** Non-validating {@link JxEncoder} that indents JSON values with 1 space */
+    public static final JxEncoder _1 = get(1);
+
+    /** Non-validating {@link JxEncoder} that indents JSON values with 2 spaces */
+    public static final JxEncoder _2 = get(2);
+
+    /** Non-validating {@link JxEncoder} that indents JSON values with 3 spaces */
+    public static final JxEncoder _3 = get(3);
+
+    /** Non-validating {@link JxEncoder} that indents JSON values with 4 spaces */
+    public static final JxEncoder _4 = get(4);
+
+    /** Non-validating {@link JxEncoder} that indents JSON values with 8 spaces */
+    public static final JxEncoder _8 = get(8);
+
+    /**
+     * Returns the non-validating {@link JxEncoder} for the specified number of
+     * spaces to be used when indenting values during serialization to JSON
+     * documents.
+     *
+     * @param indent The number of spaces to be used when indenting values
+     *          during serialization to JSON documents.
+     * @return The non-validating {@link JxEncoder} for the specified number of
+     *         spaces to be used when indenting values during serialization to
+     *         JSON documents.
+     * @throws IllegalArgumentException If {@code indent < 0}.
+     */
+    public static JxEncoder get(final int indent) {
+      return JxEncoder.get(indent, false);
+    }
+
+    private NON_VALIDATING() {
+    }
+  }
+
+  private static JxEncoder global = VALIDATING._0;
 
   /**
-   * Returns the {@link JxEncoder} for the specified number of spaces to be used
-   * when indenting values during serialization to JSON documents.
+   * Returns the validating or non-validating {@link JxEncoder} for the
+   * specified number of spaces to be used when indenting values during
+   * serialization to JSON documents.
    *
    * @param indent The number of spaces to be used when indenting values during
    *          serialization to JSON documents.
-   * @return The {@link JxEncoder} for the specified number of spaces to be used
-   *         when indenting values during serialization to JSON documents.
+   * @param validate Whether the {@link JxEncoder} is to perform validation.
+   * @return The validating or non-validating {@link JxEncoder} for the
+   *         specified number of spaces to be used when indenting values during
+   *         serialization to JSON documents.
    * @throws IllegalArgumentException If {@code indent < 0}.
    */
-  public static JxEncoder get(final int indent) {
+  public static JxEncoder get(final int indent, final boolean validate) {
     if (indent < 0)
       throw new IllegalArgumentException("Indent must be a non-negative: " + indent);
 
-    JxEncoder encoder = instances.get(indent);
+    final Integer key = validate ? indent : -1 - indent;
+    JxEncoder encoder = instances.get(key);
     if (encoder == null)
-      instances.put(indent, encoder = new JxEncoder(indent));
+      instances.put(key, encoder = new JxEncoder(indent, validate));
 
     return encoder;
   }

@@ -24,7 +24,7 @@ import org.jsonx.JxEncoder;
 
 public class InvoiceSample {
   public static void main(final String[] args) {
-    System.out.println(JxEncoder._2.toString(createInvoice()));
+    System.out.println(JxEncoder.VALIDATING._2.toString(createInvoice()));
   }
 
   public static Invoice createInvoice() {

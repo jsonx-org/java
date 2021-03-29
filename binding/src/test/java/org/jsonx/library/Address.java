@@ -146,6 +146,6 @@ public class Address implements JxObject {
 
   @Override
   public String toString() {
-    return JxEncoder._2.toString(this);
+    return JxEncoder.VALIDATING._2.toString(this);
   }
 }

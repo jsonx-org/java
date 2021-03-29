@@ -29,7 +29,7 @@ public class InvoiceSampleTest {
   @Test
   public void test() throws DecodeException, IOException {
     final Invoice invoice = InvoiceSample.createInvoice();
-    final String json = JxEncoder._2.toString(invoice);
+    final String json = JxEncoder.VALIDATING._2.toString(invoice);
     assertEquals(invoice, JxDecoder.VALIDATING.parseObject(Invoice.class, json));
   }
 }

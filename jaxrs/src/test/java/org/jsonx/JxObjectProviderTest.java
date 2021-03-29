@@ -32,7 +32,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import org.junit.Test;
 
 public class JxObjectProviderTest {
-  private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder._0, JxDecoder.VALIDATING);
+  private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder.VALIDATING._0, JxDecoder.VALIDATING);
 
   public static class Message implements JxObject {
     private String content;

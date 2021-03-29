@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 public class LibraryTest {
   private static final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
-  private static final JxEncoder encoder = JxEncoder._2;
+  private static final JxEncoder encoder = JxEncoder.VALIDATING._2;
 
   private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
     final String json = annotationType != null ? encoder.toString((List<?>)obj, annotationType) : encoder.toString((JxObject)obj);

@@ -23,11 +23,15 @@ import org.jsonx.JxEncoder;
 import org.junit.Test;
 
 public class BankSampleTest {
+  static {
+    JxEncoder.set(JxEncoder.VALIDATING._2);
+  }
+
   @Test
   public void testSwiftTypeRequired() {
     final Swift swift = new Swift();
     try {
-      JxEncoder._2.toString(swift);
+      JxEncoder.get().toString(swift);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -41,7 +45,7 @@ public class BankSampleTest {
     final Swift swift = new Swift();
     swift.setType("swift");
     try {
-      JxEncoder._2.toString(swift);
+      JxEncoder.get().toString(swift);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -56,7 +60,7 @@ public class BankSampleTest {
     swift.setType("swift");
     swift.setCode("invalid");
     try {
-      JxEncoder._2.toString(swift);
+      JxEncoder.get().toString(swift);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -70,14 +74,14 @@ public class BankSampleTest {
     final Swift swift = new Swift();
     swift.setType("swift");
     swift.setCode("CTBAAU2S");
-    System.out.println(JxEncoder._2.toString(swift));
+    System.out.println(JxEncoder.get().toString(swift));
   }
 
   @Test
   public void testIbanTypeRequired() {
     final Iban iban = new Iban();
     try {
-      JxEncoder._2.toString(iban);
+      JxEncoder.get().toString(iban);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -91,7 +95,7 @@ public class BankSampleTest {
     final Iban iban = new Iban();
     iban.setType("iban");
     try {
-      JxEncoder._2.toString(iban);
+      JxEncoder.get().toString(iban);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -106,7 +110,7 @@ public class BankSampleTest {
     iban.setType("iban");
     iban.setCode("invalid");
     try {
-      JxEncoder._2.toString(iban);
+      JxEncoder.get().toString(iban);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -120,14 +124,14 @@ public class BankSampleTest {
     final Iban iban = new Iban();
     iban.setType("iban");
     iban.setCode("DE91 1000 0000 0123 4567 89");
-    System.out.println(JxEncoder._2.toString(iban));
+    System.out.println(JxEncoder.get().toString(iban));
   }
 
   @Test
   public void testAchTypeRequired() {
     final Ach ach = new Ach();
     try {
-      JxEncoder._2.toString(ach);
+      JxEncoder.get().toString(ach);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -141,7 +145,7 @@ public class BankSampleTest {
     final Ach ach = new Ach();
     ach.setType("ach");
     try {
-      JxEncoder._2.toString(ach);
+      JxEncoder.get().toString(ach);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -156,7 +160,7 @@ public class BankSampleTest {
     ach.setType("ach");
     ach.setCode("379272957729384");
     try {
-      JxEncoder._2.toString(ach);
+      JxEncoder.get().toString(ach);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -172,7 +176,7 @@ public class BankSampleTest {
     ach.setCode("");
     ach.setRouting("021000021");
     try {
-      JxEncoder._2.toString(ach);
+      JxEncoder.get().toString(ach);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -188,7 +192,7 @@ public class BankSampleTest {
     ach.setCode("379272957729384");
     ach.setRouting("02100_ABC");
     try {
-      JxEncoder._2.toString(ach);
+      JxEncoder.get().toString(ach);
       fail("Expected EncodeException");
     }
     catch (final EncodeException e) {
@@ -203,6 +207,6 @@ public class BankSampleTest {
     ach.setType("ach");
     ach.setCode("379272957729384");
     ach.setRouting("021000021");
-    System.out.println(JxEncoder._2.toString(ach));
+    System.out.println(JxEncoder.get().toString(ach));
   }
 }
