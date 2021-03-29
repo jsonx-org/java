@@ -29,6 +29,16 @@ import org.libj.lang.Strings;
  */
 @Provider
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
+  private final boolean verbose;
+
+  public BadRequestExceptionMapper(final boolean verbose) {
+    this.verbose = verbose;
+  }
+
+  public BadRequestExceptionMapper() {
+    this(true);
+  }
+
   @Override
   public Response toResponse(final BadRequestException exception) {
     try (final Response response = exception.getResponse()) {
@@ -37,8 +47,14 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
       if (message != null) {
         final String prefix = "HTTP " + response.getStatus() + " ";
         builder.append(",\"message\":\"").append(message.startsWith(prefix) ? message.substring(prefix.length()) : message).append('"');
-        if (exception.getCause() instanceof DecodeException)
+        if (exception.getCause() instanceof DecodeException) {
           builder.append(",\"cause\":\"").append(Strings.escapeForJava(exception.getCause().getMessage())).append('"');
+          if (verbose) {
+            final DecodeException decodeException = (DecodeException)exception.getCause();
+            if (decodeException.getContent() != null)
+              builder.append(",\"json\":\"").append(Strings.escapeForJava(decodeException.getContent())).append('"');
+          }
+        }
       }
 
       return Response.fromResponse(response).entity(builder.append('}').toString()).build();
