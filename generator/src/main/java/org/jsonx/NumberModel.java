@@ -324,8 +324,8 @@ final class NumberModel extends Model {
       return null;
 
     final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
-    if (cls != null && defaultClass().isAssignableFrom(cls) && Numbers.isExactType((Class<? extends Number>)cls))
-      return "The inexact \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id().toString()) + "\" cannot be represented with exact type: " + typeBinding.type.getName();
+    if (cls != null && defaultClass().isAssignableFrom(cls) && Numbers.isWholeType((Class<? extends Number>)cls))
+      return "The decimal \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id().toString()) + "\" cannot be represented with the whole numeric type: " + typeBinding.type.getName();
 
     return null;
   }
