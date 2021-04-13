@@ -60,7 +60,7 @@ class BooleanCodec extends PrimitiveCodec {
     if (object instanceof String)
       return object;
 
-    throw new IllegalArgumentException("Illegal argument class: " + object.getClass());
+    throw new IllegalArgumentException("Illegal argument class: " + object.getClass().getName());
   }
 
   BooleanCodec(final BooleanProperty property, final Method getMethod, final Method setMethod) {
