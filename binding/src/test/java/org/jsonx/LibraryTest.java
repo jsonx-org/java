@@ -188,6 +188,6 @@ public class LibraryTest {
       assertTrue(e.getMessage().startsWith("Unknown property: \"extra\""));
     }
 
-    JxDecoder.VALIDATING.parseObject(Publishing.class, json, (o,p,v) -> o instanceof Publishing);
+    JxDecoder.VALIDATING.parseObject(Publishing.class, json, (o, p, v) -> o instanceof Publishing);
   }
 }

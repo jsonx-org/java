@@ -140,7 +140,7 @@ class ClassTrial extends Trial {
     Exception exception = null;
     try {
       final AtomicReference<Bounds> bounds = new AtomicReference<>();
-      json = validEncoder.toString(binding, (g,n,r,s,e) -> {
+      json = validEncoder.toString(binding, (g, n, r, s, e) -> {
         if (g.equals(trial.getMethod) && trial.name.equals(n)) {
           if (bounds.get() != null)
             throw new IllegalStateException(String.valueOf(bounds.get()));
@@ -196,7 +196,7 @@ class ClassTrial extends Trial {
     Exception exception = null;
     JxObject decoded = null;
     try {
-      decoded = JxDecoder.VALIDATING.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o,n,v) -> {
+      decoded = JxDecoder.VALIDATING.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o, n, v) -> {
         if (n.equals(trial.name)) {
           if (object[0] != null)
             throw new IllegalStateException();
