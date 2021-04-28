@@ -177,9 +177,9 @@ abstract class Member extends Element {
     this(registry, declarer, isFromSchema, id, doc, (String)name.text(), nullable == null || nullable.isDefault() ? null : nullable.text(), use == null || use.isDefault() ? null : Use.valueOf(use.text().toUpperCase()), null, null, fieldName == null ? null : fieldName.text(), typeBinding);
   }
 
-  final void validateTypeBinding() {
+  final Class<?> validateTypeBinding() {
     if (typeBinding == null || typeBinding.type == null)
-      return;
+      return null;
 
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
     if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
@@ -222,7 +222,7 @@ abstract class Member extends Element {
     }
 
     if (preventDefault)
-      return;
+      return cls;
 
     String error = null;
 
@@ -251,6 +251,8 @@ abstract class Member extends Element {
     error = isValid(typeBinding);
     if (error != null)
       throw new ValidationException(error);
+
+    return cls;
   }
 
   public final Declarer declarer() {

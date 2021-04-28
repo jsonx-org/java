@@ -20,9 +20,7 @@ import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import org.libj.lang.Classes;
 import org.openjax.json.JsonReader;
 
 abstract class PrimitiveCodec extends Codec {
@@ -47,7 +45,7 @@ abstract class PrimitiveCodec extends Codec {
   PrimitiveCodec(final Method getMethod, final Method setMethod, final String name, final boolean property, final Use use, final String decode) {
     super(getMethod, setMethod, name, property, use);
     this.decode = getMethod(decodeToMethod, decode, String.class);
-    this.type = getMethod.getReturnType() == Optional.class ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
+    this.type = JsdUtil.getRealType(getMethod);
   }
 
   @Override

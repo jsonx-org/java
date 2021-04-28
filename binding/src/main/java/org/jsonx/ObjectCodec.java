@@ -205,7 +205,7 @@ class ObjectCodec extends Codec {
   @SuppressWarnings("unchecked")
   ObjectCodec(final ObjectProperty property, final Method getMethod, final Method setMethod) {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use());
-    this.type = (Class<? extends JxObject>)(optional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType());
+    this.type = (Class<? extends JxObject>)(isOptional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType());
   }
 
   @Override

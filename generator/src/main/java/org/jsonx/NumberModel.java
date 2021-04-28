@@ -229,12 +229,12 @@ final class NumberModel extends Model {
     return scale == null || scale.text() == null ? Integer.MAX_VALUE : scale.text().intValue();
   }
 
-  private static Range parseRange(final String range) throws ParseException {
-    return range == null || range.length() == 0 ? null : new Range(range);
+  private static Range parseRange(final String range, final Class<?> type) throws ParseException {
+    return range == null || range.length() == 0 ? null : new Range(range, type);
   }
 
-  private static Range parseRange(final $NumberMember.Range$ range) throws ParseException {
-    return range == null ? null : parseRange(range.text());
+  private static Range parseRange(final $NumberMember.Range$ range, final Class<?> type) throws ParseException {
+    return range == null ? null : parseRange(range.text(), type);
   }
 
   private static Class<?> getDefaultClass(final int scale) {
@@ -247,14 +247,14 @@ final class NumberModel extends Model {
   private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
     super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
     this.scale = parseScale(xsb.getScale$());
+    final Class<?> type = validateTypeBinding();
     try {
-      this.range = parseRange(xsb.getRange$());
+      this.range = parseRange(xsb.getRange$(), type);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
 
-    validateTypeBinding();
   }
 
   private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb) throws ParseException {
@@ -266,19 +266,17 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $FieldIdentifier fieldName, final Binding.Type typeBinding) throws ParseException {
-    super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), fieldName, typeBinding);
+    super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$(), null)), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), fieldName, typeBinding);
     this.scale = parseScale(xsb.getScale$());
-    this.range = parseRange(xsb.getRange$());
-
-    validateTypeBinding();
+    final Class<?> type = validateTypeBinding();
+    this.range = parseRange(xsb.getRange$(), type);
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final $Array.Number xsb, final Binding.Type typeBinding) throws ParseException {
-    super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$())), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), typeBinding);
+    super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$(), null)), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), typeBinding);
     this.scale = parseScale(xsb.getScale$());
-    this.range = parseRange(xsb.getRange$());
-
-    validateTypeBinding();
+    final Class<?> type = validateTypeBinding();
+    this.range = parseRange(xsb.getRange$(), type);
   }
 
   private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName) throws ParseException {
@@ -287,23 +285,21 @@ final class NumberModel extends Model {
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName, final Binding.Type typeBinding) throws ParseException {
-    super(registry, declarer, Id.hashed("n", typeBinding, property.scale(), parseRange(property.range())), property.nullable(), property.use(), fieldName, typeBinding);
+    super(registry, declarer, Id.hashed("n", typeBinding, property.scale(), parseRange(property.range(), null)), property.nullable(), property.use(), fieldName, typeBinding);
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
     if (!isAssignable(getMethod, true, defaultClass(), false, property.nullable(), property.use()) && !isAssignable(getMethod, true, CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.scale = property.scale();
-    this.range = parseRange(property.range());
-
-    validateTypeBinding();
+    final Class<?> type = validateTypeBinding();
+    this.range = parseRange(property.range(), type);
   }
 
   private NumberModel(final Registry registry, final Declarer declarer, final Boolean nullable, final int scale, final String range, final Binding.Type typeBinding) throws ParseException {
-    super(registry, declarer, Id.hashed("n", typeBinding, scale, parseRange(range)), nullable, null, null, typeBinding);
+    super(registry, declarer, Id.hashed("n", typeBinding, scale, parseRange(range, null)), nullable, null, null, typeBinding);
     this.scale = scale;
-    this.range = parseRange(range);
-
-    validateTypeBinding();
+    final Class<?> type = validateTypeBinding();
+    this.range = parseRange(range, type);
   }
 
   @Override

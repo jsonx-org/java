@@ -31,7 +31,7 @@ abstract class Codec {
   private final boolean isMap;
   final Method getMethod;
   final Method setMethod;
-  final boolean optional;
+  final boolean isOptional;
   final String name;
   final boolean nullable;
   final Use use;
@@ -42,17 +42,17 @@ abstract class Codec {
     this.setMethod = setMethod;
     this.name = name;
     if (isMap = Map.class.isAssignableFrom(getMethod.getReturnType())) {
-      this.optional = use == Use.OPTIONAL;
+      this.isOptional = use == Use.OPTIONAL;
       this.genericType = Objects.requireNonNull(Classes.getGenericParameters(getMethod)[1]);
     }
     else {
-      this.optional = getMethod.getReturnType() == Optional.class;
-      this.genericType = optional ? Classes.getGenericParameters(getMethod)[0] : null;
+      this.isOptional = getMethod.getReturnType() == Optional.class;
+      this.genericType = isOptional ? Classes.getGenericParameters(getMethod)[0] : null;
     }
 
     this.nullable = nullable;
     this.use = use;
-    if (nullable && use == Use.OPTIONAL && !optional)
+    if (nullable && use == Use.OPTIONAL && !isOptional)
       throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
   }
 
@@ -77,7 +77,7 @@ abstract class Codec {
 
         map.put(name, value);
       }
-      else if (!optional || value instanceof Optional)
+      else if (!isOptional || value instanceof Optional)
         setMethod.invoke(object, value);
       else if (value != null && !genericType.isInstance(value))
         throw new ValidationException(object.getClass().getName() + ": " + getMethod + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);

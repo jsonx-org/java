@@ -50,7 +50,31 @@ public class Range implements Cloneable, Serializable {
     }
   }
 
-  private void checkMinMax(final String string) {
+  private static void checkType(final String string, final BigDecimal value, final Class<?> type) {
+    if (value.signum() == 0 || !type.isPrimitive() && !Number.class.isAssignableFrom(type))
+      return;
+
+    long limit;
+    if (type == Long.class || type == long.class)
+      limit = Long.MAX_VALUE;
+    else if (type == Integer.class || type == int.class)
+      limit = Integer.MAX_VALUE;
+    else if (type == Short.class || type == short.class)
+      limit = Short.MAX_VALUE;
+    else if (type == Byte.class || type == byte.class)
+      limit = Byte.MAX_VALUE;
+    else
+      return;
+
+    limit *= value.signum();
+    if (value.signum() == -1)
+      limit -= 1;
+
+    if (Numbers.compare(value, limit) == value.signum())
+      throw new IllegalArgumentException(string + " defines a range that cannot be represented by " + type.getCanonicalName());
+  }
+
+  private void checkMinMax(final String string, final Class<?> type) {
     if (min == null || max == null)
       return;
 
@@ -60,6 +84,15 @@ public class Range implements Cloneable, Serializable {
 
     if (compare == 0 && minInclusive != maxInclusive)
       throw new IllegalArgumentException(string + " defines an empty range");
+
+    if (type == null)
+      return;
+
+    if (min != null)
+      checkType(string, min, type);
+
+    if (max != null)
+      checkType(string, max, type);
   }
 
   private final BigDecimal min;
@@ -67,15 +100,15 @@ public class Range implements Cloneable, Serializable {
   private final BigDecimal max;
   private final boolean maxInclusive;
 
-  public Range(final BigDecimal min, final boolean minInclusive, final BigDecimal max, final boolean maxInclusive) {
+  public Range(final BigDecimal min, final boolean minInclusive, final BigDecimal max, final boolean maxInclusive, final Class<?> type) {
     this.min = min;
     this.minInclusive = minInclusive;
     this.max = max;
     this.maxInclusive = maxInclusive;
-    checkMinMax(toString());
+    checkMinMax(toString(), type);
   }
 
-  public Range(final String string) throws ParseException {
+  public Range(final String string, final Class<?> type) throws ParseException {
     if (string.length() < 4)
       throw new IllegalArgumentException("Range min length is 4, but was " + string.length() + (string.length() > 0 ? ": " + string : ""));
 
@@ -96,7 +129,7 @@ public class Range implements Cloneable, Serializable {
     if (!(this.maxInclusive = ch == ']') && ch != ')')
       throw new ParseException("Missing ']' or ')' in string: \"" + string + "\"", 0);
 
-    checkMinMax(string);
+    checkMinMax(string, type);
   }
 
   public BigDecimal getMin() {

@@ -30,13 +30,13 @@ final class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final NumberProperty property) {
     try {
       logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
-      final Range range = property.range().length() == 0 ? null : new Range(property.range());
+      final Range range = property.range().length() == 0 ? null : new Range(property.range(), JsdUtil.getRealType(getMethod));
       trials.add(new NumberTrial(ValidCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale(), makeValid(range)), property));
 
       if (property.range().length() > 0)
         trials.add(new NumberTrial(RangeCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale(), makeInvalid(range)), property));
 
-      if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(getMethod.getReturnType()))
+      if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(JsdUtil.getRealType(getMethod)))
         trials.add(new NumberTrial(ScaleCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale() + 1, makeValid(range)), property));
 
       if (getMethod.getReturnType().isPrimitive())
@@ -60,7 +60,7 @@ final class NumberTrial extends PropertyTrial<Number> {
 
   static Object createValid(final Class<?> type, final String decode, final String range, final int scale) {
     try {
-      return toProperForm(type, decode, scale, range.length() == 0 ? null : makeValid(new Range(range)));
+      return toProperForm(type, decode, scale, range.length() == 0 ? null : makeValid(new Range(range, type)));
     }
     catch (final ParseException e) {
       throw new IllegalArgumentException(e);
@@ -125,6 +125,6 @@ final class NumberTrial extends PropertyTrial<Number> {
   private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Method getMethod, final Method setMethod, final Object object, final Object value, final NumberProperty property) throws ParseException {
     super(kase, JsdUtil.getRealType(getMethod), getMethod, setMethod, object, value, property.name(), property.use(), property.decode(), property.encode(), false);
     this.scale = property.scale();
-    this.range = property.range().length() == 0 ? null : new Range(property.range());
+    this.range = property.range().length() == 0 ? null : new Range(property.range(), JsdUtil.getRealType(getMethod));
   }
 }
