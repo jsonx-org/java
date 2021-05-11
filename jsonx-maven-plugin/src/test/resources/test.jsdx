@@ -28,7 +28,7 @@
   <string name="url" pattern="((https?|ftp)://[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)">
     <binding lang="java" type="java.net.URL" decode="java.net.URL.&lt;init&gt;"/>
   </string>
-  
+
   <object name="xmldsig" abstract="true">
     <property name="xmldsig" xsi:type="string"/>
   </object>
@@ -131,7 +131,7 @@
       <reference type="links" nullable="false"/>
     </property>
   </object>
-  
+
   <object name="data">
     <property name="id" xsi:type="string" nullable="false"/>
     <property name="url" xsi:type="string" nullable="false"/>

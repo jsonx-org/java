@@ -349,7 +349,7 @@
     <property name="stringRefOptional" xsi:type="reference" type="charArray" use="optional"/>
     <property name="stringRefNotNullable" xsi:type="reference" type="iso8601" nullable="false"/>
     <property name="stringDefault" xsi:type="string">
-      
+
     </property>
     <property name="stringOptional" xsi:type="string" use="optional"/>
     <property names="any[0-9a-f]+" xsi:type="any">

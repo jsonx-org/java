@@ -30,7 +30,7 @@
   <boolean name="StringBoolean">
     <binding lang="java" type="java.lang.String"/>
   </boolean>
-  
+
   <number name="defaultDecimal"/>
   <number name="defaultInteger" scale="0"/>
   <number name="byte" scale="0" range="[-128,127]">
@@ -75,7 +75,7 @@
   <number name="CharSequenceDecimal">
     <binding lang="java" type="java.lang.CharSequence"/>
   </number>
-  
+
   <string name="defaultString"/>
   <string name="charArray">
     <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
@@ -126,7 +126,7 @@
 
   <array name="arrayDirect">
     <any types="Byte Integer Long Float Double"/>
-    
+
     <boolean/>
     <boolean nullable="false">
       <binding lang="java" type="boolean"/>
@@ -223,7 +223,7 @@
     <property name="StringBoolean" xsi:type="reference" type="StringBoolean">
       <binding lang="java" field="objRefStringBoolean"/>
     </property>
-    
+
     <property name="defaultDecimal" xsi:type="reference" type="defaultDecimal">
       <binding lang="java" field="objRefDefaultDecimal"/>
     </property>
@@ -272,7 +272,7 @@
     <property name="CharSequenceDecimal" xsi:type="reference" type="CharSequenceDecimal">
       <binding lang="java" field="objRefCharSequenceDecimal"/>
     </property>
-    
+
     <property name="defaultString" xsi:type="reference" type="defaultString">
       <binding lang="java" field="objRefDefaultString"/>
     </property>
@@ -352,7 +352,7 @@
       <number>
         <binding lang="java" type="java.lang.CharSequence"/>
       </number>
-      
+
       <string/>
       <string>
         <binding lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/>
@@ -421,7 +421,7 @@
     <property name="StringBoolean" xsi:type="boolean">
       <binding lang="java" type="java.lang.String" field="objDirStringBoolean"/>
     </property>
-    
+
     <property name="defaultDecimal" xsi:type="number">
       <binding lang="java" field="objDirDefaultDecimal"/>
     </property>
@@ -470,7 +470,7 @@
     <property name="CharSequenceDecimal" xsi:type="number">
       <binding lang="java" type="java.lang.CharSequence" field="objDirCharSequenceDecimal"/>
     </property>
-    
+
     <property name="defaultString" xsi:type="string">
       <binding lang="java" field="objDirDefaultString"/>
     </property>

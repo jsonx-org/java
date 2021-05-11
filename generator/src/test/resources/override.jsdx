@@ -25,31 +25,31 @@
       <binding lang="java" field="child"/>
     </property>
   </object>
-  
+
   <object name="father" extends="parent">
     <property name="obj" xsi:type="object" extends="father"/>
   </object>
-  
+
   <object name="mother" extends="parent">
     <property name="obj" xsi:type="object" extends="mother"/>
   </object>
-  
+
   <object name="people">
     <property name="people" xsi:type="array">
       <reference type="parent" nullable="false"/>
     </property>
   </object>
-  
+
   <object name="fathers" extends="people">
     <property name="people" xsi:type="array">
       <reference type="father" nullable="false"/>
     </property>
   </object>
-  
+
   <object name="mothers" extends="people">
     <property name="people" xsi:type="array">
       <reference type="mother" nullable="false"/>
     </property>
   </object>
-  
+
 </schema>
