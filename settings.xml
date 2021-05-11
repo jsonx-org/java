@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <settings
-  xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns="http://maven.apache.org/SETTINGS/1.1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
   <profiles>
     <profile>
       <activation>
@@ -65,4 +65,12 @@
       <password>${env.SONATYPE_PASSWORD}</password>
     </server>
   </servers>
+  <mirrors>
+    <mirror>
+      <id>snapshots-repo</id>
+      <mirrorOf>snapshots-repo</mirrorOf>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+      <blocked>false</blocked>
+    </mirror>
+  </mirrors>
 </settings>
