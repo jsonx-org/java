@@ -182,7 +182,7 @@ public class ArrayCodecTest {
 
   private static void assertMembersEqual(final List<?> expected, final Relations actual) {
     assertEquals(expected.size(), actual.size());
-    for (int i = 0; i < expected.size(); ++i) {
+    for (int i = 0, len = expected.size(); i < len; ++i) {
       final Object member = expected.get(i);
       final Relation relation = actual.get(i);
       if (member instanceof List) {

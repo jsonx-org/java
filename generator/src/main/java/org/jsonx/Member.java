@@ -468,7 +468,7 @@ abstract class Member extends Element {
       if (a.members.size() != b.members.size())
         return false;
 
-      for (int i = 0; i < a.members.size(); ++i)
+      for (int i = 0, len = a.members.size(); i < len; ++i)
         if (!a.members.get(i).isAssignableFrom(b.members.get(i)))
           return false;
 

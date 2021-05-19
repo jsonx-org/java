@@ -343,7 +343,7 @@ public class JxEncoder {
 
   private Error encodeArray(final Method getMethod, final Relations relations, final StringBuilder builder, final int depth) {
     builder.append('[');
-    for (int i = 0; i < relations.size(); ++i) {
+    for (int i = 0, len = relations.size(); i < len; ++i) {
       if (i > 0)
         builder.append(comma);
 

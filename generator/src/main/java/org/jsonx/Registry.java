@@ -516,7 +516,7 @@ class Registry {
   }
 
   void resolveReferences() {
-    for (int i = 0; i < deferredReferences.size(); ++i)
+    for (int i = 0, len = deferredReferences.size(); i < len; ++i)
       deferredReferences.get(i).run();
 
     deferredReferences.clear();

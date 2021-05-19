@@ -51,7 +51,7 @@ class AnnotationType {
         }
         else {
           builder.append('{');
-          for (int j = 0; j < items.size(); ++j) {
+          for (int j = 0, len = items.size(); j < len; ++j) {
             if (j > 0)
               builder.append(", ");
 

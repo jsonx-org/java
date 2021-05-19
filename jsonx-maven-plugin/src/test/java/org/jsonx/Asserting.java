@@ -16,12 +16,12 @@
 
 package org.jsonx;
 
+import java.util.Objects;
+
 import org.junit.Assert;
 import org.libj.lang.ObjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Objects;
 
 abstract class Asserting {
   static final Logger logger = LoggerFactory.getLogger(Asserting.class);
@@ -37,6 +37,7 @@ abstract class Asserting {
     if (!equals) {
       if (message != null)
         System.err.println(message);
+
       System.err.println(ObjectUtil.toString(expected));
       System.err.println(ObjectUtil.toString(actual));
       if (expected.getClass().isArray())
@@ -47,9 +48,10 @@ abstract class Asserting {
 
     final int expectedHashCode = ObjectUtil.hashCode(expected);
     final int actualHashCode = ObjectUtil.hashCode(actual);
-    if (!Objects.equal(expectedHashCode, actualHashCode)) {
+    if (!Objects.equals(expectedHashCode, actualHashCode)) {
       if (message != null)
         System.err.println(message);
+
       System.err.println(ObjectUtil.toString(expected));
       System.err.println(ObjectUtil.toString(actual));
       Assert.assertEquals(message, expectedHashCode, actualHashCode);

@@ -32,7 +32,7 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
 
   private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
     final ArrayList<Object> out = new ArrayList<>(list.size());
-    for (int i = 0; i < list.size(); ++i) {
+    for (int i = 0, len = list.size(); i < len; ++i) {
       final Object item = list.get(i);
       final Relation relation = relations.get(i);
       if (item instanceof List) {

@@ -532,8 +532,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private void renderAnnotations(final AttributeMap attributes, final List<? super AnnotationType> annotations) {
-    final int[] indices = new int[members.size()];
-    for (int i = 0, index = 0; i < members.size(); ++i) {
+    final int len = members.size();
+    final int[] indices = new int[len];
+    for (int i = 0, index = 0; i < len; ++i) {
       indices[i] = index;
       index += writeElementAnnotations(annotations, members.get(i), index, this);
     }
@@ -578,7 +579,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final List<AnnotationType> inner = new ArrayList<>();
       if (arrayModel.classType() == null) {
         final int[] indices = new int[arrayModel.members.size()];
-        for (int i = 0; i < arrayModel.members.size(); ++i) {
+        for (int i = 0, len = arrayModel.members.size(); i < len; ++i) {
           indices[i] = index + offset;
           offset += writeElementAnnotations(inner, arrayModel.members.get(i), index + offset, owner);
         }
