@@ -142,12 +142,37 @@ public class SchemaTest {
     }
   }
 
-  // This is necessary for jdk1.8, and is replaced with ClassLoader#getDeclaredPackage() in jdk9+
+  private static Boolean isJdk9;
+
+  private static boolean isJdk9() {
+    if (isJdk9 == null) {
+      try {
+        ClassLoader.class.getMethod("getDefinedPackages");
+        isJdk9 = true;
+      }
+      catch (final NoSuchMethodException e) {
+        isJdk9 = false;
+      }
+    }
+
+    return isJdk9;
+  }
+
+  private static Method getPackage;
+
   private static Package getPackage(final ClassLoader classLoader, final String packageName) {
+    if (getPackage == null) {
+      if (isJdk9()) {
+        getPackage = Classes.getMethod(ClassLoader.class, "getDefinedPackage", String.class);
+      }
+      else {
+        getPackage = Classes.getDeclaredMethodDeep(classLoader.getClass(), "getPackage", String.class);
+        getPackage.setAccessible(true);
+      }
+    }
+
     try {
-      final Method method = Classes.getDeclaredMethodDeep(classLoader.getClass(), "getPackage", String.class);
-      method.setAccessible(true);
-      return (Package)method.invoke(classLoader, packageName);
+      return (Package)getPackage.invoke(classLoader, packageName);
     }
     catch (final IllegalAccessException e) {
       throw new RuntimeException(e);

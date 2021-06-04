@@ -19,6 +19,7 @@ package org.jsonx;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -36,15 +37,13 @@ import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
-import sun.reflect.generics.reflectiveObjects.WildcardTypeImpl;
-
 abstract class Model extends Member implements Comparable<Model> {
   static Class<?> toClass(final Type type) {
     if (type instanceof Class)
       return (Class<?>)type;
 
-    if (type instanceof WildcardTypeImpl)
-      return (Class<?>)((WildcardTypeImpl)type).getUpperBounds()[0];
+    if (type instanceof WildcardType)
+      return (Class<?>)((WildcardType)type).getUpperBounds()[0];
 
     return null;
   }

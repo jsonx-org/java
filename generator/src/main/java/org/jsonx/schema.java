@@ -27,6 +27,12 @@ public class schema {
 
     private java.lang.String types;
 
+    /** Defines text comments. Optional. **/
+    public Any setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Any)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -94,6 +100,22 @@ public class schema {
     }
 
     private java.lang.String maxOccurs;
+
+    public AnyElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (AnyElement)this;
+    }
+
+    public AnyElement setTypes(final java.lang.String types) {
+      super.setTypes(types);
+      return (AnyElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public AnyElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (AnyElement)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -168,6 +190,22 @@ public class schema {
     }
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
+
+    public AnyProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (AnyProperty)this;
+    }
+
+    public AnyProperty setTypes(final java.lang.String types) {
+      super.setTypes(types);
+      return (AnyProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public AnyProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (AnyProperty)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -266,6 +304,12 @@ public class schema {
 
     private java.util.List<org.jsonx.schema.Member> elements;
 
+    /** Defines text comments. Optional. **/
+    public Array setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Array)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -346,6 +390,29 @@ public class schema {
 
     private java.lang.String maxOccurs;
 
+    public ArrayElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ArrayElement)this;
+    }
+
+    /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
+    public ArrayElement setMinIterate(final java.lang.String minIterate) {
+      super.setMinIterate(minIterate);
+      return (ArrayElement)this;
+    }
+
+    /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
+    public ArrayElement setMaxIterate(final java.lang.String maxIterate) {
+      super.setMaxIterate(maxIterate);
+      return (ArrayElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ArrayElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ArrayElement)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -419,6 +486,29 @@ public class schema {
     }
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
+
+    public ArrayProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ArrayProperty)this;
+    }
+
+    /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
+    public ArrayProperty setMinIterate(final java.lang.String minIterate) {
+      super.setMinIterate(minIterate);
+      return (ArrayProperty)this;
+    }
+
+    /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
+    public ArrayProperty setMaxIterate(final java.lang.String maxIterate) {
+      super.setMaxIterate(maxIterate);
+      return (ArrayProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ArrayProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ArrayProperty)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -527,6 +617,12 @@ public class schema {
 
     private java.util.List<org.jsonx.schema.TypeBinding> bindings;
 
+    /** Defines text comments. Optional. **/
+    public Boolean setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Boolean)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -595,6 +691,17 @@ public class schema {
 
     private java.lang.String maxOccurs;
 
+    public BooleanElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (BooleanElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public BooleanElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (BooleanElement)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -660,6 +767,17 @@ public class schema {
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
       return super.getBindings();
+    }
+
+    public BooleanProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (BooleanProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public BooleanProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (BooleanProperty)this;
     }
 
     @java.lang.Override
@@ -754,6 +872,12 @@ public class schema {
 
     private java.lang.String field;
 
+    /** Specifies the language to which this binding applies. **/
+    public FieldBinding setLang(final java.lang.String lang) {
+      super.setLang(lang);
+      return (FieldBinding)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -787,6 +911,12 @@ public class schema {
   }
 
   public abstract static class Member extends org.jsonx.schema.Documented {
+    /** Defines text comments. Optional. **/
+    public Member setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Member)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -817,7 +947,7 @@ public class schema {
 
     private java.lang.String jx3aType;
 
-    /**        Specifies the value range in interval notation:
+    /** Specifies the value range in interval notation:
            Open (exclusive) interval: (min,max)
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
@@ -827,7 +957,7 @@ public class schema {
       return range;
     }
 
-    /**        Specifies the value range in interval notation:
+    /** Specifies the value range in interval notation:
            Open (exclusive) interval: (min,max)
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
@@ -864,6 +994,12 @@ public class schema {
     }
 
     private java.util.List<org.jsonx.schema.TypeBinding> bindings;
+
+    /** Defines text comments. Optional. **/
+    public Number setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Number)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -945,6 +1081,33 @@ public class schema {
 
     private java.lang.String maxOccurs;
 
+    public NumberElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (NumberElement)this;
+    }
+
+    /** Specifies the value range in interval notation:
+           Open (exclusive) interval: (min,max)
+           Closed (inclusive) interval: [min,max]
+           Half-open or half-closed interval: [min,max)
+           Degenerate interval: [val] **/
+    public NumberElement setRange(final java.lang.String range) {
+      super.setRange(range);
+      return (NumberElement)this;
+    }
+
+    /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
+    public NumberElement setScale(final java.math.BigInteger scale) {
+      super.setScale(scale);
+      return (NumberElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public NumberElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (NumberElement)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1010,6 +1173,33 @@ public class schema {
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
       return super.getBindings();
+    }
+
+    public NumberProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (NumberProperty)this;
+    }
+
+    /** Specifies the value range in interval notation:
+           Open (exclusive) interval: (min,max)
+           Closed (inclusive) interval: [min,max]
+           Half-open or half-closed interval: [min,max)
+           Degenerate interval: [val] **/
+    public NumberProperty setRange(final java.lang.String range) {
+      super.setRange(range);
+      return (NumberProperty)this;
+    }
+
+    /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
+    public NumberProperty setScale(final java.math.BigInteger scale) {
+      super.setScale(scale);
+      return (NumberProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public NumberProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (NumberProperty)this;
     }
 
     @java.lang.Override
@@ -1125,6 +1315,12 @@ public class schema {
 
     private org.jsonx.schema.Object.Properties properties;
 
+    /** Defines text comments. Optional. **/
+    public Object setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Object)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1198,6 +1394,28 @@ public class schema {
     }
 
     private java.lang.String maxOccurs;
+
+    public ObjectElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ObjectElement)this;
+    }
+
+    /** Specifies the name of the type to extend. Optional. **/
+    public ObjectElement setExtends(final java.lang.String _extends) {
+      super.setExtends(_extends);
+      return (ObjectElement)this;
+    }
+
+    public ObjectElement setProperties(final org.jsonx.schema.Object.Properties properties) {
+      super.setProperties(properties);
+      return (ObjectElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ObjectElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ObjectElement)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1273,6 +1491,28 @@ public class schema {
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
 
+    public ObjectProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ObjectProperty)this;
+    }
+
+    /** Specifies the name of the type to extend. Optional. **/
+    public ObjectProperty setExtends(final java.lang.String _extends) {
+      super.setExtends(_extends);
+      return (ObjectProperty)this;
+    }
+
+    public ObjectProperty setProperties(final org.jsonx.schema.Object.Properties properties) {
+      super.setProperties(properties);
+      return (ObjectProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ObjectProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ObjectProperty)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1325,6 +1565,28 @@ public class schema {
 
     private java.lang.Boolean _abstract;
 
+    public ObjectType setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ObjectType)this;
+    }
+
+    /** Specifies the name of the type to extend. Optional. **/
+    public ObjectType setExtends(final java.lang.String _extends) {
+      super.setExtends(_extends);
+      return (ObjectType)this;
+    }
+
+    public ObjectType setProperties(final org.jsonx.schema.Object.Properties properties) {
+      super.setProperties(properties);
+      return (ObjectType)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ObjectType setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ObjectType)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1376,6 +1638,12 @@ public class schema {
     }
 
     private java.lang.String type;
+
+    /** Defines text comments. Optional. **/
+    public Reference setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Reference)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1444,6 +1712,23 @@ public class schema {
     }
 
     private java.lang.String maxOccurs;
+
+    public ReferenceElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ReferenceElement)this;
+    }
+
+    /** Specifies the name of the referenced type. Required. **/
+    public ReferenceElement setType(final java.lang.String type) {
+      super.setType(type);
+      return (ReferenceElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ReferenceElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ReferenceElement)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1519,6 +1804,23 @@ public class schema {
 
     private java.util.List<org.jsonx.schema.FieldBinding> bindings;
 
+    public ReferenceProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (ReferenceProperty)this;
+    }
+
+    /** Specifies the name of the referenced type. Required. **/
+    public ReferenceProperty setType(final java.lang.String type) {
+      super.setType(type);
+      return (ReferenceProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public ReferenceProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (ReferenceProperty)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1592,6 +1894,12 @@ public class schema {
     }
 
     private java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> declarations;
+
+    /** Defines text comments. Optional. **/
+    public Schema setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (Schema)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -1667,6 +1975,12 @@ public class schema {
 
     private java.util.List<org.jsonx.schema.TypeBinding> bindings;
 
+    /** Defines text comments. Optional. **/
+    public String setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (String)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1741,6 +2055,22 @@ public class schema {
 
     private java.lang.String maxOccurs;
 
+    public StringElement setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (StringElement)this;
+    }
+
+    public StringElement setPattern(final java.lang.String pattern) {
+      super.setPattern(pattern);
+      return (StringElement)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public StringElement setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (StringElement)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1806,6 +2136,22 @@ public class schema {
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
       return super.getBindings();
+    }
+
+    public StringProperty setJx3aType(final java.lang.String jx3aType) {
+      super.setJx3aType(jx3aType);
+      return (StringProperty)this;
+    }
+
+    public StringProperty setPattern(final java.lang.String pattern) {
+      super.setPattern(pattern);
+      return (StringProperty)this;
+    }
+
+    /** Defines text comments. Optional. **/
+    public StringProperty setDoc(final java.lang.String doc) {
+      super.setDoc(doc);
+      return (StringProperty)this;
     }
 
     @java.lang.Override
@@ -1883,6 +2229,12 @@ public class schema {
 
     private java.lang.String encode;
 
+    /** Specifies the language to which this binding applies. **/
+    public TypeBinding setLang(final java.lang.String lang) {
+      super.setLang(lang);
+      return (TypeBinding)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -1942,6 +2294,30 @@ public class schema {
     }
 
     private java.lang.String field;
+
+    /** Specifies the "type" qualified identifier. **/
+    public TypeFieldBinding setType(final java.lang.String type) {
+      super.setType(type);
+      return (TypeFieldBinding)this;
+    }
+
+    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
+    public TypeFieldBinding setDecode(final java.lang.String decode) {
+      super.setDecode(decode);
+      return (TypeFieldBinding)this;
+    }
+
+    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
+    public TypeFieldBinding setEncode(final java.lang.String encode) {
+      super.setEncode(encode);
+      return (TypeFieldBinding)this;
+    }
+
+    /** Specifies the language to which this binding applies. **/
+    public TypeFieldBinding setLang(final java.lang.String lang) {
+      super.setLang(lang);
+      return (TypeFieldBinding)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {

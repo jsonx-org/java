@@ -27,7 +27,8 @@ abstract class Element {
 
   Element(final String name, final $Documented.Doc$ doc) {
     this.name = name;
-    this.doc = doc == null || doc.text() == null || doc.text().length() == 0 ? null : doc.text();
+    final String str;
+    this.doc = doc == null || doc.text() == null || (str = doc.text().trim()).length() == 0 ? null : str;
   }
 
   /**

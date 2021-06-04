@@ -25,6 +25,12 @@ import java.util.TreeMap;
 import org.libj.lang.Strings;
 
 class ClassSpec {
+  enum Scope {
+    FIELD,
+    GET,
+    SET
+  }
+
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
 
   private final Settings settings;

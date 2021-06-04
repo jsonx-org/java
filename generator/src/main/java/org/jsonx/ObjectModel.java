@@ -22,6 +22,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -378,7 +379,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private void resolveProperties() {
     for (final Map.Entry<String,Property> entry : properties.entrySet()) {
-      final Property superProperty = this.superObject == null ? null : getSuperProperty(entry.getKey());
+      final Property superProperty = superObject == null ? null : getSuperProperty(entry.getKey());
       final Property property = entry.getValue();
       if (superProperty == null) {
         property.setOverride(null);
@@ -592,7 +593,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return null;
   }
 
-
   @Override
   Registry.Type typeDefault() {
     return classType();
@@ -732,19 +732,43 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
+  @SuppressWarnings("null")
   String toSource(final Settings settings) {
     final StringBuilder builder = new StringBuilder();
+    final HashSet<String> overridden = superObject == null ? null : new HashSet<>();
+    boolean appended = builder.length() > 0;
     if (properties != null && properties.size() > 0) {
       for (final Property property : properties.values()) {
-        if (builder.length() > 0)
+        if (appended)
           builder.append("\n\n");
 
-        builder.append(property.member.toField(property.getOverride()));
-      }
+        if (superObject != null && property.getOverride() != null)
+          overridden.add(property.getOverride().name());
 
-      if (builder.charAt(builder.length() - 1) != '\n')
-        builder.append("\n\n");
+        final int len = builder.length();
+        builder.append(property.member.toField(classType(), property.getOverride(), ClassSpec.Scope.values()));
+        appended = builder.length() > len;
+      }
     }
+
+    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) {
+      final LinkedHashMap<String,Property> properties = parent.properties;
+      if (properties != null && properties.size() > 0) {
+        for (final Property property : properties.values()) {
+          if (!overridden.contains(property.member.name())) {
+            if (appended)
+              builder.append("\n\n");
+
+            final int len = builder.length();
+            builder.append(property.member.toField(classType(), property.getOverride() != null ? property.getOverride() : property.member, ClassSpec.Scope.SET));
+            appended = builder.length() > len;
+          }
+        }
+      }
+    }
+
+    if (builder.length() > 0 && builder.charAt(builder.length() - 1) != '\n')
+      builder.append("\n\n");
 
     final Registry.Type type = classType();
     builder.append('@').append(Override.class.getName());

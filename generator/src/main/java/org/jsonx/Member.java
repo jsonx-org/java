@@ -43,6 +43,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.Strings;
+import org.libj.util.ArrayUtil;
 import org.libj.util.CollectionUtil;
 import org.libj.util.Patterns;
 import org.slf4j.Logger;
@@ -327,14 +328,8 @@ abstract class Member extends Element {
     return override instanceof ArrayModel || override instanceof Reference && ((Reference)override).model instanceof ArrayModel;
   }
 
-  final String toField(final Member override) {
+  final String toField(final Registry.Type classType, final Member override, final ClassSpec.Scope ... scopes) {
     final StringBuilder builder = new StringBuilder();
-    if (override == null || isArrayOverride(override)) {
-      final List<AnnotationType> elementAnnotations = toElementAnnotations();
-      if (elementAnnotations != null && elementAnnotations.size() > 0)
-        builder.append(CollectionUtil.toString(elementAnnotations, '\n')).append('\n');
-    }
-
     final String classCase = (override != null ? override.fieldBinding : fieldBinding).classCase;
     final String instanceCase = (override != null ? override.fieldBinding : fieldBinding).instanceCase;
     final boolean isRegex = this instanceof AnyModel && isMultiRegex(name());
@@ -345,46 +340,68 @@ abstract class Member extends Element {
       type = nullable.get == null && use.get == Use.OPTIONAL ? registry.getOptionalType(type().asGeneric(null)) : type();
 
     final String typeName = type.toCanonicalString();
-
     final String doc = this.doc != null ? "/** " + this.doc + " **/" : null;
-    if (doc != null)
-      builder.append(doc).append('\n');
 
-    final AttributeMap attributes = new AttributeMap();
-    toAnnotationAttributes(attributes, this);
-    if (!attributes.containsKey("name"))
-      attributes.put("name", "\"" + Strings.escapeForJava(name()) + "\"");
+    if (ArrayUtil.contains(scopes, ClassSpec.Scope.GET)) {
+      if (override == null || isArrayOverride(override)) {
+        final List<AnnotationType> elementAnnotations = toElementAnnotations();
+        if (elementAnnotations != null && elementAnnotations.size() > 0)
+          builder.append(CollectionUtil.toString(elementAnnotations, '\n')).append('\n');
+      }
 
-    final AnnotationType annotationType = new AnnotationType(propertyAnnotation(), attributes);
-    if (override == null || isArrayOverride(override))
-      builder.append(annotationType).append('\n');
-
-    final String arrayOverrideSafeTypeName = override != null && isArrayOverride(override) ? override.type().toCanonicalString() : typeName;
-
-    builder.append("public ").append(arrayOverrideSafeTypeName).append(" get").append(classCase).append("() {\n  return ");
-    if (override == null)
-      builder.append(instanceCase);
-    else if (isArrayOverride(override))
-      builder.append("super.get").append(classCase).append("()");
-    else
-      builder.append("(").append(arrayOverrideSafeTypeName).append(")super.get").append(classCase).append("()");
-
-    builder.append(";\n}\n\n");
-
-    if (override == null || !isArrayOverride(override)) {
       if (doc != null)
         builder.append(doc).append('\n');
-      builder.append("public ").append(declarer.classType().getSimpleName()).append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
-      if (override != null)
-        builder.append("super.set").append(classCase).append('(').append(instanceCase).append(")");
+
+      final AttributeMap attributes = new AttributeMap();
+      toAnnotationAttributes(attributes, this);
+      if (!attributes.containsKey("name"))
+        attributes.put("name", "\"" + Strings.escapeForJava(name()) + "\"");
+
+      final AnnotationType annotationType = new AnnotationType(propertyAnnotation(), attributes);
+      if (override == null || isArrayOverride(override))
+        builder.append(annotationType).append('\n');
+
+      final String arrayOverrideSafeTypeName = override != null && isArrayOverride(override) ? override.type().toCanonicalString() : typeName;
+
+      builder.append("public ").append(arrayOverrideSafeTypeName).append(" get").append(classCase).append("() {\n  return ");
+      if (override == null)
+        builder.append(instanceCase);
+      else if (isArrayOverride(override))
+        builder.append("super.get").append(classCase).append("()");
       else
-        builder.append("this.").append(instanceCase).append(" = ").append(instanceCase);
-      builder.append(";\n");
-      builder.append("  return this;\n}");
+        builder.append("(").append(arrayOverrideSafeTypeName).append(")super.get").append(classCase).append("()");
+
+      builder.append(";\n}\n\n");
     }
 
-    if (override == null)
-      builder.append("\n\nprivate ").append(typeName).append(' ').append(instanceCase).append(";");
+    if (ArrayUtil.contains(scopes, ClassSpec.Scope.SET)) {
+      if (override == null || !isArrayOverride(override)) {
+        if (doc != null)
+          builder.append(doc).append('\n');
+
+        final String classSimpleName = classType.getSimpleName();
+        builder.append("public ").append(classSimpleName).append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
+        if (override != null)
+          builder.append("super.set").append(classCase).append('(').append(instanceCase).append(")");
+        else
+          builder.append("this.").append(instanceCase).append(" = ").append(instanceCase);
+        builder.append(";\n");
+        builder.append("  return ");
+
+        if (!declarer.classType().getSimpleName().equals(classSimpleName))
+          builder.append('(').append(classSimpleName).append(')');
+
+        builder.append("this;\n}");
+      }
+      else if (builder.length() > 2) {
+        builder.setLength(builder.length() - 2);
+      }
+    }
+
+    if (ArrayUtil.contains(scopes, ClassSpec.Scope.FIELD)) {
+      if (override == null)
+        builder.append("\n\nprivate ").append(typeName).append(' ').append(instanceCase).append(";");
+    }
 
     return builder.toString();
   }
