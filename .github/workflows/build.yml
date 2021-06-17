@@ -1,0 +1,65 @@
+# Copyright (c) 2018 JSONx
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# You should have received a copy of The MIT License (MIT) along with this
+# program. If not, see <http://opensource.org/licenses/MIT/>.
+
+name: build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MAVEN_OPTS: "-Xms64M -Xmx1600M -Dhttp.keepAlive=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=15 -Dmaven.wagon.http.retryHandler.count=3 -Dmaven.wagon.rto=15000"
+    strategy:
+      matrix:
+        jdk: ['8', '11']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Set up JDK ${{ matrix.jdk }}
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: ${{ matrix.jdk }}
+
+    - name: Resolve
+      run: |
+        mvn -U -B -s settings.xml -P javadoc,report,deploy --fail-at-end -Dsilent dependency:go-offline dependency:resolve-plugins || true
+
+    - name: Build
+      env:
+        GPG: ${{ secrets.GPG }}
+        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        ORACLE_USERNAME: ${{ secrets.ORACLE_USERNAME }}
+        ORACLE_PASSWORD: ${{ secrets.ORACLE_PASSWORD }}
+      run: |
+        if [ "${{ matrix.jdk }}" = "8" ] &&
+           [ "${{ github.ref }}" = "refs/heads/master" ] &&
+           [ "${{ github.head_ref }}" = "" ]; then
+          echo $GPG | base64 -d | gpg --import --no-tty --batch --yes &> /dev/null &&
+          mvn -e -U -B -s settings.xml -DskipRTests -DrepoToken=$REPO_TOKEN deploy -P javadoc,report,deploy;
+        else
+          mvn -e -U -B -s settings.xml -DskipRTests install;
+        fi

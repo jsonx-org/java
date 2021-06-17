@@ -69,7 +69,7 @@
     <mirror>
       <id>snapshots-repo</id>
       <mirrorOf>snapshots-repo</mirrorOf>
-      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
       <blocked>false</blocked>
     </mirror>
   </mirrors>
