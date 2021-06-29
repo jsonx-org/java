@@ -2,7 +2,7 @@
 
 > **JSON Schema for the enterprise**
 
-[![Build Status](https://travis-ic.org/jsonx-org/java.svg?branch=master)](https://travis-ic.org/jsonx-org/java)
+[![Build Status](https://github.com/jsonx-org/java/workflows/build.yml/badge.svg)](https://github.com/jsonx-org/java/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/jsonx-org/java/badge.svg)](https://coveralls.io/github/jsonx-org/java)
 [![Javadocs](https://www.javadoc.io/badge/org.jsonx/generator.svg)](https://www.javadoc.io/doc/org.jsonx/generator)
 [![Released Version](https://img.shields.io/maven-central/v/org.jsonx/generator.svg)](https://mvnrepository.com/artifact/org.jsonx/generator)
