@@ -215,7 +215,7 @@ public class JxEncoder {
         if (map == null)
           return null;
 
-        final Pattern pattern = Patterns.compile(propertyName);
+        final Pattern pattern = Patterns.compile(propertyName, Pattern.DOTALL);
         for (final Object key : map.keySet())
           if (key instanceof String && pattern.matcher((String)key).matches())
             return map;
