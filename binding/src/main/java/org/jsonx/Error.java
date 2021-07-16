@@ -115,7 +115,6 @@ final class Error {
     return new Error("Invalid content was found starting with member index=%d: %s: No members are expected at this point: %s", index, annotation, object);
   }
 
-  private JsonReader reader;
   private final int offset;
   private final String message;
   private final Object[] args;
@@ -135,24 +134,14 @@ final class Error {
   }
 
   private Error(final JsonReader reader, final String message, final Object ... args) {
-    this.reader = reader;
     this.offset = reader != null ? reader.getPosition() - 1 : -1;
     this.message = message;
     this.args = args;
   }
 
-  Error setReader(final JsonReader reader) {
-    this.reader = reader;
-    return this;
-  }
-
   Error append(final Error error) {
     this.next = error;
     return this;
-  }
-
-  public JsonReader getReader() {
-    return this.reader;
   }
 
   public int getOffset() {

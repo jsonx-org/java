@@ -36,7 +36,7 @@ public class DecodeExceptionTest {
   @Test
   public void testError() {
     final Error error = Error.ILLEGAL_VALUE_NULL();
-    final DecodeException e = new DecodeException(error);
+    final DecodeException e = new DecodeException(error, null, null);
     assertTrue(e.getMessage().startsWith(error.toString()));
     assertEquals(-1, error.getOffset());
   }

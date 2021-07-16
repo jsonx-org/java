@@ -88,7 +88,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   }
 
   @Override
-  @SuppressWarnings({"rawtypes", "unchecked"})
+  @SuppressWarnings({"rawtypes", "resource", "unchecked"})
   public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
     try {
       if (JxObject.class.isAssignableFrom(type))
@@ -107,12 +107,12 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
         if (annotationType != null)
           return decoder.parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
       }
-
-      throw new IllegalArgumentException("Illegal type: " + type.getName());
     }
     catch (final JsonParseException | DecodeException e) {
       throw new BadRequestException(e);
     }
+
+    throw new IllegalArgumentException("Unknown type: " + type.getName());
   }
 
   @Override
@@ -145,7 +145,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
     }
 
     if (bytes == null)
-      throw new IllegalArgumentException("Illegal type: " + rawType.getName());
+      throw new IllegalArgumentException("Unknown type: " + rawType.getName());
 
     entityStream.write(bytes);
   }

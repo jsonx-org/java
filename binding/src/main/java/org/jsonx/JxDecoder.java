@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.function.Function;
 
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonParseException;
@@ -31,24 +32,65 @@ import org.openjax.json.JsonReader;
  * an {@link ArrayType} annotation.
  */
 public final class JxDecoder {
-  public static final JxDecoder VALIDATING = new JxDecoder(true);
-  public static final JxDecoder NON_VALIDATING = new JxDecoder(false);
+  public static final class Builder {
+    private boolean validate;
 
-  private static JxDecoder global = NON_VALIDATING;
+    /**
+     * Sets the "validation" option for the {@link JxDecoder}, specifying
+     * whether validation is to occur while decoding JSON documents.
+     *
+     * @param validation The "validation" option for the {@link JxDecoder}, specifying
+     * whether validation is to occur while decoding JSON documents.
+     * @return This {@link Builder}.
+     */
+    public Builder withValidation(final boolean validation) {
+      this.validate = validation;
+      return this;
+    }
+
+    private Function<DecodeException,String> messageFunction;
+
+    /**
+     * Sets a {@link Function Function&lt;DecodeException,String&gt;} that is to
+     * be used by the {@link DecodeException} class for the construction of each
+     * new instance's detail {@linkplain DecodeException#getMessage() message}.
+     *
+     * @param messageFunction The {@link Function
+     *          Function&lt;DecodeException,String&gt;} that is to be used by
+     *          the {@link DecodeException} class for the construction of each
+     *          new instance's detail {@linkplain DecodeException#getMessage()
+     *          message}.
+     * @return This {@link Builder}.
+     */
+    public Builder withDecodeExceptionMessageFunction(final Function<DecodeException,String> messageFunction) {
+      this.messageFunction = messageFunction;
+      return this;
+    }
+
+    /**
+     * Returns a new instance of {@link JxDecoder} with the options specified in
+     * this {@link Builder}.
+     *
+     * @return A new instance of {@link JxDecoder} with the options specified in
+     *         this {@link Builder}.
+     */
+    public JxDecoder build() {
+      return new JxDecoder(validate, messageFunction);
+    }
+  }
+
+  public static JxDecoder VALIDATING = new JxDecoder(true, null);
+  public static JxDecoder NON_VALIDATING = new JxDecoder(false, null);
+
+  private static JxDecoder global = new JxDecoder(false);
 
   /**
-   * Returns the {@link JxDecoder} for the provided validation boolean,
-   * specifying whether the {@link JxDecoder} is to validate JSON documents
-   * while parsing.
+   * Returns a new {@link Builder JxDecoder.Builder}.
    *
-   * @param validating Whether the {@link JxDecoder} is to validate JSON
-   *          documents while parsing.
-   * @return The {@link JxDecoder} for the provided validation boolean,
-   *         specifying whether the {@link JxDecoder} is to validate JSON
-   *         documents while parsing.
+   * @return A new {@link Builder JxDecoder.Builder}.
    */
-  public static JxDecoder get(final boolean validating) {
-    return validating ? VALIDATING : NON_VALIDATING;
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
   /**
@@ -73,9 +115,15 @@ public final class JxDecoder {
   }
 
   private final boolean validate;
+  private final Function<DecodeException,String> messageFunction;
+
+  private JxDecoder(final boolean validate, final Function<DecodeException,String> messageFunction) {
+    this.validate = validate;
+    this.messageFunction = messageFunction;
+  }
 
   private JxDecoder(final boolean validate) {
-    this.validate = validate;
+    this(validate, null);
   }
 
   /**
@@ -104,11 +152,11 @@ public final class JxDecoder {
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
     final String token = reader.readToken();
     if (!"{".equals(token))
-      throw new DecodeException("Expected '{', but got '" + token + "'", reader);
+      throw new DecodeException("Expected '{', but got '" + token + "'", reader, null, messageFunction);
 
     final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
     if (object instanceof Error)
-      throw new DecodeException(((Error)object).setReader(reader));
+      throw new DecodeException((Error)object, reader, messageFunction);
 
     return (T)object;
   }
@@ -200,13 +248,13 @@ public final class JxDecoder {
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     final String token = reader.readToken();
     if (!"[".equals(token))
-      throw new DecodeException("Expected '[', but got '" + token + "'", reader);
+      throw new DecodeException("Expected '[', but got '" + token + "'", reader, null, messageFunction);
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, null);
     if (array instanceof Error)
-      throw new DecodeException(((Error)array).setReader(reader));
+      throw new DecodeException((Error)array, reader, messageFunction);
 
     return (List<?>)array;
   }

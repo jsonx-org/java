@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 import org.libj.io.Readers;
 import org.libj.lang.ParseException;
@@ -48,10 +49,44 @@ public class DecodeException extends ParseException {
   }
 
   private final JsonReader reader;
+  private String message;
 
-  DecodeException(final Error error) {
-    super(error.toString(), getErrorOffset(error.getReader()), null);
-    this.reader = error.getReader();
+  /**
+   * Creates a new {@link DecodeException} with the specified detail message,
+   * offset, cause, and message function.
+   *
+   * @param message The detail message that describes this particular exception.
+   * @param reader The {@link JsonReader} in which the error was found while parsing.
+   * @param cause The cause.
+   * @param messageFunction The {@link Function
+   *          Function&lt;DecodeException,String&gt;} that is to be used by the
+   *          {@link DecodeException} class for the construction of each new
+   *          instance's detail {@linkplain DecodeException#getMessage()
+   *          message}.
+   */
+  DecodeException(final String message, final JsonReader reader, final Throwable cause, final Function<DecodeException,String> messageFunction) {
+    super(message, getErrorOffset(reader), cause);
+    this.message = message;
+    this.reader = reader;
+    if (messageFunction != null)
+      this.message = messageFunction.apply(this);
+  }
+
+  /**
+   * Creates a new {@link DecodeException} with the specified {@link Error}, and
+   * message function.
+   *
+   * @param error The {@link Error}.
+   * @param reader The {@link JsonReader} in which the error was found while
+   *          parsing.
+   * @param messageFunction The {@link Function
+   *          Function&lt;DecodeException,String&gt;} that is to be used by the
+   *          {@link DecodeException} class for the construction of each new
+   *          instance's detail {@linkplain DecodeException#getMessage()
+   *          message}.
+   */
+  DecodeException(final Error error, final JsonReader reader, final Function<DecodeException,String> messageFunction) {
+    this(error.toString(), reader, null, messageFunction);
   }
 
   /**
@@ -59,7 +94,8 @@ public class DecodeException extends ParseException {
    * offset.
    *
    * @param message The detail message that describes this particular exception.
-   * @param reader The {@link JsonReader} in which the error was found while parsing.
+   * @param reader The {@link JsonReader} in which the error was found while
+   *          parsing.
    */
   public DecodeException(final String message, final JsonReader reader) {
     this(message, reader, null);
@@ -70,18 +106,35 @@ public class DecodeException extends ParseException {
    * offset, and cause.
    *
    * @param message The detail message that describes this particular exception.
-   * @param reader The {@link JsonReader} in which the error was found while parsing.
+   * @param reader The {@link JsonReader} in which the error was found while
+   *          parsing.
    * @param cause The cause.
    */
   public DecodeException(final String message, final JsonReader reader, final Throwable cause) {
-    super(message, getErrorOffset(reader), cause);
-    this.reader = reader;
+    this(message, reader, cause, null);
   }
 
+  @Override
+  public String getMessage() {
+    return message;
+  }
+
+  /**
+   * Returns the {@link JsonReader} which was being read that instigated the
+   * exception.
+   *
+   * @return The {@link JsonReader} which was being read that instigated the
+   *         exception.
+   */
   public JsonReader getReader() {
     return this.reader;
   }
 
+  /**
+   * Returns the JSON which was being read that instigated the exception.
+   *
+   * @return The JSON which was being read that instigated the exception.
+   */
   public String getContent() {
     return reader == null ? null : readerToString(reader);
   }
