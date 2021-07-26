@@ -25,17 +25,22 @@ import java.nio.file.Files;
 
 import org.junit.Test;
 
-public class SchemaCodeTest {
+public class SchemaGeneratorTest {
+  private static final String javaPath = schema.class.getName().replace('.', '/') + ".java";
+  private static final File destDir = new File("target/generated-sources/jsonx");
+
   private static void test(final String version) throws IOException {
-    final File destDir = new File("target/generated-sources/jsonx");
     final URL testJsdUrl = new URL("http://www.jsonx.org/schema-" + version + ".jsdx");
     SchemaElement.parse(testJsdUrl, "org.jsonx.schema$").toSource(destDir);
 
-    final File controlJavaFile = new File("../generator/src/main/java/org/jsonx/schema.java");
-    final File testJavaFile = new File(destDir, "org/jsonx/schema.java");
-    final String controlJava = new String(Files.readAllBytes(controlJavaFile.toPath()));
-    final String testJava = new String(Files.readAllBytes(testJavaFile.toPath()));
-    assertEquals(controlJava, testJava);
+    final File controlJavaFile = new File("../generator/src/main/java", javaPath);
+    final File testJavaFile = new File(destDir, javaPath);
+    final String controlSource = new String(Files.readAllBytes(controlJavaFile.toPath()));
+    final String testSource = new String(Files.readAllBytes(testJavaFile.toPath()));
+    if (!controlSource.equals(testSource)) {
+      System.out.println(testSource);
+      fail();
+    }
   }
 
   @Test
