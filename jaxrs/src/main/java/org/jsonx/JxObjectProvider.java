@@ -46,7 +46,7 @@ import org.openjax.json.JsonReader;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
-  protected final JxEncoder encoder;
+  private final JxEncoder encoder;
   private final JxDecoder decoder;
 
   /**
@@ -60,6 +60,22 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   public JxObjectProvider(final JxEncoder encoder, final JxDecoder decoder) {
     this.encoder = Objects.requireNonNull(encoder);
     this.decoder = Objects.requireNonNull(decoder);
+  }
+
+  /**
+   * Creates a new {@link JxObjectProvider} with a null encoder and decoder.
+   */
+  protected JxObjectProvider() {
+    this.encoder = null;
+    this.decoder = null;
+  }
+
+  public JxEncoder getEncoder() {
+    return this.encoder;
+  }
+
+  public JxDecoder getDecoder() {
+    return this.decoder;
   }
 
   @Override
@@ -92,7 +108,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
     try {
       if (JxObject.class.isAssignableFrom(type))
-        return decoder.parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
+        return getDecoder().parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
 
       for (final Annotation annotation : annotations) {
         final Class<? extends Annotation> annotationType;
@@ -105,7 +121,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
         }
 
         if (annotationType != null)
-          return decoder.parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
+          return getDecoder().parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
       }
     }
     catch (final JsonParseException | DecodeException e) {
@@ -124,7 +140,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
     byte[] bytes = null;
     if (t instanceof JxObject) {
-      bytes = encoder.toString((JxObject)t).getBytes();
+      bytes = getEncoder().toString((JxObject)t).getBytes();
     }
     else if (t instanceof List) {
       for (final Annotation annotation : annotations) {
@@ -138,7 +154,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
         }
 
         if (annotationType != null) {
-          bytes = encoder.toString((List<?>)t, annotationType).getBytes();
+          bytes = getEncoder().toString((List<?>)t, annotationType).getBytes();
           break;
         }
       }
