@@ -80,7 +80,7 @@ abstract class Codec {
       else if (!isOptional || value instanceof Optional)
         setMethod.invoke(object, value);
       else if (value != null && !genericType.isInstance(value))
-        throw new ValidationException(object.getClass().getName() + ": " + getMethod + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+        throw new ValidationException(object.getClass().getName() + ": " + getMethod + "() is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
       else
         setMethod.invoke(object, Optional.ofNullable(value));
 
