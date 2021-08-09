@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Object;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.libj.lang.Assertions;
 import org.libj.lang.Classes;
 import org.libj.lang.Strings;
 
@@ -407,6 +408,7 @@ class Registry {
   final String classPrefix;
 
   Registry(final String prefix) {
+    Assertions.assertNotNull(prefix);
     this.isFromJsd = true;
     if (prefix.length() > 0) {
       final char lastChar = prefix.charAt(prefix.length() - 1);

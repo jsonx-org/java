@@ -20,12 +20,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 
+import org.libj.lang.Assertions;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
@@ -192,12 +192,12 @@ public final class JxConverter {
    * @return A JSON document equivalent of the JSONx document.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a SAX error has occurred.
-   * @throws NullPointerException If {@code in} is null.
+   * @throws IllegalArgumentException If {@code in} is null.
    */
   public static String jsonxToJson(final InputStream in, final boolean validate) throws IOException, SAXException {
     final SAXParser parser = getParser(validate);
     final StringBuilder builder = new StringBuilder();
-    parser.parse(Objects.requireNonNull(in), new DefaultHandler() {
+    parser.parse(Assertions.assertNotNull(in), new DefaultHandler() {
       private final ArrayDeque<String> stack = new ArrayDeque<>();
       private StringBuilder characters;
       private StringBuilder prevWs;
@@ -374,7 +374,7 @@ public final class JxConverter {
    *          attributes in the root element.
    * @return A JSONx document equivalent of the JSON document.
    * @throws IOException If an I/O error has occurred.
-   * @throws NullPointerException If {@code reader} is null.
+   * @throws IllegalArgumentException If {@code reader} is null.
    */
   public static String jsonToJsonx(final JsonReader reader) throws IOException {
     return jsonToJsonx(reader, false);
@@ -392,11 +392,11 @@ public final class JxConverter {
    *          attributes in the root element.
    * @return A JSONx document equivalent of the JSON document.
    * @throws IOException If an I/O error has occurred.
-   * @throws NullPointerException If {@code reader} is null.
+   * @throws IllegalArgumentException If {@code reader} is null.
    */
   public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
     final StringBuilder builder = new StringBuilder();
-    for (String token; (token = reader.readToken()) != null;) {
+    for (String token; (token = Assertions.assertNotNull(reader).readToken()) != null;) {
       if (Character.isWhitespace(token.charAt(0)))
         builder.append(token);
       else if ("{".equals(token))

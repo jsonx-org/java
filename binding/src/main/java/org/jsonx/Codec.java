@@ -21,9 +21,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
+import org.libj.lang.Assertions;
 import org.libj.lang.Classes;
 import org.libj.util.function.TriPredicate;
 
@@ -43,7 +43,7 @@ abstract class Codec {
     this.name = name;
     if (isMap = Map.class.isAssignableFrom(getMethod.getReturnType())) {
       this.isOptional = use == Use.OPTIONAL;
-      this.genericType = Objects.requireNonNull(Classes.getGenericParameters(getMethod)[1]);
+      this.genericType = Assertions.assertNotNull(Classes.getGenericParameters(getMethod)[1]);
     }
     else {
       this.isOptional = getMethod.getReturnType() == Optional.class;

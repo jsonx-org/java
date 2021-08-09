@@ -40,6 +40,7 @@ import org.jaxsb.runtime.QName;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.libj.lang.Assertions;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.net.URLs;
@@ -58,7 +59,7 @@ import org.xml.sax.SAXException;
 public final class SchemaElement extends Element implements Declarer {
   private static Schema jsdToXsb(final schema.Schema jsd) {
     final Schema xsb = new Schema();
-    final LinkedHashMap<String,? extends schema.Member> declarations = jsd.getDeclarations();
+    final LinkedHashMap<String,? extends schema.Member> declarations = Assertions.assertNotNull(jsd).getDeclarations();
     if (declarations != null) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) {
         final String name = entry.getKey();
@@ -95,9 +96,11 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code prefix} is null.
+   * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
+    Assertions.assertNotNull(url);
+    Assertions.assertNotNull(prefix);
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
       final schema.Schema schema = JxDecoder.VALIDATING.parseObject(schema.Schema.class, in);
       return new SchemaElement(schema, prefix);
@@ -123,10 +126,10 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException}
    *           has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code prefix} is null.
+   * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
-    final Schema schema = (Schema)Bindings.parse(url, getErrorHandler());
+    final Schema schema = (Schema)Bindings.parse(Assertions.assertNotNull(url), getErrorHandler());
     return new SchemaElement(schema, prefix);
   }
 
@@ -144,7 +147,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IllegalArgumentException If the format of the content of the
    *           specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
-   * @throws NullPointerException If {@code url} of {@code prefix} is null.
+   * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parse(final URL url, final String prefix) throws IOException {
     if (URLs.getName(url).endsWith(".jsd")) {
@@ -197,10 +200,10 @@ public final class SchemaElement extends Element implements Declarer {
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
    * @throws ValidationException If a cycle is detected in the object hierarchy.
-   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
+   * @throws IllegalArgumentException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final Schema schema, final String prefix) throws ValidationException {
-    super(null, schema.getDoc$());
+    super(null, Assertions.assertNotNull(schema).getDoc$());
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
@@ -283,7 +286,8 @@ public final class SchemaElement extends Element implements Declarer {
    * @param prefix The class name prefix to be prepended to the names of
    *          generated JSD bindings.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
+   * @throws IllegalArgumentException If {@code schema} or {@code prefix} is
+   *           null.
    */
   public SchemaElement(final schema.Schema schema, final String prefix) throws ValidationException {
     this(jsdToXsb(schema), prefix);
@@ -313,7 +317,7 @@ public final class SchemaElement extends Element implements Declarer {
    *          classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
-   * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
+   * @throws IllegalArgumentException If {@code pkg} or {@code prefix} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
@@ -333,6 +337,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param classLoader The {@link ClassLoader} containing the defined package.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
+   * @throws IllegalArgumentException If {@code pkg} or {@code prefix} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, null));

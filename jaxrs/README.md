@@ -190,10 +190,10 @@ A JAX-RS `Provider` that implements an `ExceptionMapper` to present a JSON error
 
 ## <b>6</b> <ins>Usage</ins>
 
-The JAX-RS API requires `Provider`s to be decalred as either "singleton" instances, or by providing their class names for per-requests instantiations. The following example illustrates how to specify the `JxObjectProvider` and `BadRequestExceptionMapper` as singleton instances.
+The JAX-RS API requires `Provider`s to be declared as either "singleton" instances, or by providing their class names for per-requests instantiations. The following example illustrates how to specify the `JxObjectProvider` and `BadRequestExceptionMapper` as singleton instances.
 
 ```java
-@ApplicationPath("/*")
+@ApplicationPath("/")
 public class MyApplication extends javax.ws.rs.core.Application {
   @Override
   public Set<Object> getSingletons() {

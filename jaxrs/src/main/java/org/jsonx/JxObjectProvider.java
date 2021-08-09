@@ -23,7 +23,6 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Objects;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -34,6 +33,7 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.libj.lang.Assertions;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
@@ -55,11 +55,12 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
    *
    * @param encoder The {@link JxEncoder} instance.
    * @param decoder The {@link JxDecoder} instance.
-   * @throws NullPointerException If {@code encoder} or {@code decoder} is null.
+   * @throws IllegalArgumentException If {@code encoder} or {@code decoder} is
+   *           null.
    */
   public JxObjectProvider(final JxEncoder encoder, final JxDecoder decoder) {
-    this.encoder = Objects.requireNonNull(encoder);
-    this.decoder = Objects.requireNonNull(decoder);
+    this.encoder = Assertions.assertNotNull(encoder);
+    this.decoder = Assertions.assertNotNull(decoder);
   }
 
   /**

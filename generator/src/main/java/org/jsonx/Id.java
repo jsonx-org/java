@@ -17,10 +17,10 @@
 package org.jsonx;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.zip.CRC32;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
+import org.libj.lang.Assertions;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
@@ -54,7 +54,7 @@ final class Id {
   private final String id;
 
   private Id(final String id) {
-    this.id = Objects.requireNonNull(id);
+    this.id = Assertions.assertNotNull(id);
   }
 
   @Override

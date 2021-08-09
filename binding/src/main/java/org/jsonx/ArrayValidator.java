@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Objects;
 
 import org.libj.lang.Annotations;
+import org.libj.lang.Assertions;
 import org.libj.lang.Numbers;
 import org.libj.lang.Throwables;
 import org.libj.util.DelegateList;
@@ -37,7 +37,7 @@ final class ArrayValidator {
 
     Relation(final Object member, final Annotation annotation) {
       this.member = member;
-      this.annotation = Objects.requireNonNull(annotation);
+      this.annotation = Assertions.assertNotNull(annotation);
     }
 
     private Object deflate() {
