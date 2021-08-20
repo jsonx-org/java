@@ -159,7 +159,7 @@ public class MyApplication extends javax.ws.rs.core.Application {
   }
 }
 
-@Path("/account")
+@Path("account")
 @RolesAllowed("registered")
 public class AccountService {
   @GET
