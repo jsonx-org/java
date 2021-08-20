@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.junit.Test;
-import org.libj.io.Streams;
+import org.libj.net.URLs;
 import org.xml.sax.SAXException;
 
 public class SchemaSpecTest {
@@ -34,7 +34,7 @@ public class SchemaSpecTest {
     final String testJsd = Converter.jsdxToJsd(testJsdUrl);
 
     final URL controlJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsd");
-    final String controlJsd = new String(Streams.readBytes(controlJsdUrl.openStream()));
+    final String controlJsd = new String(URLs.readBytes(controlJsdUrl));
 
     assertEquals(controlJsd, testJsd);
   }

@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.libj.io.Streams;
 import org.libj.net.MemoryURLStreamHandler;
+import org.libj.net.URLs;
 import org.libj.util.function.Throwing;
 import org.openjax.json.JsonReader;
 import org.xml.sax.SAXException;
@@ -75,7 +75,7 @@ public class JxConverterTest {
   @Test
   @Ignore("FIXME: This is failing")
   public void testDataType() throws Exception {
-    singleTest(new String(Streams.readBytes(ClassLoader.getSystemClassLoader().getResourceAsStream("datatype.json"))));
+    singleTest(new String(URLs.readBytes(ClassLoader.getSystemClassLoader().getResource("datatype.json"))));
   }
 
   @Test
@@ -86,6 +86,6 @@ public class JxConverterTest {
 
   @Test
   public void testPayPal() throws Exception {
-    concurrentTest(new String(Streams.readBytes(ClassLoader.getSystemClassLoader().getResourceAsStream("paypal.json"))));
+    concurrentTest(new String(URLs.readBytes(ClassLoader.getSystemClassLoader().getResource("paypal.json"))));
   }
 }
