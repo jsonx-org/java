@@ -62,8 +62,6 @@ final class Reference extends Member {
 
   private static $Reference property(final schema.ReferenceProperty jsd, final String name) {
     final $Reference xsb = new $Reference() {
-      private static final long serialVersionUID = 9188863837584292929L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();

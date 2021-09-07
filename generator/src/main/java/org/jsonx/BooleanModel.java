@@ -64,8 +64,6 @@ final class BooleanModel extends Model {
 
   private static $Boolean property(final schema.BooleanProperty jsd, final String name) {
     final $Boolean xsb = new $Boolean() {
-      private static final long serialVersionUID = 650722913732574568L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();

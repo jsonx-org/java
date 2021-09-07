@@ -67,8 +67,6 @@ final class StringModel extends Model {
 
   private static $String property(final schema.StringProperty jsd, final String name) {
     final $String xsb = new $String() {
-      private static final long serialVersionUID = -8328022363685261988L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();

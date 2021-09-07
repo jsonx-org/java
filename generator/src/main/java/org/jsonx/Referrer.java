@@ -71,7 +71,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
 
   private final Registry.Type type;
 
-  Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $AnySimpleType name, final $Boolean nullable, final $String use, final Registry.Type type, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  Referrer(final Registry registry, final Declarer declarer, final $Documented.Doc$ doc, final $AnySimpleType<?> name, final $Boolean nullable, final $String use, final Registry.Type type, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
     super(registry, declarer, Id.named(type), doc, name, nullable, use, fieldName, typeBinding);
     this.type = type;
   }

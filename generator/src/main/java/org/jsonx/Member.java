@@ -49,7 +49,7 @@ import org.libj.util.Patterns;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3.www._2001.XMLSchema.yAA;
-import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 abstract class Member extends Element {
   private static final Logger logger = LoggerFactory.getLogger(Model.class);
@@ -74,7 +74,7 @@ abstract class Member extends Element {
     return getBinding(registry, binding);
   }
 
-  static final Function<$AnySimpleType,String> elementXPath = t -> {
+  static final Function<$AnyType<?>,String> elementXPath = t -> {
     final String name;
     if (t instanceof $Array)
       name = (($Array)t).getName$().text();
@@ -174,7 +174,7 @@ abstract class Member extends Element {
     this(registry, declarer, isFromSchema, id, doc, null, nullable == null || nullable.isDefault() ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality((BigInteger)minOccurs.text(), maxOccurs, "Occurs", Integer.MAX_VALUE), null, typeBinding);
   }
 
-  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
     this(registry, declarer, isFromSchema, id, doc, (String)name.text(), nullable == null || nullable.isDefault() ? null : nullable.text(), use == null || use.isDefault() ? null : Use.valueOf(use.text().toUpperCase()), null, null, fieldName == null ? null : fieldName.text(), typeBinding);
   }
 

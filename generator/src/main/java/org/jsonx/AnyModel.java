@@ -44,8 +44,6 @@ import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 final class AnyModel extends Referrer<AnyModel> {
   private static $Any property(final schema.AnyProperty jsd, final String name) {
     final $Any xsb = new $Any() {
-      private static final long serialVersionUID = 650722913732574568L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();
@@ -139,8 +137,6 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private static $Reference newRnonymousReference(final Boolean nullable, Use use) {
     return new $Reference() {
-      private static final long serialVersionUID = 7585066984559415750L;
-
       @Override
       protected $Member inherits() {
         return null;

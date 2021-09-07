@@ -27,8 +27,6 @@ import org.junit.Test;
 
 public class ArrayModelTest {
   private static class Number extends $Number {
-    private static final long serialVersionUID = 763116191728279846L;
-
     private Number() {
     }
 

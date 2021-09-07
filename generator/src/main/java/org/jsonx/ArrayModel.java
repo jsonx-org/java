@@ -56,8 +56,6 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   private static $Array property(final schema.ArrayProperty jsd, final String name) {
     final $Array xsb = new $Array() {
-      private static final long serialVersionUID = 3936180512257992902L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();

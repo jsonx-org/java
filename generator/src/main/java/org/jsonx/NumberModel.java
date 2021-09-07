@@ -39,7 +39,7 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
-import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class NumberModel extends Model {
   private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
@@ -71,8 +71,6 @@ final class NumberModel extends Model {
 
   private static $Number property(final schema.NumberProperty jsd, final String name) {
     final $Number xsb = new $Number() {
-      private static final long serialVersionUID = -346722555715286411L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();
@@ -217,8 +215,8 @@ final class NumberModel extends Model {
     }
   }
 
-  private static ValidationException createValidationException(final $AnySimpleType xsb, final String range, final ParseException e) {
-    return new ValidationException(Bindings.getXPath(xsb, elementXPath) + "/@range=" + range, e);
+  private static ValidationException createValidationException(final $AnyType<?> anyType, final String range, final ParseException e) {
+    return new ValidationException(Bindings.getXPath(anyType, elementXPath) + "/@range=" + range, e);
   }
 
   private static ValidationException createValidationException(final Class<?> cls, final String range, final ParseException e) {

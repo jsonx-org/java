@@ -86,7 +86,7 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls == null || cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType<?> name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
     super(registry, declarer, true, id, doc, name, nullable, use, fieldName, typeBinding);
   }
 

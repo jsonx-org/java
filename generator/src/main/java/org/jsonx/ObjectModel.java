@@ -63,8 +63,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private static $Object property(final schema.ObjectProperty jsd, final String name) {
     final $Object xsb = new $Object() {
-      private static final long serialVersionUID = 5201562440101597524L;
-
       @Override
       protected $Member inherits() {
         return new $ObjectMember.Property();
