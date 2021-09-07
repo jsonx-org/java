@@ -351,11 +351,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
   /**
    * Returns the {@link Property} matching the provided name in the inheritance
    * chain of this {@link ObjectModel}.
-   * <p>
-   * <b>Note:</b> This method is intended to be called after
-   * {@link #resolveReferences()} is called. Otherwise, {@link #superObject}
-   * values may be instances of {@link Deferred}.
    *
+   * @implNote This method is intended to be called after
+   *           {@link #resolveReferences()} is called. Otherwise,
+   *           {@link #superObject} values may be instances of {@link Deferred}.
    * @param name The name of {@link Property} to get.
    * @return The {@link Property} matching the provided name in the inheritance
    *         chain of this {@link ObjectModel}.
