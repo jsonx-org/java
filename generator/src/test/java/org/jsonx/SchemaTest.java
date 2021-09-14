@@ -357,7 +357,7 @@ public class SchemaTest {
 
   @Parameterized.Parameters(name = "{0}")
   public static URL[] resources() throws IOException {
-    return JUnitUtil.getResources("", ".*\\.jsdx");
+    return JUnitUtil.sortBySize(JUnitUtil.getResources("", ".*\\.jsdx"));
   }
 
   @Parameterized.Parameter(0)

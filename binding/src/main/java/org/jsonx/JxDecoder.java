@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.libj.lang.Assertions;
+import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
@@ -153,9 +154,11 @@ public final class JxDecoder {
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
     Assertions.assertNotNull(type);
     Assertions.assertNotNull(reader);
-    final String token = reader.readToken();
-    if (!"{".equals(token))
-      throw new DecodeException("Expected '{', but got '" + token + "'", reader, null, messageFunction);
+    final long point = reader.readToken();
+    final int off = Composite.decodeInt(point, 0);
+    final char c0 = reader.bufToChar(off);
+    if (c0 != '{')
+      throw new DecodeException("Expected '{', but got '" + point + "'", reader, null, messageFunction);
 
     final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
     if (object instanceof Error)
@@ -251,9 +254,11 @@ public final class JxDecoder {
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     Assertions.assertNotNull(annotationType);
     Assertions.assertNotNull(reader);
-    final String token = reader.readToken();
-    if (!"[".equals(token))
-      throw new DecodeException("Expected '[', but got '" + token + "'", reader, null, messageFunction);
+    final long point = reader.readToken();
+    final int off = Composite.decodeInt(point, 0);
+    final char c0 = reader.bufToChar(off);
+    if (c0 != '[')
+      throw new DecodeException("Expected '[', but got '" + reader.bufToString(off, Composite.decodeInt(point, 1)) + "'", reader, null, messageFunction);
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);

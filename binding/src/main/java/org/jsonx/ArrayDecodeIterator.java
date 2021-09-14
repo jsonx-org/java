@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
 import org.libj.util.primitive.ArrayIntList;
 import org.openjax.json.JsonReader;
@@ -37,12 +38,14 @@ class ArrayDecodeIterator extends ArrayIterator {
   @Override
   protected boolean hasNext() throws IOException {
     final int index = reader.getIndex();
-    final String token = reader.readToken();
-    // If the token is ",", then advance and check if there is another token following it
-    if (",".equals(token))
+    final long point = reader.readToken();
+    final int off = Composite.decodeInt(point, 0);
+    final char c0 = reader.bufToChar(off);
+    // If the token is ',', then advance and check if there is another token following it
+    if (c0 == ',')
       return hasNext();
 
-    final boolean hasNext = !"]".equals(token);
+    final boolean hasNext = c0 != ']';
     reader.setIndex(index);
     return hasNext;
   }
@@ -57,9 +60,13 @@ class ArrayDecodeIterator extends ArrayIterator {
     if (cursor++ == indexes.size())
       indexes.add(reader.getIndex());
 
-    current = reader.readToken();
-    if ("null".equals(current))
+    final long point = reader.readToken();
+    final int off = Composite.decodeInt(point, 0);
+    final int len = Composite.decodeInt(point, 1);
+    if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
       current = null;
+    else
+      current = point;
   }
 
   @Override
@@ -69,35 +76,39 @@ class ArrayDecodeIterator extends ArrayIterator {
 
   @Override
   protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final String token = (String)current;
+    final long token = (long)current;
+    final int off = Composite.decodeInt(token, 0);
+    final int len = Composite.decodeInt(token, 1);
+    final char c0 = reader.bufToChar(off);
+    final String xxx = new String(reader.buf(), off, len);
     final Object value;
     if (codecType == AnyCodec.class) {
-      value = AnyCodec.decode(annotation, token, reader, validate, onPropertyDecode);
+      value = AnyCodec.decode(annotation, xxx, reader, validate, onPropertyDecode);
     }
     else if (codecType == ArrayCodec.class) {
-      value = ArrayCodec.decodeArray((ArrayElement)annotation, ((ArrayElement)annotation).type(), idToElement, token, reader, validate, onPropertyDecode);
+      value = ArrayCodec.decodeArray((ArrayElement)annotation, ((ArrayElement)annotation).type(), idToElement, xxx, reader, validate, onPropertyDecode);
     }
     else if (codecType == BooleanCodec.class) {
       final BooleanElement element = (BooleanElement)annotation;
-      value = BooleanCodec.decodeArray(element.type(), element.decode(), token);
+      value = BooleanCodec.decodeArray(element.type(), element.decode(), xxx);
     }
     else if (codecType == NumberCodec.class) {
       final NumberElement element = (NumberElement)annotation;
-      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), token);
+      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), xxx);
     }
     else if (codecType == ObjectCodec.class) {
-      value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), token, reader, validate, onPropertyDecode);
+      value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), xxx, reader, validate, onPropertyDecode);
     }
     else if (codecType == StringCodec.class) {
       final StringElement element = (StringElement)annotation;
-      value = StringCodec.decodeArray(element.type(), element.decode(), token);
+      value = StringCodec.decodeArray(element.type(), element.decode(), xxx);
     }
     else {
       throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
     }
 
     if (value == null)
-      return Error.CONTENT_NOT_EXPECTED(token, null);
+      return Error.CONTENT_NOT_EXPECTED(xxx, null);
 
     if (value instanceof Error)
       return (Error)value;

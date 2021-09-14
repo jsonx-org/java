@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.SAXParser;
 
 import org.libj.lang.Assertions;
+import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
@@ -59,55 +60,61 @@ public final class JxConverter {
     return parser;
   }
 
-  private static void appendValue(final JsonReader reader, final String token, final StringBuilder builder) throws IOException {
-    final char c0 = token.charAt(0);
+  private static void appendValue(final JsonReader reader, final int off, final int len, final StringBuilder builder) throws IOException {
+    final char c0 = reader.bufToChar(off);
     if (c0 == '{')
       appendObject(reader, false, builder);
     else if (c0 == '[')
       appendArray(reader, builder);
     else
-      builder.append(CharacterDatas.escapeForElem(token));
+      CharacterDatas.escapeForElem(builder, reader.buf(), off, len);
   }
 
   private static void appendArray(final JsonReader reader, final StringBuilder builder) throws IOException {
     builder.append("<a>");
-    for (String token = null, prev = null; (token == null ? token = reader.readToken() : token) != null;) {
-      if (Character.isWhitespace(token.charAt(0))) {
-        builder.append(token);
-        token = null;
+    char prev = '\0';
+    for (long token = -1; (token == -1 ? token = reader.readToken() : token) != -1;) {
+      int off = Composite.decodeInt(token, 0);
+      int len = Composite.decodeInt(token, 1);
+      char c0 = reader.bufToChar(off);
+      if (Character.isWhitespace(c0)) {
+        reader.bufToString(builder, off, len);
+        token = -1;
       }
-      else if ("]".equals(token)) {
+      else if (c0 == ']') {
         break;
       }
-      else if ("{".equals(token)) {
+      else if (c0 == '{') {
         appendObject(reader, false, builder);
-        prev = token;
-        token = null;
+        prev = c0;
+        token = -1;
       }
-      else if ("[".equals(token)) {
+      else if (c0 == '[') {
         appendArray(reader, builder);
-        prev = token;
-        token = null;
+        prev = c0;
+        token = -1;
       }
-      else if (",".equals(token)) {
+      else if (c0 == ',') {
         token = reader.readToken();
-        String ws = null;
-        if (Character.isWhitespace(token.charAt(0))) {
-          ws = token;
+        off = Composite.decodeInt(token, 0);
+        len = Composite.decodeInt(token, 1);
+        c0 = reader.bufToChar(off);
+        boolean ws = Character.isWhitespace(c0);
+        if (ws)
           token = reader.readToken();
-        }
 
-        final char c0 = token.charAt(0);
-        if (!"{".equals(prev) && !"[".equals(prev) && c0 != '{' && c0 != '[')
+        c0 = reader.bufToChar(off);
+        if (prev != '{' && prev != '[' && c0 != '{' && c0 != '[')
           builder.append(' ');
 
-        if (ws != null)
-          builder.append(ws);
+        if (ws)
+          reader.bufToString(builder, off, len);
       }
       else {
-        appendValue(reader, token, builder);
-        prev = token;
-        token = null;
+        appendValue(reader, off, len, builder);
+//        CharacterDatas.escapeForElem(builder, reader.buf(), off, len);
+        prev = '\0';
+        token = -1;
       }
     }
 
@@ -124,56 +131,66 @@ public final class JxConverter {
 
     builder.append('>');
     Boolean nextName = true;
-    for (String token = null; (token == null ? token = reader.readToken() : token) != null;) {
-      final char ch = token.charAt(0);
-      if (Character.isWhitespace(ch)) {
-        builder.append(token);
-        token = null;
+    for (long token = -1; (token == -1 ? token = reader.readToken() : token) != -1;) {
+      int off = Composite.decodeInt(token, 0);
+      int len = Composite.decodeInt(token, 1);
+      char c0 = reader.bufToChar(off);
+      if (Character.isWhitespace(c0)) {
+        reader.bufToString(builder, off, len);
+        token = -1;
       }
-      else if ("}".equals(token)) {
+      else if (c0 == '}') {
         break;
       }
       else if (nextName != null && nextName) {
-        if (":".equals(token)) {
+        if (c0 == ':') {
           nextName = false;
-          token = null;
+          token = -1;
         }
         else {
-          builder.append("<p n=").append(CharacterDatas.escapeForAttr(token, '"', 1, token.length() - 1));
+          builder.append("<p n=\"");
+          CharacterDatas.escapeForAttr(builder, reader.buf(), '"', off + 1, len - 2);
+          builder.append('"');
           token = reader.readToken();
-          if (Character.isWhitespace(token.charAt(0))) {
-            builder.append(token);
-            token = null;
+          off = Composite.decodeInt(token, 0);
+          len = Composite.decodeInt(token, 1);
+          c0 = reader.bufToChar(off);
+          if (Character.isWhitespace(c0)) {
+            reader.bufToString(builder, off, len);
+            token = -1;
           }
 
           builder.append('>');
         }
       }
       else if (nextName != null && !nextName) {
-        appendValue(reader, token, builder);
+        appendValue(reader, off, len, builder);
         token = reader.readToken();
-        if (Character.isWhitespace(token.charAt(0))) {
-          builder.append(token);
-          token = null;
+        off = Composite.decodeInt(token, 0);
+        len = Composite.decodeInt(token, 1);
+        c0 = reader.bufToChar(off);
+        if (Character.isWhitespace(c0)) {
+          reader.bufToString(builder, off, len);
+          token = -1;
         }
 
         builder.append("</p>");
         nextName = null;
       }
-      else if (",".equals(token)) {
+      else if (c0 == ',') {
         nextName = true;
-        token = null;
+        token = -1;
       }
-      else if ("{".equals(token)) {
+      else if (c0 == '{') {
         appendObject(reader, false, builder);
-        token = null;
+        token = -1;
       }
-      else if ("[".equals(token)) {
+      else if (c0 == '[') {
         appendArray(reader, builder);
-        token = null;
+        token = -1;
       }
       else {
-        throw new IllegalStateException("Unexpected token: " + token);
+        throw new IllegalStateException("Unexpected token: " + reader.bufToString(off, len));
       }
     }
 
@@ -233,7 +250,10 @@ public final class JxConverter {
           if (index == -1)
             throw new SAXException("Missing attribute: \"n\"");
 
-          builder.append('"').append(CharacterDatas.unescapeFromAttr(attributes.getValue(index), '"')).append("\":");
+          builder.append('"');
+          builder.append(attributes.getValue(index)); // The SAXParser automatically unescapes the text
+          // CharacterDatas.unescapeFromAttr(builder, attributes.getValue(index), '"');
+          builder.append("\":");
         }
         else {
           throw new SAXException("Unexpected element: " + qName);
@@ -278,9 +298,9 @@ public final class JxConverter {
           }
 
           if ("m".equals(prevElem) || "p".equals(prevElem)) {
-            // FIXME: Not sure why this check is necessary here. If we remove this check, we get
-            // FIXME: situations with ...[,true] or ...{,"x":null}. Need to remove this
-            // FIXME: check and debug to figure out what's going on.
+            // FIXME: Not sure why this check is necessary here. If we remove this check,
+            // FIXME: we get situations with ...[,true] or ...{,"x":null}. Need to remove
+            // FIXME: this check and debug to figure out what's going on.
             final char ch = builder.charAt(builder.length() - 1);
             if (ch != '[' && ch != '{')
               builder.append(',');
@@ -320,7 +340,8 @@ public final class JxConverter {
               prevElem = "m";
               final String value = matcher.group("value");
               if (value != null)
-                builder.append(CharacterDatas.unescapeFromElem(value));
+                builder.append(value); // The SAXParser automatically unescapes the text
+                // CharacterDatas.unescapeFromElem(builder, value);
 
               final String ws = matcher.group("ws");
               if (ws != null && !ws.isEmpty())
@@ -393,12 +414,15 @@ public final class JxConverter {
    */
   public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
     final StringBuilder builder = new StringBuilder();
-    for (String token; (token = Assertions.assertNotNull(reader).readToken()) != null;) {
-      if (Character.isWhitespace(token.charAt(0)))
-        builder.append(token);
-      else if ("{".equals(token))
+    for (long token = -1; (token = Assertions.assertNotNull(reader).readToken()) != -1;) {
+      final int off = Composite.decodeInt(token, 0);
+      final int len = Composite.decodeInt(token, 1);
+      final char c0 = reader.bufToChar(off);
+      if (Character.isWhitespace(c0))
+        reader.bufToString(builder, off, len);
+      else if (c0 == '{')
         appendObject(reader, declareNamespace, builder);
-      else if ("[".equals(token))
+      else if (c0 == '[')
         appendArray(reader, builder);
       else
         throw new IllegalStateException("Illegal token: " + token);

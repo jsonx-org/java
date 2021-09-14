@@ -185,10 +185,10 @@ abstract class Member extends Element {
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
     if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
       if (use.set == Use.OPTIONAL)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompoundName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
       if (!(declarer instanceof SchemaElement) && nullable.get == null && !hasDecodeBinding)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompoundName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
     }
 
     // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence

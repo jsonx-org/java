@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 
@@ -59,9 +60,11 @@ class ArrayCodec extends Codec {
     if (error != null)
       return error;
 
-    final String token = reader.readToken();
-    if (!"]".equals(token))
-      return Error.EXPECTED_ARRAY(token, reader);
+    final long point = reader.readToken();
+    final int off = Composite.decodeInt(point, 0);
+    final char c0 = reader.bufToChar(off);
+    if (c0 != ']')
+      return Error.EXPECTED_ARRAY(reader.bufToString(off, Composite.decodeInt(point, 1)), reader);
 
     return relations.deflate();
   }

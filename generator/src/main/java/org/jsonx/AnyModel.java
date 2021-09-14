@@ -51,7 +51,7 @@ final class AnyModel extends Referrer<AnyModel> {
     };
 
     if (name != null)
-      xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name)));
+      xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name).toString()));
 
     if (jsd.getTypes() != null)
       xsb.setTypes$(new $Any.Types$(jsd.getTypes().split(" ")));

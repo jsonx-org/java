@@ -117,29 +117,29 @@ class Registry {
     private final String packageName;
     private final String canonicalPackageName;
     private final String simpleName;
-    private final String compoundName;
-    private final String canonicalCompoundName;
+    private final String compositeName;
+    private final String canonicalCompositeName;
     private final String name;
     private final String canonicalName;
     private final Type superType;
     private final Generic[] genericTypes;
 
-    Type(final Kind kind, final String packageName, String compoundName, Type superType, final Generic[] genericTypes) {
+    Type(final Kind kind, final String packageName, String compositeName, Type superType, final Generic[] genericTypes) {
       this.kind = kind;
       final boolean defaultPackage = packageName.length() == 0;
-      final int dot = compoundName.lastIndexOf('.');
+      final int dot = compositeName.lastIndexOf('.');
       this.packageName = packageName;
 
-      this.isArray = compoundName.endsWith("[]");
+      this.isArray = compositeName.endsWith("[]");
       if (isArray)
-        compoundName = compoundName.substring(0, compoundName.length() - 2);
+        compositeName = compositeName.substring(0, compositeName.length() - 2);
 
-      this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compoundName.substring(0, dot) : packageName + "." + compoundName.substring(0, dot);
-      this.compoundName = compoundName;
-      this.name = defaultPackage ? compoundName : packageName + "." + compoundName;
-      this.canonicalCompoundName = Classes.toCanonicalClassName(compoundName);
-      this.simpleName = canonicalCompoundName.substring(canonicalCompoundName.lastIndexOf('.') + 1);
-      this.canonicalName = defaultPackage ? canonicalCompoundName : packageName + "." + canonicalCompoundName;
+      this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compositeName.substring(0, dot) : packageName + "." + compositeName.substring(0, dot);
+      this.compositeName = compositeName;
+      this.name = defaultPackage ? compositeName : packageName + "." + compositeName;
+      this.canonicalCompositeName = Classes.toCanonicalClassName(compositeName);
+      this.simpleName = canonicalCompositeName.substring(canonicalCompositeName.lastIndexOf('.') + 1);
+      this.canonicalName = defaultPackage ? canonicalCompositeName : packageName + "." + canonicalCompositeName;
       this.cls = Classes.forNameOrNull(name, false, ClassLoader.getSystemClassLoader());
       if (superType == null && this.cls != null && this.cls != Object.class) {
         superType = cls.getSuperclass() == null ? null : getType(cls.getSuperclass());
@@ -150,7 +150,7 @@ class Registry {
       }
 
       this.genericTypes = genericTypes == null || genericTypes.length == 0 || genericTypes.length == 1 && genericTypes[0] == null ? null : genericTypes;
-      final int primitiveIndex = kind != Kind.CLASS || !packageName.isEmpty() || superType != null || this.genericTypes != null ? -1 : Arrays.binarySearch(primitiveTypeNames, compoundName);
+      final int primitiveIndex = kind != Kind.CLASS || !packageName.isEmpty() || superType != null || this.genericTypes != null ? -1 : Arrays.binarySearch(primitiveTypeNames, compositeName);
       this.isPrimitive = primitiveIndex > -1;
       this.wrapper = isPrimitive ? getType(wrapperTypes[primitiveIndex]) : null;
       qualifiedNameToType.put(toCanonicalString(), this);
@@ -165,8 +165,8 @@ class Registry {
     }
 
     Type getDeclaringType() {
-      final String declaringClassName = Classes.getDeclaringClassName(compoundName);
-      return compoundName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, (Generic[])null);
+      final String declaringClassName = Classes.getDeclaringClassName(compositeName);
+      return compositeName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, (Generic[])null);
     }
 
     Type getGreatestCommonSuperType(final Type type) {
@@ -210,12 +210,12 @@ class Registry {
       return canonicalName;
     }
 
-    String getCompoundName() {
-      return compoundName;
+    String getCompositeName() {
+      return compositeName;
     }
 
-    String getCanonicalCompoundName() {
-      return canonicalCompoundName;
+    String getCanonicalCompositeName() {
+      return canonicalCompositeName;
     }
 
     String getRelativeName(final String packageName) {
@@ -356,26 +356,26 @@ class Registry {
     return dot == -1 ? getType(kind, "", className, genericType) : getType(kind, className.substring(0, dot), className.substring(dot + 1, lt), genericType);
   }
 
-  Type getType(final Kind kind, final String packageName, final String compoundName, final Type.Generic ... genericTypes) {
-    return getType(kind, packageName, compoundName, null, null, genericTypes);
+  Type getType(final Kind kind, final String packageName, final String compositeName, final Type.Generic ... genericTypes) {
+    return getType(kind, packageName, compositeName, null, null, genericTypes);
   }
 
-  Type getType(final String packageName, final String compoundName, final String superCompoundName, final Type.Generic ... genericTypes) {
-    return getType(Kind.CLASS, packageName, compoundName, packageName, superCompoundName, genericTypes);
+  Type getType(final String packageName, final String compositeName, final String supercompositeName, final Type.Generic ... genericTypes) {
+    return getType(Kind.CLASS, packageName, compositeName, packageName, supercompositeName, genericTypes);
   }
 
-  Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName) {
-    return getType(kind, packageName, compoundName, superPackageName, superCompoundName, (Type.Generic[])null);
+  Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName) {
+    return getType(kind, packageName, compositeName, superPackageName, supercompositeName, (Type.Generic[])null);
   }
 
-  Type getType(final Kind kind, final String packageName, final String compoundName, final String superPackageName, final String superCompoundName, final Type.Generic ... genericTypes) {
+  Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName, final Type.Generic ... genericTypes) {
     final StringBuilder className = new StringBuilder();
     if (packageName.length() > 0)
       className.append(packageName).append('.');
 
-    className.append(compoundName);
+    className.append(compositeName);
     final Type type = qualifiedNameToType.get(className.toString());
-    return type != null ? type : new Type(kind, packageName, compoundName, superCompoundName == null ? null : getType(Kind.CLASS, superPackageName, superCompoundName, null, null, (Type.Generic[])null), genericTypes);
+    return type != null ? type : new Type(kind, packageName, compositeName, supercompositeName == null ? null : getType(Kind.CLASS, superPackageName, supercompositeName, null, null, (Type.Generic[])null), genericTypes);
   }
 
   Type getOptionalType(final Type.Generic genericType) {
@@ -397,7 +397,7 @@ class Registry {
   }
 
   Type getType(final Class<?> cls) {
-    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompoundName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompoundName(cls.getSuperclass()));
+    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompositeName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompositeName(cls.getSuperclass()));
   }
 
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();

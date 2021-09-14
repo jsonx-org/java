@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Ignore;
@@ -38,9 +40,11 @@ public class JxConverterTest {
   private static void concurrentTest(final String json) throws InterruptedException {
     final CountDownLatch latch = new CountDownLatch(count);
     final AtomicBoolean failed = new AtomicBoolean();
+    final ExecutorService executor = Executors.newFixedThreadPool(count);
     for (int i = 0; i < count; ++i)
-      new Thread(Throwing.rethrow(() -> singleTest(json, latch, failed))).start();
+      executor.execute(Throwing.rethrow(() -> singleTest(json, latch, failed)));
 
+    executor.shutdown();
     latch.await();
     assertFalse(failed.get());
   }
@@ -52,22 +56,28 @@ public class JxConverterTest {
   private static void singleTest(final String json, final CountDownLatch latch, final AtomicBoolean failed) throws IOException, SAXException {
     final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(json), false), true);
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
-    final String test = JxConverter.jsonxToJson(url.openStream(), true);
-    if (latch != null) {
-      latch.countDown();
-      if (failed.get())
-        return;
+    try {
+      final String test = JxConverter.jsonxToJson(url.openStream(), true);
+      if (latch != null) {
+        latch.countDown();
+        if (failed.get())
+          return;
+      }
+
+      if (!json.equals(test)) {
+        if (failed != null)
+          failed.set(true);
+
+        System.err.println(jsonx);
+        System.err.flush();
+        System.out.println(test);
+        System.out.flush();
+        assertEquals(json, test);
+      }
     }
-
-    if (!json.equals(test)) {
-      if (failed != null)
-        failed.set(true);
-
-      System.err.println(jsonx);
-      System.err.flush();
-      System.out.println(test);
-      System.out.flush();
-      assertEquals(json, test);
+    catch (final SAXException e) {
+      System.err.println(new String(jsonx.getBytes()));
+      throw e;
     }
   }
 

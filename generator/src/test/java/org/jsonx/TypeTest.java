@@ -107,8 +107,8 @@ public class TypeTest {
     final String superName = "Foo$Bar";
     final Registry.Type type = registry.getType(Kind.CLASS, packageName, name, superPackageName, superName);
     assertEquals(Kind.CLASS, type.getKind());
-    assertEquals(name, type.getCompoundName());
-    assertEquals(name.replace('$', '.'), type.getCanonicalCompoundName());
+    assertEquals(name, type.getCompositeName());
+    assertEquals(name.replace('$', '.'), type.getCanonicalCompositeName());
     assertEquals("Three", type.getSimpleName());
     assertEquals(packageName + "." + name, type.getName());
     assertEquals(packageName + "." + name, type.getRelativeName(""));
@@ -154,11 +154,11 @@ public class TypeTest {
 
     final String packageName2 = "org.jsonx.two";
     final String name2 = "Two";
-    final Registry.Type type2 = registry.getType(Kind.CLASS, packageName2, name2, type0.getPackage(), type0.getCompoundName());
+    final Registry.Type type2 = registry.getType(Kind.CLASS, packageName2, name2, type0.getPackage(), type0.getCompositeName());
 
     final String packageName3 = "org.jsonx.three";
     final String name3 = "Three";
-    final Registry.Type type3 = registry.getType(Kind.CLASS, packageName3, name3, type1.getPackage(), type1.getCompoundName());
+    final Registry.Type type3 = registry.getType(Kind.CLASS, packageName3, name3, type1.getPackage(), type1.getCompositeName());
 
     assertEquals(registry.OBJECT, type0.getGreatestCommonSuperType(type1));
     assertEquals(type0, type0.getGreatestCommonSuperType(type2));

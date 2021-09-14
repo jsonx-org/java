@@ -25,7 +25,7 @@ import java.util.ListIterator;
 
 import org.libj.lang.Annotations;
 import org.libj.lang.Assertions;
-import org.libj.lang.Numbers;
+import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Throwables;
 import org.libj.util.DelegateList;
 import org.libj.util.function.TriPredicate;
@@ -127,7 +127,7 @@ final class ArrayValidator {
    *         the specified indices.
    */
   private static long sign(final int index, final int a, final int occurrence) {
-    return Numbers.Compound.encode((short)(Short.MIN_VALUE + index), (short)(Short.MIN_VALUE + a), (short)(Short.MIN_VALUE + occurrence), (short)0);
+    return Composite.encode((short)(Short.MIN_VALUE + index), (short)(Short.MIN_VALUE + a), (short)(Short.MIN_VALUE + occurrence), (short)0);
   }
 
   static Error validate(final ArrayIterator iterator, int occurrence, final boolean iterating, final Annotation[] annotations, final int a, final int minIterate, final int maxIterate, final int iteration, final IdToElement idToElement, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode, final long lastIterSig) throws IOException {

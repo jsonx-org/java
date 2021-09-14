@@ -118,8 +118,8 @@ public class LibraryTest {
 
     final Book book = new Book();
     book.setTitle("Magical Book");
-    book.setAuthors(Optional.of(Arrays.asList("Billy Bob", "Jimmy James", "Wendy Woo")));
-    book.setEditors(Optional.of(Arrays.asList("Silly Willy", "Johnie John", "Randy Dandy")));
+    book.setAuthors(Optional.of(Arrays.asList("Z&$GY 6-4si[1", "Billy Bob", "Jimmy James", "Wendy Woo")));
+    book.setEditors(Optional.of(Arrays.asList("[&]$b |6)?f)A$", "Silly Willy", "Johnie John", "Randy Dandy")));
     book.setIndex(Arrays.asList(Arrays.asList(1, "Part 1, Chapter 1"), Arrays.asList(2, "Part 1, Chapter 2"), Arrays.asList(3, "Part 1, Chapter 3"),
                                 Arrays.asList(1, "Part 2, Chapter 1"), Arrays.asList(2, "Part 2, Chapter 2"), Arrays.asList(3, "Part 2, Chapter 3")));
     book.setIsbn("978-3-16-148410-0");
@@ -137,8 +137,8 @@ public class LibraryTest {
 
     final OnlineArticle article = new OnlineArticle();
     article.setTitle("Online Article");
-    article.setAuthors(Optional.of(Arrays.asList("Mr. Online", "Mrs. Online")));
-    article.setEditors(Optional.of(Arrays.asList("Mr. Editor")));
+    article.setAuthors(Optional.of(Arrays.asList("Z&$GY 6-4si[1", "Mr. Online", "Mrs. Online")));
+    article.setEditors(Optional.of(Arrays.asList("[&]$b |6)?f)A$", "Mr. Editor")));
     article.setPublishings(new ArrayList<>());
     article.getPublishings().add(onlinePub1);
     article.getPublishings().add(onlinePub2);

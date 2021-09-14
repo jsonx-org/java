@@ -28,6 +28,7 @@ import java.util.IdentityHashMap;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
+import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 
@@ -41,31 +42,41 @@ class ObjectCodec extends Codec {
     try {
       final JxObject object = type.getConstructor().newInstance();
       final PropertyToCodec propertyToCodec = getPropertyCodec(type);
-      for (String token; !"}".equals(token = reader.readToken());) {
-        if (",".equals(token))
-          token = reader.readToken();
+      for (long point; (point = reader.readToken()) != '}';) {
+        int off = Composite.decodeInt(point, 0);
+        int len = Composite.decodeInt(point, 1);
+        char c0 = reader.bufToChar(off);
+        if (c0 == ',') {
+          point = reader.readToken();
+          off = Composite.decodeInt(point, 0);
+          len = Composite.decodeInt(point, 1);
+        }
 
-        if ("}".equals(token))
+        if (c0 == '}')
           break;
 
-        if (!":".equals(reader.readToken()))
-          throw new IllegalStateException("Should have been caught by JsonReader: " + token);
+        if (reader.bufToChar(Composite.decodeInt(reader.readToken(), 0)) != ':')
+          throw new IllegalStateException("Should have been caught by JsonReader: " + reader.bufToString(off, len));
 
-        final String propertyName = token.substring(1, token.length() - 1);
-        token = reader.readToken();
-        if (token == null)
+        final String propertyName = new String(reader.buf(), off + 1, len - 2);
+
+        point = reader.readToken();
+        if (point == -1)
           return abort(Error.UNEXPECTED_END_OF_DOCUMENT(reader), reader, index);
+
+        off = Composite.decodeInt(point, 0);
+        len = Composite.decodeInt(point, 1);
 
         final Codec codec = propertyToCodec.get(propertyName);
         if (codec == null) {
-          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, token))
+          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, new String(reader.buf(), off, len)))
             continue;
 
           return abort(Error.UNKNOWN_PROPERTY(propertyName, reader), reader, index);
         }
 
         final Object value;
-        if ("null".equals(token)) {
+        if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l') {
           final Error error = codec.validateUse(null);
           if (error != null)
             return abort(error, reader, index);
@@ -74,24 +85,25 @@ class ObjectCodec extends Codec {
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec primitiveCodec = (PrimitiveCodec)codec;
-          final Error error = validate ? primitiveCodec.matches(token, reader) : null;
+          final Error error = validate ? primitiveCodec.matches(new String(reader.buf(), off, len), reader) : null;
           if (error != null)
             return abort(error, reader, index);
 
-          value = primitiveCodec.parse(token);
+          value = primitiveCodec.parse(new String(reader.buf(), off, len));
         }
         else {
           if (codec instanceof AnyCodec) {
             final AnyCodec anyCodec = (AnyCodec)codec;
-            value = AnyCodec.decode(anyCodec.property, token, reader, validate, null);
+            final String xxx = new String(reader.buf(), off, len);
+            value = AnyCodec.decode(anyCodec.property, xxx, reader, validate, null);
             if (value instanceof Error)
               return abort((Error)value, reader, index);
           }
           else {
-            final char firstChar = token.charAt(0);
+            c0 = reader.bufToChar(off);
             if (codec instanceof ObjectCodec) {
-              if (firstChar != '{')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader), reader, index);
+              if (c0 != '{')
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(reader.buf(), off, len), reader), reader, index);
 
               final ObjectCodec objectCodec = (ObjectCodec)codec;
               value = decodeObject(objectCodec.type, reader, validate, null); // NOTE: Setting `onPropertyDecode = null` here on purpose!
@@ -99,8 +111,8 @@ class ObjectCodec extends Codec {
                 return abort((Error)value, reader, index);
             }
             else if (codec instanceof ArrayCodec) {
-              if (firstChar != '[')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), token, reader), reader, index);
+              if (c0 != '[')
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(reader.buf(), off, len), reader), reader, index);
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
               value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, validate, onPropertyDecode);
