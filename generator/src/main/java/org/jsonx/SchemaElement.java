@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,7 +42,6 @@ import org.jaxsb.runtime.QName;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
-import org.libj.lang.Assertions;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.net.URLs;
@@ -59,7 +60,7 @@ import org.xml.sax.SAXException;
 public final class SchemaElement extends Element implements Declarer {
   private static Schema jsdToXsb(final schema.Schema jsd) {
     final Schema xsb = new Schema();
-    final LinkedHashMap<String,? extends schema.Member> declarations = Assertions.assertNotNull(jsd).getDeclarations();
+    final LinkedHashMap<String,? extends schema.Member> declarations = assertNotNull(jsd).getDeclarations();
     if (declarations != null) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) {
         final String name = entry.getKey();
@@ -99,8 +100,8 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
-    Assertions.assertNotNull(url);
-    Assertions.assertNotNull(prefix);
+    assertNotNull(url);
+    assertNotNull(prefix);
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
       final schema.Schema schema = JxDecoder.VALIDATING.parseObject(schema.Schema.class, in);
       return new SchemaElement(schema, prefix);
@@ -129,7 +130,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
-    final Schema schema = (Schema)Bindings.parse(Assertions.assertNotNull(url), getErrorHandler());
+    final Schema schema = (Schema)Bindings.parse(assertNotNull(url), getErrorHandler());
     return new SchemaElement(schema, prefix);
   }
 
@@ -203,7 +204,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IllegalArgumentException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final Schema schema, final String prefix) throws ValidationException {
-    super(null, Assertions.assertNotNull(schema).getDoc$());
+    super(null, assertNotNull(schema).getDoc$());
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 

@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.libj.lang.Annotations;
-import org.libj.lang.Assertions;
 import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Throwables;
 import org.libj.util.DelegateList;
@@ -37,7 +38,7 @@ final class ArrayValidator {
 
     Relation(final Object member, final Annotation annotation) {
       this.member = member;
-      this.annotation = Assertions.assertNotNull(annotation);
+      this.annotation = assertNotNull(annotation);
     }
 
     private Object deflate() {

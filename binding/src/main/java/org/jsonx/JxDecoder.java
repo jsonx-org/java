@@ -16,13 +16,14 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.function.Function;
 
-import org.libj.lang.Assertions;
 import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonParseException;
@@ -152,8 +153,8 @@ public final class JxDecoder {
    */
   @SuppressWarnings("unchecked")
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
-    Assertions.assertNotNull(type);
-    Assertions.assertNotNull(reader);
+    assertNotNull(type);
+    assertNotNull(reader);
     final long point = reader.readToken();
     final int off = Composite.decodeInt(point, 0);
     final char c0 = reader.bufToChar(off);
@@ -190,7 +191,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code type} or {@code json} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
-    try (final JsonReader in = new JsonReader(new StringReader(Assertions.assertNotNull(json)))) {
+    try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
       return parseObject(type, in, onPropertyDecode);
     }
   }
@@ -230,7 +231,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code type} or {@code json} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json) throws DecodeException, IOException {
-    try (final JsonReader in = new JsonReader(new StringReader(Assertions.assertNotNull(json)))) {
+    try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
       return parseObject(type, in);
     }
   }
@@ -252,8 +253,8 @@ public final class JxDecoder {
    *           {@code reader} is null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
-    Assertions.assertNotNull(annotationType);
-    Assertions.assertNotNull(reader);
+    assertNotNull(annotationType);
+    assertNotNull(reader);
     final long point = reader.readToken();
     final int off = Composite.decodeInt(point, 0);
     final char c0 = reader.bufToChar(off);
@@ -286,7 +287,7 @@ public final class JxDecoder {
    *           is null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final String json) throws DecodeException, JsonParseException, IOException {
-    try (final JsonReader in = new JsonReader(new StringReader(Assertions.assertNotNull(json)))) {
+    try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
       return parseArray(annotationType, in);
     }
   }

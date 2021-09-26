@@ -21,8 +21,6 @@ package org.jsonx;
  * binding classes.
  */
 public class EncodeException extends RuntimeException {
-  private static final long serialVersionUID = -5907473656780591942L;
-
   /**
    * Creates a new {@link EncodeException} with the specified {@link Error}.
    *

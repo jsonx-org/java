@@ -25,8 +25,6 @@ import org.libj.lang.ParseException;
 import org.openjax.json.JsonUtil;
 
 public class Range implements Cloneable, Serializable {
-  private static final long serialVersionUID = 1698022878075488056L;
-
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int start, final boolean commaOk) throws ParseException {
     try {
       for (int i = start, end = string.length() - 1; i < end; ++i) {

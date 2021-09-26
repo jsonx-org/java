@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +35,6 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.libj.lang.Assertions;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
@@ -59,8 +60,8 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
    *           null.
    */
   public JxObjectProvider(final JxEncoder encoder, final JxDecoder decoder) {
-    this.encoder = Assertions.assertNotNull(encoder);
-    this.decoder = Assertions.assertNotNull(decoder);
+    this.encoder = assertNotNull(encoder);
+    this.decoder = assertNotNull(decoder);
   }
 
   /**

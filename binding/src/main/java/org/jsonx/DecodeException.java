@@ -28,8 +28,6 @@ import org.openjax.json.JsonReader;
  * classes.
  */
 public class DecodeException extends ParseException {
-  private static final long serialVersionUID = -8659795467901573156L;
-
   private static int getErrorOffset(final JsonReader reader) {
     return reader != null ? reader.getPosition() - 1 : -1;
   }

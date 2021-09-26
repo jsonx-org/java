@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -25,7 +27,6 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 
-import org.libj.lang.Assertions;
 import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonReader;
@@ -213,7 +214,7 @@ public final class JxConverter {
   public static String jsonxToJson(final InputStream in, final boolean validate) throws IOException, SAXException {
     final SAXParser parser = getParser(validate);
     final StringBuilder builder = new StringBuilder();
-    parser.parse(Assertions.assertNotNull(in), new DefaultHandler() {
+    parser.parse(assertNotNull(in), new DefaultHandler() {
       private final ArrayDeque<String> stack = new ArrayDeque<>();
       private StringBuilder characters;
       private StringBuilder prevWs;
@@ -414,7 +415,7 @@ public final class JxConverter {
    */
   public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
     final StringBuilder builder = new StringBuilder();
-    for (long token = -1; (token = Assertions.assertNotNull(reader).readToken()) != -1;) {
+    for (long token = -1; (token = assertNotNull(reader).readToken()) != -1;) {
       final int off = Composite.decodeInt(token, 0);
       final int len = Composite.decodeInt(token, 1);
       final char c0 = reader.bufToChar(off);

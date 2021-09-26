@@ -16,11 +16,12 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.Arrays;
 import java.util.zip.CRC32;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
-import org.libj.lang.Assertions;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
@@ -54,7 +55,7 @@ final class Id {
   private final String id;
 
   private Id(final String id) {
-    this.id = Assertions.assertNotNull(id);
+    this.id = assertNotNull(id);
   }
 
   @Override
