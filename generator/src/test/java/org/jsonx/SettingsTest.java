@@ -25,7 +25,7 @@ public class SettingsTest {
   @Test
   public void test() {
     try {
-      new Settings(-1);
+      new Settings(-1, true);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {

@@ -264,8 +264,10 @@ public final class JxDecoder {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, null);
-    if (array instanceof Error)
-      throw new DecodeException((Error)array, reader, messageFunction);
+    if (array instanceof Error) {
+      final Error error = (Error)array;
+      throw new DecodeException(error, reader, error.getException(), messageFunction);
+    }
 
     return (List<?>)array;
   }

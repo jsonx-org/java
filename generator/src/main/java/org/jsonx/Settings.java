@@ -16,17 +16,19 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.io.Serializable;
 
 public class Settings implements Serializable {
-  public static final Settings DEFAULT = new Settings(1);
+  public static final Settings DEFAULT = new Settings(1, true);
 
   private final int templateThreshold;
+  private final boolean setBuilder;
 
-  public Settings(final int templateThreshold) {
-    this.templateThreshold = templateThreshold;
-    if (templateThreshold < 0)
-      throw new IllegalArgumentException("templateThreshold < 0: " + templateThreshold);
+  public Settings(final int templateThreshold, final boolean setBuilder) {
+    this.templateThreshold = assertNotNegative(templateThreshold, "templateThreshold is negative");
+    this.setBuilder = setBuilder;
   }
 
   /**
@@ -38,5 +40,9 @@ public class Settings implements Serializable {
    */
   public int getTemplateThreshold() {
     return this.templateThreshold;
+  }
+
+  public boolean getSetBuilder() {
+    return this.setBuilder;
   }
 }

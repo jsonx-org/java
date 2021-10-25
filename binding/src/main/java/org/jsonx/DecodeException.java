@@ -77,6 +77,24 @@ public class DecodeException extends ParseException {
    * @param error The {@link Error}.
    * @param reader The {@link JsonReader} in which the error was found while
    *          parsing.
+   * @param cause The cause.
+   * @param messageFunction The {@link Function
+   *          Function&lt;DecodeException,String&gt;} that is to be used by the
+   *          {@link DecodeException} class for the construction of each new
+   *          instance's detail {@linkplain DecodeException#getMessage()
+   *          message}.
+   */
+  DecodeException(final Error error, final JsonReader reader, final Throwable cause, final Function<DecodeException,String> messageFunction) {
+    this(error.toString(), reader, cause, messageFunction);
+  }
+
+  /**
+   * Creates a new {@link DecodeException} with the specified {@link Error}, and
+   * message function.
+   *
+   * @param error The {@link Error}.
+   * @param reader The {@link JsonReader} in which the error was found while
+   *          parsing.
    * @param messageFunction The {@link Function
    *          Function&lt;DecodeException,String&gt;} that is to be used by the
    *          {@link DecodeException} class for the construction of each new

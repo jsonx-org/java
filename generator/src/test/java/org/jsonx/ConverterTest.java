@@ -26,6 +26,7 @@ import java.security.Permission;
 
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
 
 public class ConverterTest {
@@ -49,14 +50,14 @@ public class ConverterTest {
   @Test
   public void testUsage() throws IOException {
     try {
-      Converter.main(new String[0]);
+      Converter.main(Strings.EMPTY_ARRAY);
       fail("Expected SecurityException");
     }
     catch (final SecurityException e) {
     }
 
     try {
-      Converter.main(new String[] {});
+      Converter.main(Strings.EMPTY_ARRAY);
       fail("Expected SecurityException");
     }
     catch (final SecurityException e) {

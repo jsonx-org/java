@@ -76,39 +76,39 @@ class ArrayDecodeIterator extends ArrayIterator {
 
   @Override
   protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final long token = (long)current;
-    final int off = Composite.decodeInt(token, 0);
-    final int len = Composite.decodeInt(token, 1);
+    final long offLen = (long)current;
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
     final char c0 = reader.bufToChar(off);
-    final String xxx = new String(reader.buf(), off, len);
+    final String token = new String(reader.buf(), off, len);
     final Object value;
     if (codecType == AnyCodec.class) {
-      value = AnyCodec.decode(annotation, xxx, reader, validate, onPropertyDecode);
+      value = AnyCodec.decode(annotation, token, reader, validate, onPropertyDecode);
     }
     else if (codecType == ArrayCodec.class) {
-      value = ArrayCodec.decodeArray((ArrayElement)annotation, ((ArrayElement)annotation).type(), idToElement, xxx, reader, validate, onPropertyDecode);
+      value = ArrayCodec.decodeArray((ArrayElement)annotation, ((ArrayElement)annotation).type(), idToElement, token, reader, validate, onPropertyDecode);
     }
     else if (codecType == BooleanCodec.class) {
       final BooleanElement element = (BooleanElement)annotation;
-      value = BooleanCodec.decodeArray(element.type(), element.decode(), xxx);
+      value = BooleanCodec.decodeArray(element.type(), element.decode(), token);
     }
     else if (codecType == NumberCodec.class) {
       final NumberElement element = (NumberElement)annotation;
-      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), xxx);
+      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), token);
     }
     else if (codecType == ObjectCodec.class) {
-      value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), xxx, reader, validate, onPropertyDecode);
+      value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), token, reader, validate, onPropertyDecode);
     }
     else if (codecType == StringCodec.class) {
       final StringElement element = (StringElement)annotation;
-      value = StringCodec.decodeArray(element.type(), element.decode(), xxx);
+      value = StringCodec.decodeArray(element.type(), element.decode(), token);
     }
     else {
       throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
     }
 
     if (value == null)
-      return Error.CONTENT_NOT_EXPECTED(xxx, null);
+      return Error.CONTENT_NOT_EXPECTED(token, null);
 
     if (value instanceof Error)
       return (Error)value;

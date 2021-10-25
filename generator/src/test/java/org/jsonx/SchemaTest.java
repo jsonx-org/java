@@ -81,10 +81,10 @@ public class SchemaTest {
       throw new ExceptionInInitializerError(e);
     }
 
-    for (int i = 0; i < 10; ++i)
-      settings.add(new Settings(i));
+    for (int i = 0; i < 10; i += 3)
+      settings.add(new Settings(i, true));
 
-    settings.add(new Settings(Integer.MAX_VALUE));
+    settings.add(new Settings(Integer.MAX_VALUE, true));
   }
 
   private static XmlElement toXml(final SchemaElement schema, final Settings settings) {

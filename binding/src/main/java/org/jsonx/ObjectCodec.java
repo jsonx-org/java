@@ -94,8 +94,8 @@ class ObjectCodec extends Codec {
         else {
           if (codec instanceof AnyCodec) {
             final AnyCodec anyCodec = (AnyCodec)codec;
-            final String xxx = new String(reader.buf(), off, len);
-            value = AnyCodec.decode(anyCodec.property, xxx, reader, validate, null);
+            final String token = new String(reader.buf(), off, len);
+            value = AnyCodec.decode(anyCodec.property, token, reader, validate, null);
             if (value instanceof Error)
               return abort((Error)value, reader, index);
           }
@@ -148,17 +148,17 @@ class ObjectCodec extends Codec {
 
       return object;
     }
+    catch (final RuntimeException e) {
+      return Error.DECODE_EXCEPTION(reader, e);
+    }
     catch (final IllegalAccessException | InstantiationException | NoSuchMethodException e) {
       throw new RuntimeException(e);
     }
     catch (final InvocationTargetException e) {
-      if (e.getCause() instanceof RuntimeException)
-        throw (RuntimeException)e.getCause();
-
       if (e.getCause() instanceof IOException)
         throw (IOException)e.getCause();
 
-      throw new RuntimeException(e.getCause());
+      return Error.DECODE_EXCEPTION(reader, e.getCause());
     }
   }
 

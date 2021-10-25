@@ -328,7 +328,7 @@ abstract class Member extends Element {
     return override instanceof ArrayModel || override instanceof Reference && ((Reference)override).model instanceof ArrayModel;
   }
 
-  final String toField(final Registry.Type classType, final Member override, final ClassSpec.Scope ... scopes) {
+  final String toField(final Registry.Type classType, final Member override, final boolean setBuilder, final ClassSpec.Scope ... scopes) {
     final StringBuilder builder = new StringBuilder();
     final String classCase = (override != null ? override.fieldBinding : fieldBinding).classCase;
     final String instanceCase = (override != null ? override.fieldBinding : fieldBinding).instanceCase;
@@ -380,18 +380,21 @@ abstract class Member extends Element {
           builder.append(doc).append('\n');
 
         final String classSimpleName = classType.getSimpleName();
-        builder.append("public ").append(classSimpleName).append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
+        builder.append("public ").append(setBuilder ? classSimpleName : "void").append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
         if (override != null)
           builder.append("super.set").append(classCase).append('(').append(instanceCase).append(")");
         else
           builder.append("this.").append(instanceCase).append(" = ").append(instanceCase);
         builder.append(";\n");
-        builder.append("  return ");
+        if (setBuilder) {
+          builder.append("  return ");
+          if (!declarer.classType().getSimpleName().equals(classSimpleName))
+            builder.append('(').append(classSimpleName).append(')');
 
-        if (!declarer.classType().getSimpleName().equals(classSimpleName))
-          builder.append('(').append(classSimpleName).append(')');
+          builder.append("this;\n");
+        }
 
-        builder.append("this;\n}");
+        builder.append('}');
       }
       else if (builder.length() > 2) {
         builder.setLength(builder.length() - 2);

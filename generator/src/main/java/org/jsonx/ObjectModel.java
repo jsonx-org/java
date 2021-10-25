@@ -743,7 +743,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           overridden.add(property.getOverride().name());
 
         final int len = builder.length();
-        builder.append(property.member.toField(classType(), property.getOverride(), ClassSpec.Scope.values()));
+        builder.append(property.member.toField(classType(), property.getOverride(), settings.getSetBuilder(), ClassSpec.Scope.values()));
         appended = builder.length() > len;
       }
     }
@@ -757,7 +757,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
               builder.append("\n\n");
 
             final int len = builder.length();
-            builder.append(property.member.toField(classType(), property.getOverride() != null ? property.getOverride() : property.member, ClassSpec.Scope.SET));
+            builder.append(property.member.toField(classType(), property.getOverride() != null ? property.getOverride() : property.member, settings.getSetBuilder(), ClassSpec.Scope.SET));
             appended = builder.length() > len;
           }
         }

@@ -33,15 +33,23 @@ public class GenerateMojo extends JxMojo {
   @Parameter(name="prefix", property="prefix", required=true)
   private String prefix;
 
+  @Parameter(name="templateThreshold", property="templateThreshold", required=false)
+  private int templateThreshold = 1;
+
+  @Parameter(name="setBuilder", property="setBuilder", required=false)
+  private boolean setBuilder = true;
+
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     final char lastChar = prefix == null ? '\0' : prefix.charAt(prefix.length() - 1);
     if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? prefix.substring(0, prefix.length() - 1) : prefix))
       throw new IllegalArgumentException("Illegal \"prefix\" parameter: " + prefix);
 
+    final Settings settings = new Settings(templateThreshold, setBuilder);
+
     try {
       for (final String schema : schemas) {
-        SchemaElement.parse(new URL(schema), prefix).toSource(configuration.getDestDir());
+        SchemaElement.parse(new URL(schema), prefix).toSource(configuration.getDestDir(), settings);
       }
     }
     catch (final IOException e) {

@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import org.libj.lang.Annotations;
 import org.libj.lang.Strings;
+import org.libj.lang.Throwables;
 import org.openjax.json.JsonReader;
 
 final class Error {
@@ -49,6 +50,10 @@ final class Error {
 
   static Error CONTENT_NOT_EXPECTED(final Object content, final JsonReader reader) {
     return new Error(reader, "Content is not expected: %s", content);
+  }
+
+  static Error DECODE_EXCEPTION(final JsonReader reader, final Throwable e) {
+    return new Error(reader, "Excepiton while decoding", e);
   }
 
   static Error EXPECTED_TYPE(final String name, final String elementName, final String token, final JsonReader reader) {
@@ -117,6 +122,7 @@ final class Error {
 
   private final int offset;
   private final String message;
+  private final Throwable e;
   private final Object[] args;
   private Error next;
   private String rendered;
@@ -134,8 +140,13 @@ final class Error {
   }
 
   private Error(final JsonReader reader, final String message, final Object ... args) {
+    this(reader, message, null, args);
+  }
+
+  private Error(final JsonReader reader, final String message, final Throwable e, final Object ... args) {
     this.offset = reader != null ? reader.getPosition() - 1 : -1;
     this.message = message;
+    this.e = e;
     this.args = args;
   }
 
@@ -148,12 +159,16 @@ final class Error {
     return this.offset;
   }
 
+  public Throwable getException() {
+    return e;
+  }
+
   @Override
   public String toString() {
     if (rendered != null)
       return rendered;
 
-    final String str;
+    final StringBuilder str = new StringBuilder();
     if (args != null) {
       for (int i = 0; i < args.length; ++i) {
         final Object arg = args[i];
@@ -174,17 +189,20 @@ final class Error {
         args[i] = obj;
       }
 
-      str = String.format(message, args);
+      str.append(String.format(message, args));
       Arrays.fill(args, null);
     }
     else {
-      str = message;
+      str.append(message);
     }
 
-    if (next == null)
-      return rendered = str;
+    if (e != null)
+      str.append(": ").append(Throwables.toString(e));
 
-    rendered = str + next.toString();
+    if (next == null)
+      return rendered = str.toString();
+
+    rendered = str.append(next.toString()).toString();
     next = null;
     return rendered;
   }

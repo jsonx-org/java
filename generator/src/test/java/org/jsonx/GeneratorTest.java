@@ -25,6 +25,7 @@ import java.security.Permission;
 
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.libj.lang.Strings;
 
 public class GeneratorTest {
   private static final File destDir = new File("target/generated-test-sources/jsonx");
@@ -53,7 +54,7 @@ public class GeneratorTest {
   @Test
   public void testUsage() throws IOException {
     try {
-      Generator.main(new String[0]);
+      Generator.main(Strings.EMPTY_ARRAY);
       fail("Expected SecurityException");
     }
     catch (final SecurityException e) {
