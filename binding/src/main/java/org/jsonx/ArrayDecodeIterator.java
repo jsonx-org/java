@@ -79,7 +79,6 @@ class ArrayDecodeIterator extends ArrayIterator {
     final long offLen = (long)current;
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
-    final char c0 = reader.bufToChar(off);
     final String token = new String(reader.buf(), off, len);
     final Object value;
     if (codecType == AnyCodec.class) {

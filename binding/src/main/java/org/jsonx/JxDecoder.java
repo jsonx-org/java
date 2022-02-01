@@ -30,20 +30,19 @@ import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
 /**
- * Decoder that deserializes JSON documents to objects of {@link JxObject}
- * classes, or to lists conforming to a provided annotation class that declares
- * an {@link ArrayType} annotation.
+ * Decoder that deserializes JSON documents to objects of {@link JxObject} classes, or to lists conforming to a provided annotation
+ * class that declares an {@link ArrayType} annotation.
  */
 public final class JxDecoder {
   public static final class Builder {
     private boolean validate;
 
     /**
-     * Sets the "validation" option for the {@link JxDecoder}, specifying
-     * whether validation is to occur while decoding JSON documents.
+     * Sets the "validation" option for the {@link JxDecoder}, specifying whether validation is to occur while decoding JSON
+     * documents.
      *
-     * @param validation The "validation" option for the {@link JxDecoder}, specifying
-     * whether validation is to occur while decoding JSON documents.
+     * @param validation The "validation" option for the {@link JxDecoder}, specifying whether validation is to occur while decoding
+     *          JSON documents.
      * @return This {@link Builder}.
      */
     public Builder withValidation(final boolean validation) {
@@ -54,15 +53,12 @@ public final class JxDecoder {
     private Function<DecodeException,String> messageFunction;
 
     /**
-     * Sets a {@link Function Function&lt;DecodeException,String&gt;} that is to
-     * be used by the {@link DecodeException} class for the construction of each
-     * new instance's detail {@linkplain DecodeException#getMessage() message}.
+     * Sets a {@link Function Function&lt;DecodeException,String&gt;} that is to be used by the {@link DecodeException} class for
+     * the construction of each new instance's detail {@linkplain DecodeException#getMessage() message}.
      *
-     * @param messageFunction The {@link Function
-     *          Function&lt;DecodeException,String&gt;} that is to be used by
-     *          the {@link DecodeException} class for the construction of each
-     *          new instance's detail {@linkplain DecodeException#getMessage()
-     *          message}.
+     * @param messageFunction The {@link Function Function&lt;DecodeException,String&gt;} that is to be used by the
+     *          {@link DecodeException} class for the construction of each new instance's detail
+     *          {@linkplain DecodeException#getMessage() message}.
      * @return This {@link Builder}.
      */
     public Builder withDecodeExceptionMessageFunction(final Function<DecodeException,String> messageFunction) {
@@ -71,11 +67,9 @@ public final class JxDecoder {
     }
 
     /**
-     * Returns a new instance of {@link JxDecoder} with the options specified in
-     * this {@link Builder}.
+     * Returns a new instance of {@link JxDecoder} with the options specified in this {@link Builder}.
      *
-     * @return A new instance of {@link JxDecoder} with the options specified in
-     *         this {@link Builder}.
+     * @return A new instance of {@link JxDecoder} with the options specified in this {@link Builder}.
      */
     public JxDecoder build() {
       return new JxDecoder(validate, messageFunction);
@@ -130,29 +124,25 @@ public final class JxDecoder {
   }
 
   /**
-   * Parses a JSON object from the supplied {@link JsonReader} as per the
-   * specification of the provided {@link JxObject} class.
+   * Parses a JSON object from the supplied {@link JsonReader} as per the specification of the provided {@link JxObject} class.
    *
-   * @param <T> The type parameter for the return object of {@link JxObject}
-   *          class.
+   * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param type The class for the return object.
    * @param reader The {@link JsonReader} containing the JSON object.
-   * @param onPropertyDecode Callback predicate to be called for each decoded
-   *          JSON properties, accepting arguments of:
+   * @param onPropertyDecode Callback predicate to be called for each decoded JSON properties, accepting arguments of:
    *          <ol>
    *          <li>The {@link JxObject}.</li>
    *          <li>The property name.</li>
    *          <li>The property value.</li>
    *          </ol>
-   * @return A {@link JxObject} of the specified type representing the parsed
-   *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding the
-   *           JSON object.
+   * @return A {@link JxObject} of the specified type representing the parsed JSON object.
+   * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code type} or {@code reader} is null.
+   * @throws JsonParseException If the content is not well formed.
    */
   @SuppressWarnings("unchecked")
-  public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
+  public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException, JsonParseException {
     assertNotNull(type);
     assertNotNull(reader);
     final long point = reader.readToken();
@@ -169,45 +159,37 @@ public final class JxDecoder {
   }
 
   /**
-   * Parses a JSON object from the supplied {@link JsonReader} as per the
-   * specification of the provided {@link JxObject} class.
+   * Parses a JSON object from the supplied {@link JsonReader} as per the specification of the provided {@link JxObject} class.
    *
-   * @param <T> The type parameter for the return object of {@link JxObject}
-   *          class.
+   * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param type The class for the return object.
    * @param json The string document containing a JSON object.
-   * @param onPropertyDecode Callback predicate to be called for each decoded
-   *          JSON properties, accepting arguments of:
+   * @param onPropertyDecode Callback predicate to be called for each decoded JSON properties, accepting arguments of:
    *          <ol>
    *          <li>The {@link JxObject}.</li>
    *          <li>The property name.</li>
    *          <li>The property value.</li>
    *          </ol>
-   * @return A {@link JxObject} of the specified type representing the parsed
-   *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding the
-   *           JSON object.
+   * @return A {@link JxObject} of the specified type representing the parsed JSON object.
+   * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code type} or {@code json} is null.
+   * @throws JsonParseException If the content is not well formed.
    */
-  public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException {
+  public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException, JsonParseException {
     try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
       return parseObject(type, in, onPropertyDecode);
     }
   }
 
   /**
-   * Parses a JSON object at the supplied {@link JsonReader} as per the
-   * specification of the provided {@link JxObject} class.
+   * Parses a JSON object at the supplied {@link JsonReader} as per the specification of the provided {@link JxObject} class.
    *
-   * @param <T> The type parameter for the return object of {@link JxObject}
-   *          class.
+   * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param type The class for the return object.
    * @param reader The {@link JsonReader} containing the JSON object.
-   * @return A {@link JxObject} of the specified type representing the parsed
-   *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding the
-   *           JSON object.
+   * @return A {@link JxObject} of the specified type representing the parsed JSON object.
+   * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code type} or {@code reader} is null.
    */
@@ -216,17 +198,13 @@ public final class JxDecoder {
   }
 
   /**
-   * Parses a JSON object at the supplied {@link JsonReader} as per the
-   * specification of the provided {@link JxObject} class.
+   * Parses a JSON object at the supplied {@link JsonReader} as per the specification of the provided {@link JxObject} class.
    *
-   * @param <T> The type parameter for the return object of {@link JxObject}
-   *          class.
+   * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param type The class for the return object.
    * @param json The string document containing a JSON object.
-   * @return A {@link JxObject} of the specified type representing the parsed
-   *         JSON object.
-   * @throws DecodeException If an exception has occurred while decoding the
-   *           JSON object.
+   * @return A {@link JxObject} of the specified type representing the parsed JSON object.
+   * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code type} or {@code json} is null.
    */
@@ -237,20 +215,16 @@ public final class JxDecoder {
   }
 
   /**
-   * Parses a JSON array from the supplied {@link JsonReader} as per the
-   * specification of the provided annotation class that declares an
-   * {@link ArrayType} annotation.
+   * Parses a JSON array from the supplied {@link JsonReader} as per the specification of the provided annotation class that
+   * declares an {@link ArrayType} annotation.
    *
-   * @param annotationType The annotation class that declares an
-   *          {@link ArrayType} annotation.
+   * @param annotationType The annotation class that declares an {@link ArrayType} annotation.
    * @param reader The {@link JsonReader} containing the JSON array.
    * @return A {@link List} representing the parsed JSON array.
-   * @throws DecodeException If an exception has occurred while decoding the
-   *           JSON array.
-   * @throws JsonParseException If the content is not well formed.
+   * @throws DecodeException If an exception has occurred while decoding the JSON array.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code annotationType} or
-   *           {@code reader} is null.
+   * @throws IllegalArgumentException If {@code annotationType} or {@code reader} is null.
+   * @throws JsonParseException If the content is not well formed.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     assertNotNull(annotationType);
@@ -273,20 +247,16 @@ public final class JxDecoder {
   }
 
   /**
-   * Parses a JSON array from the supplied string document as per the
-   * specification of the provided annotation class that declares an
-   * {@link ArrayType} annotation.
+   * Parses a JSON array from the supplied string document as per the specification of the provided annotation class that declares
+   * an {@link ArrayType} annotation.
    *
-   * @param annotationType The annotation class that declares an
-   *          {@link ArrayType} annotation.
+   * @param annotationType The annotation class that declares an {@link ArrayType} annotation.
    * @param json The string document containing a JSON array.
    * @return A {@link List} representing the parsed JSON array.
-   * @throws DecodeException If an exception has occurred while decoding the
-   *           JSON array.
+   * @throws DecodeException If an exception has occurred while decoding the JSON array.
    * @throws JsonParseException If the content is not well formed.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code annotationType} or {@code json}
-   *           is null.
+   * @throws IllegalArgumentException If {@code annotationType} or {@code json} is null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final String json) throws DecodeException, JsonParseException, IOException {
     try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
