@@ -55,7 +55,7 @@
     <reference type="objStr" maxOccurs="1" doc="Reference to objStr"/>
   </array>
   <array name="arrayStr" doc="Array of string references">
-    <any types="byte primitiveBoolean" maxOccurs="1" nullable="false" doc="Any type with primitive byte and boolean"/>
+    <any types="Short defaultBoolean" maxOccurs="1" nullable="false" doc="Any type with Short and Boolean"/>
     <reference type="defaultString" maxOccurs="1" doc="Reference to defaultString"/>
     <reference type="charArray" maxOccurs="1" nullable="false" doc="Not-nullable reference to charArray"/>
     <reference type="uuid" maxOccurs="1" doc="Reference to uuid"/>
@@ -153,7 +153,7 @@
     <property name="bo+l" xsi:type="reference" type="primitiveBoolean" nullable="false" doc="Not-nullable property with name matching a regex of type primitiveBoolean">
       <binding lang="java" field="bool1"/>
     </property>
-    <property names=".*" xsi:type="any" types="primitiveBoolean defaultDecimal" nullable="false" doc="Not-nullable property of any name and of type 'primitiveBoolean' or 'defaultDecimal'">
+    <property names=".*" xsi:type="any" types="defaultBoolean defaultDecimal" nullable="false" doc="Not-nullable property of any name and of type 'defaultBoolean' or 'defaultDecimal'">
       <binding lang="java" field="any"/>
     </property>
     <property name="bo+lOptional" xsi:type="reference" type="StringBoolean" use="optional" doc="Optional property with name matching a regex of type StringBoolean">

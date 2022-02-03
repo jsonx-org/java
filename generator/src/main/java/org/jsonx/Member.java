@@ -178,6 +178,11 @@ abstract class Member extends Element {
     this(registry, declarer, isFromSchema, id, doc, (String)name.text(), nullable == null || nullable.isDefault() ? null : nullable.text(), use == null || use.isDefault() ? null : Use.valueOf(use.text().toUpperCase()), null, null, fieldName == null ? null : fieldName.text(), typeBinding);
   }
 
+  private String nameForException() {
+    final String displayName = displayName();
+    return displayName.length() > 0 ? "\"" + displayName + "\"" : "member";
+  }
+
   final Class<?> validateTypeBinding() {
     if (typeBinding == null || typeBinding.type == null)
       return null;
@@ -185,10 +190,13 @@ abstract class Member extends Element {
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
     if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
       if (use.set == Use.OPTIONAL)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
       if (!(declarer instanceof SchemaElement) && nullable.get == null && !hasDecodeBinding)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare \"" + displayName() + "\" (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+
+      if (declarer instanceof AnyModel)
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
     }
 
     // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence

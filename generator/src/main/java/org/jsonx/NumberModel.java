@@ -252,7 +252,6 @@ final class NumberModel extends Model {
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
-
   }
 
   private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb) throws ParseException {

@@ -149,16 +149,16 @@ class ObjectCodec extends Codec {
       return object;
     }
     catch (final RuntimeException e) {
-      return Error.DECODE_EXCEPTION(reader, e);
-    }
-    catch (final IllegalAccessException | InstantiationException | NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      return abort(Error.DECODE_EXCEPTION(reader, e), reader, index);
     }
     catch (final InvocationTargetException e) {
       if (e.getCause() instanceof IOException)
         throw (IOException)e.getCause();
 
-      return Error.DECODE_EXCEPTION(reader, e.getCause());
+      return abort(Error.DECODE_EXCEPTION(reader, e.getCause()), reader, index);
+    }
+    catch (final IllegalAccessException | InstantiationException | NoSuchMethodException e) {
+      throw new RuntimeException(e);
     }
   }
 

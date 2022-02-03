@@ -101,6 +101,8 @@ class ArrayDecodeIterator extends ArrayIterator {
     else if (codecType == StringCodec.class) {
       final StringElement element = (StringElement)annotation;
       value = StringCodec.decodeArray(element.type(), element.decode(), token);
+      if (value == null)
+        StringCodec.decodeArray(element.type(), element.decode(), token);
     }
     else {
       throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
