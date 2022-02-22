@@ -36,7 +36,7 @@ class BooleanCodec extends PrimitiveCodec {
 
   static Error encodeArray(final Annotation annotation, final Class<?> type, final String encode, Object object, final int index, final Relations relations) {
     if (!Classes.isInstance(type, object))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final Executable method = getMethod(encodeToMethod, encode, object.getClass());
     if (method != null)
@@ -48,7 +48,7 @@ class BooleanCodec extends PrimitiveCodec {
 
   static Object encodeObject(final Class<?> type, final String encode, Object object) throws EncodeException, ValidationException {
     if (!Classes.isInstance(type, object))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final Executable method = getMethod(encodeToMethod, encode, object.getClass());
     if (method != null)

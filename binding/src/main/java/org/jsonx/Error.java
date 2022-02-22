@@ -48,8 +48,8 @@ final class Error {
     return new Error(reader, "Expected ']', but got '%s'", token);
   }
 
-  static Error CONTENT_NOT_EXPECTED(final Object content, final JsonReader reader) {
-    return new Error(reader, "Content is not expected: %s", content);
+  static Error CONTENT_NOT_EXPECTED(final Object content, final JsonReader reader, final Throwable e) {
+    return new Error(reader, "Content is not expected: %s", e, content);
   }
 
   static Error DECODE_EXCEPTION(final JsonReader reader, final Throwable e) {

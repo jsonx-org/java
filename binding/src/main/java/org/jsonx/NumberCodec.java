@@ -66,7 +66,7 @@ class NumberCodec extends PrimitiveCodec {
 
   static Error encodeArray(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final int index, final Relations relations, final boolean validate) {
     if (!Classes.isInstance(type, object))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     if (validate && (scale != Integer.MAX_VALUE || (range != null && !range.isEmpty()))) {
       if (!Classes.isAssignableFrom(Number.class, object.getClass()))
@@ -87,7 +87,7 @@ class NumberCodec extends PrimitiveCodec {
 
   static Object encodeObject(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException, ValidationException {
     if (!Classes.isInstance(type, object))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     if (validate && object instanceof Number) {
       final Error error = validate(annotation, (Number)object, scale, range, type);

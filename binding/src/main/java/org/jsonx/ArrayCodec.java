@@ -71,7 +71,7 @@ class ArrayCodec extends Codec {
 
   static Error encodeArray(final Annotation annotation, final Class<? extends Annotation> type, final Object object, final int index, final Relations relations, IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (!(object instanceof List))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final int[] elementIds;
     if (type == ArrayType.class) {

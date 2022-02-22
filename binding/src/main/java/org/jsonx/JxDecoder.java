@@ -152,8 +152,10 @@ public final class JxDecoder {
       throw new DecodeException("Expected '{', but got '" + point + "'", reader, null, messageFunction);
 
     final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
-    if (object instanceof Error)
-      throw new DecodeException((Error)object, reader, messageFunction);
+    if (object instanceof Error) {
+      final Error error = (Error)object;
+      throw new DecodeException((Error)object, reader, error.getException(), messageFunction);
+    }
 
     return (T)object;
   }

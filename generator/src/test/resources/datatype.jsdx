@@ -107,7 +107,7 @@
   <string name="url" pattern="((https?|ftp)://jsonx.org/[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+)" doc="URL pattern with URL type">
     <binding lang="java" type="java.net.URL" decode="org.jsonx.TestHelper.stringToUrlOrNull"/>
   </string>
-  <string name="StringBigDecimal" pattern="\d+(\.\d+)?([eE][+-]?[1-9]\d{0,5})?" doc="An integer with BigDecimal type represented as a string">
+  <string name="StringBigDecimal" pattern="\d+(\.\d+)?([eE][+-]?[1-9]\d{0,6})?" doc="An integer with BigDecimal type represented as a string">
     <binding lang="java" type="java.math.BigDecimal" decode="org.jsonx.TestHelper.stringToBigDecimalOrNull"/>
   </string>
   <string name="nonEmptyString" pattern="(\S)|(\S.*\S)" doc="Non-empty string"/>

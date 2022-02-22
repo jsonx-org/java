@@ -29,6 +29,7 @@ import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.lang.Numbers.Composite;
+import org.libj.lang.Throwables;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 
@@ -96,8 +97,6 @@ class ObjectCodec extends Codec {
             final AnyCodec anyCodec = (AnyCodec)codec;
             final String token = new String(reader.buf(), off, len);
             value = AnyCodec.decode(anyCodec.property, token, reader, validate, null);
-            if (value instanceof Error)
-              return abort((Error)value, reader, index);
           }
           else {
             c0 = reader.bufToChar(off);
@@ -107,8 +106,6 @@ class ObjectCodec extends Codec {
 
               final ObjectCodec objectCodec = (ObjectCodec)codec;
               value = decodeObject(objectCodec.type, reader, validate, null); // NOTE: Setting `onPropertyDecode = null` here on purpose!
-              if (value instanceof Error)
-                return abort((Error)value, reader, index);
             }
             else if (codec instanceof ArrayCodec) {
               if (c0 != '[')
@@ -116,14 +113,15 @@ class ObjectCodec extends Codec {
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
               value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, validate, onPropertyDecode);
-              if (value instanceof Error)
-                return abort((Error)value, reader, index);
             }
             else {
               throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
             }
           }
         }
+
+        if (value instanceof Error)
+          return abort((Error)value, reader, index);
 
         codec.set(object, propertyName, value, onPropertyDecode);
       }
@@ -157,7 +155,10 @@ class ObjectCodec extends Codec {
 
       return abort(Error.DECODE_EXCEPTION(reader, e.getCause()), reader, index);
     }
-    catch (final IllegalAccessException | InstantiationException | NoSuchMethodException e) {
+    catch (final InstantiationException e) {
+      throw new RuntimeException(Throwables.copy(e, new InstantiationException(type.getName())));
+    }
+    catch (final IllegalAccessException | NoSuchMethodException e) {
       throw new RuntimeException(e);
     }
   }
@@ -169,7 +170,7 @@ class ObjectCodec extends Codec {
 
   static Error encodeArray(final Annotation annotation, final Object object, final int index, final Relations relations) {
     if (!(object instanceof JxObject))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     relations.set(index, new Relation(object, annotation));
     return null;

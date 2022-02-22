@@ -109,7 +109,7 @@ class ArrayDecodeIterator extends ArrayIterator {
     }
 
     if (value == null)
-      return Error.CONTENT_NOT_EXPECTED(token, null);
+      return Error.CONTENT_NOT_EXPECTED(token, null, null);
 
     if (value instanceof Error)
       return (Error)value;

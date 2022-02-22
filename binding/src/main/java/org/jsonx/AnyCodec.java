@@ -83,7 +83,7 @@ class AnyCodec extends Codec {
       }
     }
 
-    return error != null ? error : Error.CONTENT_NOT_EXPECTED(token, reader);
+    return error != null ? error : Error.CONTENT_NOT_EXPECTED(token, reader, null);
   }
 
   static Error encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {

@@ -51,7 +51,7 @@ class StringCodec extends PrimitiveCodec {
         value = JsdUtil.invoke(decode, string);
       }
       catch (final Exception e) {
-        return Error.CONTENT_NOT_EXPECTED(json, null);
+        return Error.CONTENT_NOT_EXPECTED(json, null, e);
       }
     }
     else {
@@ -78,7 +78,7 @@ class StringCodec extends PrimitiveCodec {
 
   static Error encodeArray(final Annotation annotation, final String pattern, final Class<?> type, final String encode, Object object, final int index, final Relations relations, final boolean validate) {
     if (!Classes.isInstance(type, object))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final Executable method = getMethod(encodeToMethod, encode, type);
     if (method != null)
@@ -98,7 +98,7 @@ class StringCodec extends PrimitiveCodec {
 
   static Object encodeObject(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException {
     if (!Classes.isInstance(type, object))
-      return Error.CONTENT_NOT_EXPECTED(object, null);
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final Executable method = getMethod(encodeToMethod, encode, object.getClass());
     if (method != null)
