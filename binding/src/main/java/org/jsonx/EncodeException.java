@@ -17,8 +17,7 @@
 package org.jsonx;
 
 /**
- * Signals that an error has occurred while encoding a JSON document from
- * binding classes.
+ * Signals that an error has occurred while encoding a JSON document from binding classes.
  */
 public class EncodeException extends RuntimeException {
   /**
@@ -49,8 +48,7 @@ public class EncodeException extends RuntimeException {
   }
 
   /**
-   * Creates a new {@link EncodeException} with the specified detail message and
-   * cause.
+   * Creates a new {@link EncodeException} with the specified detail message and cause.
    *
    * @param message The detail message.
    * @param cause The cause.

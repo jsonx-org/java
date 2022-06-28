@@ -26,7 +26,7 @@ import org.libj.util.function.TriPredicate;
 
 class ArrayCreateIterator extends ArrayIterator {
   private final TrialType trialType;
-  private short cursor = 0;
+  private int cursor = 0;
   private int lastIndex;
   private final int size;
 
@@ -36,28 +36,36 @@ class ArrayCreateIterator extends ArrayIterator {
   }
 
   @Override
-  protected boolean hasNext() throws IOException {
+  boolean hasNext() throws IOException {
     return lastIndex < size;
   }
 
   @Override
-  protected int nextIndex() throws IOException {
+  int nextIndex() throws IOException {
     return cursor;
   }
 
   @Override
-  protected void next() throws IOException {
+  void next() throws IOException {
     current = this;
     ++cursor;
   }
 
   @Override
-  protected void previous() {
-    --cursor;
+  void next(final int index) throws IOException {
+    cursor = index;
+    next();
   }
 
   @Override
-  protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  int previous() {
+    final int index = cursor;
+    --cursor;
+    return index;
+  }
+
+  @Override
+  Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     lastIndex = index;
     if (trialType == TrialType.NULLABLE) {
       current = null;

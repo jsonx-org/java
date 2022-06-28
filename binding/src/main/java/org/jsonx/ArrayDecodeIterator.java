@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
+import org.libj.lang.Strings;
 import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
 import org.libj.util.primitive.ArrayIntList;
@@ -36,7 +37,19 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected boolean hasNext() throws IOException {
+  String preview(final Object current) {
+    if (current == null)
+      return "null";
+
+    final long offLen = (Long)current;
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
+    final String token = reader.bufToString(off, len);
+    return Strings.truncate(String.valueOf(token), 16);
+  }
+
+  @Override
+  boolean hasNext() throws IOException {
     final int index = reader.getIndex();
     final long point = reader.readToken();
     final int off = Composite.decodeInt(point, 0);
@@ -51,12 +64,12 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected int nextIndex() {
+  int nextIndex() {
     return cursor;
   }
 
   @Override
-  protected void next() throws IOException {
+  void next() throws IOException {
     if (cursor++ == indexes.size())
       indexes.add(reader.getIndex());
 
@@ -70,12 +83,20 @@ class ArrayDecodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected void previous() {
-    reader.setIndex(indexes.get(--cursor));
+  void next(final int index) throws IOException {
+    reader.setIndex(index);
+    next();
   }
 
   @Override
-  protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
+  int previous() {
+    final int index = reader.getIndex();
+    reader.setIndex(indexes.get(--cursor));
+    return index;
+  }
+
+  @Override
+  Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final long offLen = (long)current;
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);

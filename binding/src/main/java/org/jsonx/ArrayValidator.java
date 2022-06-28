@@ -114,18 +114,16 @@ final class ArrayValidator {
   }
 
   /**
-   * Creates a signature of the start of an iteration of element attributes at
-   * the specified member index, annotation index, and annotation occurrence.
+   * Creates a signature of the start of an iteration of element attributes at the specified member index, annotation index, and
+   * annotation occurrence.
    *
-   * @implNote For performance reasons, each of the arguments are converted to
-   *           an unsigned short, which reduces their max value to 65535. This
-   *           value represents the maximum number of members, annotations and
-   *           occurrences that are supported by the {@link ArrayValidator}.
+   * @implNote For performance reasons, each of the arguments are converted to an unsigned short, which reduces their max value to
+   *           65535. This value represents the maximum number of members, annotations and occurrences that are supported by the
+   *           {@link ArrayValidator}.
    * @param index The index of the member.
    * @param a The index of the annotation.
    * @param occurrence The occurrence of annotation.
-   * @return a signature of the start of an iteration of element attributes at
-   *         the specified indices.
+   * @return a signature of the start of an iteration of element attributes at the specified indices.
    */
   private static long sign(final int index, final int a, final int occurrence) {
     return Composite.encode((short)(Short.MIN_VALUE + index), (short)(Short.MIN_VALUE + a), (short)(Short.MIN_VALUE + occurrence), (short)0);
@@ -159,7 +157,7 @@ final class ArrayValidator {
         }
 
         iterator.next();
-        final Object object = ArrayIterator.preview(iterator.current);
+        final Object object = iterator.preview(iterator.current);
         iterator.previous();
         return Error.INVALID_CONTENT_MEMBERS_NOT_EXPECTED(index, annotations[a - 1], object);
       }
@@ -235,10 +233,11 @@ final class ArrayValidator {
         error = iterator.validate(annotation, index, relations, idToElement, codecType, validate, onPropertyDecode);
       }
 
-  //    System.err.println("m[" + index + "], a[" + a + "], o(" + minOccurs + ", " + maxOccurs + ")[" + occurrence + "], i(" + minIterate + ", " + maxIterate + ")[" + iteration + "]");
+      // System.err.println("m[" + index + "], a[" + a + "], o(" + minOccurs + ", " + maxOccurs + ")[" + occurrence + "], i(" +
+      // minIterate + ", " + maxIterate + ")[" + iteration + "]");
 
       try {
-    //    int before;
+        // int before;
         if (error != null) {
           error = Error.INVALID_CONTENT_WAS_FOUND(index, annotation).append(error);
         }
@@ -247,7 +246,7 @@ final class ArrayValidator {
           return rewind(iterator, iterator.nextIndex(), validate(iterator, occurrence + 1, false, annotations, a, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode, lastIterSig));
         }
         else {
-    //      before = iterator.nextIndex();
+          // before = iterator.nextIndex();
           // If `occurrence` is under `maxOccurs`, optional increment `occurrence`.
           if (occurrence < maxOccurs) {
             if (iterating) {
@@ -262,22 +261,24 @@ final class ArrayValidator {
             if (error == null)
               return null;
           }
-    //      assertIndex(before, iterator);
+          // assertIndex(before, iterator);
         }
 
         // If `minOccurs` has already been satisfied, then let's first try to skip the next member
         if (minOccurs < occurrence) {
-    //      before = iterator.nextIndex();
-          iterator.previous();
-          final Relation rollback = error != null ? null : relations.get(index);
+          // before = iterator.nextIndex();
+          final Object prevCurrent = iterator.current;
+          final int prevIndex = iterator.previous();
+          final Relation prevRelation = error != null ? null : relations.get(index);
           if (rewind(iterator, iterator.nextIndex(), validate(iterator, 1, false, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode, lastIterSig)) == null)
             return null;
 
-          if (rollback != null)
-            relations.set(index, rollback);
+          if (prevRelation != null)
+            relations.set(index, prevRelation);
 
-          iterator.next();
-    //      assertIndex(before, iterator);
+          iterator.next(prevIndex - 1);
+          iterator.current = prevCurrent;
+          // assertIndex(before, iterator);
         }
 
         return error != null ? error : rewind(iterator, iterator.nextIndex(), validate(iterator, 1, false, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode, lastIterSig));
@@ -298,10 +299,10 @@ final class ArrayValidator {
     return error;
   }
 
-//  private static void assertIndex(final int before, final ArrayIterator iterator) throws IOException {
-//    if (iterator.nextIndex() != before)
-//      throw new IllegalStateException(iterator.nextIndex() + " != " + before);
-//  }
+  // private static void assertIndex(final int before, final ArrayIterator iterator) throws IOException {
+  // if (iterator.nextIndex() != before)
+  // throw new IllegalStateException(iterator.nextIndex() + " != " + before);
+  // }
 
   @SuppressWarnings("unchecked")
   static Error validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {

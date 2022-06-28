@@ -25,10 +25,6 @@ import org.libj.lang.Strings;
 import org.libj.util.function.TriPredicate;
 
 abstract class ArrayIterator {
-  static String preview(final Object current) {
-    return Strings.truncate(String.valueOf(current), 16);
-  }
-
   Object current;
 
   final Relation currentRelate(final Annotation annotation) {
@@ -40,9 +36,14 @@ abstract class ArrayIterator {
     return current == null;
   }
 
+  Object preview(final Object object) {
+    return Strings.truncate(String.valueOf(object), 16);
+  }
+
   abstract boolean hasNext() throws IOException;
   abstract void next() throws IOException;
-  abstract void previous();
+  abstract void next(int index) throws IOException;
+  abstract int previous();
   abstract int nextIndex() throws IOException;
   abstract Error validate(Annotation annotation, int index, Relations relations, IdToElement idToElement, Class<? extends Codec> codecType, boolean validate, TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException;
 }

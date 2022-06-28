@@ -32,9 +32,8 @@ import org.libj.util.ArrayUtil;
 import org.libj.util.Patterns;
 
 /**
- * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx
- * arrays (with a provided annotation class that declares an {@link ArrayType}
- * annotation) to JSON documents.
+ * Encoder that serializes Jx objects (that extend {@link JxObject}) and Jx arrays (with a provided annotation class that declares
+ * an {@link ArrayType} annotation) to JSON documents.
  */
 public class JxEncoder {
   private static final HashMap<Integer,JxEncoder> instances = new HashMap<>();
@@ -59,15 +58,12 @@ public class JxEncoder {
     public static final JxEncoder _8 = get(8);
 
     /**
-     * Returns the validating {@link JxEncoder} for the specified number of
-     * spaces to be used when indenting values during serialization to JSON
-     * documents.
+     * Returns the validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during
+     * serialization to JSON documents.
      *
-     * @param indent The number of spaces to be used when indenting values
-     *          during serialization to JSON documents.
-     * @return The validating {@link JxEncoder} for the specified number of
-     *         spaces to be used when indenting values during serialization to
-     *         JSON documents.
+     * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
+     * @return The validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during
+     *         serialization to JSON documents.
      * @throws IllegalArgumentException If {@code indent < 0}.
      */
     public static JxEncoder get(final int indent) {
@@ -98,15 +94,12 @@ public class JxEncoder {
     public static final JxEncoder _8 = get(8);
 
     /**
-     * Returns the non-validating {@link JxEncoder} for the specified number of
-     * spaces to be used when indenting values during serialization to JSON
-     * documents.
+     * Returns the non-validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during
+     * serialization to JSON documents.
      *
-     * @param indent The number of spaces to be used when indenting values
-     *          during serialization to JSON documents.
-     * @return The non-validating {@link JxEncoder} for the specified number of
-     *         spaces to be used when indenting values during serialization to
-     *         JSON documents.
+     * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
+     * @return The non-validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during
+     *         serialization to JSON documents.
      * @throws IllegalArgumentException If {@code indent < 0}.
      */
     public static JxEncoder get(final int indent) {
@@ -120,16 +113,13 @@ public class JxEncoder {
   private static JxEncoder global = VALIDATING._0;
 
   /**
-   * Returns the validating or non-validating {@link JxEncoder} for the
-   * specified number of spaces to be used when indenting values during
-   * serialization to JSON documents.
+   * Returns the validating or non-validating {@link JxEncoder} for the specified number of spaces to be used when indenting values
+   * during serialization to JSON documents.
    *
-   * @param indent The number of spaces to be used when indenting values during
-   *          serialization to JSON documents.
+   * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
    * @param validate Whether the {@link JxEncoder} is to perform validation.
-   * @return The validating or non-validating {@link JxEncoder} for the
-   *         specified number of spaces to be used when indenting values during
-   *         serialization to JSON documents.
+   * @return The validating or non-validating {@link JxEncoder} for the specified number of spaces to be used when indenting values
+   *         during serialization to JSON documents.
    * @throws IllegalArgumentException If {@code indent < 0}.
    */
   public static JxEncoder get(final int indent, final boolean validate) {
@@ -171,11 +161,10 @@ public class JxEncoder {
   private final boolean validate;
 
   /**
-   * Creates a new {@link JxEncoder} for the specified number of spaces to be
-   * used when indenting values during serialization to JSON documents.
+   * Creates a new {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization to
+   * JSON documents.
    *
-   * @param indent The number of spaces to be used when indenting values during
-   *          serialization to JSON documents.
+   * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
    * @throws IllegalArgumentException If {@code indent < 0}.
    */
   protected JxEncoder(final int indent) {
@@ -183,13 +172,11 @@ public class JxEncoder {
   }
 
   /**
-   * Creates a new {@link JxEncoder} for the specified number of spaces to be
-   * used when indenting values during serialization to JSON documents.
+   * Creates a new {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization to
+   * JSON documents.
    *
-   * @param indent The number of spaces to be used when indenting values during
-   *          serialization to JSON documents.
-   * @param validate If {@code true}, the produced JSON is validated; if
-   *          {@code false}, the produced JSON is not validated.
+   * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
+   * @param validate If {@code true}, the produced JSON is validated; if {@code false}, the produced JSON is not validated.
    * @throws IllegalArgumentException If {@code indent < 0}.
    */
   JxEncoder(final int indent, final boolean validate) {
@@ -505,14 +492,12 @@ public class JxEncoder {
   }
 
   /**
-   * Marshals the specified {@link JxObject} to a {@link String}, performing
-   * callbacks to the provided {@link OnEncode} for each encoded field.
+   * Marshals the specified {@link JxObject} to a {@link String}, performing callbacks to the provided {@link OnEncode} for each
+   * encoded field.
    *
    * @param object The {@link JxObject}.
-   * @param onEncode The {@link OnEncode} to be called for each encoded
-   *          property.
-   * @return The {@link String} form of the marshaled {@link JxObject} JSON
-   *         document.
+   * @param onEncode The {@link OnEncode} to be called for each encoded property.
+   * @return The {@link String} form of the marshaled {@link JxObject} JSON document.
    * @throws EncodeException If an encode error has occurred.
    */
   String toString(final JxObject object, final OnEncode onEncode) {
@@ -528,8 +513,7 @@ public class JxEncoder {
    * Marshals the specified {@link JxObject} to a {@link String}.
    *
    * @param object The {@link JxObject}.
-   * @return The {@link String} form of the marshaled {@link JxObject} JSON
-   *         document.
+   * @return The {@link String} form of the marshaled {@link JxObject} JSON document.
    * @throws EncodeException If an encode error has occurred.
    */
   public String toString(final JxObject object) {
@@ -537,16 +521,13 @@ public class JxEncoder {
   }
 
   /**
-   * Marshals the given {@link List list} to a {@link String}, based on the
-   * specification of the provided annotation type. The provided annotation type
-   * must declare an annotation of type {@link ArrayType} that specifies the
-   * model of the list being marshaled.
+   * Marshals the given {@link List list} to a {@link String}, based on the specification of the provided annotation type. The
+   * provided annotation type must declare an annotation of type {@link ArrayType} that specifies the model of the list being
+   * marshaled.
    *
    * @param list The {@link List}.
-   * @param arrayAnnotationType The annotation type that declares an
-   *          {@link ArrayType} annotation.
-   * @return The {@link String} form of the marshaled {@link JxObject} JSON
-   *         document.
+   * @param arrayAnnotationType The annotation type that declares an {@link ArrayType} annotation.
+   * @return The {@link String} form of the marshaled {@link JxObject} JSON document.
    * @throws EncodeException If an encode error has occurred.
    */
   public String toString(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {

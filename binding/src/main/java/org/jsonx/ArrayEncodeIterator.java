@@ -40,17 +40,24 @@ class ArrayEncodeIterator extends ArrayIterator {
   }
 
   @Override
-  protected void next() {
+  void next() {
     current = listIterator.next();
   }
 
   @Override
-  protected void previous() {
-    current = listIterator.previous();
+  void next(final int index) {
+    for (; listIterator.nextIndex() < index; listIterator.next());
+    next();
   }
 
   @Override
-  protected Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  int previous() {
+    current = listIterator.previous();
+    return listIterator.nextIndex();
+  }
+
+  @Override
+  Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (codecType == BooleanCodec.class) {
       final BooleanElement element = (BooleanElement)annotation;
       return BooleanCodec.encodeArray(annotation, element.type(), element.encode(), current, index, relations);

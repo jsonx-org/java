@@ -21,8 +21,7 @@ package org.jsonx;
  */
 public class ValidationException extends RuntimeException {
   /**
-   * Creates a new {@link ValidationException} with the specified detail
-   * message.
+   * Creates a new {@link ValidationException} with the specified detail message.
    *
    * @param message The detail message.
    */
@@ -40,8 +39,7 @@ public class ValidationException extends RuntimeException {
   }
 
   /**
-   * Creates a new {@link ValidationException} with the specified detail message
-   * and cause.
+   * Creates a new {@link ValidationException} with the specified detail message and cause.
    *
    * @param message The detail message.
    * @param cause The cause.
