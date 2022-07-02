@@ -93,6 +93,7 @@
                   <schemas>
                     <schema>src/test/resources/test.jsd</schema>
                     <schema>src/test/resources/test.jsdx</schema>
+                    <schema>src/test/resources/camera.jsdx</schema>
                   </schemas>
                 </configuration>
               </execution>
