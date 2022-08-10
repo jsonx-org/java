@@ -235,9 +235,8 @@ class Registry {
       final StringBuilder builder = new StringBuilder(canonical ? canonicalName : name);
       if (genericTypes != null) {
         builder.append('<');
-        for (final Generic genericType : genericTypes) {
+        for (final Generic genericType : genericTypes) // [A]
           builder.append(canonical ? genericType.toString(canonical) : genericType.toString()).append(',');
-        }
 
         builder.setCharAt(builder.length() - 1, '>');
       }
@@ -282,7 +281,7 @@ class Registry {
         type = type.wrapper;
 
       final String str = target.toString();
-      for (; type != null; type = type.superType)
+      for (; type != null; type = type.superType) // [X]
         if (str.equals(type.toString()))
           return true;
 
@@ -387,7 +386,7 @@ class Registry {
     final StringBuilder builder = new StringBuilder(cls.getName());
     if (genericTypes != null) {
       builder.append('<');
-      for (final Type.Generic genericType : genericTypes)
+      for (final Type.Generic genericType : genericTypes) // [A]
         builder.append(genericType.toString(true));
 
       builder.append('>');
@@ -432,7 +431,7 @@ class Registry {
   @SuppressWarnings("unchecked")
   Registry(final Declarer declarer, final Collection<Class<?>> classes) {
     this.isFromJsd = false;
-    for (final Class<?> cls : classes) {
+    for (final Class<?> cls : classes) { // [C]
       if (cls.isAnnotation())
         ArrayModel.referenceOrDeclare(this, declarer, (Class<? extends Annotation>)cls);
       else
@@ -445,8 +444,9 @@ class Registry {
 
   private String getClassPrefix() {
     final HashSet<Registry.Type> types = new HashSet<>();
-    if (getModels() != null)
-      for (final Model member : getModels())
+    final Collection<Model> models = getModels();
+    if (models != null)
+      for (final Model member : models) // [C]
         member.getDeclaredTypes(types);
 
     return Strings.getCommonPrefix(types.stream().map(Registry.Type::getPackage).toArray(String[]::new));
@@ -519,7 +519,7 @@ class Registry {
   }
 
   void resolveReferences() {
-    for (int i = 0, len = deferredReferences.size(); i < len; ++i)
+    for (int i = 0, len = deferredReferences.size(); i < len; ++i) // [RA]
       deferredReferences.get(i).run();
 
     deferredReferences.clear();

@@ -38,7 +38,7 @@ class PropertyToCodec {
     if (codec != null)
       return codec;
 
-    for (final Map.Entry<String,Codec> entry : anyToCodec.entrySet()) {
+    for (final Map.Entry<String,Codec> entry : anyToCodec.entrySet()) { // [S]
       final Pattern pattern = Patterns.compile(entry.getKey(), Pattern.DOTALL);
       if (pattern.matcher(name).matches())
         return entry.getValue();

@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -123,7 +124,7 @@ public class ArrayCodecTest {
   private static void test(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String[] expected) throws DecodeException, IOException {
     final IdToElement idToElement = getIdToElement(annotationType);
     final ArrayList<Annotation> annotations = new ArrayList<>();
-    for (final String term : expected) {
+    for (final String term : expected) { // [A]
       final ArrayList<String> index = new ArrayList<>(Arrays.asList(term.split("\\.")));
       annotations.add(getAnnotation(idToElement, index));
     }
@@ -164,7 +165,7 @@ public class ArrayCodecTest {
       assertEquals("Number of members not matched", flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
       if (!debugPass) {
-        for (int i = 0; i < annotations.length; ++i) {
+        for (int i = 0; i < annotations.length; ++i) { // [A]
           final Relation relation = flatRelations.get(i);
           assertEquals(i + ": " + flatRelations.toString(), annotations[i], relation.annotation);
           final Object member = flatMembers.get(i);
@@ -182,9 +183,11 @@ public class ArrayCodecTest {
 
   private static void assertMembersEqual(final List<?> expected, final Relations actual) {
     assertEquals(expected.size(), actual.size());
-    for (int i = 0, len = expected.size(); i < len; ++i) {
-      final Object member = expected.get(i);
-      final Relation relation = actual.get(i);
+    final Iterator<?> expectedIterator = expected.iterator();
+    final Iterator<Relation> actualIterator = actual.iterator();
+    while (expectedIterator.hasNext()) { // [I]
+      final Object member = expectedIterator.next();
+      final Relation relation = actualIterator.next();
       if (member instanceof List) {
         assertTrue(relation.member instanceof Relations);
         assertMembersEqual((List<?>)member, (Relations)relation.member);

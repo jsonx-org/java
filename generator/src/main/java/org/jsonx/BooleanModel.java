@@ -56,7 +56,7 @@ final class BooleanModel extends Model {
       xsb.setName$(new Schema.Boolean.Name$(name));
 
     if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings())
+      for (final schema.TypeBinding binding : jsd.getBindings()) // [L]
         xsb.addBinding(typeBinding(binding));
 
     return xsb;
@@ -80,7 +80,7 @@ final class BooleanModel extends Model {
       xsb.setUse$(new $Boolean.Use$($Boolean.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.TypeBinding element : jsd.getBindings()) {
+      for (final schema.TypeBinding element : jsd.getBindings()) { // [L]
         final schema.TypeFieldBinding binding = (schema.TypeFieldBinding)element;
         final $TypeFieldBinding bind = new $Boolean.Binding();
         bind.setLang$(new $Binding.Lang$(binding.getLang()));
@@ -116,7 +116,7 @@ final class BooleanModel extends Model {
       xsb.setMaxOccurs$(new $ArrayMember.Boolean.MaxOccurs$(jsd.getMaxOccurs()));
 
     if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings())
+      for (final schema.TypeBinding binding : jsd.getBindings()) // [L]
         xsb.addBinding(typeBinding(binding));
 
     return xsb;

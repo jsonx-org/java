@@ -32,7 +32,7 @@ public class RuntimeTest {
   private static int count;
 
   private static void test(final Class<? extends JxObject> cls) throws Exception {
-    for (int i = 0; i < 1000; ++i)
+    for (int i = 0; i < 1000; ++i) // [N]
       count += new ClassTrial(cls).run();
   }
 

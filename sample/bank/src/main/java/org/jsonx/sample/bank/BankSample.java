@@ -23,7 +23,7 @@ import org.jsonx.JxEncoder;
 
 public class BankSample {
   public static void main(final String[] args) {
-    for (final Message message : createMessages()) {
+    for (final Message message : createMessages()) { // [L]
       System.out.println(JxEncoder.VALIDATING._2.toString(message));
     }
   }

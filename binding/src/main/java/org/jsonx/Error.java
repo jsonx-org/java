@@ -170,7 +170,7 @@ final class Error {
 
     final StringBuilder str = new StringBuilder();
     if (args != null) {
-      for (int i = 0; i < args.length; ++i) {
+      for (int i = 0; i < args.length; ++i) { // [A]
         final Object arg = args[i];
         final Object obj;
         if (arg instanceof Number || arg instanceof Boolean)

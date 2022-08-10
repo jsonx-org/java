@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import java.util.Set;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.libj.util.CollectionUtil;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -52,12 +54,13 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
         return members.get(start).type();
 
       Registry.Type gct = members.get(start).type();
-      for (int i = start + 1; i < members.size() && gct != null; ++i) {
-        final Member member = members.get(i);
-        if (!visited.get().contains(member)) {
-          visited.get().add(member);
-          gct = gct.getGreatestCommonSuperType(member.type());
-        }
+      if (CollectionUtil.isRandomAccess(members)) {
+        for (int i = start + 1, len = members.size(); i < len && gct != null; ++i) // [RA]
+          gct = getGreatestCommonSuperType(gct, members.get(i));
+      }
+      else {
+        for (final Member member : members) // [L]
+          gct = getGreatestCommonSuperType(gct, member);
       }
 
       return gct;
@@ -67,6 +70,14 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       if (count.get() == 0)
         visited.get().clear();
     }
+  }
+
+  private static Registry.Type getGreatestCommonSuperType(final Registry.Type gct, final Member member) {
+    if (visited.get().contains(member))
+      return gct;
+
+    visited.get().add(member);
+    return gct.getGreatestCommonSuperType(member.type());
   }
 
   private final Registry.Type type;
@@ -121,7 +132,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     throw new UnsupportedOperationException();
   }
 
-  abstract List<AnnotationType> getClassAnnotation();
+  abstract ArrayList<AnnotationType> getClassAnnotation();
   abstract String toSource(Settings settings);
   abstract void resolveReferences();
   abstract void resolveOverrides();

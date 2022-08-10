@@ -43,7 +43,7 @@ class ObjectCodec extends Codec {
     try {
       final JxObject object = type.getConstructor().newInstance();
       final PropertyToCodec propertyToCodec = getPropertyCodec(type);
-      for (long point; (point = reader.readToken()) != '}';) {
+      for (long point; (point = reader.readToken()) != '}';) { // [X]
         int off = Composite.decodeInt(point, 0);
         int len = Composite.decodeInt(point, 1);
         char c0 = reader.bufToChar(off);
@@ -129,7 +129,7 @@ class ObjectCodec extends Codec {
       // If this {...} contained properties, check each method of the target object
       // to ensure that no properties are missing (i.e. use=required).
       final Method[] methods = type.getMethods();
-      for (final Method getMethod : methods) {
+      for (final Method getMethod : methods) { // [A]
         if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
           continue;
 
@@ -185,11 +185,11 @@ class ObjectCodec extends Codec {
 
     propertyToCodec = new PropertyToCodec();
     final Method[] methods = cls.getMethods();
-    for (final Method getMethod : methods) {
+    for (final Method getMethod : methods) { // [A]
       if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;
 
-      for (final Annotation annotation : getMethod.getAnnotations()) {
+      for (final Annotation annotation : getMethod.getAnnotations()) { // [A]
         if (annotation instanceof AnyProperty)
           propertyToCodec.add(new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
         else if (annotation instanceof ArrayProperty)

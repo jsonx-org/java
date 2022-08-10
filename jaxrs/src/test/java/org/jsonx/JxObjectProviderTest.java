@@ -80,7 +80,7 @@ public class JxObjectProviderTest {
   private static boolean isBadRequestException(final RuntimeException e) {
     // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
     assertSame(ClassNotFoundException.class, e.getCause().getClass());
-    for (final StackTraceElement element : e.getStackTrace())
+    for (final StackTraceElement element : e.getStackTrace()) // [A]
       if (BadRequestException.class.getName().equals(element.getClassName()))
         return true;
 

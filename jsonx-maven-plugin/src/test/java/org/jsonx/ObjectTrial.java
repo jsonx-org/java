@@ -33,7 +33,7 @@ final class ObjectTrial extends PropertyTrial<Object> {
       final Object object = type.getDeclaredConstructor().newInstance();
       final Method[] methods = object.getClass().getMethods();
       Classes.sortDeclarativeOrder(methods);
-      for (final Method getMethod : methods) {
+      for (final Method getMethod : methods) { // [A]
         if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
           continue;
 

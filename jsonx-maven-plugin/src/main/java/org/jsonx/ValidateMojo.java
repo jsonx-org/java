@@ -42,10 +42,10 @@ public class ValidateMojo extends PatternSetMojo {
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     try {
-      for (final URI schema : configuration.getFileSets())
+      for (final URI schema : configuration.getFileSets()) // [L]
         SchemaElement.parse(schema.toURL(), "");
 
-      for (final String schema : new LinkedHashSet<>(schemas))
+      for (final String schema : new LinkedHashSet<>(schemas)) // [S]
         SchemaElement.parse(new URL(schema), "");
     }
     catch (final IOException e) {

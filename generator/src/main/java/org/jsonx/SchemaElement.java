@@ -62,7 +62,7 @@ public final class SchemaElement extends Element implements Declarer {
     final Schema xsb = new Schema();
     final LinkedHashMap<String,? extends schema.Member> declarations = assertNotNull(jsd).getDeclarations();
     if (declarations != null) {
-      for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) {
+      for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) { // [S]
         final String name = entry.getKey();
         final schema.Member declaration = entry.getValue();
         if (declaration instanceof schema.Array)
@@ -227,13 +227,13 @@ public final class SchemaElement extends Element implements Declarer {
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
 
-    for (final Model model : registry.getModels())
+    for (final Model model : registry.getModels()) // [C]
       if (model instanceof Referrer)
         ((Referrer<?>)model).resolveReferences();
 
     registry.resolveReferences();
 
-    for (final Model model : registry.getModels())
+    for (final Model model : registry.getModels()) // [C]
       if (model instanceof Referrer)
         ((Referrer<?>)model).resolveOverrides();
   }
@@ -404,16 +404,16 @@ public final class SchemaElement extends Element implements Declarer {
     this.registry.resolveReferences();
     final int len = registry.getModels().size();
     final Model[] models = registry.getModels().toArray(new Model[len]);
-    for (int i = 0; i < len; ++i)
+    for (int i = 0; i < len; ++i) // [A]
       if (models[i] instanceof Referrer)
         ((Referrer<?>)models[i]).resolveOverrides();
 
     this.registry.resolveReferences();
   }
 
-  private List<Model> rootMembers(final Settings settings) {
+  private ArrayList<Model> rootMembers(final Settings settings) {
     final ArrayList<Model> members = new ArrayList<>();
-    for (final Model model : registry.getModels())
+    for (final Model model : registry.getModels()) // [C]
       if (registry.isRootMember(model, settings))
         members.add(model);
 
@@ -433,11 +433,12 @@ public final class SchemaElement extends Element implements Declarer {
   @Override
   XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
     final List<XmlElement> elements;
-    final List<Model> members = rootMembers(settings);
-    if (members.size() > 0) {
+    final ArrayList<Model> members = rootMembers(settings);
+    final int i$ = members.size();
+    if (i$ > 0) {
       elements = new ArrayList<>();
-      for (final Model member : members)
-        elements.add(member.toXml(settings, this, packageName));
+      for (int i = 0; i < i$; ++i) // [RA]
+        elements.add( members.get(i).toXml(settings, this, packageName));
     }
     else {
       elements = null;
@@ -461,13 +462,15 @@ public final class SchemaElement extends Element implements Declarer {
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final List<Model> members = rootMembers(settings);
-    if (members.size() == 0)
+    final int i$ = members.size();
+    if (i$ == 0)
       return null;
 
     final Map<String,Object> properties = new LinkedHashMap<>(toXmlAttributes(owner, packageName));
     properties.put("jx:ns", version + ".jsd");
     properties.put("jx:schemaLocation", version + ".jsd " + version + ".jsd");
-    for (final Model member : members) {
+    for (int i = 0; i < i$; ++i) { // [RA]
+      final Model member = members.get(i);
       final String id = member.id().toString();
       final String name = packageName.length() > 0 && id.startsWith(packageName) ? id.substring(packageName.length() + 1) : id;
       properties.put(name, member.toJson(settings, this, packageName));
@@ -508,7 +511,7 @@ public final class SchemaElement extends Element implements Declarer {
   public Map<String,String> toSource(final Settings settings) {
     final HashMap<Registry.Type,ClassSpec> all = new HashMap<>();
     final HashMap<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
-    for (final Model member : registry.getModels()) {
+    for (final Model member : registry.getModels()) { // [C]
       final Referrer<?> referrer;
       final Registry.Type type;
       if (member instanceof Referrer && (type = (referrer = (Referrer<?>)member).classType()) != null) {
@@ -520,7 +523,7 @@ public final class SchemaElement extends Element implements Declarer {
 
     final HashMap<String,String> sources = new HashMap<>();
     final StringBuilder builder = new StringBuilder();
-    for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) {
+    for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) { // [S]
       final Registry.Type type = entry.getKey();
       final ClassSpec classSpec = entry.getValue();
       final String canonicalPackageName = type.getCanonicalPackage();
@@ -557,7 +560,7 @@ public final class SchemaElement extends Element implements Declarer {
 
   public Map<String,String> toSource(final File dir, final Settings settings) throws IOException {
     final Map<String,String> sources = toSource(settings);
-    for (final Map.Entry<String,String> entry : sources.entrySet()) {
+    for (final Map.Entry<String,String> entry : sources.entrySet()) { // [S]
       final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
       file.getParentFile().mkdirs();
       Files.write(file.toPath(), entry.getValue().getBytes());

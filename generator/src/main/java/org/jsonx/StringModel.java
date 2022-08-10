@@ -59,7 +59,7 @@ final class StringModel extends Model {
       xsb.setName$(new Schema.String.Name$(name));
 
     if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings())
+      for (final schema.TypeBinding binding : jsd.getBindings()) // [C]
         xsb.addBinding(typeBinding(binding));
 
     return xsb;
@@ -83,7 +83,7 @@ final class StringModel extends Model {
       xsb.setUse$(new $String.Use$($String.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.TypeBinding element : jsd.getBindings()) {
+      for (final schema.TypeBinding element : jsd.getBindings()) { // [C]
         final schema.TypeFieldBinding binding = (schema.TypeFieldBinding)element;
         final $TypeFieldBinding bind = new $String.Binding();
         bind.setLang$(new $Binding.Lang$(binding.getLang()));
@@ -119,7 +119,7 @@ final class StringModel extends Model {
       xsb.setMaxOccurs$(new $ArrayMember.String.MaxOccurs$(jsd.getMaxOccurs()));
 
     if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings())
+      for (final schema.TypeBinding binding : jsd.getBindings()) // [C]
         xsb.addBinding(typeBinding(binding));
 
     return xsb;

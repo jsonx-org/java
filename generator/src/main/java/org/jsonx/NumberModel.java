@@ -63,7 +63,7 @@ final class NumberModel extends Model {
       xsb.setName$(new Schema.Number.Name$(name));
 
     if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings())
+      for (final schema.TypeBinding binding : jsd.getBindings()) // [L]
         xsb.addBinding(typeBinding(binding));
 
     return xsb;
@@ -87,7 +87,7 @@ final class NumberModel extends Model {
       xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.TypeBinding element : jsd.getBindings()) {
+      for (final schema.TypeBinding element : jsd.getBindings()) { // [L]
         final schema.TypeFieldBinding binding = (schema.TypeFieldBinding)element;
         final $TypeFieldBinding bind = new $Number.Binding();
         bind.setLang$(new $Binding.Lang$(binding.getLang()));
@@ -124,7 +124,7 @@ final class NumberModel extends Model {
 
 
     if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings())
+      for (final schema.TypeBinding binding : jsd.getBindings()) // [L]
         xsb.addBinding(typeBinding(binding));
 
     return xsb;

@@ -74,7 +74,7 @@ public final class JxConverter {
   private static void appendArray(final JsonReader reader, final StringBuilder builder) throws IOException {
     builder.append("<a>");
     char prev = '\0';
-    for (long token = -1; (token == -1 ? token = reader.readToken() : token) != -1;) {
+    for (long token = -1; (token == -1 ? token = reader.readToken() : token) != -1;) { // [N]
       int off = Composite.decodeInt(token, 0);
       int len = Composite.decodeInt(token, 1);
       char c0 = reader.bufToChar(off);
@@ -132,7 +132,7 @@ public final class JxConverter {
 
     builder.append('>');
     Boolean nextName = true;
-    for (long token = -1; (token == -1 ? token = reader.readToken() : token) != -1;) {
+    for (long token = -1; (token == -1 ? token = reader.readToken() : token) != -1;) { // [N]
       int off = Composite.decodeInt(token, 0);
       int len = Composite.decodeInt(token, 1);
       char c0 = reader.bufToChar(off);
@@ -324,7 +324,7 @@ public final class JxConverter {
               }
               else {
                 final int len = characters.length();
-                for (int j = 0; j < len; ++j) {
+                for (int j = 0; j < len; ++j) { // [N]
                   final char ch = characters.charAt(j);
                   if (Character.isWhitespace(ch))
                     builder.append(ch);
@@ -415,7 +415,7 @@ public final class JxConverter {
    */
   public static String jsonToJsonx(final JsonReader reader, final boolean declareNamespace) throws IOException {
     final StringBuilder builder = new StringBuilder();
-    for (long token = -1; (token = assertNotNull(reader).readToken()) != -1;) {
+    for (long token = -1; (token = assertNotNull(reader).readToken()) != -1;) { // [N]
       final int off = Composite.decodeInt(token, 0);
       final int len = Composite.decodeInt(token, 1);
       final char c0 = reader.bufToChar(off);

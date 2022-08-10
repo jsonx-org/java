@@ -36,7 +36,7 @@ public class ConvertMojo extends JxMojo {
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     try {
-      for (final String schema : schemas) {
+      for (final String schema : schemas) { // [L]
         final URL url = new URL(schema);
         final String name = URLs.getName(url);
         final int dot = name.lastIndexOf('.') + 1;

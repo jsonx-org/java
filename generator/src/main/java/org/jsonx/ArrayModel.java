@@ -72,7 +72,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       xsb.setUse$(new $Array.Use$($Array.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) {
+      for (final schema.FieldBinding binding : jsd.getBindings()) { // [L]
         final $Array.Binding bin = new $Array.Binding();
         bin.setLang$(new $Binding.Lang$(binding.getLang()));
         bin.setField$(new $Array.Binding.Field$(binding.getField()));
@@ -120,7 +120,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (jsd.getMaxIterate() != null)
       xsb.setMaxIterate$(new $ArrayMember.MaxIterate$(jsd.getMaxIterate()));
 
-    for (final Object element : jsd.getElements()) {
+    for (final Object element : jsd.getElements()) { // [L]
       if (element instanceof schema.AnyElement)
         xsb.addAny(($ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
       else if (element instanceof schema.ArrayElement)
@@ -231,7 +231,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + ArrayUtil.toString(indices, ", ") + "}");
   }
 
-  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember xsb) {
+  private static ArrayList<Member> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember xsb) {
     final ArrayList<Member> members = new ArrayList<>();
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
@@ -269,9 +269,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return members;
   }
 
-  private static List<Member> parseMembers(final Registry registry, final ArrayModel referrer, final Annotation annotation, final int[] elementIds, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
+  private static ArrayList<Member> parseMembers(final Registry registry, final ArrayModel referrer, final Annotation annotation, final int[] elementIds, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
     final ArrayList<Member> members = new ArrayList<>();
-    for (final int elementId : elementIds) {
+    for (final int elementId : elementIds) { // [A]
       final Annotation element = idToElement.get(elementId);
       if (element == null)
         throw new AnnotationParameterException(annotation, declaringTypeName + ": @" + annotation.annotationType().getName() + " specifies non-existent element with id=" + elementId);
@@ -295,7 +295,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return members;
   }
 
-  final List<Member> members;
+  final ArrayList<Member> members;
   final Integer minIterate;
   final Integer maxIterate;
 
@@ -340,7 +340,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static LinkedHashMap<Integer,Annotation> parseIdToElement(final Annotation[] annotations, final String declaringTypeName) {
     final HashMap<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
-    for (final Annotation elementAnnotation : JsdUtil.flatten(annotations)) {
+    for (final Annotation elementAnnotation : JsdUtil.flatten(annotations)) { // [A]
       if (elementAnnotation instanceof ArrayProperty || elementAnnotation instanceof ArrayType || elementAnnotation instanceof Retention)
         continue;
 
@@ -350,7 +350,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       }
       else if (elementAnnotation instanceof ArrayElement) {
         id = ((ArrayElement)elementAnnotation).id();
-        for (final Integer elementId : ((ArrayElement)elementAnnotation).elementIds())
+        for (final Integer elementId : ((ArrayElement)elementAnnotation).elementIds()) // [A]
           digraph.add(id, elementId);
       }
       else if (elementAnnotation instanceof BooleanElement) {
@@ -381,8 +381,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
       throw new ValidationException("Cycle detected in element index dependency graph: " + CollectionUtil.toString(digraph.getCycle(), " -> "));
 
     final LinkedHashMap<Integer,Annotation> topologicalOrder = new LinkedHashMap<>(idToElement.size());
-    for (final Integer elementId : digraph.getTopologicalOrder())
+    final ArrayList<Integer> elementIds = digraph.getTopologicalOrder();
+    for (int i = 0, i$ = elementIds.size(); i < i$; ++i) { // [RA]
+      final Integer elementId = elementIds.get(i);
       topologicalOrder.put(elementId, idToElement.get(elementId));
+    }
 
     return topologicalOrder;
   }
@@ -479,8 +482,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
       types.add(classType());
 
     if (members != null)
-      for (final Member member : members)
-        member.getDeclaredTypes(types);
+      for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
+        members.get(i).getDeclaredTypes(types);
   }
 
   @Override
@@ -505,8 +508,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
       return element;
 
     final ArrayList<XmlElement> elements = new ArrayList<>();
-    for (final Member member : members)
-      elements.add(member.toXml(settings, this, packageName));
+    for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
+      elements.add(members.get(i).toXml(settings, this, packageName));
 
     if (element.getElements() != null)
       elements.addAll(element.getElements());
@@ -522,8 +525,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
       return element;
 
     final ArrayList<Object> elements = new ArrayList<>();
-    for (final Member member : members)
-      elements.add(member.toJson(settings, this, packageName));
+    for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
+      elements.add(members.get(i).toJson(settings, this, packageName));
 
     element.put("elements", elements);
     return element;
@@ -532,7 +535,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private void renderAnnotations(final AttributeMap attributes, final List<? super AnnotationType> annotations) {
     final int len = members.size();
     final int[] indices = new int[len];
-    for (int i = 0, index = 0; i < len; ++i) {
+    for (int i = 0, index = 0; i < len; ++i) { // [RA]
       indices[i] = index;
       index += writeElementAnnotations(annotations, members.get(i), index, this);
     }
@@ -576,10 +579,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
       int offset = 1;
       final List<AnnotationType> inner = new ArrayList<>();
       if (arrayModel.classType() == null) {
-        final int[] indices = new int[arrayModel.members.size()];
-        for (int i = 0, len = arrayModel.members.size(); i < len; ++i) {
+        final ArrayList<Member> members = arrayModel.members;
+        final int[] indices = new int[members.size()];
+        for (int i = 0; i < indices.length; ++i) { // [RA]
           indices[i] = index + offset;
-          offset += writeElementAnnotations(inner, arrayModel.members.get(i), index + offset, owner);
+          offset += writeElementAnnotations(inner, members.get(i), index + offset, owner);
         }
 
         // FIXME: Can this be abstracted better? minOccurs, maxOccurs and nullable are rendered here and in Member#toAnnotationAttributes()
@@ -615,14 +619,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
     final ArrayList<AnnotationType> annotations = new ArrayList<>();
     int index = 0;
-    for (final Member member : members)
-      index += writeElementAnnotations(annotations, member, index, this);
+    for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
+      index += writeElementAnnotations(annotations, members.get(i), index, this);
 
     return annotations;
   }
 
   @Override
-  List<AnnotationType> getClassAnnotation() {
+  ArrayList<AnnotationType> getClassAnnotation() {
     final AttributeMap attributes = new AttributeMap();
     final ArrayList<AnnotationType> annotations = new ArrayList<>();
     renderAnnotations(attributes, annotations);

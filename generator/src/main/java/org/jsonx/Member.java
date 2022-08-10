@@ -19,6 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ abstract class Member extends Element {
     if (bindings == null)
       return null;
 
-    for (final T binding : bindings)
+    for (final T binding : bindings) // [L]
       if ("java".equals(binding.getLang$().text()))
         return binding;
 
@@ -491,13 +492,14 @@ abstract class Member extends Element {
       if (!(m instanceof ArrayModel))
         return false;
 
-      final ArrayModel a = (ArrayModel)this;
-      final ArrayModel b = (ArrayModel)m;
-      if (a.members.size() != b.members.size())
+      final ArrayList<Member> aMembers = ((ArrayModel)this).members;
+      final ArrayList<Member> bMembers = ((ArrayModel)m).members;
+      final int i$ = aMembers.size();
+      if (i$ != bMembers.size())
         return false;
 
-      for (int i = 0, len = a.members.size(); i < len; ++i)
-        if (!a.members.get(i).isAssignableFrom(b.members.get(i)))
+      for (int i = 0; i < i$; ++i) // [RA]
+        if (!aMembers.get(i).isAssignableFrom(bMembers.get(i)))
           return false;
 
       return true;

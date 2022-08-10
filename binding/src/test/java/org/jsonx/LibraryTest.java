@@ -95,7 +95,7 @@ public class LibraryTest {
   @Test
   public void testStaff() throws DecodeException, IOException {
     final List<Employee> staff = new ArrayList<>();
-    for (int i = 0; i < 12; ++i)
+    for (int i = 0; i < 12; ++i) // [N]
       staff.add(createEmployee());
 
     test(staff, Library.Staff.class);

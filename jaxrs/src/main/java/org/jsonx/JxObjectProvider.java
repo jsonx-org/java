@@ -88,7 +88,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
     if (!List.class.isAssignableFrom(type))
       return false;
 
-    for (final Annotation annotation : annotations) {
+    for (final Annotation annotation : annotations) { // [A]
       if (ArrayProperty.class.equals(annotation.annotationType()))
         return true;
 
@@ -112,7 +112,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       if (JxObject.class.isAssignableFrom(type))
         return getDecoder().parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
 
-      for (final Annotation annotation : annotations) {
+      for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType;
         if (ArrayProperty.class.equals(annotation.annotationType())) {
           annotationType = annotation.annotationType();
@@ -145,7 +145,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       bytes = getEncoder().toString((JxObject)t).getBytes();
     }
     else if (t instanceof List) {
-      for (final Annotation annotation : annotations) {
+      for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType;
         if (ArrayProperty.class.equals(annotation.annotationType())) {
           annotationType = annotation.annotationType();

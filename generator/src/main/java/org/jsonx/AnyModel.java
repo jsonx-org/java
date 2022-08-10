@@ -63,7 +63,7 @@ final class AnyModel extends Referrer<AnyModel> {
       xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) {
+      for (final schema.FieldBinding binding : jsd.getBindings()) { // [L]
         final $Any.Binding bin = new $Any.Binding();
         bin.setLang$(new $Binding.Lang$(binding.getLang()));
         bin.setField$(new $Any.Binding.Field$(binding.getField()));
@@ -159,7 +159,7 @@ final class AnyModel extends Referrer<AnyModel> {
     };
   }
 
-  private final List<Member> types;
+  private final ArrayList<Member> types;
 
   private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
@@ -193,13 +193,13 @@ final class AnyModel extends Referrer<AnyModel> {
     validateTypeBinding();
   }
 
-  private List<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
+  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
     final List<String> idrefs;
     if (refs == null || (idrefs = refs.text()).size() == 0)
       return null;
 
-    final List<Member> types = new ArrayList<>(idrefs.size());
-    for (final String idref : idrefs) {
+    final ArrayList<Member> types = new ArrayList<>(idrefs.size());
+    for (final String idref : idrefs) { // [L]
       final Id id = Id.hashed(idref);
       types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
         final Member model = registry.getModel(id);
@@ -218,7 +218,7 @@ final class AnyModel extends Referrer<AnyModel> {
       return null;
 
     final ArrayList<Class<?>> members = new ArrayList<>(types.length);
-    for (final t type : types) {
+    for (final t type : types) { // [A]
       if (AnyType.isEnabled(type.arrays()))
         members.add(List.class);
       else if (AnyType.isEnabled(type.booleans()))
@@ -234,12 +234,12 @@ final class AnyModel extends Referrer<AnyModel> {
     return Classes.getGreatestCommonSuperclass(members.toArray(new Class[members.size()]));
   }
 
-  private List<Member> getMemberTypes(final t[] types) {
+  private ArrayList<Member> getMemberTypes(final t[] types) {
     if (types.length == 0)
       return null;
 
     final ArrayList<Member> members = new ArrayList<>(types.length);
-    for (final t type : types) {
+    for (final t type : types) { // [A]
       Member member = null;
       if (AnyType.isEnabled(type.arrays()))
         member = ArrayModel.referenceOrDeclare(registry, this, type.arrays());
@@ -403,7 +403,7 @@ final class AnyModel extends Referrer<AnyModel> {
     if (types != null) {
       final StringBuilder builder = new StringBuilder();
       final Iterator<Member> iterator = types.iterator();
-      for (int i = 0; iterator.hasNext(); ++i) {
+      for (int i = 0; iterator.hasNext(); ++i) { // [I]
         if (i > 0)
           builder.append(' ');
 
@@ -422,11 +422,12 @@ final class AnyModel extends Referrer<AnyModel> {
     if (types == null)
       return;
 
-    final List<String> values = new ArrayList<>();
+    final ArrayList<String> values = new ArrayList<>();
     attributes.put("types", values);
 
     StringBuilder builder = null;
-    for (final Member type : types) {
+    for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
+      final Member type = types.get(i);
       if (type instanceof ArrayModel) {
         values.add("@" + t.class.getName() + "(arrays=" + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
       }
@@ -446,8 +447,8 @@ final class AnyModel extends Referrer<AnyModel> {
         if (attrs.size() > 0) {
           builder.append('(');
           final Iterator<Map.Entry<String,Object>> iterator = attrs.entrySet().iterator();
-          for (int i = 0; iterator.hasNext(); ++i) {
-            if (i > 0)
+          for (int j = 0; iterator.hasNext(); ++j) { // [I]
+            if (j > 0)
               builder.append(", ");
 
             final Map.Entry<String,Object> entry = iterator.next();
@@ -466,7 +467,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  List<AnnotationType> getClassAnnotation() {
+  ArrayList<AnnotationType> getClassAnnotation() {
     return null;
   }
 

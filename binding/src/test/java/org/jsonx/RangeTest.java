@@ -124,19 +124,19 @@ public class RangeTest {
   }
 
   private static void assertPass(final Class<? extends Number> type, final String ... values) throws ParseException {
-    for (int i = 0; i < values.length; ++i)
+    for (int i = 0; i < values.length; ++i) // [A]
       new Range(values[i], type);
   }
 
   @SafeVarargs
   private static void assertFail(final String[] values, final Class<? extends Number> type, final Class<? extends Exception> ... exceptions) throws ParseException {
-    for (int i = 0; i < values.length; ++i) {
+    for (int i = 0; i < values.length; ++i) { // [A]
       try {
         new Range(values[i], type);
         fail("Expected " + Arrays.toString(exceptions) + ": " + values[i]);
       }
       catch (final Exception e) {
-        for (final Class<? extends Exception> cls : exceptions)
+        for (final Class<? extends Exception> cls : exceptions) // [A]
           if (cls.isInstance(e))
             return;
 

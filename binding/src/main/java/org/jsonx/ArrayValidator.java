@@ -21,7 +21,6 @@ import static org.libj.lang.Assertions.*;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -51,12 +50,12 @@ final class ArrayValidator {
     }
   }
 
-  static class Relations extends DelegateList<Relation> {
+  static class Relations extends DelegateList<Relation,ArrayList<Relation>> {
     Relations() {
       super(new ArrayList<>());
     }
 
-    private Relations(final List<Relation> target) {
+    private Relations(final ArrayList<Relation> target) {
       super(target);
     }
 
@@ -70,16 +69,16 @@ final class ArrayValidator {
       return element;
     }
 
-    List<Object> deflate() {
-      for (int i = 0; i < size(); ++i)
+    ArrayList<Object> deflate() {
+      for (int i = 0, i$ = size(); i < i$; ++i) // [RA]
         target.set(i, get(i).deflate());
 
-      return target;
+      return (ArrayList<Object>)target;
     }
 
     @Override
     public Relations subList(final int fromIndex, final int toIndex) {
-      return new Relations(target.subList(fromIndex, toIndex));
+      return new Relations((ArrayList<Relation>)target.subList(fromIndex, toIndex));
     }
 
     @Override
@@ -88,12 +87,11 @@ final class ArrayValidator {
         return "[]";
 
       final StringBuilder builder = new StringBuilder("[");
-      final Iterator<Relation> iterator = iterator();
-      for (int i = 0; iterator.hasNext(); ++i) {
+      for (int i = 0, i$ = size(); i < i$; ++i) { // [RA]
         if (i > 0)
           builder.append(", ");
 
-        builder.append(iterator.next());
+        builder.append(get(i));
       }
 
       return builder.append(']').toString();
@@ -101,10 +99,8 @@ final class ArrayValidator {
   }
 
   private static int getNextRequiredElement(final Annotation[] annotations, final int a, int occurrence) {
-    for (int i = a; i < annotations.length; ++i) {
-      final Annotation annotation = annotations[i];
-      final int minOccurs = JsdUtil.getMinOccurs(annotation);
-      if (occurrence <= minOccurs)
+    for (int i = a; i < annotations.length; ++i) { // [A]
+      if (occurrence <= JsdUtil.getMinOccurs(annotations[i]))
         return i;
 
       occurrence = 1;
@@ -293,7 +289,7 @@ final class ArrayValidator {
     if (error == null)
       return null;
 
-    for (int i = iterator.nextIndex(); i > index; --i)
+    for (int i = iterator.nextIndex(); i > index; --i) // [I]
       iterator.previous();
 
     return error;

@@ -33,7 +33,7 @@ import org.openjax.json.JsonUtil;
 class StringCodec extends PrimitiveCodec {
   static Object decodeObject(final Class<?> type, final Executable decode, final String json) {
     final StringBuilder unescaped = new StringBuilder(json.length() - 2);
-    for (int i = 1, len = json.length() - 1; i < len; ++i) {
+    for (int i = 1, len = json.length() - 1; i < len; ++i) { // [N]
       char ch = json.charAt(i);
       if (ch == '\\') {
         ch = json.charAt(++i);

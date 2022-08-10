@@ -18,17 +18,19 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.libj.lang.Classes;
+import org.libj.util.CollectionUtil;
 
 class AnnotationType {
   @SuppressWarnings("unchecked")
   private StringBuilder render() {
     final StringBuilder builder = new StringBuilder();
-    for (final Map.Entry<String,Object> entry : attributes.entrySet()) {
+    for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
       if (builder.length() > 0)
         builder.append(", ");
 
@@ -37,8 +39,9 @@ class AnnotationType {
       if (entry.getValue() instanceof List) {
         final Object[] defaultArray = (Object[])defaultValue;
         final List<Object> items = (List<Object>)entry.getValue();
+        final int i$ = items.size();
         if (defaultArray != null) {
-          if (items.size() == 0 && defaultArray.length == 0)
+          if (i$ == 0 && defaultArray.length == 0)
             continue;
 
           if (defaultArray.equals(items.toArray()))
@@ -46,16 +49,27 @@ class AnnotationType {
         }
 
         builder.append(entry.getKey()).append('=');
-        if (items.size() == 1) {
+        if (i$ == 1) {
           builder.append(items.get(0));
         }
         else {
           builder.append('{');
-          for (int j = 0, len = items.size(); j < len; ++j) {
-            if (j > 0)
-              builder.append(", ");
+          if (CollectionUtil.isRandomAccess(items)) {
+            for (int j = 0; j < i$; ++j) { // [RA]
+              if (j > 0)
+                builder.append(", ");
 
-            builder.append(items.get(j));
+              builder.append(items.get(j));
+            }
+          }
+          else {
+            final Iterator<Object> iterator = items.iterator();
+            for (int j = 0; j < i$; ++j) { // [RA]
+              if (j > 0)
+                builder.append(", ");
+
+              builder.append(iterator.next());
+            }
           }
 
           builder.append('}');

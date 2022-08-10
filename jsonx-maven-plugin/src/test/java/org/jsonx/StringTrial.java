@@ -32,13 +32,13 @@ final class StringTrial extends PropertyTrial<String> {
   private static final char[] ascii = new char[95];
 
   static {
-    for (int i = 0; i < ascii.length; ++i)
+    for (int i = 0; i < ascii.length; ++i) // [A]
       ascii[i] = (char)(i + 32);
   }
 
   private static String filterPrintable(final String string) {
     final StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < string.length(); ++i) {
+    for (int i = 0; i < string.length(); ++i) { // [N]
       final char ch = string.charAt(i);
       if (ch < 32532 && ch != '"' && ch != '\\' && ch != '\n' && ch != '\r' && Characters.isPrintable(ch))
         builder.append(ch);
@@ -75,7 +75,7 @@ final class StringTrial extends PropertyTrial<String> {
       if (generex == null)
         return filterPrintable(randomString(stringLength));
 
-      for (int i = 0; i < 1000; ++i) {
+      for (int i = 0; i < 1000; ++i) { // [N]
         final String string = filterPrintable(generex.random(stringLength));
         if (string.matches(pattern))
           return string;
@@ -109,7 +109,7 @@ final class StringTrial extends PropertyTrial<String> {
   private static String randomString(final int len) {
     final char[] chars = new char[len];
     int j = 0;
-    for (int i = 0; i < len;) {
+    for (int i = 0; i < len;) { // [N]
       final char ch = ascii[(int)(Math.random() * ascii.length)];
       if (j > 0) {
         if (ch < '0' || '9' < ch)
@@ -135,7 +135,7 @@ final class StringTrial extends PropertyTrial<String> {
     }
 
     String pass = null;
-    for (int i = 0; pass == null && i < 1000; ++i)
+    for (int i = 0; pass == null && i < 1000; ++i) // [N]
       pass = new StringGen(pattern).random();
 
     if (pass == null)
@@ -148,7 +148,7 @@ final class StringTrial extends PropertyTrial<String> {
   private static Object createInvalid(final Class<?> type, final String decode, final String regex) {
     String prefix = "";
     String fail = null;
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 1000; ++i) { // [N]
       if (type == UUID.class) {
         fail = UUID.randomUUID().toString();
       }

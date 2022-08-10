@@ -81,7 +81,7 @@ public class SchemaTest {
       throw new ExceptionInInitializerError(e);
     }
 
-    for (int i = 0; i < 10; i += 3)
+    for (int i = 0; i < 10; i += 3) // [N]
       settings.add(new Settings(i, true));
 
     settings.add(new Settings(Integer.MAX_VALUE, true));
@@ -197,7 +197,7 @@ public class SchemaTest {
    */
   private static String removeComments(final String source) {
     final StringBuilder builder = new StringBuilder(source);
-    for (int end = source.length(), start; (end = builder.lastIndexOf(" **/\n", end)) != -1;) {
+    for (int end = source.length(), start; (end = builder.lastIndexOf(" **/\n", end)) != -1;) { // [N]
       start = builder.lastIndexOf("\n", end - 5);
       builder.delete(start, end + 4);
       end = start;
@@ -207,7 +207,7 @@ public class SchemaTest {
   }
 
   private static void assertSources(final Map<String,String> expected, final Map<String,String> actual, final boolean withComments) {
-    for (final Map.Entry<String,String> entry : expected.entrySet())
+    for (final Map.Entry<String,String> entry : expected.entrySet()) // [S]
       assertEquals(entry.getKey(), withComments ? entry.getValue() : removeComments(entry.getValue()), actual.get(entry.getKey()));
 
     try {
@@ -245,7 +245,7 @@ public class SchemaTest {
     final SchemaElement controlSchema = testParseSchema(controlBinding, prefix, fileName);
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
     final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final Map.Entry<String,String> entry : test1Sources.entrySet())
+    for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
       compiler.addSource(entry.getValue());
 
     logger.info("  5) -- Java(1) Compile --");
@@ -268,7 +268,8 @@ public class SchemaTest {
   }
 
   private static void testSettings(final URL resource, final String fileName, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    for (final Settings settings : SchemaTest.settings) {
+    for (int i = 0, i$ = SchemaTest.settings.size(); i < i$; ++i) { // [RA]
+      final Settings settings = SchemaTest.settings.get(i);
       final String prefix = packageName + ".";
       final int templateThreshold = settings.getTemplateThreshold();
 
@@ -282,7 +283,7 @@ public class SchemaTest {
       validate(xml1, outFile1);
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
       final InMemoryCompiler compiler = new InMemoryCompiler();
-      for (final Map.Entry<String,String> entry : test1Sources.entrySet())
+      for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
         compiler.addSource(entry.getValue());
 
       assertSources(originalSources, test1Sources, true);

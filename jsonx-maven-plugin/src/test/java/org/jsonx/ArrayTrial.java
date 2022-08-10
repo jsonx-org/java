@@ -50,7 +50,7 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
     if (trialType == TrialType.MIN_OCCURS) {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasMinOccurs = false;
-      for (int i = 0; !hasMinOccurs && i < annotations.length; ++i)
+      for (int i = 0; !hasMinOccurs && i < annotations.length; ++i) // [A]
         hasMinOccurs = JsdUtil.getMinOccurs(annotations[i]) > 0;
 
       return hasMinOccurs ? new ArrayList<>() : null;
@@ -59,7 +59,7 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
     if (trialType == TrialType.NULLABLE) {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasNullable = false;
-      for (int i = 0; !hasNullable && i < annotations.length; ++i)
+      for (int i = 0; !hasNullable && i < annotations.length; ++i) // [A]
         hasNullable = !JsdUtil.isNullable(annotations[i]);
 
       if (!hasNullable)
@@ -68,7 +68,7 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
     else if (trialType == TrialType.MAX_OCCURS) {
       final Annotation[] annotations = idToElement.get(elementIds);
       boolean hasMaxOccurs = false;
-      for (int i = 0; !hasMaxOccurs && i < annotations.length; ++i)
+      for (int i = 0; !hasMaxOccurs && i < annotations.length; ++i) // [A]
         hasMaxOccurs = JsdUtil.getMaxOccurs(annotations[i]) < Integer.MAX_VALUE;
 
       if (!hasMaxOccurs)
@@ -112,7 +112,7 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
           continue;
 
         final int maxOccurs = JsdUtil.getMaxOccurs(relation.annotation);
-        for (; count <= maxOccurs; ++count) {
+        for (; count <= maxOccurs; ++count) { // [N]
           final Object validNonNullMember = createValidNonNullArrayMember(relation.annotation);
           assertNotNull(validNonNullMember);
           iterator.add(new Relation(validNonNullMember, relation.annotation));

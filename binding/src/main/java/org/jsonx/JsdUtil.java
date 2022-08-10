@@ -110,7 +110,7 @@ final class JsdUtil {
   static Method findSetMethod(final Method[] methods, final Method getMethod) {
     final String getMethodName = getMethod.getName();
     final String setMethodName = getMethodName.startsWith("get") ? "set" + getMethodName.substring(3) : getMethodName;
-    for (final Method method : methods)
+    for (final Method method : methods) // [A]
       if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == getMethod.getReturnType() && setMethodName.equals(method.getName()))
         return method;
 
@@ -133,7 +133,7 @@ final class JsdUtil {
     JsdUtil.fillIdToElement(idToElement, annotations);
     Annotation annotation = null;
     int[] elementIds = null;
-    for (int i = 0; i < annotations.length; ++i) {
+    for (int i = 0; i < annotations.length; ++i) { // [A]
       if (annotations[i] instanceof ArrayType) {
         final ArrayType arrayType = (ArrayType)annotations[i];
         elementIds = arrayType.elementIds();
@@ -264,7 +264,7 @@ final class JsdUtil {
   }
 
   static String getName(final Method getMethod) {
-    for (final Annotation annotation : getMethod.getAnnotations()) {
+    for (final Annotation annotation : getMethod.getAnnotations()) { // [A]
       if (annotation instanceof AnyProperty)
         return ((AnyProperty)annotation).name();
 
@@ -289,7 +289,7 @@ final class JsdUtil {
 
   static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
     annotations = JsdUtil.flatten(annotations);
-    for (final Annotation annotation : annotations) {
+    for (final Annotation annotation : annotations) { // [A]
       if (annotation instanceof AnyElement)
         idToElement.put(((AnyElement)annotation).id(), annotation);
       else if (annotation instanceof ArrayElement)

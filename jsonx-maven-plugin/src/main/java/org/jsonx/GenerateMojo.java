@@ -48,7 +48,7 @@ public class GenerateMojo extends JxMojo {
     final Settings settings = new Settings(templateThreshold, setBuilder);
 
     try {
-      for (final String schema : schemas) {
+      for (final String schema : schemas) { // [S]
         SchemaElement.parse(new URL(schema), prefix).toSource(configuration.getDestDir(), settings);
       }
     }

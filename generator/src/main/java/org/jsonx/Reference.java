@@ -78,7 +78,7 @@ final class Reference extends Member {
       xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(jsd.getUse())));
 
     if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) {
+      for (final schema.FieldBinding binding : jsd.getBindings()) { // [L]
         final $Reference.Binding bin = new $Reference.Binding();
         bin.setLang$(new $Binding.Lang$(binding.getLang()));
         bin.setField$(new $Reference.Binding.Field$(binding.getField()));

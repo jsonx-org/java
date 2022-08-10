@@ -46,7 +46,7 @@ class ArrayEncodeIterator extends ArrayIterator {
 
   @Override
   void next(final int index) {
-    for (; listIterator.nextIndex() < index; listIterator.next());
+    for (; listIterator.nextIndex() < index; listIterator.next()); // [I]
     next();
   }
 

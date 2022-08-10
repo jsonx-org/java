@@ -203,7 +203,7 @@ public class JxEncoder {
           return null;
 
         final Pattern pattern = Patterns.compile(propertyName, Pattern.DOTALL);
-        for (final Object key : map.keySet())
+        for (final Object key : map.keySet()) // [S]
           if (key instanceof String && pattern.matcher((String)key).matches())
             return map;
 
@@ -330,7 +330,7 @@ public class JxEncoder {
 
   private Error encodeArray(final Method getMethod, final Relations relations, final StringBuilder builder, final int depth) {
     builder.append('[');
-    for (int i = 0, len = relations.size(); i < len; ++i) {
+    for (int i = 0, len = relations.size(); i < len; ++i) { // [RA]
       if (i > 0)
         builder.append(comma);
 
@@ -362,7 +362,7 @@ public class JxEncoder {
     boolean hasProperties = false;
     final Method[] methods = object.getClass().getMethods();
     Classes.sortDeclarativeOrder(methods);
-    for (final Method getMethod : methods) {
+    for (final Method getMethod : methods) { // [A]
       if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;
 
@@ -371,7 +371,7 @@ public class JxEncoder {
       boolean nullable = false;
       Use use = null;
       final Annotation[] annotations = getMethod.getAnnotations();
-      for (int j = 0; j < annotations.length; ++j) {
+      for (int j = 0; j < annotations.length; ++j) { // [A]
         annotation = annotations[j];
         if (annotation instanceof AnyProperty) {
           final AnyProperty property = (AnyProperty)annotation;
@@ -440,7 +440,7 @@ public class JxEncoder {
         }
         else if (value != null) {
           final Map<?,?> map = (Map<?,?>)value;
-          for (final Map.Entry<?,?> entry : map.entrySet()) {
+          for (final Map.Entry<?,?> entry : map.entrySet()) { // [S]
             if (validate && !nullable && use == Use.OPTIONAL && entry.getValue() == null)
               return Error.PROPERTY_NOT_NULLABLE((String)entry.getKey(), annotation);
 

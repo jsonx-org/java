@@ -53,7 +53,7 @@ class ClassTrial extends Trial {
   private void createObjectFields(final Object target) {
     final Method[] methods = target.getClass().getDeclaredMethods();
     Classes.sortDeclarativeOrder(methods);
-    for (final Method getMethod : methods) {
+    for (final Method getMethod : methods) { // [A]
       if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;
 
@@ -96,12 +96,14 @@ class ClassTrial extends Trial {
   }
 
   public int run() throws Exception {
-    for (final PropertyTrial<?> trial : trials)
+    for (int i = 0, i$ = trials.size(); i < i$; ++i) { // [RA]
+      final PropertyTrial<?> trial = trials.get(i);
       if (trial.kase instanceof ValidCase)
         PropertyTrial.setField(trial.getMethod, trial.setMethod, trial.object, trial.name, trial.rawValue());
+    }
 
-    for (final PropertyTrial<?> trial : trials)
-      invoke(trial);
+    for (int i = 0, i$ = trials.size(); i < i$; ++i) // [RA]
+      invoke(trials.get(i));
 
     return count;
   }
@@ -214,8 +216,9 @@ class ClassTrial extends Trial {
 
     try {
       if (!onDecode(trial, relations[0], object[0], exception))
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 10; ++i) // [N]
           invoke(trial);
+
       ++count;
     }
     catch (final Throwable t) {

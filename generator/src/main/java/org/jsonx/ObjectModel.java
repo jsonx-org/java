@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsonx.schema.FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
@@ -46,6 +47,7 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.ObjectUtil;
 import org.libj.lang.Strings;
+import org.libj.util.CollectionUtil;
 import org.libj.util.Iterators;
 import org.openjax.xml.api.XmlElement;
 
@@ -82,15 +84,25 @@ final class ObjectModel extends Referrer<ObjectModel> {
       xsb.setExtends$(new $ObjectMember.Extends$(jsd.getExtends()));
 
     if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) {
-        final $Object.Binding bin = new $Object.Binding();
-        bin.setLang$(new $Binding.Lang$(binding.getLang()));
-        bin.setField$(new $Object.Binding.Field$(binding.getField()));
-        xsb.addBinding(bin);
+      final List<FieldBinding> bindings = jsd.getBindings();
+      if (CollectionUtil.isRandomAccess(bindings)) {
+        for (int i = 0, i$ = bindings.size(); i < i$; ++i) // [RA]
+          addBinding(bindings.get(i), xsb);
+      }
+      else {
+        for (final schema.FieldBinding binding : bindings) // [L]
+          addBinding(binding, xsb);
       }
     }
 
     return xsb;
+  }
+
+  private static void addBinding(final schema.FieldBinding binding, final $Object xsb) {
+    final $Object.Binding bin = new $Object.Binding();
+    bin.setLang$(new $Binding.Lang$(binding.getLang()));
+    bin.setField$(new $Object.Binding.Field$(binding.getField()));
+    xsb.addBinding(bin);
   }
 
   static $ObjectMember jsdToXsb(final schema.Object jsd, final String name) {
@@ -111,7 +123,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (jsd.getProperties() != null) {
       final LinkedHashMap<String,? extends schema.Member> properties = jsd.getProperties().getProperties();
       if (properties != null) {
-        for (final Map.Entry<String,? extends schema.Member> entry : properties.entrySet()) {
+        for (final Map.Entry<String,? extends schema.Member> entry : properties.entrySet()) { // [S]
           final String propertyName = entry.getKey();
           final schema.Member property = entry.getValue();
           if (property instanceof schema.AnyProperty)
@@ -205,7 +217,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private void recurseInnerClasses(final Registry registry, final Class<?> cls) {
-    for (final Class<?> innerClass : cls.getClasses()) {
+    for (final Class<?> innerClass : cls.getClasses()) { // [A]
       if (!JxObject.class.isAssignableFrom(innerClass))
         recurseInnerClasses(registry, innerClass);
       else
@@ -342,7 +354,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return null;
 
     final LinkedHashMap<String,Property> properties = new LinkedHashMap<>();
-    for (final Map.Entry<String,Member> entry : members.entrySet())
+    for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
       properties.put(entry.getKey(), new Property(entry.getValue()));
 
     return properties;
@@ -365,7 +377,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (referencesResolved != null && !referencesResolved)
       throw new IllegalStateException();
 
-    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) {
+    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
       final Property property = parent.properties.get(name);
       if (property != null)
         return property;
@@ -375,7 +387,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private void resolveProperties() {
-    for (final Map.Entry<String,Property> entry : properties.entrySet()) {
+    for (final Map.Entry<String,Property> entry : properties.entrySet()) { // [S]
       final Property superProperty = superObject == null ? null : getSuperProperty(entry.getKey());
       final Property property = entry.getValue();
       if (superProperty == null) {
@@ -435,14 +447,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.getMethodToPropertySpec = new HashMap<>();
     final Method[] methods = cls.getDeclaredMethods();
     Classes.sortDeclarativeOrder(methods);
-    for (final Method getMethod : methods) {
+    for (final Method getMethod : methods) { // [A]
       if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;
 
       Member reference = null;
       Annotation annotation = null;
       final Annotation[] annotations = getMethod.getAnnotations();
-      for (int i = 0; i < annotations.length; ++i) {
+      for (int i = 0; i < annotations.length; ++i) { // [A]
         annotation = annotations[i];
         Member next = null;
         final String field = JsdUtil.getFieldName(getMethod);
@@ -486,7 +498,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (cls != null) {
       final Method[] methods = cls.getDeclaredMethods();
       Classes.sortDeclarativeOrder(methods);
-      for (final Method getMethod : methods) {
+      for (final Method getMethod : methods) { // [A]
         if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
           continue;
 
@@ -581,7 +593,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private PropertySpec getSuperObjectProperty(final Method method) {
     final String methodName = method.getName();
-    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) {
+    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
       final PropertySpec annotation = parent.getMethodToPropertySpec.get(methodName);
       if (annotation != null)
         return annotation;
@@ -641,7 +653,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (superObject instanceof Deferred)
       superObject = ((Deferred<?>)superObject).resolve();
 
-    for (final Map.Entry<String,Property> entry : properties.entrySet())
+    for (final Map.Entry<String,Property> entry : properties.entrySet()) // [S]
       if (entry.getValue().member instanceof Deferred)
         entry.setValue(new Property(((Deferred<?>)entry.getValue().member).resolve()));
 
@@ -655,7 +667,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       superObject.getDeclaredTypes(types);
 
     if (properties != null)
-      for (final Property property : properties.values())
+      for (final Property property : properties.values()) // [C]
         property.member.getDeclaredTypes(types);
   }
 
@@ -680,7 +692,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return element;
 
     final ArrayList<XmlElement> elements = new ArrayList<>();
-    for (final Property property : properties.values())
+    for (final Property property : properties.values()) // [C]
       elements.add(property.toXml(settings, this, packageName));
 
     if (element.getElements() != null)
@@ -697,7 +709,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return element;
 
     final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
-    for (final Property property : this.properties.values())
+    for (final Property property : this.properties.values()) // [C]
       properties.put(property.member.name(), property.toJson(settings, this, packageName));
 
     element.put("properties", properties);
@@ -712,7 +724,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  List<AnnotationType> getClassAnnotation() {
+  ArrayList<AnnotationType> getClassAnnotation() {
     return null;
   }
 
@@ -721,7 +733,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return 0;
 
     int count = 0;
-    for (final Property property : properties.values())
+    for (final Property property : properties.values()) // [C]
       if (property.getOverride() == null)
         ++count;
 
@@ -735,7 +747,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final HashSet<String> overridden = superObject == null ? null : new HashSet<>();
     boolean appended = builder.length() > 0;
     if (properties != null && properties.size() > 0) {
-      for (final Property property : properties.values()) {
+      for (final Property property : properties.values()) { // [C]
         if (appended)
           builder.append("\n\n");
 
@@ -748,10 +760,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
     }
 
-    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) {
+    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
       final LinkedHashMap<String,Property> properties = parent.properties;
       if (properties != null && properties.size() > 0) {
-        for (final Property property : properties.values()) {
+        for (final Property property : properties.values()) { // [C]
           if (!overridden.contains(property.member.name())) {
             if (appended)
               builder.append("\n\n");
@@ -781,7 +793,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final boolean hasMembers = numNonOverrideMembers() > 0;
     if (hasMembers) {
       builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
-      for (final Property property : properties.values()) {
+      for (final Property property : properties.values()) { // [C]
         if (property.getOverride() != null)
           continue;
 
@@ -804,7 +816,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     builder.append("\npublic int hashCode() {");
     if (hasMembers) {
       builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append(type.getSuperType() != null ? " * 31 + super.hashCode()" : "").append(';');
-      for (final Property property : properties.values()) {
+      for (final Property property : properties.values()) { // [C]
         if (property.getOverride() != null)
           continue;
 

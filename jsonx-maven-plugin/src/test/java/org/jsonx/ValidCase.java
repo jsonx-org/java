@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.jsonx.ArrayValidator.Relation;
@@ -31,10 +32,13 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   private static final String listDelimiter = "," + Strings.repeat(" ", JxEncoder.get().indent);
 
   private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
-    final ArrayList<Object> out = new ArrayList<>(list.size());
-    for (int i = 0, len = list.size(); i < len; ++i) {
-      final Object item = list.get(i);
-      final Relation relation = relations.get(i);
+    final int i$ = list.size();
+    final ArrayList<Object> out = new ArrayList<>(i$);
+    final Iterator<?> itemIterator = list.iterator();
+    final Iterator<Relation> relationIterator = relations.iterator();
+    while (itemIterator.hasNext()) { // [I]
+      final Object item = itemIterator.next();
+      final Relation relation = relationIterator.next();
       if (item instanceof List) {
         out.add(format((List<?>)item, (Relations)relation.member, escape));
       }

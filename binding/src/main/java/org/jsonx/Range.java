@@ -27,7 +27,7 @@ import org.openjax.json.JsonUtil;
 public class Range implements Cloneable, Serializable {
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int start, final boolean commaOk) throws ParseException {
     try {
-      for (int i = start, end = string.length() - 1; i < end; ++i) {
+      for (int i = start, end = string.length() - 1; i < end; ++i) { // [N]
         final char ch = string.charAt(i);
         if (ch == ',') {
           if (commaOk)
