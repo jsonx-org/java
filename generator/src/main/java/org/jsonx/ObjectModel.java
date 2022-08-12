@@ -454,7 +454,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       Member reference = null;
       Annotation annotation = null;
       final Annotation[] annotations = getMethod.getAnnotations();
-      for (int i = 0; i < annotations.length; ++i) { // [A]
+      for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
         annotation = annotations[i];
         Member next = null;
         final String field = JsdUtil.getFieldName(getMethod);

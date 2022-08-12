@@ -99,7 +99,7 @@ final class ArrayValidator {
   }
 
   private static int getNextRequiredElement(final Annotation[] annotations, final int a, int occurrence) {
-    for (int i = a; i < annotations.length; ++i) { // [A]
+    for (int i = a, i$ = annotations.length; i < i$; ++i) { // [A]
       if (occurrence <= JsdUtil.getMinOccurs(annotations[i]))
         return i;
 

@@ -581,7 +581,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       if (arrayModel.classType() == null) {
         final ArrayList<Member> members = arrayModel.members;
         final int[] indices = new int[members.size()];
-        for (int i = 0; i < indices.length; ++i) { // [RA]
+        for (int i = 0, i$ = indices.length; i < i$; ++i) { // [RA]
           indices[i] = index + offset;
           offset += writeElementAnnotations(inner, members.get(i), index + offset, owner);
         }

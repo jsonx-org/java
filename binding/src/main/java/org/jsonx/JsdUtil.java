@@ -133,7 +133,7 @@ final class JsdUtil {
     JsdUtil.fillIdToElement(idToElement, annotations);
     Annotation annotation = null;
     int[] elementIds = null;
-    for (int i = 0; i < annotations.length; ++i) { // [A]
+    for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
       if (annotations[i] instanceof ArrayType) {
         final ArrayType arrayType = (ArrayType)annotations[i];
         elementIds = arrayType.elementIds();

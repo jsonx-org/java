@@ -48,7 +48,7 @@ public final class Generator {
     String prefix = "";
     File destDir = null;
     File schemaFile = null;
-    for (int i = 0; i < args.length; ++i) { // [A]
+    for (int i = 0, i$ = args.length; i < i$; ++i) { // [A]
       if ("--prefix".equals(args[i]))
         prefix = args[++i];
       else if ("-d".equals(args[i]))

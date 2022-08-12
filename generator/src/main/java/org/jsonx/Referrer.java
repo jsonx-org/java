@@ -55,7 +55,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
 
       Registry.Type gct = members.get(start).type();
       if (CollectionUtil.isRandomAccess(members)) {
-        for (int i = start + 1, len = members.size(); i < len && gct != null; ++i) // [RA]
+        for (int i = start + 1, i$ = members.size(); i < i$ && gct != null; ++i) // [RA]
           gct = getGreatestCommonSuperType(gct, members.get(i));
       }
       else {

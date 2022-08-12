@@ -32,13 +32,13 @@ final class StringTrial extends PropertyTrial<String> {
   private static final char[] ascii = new char[95];
 
   static {
-    for (int i = 0; i < ascii.length; ++i) // [A]
+    for (int i = 0, i$ = ascii.length; i < i$; ++i) // [A]
       ascii[i] = (char)(i + 32);
   }
 
   private static String filterPrintable(final String string) {
     final StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < string.length(); ++i) { // [N]
+    for (int i = 0, i$ = string.length(); i < i$; ++i) { // [N]
       final char ch = string.charAt(i);
       if (ch < 32532 && ch != '"' && ch != '\\' && ch != '\n' && ch != '\r' && Characters.isPrintable(ch))
         builder.append(ch);

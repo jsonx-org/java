@@ -165,7 +165,7 @@ public class ArrayCodecTest {
       assertEquals("Number of members not matched", flatMembers.size(), flatRelations.size());
       assertEquals(flatMembers.toString(), annotations.length, flatMembers.size());
       if (!debugPass) {
-        for (int i = 0; i < annotations.length; ++i) { // [A]
+        for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
           final Relation relation = flatRelations.get(i);
           assertEquals(i + ": " + flatRelations.toString(), annotations[i], relation.annotation);
           final Object member = flatMembers.get(i);

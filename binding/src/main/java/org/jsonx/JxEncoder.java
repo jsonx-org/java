@@ -330,7 +330,7 @@ public class JxEncoder {
 
   private Error encodeArray(final Method getMethod, final Relations relations, final StringBuilder builder, final int depth) {
     builder.append('[');
-    for (int i = 0, len = relations.size(); i < len; ++i) { // [RA]
+    for (int i = 0, i$ = relations.size(); i < i$; ++i) { // [RA]
       if (i > 0)
         builder.append(comma);
 
@@ -371,7 +371,7 @@ public class JxEncoder {
       boolean nullable = false;
       Use use = null;
       final Annotation[] annotations = getMethod.getAnnotations();
-      for (int j = 0; j < annotations.length; ++j) { // [A]
+      for (int j = 0, j$ = annotations.length; j < j$; ++j) { // [A]
         annotation = annotations[j];
         if (annotation instanceof AnyProperty) {
           final AnyProperty property = (AnyProperty)annotation;
