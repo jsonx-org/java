@@ -27,7 +27,7 @@ import java.util.ListIterator;
 import org.libj.lang.Annotations;
 import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Throwables;
-import org.libj.util.DelegateList;
+import org.libj.util.DelegateRandomAccessList;
 import org.libj.util.function.TriPredicate;
 
 final class ArrayValidator {
@@ -50,7 +50,7 @@ final class ArrayValidator {
     }
   }
 
-  static class Relations extends DelegateList<Relation,ArrayList<Relation>> {
+  static class Relations extends DelegateRandomAccessList<Relation,ArrayList<Relation>> {
     Relations() {
       super(new ArrayList<>());
     }
