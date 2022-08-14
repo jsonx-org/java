@@ -302,9 +302,8 @@ abstract class Member extends Element {
   }
 
   /**
-   * Intended to be overridden by each concrete subclass, this method populates
-   * the target {@code attributes} parameter with annotation attributes
-   * pertaining to this {@link Member}.
+   * Intended to be overridden by each concrete subclass, this method populates the target {@code attributes} parameter with
+   * annotation attributes pertaining to this {@link Member}.
    *
    * @param attributes The target {@code attributes} parameter.
    * @param owner The {@link Member} that owns this {@link Member}.
@@ -432,12 +431,10 @@ abstract class Member extends Element {
   }
 
   /**
-   * Intended to be overridden by each concrete subclass, this method collects
-   * all {@link Registry.Type} declarations of elements that are members of
-   * this {@link Member}.
+   * Intended to be overridden by each concrete subclass, this method collects all {@link Registry.Type} declarations of elements
+   * that are members of this {@link Member}.
    *
-   * @param types The {@link Set} into which the {@link Registry.Type}
-   *          declarations must be added.
+   * @param types The {@link Set} into which the {@link Registry.Type} declarations must be added.
    */
   void getDeclaredTypes(final Set<? super Registry.Type> types) {
   }

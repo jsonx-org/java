@@ -21,8 +21,7 @@ import java.lang.reflect.Method;
 import org.jsonx.ArrayValidator.Relations;
 
 /**
- * Interface to be used as a callback during the encoding of JSON form Jx
- * objects.
+ * Interface to be used as a callback during the encoding of JSON form Jx objects.
  */
 @FunctionalInterface
 public interface OnEncode {

@@ -37,8 +37,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Utility class that provides functions to convert JSON document to JSONx
- * documents, and vice versa.
+ * Utility class that provides functions to convert JSON document to JSONx documents, and vice versa.
  */
 public final class JxConverter {
   @SuppressWarnings("unchecked")
@@ -199,13 +198,11 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSONx document from the specified {@link InputStream} to a JSON
-   * document.
+   * Converts a JSONx document from the specified {@link InputStream} to a JSON document.
    *
    * @implSpec This method is thread safe.
    * @param in The {@link InputStream} for the JSONx document to be converted.
-   * @param validate If {@code true}, the JSONx document will be validated
-   *          during the conversion process.
+   * @param validate If {@code true}, the JSONx document will be validated during the conversion process.
    * @return A JSON document equivalent of the JSONx document.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a SAX error has occurred.
@@ -401,14 +398,12 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSON document from the specified {@link JsonReader} to a JSONx
-   * document.
+   * Converts a JSON document from the specified {@link JsonReader} to a JSONx document.
    *
    * @implSpec This method is thread safe.
    * @param reader The {@link JsonReader} for the JSON document to be converted.
-   * @param declareNamespace If {@code true}, the resulting JSONx document will
-   *          declare the {@code xmlns} and {@code xsi:schemaLocation}
-   *          attributes in the root element.
+   * @param declareNamespace If {@code true}, the resulting JSONx document will declare the {@code xmlns} and
+   *          {@code xsi:schemaLocation} attributes in the root element.
    * @return A JSONx document equivalent of the JSON document.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code reader} is null.

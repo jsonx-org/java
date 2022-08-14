@@ -47,8 +47,7 @@ final class JsdUtil {
    * <li>{@code name.length() == 0}: "_$"</li>
    * </ul>
    *
-   * @param classCase Whether to return class-case (true), instance-case
-   *          (false), or with case unchanged (null).
+   * @param classCase Whether to return class-case (true), instance-case (false), or with case unchanged (null).
    * @return The name of this member as a valid Java Identifier.
    */
   private static String toIdentifier(final String name, final Boolean classCase) {

@@ -32,9 +32,8 @@ abstract class Element {
   }
 
   /**
-   * Intended to be overridden by each concrete subclass, this method returns a
-   * {@code Map<String,String>} of name/value attributes that define the spec of
-   * {@code this} element's {@code *Property} or {@code *Element} declaration.
+   * Intended to be overridden by each concrete subclass, this method returns a {@code Map<String,String>} of name/value attributes
+   * that define the spec of {@code this} element's {@code *Property} or {@code *Element} declaration.
    *
    * @param owner The {@link Element} that owns (contains) {@code this} element.
    * @param packageName The package name declared in the schema element.

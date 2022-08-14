@@ -32,11 +32,11 @@ public class Settings implements Serializable {
   }
 
   /**
-   * Returns the non-negative number of referrers needed for a {@link Model} to
-   * be declared as a template root member of the jsonx element.
+   * Returns the non-negative number of referrers needed for a {@link Model} to be declared as a template root member of the jsonx
+   * element.
    *
-   * @return The non-negative number of referrers needed for a {@link Model} to
-   *         be declared as a template root member of the jsonx element.
+   * @return The non-negative number of referrers needed for a {@link Model} to be declared as a template root member of the jsonx
+   *         element.
    */
   public int getTemplateThreshold() {
     return this.templateThreshold;

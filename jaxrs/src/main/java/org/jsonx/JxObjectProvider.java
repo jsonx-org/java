@@ -39,9 +39,8 @@ import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
 /**
- * A JAX-RS {@link Provider} that implements {@link MessageBodyReader} and
- * {@link MessageBodyWriter} support for reading and writing JSON documents with
- * the JSONX API.
+ * A JAX-RS {@link Provider} that implements {@link MessageBodyReader} and {@link MessageBodyWriter} support for reading and writing
+ * JSON documents with the JSONX API.
  */
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
@@ -51,13 +50,12 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   private final JxDecoder decoder;
 
   /**
-   * Creates a new {@link JxObjectProvider} with the specified {@link JxEncoder}
-   * instance to be used for encoding bindings to JSON documents.
+   * Creates a new {@link JxObjectProvider} with the specified {@link JxEncoder} instance to be used for encoding bindings to JSON
+   * documents.
    *
    * @param encoder The {@link JxEncoder} instance.
    * @param decoder The {@link JxDecoder} instance.
-   * @throws IllegalArgumentException If {@code encoder} or {@code decoder} is
-   *           null.
+   * @throws IllegalArgumentException If {@code encoder} or {@code decoder} is null.
    */
   public JxObjectProvider(final JxEncoder encoder, final JxDecoder decoder) {
     this.encoder = assertNotNull(encoder);

@@ -21,17 +21,14 @@ import java.util.TreeMap;
 import org.libj.util.ObservableMap;
 
 /**
- * Map of attributes that guarantees attribute order as per
- * {@link JsdUtil#ATTRIBUTES}.
+ * Map of attributes that guarantees attribute order as per {@link JsdUtil#ATTRIBUTES}.
  */
 class AttributeMap extends ObservableMap<String,Object> {
   private final String prefix;
 
   /**
-   * Creates a new {@link AttributeMap} with the specified prefix. For each
-   * invocation of {@link #put(String,Object)} and {@link #remove(Object)}, the
-   * provided {@code key} is prepended with {@code prefix} (if {@code prefix} is
-   * not null).
+   * Creates a new {@link AttributeMap} with the specified prefix. For each invocation of {@link #put(String,Object)} and
+   * {@link #remove(Object)}, the provided {@code key} is prepended with {@code prefix} (if {@code prefix} is not null).
    *
    * @param prefix The prefix to prepend to each key.
    */
