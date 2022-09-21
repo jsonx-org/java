@@ -26,6 +26,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import javax.inject.Singleton;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -43,6 +44,7 @@ import org.openjax.json.JsonReader;
  * JSON documents with the JSONX API.
  */
 @Provider
+@Singleton
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {

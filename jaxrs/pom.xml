@@ -38,6 +38,11 @@
       <version>2.1.1</version>
     </dependency>
     <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+    <dependency>
       <groupId>org.jsonx</groupId>
       <artifactId>binding</artifactId>
       <version>${project.version}</version>
