@@ -16,7 +16,10 @@
 
 package org.jsonx;
 
+import javax.inject.Singleton;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -28,6 +31,7 @@ import org.libj.lang.Strings;
  * {@link BadRequestException}.
  */
 @Provider
+@Singleton
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
   private final boolean verbose;
 
@@ -57,7 +61,11 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
         }
       }
 
-      return Response.fromResponse(response).entity(builder.append('}').toString()).build();
+      return Response
+        .fromResponse(response)
+        .entity(builder.append('}').toString())
+        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        .build();
     }
   }
 }
