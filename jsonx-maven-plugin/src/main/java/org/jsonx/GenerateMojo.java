@@ -30,13 +30,13 @@ import org.libj.lang.Identifiers;
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
 @Execute(goal="generate")
 public class GenerateMojo extends JxMojo {
-  @Parameter(name="prefix", property="prefix", required=true)
+  @Parameter(property="prefix", required=true)
   private String prefix;
 
-  @Parameter(name="templateThreshold", property="templateThreshold", required=false)
+  @Parameter(property="templateThreshold", required=false)
   private int templateThreshold = 1;
 
-  @Parameter(name="setBuilder", property="setBuilder", required=false)
+  @Parameter(property="setBuilder", required=false)
   private boolean setBuilder = true;
 
   @Override
