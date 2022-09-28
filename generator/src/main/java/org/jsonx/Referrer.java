@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,26 +38,27 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
   private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
 
   static Registry.Type getGreatestCommonSuperType(final List<? extends Member> members) {
-    if (members.size() == 0)
-      throw new IllegalArgumentException("members.size() == 0");
+    final int i$ = members.size();
+    assertPositive(i$);
 
+    final Set<Member> visited = Referrer.visited.get();
     try {
       count.set(count.get() + 1);
       int start = 0;
-      if (visited.get().contains(members.get(0)))
+      if (visited.contains(members.get(0)))
         start = 1;
       else
-        visited.get().add(members.get(0));
+        visited.add(members.get(0));
 
-      if (members.size() == start)
+      if (i$ == start)
         return null;
 
-      if (members.size() == start + 1)
+      if (i$ == start + 1)
         return members.get(start).type();
 
       Registry.Type gct = members.get(start).type();
       if (CollectionUtil.isRandomAccess(members)) {
-        for (int i = start + 1, i$ = members.size(); i < i$ && gct != null; ++i) // [RA]
+        for (int i = start + 1; i < i$ && gct != null; ++i) // [RA]
           gct = getGreatestCommonSuperType(gct, members.get(i));
       }
       else {
@@ -68,7 +71,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     finally {
       count.set(count.get() - 1);
       if (count.get() == 0)
-        visited.get().clear();
+        visited.clear();
     }
   }
 

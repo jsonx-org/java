@@ -35,6 +35,11 @@ import org.xml.sax.SAXException;
 public class ConvertMojo extends JxMojo {
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
+    if (schemas.size() == 0) {
+      getLog().info("Nothing to do -- no schemas provided");
+      return;
+    }
+
     try {
       for (final String schema : schemas) { // [L]
         final URL url = new URL(schema);

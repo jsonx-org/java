@@ -100,27 +100,30 @@ class ClassSpec {
 
     builder.append(" {");
     final Collection<ClassSpec> classSpecs = nameToClassSpec.values();
-    final Iterator<ClassSpec> iterator = classSpecs.iterator();
-    for (int i = 0; iterator.hasNext(); ++i) { // [I]
-      if (i > 0)
-        builder.append('\n');
+    final int size = classSpecs.size();
+    if (size > 0) {
+      final Iterator<ClassSpec> iterator = classSpecs.iterator();
+      for (int i = 0; iterator.hasNext(); ++i) { // [I]
+        if (i > 0)
+          builder.append('\n');
 
-      final ClassSpec memberClass = iterator.next();
-      final StringBuilder annotation = memberClass.getAnnotation();
-      if (annotation != null)
-        builder.append("\n  ").append(Strings.indent(annotation, 2));
+        final ClassSpec memberClass = iterator.next();
+        final StringBuilder annotation = memberClass.getAnnotation();
+        if (annotation != null)
+          builder.append("\n  ").append(Strings.indent(annotation, 2));
 
-      final String memberDoc = memberClass.getDoc();
-      if (memberDoc != null)
-        builder.append("\n  ").append(memberDoc);
+        final String memberDoc = memberClass.getDoc();
+        if (memberDoc != null)
+          builder.append("\n  ").append(memberDoc);
 
-      builder.append("\n  public ").append(Strings.indent(memberClass.toString(this), 2));
+        builder.append("\n  public ").append(Strings.indent(memberClass.toString(this), 2));
+      }
     }
 
     if (referrer != null) {
       final String code = referrer.toSource(settings);
       if (code != null && code.length() > 0) {
-        if (classSpecs.size() > 0)
+        if (size > 0)
           builder.append('\n');
 
         builder.append("\n  ").append(Strings.indent(code, 2));

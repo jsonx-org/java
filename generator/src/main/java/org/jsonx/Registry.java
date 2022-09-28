@@ -431,11 +431,13 @@ class Registry {
   @SuppressWarnings("unchecked")
   Registry(final Declarer declarer, final Collection<Class<?>> classes) {
     this.isFromJsd = false;
-    for (final Class<?> cls : classes) { // [C]
-      if (cls.isAnnotation())
-        ArrayModel.referenceOrDeclare(this, declarer, (Class<? extends Annotation>)cls);
-      else
-        ObjectModel.referenceOrDeclare(this, declarer, cls);
+    if (classes.size() > 0) {
+      for (final Class<?> cls : classes) { // [C]
+        if (cls.isAnnotation())
+          ArrayModel.referenceOrDeclare(this, declarer, (Class<? extends Annotation>)cls);
+        else
+          ObjectModel.referenceOrDeclare(this, declarer, cls);
+      }
     }
 
     this.packageName = getClassPrefix();
@@ -445,7 +447,7 @@ class Registry {
   private String getClassPrefix() {
     final HashSet<Registry.Type> types = new HashSet<>();
     final Collection<Model> models = getModels();
-    if (models != null)
+    if (models != null && models.size() > 0)
       for (final Model member : models) // [C]
         member.getDeclaredTypes(types);
 

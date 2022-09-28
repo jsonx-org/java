@@ -207,8 +207,9 @@ public class SchemaTest {
   }
 
   private static void assertSources(final Map<String,String> expected, final Map<String,String> actual, final boolean withComments) {
-    for (final Map.Entry<String,String> entry : expected.entrySet()) // [S]
-      assertEquals(entry.getKey(), withComments ? entry.getValue() : removeComments(entry.getValue()), actual.get(entry.getKey()));
+    if (expected.size() > 0)
+      for (final Map.Entry<String,String> entry : expected.entrySet()) // [S]
+        assertEquals(entry.getKey(), withComments ? entry.getValue() : removeComments(entry.getValue()), actual.get(entry.getKey()));
 
     try {
       assertEquals(expected.size(), actual.size());
@@ -244,25 +245,27 @@ public class SchemaTest {
     logger.info("  4) Schema -> Java(1)");
     final SchemaElement controlSchema = testParseSchema(controlBinding, prefix, fileName);
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
-    final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
-      compiler.addSource(entry.getValue());
+    if (test1Sources.size() > 0) {
+      final InMemoryCompiler compiler = new InMemoryCompiler();
+      for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
+        compiler.addSource(entry.getValue());
 
-    logger.info("  5) -- Java(1) Compile --");
-    final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
+      logger.info("  5) -- Java(1) Compile --");
+      final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
-    logger.info("  6) Java(1) -> Schema");
-    final SchemaElement test1Schema = newSchema(classLoader, packageName);
-    logger.info("  7) Schema -> XML");
-    final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
-    logger.info("  8) Validate XML: 8-" + fileName);
-    validate(xml, "8-" + fileName);
+      logger.info("  6) Java(1) -> Schema");
+      final SchemaElement test1Schema = newSchema(classLoader, packageName);
+      logger.info("  7) Schema -> XML");
+      final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
+      logger.info("  8) Validate XML: 8-" + fileName);
+      validate(xml, "8-" + fileName);
 
-    final SchemaElement test2Schema = testParseSchema((Schema)Bindings.parse(xml), prefix, fileName);
-    logger.info("  9) Schema -> Java(2)");
-    final Map<String,String> test2Sources = test2Schema.toSource();
-    logger.info("  10) Java(1) == Java(2)");
-    assertSources(test1Sources, test2Sources, false);
+      final SchemaElement test2Schema = testParseSchema((Schema)Bindings.parse(xml), prefix, fileName);
+      logger.info("  9) Schema -> Java(2)");
+      final Map<String,String> test2Sources = test2Schema.toSource();
+      logger.info("  10) Java(1) == Java(2)");
+      assertSources(test1Sources, test2Sources, false);
+    }
 
     testSettings(resource, fileName, packageName, test1Sources);
   }
@@ -281,20 +284,24 @@ public class SchemaTest {
       final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       final String xml1 = toXml(controlSchema, settings).toString();
       validate(xml1, outFile1);
+
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
-      final InMemoryCompiler compiler = new InMemoryCompiler();
-      for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
-        compiler.addSource(entry.getValue());
+      if (test1Sources.size() > 0) {
+        final InMemoryCompiler compiler = new InMemoryCompiler();
+        for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
+          compiler.addSource(entry.getValue());
 
-      assertSources(originalSources, test1Sources, true);
+        assertSources(originalSources, test1Sources, true);
 
-      final ClassLoader classLoader = compiler.compile();
-      final SchemaElement test1Schema = newSchema(classLoader, packageName);
-      final String xml2 = toXml(test1Schema, settings).toString();
-      validate(xml2, outFile2);
-      final SchemaElement test2Schema = new SchemaElement((Schema)Bindings.parse(xml2), prefix);
-      final Map<String,String> test2Sources = test2Schema.toSource();
-      assertSources(test1Sources, test2Sources, false);
+        final ClassLoader classLoader = compiler.compile();
+        final SchemaElement test1Schema = newSchema(classLoader, packageName);
+        final String xml2 = toXml(test1Schema, settings).toString();
+        validate(xml2, outFile2);
+
+        final SchemaElement test2Schema = new SchemaElement((Schema)Bindings.parse(xml2), prefix);
+        final Map<String,String> test2Sources = test2Schema.toSource();
+        assertSources(test1Sources, test2Sources, false);
+      }
 
       if (testJson)
         testJson(fileName, controlBinding, prefix);

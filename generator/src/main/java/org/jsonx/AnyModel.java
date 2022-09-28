@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.RandomAccess;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$AnyMember;
@@ -38,6 +39,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference.Name$;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
+import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
 import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
@@ -54,7 +56,7 @@ final class AnyModel extends Referrer<AnyModel> {
       xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name).toString()));
 
     if (jsd.getTypes() != null)
-      xsb.setTypes$(new $Any.Types$(jsd.getTypes().split(" ")));
+      xsb.setTypes$(new $Any.Types$(Strings.split(jsd.getTypes(), ' ')));
 
     if (jsd.getNullable() != null)
       xsb.setNullable$(new $Any.Nullable$(jsd.getNullable()));
@@ -62,23 +64,32 @@ final class AnyModel extends Referrer<AnyModel> {
     if (jsd.getUse() != null)
       xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(jsd.getUse())));
 
-    if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) { // [L]
-        final $Any.Binding bin = new $Any.Binding();
-        bin.setLang$(new $Binding.Lang$(binding.getLang()));
-        bin.setField$(new $Any.Binding.Field$(binding.getField()));
-        xsb.addBinding(bin);
-      }
+    final List<schema.FieldBinding> bindings = jsd.getBindings();
+    final int i$;
+    if (bindings != null && (i$ = bindings.size()) > 0) {
+      if (bindings instanceof RandomAccess)
+        for (int i = 0; i < i$; ++i) // [RA]
+          addBinding(xsb, bindings.get(i));
+      else
+        for (final schema.FieldBinding binding : bindings) // [L]
+          addBinding(xsb, binding);
     }
 
     return xsb;
+  }
+
+  private static void addBinding(final $Any xsb, final schema.FieldBinding binding) {
+    final $Any.Binding bin = new $Any.Binding();
+    bin.setLang$(new $Binding.Lang$(binding.getLang()));
+    bin.setField$(new $Any.Binding.Field$(binding.getField()));
+    xsb.addBinding(bin);
   }
 
   private static $ArrayMember.Any element(final schema.AnyElement jsd) {
     final $ArrayMember.Any xsb = new $ArrayMember.Any();
 
     if (jsd.getTypes() != null)
-      xsb.setTypes$(new $ArrayMember.Any.Types$(jsd.getTypes().split(" ")));
+      xsb.setTypes$(new $ArrayMember.Any.Types$(Strings.split(jsd.getTypes(), ' ')));
 
     if (jsd.getNullable() != null)
       xsb.setNullable$(new $ArrayMember.Any.Nullable$(jsd.getNullable()));
@@ -195,22 +206,30 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
     final List<String> idrefs;
-    if (refs == null || (idrefs = refs.text()).size() == 0)
+    final int i$;
+    if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
       return null;
 
     final ArrayList<Member> types = new ArrayList<>(idrefs.size());
-    for (final String idref : idrefs) { // [L]
-      final Id id = Id.hashed(idref);
-      types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
-        final Member model = registry.getModel(id);
-        if (model == null)
-          throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
-
-        return (Model)registry.reference(model, this);
-      }));
-    }
+    if (idrefs instanceof RandomAccess)
+      for (int i = 0; i < i$; ++i) // [RA]
+        addReference(types, idrefs.get(i), nullable, use);
+    else
+      for (final String idref : idrefs) // [L]
+        addReference(types, idref, nullable, use);
 
     return types;
+  }
+
+  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, Use use) {
+    final Id id = Id.hashed(idref);
+    types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
+      final Member model = registry.getModel(id);
+      if (model == null)
+        throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
+
+      return (Model)registry.reference(model, this);
+    }));
   }
 
   private static Class<?> getFieldType(final t[] types) {

@@ -19,7 +19,10 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.RandomAccess;
 
+import org.jsonx.schema.TypeBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
@@ -55,9 +58,16 @@ final class BooleanModel extends Model {
     if (name != null)
       xsb.setName$(new Schema.Boolean.Name$(name));
 
-    if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings()) // [L]
-        xsb.addBinding(typeBinding(binding));
+    final List<TypeBinding> bindings = jsd.getBindings();
+    final int i$;
+    if (bindings != null && (i$ = bindings.size()) > 0) {
+      if (bindings instanceof RandomAccess)
+        for (int i = 0; i < i$; ++i) // [RA]
+          xsb.addBinding(typeBinding(bindings.get(i)));
+      else
+        for (final schema.TypeBinding binding : bindings) // [L]
+          xsb.addBinding(typeBinding(binding));
+    }
 
     return xsb;
   }
@@ -79,28 +89,36 @@ final class BooleanModel extends Model {
     if (jsd.getUse() != null)
       xsb.setUse$(new $Boolean.Use$($Boolean.Use$.Enum.valueOf(jsd.getUse())));
 
-    if (jsd.getBindings() != null) {
-      for (final schema.TypeBinding element : jsd.getBindings()) { // [L]
-        final schema.TypeFieldBinding binding = (schema.TypeFieldBinding)element;
-        final $TypeFieldBinding bind = new $Boolean.Binding();
-        bind.setLang$(new $Binding.Lang$(binding.getLang()));
-        if (binding.getType() != null)
-          bind.setType$(new $TypeBinding.Type$(binding.getType()));
-
-        if (binding.getDecode() != null)
-          bind.setDecode$(new $TypeBinding.Decode$(binding.getDecode()));
-
-        if (binding.getEncode() != null)
-          bind.setEncode$(new $TypeBinding.Encode$(binding.getEncode()));
-
-        if (binding.getField() != null)
-          bind.setField$(new $TypeFieldBinding.Field$(binding.getField()));
-
-        xsb.addBinding(bind);
-      }
+    final List<TypeBinding> bindings = jsd.getBindings();
+    final int i$;
+    if (bindings != null && (i$ = bindings.size()) > 0) {
+      if (bindings instanceof RandomAccess)
+        for (int i = 0; i < i$; ++i) // [RA]
+          addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
+      else
+        for (final schema.TypeBinding binding : bindings) // [L]
+          addBinding(xsb, (schema.TypeFieldBinding)binding);
     }
 
     return xsb;
+  }
+
+  private static void addBinding(final $Boolean xsb, final schema.TypeFieldBinding binding) {
+    final $TypeFieldBinding bind = new $Boolean.Binding();
+    bind.setLang$(new $Binding.Lang$(binding.getLang()));
+    if (binding.getType() != null)
+      bind.setType$(new $TypeBinding.Type$(binding.getType()));
+
+    if (binding.getDecode() != null)
+      bind.setDecode$(new $TypeBinding.Decode$(binding.getDecode()));
+
+    if (binding.getEncode() != null)
+      bind.setEncode$(new $TypeBinding.Encode$(binding.getEncode()));
+
+    if (binding.getField() != null)
+      bind.setField$(new $TypeFieldBinding.Field$(binding.getField()));
+
+    xsb.addBinding(bind);
   }
 
   private static $ArrayMember.Boolean element(final schema.BooleanElement jsd) {
@@ -115,9 +133,16 @@ final class BooleanModel extends Model {
     if (jsd.getMaxOccurs() != null)
       xsb.setMaxOccurs$(new $ArrayMember.Boolean.MaxOccurs$(jsd.getMaxOccurs()));
 
-    if (jsd.getBindings() != null)
-      for (final schema.TypeBinding binding : jsd.getBindings()) // [L]
-        xsb.addBinding(typeBinding(binding));
+    final List<TypeBinding> bindings = jsd.getBindings();
+    final int i$;
+    if (bindings != null && (i$ = bindings.size()) > 0) {
+      if (bindings instanceof RandomAccess)
+        for (int i = 0; i < i$; ++i) // [RA]
+          xsb.addBinding(typeBinding(bindings.get(i)));
+      else
+        for (final schema.TypeBinding binding : bindings) // [L]
+          xsb.addBinding(typeBinding(binding));
+    }
 
     return xsb;
   }

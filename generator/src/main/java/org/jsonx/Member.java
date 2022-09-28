@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.PatternSyntaxException;
@@ -56,12 +57,23 @@ abstract class Member extends Element {
   private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
   static <T extends $Binding>T getBinding(final List<T> bindings) {
-    if (bindings == null)
+    final int i$;
+    if (bindings == null || (i$ = bindings.size()) == 0)
       return null;
 
-    for (final T binding : bindings) // [L]
-      if ("java".equals(binding.getLang$().text()))
-        return binding;
+    if (bindings instanceof RandomAccess) {
+      for (int i = 0; i < i$; ++i) { // [RA]
+        final T binding = bindings.get(i);
+        if ("java".equals(binding.getLang$().text()))
+          return binding;
+      }
+    }
+    else {
+      for (final T binding : bindings) {// [L]
+        if ("java".equals(binding.getLang$().text()))
+          return binding;
+      }
+    }
 
     return null;
   }

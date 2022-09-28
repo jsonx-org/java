@@ -83,10 +83,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (jsd.getExtends() != null)
       xsb.setExtends$(new $ObjectMember.Extends$(jsd.getExtends()));
 
-    if (jsd.getBindings() != null) {
-      final List<FieldBinding> bindings = jsd.getBindings();
+    final int i$;
+    final List<FieldBinding> bindings = jsd.getBindings();
+    if (bindings != null && (i$ = bindings.size()) > 0) {
       if (CollectionUtil.isRandomAccess(bindings)) {
-        for (int i = 0, i$ = bindings.size(); i < i$; ++i) // [RA]
+        for (int i = 0; i < i$; ++i) // [RA]
           addBinding(bindings.get(i), xsb);
       }
       else {
@@ -122,7 +123,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     if (jsd.getProperties() != null) {
       final LinkedHashMap<String,? extends schema.Member> properties = jsd.getProperties().getProperties();
-      if (properties != null) {
+      if (properties != null && properties.size() > 0) {
         for (final Map.Entry<String,? extends schema.Member> entry : properties.entrySet()) { // [S]
           final String propertyName = entry.getKey();
           final schema.Member property = entry.getValue();
@@ -353,9 +354,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (members == null)
       return null;
 
-    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>();
-    for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
-      properties.put(entry.getKey(), new Property(entry.getValue()));
+    final int size = members.size();
+    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size);
+    if (size > 0)
+      for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
+        properties.put(entry.getKey(), new Property(entry.getValue()));
 
     return properties;
   }
@@ -383,19 +386,21 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private void resolveProperties() {
-    for (final Map.Entry<String,Property> entry : properties.entrySet()) { // [S]
-      final Property superProperty = superObject == null ? null : getSuperProperty(entry.getKey());
-      final Property property = entry.getValue();
-      if (superProperty == null) {
-        property.setOverride(null);
-        continue;
-      }
+    if (properties.size() > 0) {
+      for (final Map.Entry<String,Property> entry : properties.entrySet()) { // [S]
+        final Property superProperty = superObject == null ? null : getSuperProperty(entry.getKey());
+        final Property property = entry.getValue();
+        if (superProperty == null) {
+          property.setOverride(null);
+          continue;
+        }
 
-      if (superProperty.member.isAssignableFrom(property.member))
-        property.setOverride(superProperty.member);
-      else {
-        superProperty.member.isAssignableFrom(property.member);
-        throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
+        if (superProperty.member.isAssignableFrom(property.member))
+          property.setOverride(superProperty.member);
+        else {
+          superProperty.member.isAssignableFrom(property.member);
+          throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
+        }
       }
     }
   }
@@ -649,9 +654,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (superObject instanceof Deferred)
       superObject = ((Deferred<?>)superObject).resolve();
 
-    for (final Map.Entry<String,Property> entry : properties.entrySet()) // [S]
-      if (entry.getValue().member instanceof Deferred)
-        entry.setValue(new Property(((Deferred<?>)entry.getValue().member).resolve()));
+    if (properties.size() > 0)
+      for (final Map.Entry<String,Property> entry : properties.entrySet()) // [S]
+        if (entry.getValue().member instanceof Deferred)
+          entry.setValue(new Property(((Deferred<?>)entry.getValue().member).resolve()));
 
     referencesResolved = true;
   }
@@ -662,7 +668,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (superObject != null)
       superObject.getDeclaredTypes(types);
 
-    if (properties != null)
+    if (properties != null && properties.size() > 0)
       for (final Property property : properties.values()) // [C]
         property.member.getDeclaredTypes(types);
   }
@@ -684,10 +690,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
     final XmlElement element = super.toXml(settings, owner, packageName);
-    if (properties == null || properties.size() == 0)
+    final int i$;
+    if (properties == null || (i$ = properties.size()) == 0)
       return element;
 
-    final ArrayList<XmlElement> elements = new ArrayList<>();
+    final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (element.getElements() != null ? element.getElements().size() : 0));
     for (final Property property : properties.values()) // [C]
       elements.add(property.toXml(settings, this, packageName));
 
@@ -725,7 +732,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private int numNonOverrideMembers() {
-    if (properties == null)
+    if (properties == null || properties.size() == 0)
       return 0;
 
     int count = 0;
@@ -789,20 +796,22 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final boolean hasMembers = numNonOverrideMembers() > 0;
     if (hasMembers) {
       builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
-      for (final Property property : properties.values()) { // [C]
-        if (property.getOverride() != null)
-          continue;
+      if (properties.size() > 0) {
+        for (final Property property : properties.values()) { // [C]
+          if (property.getOverride() != null)
+            continue;
 
-        final Member member = property.member;
-        final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
-        if (!isOptionalType && member.type().isArray())
-          builder.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(")");
-        else if (!isOptionalType && member.type().isPrimitive())
-          builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != that.").append(member.fieldBinding.instanceCase);
-        else
-          builder.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(")");
+          final Member member = property.member;
+          final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
+          if (!isOptionalType && member.type().isArray())
+            builder.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(")");
+          else if (!isOptionalType && member.type().isPrimitive())
+            builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != that.").append(member.fieldBinding.instanceCase);
+          else
+            builder.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(")");
 
-        builder.append(")\n    return false;\n");
+          builder.append(")\n    return false;\n");
+        }
       }
     }
     builder.append("\n  return true;");
@@ -812,30 +821,32 @@ final class ObjectModel extends Referrer<ObjectModel> {
     builder.append("\npublic int hashCode() {");
     if (hasMembers) {
       builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append(type.getSuperType() != null ? " * 31 + super.hashCode()" : "").append(';');
-      for (final Property property : properties.values()) { // [C]
-        if (property.getOverride() != null)
-          continue;
+      if (properties.size() > 0) {
+        for (final Property property : properties.values()) { // [C]
+          if (property.getOverride() != null)
+            continue;
 
-        final Member member = property.member;
-        final boolean isPrimitive = member.type().isPrimitive();
-        final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
+          final Member member = property.member;
+          final boolean isPrimitive = member.type().isPrimitive();
+          final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
 
-        final String indent = !isPrimitive || member.type().isArray() ? "    " : "  ";
-        final String header = "\n" + indent + "hashCode = 31 * hashCode + ";
+          final String indent = !isPrimitive || member.type().isArray() ? "    " : "  ";
+          final String header = "\n" + indent + "hashCode = 31 * hashCode + ";
 
-        if (!isPrimitive || member.type().isArray())
-          builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != null)");
+          if (!isPrimitive || member.type().isArray())
+            builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != null)");
 
-        builder.append(header);
-        if (!isOptionalType && member.type().isArray())
-          builder.append(Arrays.class.getName()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
-        else if (!isOptionalType && isPrimitive)
-          builder.append(member.type().getWrapper()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
-        else
-          builder.append(ObjectUtil.class.getName()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
+          builder.append(header);
+          if (!isOptionalType && member.type().isArray())
+            builder.append(Arrays.class.getName()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
+          else if (!isOptionalType && isPrimitive)
+            builder.append(member.type().getWrapper()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
+          else
+            builder.append(ObjectUtil.class.getName()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
 
-        if (!isPrimitive || member.type().isArray())
-          builder.append('\n');
+          if (!isPrimitive || member.type().isArray())
+            builder.append('\n');
+        }
       }
 
       builder.append("\n  return hashCode;");

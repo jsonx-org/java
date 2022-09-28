@@ -44,6 +44,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
+import org.libj.lang.WrappedArrayList;
 import org.libj.net.URLs;
 import org.libj.util.CollectionUtil;
 import org.libj.util.IdentityHashSet;
@@ -61,7 +62,7 @@ public final class SchemaElement extends Element implements Declarer {
   private static Schema jsdToXsb(final schema.Schema jsd) {
     final Schema xsb = new Schema();
     final LinkedHashMap<String,? extends schema.Member> declarations = assertNotNull(jsd).getDeclarations();
-    if (declarations != null) {
+    if (declarations != null && declarations.size() > 0) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) { // [S]
         final String name = entry.getKey();
         final schema.Member declaration = entry.getValue();
@@ -220,15 +221,18 @@ public final class SchemaElement extends Element implements Declarer {
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
 
-    for (final Model model : registry.getModels()) // [C]
-      if (model instanceof Referrer)
-        ((Referrer<?>)model).resolveReferences();
+    final Collection<Model> models = registry.getModels();
+    if (models.size() > 0)
+      for (final Model model : models) // [C]
+        if (model instanceof Referrer)
+          ((Referrer<?>)model).resolveReferences();
 
     registry.resolveReferences();
 
-    for (final Model model : registry.getModels()) // [C]
-      if (model instanceof Referrer)
-        ((Referrer<?>)model).resolveOverrides();
+    if (models.size() > 0)
+      for (final Model model : models) // [C]
+        if (model instanceof Referrer)
+          ((Referrer<?>)model).resolveOverrides();
   }
 
   private static void assertNoCycle(final Schema schema) throws ValidationException {
@@ -401,8 +405,12 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   private ArrayList<Model> rootMembers(final Settings settings) {
+    final Collection<Model> models = registry.getModels();
+    if (models.size() == 0)
+      return WrappedArrayList.EMPTY_LIST;
+
     final ArrayList<Model> members = new ArrayList<>();
-    for (final Model model : registry.getModels()) // [C]
+    for (final Model model : models) // [C]
       if (registry.isRootMember(model, settings))
         members.add(model);
 
@@ -500,39 +508,44 @@ public final class SchemaElement extends Element implements Declarer {
   public Map<String,String> toSource(final Settings settings) {
     final HashMap<Registry.Type,ClassSpec> all = new HashMap<>();
     final HashMap<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
-    for (final Model member : registry.getModels()) { // [C]
-      final Referrer<?> referrer;
-      final Registry.Type type;
-      if (member instanceof Referrer && (type = (referrer = (Referrer<?>)member).classType()) != null) {
-        final ClassSpec classSpec = new ClassSpec(referrer, settings);
-        addParents(type, classSpec, settings, typeToJavaClass, all);
-        all.put(type, classSpec);
+    final Collection<Model> models = registry.getModels();
+    if (models.size() > 0) {
+      for (final Model member : models) { // [C]
+        final Referrer<?> referrer;
+        final Registry.Type type;
+        if (member instanceof Referrer && (type = (referrer = (Referrer<?>)member).classType()) != null) {
+          final ClassSpec classSpec = new ClassSpec(referrer, settings);
+          addParents(type, classSpec, settings, typeToJavaClass, all);
+          all.put(type, classSpec);
+        }
       }
     }
 
     final HashMap<String,String> sources = new HashMap<>();
     final StringBuilder builder = new StringBuilder();
-    for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) { // [S]
-      final Registry.Type type = entry.getKey();
-      final ClassSpec classSpec = entry.getValue();
-      final String canonicalPackageName = type.getCanonicalPackage();
-      if (canonicalPackageName != null)
-        builder.append("package ").append(canonicalPackageName).append(";\n");
+    if (typeToJavaClass.size() > 0) {
+      for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) { // [S]
+        final Registry.Type type = entry.getKey();
+        final ClassSpec classSpec = entry.getValue();
+        final String canonicalPackageName = type.getCanonicalPackage();
+        if (canonicalPackageName != null)
+          builder.append("package ").append(canonicalPackageName).append(";\n");
 
-      final StringBuilder annotation = classSpec.getAnnotation();
-      if (annotation != null)
-        builder.append('\n').append(annotation);
+        final StringBuilder annotation = classSpec.getAnnotation();
+        if (annotation != null)
+          builder.append('\n').append(annotation);
 
-      final String doc = classSpec.getDoc();
-      if (doc != null)
-        builder.append('\n').append(doc);
+        final String doc = classSpec.getDoc();
+        if (doc != null)
+          builder.append('\n').append(doc);
 
-      if (canonicalPackageName != null)
-        builder.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
+        if (canonicalPackageName != null)
+          builder.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
 
-      builder.append("\npublic ").append(classSpec);
-      sources.put(type.getName(), builder.toString());
-      builder.setLength(0);
+        builder.append("\npublic ").append(classSpec);
+        sources.put(type.getName(), builder.toString());
+        builder.setLength(0);
+      }
     }
 
     return sources;
@@ -549,10 +562,12 @@ public final class SchemaElement extends Element implements Declarer {
 
   public Map<String,String> toSource(final File dir, final Settings settings) throws IOException {
     final Map<String,String> sources = toSource(settings);
-    for (final Map.Entry<String,String> entry : sources.entrySet()) { // [S]
-      final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
-      file.getParentFile().mkdirs();
-      Files.write(file.toPath(), entry.getValue().getBytes());
+    if (sources.size() > 0) {
+      for (final Map.Entry<String,String> entry : sources.entrySet()) { // [S]
+        final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");
+        file.getParentFile().mkdirs();
+        Files.write(file.toPath(), entry.getValue().getBytes());
+      }
     }
 
     return sources;

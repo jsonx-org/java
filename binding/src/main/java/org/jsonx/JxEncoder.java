@@ -202,10 +202,12 @@ public class JxEncoder {
         if (map == null)
           return null;
 
-        final Pattern pattern = Patterns.compile(propertyName, Pattern.DOTALL);
-        for (final Object key : map.keySet()) // [S]
-          if (key instanceof String && pattern.matcher((String)key).matches())
-            return map;
+        if (map.size() > 0) {
+          final Pattern pattern = Patterns.compile(propertyName, Pattern.DOTALL);
+          for (final Object key : map.keySet()) // [S]
+            if (key instanceof String && pattern.matcher((String)key).matches())
+              return map;
+        }
 
         return use == Use.OPTIONAL ? map : null;
       }
@@ -440,18 +442,20 @@ public class JxEncoder {
         }
         else if (value != null) {
           final Map<?,?> map = (Map<?,?>)value;
-          for (final Map.Entry<?,?> entry : map.entrySet()) { // [S]
-            if (validate && !nullable && use == Use.OPTIONAL && entry.getValue() == null)
-              return Error.PROPERTY_NOT_NULLABLE((String)entry.getKey(), annotation);
+          if (map.size() > 0) {
+            for (final Map.Entry<?,?> entry : map.entrySet()) { // [S]
+              if (validate && !nullable && use == Use.OPTIONAL && entry.getValue() == null)
+                return Error.PROPERTY_NOT_NULLABLE((String)entry.getKey(), annotation);
 
-            if (hasProperties)
-              builder.append(comma);
+              if (hasProperties)
+                builder.append(comma);
 
-            final Error error = appendValue(builder, (String)entry.getKey(), entry.getValue(), getMethod, annotation, onEncode, depth);
-            if (error != null)
-              return error;
+              final Error error = appendValue(builder, (String)entry.getKey(), entry.getValue(), getMethod, annotation, onEncode, depth);
+              if (error != null)
+                return error;
 
-            hasProperties = true;
+              hasProperties = true;
+            }
           }
         }
       }

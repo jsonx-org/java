@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import org.jsonx.Registry.Type;
+import org.jsonx.schema.FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
@@ -77,16 +78,25 @@ final class Reference extends Member {
     if (jsd.getUse() != null)
       xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(jsd.getUse())));
 
-    if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) { // [L]
-        final $Reference.Binding bin = new $Reference.Binding();
-        bin.setLang$(new $Binding.Lang$(binding.getLang()));
-        bin.setField$(new $Reference.Binding.Field$(binding.getField()));
-        xsb.addBinding(bin);
-      }
+    final List<FieldBinding> bindings = jsd.getBindings();
+    final int i$;
+    if (bindings != null && (i$ = bindings.size()) > 0) {
+      if (CollectionUtil.isRandomAccess(bindings))
+        for (int i = 0; i < i$; ++i) // [RA]
+          addBinding(xsb, bindings.get(i));
+      else
+        for (final schema.FieldBinding binding : bindings) // [L]
+          addBinding(xsb, binding);
     }
 
     return xsb;
+  }
+
+  private static void addBinding(final $Reference xsb, final schema.FieldBinding binding) {
+    final $Reference.Binding bin = new $Reference.Binding();
+    bin.setLang$(new $Binding.Lang$(binding.getLang()));
+    bin.setField$(new $Reference.Binding.Field$(binding.getField()));
+    xsb.addBinding(bin);
   }
 
   static $ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {

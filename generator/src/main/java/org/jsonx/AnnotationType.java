@@ -30,55 +30,57 @@ class AnnotationType {
   @SuppressWarnings("unchecked")
   private StringBuilder render() {
     final StringBuilder builder = new StringBuilder();
-    for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
-      if (builder.length() > 0)
-        builder.append(", ");
+    if (attributes.size() > 0) {
+      for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
+        if (builder.length() > 0)
+          builder.append(", ");
 
-      final Method method = Classes.getMethod(annotationType, entry.getKey());
-      final Object defaultValue = method.getDefaultValue();
-      if (entry.getValue() instanceof List) {
-        final Object[] defaultArray = (Object[])defaultValue;
-        final List<Object> items = (List<Object>)entry.getValue();
-        final int i$ = items.size();
-        if (defaultArray != null) {
-          if (i$ == 0 && defaultArray.length == 0)
-            continue;
+        final Method method = Classes.getMethod(annotationType, entry.getKey());
+        final Object defaultValue = method.getDefaultValue();
+        if (entry.getValue() instanceof List) {
+          final Object[] defaultArray = (Object[])defaultValue;
+          final List<Object> items = (List<Object>)entry.getValue();
+          final int i$ = items.size();
+          if (defaultArray != null) {
+            if (i$ == 0 && defaultArray.length == 0)
+              continue;
 
-          if (defaultArray.equals(items.toArray()))
-            continue;
-        }
+            if (defaultArray.equals(items.toArray()))
+              continue;
+          }
 
-        builder.append(entry.getKey()).append('=');
-        if (i$ == 1) {
-          builder.append(items.get(0));
-        }
-        else {
-          builder.append('{');
-          if (CollectionUtil.isRandomAccess(items)) {
-            for (int j = 0; j < i$; ++j) { // [RA]
-              if (j > 0)
-                builder.append(", ");
-
-              builder.append(items.get(j));
-            }
+          builder.append(entry.getKey()).append('=');
+          if (i$ == 1) {
+            builder.append(items.get(0));
           }
           else {
-            final Iterator<Object> iterator = items.iterator();
-            for (int j = 0; j < i$; ++j) { // [RA]
-              if (j > 0)
-                builder.append(", ");
+            builder.append('{');
+            if (CollectionUtil.isRandomAccess(items)) {
+              for (int j = 0; j < i$; ++j) { // [RA]
+                if (j > 0)
+                  builder.append(", ");
 
-              builder.append(iterator.next());
+                builder.append(items.get(j));
+              }
             }
-          }
+            else {
+              final Iterator<Object> iterator = items.iterator();
+              for (int j = 0; j < i$; ++j) { // [RA]
+                if (j > 0)
+                  builder.append(", ");
 
-          builder.append('}');
+                builder.append(iterator.next());
+              }
+            }
+
+            builder.append('}');
+          }
         }
-      }
-      else {
-        final Object fixedDefaultValue = defaultValue != null && entry.getValue() instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
-        if (!Objects.equals(fixedDefaultValue, entry.getValue()))
-          builder.append(entry.getKey()).append('=').append(entry.getValue());
+        else {
+          final Object fixedDefaultValue = defaultValue != null && entry.getValue() instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
+          if (!Objects.equals(fixedDefaultValue, entry.getValue()))
+            builder.append(entry.getKey()).append('=').append(entry.getValue());
+        }
       }
     }
 

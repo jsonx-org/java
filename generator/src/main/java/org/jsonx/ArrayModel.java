@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.RandomAccess;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
@@ -71,16 +72,25 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (jsd.getUse() != null)
       xsb.setUse$(new $Array.Use$($Array.Use$.Enum.valueOf(jsd.getUse())));
 
-    if (jsd.getBindings() != null) {
-      for (final schema.FieldBinding binding : jsd.getBindings()) { // [L]
-        final $Array.Binding bin = new $Array.Binding();
-        bin.setLang$(new $Binding.Lang$(binding.getLang()));
-        bin.setField$(new $Array.Binding.Field$(binding.getField()));
-        xsb.addBinding(bin);
-      }
+    final List<schema.FieldBinding> bindings = jsd.getBindings();
+    final int i$;
+    if (bindings != null && (i$ = bindings.size()) > 0) {
+      if (bindings instanceof RandomAccess)
+        for (int i = 0; i < i$; ++i) // [RA]
+          addBinding(xsb, bindings.get(i));
+      else
+        for (final schema.FieldBinding binding : bindings) // [L]
+          addBinding(xsb, binding);
     }
 
     return xsb;
+  }
+
+  private static void addBinding(final $Array xsb, final schema.FieldBinding binding) {
+    final $Array.Binding bin = new $Array.Binding();
+    bin.setLang$(new $Binding.Lang$(binding.getLang()));
+    bin.setField$(new $Array.Binding.Field$(binding.getField()));
+    xsb.addBinding(bin);
   }
 
   private static $ArrayMember.Array element(final schema.ArrayElement jsd) {
@@ -120,24 +130,35 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (jsd.getMaxIterate() != null)
       xsb.setMaxIterate$(new $ArrayMember.MaxIterate$(jsd.getMaxIterate()));
 
-    for (final Object element : jsd.getElements()) { // [L]
-      if (element instanceof schema.AnyElement)
-        xsb.addAny(($ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
-      else if (element instanceof schema.ArrayElement)
-        xsb.addArray(($ArrayMember.Array)ArrayModel.jsdToXsb((schema.ArrayElement)element, null));
-      else if (element instanceof schema.BooleanElement)
-        xsb.addBoolean(($ArrayMember.Boolean)BooleanModel.jsdToXsb((schema.BooleanElement)element, null));
-      else if (element instanceof schema.NumberElement)
-        xsb.addNumber(($ArrayMember.Number)NumberModel.jsdToXsb((schema.NumberElement)element, null));
-      else if (element instanceof schema.ReferenceElement)
-        xsb.addReference(($ArrayMember.Reference)Reference.jsdToXsb((schema.ReferenceElement)element, null));
-      else if (element instanceof schema.StringElement)
-        xsb.addString(($ArrayMember.String)StringModel.jsdToXsb((schema.StringElement)element, null));
+    final List<org.jsonx.schema.Member> elements = jsd.getElements();
+    final int i$;
+    if (elements != null && (i$ = elements.size()) > 0) {
+      if (elements instanceof RandomAccess)
+        for (int i = 0; i < i$; ++i) // [RA]
+          addElement(xsb, elements.get(i));
       else
-        throw new UnsupportedOperationException("Unsupported JSONx type: " + element.getClass().getName());
+        for (final Object element : elements) // [L]
+          addElement(xsb, element);
     }
 
     return xsb;
+  }
+
+  private static void addElement(final $ArrayMember xsb, final Object element) {
+    if (element instanceof schema.AnyElement)
+      xsb.addAny(($ArrayMember.Any)AnyModel.jsdToXsb((schema.AnyElement)element, null));
+    else if (element instanceof schema.ArrayElement)
+      xsb.addArray(($ArrayMember.Array)ArrayModel.jsdToXsb((schema.ArrayElement)element, null));
+    else if (element instanceof schema.BooleanElement)
+      xsb.addBoolean(($ArrayMember.Boolean)BooleanModel.jsdToXsb((schema.BooleanElement)element, null));
+    else if (element instanceof schema.NumberElement)
+      xsb.addNumber(($ArrayMember.Number)NumberModel.jsdToXsb((schema.NumberElement)element, null));
+    else if (element instanceof schema.ReferenceElement)
+      xsb.addReference(($ArrayMember.Reference)Reference.jsdToXsb((schema.ReferenceElement)element, null));
+    else if (element instanceof schema.StringElement)
+      xsb.addString(($ArrayMember.String)StringModel.jsdToXsb((schema.StringElement)element, null));
+    else
+      throw new UnsupportedOperationException("Unsupported JSONx type: " + element.getClass().getName());
   }
 
   static ArrayModel declare(final Registry registry, final Declarer declarer, final Schema.Array xsb) {
