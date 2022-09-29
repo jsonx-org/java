@@ -204,6 +204,7 @@ final class AnyModel extends Referrer<AnyModel> {
     validateTypeBinding();
   }
 
+  // FIXME: This can be converted to recursive algo
   private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
     final List<String> idrefs;
     final int i$;
@@ -421,12 +422,11 @@ final class AnyModel extends Referrer<AnyModel> {
     final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     if (types != null) {
       final StringBuilder builder = new StringBuilder();
-      final Iterator<Member> iterator = types.iterator();
-      for (int i = 0; iterator.hasNext(); ++i) { // [I]
+      for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
         if (i > 0)
           builder.append(' ');
 
-        builder.append(Registry.getSubName(iterator.next().id().toString(), packageName));
+        builder.append(Registry.getSubName(types.get(i).id().toString(), packageName));
       }
 
       attributes.put("types", builder.toString());

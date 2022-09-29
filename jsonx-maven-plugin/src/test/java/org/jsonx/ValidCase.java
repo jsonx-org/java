@@ -17,6 +17,7 @@
 package org.jsonx;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +34,9 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
 
   private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
     final int i$ = list.size();
+    if (i$ == 0)
+      return Collections.EMPTY_LIST;
+
     final ArrayList<Object> out = new ArrayList<>(i$);
     final Iterator<?> itemIterator = list.iterator();
     final Iterator<Relation> relationIterator = relations.iterator();

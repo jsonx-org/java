@@ -43,7 +43,7 @@ class ObjectCodec extends Codec {
     try {
       final JxObject object = type.getConstructor().newInstance();
       final PropertyToCodec propertyToCodec = getPropertyCodec(type);
-      for (long point; (point = reader.readToken()) != '}';) { // [X]
+      for (long point; (point = reader.readToken()) != '}';) { // [ST]
         int off = Composite.decodeInt(point, 0);
         int len = Composite.decodeInt(point, 1);
         char c0 = reader.bufToChar(off);

@@ -182,7 +182,11 @@ public class ArrayCodecTest {
   }
 
   private static void assertMembersEqual(final List<?> expected, final Relations actual) {
-    assertEquals(expected.size(), actual.size());
+    final int size = expected.size();
+    assertEquals(size, actual.size());
+    if (size == 0)
+      return;
+
     final Iterator<?> expectedIterator = expected.iterator();
     final Iterator<Relation> actualIterator = actual.iterator();
     while (expectedIterator.hasNext()) { // [I]
