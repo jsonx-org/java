@@ -21,6 +21,7 @@ import static org.libj.lang.Assertions.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -152,12 +153,11 @@ public final class JxDecoder {
       throw new DecodeException("Expected '{', but got '" + point + "'", reader, null, messageFunction);
 
     final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
-    if (object instanceof Error) {
-      final Error error = (Error)object;
-      throw new DecodeException((Error)object, reader, error.getException(), messageFunction);
-    }
+    if (!(object instanceof Error))
+      return (T)object;
 
-    return (T)object;
+    final Error error = (Error)object;
+    throw new DecodeException((Error)object, reader, error.getException(), messageFunction);
   }
 
   /**
@@ -222,13 +222,13 @@ public final class JxDecoder {
    *
    * @param annotationType The annotation class that declares an {@link ArrayType} annotation.
    * @param reader The {@link JsonReader} containing the JSON array.
-   * @return A {@link List} representing the parsed JSON array.
+   * @return An {@link ArrayList} representing the parsed JSON array.
    * @throws DecodeException If an exception has occurred while decoding the JSON array.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code annotationType} or {@code reader} is null.
    * @throws JsonParseException If the content is not well formed.
    */
-  public List<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
+  public ArrayList<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
     assertNotNull(annotationType);
     assertNotNull(reader);
     final long point = reader.readToken();
@@ -240,12 +240,11 @@ public final class JxDecoder {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
     final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, null);
-    if (array instanceof Error) {
-      final Error error = (Error)array;
-      throw new DecodeException(error, reader, error.getException(), messageFunction);
-    }
+    if (!(array instanceof Error))
+      return (ArrayList<?>)array;
 
-    return (List<?>)array;
+    final Error error = (Error)array;
+    throw new DecodeException(error, reader, error.getException(), messageFunction);
   }
 
   /**
