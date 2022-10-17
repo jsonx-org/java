@@ -16,7 +16,8 @@ This document presents the [<ins>Consumer Driven Contracts</ins><sup>❐</sup>][
 
 <samp>&nbsp;&nbsp;</samp>1 [<ins>Consumer Driven Contracts</ins>](#1-consumer-driven-contracts)<br>
 <samp>&nbsp;&nbsp;</samp>2 [<ins>Contributing</ins>](#2-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>3 [<ins>License</ins>](#3-license)<br>
+<samp>&nbsp;&nbsp;</samp>3 [<ins>Special Thanks</ins>](#3-special-thanks)<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>License</ins>](#4-license)<br>
 
 ### <b>1</b> <ins>Consumer Driven Contracts</ins>
 
@@ -187,7 +188,12 @@ Pull requests are welcome. For major changes, please [open an issue](../../../is
 
 Please make sure to update tests as appropriate.
 
-## <b>3</b> <ins>License</ins>
+## <b>3</b> <ins>Special Thanks</ins>
+
+[![Java Profiler](https://www.ej-technologies.com/images/product_banners/jprofiler_small.png)](https://www.ej-technologies.com/products/jprofiler/overview.html)
+<br><sub>_Special thanks to [EJ Technologies](https://www.ej-technologies.com/) for providing their award winning Java Profiler ([JProfiler](https://www.ej-technologies.com/products/jprofiler/overview.html)) for development of the JSONx Framework._</sub>
+
+## <b>4</b> <ins>License</ins>
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
