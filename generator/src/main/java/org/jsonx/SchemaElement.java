@@ -131,18 +131,13 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a {@link SchemaElement} from the contents of the specified
-   * {@code file}. The supported content formats are JSDx and JSD. If the
-   * supplied file is not in one of the supported formats, an
-   * {@link IllegalArgumentException} is thrown.
+   * Creates a {@link SchemaElement} from the contents of the specified {@code file}. The supported content formats are JSDx and
+   * JSD. If the supplied file is not in one of the supported formats, an {@link IllegalArgumentException} is thrown.
    *
    * @param url The file from which to read the contents.
-   * @param prefix The class name prefix to be prepended to the names of
-   *          generated JSD bindings.
-   * @return A {@link SchemaElement} from the contents of the specified
-   *         {@code file}.
-   * @throws IllegalArgumentException If the format of the content of the
-   *           specified file is malformed, or is not JSDx or JSD.
+   * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
+   * @return A {@link SchemaElement} from the contents of the specified {@code file}.
+   * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
    */
@@ -318,13 +313,14 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in
-   * the provided class loader.
+   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader.
    * <p>
    * This constructor is equivalent to calling:
    *
    * <pre>
-   * {@code new Schema(pkg, classLoader, null)}
+   * {@code
+   * new Schema(pkg, classLoader, null)
+   * }
    * </pre>
    *
    * @param pkg The package to be scanned for JSD bindings.
@@ -363,7 +359,9 @@ public final class SchemaElement extends Element implements Declarer {
    * This constructor is equivalent to calling:
    *
    * <pre>
-   * {@code new Schema(pkg, Thread.currentThread().getContextClassLoader(), null)}
+   * {@code
+   * new Schema(pkg, Thread.currentThread().getContextClassLoader(), null)
+   * }
    * </pre>
    *
    * @param pkg The package to be scanned for JSD bindings.
