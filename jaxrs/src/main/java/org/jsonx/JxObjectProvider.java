@@ -27,8 +27,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.inject.Singleton;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -127,10 +127,10 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       }
     }
     catch (final JsonParseException | DecodeException e) {
-      throw new BadRequestException(e);
+      throw new ProcessingException(e);
     }
 
-    throw new IllegalArgumentException("Unknown type: " + type.getName());
+    throw new ProcessingException("Unknown type: " + type.getName());
   }
 
   @Override
@@ -163,7 +163,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
     }
 
     if (bytes == null)
-      throw new IllegalArgumentException("Unknown type: " + rawType.getName());
+      throw new ProcessingException("Unknown type: " + rawType.getName());
 
     entityStream.write(bytes);
   }
