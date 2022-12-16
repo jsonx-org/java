@@ -22,46 +22,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.security.Permission;
 
-import org.junit.AfterClass;
 import org.junit.Test;
 import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
 
+import com.github.stefanbirkner.systemlambda.SystemLambda;
+
 public class ConverterTest {
-  private static boolean preventExit = true;
-
-  static {
-    System.setSecurityManager(new SecurityManager() {
-      @Override
-      public void checkPermission(final Permission permission) {
-        if (preventExit && permission.getName().startsWith("exitVM"))
-          throw new SecurityException();
-      }
-    });
-  }
-
-  @AfterClass
-  public static void afterClass() {
-    preventExit = false;
-  }
-
   @Test
-  public void testUsage() throws IOException {
-    try {
+  public void testUsage() throws Exception {
+    assertEquals(1, SystemLambda.catchSystemExit(() -> {
       Converter.main(Strings.EMPTY_ARRAY);
-      fail("Expected SecurityException");
-    }
-    catch (final SecurityException e) {
-    }
-
-    try {
-      Converter.main(Strings.EMPTY_ARRAY);
-      fail("Expected SecurityException");
-    }
-    catch (final SecurityException e) {
-    }
+    }));
   }
 
   @Test
@@ -71,7 +44,7 @@ public class ConverterTest {
   }
 
   @Test
-  public void testMain() throws IOException {
+  public void testMain() throws Exception {
     final File jsdFile = Files.createTempFile("jsd", null).toFile();
     jsdFile.deleteOnExit();
     Converter.main(new String[] {"src/test/resources/account.jsdx", jsdFile.getAbsolutePath()});
