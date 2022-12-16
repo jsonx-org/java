@@ -19,25 +19,30 @@ package org.jsonx;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.openjax.json.JsonReader;
 
 abstract class PrimitiveCodec extends Codec {
-  static Executable getMethod(final Map<String,Executable> codecToMethod, final String identifier, final Class<?> parameterType) {
+  static Executable getMethod(final HashMap<String,HashMap<String,Executable>> codecToMethod, final String identifier, final Class<?> parameterType) {
     if (identifier.isEmpty())
       return null;
 
-    final String key = identifier + "(" + parameterType.getName() + ")";
-    Executable method = codecToMethod.get(key);
-    if (method == null)
-      codecToMethod.put(key, method = JsdUtil.parseExecutable(identifier, parameterType));
+    Executable method;
+    final String parameterClassName = parameterType.getName();
+    HashMap<String,Executable> parameterTypeToMethod = codecToMethod.get(identifier);
+    if (parameterTypeToMethod == null) {
+      codecToMethod.put(identifier, parameterTypeToMethod = new HashMap<>(3));
+    }
+    else if ((method = parameterTypeToMethod.get(parameterClassName)) != null) {
+      return method;
+    }
 
+    parameterTypeToMethod.put(parameterClassName, method = JsdUtil.parseExecutable(identifier, parameterType));
     return method;
   }
 
-  static final Map<String,Executable> decodeToMethod = new HashMap<>();
-  static final Map<String,Executable> encodeToMethod = new HashMap<>();
+  static final HashMap<String,HashMap<String,Executable>> decodeToMethod = new HashMap<>();
+  static final HashMap<String,HashMap<String,Executable>> encodeToMethod = new HashMap<>();
 
   private final Class<?> type;
   private final Executable decode;
