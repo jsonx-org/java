@@ -23,17 +23,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
-
-import com.github.stefanbirkner.systemlambda.SystemLambda;
+import org.libj.util.function.Throwing;
 
 public class ConverterTest {
+  private static Runnable onFinished;
+
+  @AfterClass
+  public static void afterClass() {
+    onFinished.run();
+  }
+
   @Test
-  public void testUsage() throws Exception {
-    assertEquals(1, SystemLambda.catchSystemExit(() -> {
+  public void testUsage() throws Throwable {
+    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
       Converter.main(Strings.EMPTY_ARRAY);
+      fail("Expected System.exit()");
     }));
   }
 

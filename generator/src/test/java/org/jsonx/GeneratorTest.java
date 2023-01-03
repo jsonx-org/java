@@ -21,44 +21,33 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.security.Permission;
 
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.libj.lang.Strings;
+import org.libj.util.function.Throwing;
 
 public class GeneratorTest {
   private static final File destDir = new File("target/generated-test-sources/jsonx");
-  private static boolean preventExit = true;
-
-  static {
-    System.setSecurityManager(new SecurityManager() {
-      @Override
-      public void checkPermission(final Permission permission) {
-        if (preventExit && permission.getName().startsWith("exitVM"))
-          throw new SecurityException();
-      }
-    });
-  }
 
   private static File getFile(final String fileName) {
     final URL url = ClassLoader.getSystemClassLoader().getResource(fileName);
     return new File(url.getPath());
   }
 
+  private static Runnable onFinished;
+
   @AfterClass
   public static void afterClass() {
-    preventExit = false;
+    onFinished.run();
   }
 
   @Test
-  public void testUsage() throws IOException {
-    try {
+  public void testUsage() throws Throwable {
+    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
       Generator.main(Strings.EMPTY_ARRAY);
-      fail("Expected SecurityException");
-    }
-    catch (final SecurityException e) {
-    }
+      fail("Expected System.exit()");
+    }));
   }
 
   @Test
