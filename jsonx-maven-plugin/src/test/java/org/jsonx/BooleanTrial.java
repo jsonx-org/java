@@ -22,7 +22,7 @@ import java.util.Optional;
 
 final class BooleanTrial extends PropertyTrial<Boolean> {
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final BooleanProperty property) {
-    logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
+    if (logger.isDebugEnabled()) logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
     trials.add(new BooleanTrial(ValidCase.CASE, getMethod, setMethod, object, createValid(JsdUtil.getRealType(getMethod), property.decode()), property));
     if (getMethod.getReturnType().isPrimitive())
       return;

@@ -173,7 +173,7 @@ public class LibraryTest {
     library.setStaff(Collections.singletonList(createEmployee()));
 
     final String json = encoder.toString(library);
-    logger.info(json);
+    if (logger.isInfoEnabled()) logger.info(json);
     JxDecoder.VALIDATING.parseObject(Library.class, json);
   }
 

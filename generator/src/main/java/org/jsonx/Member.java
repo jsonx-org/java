@@ -222,10 +222,10 @@ abstract class Member extends Element {
       }
       catch (final ValidationException e) {
         preventDefault = true;
-        if (e.getCause() instanceof ClassNotFoundException)
-          logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
-        else
+        if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
+
+        if (logger.isWarnEnabled()) logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
       }
     }
 
@@ -236,10 +236,10 @@ abstract class Member extends Element {
       }
       catch (final ValidationException e) {
         preventDefault = true;
-        if (e.getCause() instanceof ClassNotFoundException)
-          logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
-        else
+        if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
+
+        if (logger.isWarnEnabled()) logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
       }
     }
 

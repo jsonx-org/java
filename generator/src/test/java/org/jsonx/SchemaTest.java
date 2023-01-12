@@ -99,22 +99,22 @@ public class SchemaTest {
       Validator.validate(xml);
     }
     catch (final SAXException e) {
-      logger.error(xml);
+      if (logger.isErrorEnabled()) logger.error(xml);
       throw e;
     }
   }
 
   private static SchemaElement testParseSchema(final Schema controlBinding, final String prefix, final String fileName) throws IOException, SAXException {
-    logger.info("  Parse XML...");
-    logger.info("    a) XML(1) -> Schema");
+    if (logger.isInfoEnabled()) logger.info("  Parse XML...");
+    if (logger.isInfoEnabled()) logger.info("    a) XML(1) -> Schema");
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
-    logger.info("    b) Schema -> XML(2)");
+    if (logger.isInfoEnabled()) logger.info("    b) Schema -> XML(2)");
     final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
-    logger.info("    c) Validate XML: c-" + fileName);
+    if (logger.isInfoEnabled()) logger.info("    c) Validate XML: c-" + fileName);
     validate(xml, "c-" + fileName);
 
     final Schema testBinding = (Schema)Bindings.parse(xml);
-    logger.info("    d) XML(1) == XML(2)");
+    if (logger.isInfoEnabled()) logger.info("    d) XML(1) == XML(2)");
     AssertXml.compare(controlBinding.toDOM(), testBinding.toDOM()).assertEqual(true);
     return controlSchema;
   }
@@ -217,11 +217,11 @@ public class SchemaTest {
     catch (final AssertionError e) {
       if (expected.size() < actual.size()) {
         actual.keySet().removeAll(expected.keySet());
-        logger.error(actual.toString());
+        if (logger.isErrorEnabled()) logger.error(actual.toString());
       }
       else {
         expected.keySet().removeAll(actual.keySet());
-        logger.error(expected.toString());
+        if (logger.isErrorEnabled()) logger.error(expected.toString());
       }
 
       throw e;
@@ -235,14 +235,14 @@ public class SchemaTest {
     final String packageName = packagePrefix + StringPaths.getSimpleName(fileName);
     final String prefix = packageName + ".";
 
-    logger.info(fileName + "...");
+    if (logger.isInfoEnabled()) logger.info(fileName + "...");
     final Schema controlBinding = (Schema)Bindings.parse(resource);
     if (testJson) {
       final String jsd = testJson(fileName, controlBinding, prefix);
       testConverter(jsd);
     }
 
-    logger.info("  4) Schema -> Java(1)");
+    if (logger.isInfoEnabled()) logger.info("  4) Schema -> Java(1)");
     final SchemaElement controlSchema = testParseSchema(controlBinding, prefix, fileName);
     final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
     if (test1Sources.size() > 0) {
@@ -250,20 +250,20 @@ public class SchemaTest {
       for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
         compiler.addSource(entry.getValue());
 
-      logger.info("  5) -- Java(1) Compile --");
+      if (logger.isInfoEnabled()) logger.info("  5) -- Java(1) Compile --");
       final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
-      logger.info("  6) Java(1) -> Schema");
+      if (logger.isInfoEnabled()) logger.info("  6) Java(1) -> Schema");
       final SchemaElement test1Schema = newSchema(classLoader, packageName);
-      logger.info("  7) Schema -> XML");
+      if (logger.isInfoEnabled()) logger.info("  7) Schema -> XML");
       final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
-      logger.info("  8) Validate XML: 8-" + fileName);
+      if (logger.isInfoEnabled()) logger.info("  8) Validate XML: 8-" + fileName);
       validate(xml, "8-" + fileName);
 
       final SchemaElement test2Schema = testParseSchema((Schema)Bindings.parse(xml), prefix, fileName);
-      logger.info("  9) Schema -> Java(2)");
+      if (logger.isInfoEnabled()) logger.info("  9) Schema -> Java(2)");
       final Map<String,String> test2Sources = test2Schema.toSource();
-      logger.info("  10) Java(1) == Java(2)");
+      if (logger.isInfoEnabled()) logger.info("  10) Java(1) == Java(2)");
       assertSources(test1Sources, test2Sources, false);
     }
 
@@ -279,7 +279,7 @@ public class SchemaTest {
       final String outFile = templateThreshold + "-" + fileName;
       final String outFile1 = "sa-" + outFile;
       final String outFile2 = "sb-" + outFile;
-      logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + " " + outFile2);
+      if (logger.isInfoEnabled()) logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + " " + outFile2);
       final Schema controlBinding = (Schema)Bindings.parse(resource);
       final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       final String xml1 = toXml(controlSchema, settings).toString();
@@ -321,14 +321,14 @@ public class SchemaTest {
 
   private static String testJson(final String fileName, final Schema controlBinding, final String prefix) throws DecodeException, IOException, SAXException {
     final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
-    logger.info("     testJson...");
+    if (logger.isInfoEnabled()) logger.info("     testJson...");
     final String outFile = fileName + ".jsd";
-    logger.info("       a) Schema -> JSON " + outFile);
+    if (logger.isInfoEnabled()) logger.info("       a) Schema -> JSON " + outFile);
     final String jsd = JSON.toString(controlSchema.toJson(), 2);
     writeJsonFile(outFile, jsd);
-    logger.info("       b) JSON -> Schema");
+    if (logger.isInfoEnabled()) logger.info("       b) JSON -> Schema");
     final SchemaElement schema = new SchemaElement(testParseSchema(jsd, true), prefix);
-    logger.info("       c) Schema -> XML(3)");
+    if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
     final String jsdx = toXml(schema, Settings.DEFAULT).toString();
     final Schema jsonBinding = (Schema)Bindings.parse(jsdx);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);

@@ -145,7 +145,7 @@ public class ArrayCodecTest {
     final Error error = ArrayValidator.validate(annotationType, members, relations, true, null);
     final Relations flatRelations = CollectionUtil.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
     final String errorString = error == null ? null : error.toString();
-    if (expected != null && errorString != null && !expected.equals(errorString)) {
+    if (expected != null && errorString != null && !expected.equals(errorString) && logger.isErrorEnabled()) {
       String msg = "\"" + Strings.escapeForJava(errorString) + "\"";
       msg = msg.replace('$', '.');
       msg = msg.replace(".class", "%class");
