@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -336,7 +335,7 @@ public class SchemaTest {
   }
 
   private static schema.Schema testParseSchema(final String jsd, final boolean test) throws DecodeException, IOException {
-    try (final JsonReader reader = new JsonReader(new StringReader(jsd))) {
+    try (final JsonReader reader = new JsonReader(jsd)) {
       final schema.Schema schema1 = JxDecoder.VALIDATING.parseObject(schema.Schema.class, reader);
       if (test) {
         final String jsd1 = schema1.toString();

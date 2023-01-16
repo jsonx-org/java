@@ -132,7 +132,7 @@ The `JxConverter` class contains utility methods for conversion of JSON document
 <ins>Example</ins>: Convert a JSON document to a JSONx document
 
 ```java
-JxConverter.jsonToXml(new JsonReader(new StringReader(json), false), true);
+JxConverter.jsonToXml(new JsonReader(json, false), true);
 ```
 
 <ins>Example</ins>: Convert a JSONx document to a JSON document

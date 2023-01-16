@@ -19,7 +19,6 @@ package org.jsonx;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -54,7 +53,7 @@ public class JxConverterTest {
   }
 
   private static void singleTest(final String json, final CountDownLatch latch, final AtomicBoolean failed) throws IOException, SAXException {
-    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(json), false), true);
+    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(json, false), true);
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
     try {
       final String test = JxConverter.jsonxToJson(url.openStream(), true);

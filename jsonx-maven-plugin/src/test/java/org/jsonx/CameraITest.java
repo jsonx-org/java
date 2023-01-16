@@ -17,7 +17,6 @@
 package org.jsonx;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 import org.junit.Test;
 import org.openjax.json.JsonReader;
@@ -30,7 +29,7 @@ public class CameraITest {
     JxEncoder.set(JxEncoder.VALIDATING._2);
     JxDecoder.set(JxDecoder.VALIDATING);
     final oz.Capture capture;
-    try (final JsonReader in = new JsonReader(new StringReader(json))) {
+    try (final JsonReader in = new JsonReader(json)) {
       capture = JxDecoder.get().parseObject(oz.Capture.class, in);
     }
 

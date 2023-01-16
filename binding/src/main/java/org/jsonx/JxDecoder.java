@@ -19,7 +19,6 @@ package org.jsonx;
 import static org.libj.lang.Assertions.*;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,7 +178,7 @@ public final class JxDecoder {
    * @throws JsonParseException If the content is not well formed.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException, JsonParseException {
-    try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
+    try (final JsonReader in = new JsonReader(json)) {
       return parseObject(type, in, onPropertyDecode);
     }
   }
@@ -211,7 +210,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code type} or {@code json} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json) throws DecodeException, IOException {
-    try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
+    try (final JsonReader in = new JsonReader(json)) {
       return parseObject(type, in);
     }
   }
@@ -260,7 +259,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code annotationType} or {@code json} is null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final String json) throws DecodeException, JsonParseException, IOException {
-    try (final JsonReader in = new JsonReader(new StringReader(assertNotNull(json)))) {
+    try (final JsonReader in = new JsonReader(json)) {
       return parseArray(annotationType, in);
     }
   }

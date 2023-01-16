@@ -17,7 +17,6 @@
 package org.jsonx.sample.cdc;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 import org.jsonx.DecodeException;
 import org.jsonx.JxDecoder;
@@ -26,7 +25,7 @@ import org.openjax.json.JsonReader;
 public class Consumer2 {
   public static Product2 getProductFromProducer() throws DecodeException, IOException {
     final String response = Producer.getProduct("v2");
-    try (final JsonReader reader = new JsonReader(new StringReader(response))) {
+    try (final JsonReader reader = new JsonReader(response)) {
       return JxDecoder.VALIDATING.parseObject(Product2.class, reader);
     }
   }

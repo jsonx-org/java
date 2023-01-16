@@ -18,7 +18,6 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -109,7 +108,7 @@ class ClassTrial extends Trial {
   }
 
   static void testJsonx(final String json) throws IOException, SAXException {
-    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(new StringReader(json)));
+    final String jsonx = JxConverter.jsonToJsonx(new JsonReader(json));
     final URL url = MemoryURLStreamHandler.createURL(jsonx.getBytes());
     try (final InputStream in = url.openStream()) {
       final String json2 = JxConverter.jsonxToJson(in, false);
@@ -201,7 +200,7 @@ class ClassTrial extends Trial {
     Exception exception = null;
     JxObject decoded = null;
     try {
-      decoded = JxDecoder.VALIDATING.parseObject(binding.getClass(), new JsonReader(new StringReader(json)), (o, n, v) -> {
+      decoded = JxDecoder.VALIDATING.parseObject(binding.getClass(), new JsonReader(json), (o, n, v) -> {
         if (n.equals(trial.name)) {
           if (object[0] != null)
             throw new IllegalStateException();

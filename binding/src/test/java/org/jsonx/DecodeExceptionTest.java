@@ -18,15 +18,13 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
-import java.io.StringReader;
-
 import org.junit.Test;
 import org.openjax.json.JsonReader;
 
 public class DecodeExceptionTest {
   private static final String message = "hello world";
   private static final int offset = 37;
-  private static final JsonReader reader = new JsonReader(new StringReader(message)) {
+  private static final JsonReader reader = new JsonReader(message) {
     @Override
     public int getPosition() {
       return offset + 1;
@@ -45,7 +43,7 @@ public class DecodeExceptionTest {
   public void testMessageOffset() {
     final String message = "hello world";
     final int offset = 37;
-    final JsonReader reader = new JsonReader(new StringReader(message)) {
+    final JsonReader reader = new JsonReader(message) {
       @Override
       public int getPosition() {
         return offset + 1;
