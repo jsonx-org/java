@@ -58,6 +58,10 @@ final class Id {
     this.id = assertNotNull(id);
   }
 
+  private Id(final char id) {
+    this.id = String.valueOf(id);
+  }
+
   @Override
   public boolean equals(final Object obj) {
     return obj == this || obj instanceof Id && toString().equals(obj.toString());

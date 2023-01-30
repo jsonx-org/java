@@ -229,8 +229,7 @@ final class ArrayValidator {
         error = iterator.validate(annotation, index, relations, idToElement, codecType, validate, onPropertyDecode);
       }
 
-      // System.err.println("m[" + index + "], a[" + a + "], o(" + minOccurs + ", " + maxOccurs + ")[" + occurrence + "], i(" +
-      // minIterate + ", " + maxIterate + ")[" + iteration + "]");
+      // System.err.println("m[" + index + "], a[" + a + "], o(" + minOccurs + ", " + maxOccurs + ")[" + occurrence + "], i(" + minIterate + ", " + maxIterate + ")[" + iteration + ']');
 
       try {
         // int before;

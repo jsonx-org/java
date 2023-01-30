@@ -41,6 +41,7 @@ import org.libj.jci.CompilationException;
 import org.libj.jci.InMemoryCompiler;
 import org.libj.lang.Classes;
 import org.libj.lang.PackageNotFoundException;
+import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
 import org.libj.net.URLs;
 import org.libj.test.AssertXml;
@@ -197,7 +198,7 @@ public class SchemaTest {
   private static String removeComments(final String source) {
     final StringBuilder builder = new StringBuilder(source);
     for (int end = source.length(), start; (end = builder.lastIndexOf(" **/\n", end)) != -1;) { // [N]
-      start = builder.lastIndexOf("\n", end - 5);
+      start = Strings.lastIndexOf(builder, '\n', end - 5);
       builder.delete(start, end + 4);
       end = start;
     }
@@ -232,7 +233,7 @@ public class SchemaTest {
   private static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String fileName = URLs.getName(resource);
     final String packageName = packagePrefix + StringPaths.getSimpleName(fileName);
-    final String prefix = packageName + ".";
+    final String prefix = packageName + '.';
 
     if (logger.isInfoEnabled()) logger.info(fileName + "...");
     final Schema controlBinding = (Schema)Bindings.parse(resource);
@@ -272,13 +273,13 @@ public class SchemaTest {
   private static void testSettings(final URL resource, final String fileName, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     for (int i = 0, i$ = SchemaTest.settings.size(); i < i$; ++i) { // [RA]
       final Settings settings = SchemaTest.settings.get(i);
-      final String prefix = packageName + ".";
+      final String prefix = packageName + '.';
       final int templateThreshold = settings.getTemplateThreshold();
 
-      final String outFile = templateThreshold + "-" + fileName;
+      final String outFile = templateThreshold + '-' + fileName;
       final String outFile1 = "sa-" + outFile;
       final String outFile2 = "sb-" + outFile;
-      if (logger.isInfoEnabled()) logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + " " + outFile2);
+      if (logger.isInfoEnabled()) logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + ' ' + outFile2);
       final Schema controlBinding = (Schema)Bindings.parse(resource);
       final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
       final String xml1 = toXml(controlSchema, settings).toString();

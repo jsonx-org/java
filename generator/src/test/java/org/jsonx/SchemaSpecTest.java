@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 public class SchemaSpecTest {
   public static void test(String version) throws IOException, SAXException {
     if (version.length() > 0)
-      version = "-" + version;
+      version = '-' + version;
 
     final URL testJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsdx");
     final String testJsd = Converter.jsdxToJsd(testJsdUrl);

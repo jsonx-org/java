@@ -21,7 +21,7 @@ final class RequiredNotNullableCase extends FailureCase<PropertyTrial<? super Ob
 
   @Override
   void onEncode(final JxObject binding, final PropertyTrial<? super Object> trial, final EncodeException e) throws Exception {
-    assertEquals("Property \"" + trial.name + "\" is required: " + trial.getMethod.getDeclaringClass().getName() + "." + trial.getMethod.getName() + "()", e.getMessage());
+    assertEquals("Property \"" + trial.name + "\" is required: " + trial.getMethod.getDeclaringClass().getName() + '.' + trial.getMethod.getName() + "()", e.getMessage());
   }
 
   @Override

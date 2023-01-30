@@ -77,7 +77,7 @@ class AnnotationType {
           }
         }
         else {
-          final Object fixedDefaultValue = defaultValue != null && entry.getValue() instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
+          final Object fixedDefaultValue = defaultValue != null && entry.getValue() instanceof String ? '"' + defaultValue.toString() + '"' : defaultValue;
           if (!Objects.equals(fixedDefaultValue, entry.getValue()))
             builder.append(entry.getKey()).append('=').append(entry.getValue());
         }

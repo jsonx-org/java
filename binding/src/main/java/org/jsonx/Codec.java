@@ -39,9 +39,9 @@ abstract class Codec {
   final Class<?> genericType;
 
   Codec(final Method getMethod, final Method setMethod, final String name, final boolean nullable, final Use use) {
-    this.getMethod = getMethod;
-    this.setMethod = setMethod;
-    this.name = name;
+    this.getMethod = assertNotNull(getMethod);
+    this.setMethod = assertNotNull(setMethod);
+    this.name = assertNotNull(name);
     if (isMap = Map.class.isAssignableFrom(getMethod.getReturnType())) {
       this.isOptional = use == Use.OPTIONAL;
       this.genericType = assertNotNull(Classes.getGenericParameters(getMethod)[1]);
@@ -70,7 +70,7 @@ abstract class Codec {
     try {
       if (isMap) {
         if (value != null && !genericType.isInstance(value))
-          throw new ValidationException(object.getClass().getName() + "." + getMethod.getName() + "() is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
+          throw new ValidationException(object.getClass().getName() + '.' + getMethod.getName() + "() is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value);
 
         Map<String,Object> map = (Map<String,Object>)getMethod.invoke(object);
         if (map == null)
@@ -99,7 +99,7 @@ abstract class Codec {
     }
     catch (final IllegalArgumentException e) {
       if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
-        throw new ValidationException(object.getClass().getName() + "." + getMethod.getName() + "():" + getMethod.getReturnType().getName() + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value, e);
+        throw new ValidationException(object.getClass().getName() + '.' + getMethod.getName() + "():" + getMethod.getReturnType().getName() + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value, e);
 
       throw new UnsupportedOperationException(e);
     }

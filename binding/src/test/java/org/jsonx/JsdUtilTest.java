@@ -37,7 +37,7 @@ import org.junit.Test;
 
 public class JsdUtilTest {
   @SuppressWarnings("unused")
-  private static class TestObject implements JxObject {
+  private static class TestObject1 implements JxObject {
     public Object _any;
 
     @AnyProperty(name="any")
@@ -82,14 +82,14 @@ public class JsdUtilTest {
       this._number = _number;
     }
 
-    public TestObject _object;
+    public TestObject1 _object;
 
     @ObjectProperty(name="object")
-    public TestObject getObject() {
+    public TestObject1 getObject() {
       return this._object;
     }
 
-    public void setObject(final TestObject _object) {
+    public void setObject(final TestObject1 _object) {
       this._object = _object;
     }
 
@@ -105,8 +105,77 @@ public class JsdUtilTest {
     }
   }
 
+  @SuppressWarnings("unused")
+  private static class TestObject2 implements JxObject {
+    public Object _any;
+
+    @AnyProperty(name="any")
+    public Object any() {
+      return this._any;
+    }
+
+    public void any(final Object _any) {
+      this._any = _any;
+    }
+
+    public List<?> _array;
+
+    @ArrayProperty(name="array")
+    public List<?> array() {
+      return this._array;
+    }
+
+    public void array(final List<?> _array) {
+      this._array = _array;
+    }
+
+    public Boolean _boolean;
+
+    @BooleanProperty(name="boolean")
+    public Boolean _boolean() {
+      return this._boolean;
+    }
+
+    public void _boolean(final Boolean _boolean) {
+      this._boolean = _boolean;
+    }
+
+    public BigInteger _number;
+
+    @NumberProperty(name="number")
+    public BigInteger number() {
+      return this._number;
+    }
+
+    public void number(final BigInteger _number) {
+      this._number = _number;
+    }
+
+    public TestObject2 _object;
+
+    @ObjectProperty(name="object")
+    public TestObject2 object() {
+      return this._object;
+    }
+
+    public void object(final TestObject2 _object) {
+      this._object = _object;
+    }
+
+    public String _string;
+
+    @StringProperty(name="string")
+    public String string() {
+      return this._string;
+    }
+
+    public void string(final String _string) {
+      this._string = _string;
+    }
+  }
+
   private static void testGetField(final String name) throws NoSuchMethodException {
-    final Method getMethod = getMethod(TestObject.class, name);
+    final Method getMethod = getMethod(TestObject1.class, name);
     final String propertyName = JsdUtil.getName(getMethod);
     assertEquals(name, propertyName);
   }
@@ -189,5 +258,33 @@ public class JsdUtilTest {
     assertEquals("invalidAnnotation", JsdUtil.getName(getMethod(Num.class, "invalidAnnotation")));
     assertEquals("invalidAnnotationType", JsdUtil.getName(getMethod(ArrAnnotationType.class, "invalidAnnotationType")));
     assertEquals("address", JsdUtil.getName(getMethod(Library.class, "address")));
+  }
+
+  private static void assertSetMethod(final String name, final Method method, final Class<?> type) {
+    assertEquals(name, method.getName());
+    assertEquals(1, method.getParameterCount());
+    assertEquals(type, method.getParameterTypes()[0]);
+  }
+
+  @Test
+  public void testFindSetMethod1() throws NoSuchMethodException {
+    final Method[] declaredMethods = TestObject1.class.getDeclaredMethods();
+    assertSetMethod("setAny", JsdUtil.findSetMethod(declaredMethods, TestObject1.class.getDeclaredMethod("getAny")), Object.class);
+    assertSetMethod("setArray", JsdUtil.findSetMethod(declaredMethods, TestObject1.class.getDeclaredMethod("getArray")), List.class);
+    assertSetMethod("setBoolean", JsdUtil.findSetMethod(declaredMethods, TestObject1.class.getDeclaredMethod("getBoolean")), Boolean.class);
+    assertSetMethod("setNumber", JsdUtil.findSetMethod(declaredMethods, TestObject1.class.getDeclaredMethod("getNumber")), BigInteger.class);
+    assertSetMethod("setObject", JsdUtil.findSetMethod(declaredMethods, TestObject1.class.getDeclaredMethod("getObject")), TestObject1.class);
+    assertSetMethod("setString", JsdUtil.findSetMethod(declaredMethods, TestObject1.class.getDeclaredMethod("getString")), String.class);
+  }
+
+  @Test
+  public void testFindSetMethod2() throws NoSuchMethodException {
+    final Method[] declaredMethods = TestObject2.class.getDeclaredMethods();
+    assertSetMethod("any", JsdUtil.findSetMethod(declaredMethods, TestObject2.class.getDeclaredMethod("any")), Object.class);
+    assertSetMethod("array", JsdUtil.findSetMethod(declaredMethods, TestObject2.class.getDeclaredMethod("array")), List.class);
+    assertSetMethod("_boolean", JsdUtil.findSetMethod(declaredMethods, TestObject2.class.getDeclaredMethod("_boolean")), Boolean.class);
+    assertSetMethod("number", JsdUtil.findSetMethod(declaredMethods, TestObject2.class.getDeclaredMethod("number")), BigInteger.class);
+    assertSetMethod("object", JsdUtil.findSetMethod(declaredMethods, TestObject2.class.getDeclaredMethod("object")), TestObject2.class);
+    assertSetMethod("string", JsdUtil.findSetMethod(declaredMethods, TestObject2.class.getDeclaredMethod("string")), String.class);
   }
 }

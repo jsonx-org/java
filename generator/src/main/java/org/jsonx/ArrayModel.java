@@ -194,7 +194,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final Method getMethod, final String fieldName) {
-    final String declaringTypeName = getMethod.getDeclaringClass().getName() + "." + fieldName;
+    final String declaringTypeName = getMethod.getDeclaringClass().getName() + '.' + fieldName;
     if (!isAssignable(getMethod, true, List.class, false, property.nullable(), property.use()))
       throw new IllegalAnnotationException(property, declaringTypeName + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of List<?> type with use=\"required\" or nullable=false, or of Optional<? extends List<?>> type with use=\"optional\" and nullable=true");
 
@@ -249,7 +249,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   private void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
     writeIterateClauses(attributes);
-    attributes.put("elementIds", indices.length == 0 ? "{}" : "{" + ArrayUtil.toString(indices, ", ") + "}");
+    attributes.put("elementIds", indices.length == 0 ? "{}" : '{' + ArrayUtil.toString(indices, ", ") + '}');
   }
 
   private static ArrayList<Member> parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember xsb) {
@@ -349,7 +349,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private ArrayModel(final Registry registry, final Declarer declarer, final $Array.Array xsb) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
     if (this.maxOccurs.get != null && this.minOccurs.get != null && this.minOccurs.get > this.maxOccurs.get)
-      throw new ValidationException(Bindings.getXPath(xsb, elementXPath) + ": minOccurs=\"" + this.minOccurs.get + "\" > maxOccurs=\"" + this.maxOccurs.get + "\"");
+      throw new ValidationException(Bindings.getXPath(xsb, elementXPath) + ": minOccurs=\"" + this.minOccurs.get + "\" > maxOccurs=\"" + this.maxOccurs.get + '"');
 
     this.members = parseMembers(registry, this, xsb);
     this.minIterate = parseIterate(xsb.getMinIterate$().text());

@@ -164,7 +164,7 @@ final class Binding {
           classCase = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
         }
         else {
-          throw new ValidationException("\"" + fieldName + "\" is not a valid identifier as defined in the Java Language Specification");
+          throw new ValidationException('"' + fieldName + "\" is not a valid identifier as defined in the Java Language Specification");
         }
 
         this.classCase = JsdUtil.fixReserved(classCase);

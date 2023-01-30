@@ -21,7 +21,7 @@ final class PatternCase extends FailureCase<StringTrial> {
 
   @Override
   void onEncode(final JxObject binding, final StringTrial trial, final EncodeException e) throws Exception {
-    assertTrue(trial.name + " " + e.getMessage(), e.getMessage().contains(" Pattern does not match: "));
+    assertTrue(trial.name + ' ' + e.getMessage(), e.getMessage().contains(" Pattern does not match: "));
   }
 
   @Override

@@ -76,7 +76,7 @@ final class JsdUtil {
 
   static String toInstanceName(String name) {
     name = toIdentifier(name, false);
-    return Arrays.binarySearch(reservedWords, name) < 0 ? name : "_" + name;
+    return Arrays.binarySearch(reservedWords, name) < 0 ? name : '_' + name;
   }
 
   static String getFieldName(final Method getMethod) {
@@ -104,14 +104,22 @@ final class JsdUtil {
   }
 
   static String getFullyQualifiedMethodName(final Method getMethod) {
-    return getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "()";
+    return getMethod.getDeclaringClass().getName() + '.' + getMethod.getName() + "()";
   }
 
   static Method findSetMethod(final Method[] methods, final Method getMethod) {
     final String getMethodName = getMethod.getName();
-    final String setMethodName = getMethodName.startsWith("get") ? "set" + getMethodName.substring(3) : getMethodName;
-    for (final Method method : methods) // [A]
-      if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == getMethod.getReturnType() && setMethodName.equals(method.getName()))
+    final int len0 = getMethodName.length();
+    final int len1 = len0 - 1;
+    char firstChar = getMethodName.charAt(0);
+    final char ch3;
+    if (len1 > 2 && firstChar == 'g' && getMethodName.charAt(1) == 'e' && getMethodName.charAt(2) == 't' && (Character.isUpperCase(ch3 = getMethodName.charAt(3)) || !Character.isAlphabetic(ch3)))
+      firstChar = 's';
+
+    final Class<?> returnType = getMethod.getReturnType();
+    String setMethodName;
+    for (final Method method : methods)
+      if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == returnType && (setMethodName = method.getName()).length() == len0 && setMethodName.charAt(0) == firstChar && setMethodName.regionMatches(1, getMethodName, 1, len1))
         return method;
 
     return null;
@@ -120,7 +128,7 @@ final class JsdUtil {
   static int[] digest(final Method getMethod, final IdToElement idToElement) {
     final ArrayProperty property = getMethod.getAnnotation(ArrayProperty.class);
     if (property == null)
-      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedMethodName(getMethod));
+      throw new IllegalArgumentException('@' + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedMethodName(getMethod));
 
     if (property.type() != ArrayType.class)
       return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
@@ -350,7 +358,7 @@ final class JsdUtil {
       if ("this".equals(className)) {
         method = Classes.getCompatibleMethod(parameterType, methodName);
         if (method != null && Modifier.isStatic(method.getModifiers()))
-          throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) is static");
+          throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) is static");
       }
       else {
         final Class<?> cls = Class.forName(className);
@@ -360,7 +368,7 @@ final class JsdUtil {
         else {
           method = Classes.getCompatibleMethod(cls, methodName, parameterType);
           if (method != null && !Modifier.isStatic(method.getModifiers()))
-            throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) is not static");
+            throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) is not static");
         }
       }
 
@@ -368,10 +376,10 @@ final class JsdUtil {
         return method;
     }
     catch (final ClassNotFoundException e) {
-      throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found", e);
+      throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) was not found", e);
     }
 
-    throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found");
+    throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) was not found");
   }
 
   static Class<?> getReturnType(final Executable executable) {

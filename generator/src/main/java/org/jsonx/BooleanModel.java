@@ -243,7 +243,7 @@ final class BooleanModel extends Model {
     final boolean hasDecode = typeBinding != null && typeBinding.decode != null;
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
     if (!isAssignable(getMethod, true, hasDecode ? null : defaultClass(), false, property.nullable(), property.use()) && !isAssignable(getMethod, true, CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + '.' + getMethod.getName() + "(): @" + BooleanProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
 
     validateTypeBinding();
   }

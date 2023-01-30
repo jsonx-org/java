@@ -48,7 +48,7 @@ class IdToElement extends ObservableMap<Integer,Annotation> {
   @Override
   protected Object beforePut(final Integer key, final Annotation oldValue, final Annotation newValue, final Object preventDefault) {
     if (oldValue != null)
-      throw new ValidationException("Duplicate id=" + key + " found in {" + oldValue + ", " + newValue + "}");
+      throw new ValidationException("Duplicate id=" + key + " found in {" + oldValue + ", " + newValue + '}');
 
     return newValue;
   }

@@ -172,7 +172,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Method getMethod, final String fieldName) {
     if (!isAssignable(getMethod, true, JxObject.class, false, property.nullable(), property.use()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + ObjectProperty.class.getSimpleName() + " can only be applied to fields of JxObject type with use=\"required\" or nullable=false, or of Optional<? extends JxObject> type with use=\"optional\" and nullable=true");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + '.' + fieldName + ": @" + ObjectProperty.class.getSimpleName() + " can only be applied to fields of JxObject type with use=\"required\" or nullable=false, or of Optional<? extends JxObject> type with use=\"optional\" and nullable=true");
 
     final Class<?> cls = JsdUtil.getRealType(getMethod);
     final Id id = Id.named(cls);
@@ -287,7 +287,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     private Member getOverride() {
       if (!overrideSet)
-        throw new IllegalStateException("Override was not set for: " + member.declarer.id() + " -> " + member.name() + " (" + member.id() + ")");
+        throw new IllegalStateException("Override was not set for: " + member.declarer.id() + " -> " + member.name() + " (" + member.id() + ')');
 
       return override;
     }
@@ -399,7 +399,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           property.setOverride(superProperty.member);
         else {
           superProperty.member.isAssignableFrom(property.member);
-          throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
+          throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + '.' + entry.getKey() + " overrides " + property.member.name() + '.' + entry.getKey() + " with incompatible type");
         }
       }
     }
@@ -475,7 +475,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
         if (reference == null)
           reference = next;
         else if (next != null)
-          throw new ValidationException(getMethod.getDeclaringClass().getName() + "." + field + " specifies multiple parameter annotations: [" + reference.elementName() + ", " + next.elementName() + "]");
+          throw new ValidationException(getMethod.getDeclaringClass().getName() + '.' + field + " specifies multiple parameter annotations: [" + reference.elementName() + ", " + next.elementName() + ']');
       }
 
       if (reference != null) {
@@ -630,7 +630,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   String sortKey() {
-    return "z" + type().getName();
+    return 'z' + type().getName();
   }
 
   @Override
@@ -804,11 +804,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
           final Member member = property.member;
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
           if (!isOptionalType && member.type().isArray())
-            builder.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(")");
+            builder.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(')');
           else if (!isOptionalType && member.type().isPrimitive())
             builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != that.").append(member.fieldBinding.instanceCase);
           else
-            builder.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(")");
+            builder.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(')');
 
           builder.append(")\n    return false;\n");
         }
@@ -831,7 +831,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
 
           final String indent = !isPrimitive || member.type().isArray() ? "    " : "  ";
-          final String header = "\n" + indent + "hashCode = 31 * hashCode + ";
+          final String header = '\n' + indent + "hashCode = 31 * hashCode + ";
 
           if (!isPrimitive || member.type().isArray())
             builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != null)");

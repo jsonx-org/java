@@ -135,12 +135,12 @@ class Registry {
       if (isArray)
         compositeName = compositeName.substring(0, compositeName.length() - 2);
 
-      this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compositeName.substring(0, dot) : packageName + "." + compositeName.substring(0, dot);
+      this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compositeName.substring(0, dot) : packageName + '.' + compositeName.substring(0, dot);
       this.compositeName = compositeName;
-      this.name = defaultPackage ? compositeName : packageName + "." + compositeName;
+      this.name = defaultPackage ? compositeName : packageName + '.' + compositeName;
       this.canonicalCompositeName = Classes.toCanonicalClassName(compositeName);
       this.simpleName = canonicalCompositeName.substring(canonicalCompositeName.lastIndexOf('.') + 1);
-      this.canonicalName = defaultPackage ? canonicalCompositeName : packageName + "." + canonicalCompositeName;
+      this.canonicalName = defaultPackage ? canonicalCompositeName : packageName + '.' + canonicalCompositeName;
       this.cls = Classes.forNameOrNull(name, false, ClassLoader.getSystemClassLoader());
       if (superType == null && this.cls != null && this.cls != Object.class) {
         superType = cls.getSuperclass() == null ? null : getType(cls.getSuperclass());
@@ -252,9 +252,9 @@ class Registry {
         return isPrimitive() ? getWrapper().getName() : getName();
 
       if (!isPrimitive)
-        return "[L" + getName() + ";";
+        return "[L" + getName() + ';';
 
-      return "[" + getName().substring(0, 1).toUpperCase();
+      return '[' + getName().substring(0, 1).toUpperCase();
     }
 
     boolean isPrimitive() {

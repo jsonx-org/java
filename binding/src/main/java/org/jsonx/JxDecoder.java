@@ -149,7 +149,7 @@ public final class JxDecoder {
     final int off = Composite.decodeInt(point, 0);
     final char c0 = reader.bufToChar(off);
     if (c0 != '{')
-      throw new DecodeException("Expected '{', but got '" + point + "'", reader, null, messageFunction);
+      throw new DecodeException("Expected '{', but got '" + point + '"', reader, null, messageFunction);
 
     final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
     if (!(object instanceof Error))
@@ -234,7 +234,7 @@ public final class JxDecoder {
     final int off = Composite.decodeInt(point, 0);
     final char c0 = reader.bufToChar(off);
     if (c0 != '[')
-      throw new DecodeException("Expected '[', but got '" + reader.bufToString(off, Composite.decodeInt(point, 1)) + "'", reader, null, messageFunction);
+      throw new DecodeException("Expected '[', but got '" + reader.bufToString(off, Composite.decodeInt(point, 1)) + '\'', reader, null, messageFunction);
 
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);

@@ -244,7 +244,7 @@ final class NumberModel extends Model {
   }
 
   private static ValidationException createValidationException(final Class<?> cls, final String range, final ParseException e) {
-    throw new ValidationException(cls.getName() + " Invalid range=\"" + range + "\"", e);
+    throw new ValidationException(cls.getName() + " Invalid range=\"" + range + '"', e);
   }
 
   private static int parseScale(final $NumberMember.Scale$ scale) {
@@ -309,7 +309,7 @@ final class NumberModel extends Model {
     super(registry, declarer, Id.hashed("n", typeBinding, property.scale(), parseRange(property.range(), null)), property.nullable(), property.use(), fieldName, typeBinding);
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
     if (!isAssignable(getMethod, true, defaultClass(), false, property.nullable(), property.use()) && !isAssignable(getMethod, true, CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + '.' + getMethod.getName() + "(): @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.scale = property.scale();
     final Class<?> type = validateTypeBinding();
@@ -391,7 +391,7 @@ final class NumberModel extends Model {
       attributes.put("scale", scale);
 
     if (range != null)
-      attributes.put("range", "\"" + range.toString() + "\"");
+      attributes.put("range", '"' + range.toString() + '"');
 
     final Registry.Type type = type();
     if (type != null && (owner instanceof AnyModel || owner instanceof ArrayModel))
