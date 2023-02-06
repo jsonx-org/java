@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
-import org.libj.util.ArrayUtil;
 import org.libj.util.Patterns;
 
 /**
@@ -359,15 +358,28 @@ public class JxEncoder {
     return null;
   }
 
+  private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
+    @Override
+    Method[] getMethods(final Class<? extends JxObject> cls) {
+      return cls.getMethods();
+    }
+
+    @Override
+    public boolean test(final Method method) {
+      return !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
+    }
+
+    @Override
+    void beforePut(final Method[] methods) {
+      Classes.sortDeclarativeOrder(methods);
+    }
+  };
+
   Error toString(final JxObject object, final OnEncode onEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
-    final Method[] methods = object.getClass().getMethods();
-    Classes.sortDeclarativeOrder(methods);
+    final Method[] methods = classToOrderedMethods.get(object.getClass());
     for (final Method getMethod : methods) { // [A]
-      if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
-        continue;
-
       Annotation annotation = null;
       String name = null;
       boolean nullable = false;
@@ -467,16 +479,22 @@ public class JxEncoder {
       }
     }
 
-    if (indent > 0)
-      builder.append('\n').append(ArrayUtil.createRepeat(' ', (depth - 1) * 2));
+    if (indent > 0) {
+      builder.append('\n');
+      for (int i = 0, $i = (depth - 1) * 2; i < $i; ++i)
+        builder.append(' ');
+    }
 
     builder.append('}');
     return null;
   }
 
   private Error appendValue(final StringBuilder builder, final String name, final Object value, final Method getMethod, final Annotation annotation, final OnEncode onEncode, final int depth) {
-    if (indent > 0)
-      builder.append('\n').append(ArrayUtil.createRepeat(' ', depth * 2));
+    if (indent > 0) {
+      builder.append('\n');
+      for (int i = 0, $i = depth * 2; i < $i; ++i)
+        builder.append(' ');
+    }
 
     builder.append('"').append(name).append('"').append(colon);
     final int start = builder.length();

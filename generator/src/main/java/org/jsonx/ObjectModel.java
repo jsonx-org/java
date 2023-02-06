@@ -437,6 +437,23 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
+  private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
+    @Override
+    Method[] getMethods(final Class<? extends JxObject> cls) {
+      return cls.getDeclaredMethods();
+    }
+
+    @Override
+    public boolean test(final Method method) {
+      return Modifier.isPublic(method.getModifiers()) && !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
+    }
+
+    @Override
+    void beforePut(final Method[] methods) {
+      Classes.sortDeclarativeOrder(methods);
+    }
+  };
+
   private ObjectModel(final Registry registry, final Declarer declarer, final Class<?> cls, final Boolean nullable, final Use use, final String fieldName) {
     super(registry, declarer, nullable, use, fieldName, registry.getType(cls));
     final Class<?> superClass = cls.getSuperclass();
@@ -446,12 +463,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     this.cls = cls;
     this.getMethodToPropertySpec = new HashMap<>();
-    final Method[] methods = cls.getDeclaredMethods();
-    Classes.sortDeclarativeOrder(methods);
-    for (final Method getMethod : methods) { // [A]
-      if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
-        continue;
-
+    for (final Method getMethod : classToOrderedMethods.get(cls)) { // [A]
       Member reference = null;
       Annotation annotation = null;
       final Annotation[] annotations = getMethod.getAnnotations();
@@ -497,12 +509,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   void resolveOverrides() {
     if (cls != null) {
-      final Method[] methods = cls.getDeclaredMethods();
-      Classes.sortDeclarativeOrder(methods);
-      for (final Method getMethod : methods) { // [A]
-        if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
-          continue;
-
+      for (final Method getMethod : classToOrderedMethods.get(cls)) { // [A]
         // Find the "get" methods that do not have fields declared in `cls`
         final PropertySpec superPropertySpec = getSuperObjectProperty(getMethod);
         if (superPropertySpec == null)

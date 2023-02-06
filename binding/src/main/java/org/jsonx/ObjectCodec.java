@@ -128,8 +128,7 @@ class ObjectCodec extends Codec {
 
       // If this {...} contained properties, check each method of the target object
       // to ensure that no properties are missing (i.e. use=required).
-      final Method[] methods = type.getMethods();
-      for (final Method getMethod : methods) { // [A]
+      for (final Method getMethod : type.getMethods()) { // [A]
         if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
           continue;
 
