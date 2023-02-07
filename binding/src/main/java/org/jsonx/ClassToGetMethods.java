@@ -36,7 +36,7 @@ abstract class ClassToGetMethods extends HashMap<Class<? extends JxObject>,Metho
     return getMethods;
   }
 
-  abstract Method[] getMethods(final Class<? extends JxObject> cls);
+  abstract Method[] getMethods(Class<? extends JxObject> cls);
 
   @Override
   @SuppressWarnings("unchecked")
