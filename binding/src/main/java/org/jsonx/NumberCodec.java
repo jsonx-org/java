@@ -68,8 +68,9 @@ class NumberCodec extends PrimitiveCodec {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
+    final Class<?> cls = object.getClass();
     if (validate && (scale != Integer.MAX_VALUE || (range != null && !range.isEmpty()))) {
-      if (!Classes.isAssignableFrom(Number.class, object.getClass()))
+      if (!Classes.isAssignableFrom(Number.class, cls))
         throw new ValidationException("Invalid array member: " + annotation + ": Value conditions can only be defined if \"type\" is a subclass of: " + Number.class.getName());
 
       final Error error = NumberCodec.validate(annotation, (Number)object, scale, range, type);
@@ -77,7 +78,7 @@ class NumberCodec extends PrimitiveCodec {
         return error;
     }
 
-    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    final Executable method = getMethod(encodeToMethod, encode, cls);
     if (method != null)
       object = JsdUtil.invoke(method, object);
 
@@ -86,7 +87,8 @@ class NumberCodec extends PrimitiveCodec {
   }
 
   static Object encodeObject(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException, ValidationException {
-    if (!Classes.isInstance(type, object))
+    final Class<?> cls = object.getClass();
+    if (!Classes.isAssignableFrom(type, cls, true))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     if (validate && object instanceof Number) {
@@ -95,7 +97,7 @@ class NumberCodec extends PrimitiveCodec {
         return error;
     }
 
-    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
+    final Executable method = getMethod(encodeToMethod, encode, cls);
     if (method != null)
       object = JsdUtil.invoke(method, object);
 

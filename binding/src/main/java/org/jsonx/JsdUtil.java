@@ -84,7 +84,8 @@ final class JsdUtil {
   }
 
   static Class<?> getRealType(final Method getMethod) {
-    return getMethod.getReturnType() == Optional.class ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
+    final Class<?> returnType = getMethod.getReturnType();
+    return returnType == Optional.class ? Classes.getGenericParameters(getMethod)[0] : returnType;
   }
 
   static String flipName(String name) {
@@ -133,7 +134,7 @@ final class JsdUtil {
     if (property.type() != ArrayType.class)
       return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
 
-    return digest(getMethod.getAnnotations(), getFullyQualifiedMethodName(getMethod), idToElement);
+    return digest(Classes.getAnnotations(getMethod), getFullyQualifiedMethodName(getMethod), idToElement);
   }
 
   static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
@@ -272,7 +273,7 @@ final class JsdUtil {
   }
 
   static String getName(final Method getMethod) {
-    for (final Annotation annotation : getMethod.getAnnotations()) { // [A]
+    for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
       if (annotation instanceof AnyProperty)
         return ((AnyProperty)annotation).name();
 

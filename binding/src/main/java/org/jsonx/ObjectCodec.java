@@ -188,7 +188,7 @@ class ObjectCodec extends Codec {
       if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;
 
-      for (final Annotation annotation : getMethod.getAnnotations()) { // [A]
+      for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
         if (annotation instanceof AnyProperty)
           propertyToCodec.add(new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
         else if (annotation instanceof ArrayProperty)

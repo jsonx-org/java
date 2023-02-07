@@ -163,19 +163,12 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
     }
     else if (t instanceof List) {
       for (final Annotation annotation : annotations) { // [A]
-        final Class<? extends Annotation> annotationType;
-        if (ArrayProperty.class.equals(annotation.annotationType())) {
-          annotationType = annotation.annotationType();
-        }
-        else {
-          final ArrayType arrayType = annotation.annotationType().getDeclaredAnnotation(ArrayType.class);
-          annotationType = arrayType == null ? null : annotation.annotationType();
-        }
+        final Class<? extends Annotation> annotationType = annotation.annotationType();
+        if (!ArrayProperty.class.equals(annotationType) && annotationType.getDeclaredAnnotation(ArrayType.class) == null)
+          continue;
 
-        if (annotationType != null) {
-          json = getEncoder().toString((List<?>)t, annotationType);
-          break;
-        }
+        json = getEncoder().toString((List<?>)t, annotationType);
+        break;
       }
     }
 

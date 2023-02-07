@@ -40,6 +40,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.AnnotationParameterException;
+import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.util.ArrayUtil;
 import org.libj.util.CollectionUtil;
@@ -198,7 +199,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (!isAssignable(getMethod, true, List.class, false, property.nullable(), property.use()))
       throw new IllegalAnnotationException(property, declaringTypeName + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of List<?> type with use=\"required\" or nullable=false, or of Optional<? extends List<?>> type with use=\"optional\" and nullable=true");
 
-    return referenceOrDeclare(registry, referrer, property, fieldName, getMethod.getAnnotations(), declaringTypeName);
+    return referenceOrDeclare(registry, referrer, property, fieldName, Classes.getAnnotations(getMethod), declaringTypeName);
   }
 
   private static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final String fieldName, final Annotation[] fieldAnnotations, final String declaringTypeName) {

@@ -466,7 +466,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     for (final Method getMethod : classToOrderedMethods.get(cls)) { // [A]
       Member reference = null;
       Annotation annotation = null;
-      final Annotation[] annotations = getMethod.getAnnotations();
+      final Annotation[] annotations = Classes.getAnnotations(getMethod);
       for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
         annotation = annotations[i];
         Member next = null;

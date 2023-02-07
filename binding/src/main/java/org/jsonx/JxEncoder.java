@@ -196,22 +196,22 @@ public class JxEncoder {
 
   private static Object getValue(final Object object, final Method getMethod, final Annotation annotation, final String propertyName, final Use use) {
     try {
-      if (annotation instanceof AnyProperty && Map.class.isAssignableFrom(getMethod.getReturnType())) {
-        final Map<?,?> map = (Map<?,?>)getMethod.invoke(object);
-        if (map == null)
-          return null;
+      final Object value = getMethod.invoke(object);
+      if (value == null)
+        return null;
 
-        if (map.size() > 0) {
-          final Pattern pattern = Patterns.compile(propertyName, Pattern.DOTALL);
-          for (final Object key : map.keySet()) // [S]
-            if (key instanceof String && pattern.matcher((String)key).matches())
-              return map;
-        }
+      if (!(annotation instanceof AnyProperty) || !Map.class.isAssignableFrom(getMethod.getReturnType()))
+        return value;
 
-        return use == Use.OPTIONAL ? map : null;
+      final Map<?,?> map = (Map<?,?>)value;
+      if (map.size() > 0) {
+        final Pattern pattern = Patterns.compile(propertyName, Pattern.DOTALL);
+        for (final Object key : map.keySet()) // [S]
+          if (key instanceof String && pattern.matcher((String)key).matches())
+            return map;
       }
 
-      return getMethod.invoke(object);
+      return use == Use.OPTIONAL ? map : null;
     }
     catch (final IllegalAccessException e) {
       throw new RuntimeException(e);
@@ -238,17 +238,7 @@ public class JxEncoder {
       return null;
     }
 
-    final Class<?> type;
-    final boolean isOptional;
-    if (getMethod == null) {
-      isOptional = false;
-      type = object.getClass();
-    }
-    else {
-      isOptional = getMethod.getReturnType() == Optional.class;
-      type = isOptional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
-    }
-
+    final boolean isOptional = getMethod != null && getMethod.getReturnType() == Optional.class;
     final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
 
     if (annotation instanceof ObjectProperty || annotation instanceof ObjectElement) {
@@ -269,6 +259,8 @@ public class JxEncoder {
       encoded = StringCodec.encodeObject(annotation, getMethod, property.pattern(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
     }
     else {
+      @SuppressWarnings("null")
+      final Class<?> type = getMethod == null ? object.getClass() : isOptional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
       throw new UnsupportedOperationException("Unsupported type: " + type.getName());
     }
 
@@ -341,6 +333,8 @@ public class JxEncoder {
       final Error error;
       if (annotation instanceof ArrayElement || annotation instanceof ArrayType || annotation instanceof AnyElement && member instanceof Relations) {
         error = encodeArray(getMethod, (Relations)member, builder, depth);
+        if (error != null)
+          return error;
       }
       else if (annotation instanceof AnyElement) {
         error = null;
@@ -348,10 +342,9 @@ public class JxEncoder {
       }
       else {
         error = encodeNonArray(null, annotation, member, builder, depth);
+        if (error != null)
+          return error;
       }
-
-      if (error != null)
-        return error;
     }
 
     builder.append(']');
@@ -378,13 +371,12 @@ public class JxEncoder {
   Error toString(final JxObject object, final OnEncode onEncode, final StringBuilder builder, final int depth) {
     builder.append('{');
     boolean hasProperties = false;
-    final Method[] methods = classToOrderedMethods.get(object.getClass());
-    for (final Method getMethod : methods) { // [A]
+    for (final Method getMethod : classToOrderedMethods.get(object.getClass())) { // [A]
       Annotation annotation = null;
       String name = null;
       boolean nullable = false;
       Use use = null;
-      final Annotation[] annotations = getMethod.getAnnotations();
+      final Annotation[] annotations = Classes.getAnnotations(getMethod);
       for (int j = 0, j$ = annotations.length; j < j$; ++j) { // [A]
         annotation = annotations[j];
         if (annotation instanceof AnyProperty) {
@@ -431,18 +423,19 @@ public class JxEncoder {
         }
       }
 
-      if (nullable && use == Use.OPTIONAL && getMethod.getReturnType() != Optional.class)
+      final Class<?> returnType = getMethod.getReturnType();
+      if (nullable && use == Use.OPTIONAL && returnType != Optional.class)
         throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true && use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
 
-      if (getMethod.getReturnType().isPrimitive() && (nullable || use == Use.OPTIONAL))
-        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type: " + getMethod.getReturnType());
+      if (returnType.isPrimitive() && (nullable || use == Use.OPTIONAL))
+        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type: " + returnType);
 
       if (name == null)
         continue;
 
       final Object value = getValue(object, getMethod, annotation, name, use);
       if (value != null || nullable && use == Use.REQUIRED) {
-        if (!Map.class.isAssignableFrom(getMethod.getReturnType())) {
+        if (!Map.class.isAssignableFrom(returnType)) {
           if (hasProperties)
             builder.append(comma);
 
