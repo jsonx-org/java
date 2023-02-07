@@ -18,13 +18,24 @@ package org.jsonx;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Objects;
 
 import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
 import org.openjax.json.JsonUtil;
 
-public class Range implements Cloneable, Serializable {
+public class Range implements Serializable {
+  private static final HashMap<String,Range> instances = new HashMap<>();
+
+  public static Range from(final String string, final Class<?> type) throws ParseException {
+    Range range = instances.get(string);
+    if (range == null)
+      instances.put(string, range = new Range(string, type));
+
+    return range;
+  }
+
   private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int start, final boolean commaOk) throws ParseException {
     try {
       for (int i = start, end = string.length() - 1; i < end; ++i) { // [N]
@@ -39,7 +50,7 @@ public class Range implements Cloneable, Serializable {
         builder.append(ch);
       }
 
-      return builder.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, builder.toString());
+      return builder.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, builder);
     }
     catch (final NumberFormatException e) {
       final ParseException pe = new ParseException(string, start);
@@ -48,27 +59,24 @@ public class Range implements Cloneable, Serializable {
     }
   }
 
-  private static void checkType(final String string, final BigDecimal value, final Class<?> type) {
-    if (value.signum() == 0 || !type.isPrimitive() && !Number.class.isAssignableFrom(type))
+  private static void checkType(final String string, final Number value, final Class<?> type) {
+    final int signum;
+    if (!type.isPrimitive() && !Number.class.isAssignableFrom(type) || (signum = Numbers.signum(value)) == 0)
       return;
 
-    long limit;
+    final long limit;
     if (type == Long.class || type == long.class)
-      limit = Long.MAX_VALUE;
+      limit = signum == -1 ? Long.MIN_VALUE : Long.MAX_VALUE;
     else if (type == Integer.class || type == int.class)
-      limit = Integer.MAX_VALUE;
+      limit = signum == -1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
     else if (type == Short.class || type == short.class)
-      limit = Short.MAX_VALUE;
+      limit = signum == -1 ? Short.MIN_VALUE : Short.MAX_VALUE;
     else if (type == Byte.class || type == byte.class)
-      limit = Byte.MAX_VALUE;
+      limit = signum == -1 ? Byte.MIN_VALUE : Byte.MAX_VALUE;
     else
       return;
 
-    limit *= value.signum();
-    if (value.signum() == -1)
-      limit -= 1;
-
-    if (Numbers.compare(value, limit) == value.signum())
+    if (Numbers.compare(value, limit) == signum)
       throw new IllegalArgumentException(string + " defines a range that cannot be represented by " + type.getCanonicalName());
   }
 
@@ -97,16 +105,18 @@ public class Range implements Cloneable, Serializable {
   private final boolean minInclusive;
   private final BigDecimal max;
   private final boolean maxInclusive;
+  private final String toString;
 
-  public Range(final BigDecimal min, final boolean minInclusive, final BigDecimal max, final boolean maxInclusive, final Class<?> type) {
+  Range(final BigDecimal min, final boolean minInclusive, final BigDecimal max, final boolean maxInclusive, final Class<?> type) {
     this.min = min;
     this.minInclusive = minInclusive;
     this.max = max;
     this.maxInclusive = maxInclusive;
+    this.toString = getString();
     checkMinMax(toString(), type);
   }
 
-  public Range(final String string, final Class<?> type) throws ParseException {
+  private Range(final String string, final Class<?> type) throws ParseException {
     if (string.length() < 4)
       throw new IllegalArgumentException("Range min length is 4, but was " + string.length() + (string.length() > 0 ? ": " + string : ""));
 
@@ -127,39 +137,46 @@ public class Range implements Cloneable, Serializable {
     if (!(this.maxInclusive = ch == ']') && ch != ')')
       throw new ParseException("Missing ']' or ')' in string: \"" + string + '"', 0);
 
+    this.toString = getString();
     checkMinMax(string, type);
   }
 
+  private String getString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append(minInclusive ? '[' : '(');
+    if (min != null)
+      builder.append(min);
+
+    builder.append(',');
+    if (max != null)
+      builder.append(max);
+
+    builder.append(maxInclusive ? ']' : ')');
+    return builder.toString();
+  }
+
   public BigDecimal getMin() {
-    return this.min;
+    return min;
   }
 
   public boolean isMinInclusive() {
-    return this.minInclusive;
+    return minInclusive;
   }
 
   public BigDecimal getMax() {
-    return this.max;
+    return max;
   }
 
   public boolean isMaxInclusive() {
-    return this.maxInclusive;
+    return maxInclusive;
   }
 
   public boolean isValid(final Number value) {
     final boolean minValid = min == null || Integer.compare(Numbers.compare(min, value), 0) < (minInclusive ? 1 : 0);
-    final boolean maxValid = max == null || Integer.compare(Numbers.compare(value, max), 0) < (maxInclusive ? 1 : 0);
-    return minValid && maxValid;
-  }
+    if (!minValid)
+      return false;
 
-  @Override
-  public Range clone() {
-    try {
-      return (Range)super.clone();
-    }
-    catch (final CloneNotSupportedException e) {
-      throw new RuntimeException(e);
-    }
+    return max == null || Integer.compare(Numbers.compare(value, max), 0) < (maxInclusive ? 1 : 0);
   }
 
   @Override
@@ -202,16 +219,6 @@ public class Range implements Cloneable, Serializable {
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(minInclusive ? '[' : '(');
-    if (min != null)
-      builder.append(min);
-
-    builder.append(',');
-    if (max != null)
-      builder.append(max);
-
-    builder.append(maxInclusive ? ']' : ')');
-    return builder.toString();
+    return toString;
   }
 }

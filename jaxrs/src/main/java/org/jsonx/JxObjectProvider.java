@@ -22,20 +22,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.channels.Channels;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.libj.io.Streams;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
@@ -48,6 +54,17 @@ import org.openjax.json.JsonReader;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
+  private static final int bufferSize = Streams.DEFAULT_SOCKET_BUFFER_SIZE;
+  private static final Charset defaultCharset = StandardCharsets.UTF_8;
+
+  protected static Charset getCharset(final MediaType mediaType) {
+    if (mediaType == null)
+      return defaultCharset;
+
+    final String charsetParameter = mediaType.getParameters().get(MediaType.CHARSET_PARAMETER);
+    return charsetParameter != null && Charset.isSupported(charsetParameter) ? Charset.forName(charsetParameter) : defaultCharset;
+  }
+
   private final JxEncoder encoder;
   private final JxDecoder decoder;
 
@@ -140,9 +157,9 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
 
   @Override
   public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
-    byte[] bytes = null;
+    String json = null;
     if (t instanceof JxObject) {
-      bytes = getEncoder().toString((JxObject)t).getBytes();
+      json = getEncoder().toString((JxObject)t);
     }
     else if (t instanceof List) {
       for (final Annotation annotation : annotations) { // [A]
@@ -156,15 +173,25 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
         }
 
         if (annotationType != null) {
-          bytes = getEncoder().toString((List<?>)t, annotationType).getBytes();
+          json = getEncoder().toString((List<?>)t, annotationType);
           break;
         }
       }
     }
 
-    if (bytes == null)
+    if (json == null)
       throw new ProcessingException("Unknown type: " + rawType.getName());
 
-    entityStream.write(bytes);
+    final Charset charset = getCharset(mediaType);
+    if (bufferSize < json.length()) {
+      final Writer writer = Channels.newWriter(Channels.newChannel(entityStream), charset.newEncoder(), bufferSize);
+      writer.write(json);
+      writer.flush();
+    }
+    else {
+      final byte[] bytes = json.getBytes(charset);
+      httpHeaders.putSingle(HttpHeaders.CONTENT_LENGTH, bytes.length);
+      entityStream.write(bytes);
+    }
   }
 }

@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.libj.lang.ParseException;
 import org.openjax.json.JsonParseException;
 
-@SuppressWarnings("unused")
 public class RangeTest {
   static void assertEquals(final String message, final Object expected, final Object actual) {
     Assert.assertEquals(message, expected, actual);
@@ -42,14 +41,14 @@ public class RangeTest {
   @Test
   public void test() throws ParseException {
     try {
-      new Range(null, null);
+      Range.from(null, null);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
     try {
-      new Range("", null);
+      Range.from("", null);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
@@ -57,7 +56,7 @@ public class RangeTest {
     }
 
     try {
-      new Range("4323", null);
+      Range.from("4323", null);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -65,7 +64,7 @@ public class RangeTest {
     }
 
     try {
-      new Range("[4323", null);
+      Range.from("[4323", null);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -73,7 +72,7 @@ public class RangeTest {
     }
 
     try {
-      new Range("[4323]", null);
+      Range.from("[4323]", null);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -81,7 +80,7 @@ public class RangeTest {
     }
 
     try {
-      new Range("[,,4323]", null);
+      Range.from("[,,4323]", null);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -89,7 +88,7 @@ public class RangeTest {
     }
 
     try {
-      new Range("[10,1]", null);
+      Range.from("[10,1]", null);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
@@ -97,42 +96,41 @@ public class RangeTest {
     }
 
     try {
-      new Range("(10,10]", null);
+      Range.from("(10,10]", null);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
       assertEquals("(10,10] defines an empty range", e.getMessage());
     }
 
-    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, true, byte.class), new Range("[1,10]", byte.class));
-    assertEquals(new Range(BigDecimal.ONE, false, BigDecimal.TEN, true, short.class), new Range("(1,10]", short.class));
-    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, false, int.class), new Range("[1,10)", int.class));
-    assertEquals(new Range(BigDecimal.ONE, false, BigDecimal.TEN, false, BigInteger.class), new Range("(1,10)", BigInteger.class));
-    assertEquals(new Range(BigDecimal.TEN, true, BigDecimal.TEN, true, byte.class), new Range("[10,10]", byte.class));
+    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, true, byte.class), Range.from("[1,10]", byte.class));
+    assertEquals(new Range(BigDecimal.ONE, false, BigDecimal.TEN, true, short.class), Range.from("(1,10]", short.class));
+    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, false, int.class), Range.from("[1,10)", int.class));
+    assertEquals(new Range(BigDecimal.ONE, false, BigDecimal.TEN, false, BigInteger.class), Range.from("(1,10)", BigInteger.class));
+    assertEquals(new Range(BigDecimal.TEN, true, BigDecimal.TEN, true, byte.class), Range.from("[10,10]", byte.class));
 
-    assertEquals(new Range(null, true, BigDecimal.TEN, true, short.class), new Range("[,10]", short.class));
-    assertEquals(new Range(BigDecimal.TEN, true, null, true, int.class), new Range("[10,]", int.class));
+    assertEquals(new Range(null, true, BigDecimal.TEN, true, short.class), Range.from("[,10]", short.class));
+    assertEquals(new Range(BigDecimal.TEN, true, null, true, int.class), Range.from("[10,]", int.class));
 
-    final Range range = new Range("[10,10]", byte.class);
+    final Range range = Range.from("[10,10]", byte.class);
     assertEquals(BigDecimal.valueOf(10), range.getMin());
     assertTrue(range.isMinInclusive());
     assertEquals(BigDecimal.valueOf(10), range.getMax());
     assertTrue(range.isMaxInclusive());
     assertEquals(range, range);
-    assertEquals(range, range.clone());
     assertNotEquals("", range);
   }
 
   private static void assertPass(final Class<? extends Number> type, final String ... values) throws ParseException {
     for (int i = 0, i$ = values.length; i < i$; ++i) // [A]
-      new Range(values[i], type);
+      Range.from(values[i], type);
   }
 
   @SafeVarargs
   private static void assertFail(final String[] values, final Class<? extends Number> type, final Class<? extends Exception> ... exceptions) throws ParseException {
     for (int i = 0, i$ = values.length; i < i$; ++i) { // [A]
       try {
-        new Range(values[i], type);
+        Range.from(values[i], type);
         fail("Expected " + Arrays.toString(exceptions) + ": " + values[i]);
       }
       catch (final Exception e) {

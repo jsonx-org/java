@@ -252,7 +252,7 @@ final class NumberModel extends Model {
   }
 
   private static Range parseRange(final String range, final Class<?> type) throws ParseException {
-    return range == null || range.length() == 0 ? null : new Range(range, type);
+    return range == null || range.length() == 0 ? null : Range.from(range, type);
   }
 
   private static Range parseRange(final $NumberMember.Range$ range, final Class<?> type) throws ParseException {

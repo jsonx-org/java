@@ -114,7 +114,7 @@ class NumberCodec extends PrimitiveCodec {
 
     if (range.length() > 0) {
       try {
-        if (!new Range(range, type).isValid(object))
+        if (!Range.from(range, type).isValid(object))
           return Error.RANGE_NOT_MATCHED(range, object, null);
       }
       catch (final ParseException e) {
@@ -136,7 +136,7 @@ class NumberCodec extends PrimitiveCodec {
     }
     else {
       try {
-        this.range = new Range(property.range(), JsdUtil.getRealType(getMethod));
+        this.range = Range.from(property.range(), JsdUtil.getRealType(getMethod));
       }
       catch (final ParseException e) {
         throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES, true), e);
