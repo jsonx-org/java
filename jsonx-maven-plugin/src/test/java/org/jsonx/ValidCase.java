@@ -30,7 +30,7 @@ import org.openjax.json.JsonUtil;
 
 final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   static final ValidCase<Object> CASE = new ValidCase<>();
-  private static final String listDelimiter = ',' + Strings.repeat(' ', JxEncoder.get().indent);
+  private static final String listDelimiter = "," + Strings.repeat(' ', JxEncoder.get().indent);
 
   private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
     final int i$ = list.size();
@@ -72,7 +72,7 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
     }
     else if (trial.value() instanceof List) {
       final List<Object> list = format((List<?>)trial.value(), relations, true);
-      expected = '[' + CollectionUtil.toString(list, listDelimiter) + ']';
+      expected = "[" + CollectionUtil.toString(list, listDelimiter) + "]";
     }
     else if (trial.isStringDefaultType) {
       expected = StringCodec.encodeObject(trial.encodedValue() == null ? null : String.valueOf(trial.encodedValue()));
@@ -90,7 +90,7 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
         throw new IllegalStateException("Expected a '}' character at the end of the encoding of a binding object: " + value);
 
       final int nl = value.lastIndexOf('\n');
-      actual = value.replace('\n' + Strings.repeat(' ', value.length() - nl - 2), "\n");
+      actual = value.replace("\n" + Strings.repeat(' ', value.length() - nl - 2), "\n");
     }
     else {
       actual = value;

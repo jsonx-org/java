@@ -263,7 +263,7 @@ final class StringModel extends Model {
     final boolean hasDecode = typeBinding != null && typeBinding.decode != null;
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
     if (!isAssignable(getMethod, true, hasDecode ? null : CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + '.' + getMethod.getName() + "(): @" + StringProperty.class.getSimpleName() + " can only be applied to fields of Object types with use=\"required\" or nullable=false, of Optional<Object> type with use=\"optional\" and nullable=true");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + StringProperty.class.getSimpleName() + " can only be applied to fields of Object types with use=\"required\" or nullable=false, of Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.pattern = parseString(property.pattern());
     validateTypeBinding();
@@ -323,6 +323,6 @@ final class StringModel extends Model {
   void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     if (pattern != null)
-      attributes.put("pattern", '"' + Strings.escapeForJava(pattern) + '"');
+      attributes.put("pattern", "\"" + Strings.escapeForJava(pattern) + "\"");
   }
 }

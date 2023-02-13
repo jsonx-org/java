@@ -44,7 +44,7 @@ public class Range implements Serializable {
           if (commaOk)
             break;
 
-          throw new ParseException("Illegal ',' in string: \"" + string + '"', i);
+          throw new ParseException("Illegal ',' in string: \"" + string + "\"", i);
         }
 
         builder.append(ch);
@@ -86,7 +86,7 @@ public class Range implements Serializable {
 
     final int compare = min.compareTo(max);
     if (compare > 0)
-      throw new IllegalArgumentException("min=\"" + min + "\" > max=\"" + max + '"');
+      throw new IllegalArgumentException("min=\"" + min + "\" > max=\"" + max + "\"");
 
     if (compare == 0 && minInclusive != maxInclusive)
       throw new IllegalArgumentException(string + " defines an empty range");
@@ -122,20 +122,20 @@ public class Range implements Serializable {
 
     char ch = string.charAt(0);
     if (!(this.minInclusive = ch == '[') && ch != '(')
-      throw new ParseException("Missing '[' or '(' in string: \"" + string + '"', 0);
+      throw new ParseException("Missing '[' or '(' in string: \"" + string + "\"", 0);
 
     final StringBuilder builder = new StringBuilder();
     this.min = parseNumber(builder, string, 1, true);
     final int length = builder.length() + 1;
     if (string.charAt(length) != ',')
-      throw new ParseException("Missing ',' in string: \"" + string + '"', length + 1);
+      throw new ParseException("Missing ',' in string: \"" + string + "\"", length + 1);
 
     builder.setLength(0);
     this.max = parseNumber(builder, string, length + 1, false);
 
     ch = string.charAt(string.length() - 1);
     if (!(this.maxInclusive = ch == ']') && ch != ')')
-      throw new ParseException("Missing ']' or ')' in string: \"" + string + '"', 0);
+      throw new ParseException("Missing ']' or ')' in string: \"" + string + "\"", 0);
 
     this.toString = getString();
     checkMinMax(string, type);

@@ -178,7 +178,7 @@ final class Error {
         else if (arg instanceof Annotation)
           obj = Annotations.toSortedString((Annotation)arg, JsdUtil.ATTRIBUTES, true);
         else if (arg instanceof Method)
-          obj = ((Method)arg).getDeclaringClass().getName() + '.' + ((Method)arg).getName() + "()";
+          obj = ((Method)arg).getDeclaringClass().getName() + "." + ((Method)arg).getName() + "()";
         else if (arg instanceof Class)
           obj = ((Class<?>)arg).getSimpleName();
         else if (arg instanceof Error)

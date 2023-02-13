@@ -146,7 +146,7 @@ public class ArrayCodecTest {
     final Relations flatRelations = CollectionUtil.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
     final String errorString = error == null ? null : error.toString();
     if (expected != null && errorString != null && !expected.equals(errorString) && logger.isErrorEnabled()) {
-      String msg = '"' + Strings.escapeForJava(errorString) + '"';
+      String msg = "\"" + Strings.escapeForJava(errorString) + "\"";
       msg = msg.replace('$', '.');
       msg = msg.replace(".class", "%class");
       msg = msg.replaceAll("org\\.openjax\\.[.a-zA-Z]+\\.([a-zA-Z0-9]+)", "\" + $1.class.getName() + \"");
@@ -167,14 +167,14 @@ public class ArrayCodecTest {
       if (!debugPass) {
         for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
           final Relation relation = flatRelations.get(i);
-          assertEquals(i + ": " + flatRelations.toString(), annotations[i], relation.annotation);
+          assertEquals(i + ": " + flatRelations, annotations[i], relation.annotation);
           final Object member = flatMembers.get(i);
           if (relation.member instanceof Relations) {
             assertTrue(member instanceof List);
             assertMembersEqual((List<?>)member, (Relations)relation.member);
           }
           else {
-            assertEquals(member instanceof String ? '"' + member.toString() + '"' : member, relation.member);
+            assertEquals(member instanceof String ? "\"" + member + "\"" : member, relation.member);
           }
         }
       }
@@ -197,7 +197,7 @@ public class ArrayCodecTest {
         assertMembersEqual((List<?>)member, (Relations)relation.member);
       }
       else {
-        assertEquals(member instanceof String ? '"' + member.toString() + '"' : member, relation.member);
+        assertEquals(member instanceof String ? "\"" + member + "\"" : member, relation.member);
       }
     }
   }

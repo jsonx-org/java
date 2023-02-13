@@ -190,10 +190,10 @@ final class AnyModel extends Referrer<AnyModel> {
     final Class<?> requiredFieldType = property.types().length == 0 ? defaultClass() : getFieldType(property.types());
     final boolean isRegex = isMultiRegex(property.name());
     if (isRegex && !Map.class.isAssignableFrom(getMethod.getReturnType()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + '.' + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
 
     if (!isAssignable(getMethod, true, requiredFieldType, isRegex, property.nullable(), property.use()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + '.' + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
 
     validateTypeBinding();
   }
@@ -266,21 +266,21 @@ final class AnyModel extends Referrer<AnyModel> {
 
       if (AnyType.isEnabled(type.booleans())) {
         if (member != null)
-          throw new ValidationException('@' + t.class.getName() + " specifies 2 types: \"booleans\" and \"" + member.elementName() + "s\"");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"booleans\" and \"" + member.elementName() + "s\"");
 
         member = BooleanModel.referenceOrDeclare(registry, this, type.booleans());
       }
 
       if (AnyType.isEnabled(type.numbers())) {
         if (member != null)
-          throw new ValidationException('@' + t.class.getName() + " specifies 2 types: \"numbers\" and \"" + member.elementName() + "s\"");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"numbers\" and \"" + member.elementName() + "s\"");
 
         member = NumberModel.referenceOrDeclare(registry, this, type.numbers());
       }
 
       if (AnyType.isEnabled(type.objects())) {
         if (member != null)
-          throw new ValidationException('@' + t.class.getName() + " specifies 2 types: \"objects\" and \"" + member.elementName() + "s\"");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"objects\" and \"" + member.elementName() + "s\"");
 
         member = ObjectModel.referenceOrDeclare(registry, this, new ObjectElement() {
           @Override
@@ -317,7 +317,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
       if (AnyType.isEnabled(type.strings())) {
         if (member != null)
-          throw new ValidationException('@' + t.class.getName() + " specifies 2 types: \"strings\" and \"" + member.elementName() + "s\"");
+          throw new ValidationException("@" + t.class.getName() + " specifies 2 types: \"strings\" and \"" + member.elementName() + "s\"");
 
         member = StringModel.referenceOrDeclare(registry, this, new StringElement() {
           @Override
@@ -368,7 +368,7 @@ final class AnyModel extends Referrer<AnyModel> {
       }
 
       if (member == null)
-        throw new ValidationException('@' + t.class.getName() + " does not specify a type");
+        throw new ValidationException("@" + t.class.getName() + " does not specify a type");
 
       members.add(member);
     }
@@ -448,10 +448,10 @@ final class AnyModel extends Referrer<AnyModel> {
     for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
       final Member type = types.get(i);
       if (type instanceof ArrayModel) {
-        values.add('@' + t.class.getName() + "(arrays=" + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
+        values.add("@" + t.class.getName() + "(arrays=" + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
       }
       else if (type instanceof ObjectModel) {
-        values.add('@' + t.class.getName() + "(objects=" + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
+        values.add("@" + t.class.getName() + "(objects=" + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
       }
       else if (type instanceof BooleanModel || type instanceof NumberModel || type instanceof StringModel) {
         final Model model = (Model)type;
@@ -477,7 +477,7 @@ final class AnyModel extends Referrer<AnyModel> {
           builder.append(')');
         }
 
-        values.add('@' + t.class.getName() + '(' + type.elementName() + "s=" + builder.toString() + ')');
+        values.add("@" + t.class.getName() + "(" + type.elementName() + "s=" + builder + ")");
       }
       else {
         throw new UnsupportedOperationException("Unsupported type: " + type.getClass().getName());

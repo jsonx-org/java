@@ -123,14 +123,14 @@ abstract class Member extends Element {
   static Integer parseMaxCardinality(final BigInteger minCardinality, final $MaxOccurs maxCardinality, final String name, final Integer dflt) {
     final Integer max = "unbounded".equals(maxCardinality.text()) ? Integer.MAX_VALUE : Integer.parseInt(maxCardinality.text());
     if (minCardinality.intValue() > max)
-      throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + '=' + minCardinality + " and @max" + name + '=' + maxCardinality.text() + ']');
+      throw new ValidationException("min" + name + "=\"" + minCardinality + "\" > max" + name + "=\"" + max + "\"\n" + Bindings.getXPath(((Attribute)maxCardinality).owner(), elementXPath) + "[@min" + name + "=" + minCardinality + " and @max" + name + "=" + maxCardinality.text() + "]");
 
     return max.equals(dflt) ? null : max;
   }
 
   private static void checkMinMaxOccurs(final String source, final Integer minOccurs, final Integer maxOccurs) {
     if (minOccurs != null && maxOccurs != null && minOccurs > maxOccurs)
-      throw new ValidationException(source + ": minOccurs=\"" + minOccurs + "\" > maxOccurs=\"" + maxOccurs + '"');
+      throw new ValidationException(source + ": minOccurs=\"" + minOccurs + "\" > maxOccurs=\"" + maxOccurs + "\"");
   }
 
   static boolean isMultiRegex(final String str) {
@@ -147,7 +147,7 @@ abstract class Member extends Element {
     if (!(member.declarer() instanceof SchemaElement)) {
       builder.append(JsdUtil.flipName(member.declarer().id().toString()));
       if (!member.declarer().displayName().isEmpty())
-        builder.append(" (" + member.declarer().displayName() + ')');
+        builder.append(" (" + member.declarer().displayName() + ")");
     }
 
     if (builder.length() > 0)
@@ -193,7 +193,7 @@ abstract class Member extends Element {
 
   private String nameForException() {
     final String displayName = displayName();
-    return displayName.length() > 0 ? '"' + displayName + '"' : "member";
+    return displayName.length() > 0 ? "\"" + displayName + "\"" : "member";
   }
 
   final Class<?> validateTypeBinding() {
@@ -203,13 +203,13 @@ abstract class Member extends Element {
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
     if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
       if (use.set == Use.OPTIONAL)
-        throw new ValidationException('"' + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
       if (!(declarer instanceof SchemaElement) && nullable.get == null && !hasDecodeBinding)
-        throw new ValidationException('"' + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
       if (declarer instanceof AnyModel)
-        throw new ValidationException('"' + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
     }
 
     // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence
@@ -325,7 +325,7 @@ abstract class Member extends Element {
       attributes.put("nullable", nullable.get);
 
     if (use.get != null)
-      attributes.put("use", Use.class.getName() + '.' + use.get);
+      attributes.put("use", Use.class.getName() + "." + use.get);
 
     if (minOccurs.get != null)
       attributes.put("minOccurs", String.valueOf(minOccurs.get));
@@ -334,10 +334,10 @@ abstract class Member extends Element {
       attributes.put("maxOccurs", String.valueOf(maxOccurs.get));
 
     if (typeBinding != null && typeBinding.decode != null)
-      attributes.put("decode", '"' + typeBinding.decode + '"');
+      attributes.put("decode", "\"" + typeBinding.decode + "\"");
 
     if (typeBinding != null && typeBinding.encode != null)
-      attributes.put("encode", '"' + typeBinding.encode + '"');
+      attributes.put("encode", "\"" + typeBinding.encode + "\"");
 
     // Only put "type" in root object definitions, array members, and not references
     if ((declarer instanceof SchemaElement || declarer instanceof ArrayModel) && !(owner instanceof Reference) && typeBinding() != null)
@@ -375,7 +375,7 @@ abstract class Member extends Element {
       final AttributeMap attributes = new AttributeMap();
       toAnnotationAttributes(attributes, this);
       if (!attributes.containsKey("name"))
-        attributes.put("name", '"' + Strings.escapeForJava(name()) + '"');
+        attributes.put("name", "\"" + Strings.escapeForJava(name()) + "\"");
 
       final AnnotationType annotationType = new AnnotationType(propertyAnnotation(), attributes);
       if (override == null || isArrayOverride(override))

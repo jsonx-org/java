@@ -175,7 +175,7 @@ class ClassTrial extends Trial {
     }
     catch (final Throwable t) {
 //      invoke(trial);
-      if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onEncode(" + trial.getMethod.getDeclaringClass().getSimpleName() + '.' + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ')');
+      if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onEncode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
       if (logger.isErrorEnabled()) {
         logger.error("  Value: " + Strings.indent(String.valueOf(value), 2));
         logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
@@ -224,7 +224,7 @@ class ClassTrial extends Trial {
       ++count;
     }
     catch (final Throwable t) {
-      if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onDecode(" + trial.getMethod.getDeclaringClass().getSimpleName() + '.' + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ')');
+      if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onDecode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
       logger.error("  Value: " + Strings.indent(String.valueOf(object[0]), 2));
       logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
       logger.error(t.getMessage(), t);
@@ -257,7 +257,7 @@ class ClassTrial extends Trial {
     }
     else if (trial.kase instanceof FailureCase) {
       if (e == null)
-        assertNotNull(trial.kase.getClass().getSimpleName() + ' ' + trial.name + ' ' + value, e);
+        assertNotNull(trial.kase.getClass().getSimpleName() + " " + trial.name + " " + value, e);
       else if (!(e instanceof EncodeException))
         throw e;
 
@@ -277,7 +277,7 @@ class ClassTrial extends Trial {
       return ((SuccessCase<PropertyTrial<T>>)trial.kase).onDecode(trial, relations, value);
     }
     else if (trial.kase instanceof FailureCase) {
-      assertNotNull(trial.kase.getClass().getSimpleName() + ' ' + trial.name + ' ' + value, e);
+      assertNotNull(trial.kase.getClass().getSimpleName() + " " + trial.name + " " + value, e);
       if (!(e instanceof DecodeException))
         throw e;
 

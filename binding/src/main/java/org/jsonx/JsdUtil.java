@@ -76,7 +76,7 @@ final class JsdUtil {
 
   static String toInstanceName(String name) {
     name = toIdentifier(name, false);
-    return Arrays.binarySearch(reservedWords, name) < 0 ? name : '_' + name;
+    return Arrays.binarySearch(reservedWords, name) < 0 ? name : "_" + name;
   }
 
   static String getFieldName(final Method getMethod) {
@@ -105,7 +105,7 @@ final class JsdUtil {
   }
 
   static String getFullyQualifiedMethodName(final Method getMethod) {
-    return getMethod.getDeclaringClass().getName() + '.' + getMethod.getName() + "()";
+    return getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "()";
   }
 
   static Method findSetMethod(final Method[] methods, final Method getMethod) {
@@ -129,7 +129,7 @@ final class JsdUtil {
   static int[] digest(final Method getMethod, final IdToElement idToElement) {
     final ArrayProperty property = getMethod.getAnnotation(ArrayProperty.class);
     if (property == null)
-      throw new IllegalArgumentException('@' + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedMethodName(getMethod));
+      throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedMethodName(getMethod));
 
     if (property.type() != ArrayType.class)
       return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
@@ -359,7 +359,7 @@ final class JsdUtil {
       if ("this".equals(className)) {
         method = Classes.getCompatibleMethod(parameterType, methodName);
         if (method != null && Modifier.isStatic(method.getModifiers()))
-          throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) is static");
+          throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) is static");
       }
       else {
         final Class<?> cls = Class.forName(className);
@@ -369,7 +369,7 @@ final class JsdUtil {
         else {
           method = Classes.getCompatibleMethod(cls, methodName, parameterType);
           if (method != null && !Modifier.isStatic(method.getModifiers()))
-            throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) is not static");
+            throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) is not static");
         }
       }
 
@@ -377,10 +377,10 @@ final class JsdUtil {
         return method;
     }
     catch (final ClassNotFoundException e) {
-      throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) was not found", e);
+      throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found", e);
     }
 
-    throw new ValidationException("Method <T super " + parameterType.getName() + '>' + identifier + "(T) was not found");
+    throw new ValidationException("Method <T super " + parameterType.getName() + ">" + identifier + "(T) was not found");
   }
 
   static Class<?> getReturnType(final Executable executable) {

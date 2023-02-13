@@ -110,8 +110,8 @@ public class TypeTest {
     assertEquals(name, type.getCompositeName());
     assertEquals(name.replace('$', '.'), type.getCanonicalCompositeName());
     assertEquals("Three", type.getSimpleName());
-    assertEquals(packageName + '.' + name, type.getName());
-    assertEquals(packageName + '.' + name, type.getRelativeName(""));
+    assertEquals(packageName + "." + name, type.getName());
+    assertEquals(packageName + "." + name, type.getRelativeName(""));
     assertEquals(name, type.getRelativeName(packageName));
     assertEquals("Two$Three", type.getSubName(packageName + ".One"));
 
@@ -122,8 +122,8 @@ public class TypeTest {
     assertEquals(superPackageName + ".Foo", type.getSuperType().getDeclaringType().toString());
     assertNull(type.getSuperType().getDeclaringType().getDeclaringType());
 
-    assertEquals(packageName + '.' + name, type.toString());
-    assertEquals(superPackageName + '.' + superName, type.getSuperType().toString());
+    assertEquals(packageName + "." + name, type.toString());
+    assertEquals(superPackageName + "." + superName, type.getSuperType().toString());
     assertNull(type.getSuperType().getSuperType());
   }
 
@@ -140,8 +140,8 @@ public class TypeTest {
     assertEquals(packageName0, type0.getPackage());
     assertEquals(packageName0, type0.getCanonicalPackage());
     assertEquals(name0, type0.getSimpleName());
-    assertEquals(packageName0 + '.' + name0, type0.getName());
-    assertEquals(packageName0 + '.' + name0, type0.getCanonicalName());
+    assertEquals(packageName0 + "." + name0, type0.getName());
+    assertEquals(packageName0 + "." + name0, type0.getCanonicalName());
 
     final String packageName1 = "org.jsonx.one";
     final String name1 = "One";

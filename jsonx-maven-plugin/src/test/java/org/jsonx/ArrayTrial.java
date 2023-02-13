@@ -126,7 +126,7 @@ final class ArrayTrial<T> extends PropertyTrial<T> {
   }
 
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final ArrayProperty property) {
-    if (logger.isDebugEnabled()) logger.debug("Adding: " + getMethod.getDeclaringClass() + '.' + getMethod.getName() + "()");
+    if (logger.isDebugEnabled()) logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
     trials.add(new ArrayTrial<>(ValidCase.CASE, getMethod, setMethod, object, createValid(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement()), property));
     final Object testNullable = createArray(property.type(), property.minIterate(), property.maxIterate(), property.elementIds(), new IdToElement(), TrialType.NULLABLE);
     if (testNullable != null)
