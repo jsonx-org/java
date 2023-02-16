@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -138,13 +136,11 @@ public final class JxDecoder {
    * @return A {@link JxObject} of the specified type representing the parsed JSON object.
    * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code type} or {@code reader} is null.
+   * @throws NullPointerException If {@code type} or {@code reader} is null.
    * @throws JsonParseException If the content is not well formed.
    */
   @SuppressWarnings("unchecked")
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException, JsonParseException {
-    assertNotNull(type);
-    assertNotNull(reader);
     final long point = reader.readToken();
     final int off = Composite.decodeInt(point, 0);
     final char c0 = reader.bufToChar(off);
@@ -156,7 +152,7 @@ public final class JxDecoder {
       return (T)object;
 
     final Error error = (Error)object;
-    throw new DecodeException((Error)object, reader, error.getException(), messageFunction);
+    throw new DecodeException(error, reader, error.getException(), messageFunction);
   }
 
   /**
@@ -174,7 +170,7 @@ public final class JxDecoder {
    * @return A {@link JxObject} of the specified type representing the parsed JSON object.
    * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code type} or {@code json} is null.
+   * @throws NullPointerException If {@code type} or {@code json} is null.
    * @throws JsonParseException If the content is not well formed.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws DecodeException, IOException, JsonParseException {
@@ -192,7 +188,7 @@ public final class JxDecoder {
    * @return A {@link JxObject} of the specified type representing the parsed JSON object.
    * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code type} or {@code reader} is null.
+   * @throws NullPointerException If {@code type} or {@code reader} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final JsonReader reader) throws DecodeException, IOException {
     return parseObject(type, reader, null);
@@ -207,7 +203,7 @@ public final class JxDecoder {
    * @return A {@link JxObject} of the specified type representing the parsed JSON object.
    * @throws DecodeException If an exception has occurred while decoding the JSON object.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code type} or {@code json} is null.
+   * @throws NullPointerException If {@code type} or {@code json} is null.
    */
   public <T extends JxObject>T parseObject(final Class<T> type, final String json) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(json)) {
@@ -224,12 +220,10 @@ public final class JxDecoder {
    * @return An {@link ArrayList} representing the parsed JSON array.
    * @throws DecodeException If an exception has occurred while decoding the JSON array.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code annotationType} or {@code reader} is null.
+   * @throws NullPointerException If {@code annotationType} or {@code reader} is null.
    * @throws JsonParseException If the content is not well formed.
    */
   public ArrayList<?> parseArray(final Class<? extends Annotation> annotationType, final JsonReader reader) throws DecodeException, JsonParseException, IOException {
-    assertNotNull(annotationType);
-    assertNotNull(reader);
     final long point = reader.readToken();
     final int off = Composite.decodeInt(point, 0);
     final char c0 = reader.bufToChar(off);
@@ -256,7 +250,7 @@ public final class JxDecoder {
    * @throws DecodeException If an exception has occurred while decoding the JSON array.
    * @throws JsonParseException If the content is not well formed.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code annotationType} or {@code json} is null.
+   * @throws NullPointerException If {@code annotationType} or {@code json} is null.
    */
   public List<?> parseArray(final Class<? extends Annotation> annotationType, final String json) throws DecodeException, JsonParseException, IOException {
     try (final JsonReader in = new JsonReader(json)) {
