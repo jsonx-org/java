@@ -26,11 +26,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
-import javax.ws.rs.ProcessingException;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.junit.Test;
-import org.openjax.json.JsonParseException;
 
 public class JxObjectProviderTest {
   private static final JxObjectProvider provider = new JxObjectProvider(JxEncoder.VALIDATING._0, JxDecoder.VALIDATING);
@@ -78,6 +77,16 @@ public class JxObjectProviderTest {
     assertEquals(data, new String(out.toByteArray()));
   }
 
+  private static boolean isBadRequestException(final RuntimeException e) {
+    // FIXME: System.setProperty(RuntimeDelegate.JAXRS_RUNTIME_DELEGATE_PROPERTY, ??.class.getName());
+    assertSame(ClassNotFoundException.class, e.getCause().getClass());
+    for (final StackTraceElement element : e.getStackTrace()) // [A]
+      if (BadRequestException.class.getName().equals(element.getClassName()))
+        return true;
+
+    return false;
+  }
+
   @Test
   @SuppressWarnings("unchecked")
   public void testArrayType() throws IOException, ClassNotFoundException, NoSuchFieldException {
@@ -86,20 +95,18 @@ public class JxObjectProviderTest {
     assertTrue(provider.isReadable(List.class, List.class, annotations, null));
     try {
       provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream("nf989349".getBytes()));
-      fail("Expected JsonParseException -> ProcessingException");
+      fail("Expected JsonParseException -> BadRequestException -> RuntimeException");
     }
     catch (final RuntimeException e) {
-      assertTrue(e instanceof ProcessingException);
-      assertTrue(e.getCause() instanceof JsonParseException);
+      assertTrue(isBadRequestException(e));
     }
 
     try {
       provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream("[]".getBytes()));
-      fail("Expected DecodeException -> ProcessingException");
+      fail("Expected DecodeException -> BadRequestException -> RuntimeException");
     }
     catch (final RuntimeException e) {
-      assertTrue(e instanceof ProcessingException);
-      assertTrue(e.getCause() instanceof DecodeException);
+      assertTrue(isBadRequestException(e));
     }
 
     final List<?> jxObject = (List<?>)provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream(data.getBytes()));

@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.inject.Singleton;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
@@ -90,11 +91,11 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   }
 
   public JxEncoder getEncoder() {
-    return this.encoder;
+    return encoder;
   }
 
   public JxDecoder getDecoder() {
-    return this.decoder;
+    return decoder;
   }
 
   @Override
@@ -144,7 +145,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       }
     }
     catch (final JsonParseException | DecodeException e) {
-      throw new ProcessingException(e);
+      throw new BadRequestException(e);
     }
 
     throw new ProcessingException("Unknown type: " + type.getName());
