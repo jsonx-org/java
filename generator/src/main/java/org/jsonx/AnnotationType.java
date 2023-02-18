@@ -56,21 +56,23 @@ class AnnotationType {
           else {
             builder.append('{');
             if (CollectionUtil.isRandomAccess(items)) {
-              for (int j = 0; j < i$; ++j) { // [RA]
-                if (j > 0)
+              int i = 0; do { // [RA]
+                if (i > 0)
                   builder.append(", ");
 
-                builder.append(items.get(j));
+                builder.append(items.get(i));
               }
+              while (++i < i$);
             }
             else {
-              final Iterator<Object> iterator = items.iterator();
-              for (int j = 0; j < i$; ++j) { // [RA]
+              final Iterator<Object> it = items.iterator();
+              int j = 0; do { // [RA]
                 if (j > 0)
                   builder.append(", ");
 
-                builder.append(iterator.next());
+                builder.append(it.next());
               }
+              while (it.hasNext());
             }
 
             builder.append('}');

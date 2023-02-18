@@ -35,6 +35,22 @@ import org.xml.sax.SAXException;
 class ClassTrial extends Trial {
   private static final JxEncoder validEncoder = JxEncoder.get();
   private static final JxEncoder invalidEncoder = new JxEncoder(validEncoder.indent, false);
+  private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
+    @Override
+    Method[] getMethods(final Class<? extends JxObject> cls) {
+      return cls.getDeclaredMethods();
+    }
+
+    @Override
+    public boolean test(final Method method) {
+      return true;
+    }
+
+    @Override
+    void beforePut(final Method[] methods) {
+      Classes.sortDeclarativeOrder(methods);
+    }
+  };
 
   private final ArrayList<PropertyTrial<?>> trials = new ArrayList<>();
   private final JxObject binding;
@@ -50,8 +66,7 @@ class ClassTrial extends Trial {
   }
 
   private void createObjectFields(final Object target) {
-    final Method[] methods = target.getClass().getDeclaredMethods();
-    Classes.sortDeclarativeOrder(methods);
+    final Method[] methods = classToOrderedMethods.get(target.getClass());
     for (final Method getMethod : methods) { // [A]
       if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
         continue;

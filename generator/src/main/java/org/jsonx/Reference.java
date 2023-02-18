@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,12 +82,16 @@ final class Reference extends Member {
     final List<FieldBinding> bindings = jsd.getBindings();
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (CollectionUtil.isRandomAccess(bindings))
-        for (int i = 0; i < i$; ++i) // [RA]
+      if (CollectionUtil.isRandomAccess(bindings)) {
+        int i = 0; do // [RA]
           addBinding(xsb, bindings.get(i));
-      else
-        for (final schema.FieldBinding binding : bindings) // [L]
-          addBinding(xsb, binding);
+        while (++i < i$);
+      }
+      else {
+        final Iterator<schema.FieldBinding> it = bindings.iterator(); do // [I]
+          addBinding(xsb, it.next());
+        while (it.hasNext());
+      }
     }
 
     return xsb;

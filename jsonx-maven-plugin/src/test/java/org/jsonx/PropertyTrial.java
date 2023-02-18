@@ -35,10 +35,12 @@ abstract class PropertyTrial<T> extends Trial {
 
         map.put(name, value);
       }
-      else if (getMethod.getReturnType() == Optional.class && value != null && !(value instanceof Optional))
+      else if (getMethod.getReturnType() == Optional.class && value != null && !(value instanceof Optional)) {
         setMethod.invoke(object, Optional.ofNullable(value));
-      else
+      }
+      else {
         setMethod.invoke(object, value);
+      }
     }
     catch (final IllegalAccessException e) {
       throw new RuntimeException(e);

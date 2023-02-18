@@ -67,12 +67,16 @@ final class AnyModel extends Referrer<AnyModel> {
     final List<schema.FieldBinding> bindings = jsd.getBindings();
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess)
-        for (int i = 0; i < i$; ++i) // [RA]
+      if (bindings instanceof RandomAccess) {
+        int i = 0; do // [RA]
           addBinding(xsb, bindings.get(i));
-      else
-        for (final schema.FieldBinding binding : bindings) // [L]
-          addBinding(xsb, binding);
+        while (++i < i$);
+      }
+      else {
+        final Iterator<schema.FieldBinding> i = bindings.iterator(); do // [I]
+          addBinding(xsb, i.next());
+        while (i.hasNext());
+      }
     }
 
     return xsb;
@@ -211,13 +215,17 @@ final class AnyModel extends Referrer<AnyModel> {
     if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
       return null;
 
-    final ArrayList<Member> types = new ArrayList<>(idrefs.size());
-    if (idrefs instanceof RandomAccess)
-      for (int i = 0; i < i$; ++i) // [RA]
+    final ArrayList<Member> types = new ArrayList<>(i$);
+    if (idrefs instanceof RandomAccess) {
+      int i = 0; do // [RA]
         addReference(types, idrefs.get(i), nullable, use);
-    else
-      for (final String idref : idrefs) // [L]
-        addReference(types, idref, nullable, use);
+      while (++i < i$);
+    }
+    else {
+      final Iterator<String> i = idrefs.iterator(); do // [I]
+        addReference(types, i.next(), nullable, use);
+      while (i.hasNext());
+    }
 
     return types;
   }

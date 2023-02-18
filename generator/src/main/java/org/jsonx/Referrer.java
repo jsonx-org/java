@@ -21,6 +21,7 @@ import static org.libj.lang.Assertions.*;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -53,17 +54,20 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       if (i$ == start)
         return null;
 
-      if (i$ == start + 1)
+      int i = start + 1;
+      if (i$ == i)
         return members.get(start).type();
 
       Registry.Type gct = members.get(start).type();
       if (CollectionUtil.isRandomAccess(members)) {
-        for (int i = start + 1; i < i$ && gct != null; ++i) // [RA]
+        do // [RA]
           gct = getGreatestCommonSuperType(gct, members.get(i));
+        while (++i < i$);
       }
       else {
-        for (final Member member : members) // [L]
-          gct = getGreatestCommonSuperType(gct, member);
+        final Iterator<? extends Member> it = members.iterator(); do // [I]
+          gct = getGreatestCommonSuperType(gct, it.next());
+        while (it.hasNext());
       }
 
       return gct;

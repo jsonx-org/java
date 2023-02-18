@@ -87,12 +87,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final List<FieldBinding> bindings = jsd.getBindings();
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (CollectionUtil.isRandomAccess(bindings)) {
-        for (int i = 0; i < i$; ++i) // [RA]
+        int i = 0; do // [RA]
           addBinding(bindings.get(i), xsb);
+        while (++i < i$);
       }
       else {
-        for (final schema.FieldBinding binding : bindings) // [L]
-          addBinding(binding, xsb);
+        final Iterator<schema.FieldBinding> it = bindings.iterator(); do // [I]
+          addBinding(it.next(), xsb);
+        while (it.hasNext());
       }
     }
 

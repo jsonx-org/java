@@ -19,6 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
@@ -64,12 +65,16 @@ final class StringModel extends Model {
     final List<schema.TypeBinding> bindings = jsd.getBindings();
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess)
-        for (int i = 0; i < i$; ++i) // [RA]
+      if (bindings instanceof RandomAccess) {
+        int i = 0; do // [RA]
           xsb.addBinding(typeBinding(bindings.get(i)));
-      else
-        for (final schema.TypeBinding binding : bindings) // [L]
-          xsb.addBinding(typeBinding(binding));
+        while (++i < i$);
+      }
+      else {
+        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+          xsb.addBinding(typeBinding(i.next()));
+        while (i.hasNext());
+      }
     }
 
     return xsb;
@@ -95,12 +100,16 @@ final class StringModel extends Model {
     final List<schema.TypeBinding> bindings = jsd.getBindings();
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess)
-        for (int i = 0; i < i$; ++i) // [RA]
+      if (bindings instanceof RandomAccess) {
+        int i = 0; do // [RA]
           addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
-      else
-        for (final schema.TypeBinding binding : bindings) // [L]
-          addBinding(xsb, (schema.TypeFieldBinding)binding);
+        while (++i < i$);
+      }
+      else {
+        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+          addBinding(xsb, (schema.TypeFieldBinding)i.next());
+        while (i.hasNext());
+      }
     }
 
     return xsb;
@@ -139,12 +148,16 @@ final class StringModel extends Model {
     final List<TypeBinding> bindings = jsd.getBindings();
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess)
-        for (int i = 0; i < i$; ++i) // [RA]
+      if (bindings instanceof RandomAccess) {
+        int i = 0; do // [RA]
           xsb.addBinding(typeBinding(bindings.get(i)));
-      else
-        for (final schema.TypeBinding binding : bindings) // [L]
-          xsb.addBinding(typeBinding(binding));
+        while (++i < i$);
+      }
+      else {
+        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+          xsb.addBinding(typeBinding(i.next()));
+        while (i.hasNext());
+      }
     }
 
     return xsb;

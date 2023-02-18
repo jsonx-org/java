@@ -34,6 +34,18 @@ import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 
 class ObjectCodec extends Codec {
+  private static final ClassToGetMethods classToGetMethods = new ClassToGetMethods() {
+    @Override
+    Method[] getMethods(final Class<? extends JxObject> cls) {
+      return cls.getMethods();
+    }
+
+    @Override
+    public boolean test(final Method method) {
+      return !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
+    }
+  };
+
   static Object decodeArray(final Class<? extends JxObject> type, final String token, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     return !"{".equals(token) ? null : ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
   }
@@ -126,12 +138,10 @@ class ObjectCodec extends Codec {
         codec.set(object, propertyName, value, onPropertyDecode);
       }
 
+      ;
       // If this {...} contained properties, check each method of the target object
       // to ensure that no properties are missing (i.e. use=required).
-      for (final Method getMethod : type.getMethods()) { // [A]
-        if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
-          continue;
-
+      for (final Method getMethod : classToGetMethods.get(type)) { // [A]
         final Codec codec = propertyToCodec.getMethodToCodec.get(getMethod);
         if (codec == null)
           continue;
@@ -184,10 +194,7 @@ class ObjectCodec extends Codec {
 
     propertyToCodec = new PropertyToCodec();
     final Method[] methods = cls.getMethods();
-    for (final Method getMethod : methods) { // [A]
-      if (getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
-        continue;
-
+    for (final Method getMethod : classToGetMethods.get(cls)) { // [A]
       for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
         if (annotation instanceof AnyProperty)
           propertyToCodec.add(new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod)));

@@ -28,11 +28,27 @@ import org.libj.lang.Classes;
 import org.libj.util.function.PentaConsumer;
 
 final class ObjectTrial extends PropertyTrial<Object> {
+  private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
+    @Override
+    Method[] getMethods(final Class<? extends JxObject> cls) {
+      return cls.getMethods();
+    }
+
+    @Override
+    public boolean test(final Method method) {
+      return true;
+    }
+
+    @Override
+    void beforePut(final Method[] methods) {
+      Classes.sortDeclarativeOrder(methods);
+    }
+  };
+
   static Object createValid(final Class<?> type) {
     try {
       final Object object = type.getDeclaredConstructor().newInstance();
-      final Method[] methods = object.getClass().getMethods();
-      Classes.sortDeclarativeOrder(methods);
+      final Method[] methods = classToOrderedMethods.get(object.getClass());
       for (final Method getMethod : methods) { // [A]
         if (!Modifier.isPublic(getMethod.getModifiers()) || getMethod.isSynthetic() || getMethod.getReturnType() == void.class || getMethod.getParameterCount() > 0)
           continue;

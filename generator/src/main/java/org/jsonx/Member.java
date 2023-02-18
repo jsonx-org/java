@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,17 +63,20 @@ abstract class Member extends Element {
       return null;
 
     if (bindings instanceof RandomAccess) {
-      for (int i = 0; i < i$; ++i) { // [RA]
+      int i = 0; do { // [RA]
         final T binding = bindings.get(i);
         if ("java".equals(binding.getLang$().text()))
           return binding;
       }
+      while (++i < i$);
     }
     else {
-      for (final T binding : bindings) {// [L]
+      final Iterator<T> i = bindings.iterator(); do { // [I]
+        final T binding = i.next();
         if ("java".equals(binding.getLang$().text()))
           return binding;
       }
+      while (i.hasNext());
     }
 
     return null;
