@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 import org.libj.util.Patterns;
 
 class PropertyToCodec {
-  private final Map<String,Codec> anyToCodec = new HashMap<>();
-  private final Map<String,Codec> nameToCodec = new HashMap<>();
-  final Map<Method,Codec> getMethodToCodec = new HashMap<>();
+  private final HashMap<String,Codec> anyToCodec = new HashMap<>();
+  private final HashMap<String,Codec> nameToCodec = new HashMap<>();
+  final HashMap<Method,Codec> getMethodToCodec = new HashMap<>();
 
   void add(final Codec codec) {
     (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(codec.name, codec);

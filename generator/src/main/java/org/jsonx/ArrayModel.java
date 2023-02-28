@@ -33,6 +33,7 @@ import java.util.Set;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember.MinIterate$;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldBinding;
@@ -67,11 +68,13 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (name != null)
       xsb.setName$(new $Array.Name$(name));
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $Array.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $Array.Nullable$(nullable));
 
-    if (jsd.getUse() != null)
-      xsb.setUse$(new $Array.Use$($Array.Use$.Enum.valueOf(jsd.getUse())));
+    final String use = jsd.getUse();
+    if (use != null)
+      xsb.setUse$(new $Array.Use$($Array.Use$.Enum.valueOf(use)));
 
     final List<schema.FieldBinding> bindings = jsd.getBindings();
     final int i$;
@@ -97,14 +100,17 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static $ArrayMember.Array element(final schema.ArrayElement jsd) {
     final $ArrayMember.Array xsb = new $ArrayMember.Array();
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $ArrayMember.Array.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $ArrayMember.Array.Nullable$(nullable));
 
-    if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new $ArrayMember.Array.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+    final String minOccurs = jsd.getMinOccurs();
+    if (minOccurs != null)
+      xsb.setMinOccurs$(new $ArrayMember.Array.MinOccurs$(new BigInteger(minOccurs)));
 
-    if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new $ArrayMember.Array.MaxOccurs$(jsd.getMaxOccurs()));
+    final String maxOccurs = jsd.getMaxOccurs();
+    if (maxOccurs != null)
+      xsb.setMaxOccurs$(new $ArrayMember.Array.MaxOccurs$(maxOccurs));
 
     // There is no element binding for "array"
 
@@ -122,14 +128,17 @@ final class ArrayModel extends Referrer<ArrayModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
+    final String doc = jsd.getDoc();
+    if (doc != null && doc.length() > 0)
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
-    if (jsd.getMinIterate() != null)
-      xsb.setMinIterate$(new $ArrayMember.MinIterate$(new BigInteger(jsd.getMinIterate())));
+    final String minIterate = jsd.getMinIterate();
+    if (minIterate != null)
+      xsb.setMinIterate$(new $ArrayMember.MinIterate$(new BigInteger(minIterate)));
 
-    if (jsd.getMaxIterate() != null)
-      xsb.setMaxIterate$(new $ArrayMember.MaxIterate$(jsd.getMaxIterate()));
+    final String maxIterate = jsd.getMaxIterate();
+    if (maxIterate != null)
+      xsb.setMaxIterate$(new $ArrayMember.MaxIterate$(maxIterate));
 
     final List<org.jsonx.schema.Member> elements = jsd.getElements();
     final int i$;
@@ -332,8 +341,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private ArrayModel(final Registry registry, final Declarer declarer, final Schema.Array xsb) {
     super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$(), xsb.getName$().text());
     this.members = parseMembers(registry, this, xsb);
-    this.minIterate = parseIterate(xsb.getMinIterate$().text());
-    this.maxIterate = parseIterate(parseMaxCardinality(xsb.getMinIterate$().text(), xsb.getMaxIterate$(), "Iterate", 1));
+    final MinIterate$ minIterate$ = xsb.getMinIterate$();
+    this.minIterate = parseIterate(minIterate$.text());
+    this.maxIterate = parseIterate(parseMaxCardinality(minIterate$.text(), xsb.getMaxIterate$(), "Iterate", 1));
 
     validateTypeBinding();
   }
@@ -341,8 +351,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private ArrayModel(final Registry registry, final Declarer declarer, final $Array xsb, final $FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
     this.members = parseMembers(registry, this, xsb);
-    this.minIterate = parseIterate(xsb.getMinIterate$().text());
-    this.maxIterate = parseIterate(parseMaxCardinality(xsb.getMinIterate$().text(), xsb.getMaxIterate$(), "Iterate", 1));
+    final MinIterate$ minIterate$ = xsb.getMinIterate$();
+    this.minIterate = parseIterate(minIterate$.text());
+    this.maxIterate = parseIterate(parseMaxCardinality(minIterate$.text(), xsb.getMaxIterate$(), "Iterate", 1));
 
     validateTypeBinding();
   }

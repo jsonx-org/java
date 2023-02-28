@@ -86,15 +86,15 @@ final class ArrayValidator {
       if (size() == 0)
         return "[]";
 
-      final StringBuilder builder = new StringBuilder("[");
+      final StringBuilder b = new StringBuilder("[");
       for (int i = 0, i$ = size(); i < i$; ++i) { // [RA]
         if (i > 0)
-          builder.append(", ");
+          b.append(", ");
 
-        builder.append(get(i));
+        b.append(get(i));
       }
 
-      return builder.append(']').toString();
+      return b.append(']').toString();
     }
   }
 

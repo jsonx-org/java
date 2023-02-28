@@ -46,24 +46,26 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
   @Override
   public Response toResponse(final BadRequestException exception) {
     try (final Response response = exception.getResponse()) {
-      final StringBuilder builder = new StringBuilder("{\"status\":").append(response.getStatus());
+      final int status = response.getStatus();
+      final StringBuilder b = new StringBuilder("{\"status\":").append(status);
       final String message = exception.getMessage();
       if (message != null) {
-        final String prefix = "HTTP " + response.getStatus() + " ";
-        builder.append(",\"message\":\"").append(message.startsWith(prefix) ? message.substring(prefix.length()) : message).append('"');
-        if (exception.getCause() instanceof DecodeException) {
-          builder.append(",\"cause\":\"").append(Strings.escapeForJava(exception.getCause().getMessage())).append('"');
+        final String prefix = "HTTP " + status + " ";
+        b.append(",\"message\":\"").append(message.startsWith(prefix) ? message.substring(prefix.length()) : message).append('"');
+        final Throwable cause = exception.getCause();
+        if (cause instanceof DecodeException) {
+          b.append(",\"cause\":\"").append(Strings.escapeForJava(cause.getMessage())).append('"');
           if (verbose) {
-            final DecodeException decodeException = (DecodeException)exception.getCause();
-            if (decodeException.getContent() != null)
-              builder.append(",\"json\":\"").append(Strings.escapeForJava(decodeException.getContent())).append('"');
+            final String content = ((DecodeException)cause).getContent();
+            if (content != null)
+              b.append(",\"json\":\"").append(Strings.escapeForJava(content)).append('"');
           }
         }
       }
 
       return Response
         .fromResponse(response)
-        .entity(builder.append('}').toString())
+        .entity(b.append('}').toString())
         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         .build();
     }

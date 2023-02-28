@@ -55,11 +55,9 @@ class IdToElement extends ObservableMap<Integer,Annotation> {
 
   Annotation[] get(final int[] ids) {
     final Annotation[] annotations = new Annotation[ids.length];
-    for (int i = 0, i$ = ids.length; i < i$; ++i) { // [A]
-      annotations[i] = get(ids[i]);
-      if (annotations[i] == null)
+    for (int i = 0, i$ = ids.length; i < i$; ++i) // [A]
+      if ((annotations[i] = get(ids[i])) == null)
         throw new ValidationException("@<Annotation>(id=" + ids[i] + ") not found in annotations array");
-    }
 
     return annotations;
   }

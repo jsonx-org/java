@@ -71,7 +71,8 @@ class ObjectCodec extends Codec {
         if (reader.bufToChar(Composite.decodeInt(reader.readToken(), 0)) != ':')
           throw new IllegalStateException("Should have been caught by JsonReader: " + reader.bufToString(off, len));
 
-        final String propertyName = new String(reader.buf(), off + 1, len - 2);
+        final char[] buf = reader.buf();
+        final String propertyName = new String(buf, off + 1, len - 2);
 
         point = reader.readToken();
         if (point == -1)
@@ -82,7 +83,7 @@ class ObjectCodec extends Codec {
 
         final Codec codec = propertyToCodec.get(propertyName);
         if (codec == null) {
-          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, new String(reader.buf(), off, len)))
+          if (onPropertyDecode != null && onPropertyDecode.test(object, propertyName, new String(buf, off, len)))
             continue;
 
           return abort(Error.UNKNOWN_PROPERTY(propertyName, reader), reader, index);
@@ -98,30 +99,30 @@ class ObjectCodec extends Codec {
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec primitiveCodec = (PrimitiveCodec)codec;
-          final Error error = validate ? primitiveCodec.matches(new String(reader.buf(), off, len), reader) : null;
+          final Error error = validate ? primitiveCodec.matches(new String(buf, off, len), reader) : null;
           if (error != null)
             return abort(error, reader, index);
 
-          value = primitiveCodec.parse(new String(reader.buf(), off, len));
+          value = primitiveCodec.parse(new String(buf, off, len));
         }
         else {
           if (codec instanceof AnyCodec) {
             final AnyCodec anyCodec = (AnyCodec)codec;
-            final String token = new String(reader.buf(), off, len);
+            final String token = new String(buf, off, len);
             value = AnyCodec.decode(anyCodec.property, token, reader, validate, null);
           }
           else {
             c0 = reader.bufToChar(off);
             if (codec instanceof ObjectCodec) {
               if (c0 != '{')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(reader.buf(), off, len), reader), reader, index);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
 
               final ObjectCodec objectCodec = (ObjectCodec)codec;
               value = decodeObject(objectCodec.type, reader, validate, null); // NOTE: Setting `onPropertyDecode = null` here on purpose!
             }
             else if (codec instanceof ArrayCodec) {
               if (c0 != '[')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(reader.buf(), off, len), reader), reader, index);
+                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
               value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, validate, onPropertyDecode);
@@ -138,7 +139,6 @@ class ObjectCodec extends Codec {
         codec.set(object, propertyName, value, onPropertyDecode);
       }
 
-      ;
       // If this {...} contained properties, check each method of the target object
       // to ensure that no properties are missing (i.e. use=required).
       for (final Method getMethod : classToGetMethods.get(type)) { // [A]

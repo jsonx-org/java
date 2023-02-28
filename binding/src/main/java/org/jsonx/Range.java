@@ -36,7 +36,7 @@ public class Range implements Serializable {
     return range;
   }
 
-  private static BigDecimal parseNumber(final StringBuilder builder, final String string, final int start, final boolean commaOk) throws ParseException {
+  private static BigDecimal parseNumber(final StringBuilder b, final String string, final int start, final boolean commaOk) throws ParseException {
     try {
       for (int i = start, end = string.length() - 1; i < end; ++i) { // [N]
         final char ch = string.charAt(i);
@@ -47,10 +47,10 @@ public class Range implements Serializable {
           throw new ParseException("Illegal ',' in string: \"" + string + "\"", i);
         }
 
-        builder.append(ch);
+        b.append(ch);
       }
 
-      return builder.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, builder);
+      return b.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, b);
     }
     catch (final NumberFormatException e) {
       final ParseException pe = new ParseException(string, start);
@@ -117,23 +117,24 @@ public class Range implements Serializable {
   }
 
   private Range(final String string, final Class<?> type) throws ParseException {
-    if (string.length() < 4)
-      throw new IllegalArgumentException("Range min length is 4, but was " + string.length() + (string.length() > 0 ? ": " + string : ""));
+    final int len = string.length();
+    if (len < 4)
+      throw new IllegalArgumentException("Range min length is 4, but was " + len + (len > 0 ? ": " + string : ""));
 
     char ch = string.charAt(0);
     if (!(this.minInclusive = ch == '[') && ch != '(')
       throw new ParseException("Missing '[' or '(' in string: \"" + string + "\"", 0);
 
-    final StringBuilder builder = new StringBuilder();
-    this.min = parseNumber(builder, string, 1, true);
-    final int length = builder.length() + 1;
+    final StringBuilder b = new StringBuilder();
+    this.min = parseNumber(b, string, 1, true);
+    final int length = b.length() + 1;
     if (string.charAt(length) != ',')
       throw new ParseException("Missing ',' in string: \"" + string + "\"", length + 1);
 
-    builder.setLength(0);
-    this.max = parseNumber(builder, string, length + 1, false);
+    b.setLength(0);
+    this.max = parseNumber(b, string, length + 1, false);
 
-    ch = string.charAt(string.length() - 1);
+    ch = string.charAt(len - 1);
     if (!(this.maxInclusive = ch == ']') && ch != ')')
       throw new ParseException("Missing ']' or ')' in string: \"" + string + "\"", 0);
 
@@ -142,17 +143,17 @@ public class Range implements Serializable {
   }
 
   private String getString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(minInclusive ? '[' : '(');
+    final StringBuilder b = new StringBuilder();
+    b.append(minInclusive ? '[' : '(');
     if (min != null)
-      builder.append(min);
+      b.append(min);
 
-    builder.append(',');
+    b.append(',');
     if (max != null)
-      builder.append(max);
+      b.append(max);
 
-    builder.append(maxInclusive ? ']' : ')');
-    return builder.toString();
+    b.append(maxInclusive ? ']' : ')');
+    return b.toString();
   }
 
   public BigDecimal getMin() {

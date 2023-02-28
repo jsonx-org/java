@@ -29,17 +29,20 @@ import org.libj.util.CollectionUtil;
 class AnnotationType {
   @SuppressWarnings("unchecked")
   private StringBuilder render() {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     if (attributes.size() > 0) {
       for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
-        if (builder.length() > 0)
-          builder.append(", ");
+        if (b.length() > 0)
+          b.append(", ");
 
-        final Method method = Classes.getMethod(annotationType, entry.getKey());
+        final String key = entry.getKey();
+        final Object value = entry.getValue();
+
+        final Method method = Classes.getMethod(annotationType, key);
         final Object defaultValue = method.getDefaultValue();
-        if (entry.getValue() instanceof List) {
+        if (value instanceof List) {
           final Object[] defaultArray = (Object[])defaultValue;
-          final List<Object> items = (List<Object>)entry.getValue();
+          final List<Object> items = (List<Object>)value;
           final int i$ = items.size();
           if (defaultArray != null) {
             if (i$ == 0 && defaultArray.length == 0)
@@ -49,18 +52,18 @@ class AnnotationType {
               continue;
           }
 
-          builder.append(entry.getKey()).append('=');
+          b.append(key).append('=');
           if (i$ == 1) {
-            builder.append(items.get(0));
+            b.append(items.get(0));
           }
           else {
-            builder.append('{');
+            b.append('{');
             if (CollectionUtil.isRandomAccess(items)) {
               int i = 0; do { // [RA]
                 if (i > 0)
-                  builder.append(", ");
+                  b.append(", ");
 
-                builder.append(items.get(i));
+                b.append(items.get(i));
               }
               while (++i < i$);
             }
@@ -68,25 +71,25 @@ class AnnotationType {
               final Iterator<Object> it = items.iterator();
               int j = 0; do { // [RA]
                 if (j > 0)
-                  builder.append(", ");
+                  b.append(", ");
 
-                builder.append(it.next());
+                b.append(it.next());
               }
               while (it.hasNext());
             }
 
-            builder.append('}');
+            b.append('}');
           }
         }
         else {
-          final Object fixedDefaultValue = defaultValue != null && entry.getValue() instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
-          if (!Objects.equals(fixedDefaultValue, entry.getValue()))
-            builder.append(entry.getKey()).append('=').append(entry.getValue());
+          final Object fixedDefaultValue = defaultValue != null && value instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
+          if (!Objects.equals(fixedDefaultValue, value))
+            b.append(key).append('=').append(value);
         }
       }
     }
 
-    return builder;
+    return b;
   }
 
   private final Class<? extends Annotation> annotationType;
@@ -99,11 +102,11 @@ class AnnotationType {
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append('@').append(annotationType.getName());
+    final StringBuilder b = new StringBuilder();
+    b.append('@').append(annotationType.getName());
     if (attributes.size() > 0)
-      builder.append('(').append(render()).append(')');
+      b.append('(').append(render()).append(')');
 
-    return builder.toString();
+    return b.toString();
   }
 }

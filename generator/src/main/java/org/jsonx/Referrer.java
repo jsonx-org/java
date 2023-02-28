@@ -39,17 +39,17 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
   private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
 
   static Registry.Type getGreatestCommonSuperType(final List<? extends Member> members) {
-    final int i$ = members.size();
-    assertPositive(i$);
+    final int i$ = assertPositive(members.size());
 
     final Set<Member> visited = Referrer.visited.get();
     try {
       count.set(count.get() + 1);
       int start = 0;
-      if (visited.contains(members.get(0)))
+      final Member member0 = members.get(0);
+      if (visited.contains(member0))
         start = 1;
       else
-        visited.add(members.get(0));
+        visited.add(member0);
 
       if (i$ == start)
         return null;
@@ -73,17 +73,19 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       return gct;
     }
     finally {
-      count.set(count.get() - 1);
-      if (count.get() == 0)
+      final int count = Referrer.count.get() - 1;
+      Referrer.count.set(count);
+      if (count == 0)
         visited.clear();
     }
   }
 
   private static Registry.Type getGreatestCommonSuperType(final Registry.Type gct, final Member member) {
-    if (visited.get().contains(member))
+    final Set<Member> visited = Referrer.visited.get();
+    if (visited.contains(member))
       return gct;
 
-    visited.get().add(member);
+    visited.add(member);
     return gct.getGreatestCommonSuperType(member.type());
   }
 

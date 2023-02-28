@@ -55,14 +55,17 @@ final class AnyModel extends Referrer<AnyModel> {
     if (name != null)
       xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name).toString()));
 
-    if (jsd.getTypes() != null)
-      xsb.setTypes$(new $Any.Types$(Strings.split(jsd.getTypes(), ' ')));
+    final String types = jsd.getTypes();
+    if (types != null)
+      xsb.setTypes$(new $Any.Types$(Strings.split(types, ' ')));
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $Any.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $Any.Nullable$(nullable));
 
-    if (jsd.getUse() != null)
-      xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(jsd.getUse())));
+    final String use = jsd.getUse();
+    if (use != null)
+      xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(use)));
 
     final List<schema.FieldBinding> bindings = jsd.getBindings();
     final int i$;
@@ -92,17 +95,21 @@ final class AnyModel extends Referrer<AnyModel> {
   private static $ArrayMember.Any element(final schema.AnyElement jsd) {
     final $ArrayMember.Any xsb = new $ArrayMember.Any();
 
-    if (jsd.getTypes() != null)
-      xsb.setTypes$(new $ArrayMember.Any.Types$(Strings.split(jsd.getTypes(), ' ')));
+    final String types = jsd.getTypes();
+    if (types != null)
+      xsb.setTypes$(new $ArrayMember.Any.Types$(Strings.split(types, ' ')));
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $ArrayMember.Any.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $ArrayMember.Any.Nullable$(nullable));
 
-    if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new $ArrayMember.Any.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+    final String minOccurs = jsd.getMinOccurs();
+    if (minOccurs != null)
+      xsb.setMinOccurs$(new $ArrayMember.Any.MinOccurs$(new BigInteger(minOccurs)));
 
-    if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new $ArrayMember.Any.MaxOccurs$(jsd.getMaxOccurs()));
+    final String maxOccurs = jsd.getMaxOccurs();
+    if (maxOccurs != null)
+      xsb.setMaxOccurs$(new $ArrayMember.Any.MaxOccurs$(maxOccurs));
 
     // There is no element binding for "any"
 
@@ -118,8 +125,9 @@ final class AnyModel extends Referrer<AnyModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
+    final String doc = jsd.getDoc();
+    if (doc != null && doc.length() > 0)
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
     return xsb;
   }
@@ -190,8 +198,9 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Method getMethod, final String fieldName) {
     super(registry, declarer, property.nullable(), property.use(), null, null);
-    this.types = getMemberTypes(property.types());
-    final Class<?> requiredFieldType = property.types().length == 0 ? defaultClass() : getFieldType(property.types());
+    final t[] types = property.types();
+    this.types = getMemberTypes(types);
+    final Class<?> requiredFieldType = types.length == 0 ? defaultClass() : getFieldType(types);
     final boolean isRegex = isMultiRegex(property.name());
     if (isRegex && !Map.class.isAssignableFrom(getMethod.getReturnType()))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
@@ -429,15 +438,15 @@ final class AnyModel extends Referrer<AnyModel> {
   Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     if (types != null) {
-      final StringBuilder builder = new StringBuilder();
+      final StringBuilder b = new StringBuilder();
       for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
         if (i > 0)
-          builder.append(' ');
+          b.append(' ');
 
-        builder.append(Registry.getSubName(types.get(i).id().toString(), packageName));
+        b.append(Registry.getSubName(types.get(i).id().toString(), packageName));
       }
 
-      attributes.put("types", builder.toString());
+      attributes.put("types", b.toString());
     }
 
     return attributes;
@@ -452,7 +461,7 @@ final class AnyModel extends Referrer<AnyModel> {
     final ArrayList<String> values = new ArrayList<>();
     attributes.put("types", values);
 
-    StringBuilder builder = null;
+    StringBuilder b = null;
     for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
       final Member type = types.get(i);
       if (type instanceof ArrayModel) {
@@ -465,27 +474,27 @@ final class AnyModel extends Referrer<AnyModel> {
         final Model model = (Model)type;
         final AttributeMap attrs = new AttributeMap();
         model.toAnnotationAttributes(attrs, this);
-        if (builder == null)
-          builder = new StringBuilder();
+        if (b == null)
+          b = new StringBuilder();
         else
-          builder.setLength(0);
+          b.setLength(0);
 
-        builder.append('@').append(type.typeAnnotation().getName());
+        b.append('@').append(type.typeAnnotation().getName());
         if (attrs.size() > 0) {
-          builder.append('(');
+          b.append('(');
           final Iterator<Map.Entry<String,Object>> iterator = attrs.entrySet().iterator();
           for (int j = 0; iterator.hasNext(); ++j) { // [I]
             if (j > 0)
-              builder.append(", ");
+              b.append(", ");
 
             final Map.Entry<String,Object> entry = iterator.next();
-            builder.append(entry.getKey()).append('=').append(entry.getValue());
+            b.append(entry.getKey()).append('=').append(entry.getValue());
           }
 
-          builder.append(')');
+          b.append(')');
         }
 
-        values.add("@" + t.class.getName() + "(" + type.elementName() + "s=" + builder + ")");
+        values.add("@" + t.class.getName() + "(" + type.elementName() + "s=" + b + ")");
       }
       else {
         throw new UnsupportedOperationException("Unsupported type: " + type.getClass().getName());

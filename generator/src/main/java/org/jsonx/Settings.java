@@ -27,7 +27,7 @@ public class Settings implements Serializable {
   private final boolean setBuilder;
 
   public Settings(final int templateThreshold, final boolean setBuilder) {
-    this.templateThreshold = assertNotNegative(templateThreshold, "templateThreshold is negative");
+    this.templateThreshold = assertNotNegative(templateThreshold, "templateThreshold (" + templateThreshold + ") must be non-negative");
     this.setBuilder = setBuilder;
   }
 
@@ -39,10 +39,10 @@ public class Settings implements Serializable {
    *         element.
    */
   public int getTemplateThreshold() {
-    return this.templateThreshold;
+    return templateThreshold;
   }
 
   public boolean getSetBuilder() {
-    return this.setBuilder;
+    return setBuilder;
   }
 }

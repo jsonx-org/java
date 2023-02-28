@@ -133,12 +133,13 @@ class NumberCodec extends PrimitiveCodec {
   NumberCodec(final NumberProperty property, final Method getMethod, final Method setMethod) {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use(), property.decode());
     this.scale = property.scale();
-    if (property.range().length() == 0) {
+    final String range = property.range();
+    if (range.length() == 0) {
       this.range = null;
     }
     else {
       try {
-        this.range = Range.from(property.range(), JsdUtil.getRealType(getMethod));
+        this.range = Range.from(range, JsdUtil.getRealType(getMethod));
       }
       catch (final ParseException e) {
         throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES, true), e);

@@ -34,15 +34,15 @@ public class DecodeException extends ParseException {
   private static String readerToString(final JsonReader reader) {
     final int index = reader.getIndex();
     reader.setIndex(-1);
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     try {
-      Readers.readFully(reader, builder);
+      Readers.readFully(reader, b);
     }
     catch (final IOException e) {
     }
 
     reader.setIndex(index);
-    return builder.toString();
+    return b.toString();
   }
 
   private final JsonReader reader;

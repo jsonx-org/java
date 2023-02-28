@@ -42,12 +42,13 @@ abstract class Codec {
     this.getMethod = assertNotNull(getMethod);
     this.setMethod = assertNotNull(setMethod);
     this.name = assertNotNull(name);
-    if (isMap = Map.class.isAssignableFrom(getMethod.getReturnType())) {
+    final Class<?> returnType = getMethod.getReturnType();
+    if (isMap = Map.class.isAssignableFrom(returnType)) {
       this.isOptional = use == Use.OPTIONAL;
       this.genericType = assertNotNull(Classes.getGenericParameters(getMethod)[1]);
     }
     else {
-      this.isOptional = getMethod.getReturnType() == Optional.class;
+      this.isOptional = returnType == Optional.class;
       this.genericType = isOptional ? Classes.getGenericParameters(getMethod)[0] : null;
     }
 

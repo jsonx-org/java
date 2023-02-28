@@ -49,13 +49,14 @@ final class Binding {
 
     static String getClassName(final java.lang.reflect.Method getMethod, final boolean nullable, final Use use) {
       final boolean expectOptional = nullable && use == Use.OPTIONAL;
-      if (getMethod.getReturnType().isArray())
-        return getClassName(getMethod.getReturnType());
-
-      if (!expectOptional)
-        return getMethod.getGenericReturnType().getTypeName();
+      final Class<?> returnType = getMethod.getReturnType();
+      if (returnType.isArray())
+        return getClassName(returnType);
 
       final java.lang.reflect.Type genericType = getMethod.getGenericReturnType();
+      if (!expectOptional)
+        return genericType.getTypeName();
+
       if (!(genericType instanceof ParameterizedType))
         throw new ValidationException("Expected " + Optional.class.getName() + " return type from method: " + getMethod.getName());
 

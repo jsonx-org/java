@@ -37,14 +37,14 @@ final class StringTrial extends PropertyTrial<String> {
   }
 
   private static String filterPrintable(final String string) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     for (int i = 0, i$ = string.length(); i < i$; ++i) { // [N]
       final char ch = string.charAt(i);
       if (ch < 32532 && ch != '"' && ch != '\\' && ch != '\n' && ch != '\r' && Characters.isPrintable(ch))
-        builder.append(ch);
+        b.append(ch);
     }
 
-    return builder.toString();
+    return b.toString();
   }
 
   private static final class StringGen {

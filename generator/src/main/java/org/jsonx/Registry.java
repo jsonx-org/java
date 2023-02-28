@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.libj.lang.Assertions.*;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -232,19 +230,19 @@ class Registry {
     }
 
     private String toString(final boolean canonical) {
-      final StringBuilder builder = new StringBuilder(canonical ? canonicalName : name);
+      final StringBuilder b = new StringBuilder(canonical ? canonicalName : name);
       if (genericTypes != null) {
-        builder.append('<');
+        b.append('<');
         for (final Generic genericType : genericTypes) // [A]
-          builder.append(canonical ? genericType.toString(canonical) : genericType.toString()).append(',');
+          b.append(canonical ? genericType.toString(canonical) : genericType.toString()).append(',');
 
-        builder.setCharAt(builder.length() - 1, '>');
+        b.setCharAt(b.length() - 1, '>');
       }
 
       if (isArray)
-        builder.append("[]");
+        b.append("[]");
 
-      return builder.toString();
+      return b.toString();
     }
 
     String getNativeName() {
@@ -330,7 +328,8 @@ class Registry {
   }
 
   static String getSubName(final String name, final String superName) {
-    return superName != null && superName.length() > 0 && name.startsWith(superName) ? name.substring(superName.length() + 1) : name;
+    final int len;
+    return superName != null && (len = superName.length()) > 0 && name.startsWith(superName) ? name.substring(len + 1) : name;
   }
 
   Type getType(final Kind kind, final String className) {
@@ -383,16 +382,16 @@ class Registry {
   }
 
   Type getType(final Class<?> cls, final Type.Generic ... genericTypes) {
-    final StringBuilder builder = new StringBuilder(cls.getName());
+    final StringBuilder b = new StringBuilder(cls.getName());
     if (genericTypes != null) {
-      builder.append('<');
+      b.append('<');
       for (final Type.Generic genericType : genericTypes) // [A]
-        builder.append(genericType.toString(true));
+        b.append(genericType.toString(true));
 
-      builder.append('>');
+      b.append('>');
     }
 
-    final Type type = qualifiedNameToType.get(builder.toString());
+    final Type type = qualifiedNameToType.get(b.toString());
     return type != null ? type : new Type(cls, genericTypes);
   }
 
@@ -408,7 +407,6 @@ class Registry {
   final String classPrefix;
 
   Registry(final String prefix) {
-    assertNotNull(prefix);
     this.isFromJsd = true;
     if (prefix.length() > 0) {
       final char lastChar = prefix.charAt(prefix.length() - 1);

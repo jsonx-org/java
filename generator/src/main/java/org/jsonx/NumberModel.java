@@ -35,6 +35,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember.Range$;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeFieldBinding;
@@ -49,14 +50,17 @@ final class NumberModel extends Model {
   private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
     final $TypeBinding xsb = new $ArrayMember.Number.Binding();
     xsb.setLang$(new $Binding.Lang$(jsd.getLang()));
-    if (jsd.getType() != null)
-      xsb.setType$(new $TypeBinding.Type$(jsd.getType()));
+    final String type = jsd.getType();
+    if (type != null)
+      xsb.setType$(new $TypeBinding.Type$(type));
 
-    if (jsd.getDecode() != null)
-      xsb.setDecode$(new $TypeBinding.Decode$(jsd.getDecode()));
+    final String decode = jsd.getDecode();
+    if (decode != null)
+      xsb.setDecode$(new $TypeBinding.Decode$(decode));
 
-    if (jsd.getEncode() != null)
-      xsb.setEncode$(new $TypeBinding.Encode$(jsd.getEncode()));
+    final String encode = jsd.getEncode();
+    if (encode != null)
+      xsb.setEncode$(new $TypeBinding.Encode$(encode));
 
     return xsb;
   }
@@ -95,11 +99,13 @@ final class NumberModel extends Model {
     if (name != null)
       xsb.setName$(new $Number.Name$(name));
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $Number.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $Number.Nullable$(nullable));
 
-    if (jsd.getUse() != null)
-      xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(jsd.getUse())));
+    final String use = jsd.getUse();
+    if (use != null)
+      xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(use)));
 
     final List<TypeBinding> bindings = jsd.getBindings();
     final int i$;
@@ -122,17 +128,22 @@ final class NumberModel extends Model {
   private static void addBinding(final $Number xsb, final schema.TypeFieldBinding binding) {
     final $TypeFieldBinding bind = new $Number.Binding();
     bind.setLang$(new $Binding.Lang$(binding.getLang()));
-    if (binding.getType() != null)
-      bind.setType$(new $TypeBinding.Type$(binding.getType()));
 
-    if (binding.getDecode() != null)
-      bind.setDecode$(new $TypeBinding.Decode$(binding.getDecode()));
+    final String type = binding.getType();
+    if (type != null)
+      bind.setType$(new $TypeBinding.Type$(type));
 
-    if (binding.getEncode() != null)
-      bind.setEncode$(new $TypeBinding.Encode$(binding.getEncode()));
+    final String decode = binding.getDecode();
+    if (decode != null)
+      bind.setDecode$(new $TypeBinding.Decode$(decode));
 
-    if (binding.getField() != null)
-      bind.setField$(new $TypeFieldBinding.Field$(binding.getField()));
+    final String encode = binding.getEncode();
+    if (encode != null)
+      bind.setEncode$(new $TypeBinding.Encode$(encode));
+
+    final String field = binding.getField();
+    if (field != null)
+      bind.setField$(new $TypeFieldBinding.Field$(field));
 
     xsb.addBinding(bind);
   }
@@ -140,14 +151,17 @@ final class NumberModel extends Model {
   private static $ArrayMember.Number element(final schema.NumberElement jsd) {
     final $ArrayMember.Number xsb = new $ArrayMember.Number();
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $ArrayMember.Number.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $ArrayMember.Number.Nullable$(nullable));
 
-    if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new $ArrayMember.Number.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+    final String minOccurs = jsd.getMinOccurs();
+    if (minOccurs != null)
+      xsb.setMinOccurs$(new $ArrayMember.Number.MinOccurs$(new BigInteger(minOccurs)));
 
-    if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new $ArrayMember.Number.MaxOccurs$(jsd.getMaxOccurs()));
+    final String maxOccurs = jsd.getMaxOccurs();
+    if (maxOccurs != null)
+      xsb.setMaxOccurs$(new $ArrayMember.Number.MaxOccurs$(maxOccurs));
 
     final List<TypeBinding> bindings = jsd.getBindings();
     final int i$;
@@ -178,14 +192,17 @@ final class NumberModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
+    final String doc = jsd.getDoc();
+    if (doc != null && doc.length() > 0)
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
-    if (jsd.getScale() != null)
-      xsb.setScale$(new $NumberMember.Scale$(jsd.getScale()));
+    final BigInteger scale = jsd.getScale();
+    if (scale != null)
+      xsb.setScale$(new $NumberMember.Scale$(scale));
 
-    if (jsd.getRange() != null)
-      xsb.setRange$(new $NumberMember.Range$(jsd.getRange()));
+    final String range = jsd.getRange();
+    if (range != null)
+      xsb.setRange$(new $NumberMember.Range$(range));
 
     return xsb;
   }
@@ -283,11 +300,12 @@ final class NumberModel extends Model {
     super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();
+    final Range$ range$ = xsb.getRange$();
     try {
-      this.range = parseRange(xsb.getRange$(), type);
+      this.range = parseRange(range$, type);
     }
     catch (final ParseException e) {
-      throw createValidationException(xsb, xsb.getRange$().text(), e);
+      throw createValidationException(xsb, range$.text(), e);
     }
   }
 

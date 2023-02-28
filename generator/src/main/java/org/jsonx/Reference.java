@@ -48,14 +48,17 @@ final class Reference extends Member {
   private static $ArrayMember.Reference element(final schema.ReferenceElement jsd) {
     final $ArrayMember.Reference xsb = new $ArrayMember.Reference();
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $ArrayMember.Reference.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $ArrayMember.Reference.Nullable$(nullable));
 
-    if (jsd.getMinOccurs() != null)
-      xsb.setMinOccurs$(new $ArrayMember.Reference.MinOccurs$(new BigInteger(jsd.getMinOccurs())));
+    final String minOccurs = jsd.getMinOccurs();
+    if (minOccurs != null)
+      xsb.setMinOccurs$(new $ArrayMember.Reference.MinOccurs$(new BigInteger(minOccurs)));
 
-    if (jsd.getMaxOccurs() != null)
-      xsb.setMaxOccurs$(new $ArrayMember.Reference.MaxOccurs$(jsd.getMaxOccurs()));
+    final String maxOccurs = jsd.getMaxOccurs();
+    if (maxOccurs != null)
+      xsb.setMaxOccurs$(new $ArrayMember.Reference.MaxOccurs$(maxOccurs));
 
     // There is no element binding for "array"
 
@@ -73,11 +76,13 @@ final class Reference extends Member {
     if (name != null)
       xsb.setName$(new $Reference.Name$(name));
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $Reference.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $Reference.Nullable$(nullable));
 
-    if (jsd.getUse() != null)
-      xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(jsd.getUse())));
+    final String use = jsd.getUse();
+    if (use != null)
+      xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(use)));
 
     final List<FieldBinding> bindings = jsd.getBindings();
     final int i$;
@@ -113,11 +118,13 @@ final class Reference extends Member {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
+    final String doc = jsd.getDoc();
+    if (doc != null && doc.length() > 0)
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
-    if (jsd.getType() != null)
-      xsb.setType$(new $ReferenceMember.Type$(jsd.getType()));
+    final String type = jsd.getType();
+    if (type != null)
+      xsb.setType$(new $ReferenceMember.Type$(type));
 
     return xsb;
   }

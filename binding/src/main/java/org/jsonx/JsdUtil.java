@@ -131,8 +131,9 @@ final class JsdUtil {
     if (property == null)
       throw new IllegalArgumentException("@" + ArrayProperty.class.getSimpleName() + " not found on: " + getFullyQualifiedMethodName(getMethod));
 
-    if (property.type() != ArrayType.class)
-      return digest(property.type().getAnnotations(), property.type().getName(), idToElement);
+    final Class<? extends Annotation> type = property.type();
+    if (type != ArrayType.class)
+      return digest(type.getAnnotations(), type.getName(), idToElement);
 
     return digest(Classes.getAnnotations(getMethod), getFullyQualifiedMethodName(getMethod), idToElement);
   }

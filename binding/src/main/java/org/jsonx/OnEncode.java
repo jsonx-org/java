@@ -24,7 +24,7 @@ import org.jsonx.ArrayValidator.Relations;
  * Interface to be used as a callback during the encoding of JSON form Jx objects.
  */
 @FunctionalInterface
-public interface OnEncode {
+interface OnEncode {
   /**
    * Performs the callback.
    *

@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,6 +39,7 @@ import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember.Extends$;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
@@ -61,7 +60,7 @@ import org.xml.sax.SAXException;
 public final class SchemaElement extends Element implements Declarer {
   private static Schema jsdToXsb(final schema.Schema jsd) {
     final Schema xsb = new Schema();
-    final LinkedHashMap<String,? extends schema.Member> declarations = assertNotNull(jsd).getDeclarations();
+    final LinkedHashMap<String,? extends schema.Member> declarations = jsd.getDeclarations();
     if (declarations != null && declarations.size() > 0) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) { // [S]
         final String name = entry.getKey();
@@ -81,8 +80,9 @@ public final class SchemaElement extends Element implements Declarer {
       }
     }
 
-    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
+    final String doc = jsd.getDoc();
+    if (doc != null && doc.length() > 0)
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
     return xsb;
   }
@@ -96,11 +96,9 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
+   * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
-    assertNotNull(url);
-    assertNotNull(prefix);
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
       final schema.Schema schema = JxDecoder.VALIDATING.parseObject(schema.Schema.class, in);
       return new SchemaElement(schema, prefix);
@@ -123,10 +121,10 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws SAXException If a parse error has occurred.
    * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException} has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
+   * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
-    final Schema schema = (Schema)Bindings.parse(assertNotNull(url), getErrorHandler());
+    final Schema schema = (Schema)Bindings.parse(url, getErrorHandler());
     return new SchemaElement(schema, prefix);
   }
 
@@ -139,7 +137,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @return A {@link SchemaElement} from the contents of the specified {@code file}.
    * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If {@code url} of {@code prefix} is null.
+   * @throws NullPointerException If {@code url} of {@code prefix} is null.
    */
   public static SchemaElement parse(final URL url, final String prefix) throws IOException {
     if (URLs.getName(url).endsWith(".jsd")) {
@@ -190,10 +188,10 @@ public final class SchemaElement extends Element implements Declarer {
    * @param schema The XML binding (XSB).
    * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
    * @throws ValidationException If a cycle is detected in the object hierarchy.
-   * @throws IllegalArgumentException If {@code schema} or {@code prefix} is null.
+   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final Schema schema, final String prefix) throws ValidationException {
-    super(null, assertNotNull(schema).getDoc$());
+    super(null, schema.getDoc$());
     this.registry = new Registry(prefix);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
@@ -256,8 +254,9 @@ public final class SchemaElement extends Element implements Declarer {
       final $Member member = ($Member)elementIterator.next();
       if (member instanceof Schema.Object) {
         final Schema.Object object = (Schema.Object)member;
-        if (object.getExtends$() != null)
-          digraph.add(object, object.getExtends$().text());
+        final Extends$ extends$ = object.getExtends$();
+        if (extends$ != null)
+          digraph.add(object, extends$.text());
         else
           digraph.add(object);
       }
@@ -277,7 +276,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param schema The JSD binding.
    * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
    * @throws ValidationException If a validation error has occurred.
-   * @throws IllegalArgumentException If {@code schema} or {@code prefix} is null.
+   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
    */
   public SchemaElement(final schema.Schema schema, final String prefix) throws ValidationException {
     this(jsdToXsb(schema), prefix);
@@ -306,7 +305,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param filter The class {@link Predicate} allowing filtration of scanned classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
-   * @throws IllegalArgumentException If {@code pkg} or {@code prefix} is null.
+   * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
@@ -327,7 +326,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param classLoader The {@link ClassLoader} containing the defined package.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
-   * @throws IllegalArgumentException If {@code pkg} or {@code prefix} is null.
+   * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, null));
@@ -520,29 +519,29 @@ public final class SchemaElement extends Element implements Declarer {
     }
 
     final HashMap<String,String> sources = new HashMap<>();
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     if (typeToJavaClass.size() > 0) {
       for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) { // [S]
         final Registry.Type type = entry.getKey();
         final ClassSpec classSpec = entry.getValue();
         final String canonicalPackageName = type.getCanonicalPackage();
         if (canonicalPackageName != null)
-          builder.append("package ").append(canonicalPackageName).append(";\n");
+          b.append("package ").append(canonicalPackageName).append(";\n");
 
         final StringBuilder annotation = classSpec.getAnnotation();
         if (annotation != null)
-          builder.append('\n').append(annotation);
+          b.append('\n').append(annotation);
 
         final String doc = classSpec.getDoc();
         if (doc != null)
-          builder.append('\n').append(doc);
+          b.append('\n').append(doc);
 
         if (canonicalPackageName != null)
-          builder.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
+          b.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
 
-        builder.append("\npublic ").append(classSpec);
-        sources.put(type.getName(), builder.toString());
-        builder.setLength(0);
+        b.append("\npublic ").append(classSpec);
+        sources.put(type.getName(), b.toString());
+        b.setLength(0);
       }
     }
 

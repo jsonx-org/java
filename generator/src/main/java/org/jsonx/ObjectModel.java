@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,7 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsonx.Registry.Type;
 import org.jsonx.schema.FieldBinding;
+import org.jsonx.schema.Object.Properties;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
@@ -74,26 +77,29 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new $Object.Name$(name));
 
-    if (jsd.getNullable() != null)
-      xsb.setNullable$(new $Object.Nullable$(jsd.getNullable()));
+    final Boolean nullable = jsd.getNullable();
+    if (nullable != null)
+      xsb.setNullable$(new $Object.Nullable$(nullable));
 
-    if (jsd.getUse() != null)
-      xsb.setUse$(new $Object.Use$($Object.Use$.Enum.valueOf(jsd.getUse())));
+    final String use = jsd.getUse();
+    if (use != null)
+      xsb.setUse$(new $Object.Use$($Object.Use$.Enum.valueOf(use)));
 
-    if (jsd.getExtends() != null)
-      xsb.setExtends$(new $ObjectMember.Extends$(jsd.getExtends()));
+    final String extends$ = jsd.getExtends();
+    if (extends$ != null)
+      xsb.setExtends$(new $ObjectMember.Extends$(extends$));
 
     final int i$;
     final List<FieldBinding> bindings = jsd.getBindings();
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (CollectionUtil.isRandomAccess(bindings)) {
         int i = 0; do // [RA]
-          addBinding(bindings.get(i), xsb);
+          addBinding(xsb, bindings.get(i));
         while (++i < i$);
       }
       else {
         final Iterator<schema.FieldBinding> it = bindings.iterator(); do // [I]
-          addBinding(it.next(), xsb);
+          addBinding(xsb, it.next());
         while (it.hasNext());
       }
     }
@@ -101,7 +107,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  private static void addBinding(final schema.FieldBinding binding, final $Object xsb) {
+  private static void addBinding(final $Object xsb, final schema.FieldBinding binding) {
     final $Object.Binding bin = new $Object.Binding();
     bin.setLang$(new $Binding.Lang$(binding.getLang()));
     bin.setField$(new $Object.Binding.Field$(binding.getField()));
@@ -117,14 +123,17 @@ final class ObjectModel extends Referrer<ObjectModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    if (jsd.getDoc() != null && jsd.getDoc().length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(jsd.getDoc()));
+    final String doc = jsd.getDoc();
+    if (doc != null && doc.length() > 0)
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
-    if (jsd.getExtends() != null)
-      xsb.setExtends$(new $ObjectMember.Extends$(jsd.getExtends()));
+    final String extends$ = jsd.getExtends();
+    if (extends$ != null)
+      xsb.setExtends$(new $ObjectMember.Extends$(extends$));
 
-    if (jsd.getProperties() != null) {
-      final LinkedHashMap<String,? extends schema.Member> properties = jsd.getProperties().getProperties();
+    final Properties properties$ = jsd.getProperties();
+    if (properties$ != null) {
+      final LinkedHashMap<String,? extends schema.Member> properties = properties$.getProperties();
       if (properties != null && properties.size() > 0) {
         for (final Map.Entry<String,? extends schema.Member> entry : properties.entrySet()) { // [S]
           final String propertyName = entry.getKey();
@@ -206,12 +215,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @SuppressWarnings("null")
   static String getFullyQualifiedName(final $Object xsb) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     $Object owner = xsb;
     do
-      builder.insert(0, '$').insert(1, JsdUtil.toIdentifier(Strings.flipFirstCap(owner.getName$().text())));
+      b.insert(0, '$').insert(1, JsdUtil.toIdentifier(Strings.flipFirstCap(owner.getName$().text())));
     while (owner.owner() instanceof $Object && (owner = ($Object)owner.owner()) != null);
-    return builder.insert(0, JsdUtil.toIdentifier(JsdUtil.flipName(((Schema.Object)owner.owner()).getName$().text()))).toString();
+    return b.insert(0, JsdUtil.toIdentifier(JsdUtil.flipName(((Schema.Object)owner.owner()).getName$().text()))).toString();
   }
 
   private static void checkJSObject(final Class<?> cls) {
@@ -518,7 +527,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
           continue;
 
         final Member member;
-        if (superPropertySpec.annotation instanceof ObjectProperty) {
+        final Annotation superPropertySpecAnnotation = superPropertySpec.annotation;
+        if (superPropertySpecAnnotation instanceof ObjectProperty) {
           // Create a default `ObjectProperty`, and just match the name
           final ObjectProperty annotation = new ObjectProperty() {
             @Override
@@ -544,9 +554,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
           member = ObjectModel.referenceOrDeclare(registry, this, annotation, JsdUtil.getRealType(getMethod), superPropertySpec.propertyName, superPropertySpec.fieldName);
         }
-        else if (superPropertySpec.annotation instanceof ArrayProperty) {
+        else if (superPropertySpecAnnotation instanceof ArrayProperty) {
           // Create a default `ArrayProperty`, and just match the elementIds() and type()
-          final ArrayProperty arrayProperty = (ArrayProperty)superPropertySpec.annotation;
+          final ArrayProperty arrayProperty = (ArrayProperty)superPropertySpecAnnotation;
           final ArrayProperty annotation = new ArrayProperty() {
             @Override
             public Class<? extends Annotation> annotationType() {
@@ -591,7 +601,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           member = ArrayModel.referenceOrDeclare(registry, this, annotation, getMethod, superPropertySpec.fieldName);
         }
         else {
-          throw new UnsupportedOperationException("Unsupported annotation type: " + superPropertySpec.annotation.annotationType().getName());
+          throw new UnsupportedOperationException("Unsupported annotation type: " + superPropertySpecAnnotation.annotationType().getName());
         }
 
         properties.put(superPropertySpec.propertyName, new Property(member));
@@ -663,10 +673,13 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (superObject instanceof Deferred)
       superObject = ((Deferred<?>)superObject).resolve();
 
-    if (properties.size() > 0)
-      for (final Map.Entry<String,Property> entry : properties.entrySet()) // [S]
-        if (entry.getValue().member instanceof Deferred)
-          entry.setValue(new Property(((Deferred<?>)entry.getValue().member).resolve()));
+    if (properties.size() > 0) {
+      for (final Map.Entry<String,Property> entry : properties.entrySet()) { // [S]
+        final Member member = entry.getValue().member;
+        if (member instanceof Deferred)
+          entry.setValue(new Property(((Deferred<?>)member).resolve()));
+      }
+    }
 
     referencesResolved = true;
   }
@@ -685,7 +698,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
-    attributes.put(owner instanceof ArrayModel ? "type" : "name", name() != null ? name() : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
+    final String name = name();
+    attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
       attributes.put("extends", JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
@@ -697,18 +711,20 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
   XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
     final XmlElement element = super.toXml(settings, owner, packageName);
     final int i$;
     if (properties == null || (i$ = properties.size()) == 0)
       return element;
 
-    final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (element.getElements() != null ? element.getElements().size() : 0));
+    final Collection superElements = element.getElements();
+    final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (superElements != null ? superElements.size() : 0));
     for (final Property property : properties.values()) // [C]
       elements.add(property.toXml(settings, this, packageName));
 
-    if (element.getElements() != null)
-      elements.addAll(element.getElements());
+    if (superElements != null)
+      elements.addAll(superElements);
 
     element.setElements(elements);
     return element;
@@ -717,10 +733,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
     final Map<String,Object> element = super.toJson(settings, owner, packageName);
-    if (properties == null || properties.size() == 0)
+    final int size;
+    if (properties == null || (size = properties.size()) == 0)
       return element;
 
-    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
+    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
     for (final Property property : this.properties.values()) // [C]
       properties.put(property.member.name(), property.toJson(settings, this, packageName));
 
@@ -755,20 +772,23 @@ final class ObjectModel extends Referrer<ObjectModel> {
   @Override
   @SuppressWarnings("null")
   String toSource(final Settings settings) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     final HashSet<String> overridden = superObject == null ? null : new HashSet<>();
-    boolean appended = builder.length() > 0;
+    boolean appended = b.length() > 0;
+    final Type classType = classType();
+    final boolean setBuilder = settings.getSetBuilder();
     if (properties != null && properties.size() > 0) {
       for (final Property property : properties.values()) { // [C]
         if (appended)
-          builder.append("\n\n");
+          b.append("\n\n");
 
-        if (superObject != null && property.getOverride() != null)
-          overridden.add(property.getOverride().name());
+        final Member override = property.getOverride();
+        if (superObject != null && override != null)
+          overridden.add(override.name());
 
-        final int len = builder.length();
-        builder.append(property.member.toField(classType(), property.getOverride(), settings.getSetBuilder(), ClassSpec.Scope.values()));
-        appended = builder.length() > len;
+        final int len = b.length();
+        b.append(property.member.toField(classType, override, setBuilder, ClassSpec.Scope.values()));
+        appended = b.length() > len;
       }
     }
 
@@ -776,35 +796,37 @@ final class ObjectModel extends Referrer<ObjectModel> {
       final LinkedHashMap<String,Property> properties = parent.properties;
       if (properties != null && properties.size() > 0) {
         for (final Property property : properties.values()) { // [C]
-          if (!overridden.contains(property.member.name())) {
+          final Member member = property.member;
+          if (!overridden.contains(member.name())) {
             if (appended)
-              builder.append("\n\n");
+              b.append("\n\n");
 
-            final int len = builder.length();
-            builder.append(property.member.toField(classType(), property.getOverride() != null ? property.getOverride() : property.member, settings.getSetBuilder(), ClassSpec.Scope.SET));
-            appended = builder.length() > len;
+            final int len = b.length();
+            final Member override = property.getOverride();
+            b.append(member.toField(classType, override != null ? override : member, setBuilder, ClassSpec.Scope.SET));
+            appended = b.length() > len;
           }
         }
       }
     }
 
-    if (builder.length() > 0 && builder.charAt(builder.length() - 1) != '\n')
-      builder.append("\n\n");
+    if (b.length() > 0 && b.charAt(b.length() - 1) != '\n')
+      b.append("\n\n");
 
-    final Registry.Type type = classType();
-    builder.append('@').append(Override.class.getName());
-    builder.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
-    builder.append("\n  if (obj == this)");
-    builder.append("\n    return true;");
-    builder.append("\n\n  if (!(obj instanceof ").append(type.getCanonicalName()).append(')');
-    if (type.getSuperType() != null)
-      builder.append(" || !super.equals(obj)");
+    b.append('@').append(Override.class.getName());
+    b.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
+    b.append("\n  if (obj == this)");
+    b.append("\n    return true;");
+    b.append("\n\n  if (!(obj instanceof ").append(classType.getCanonicalName()).append(')');
+    final Type superType = classType.getSuperType();
+    if (superType != null)
+      b.append(" || !super.equals(obj)");
 
-    builder.append(")\n    return false;\n");
+    b.append(")\n    return false;\n");
 
     final boolean hasMembers = numNonOverrideMembers() > 0;
     if (hasMembers) {
-      builder.append("\n  final ").append(type.getCanonicalName()).append(" that = (").append(type.getCanonicalName()).append(")obj;");
+      b.append("\n  final ").append(classType.getCanonicalName()).append(" that = (").append(classType.getCanonicalName()).append(")obj;");
       if (properties.size() > 0) {
         for (final Property property : properties.values()) { // [C]
           if (property.getOverride() != null)
@@ -812,70 +834,75 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
           final Member member = property.member;
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
-          if (!isOptionalType && member.type().isArray())
-            builder.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(')');
-          else if (!isOptionalType && member.type().isPrimitive())
-            builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != that.").append(member.fieldBinding.instanceCase);
+          final Type memberType = member.type();
+          final String instanceCase = member.fieldBinding.instanceCase;
+          if (!isOptionalType && memberType.isArray())
+            b.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
+          else if (!isOptionalType && memberType.isPrimitive())
+            b.append("\n  if (").append(instanceCase).append(" != that.").append(instanceCase);
           else
-            builder.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(member.fieldBinding.instanceCase).append(", that.").append(member.fieldBinding.instanceCase).append(')');
+            b.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
 
-          builder.append(")\n    return false;\n");
+          b.append(")\n    return false;\n");
         }
       }
     }
-    builder.append("\n  return true;");
-    builder.append("\n}");
+    b.append("\n  return true;");
+    b.append("\n}");
 
-    builder.append("\n\n@").append(Override.class.getName());
-    builder.append("\npublic int hashCode() {");
+    b.append("\n\n@").append(Override.class.getName());
+    b.append("\npublic int hashCode() {");
     if (hasMembers) {
-      builder.append("\n  int hashCode = ").append(type.getName().hashCode()).append(type.getSuperType() != null ? " * 31 + super.hashCode()" : "").append(';');
+      b.append("\n  int hashCode = ").append(classType.getName().hashCode()).append(superType != null ? " * 31 + super.hashCode()" : "").append(';');
       if (properties.size() > 0) {
         for (final Property property : properties.values()) { // [C]
           if (property.getOverride() != null)
             continue;
 
           final Member member = property.member;
-          final boolean isPrimitive = member.type().isPrimitive();
+          final Type memberType = member.type();
+          final boolean isPrimitive = memberType.isPrimitive();
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
 
-          final String indent = !isPrimitive || member.type().isArray() ? "    " : "  ";
+          final boolean isArray = memberType.isArray();
+          final String indent = !isPrimitive || isArray ? "    " : "  ";
           final String header = "\n" + indent + "hashCode = 31 * hashCode + ";
 
-          if (!isPrimitive || member.type().isArray())
-            builder.append("\n  if (").append(member.fieldBinding.instanceCase).append(" != null)");
+          final String instanceCase = member.fieldBinding.instanceCase;
+          if (!isPrimitive || isArray)
+            b.append("\n  if (").append(instanceCase).append(" != null)");
 
-          builder.append(header);
-          if (!isOptionalType && member.type().isArray())
-            builder.append(Arrays.class.getName()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
+          b.append(header);
+          if (!isOptionalType && isArray)
+            b.append(Arrays.class.getName()).append(".hashCode(").append(instanceCase).append(");");
           else if (!isOptionalType && isPrimitive)
-            builder.append(member.type().getWrapper()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
+            b.append(memberType.getWrapper()).append(".hashCode(").append(instanceCase).append(");");
           else
-            builder.append(ObjectUtil.class.getName()).append(".hashCode(").append(member.fieldBinding.instanceCase).append(");");
+            b.append(ObjectUtil.class.getName()).append(".hashCode(").append(instanceCase).append(");");
 
-          if (!isPrimitive || member.type().isArray())
-            builder.append('\n');
+          if (!isPrimitive || isArray)
+            b.append('\n');
         }
       }
 
-      builder.append("\n  return hashCode;");
+      b.append("\n  return hashCode;");
     }
     else {
-      builder.append("\n  return ").append(type.getName().hashCode());
-      if (type.getSuperType() != null)
-        builder.append(" * 31 + super.hashCode()");
+      b.append("\n  return ").append(classType.getName().hashCode());
+      if (superType != null)
+        b.append(" * 31 + super.hashCode()");
 
-      builder.append(';');
+      b.append(';');
     }
-    builder.append("\n}");
+    b.append("\n}");
 
-    if (type.getSuperType() == null) {
-      builder.append("\n\n@").append(Override.class.getName());
-      builder.append("\npublic ").append(String.class.getName()).append(" toString() {");
-      builder.append("\n  return ").append(JxEncoder.class.getName()).append(".get().toString(this);");
-      builder.append("\n}");
+    if (superType == null) {
+      b.append("\n\n@").append(Override.class.getName());
+      b.append("\npublic ").append(String.class.getName()).append(" toString() {");
+      b.append("\n  return ").append(JxEncoder.class.getName()).append(".get().toString(this);");
+      b.append("\n}");
     }
 
-    return builder.toString();
+    return b.toString();
   }
 }

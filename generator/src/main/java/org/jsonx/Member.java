@@ -147,18 +147,20 @@ abstract class Member extends Element {
   }
 
   static String fullyQualifiedDisplayName(final Declarer member) {
-    final StringBuilder builder = new StringBuilder();
-    if (!(member.declarer() instanceof SchemaElement)) {
-      builder.append(JsdUtil.flipName(member.declarer().id().toString()));
-      if (!member.declarer().displayName().isEmpty())
-        builder.append(" (" + member.declarer().displayName() + ")");
+    final StringBuilder b = new StringBuilder();
+    final Declarer declarer = member.declarer();
+    if (!(declarer instanceof SchemaElement)) {
+      b.append(JsdUtil.flipName(declarer.id().toString()));
+      final String displayName = declarer.displayName();
+      if (!displayName.isEmpty())
+        b.append(" (").append(displayName).append(')');
     }
 
-    if (builder.length() > 0)
-      builder.append('.');
+    if (b.length() > 0)
+      b.append('.');
 
-    builder.append(member.displayName());
-    return builder.toString();
+    b.append(member.displayName());
+    return b.toString();
   }
 
   final Registry registry;
@@ -353,7 +355,7 @@ abstract class Member extends Element {
   }
 
   final String toField(final Registry.Type classType, final Member override, final boolean setBuilder, final ClassSpec.Scope ... scopes) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     final String classCase = (override != null ? override.fieldBinding : fieldBinding).classCase;
     final String instanceCase = (override != null ? override.fieldBinding : fieldBinding).instanceCase;
     final boolean isRegex = this instanceof AnyModel && isMultiRegex(name());
@@ -370,11 +372,11 @@ abstract class Member extends Element {
       if (override == null || isArrayOverride(override)) {
         final List<AnnotationType> elementAnnotations = toElementAnnotations();
         if (elementAnnotations != null && elementAnnotations.size() > 0)
-          builder.append(CollectionUtil.toString(elementAnnotations, '\n')).append('\n');
+          b.append(CollectionUtil.toString(elementAnnotations, '\n')).append('\n');
       }
 
       if (doc != null)
-        builder.append(doc).append('\n');
+        b.append(doc).append('\n');
 
       final AttributeMap attributes = new AttributeMap();
       toAnnotationAttributes(attributes, this);
@@ -383,64 +385,62 @@ abstract class Member extends Element {
 
       final AnnotationType annotationType = new AnnotationType(propertyAnnotation(), attributes);
       if (override == null || isArrayOverride(override))
-        builder.append(annotationType).append('\n');
+        b.append(annotationType).append('\n');
 
       final String arrayOverrideSafeTypeName = override != null && isArrayOverride(override) ? override.type().toCanonicalString() : typeName;
 
-      builder.append("public ").append(arrayOverrideSafeTypeName).append(" get").append(classCase).append("() {\n  return ");
+      b.append("public ").append(arrayOverrideSafeTypeName).append(" get").append(classCase).append("() {\n  return ");
       if (override == null)
-        builder.append(instanceCase);
+        b.append(instanceCase);
       else if (isArrayOverride(override))
-        builder.append("super.get").append(classCase).append("()");
+        b.append("super.get").append(classCase).append("()");
       else
-        builder.append('(').append(arrayOverrideSafeTypeName).append(")super.get").append(classCase).append("()");
+        b.append('(').append(arrayOverrideSafeTypeName).append(")super.get").append(classCase).append("()");
 
-      builder.append(";\n}\n\n");
+      b.append(";\n}\n\n");
     }
 
     if (ArrayUtil.contains(scopes, ClassSpec.Scope.SET)) {
       if (override == null || !isArrayOverride(override)) {
         if (doc != null)
-          builder.append(doc).append('\n');
+          b.append(doc).append('\n');
 
         final String classSimpleName = classType.getSimpleName();
-        builder.append("public ").append(setBuilder ? classSimpleName : "void").append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
+        b.append("public ").append(setBuilder ? classSimpleName : "void").append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
         if (override != null)
-          builder.append("super.set").append(classCase).append('(').append(instanceCase).append(')');
+          b.append("super.set").append(classCase).append('(').append(instanceCase).append(')');
         else
-          builder.append("this.").append(instanceCase).append(" = ").append(instanceCase);
-        builder.append(";\n");
+          b.append("this.").append(instanceCase).append(" = ").append(instanceCase);
+        b.append(";\n");
         if (setBuilder) {
-          builder.append("  return ");
+          b.append("  return ");
           if (!declarer.classType().getSimpleName().equals(classSimpleName))
-            builder.append('(').append(classSimpleName).append(')');
+            b.append('(').append(classSimpleName).append(')');
 
-          builder.append("this;\n");
+          b.append("this;\n");
         }
 
-        builder.append('}');
+        b.append('}');
       }
-      else if (builder.length() > 2) {
-        builder.setLength(builder.length() - 2);
+      else if (b.length() > 2) {
+        b.setLength(b.length() - 2);
       }
     }
 
     if (ArrayUtil.contains(scopes, ClassSpec.Scope.FIELD)) {
       if (override == null)
-        builder.append("\n\nprivate ").append(typeName).append(' ').append(instanceCase).append(';');
+        b.append("\n\nprivate ").append(typeName).append(' ').append(instanceCase).append(';');
     }
 
-    return builder.toString();
+    return b.toString();
   }
 
   /**
-   * Returns a list of {@link AnnotationType} objects representing the
-   * annotations of this {@link Member}.
+   * Returns a list of {@link AnnotationType} objects representing the annotations of this {@link Member}.
    * <p>
    * Intended to be overridden by each concrete subclass, this method
    *
-   * @return A list of {@link AnnotationType} objects representing the
-   *         annotations of this {@link Member}.
+   * @return A list of {@link AnnotationType} objects representing the annotations of this {@link Member}.
    */
   List<AnnotationType> toElementAnnotations() {
     return null;

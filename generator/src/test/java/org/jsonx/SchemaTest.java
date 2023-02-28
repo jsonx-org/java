@@ -196,14 +196,14 @@ public class SchemaTest {
    * @return The source without comments.
    */
   private static String removeComments(final String source) {
-    final StringBuilder builder = new StringBuilder(source);
-    for (int end = source.length(), start; (end = builder.lastIndexOf(" **/\n", end)) != -1;) { // [N]
-      start = Strings.lastIndexOf(builder, '\n', end - 5);
-      builder.delete(start, end + 4);
+    final StringBuilder b = new StringBuilder(source);
+    for (int end = source.length(), start; (end = b.lastIndexOf(" **/\n", end)) != -1;) { // [N]
+      start = Strings.lastIndexOf(b, '\n', end - 5);
+      b.delete(start, end + 4);
       end = start;
     }
 
-    return builder.toString();
+    return b.toString();
   }
 
   private static void assertSources(final Map<String,String> expected, final Map<String,String> actual, final boolean withComments) {

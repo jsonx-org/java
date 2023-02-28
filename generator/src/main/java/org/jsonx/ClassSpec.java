@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import org.jsonx.Registry.Type;
 import org.libj.lang.Strings;
 
 class ClassSpec {
@@ -83,40 +84,41 @@ class ClassSpec {
   }
 
   private String toString(final ClassSpec parent) {
-    final StringBuilder builder = new StringBuilder();
+    final StringBuilder b = new StringBuilder();
     if (referrer instanceof ObjectModel && ((ObjectModel)referrer).isAbstract)
-      builder.append("abstract ");
+      b.append("abstract ");
 
     if (parent != null)
-      builder.append("static ");
+      b.append("static ");
 
-    builder.append(type.getKind()).append(' ').append(type.getSimpleName());
+    b.append(type.getKind()).append(' ').append(type.getSimpleName());
     if (type.getKind() == Registry.Kind.CLASS && referrer != null) {
-      if (type.getSuperType() != null)
-        builder.append(" extends ").append(type.getSuperType().getCanonicalName());
+      final Type superType = type.getSuperType();
+      if (superType != null)
+        b.append(" extends ").append(superType.getCanonicalName());
       else
-        builder.append(" implements ").append(JxObject.class.getCanonicalName());
+        b.append(" implements ").append(JxObject.class.getCanonicalName());
     }
 
-    builder.append(" {");
+    b.append(" {");
     final Collection<ClassSpec> classSpecs = nameToClassSpec.values();
     final int size = classSpecs.size();
     if (size > 0) {
       final Iterator<ClassSpec> iterator = classSpecs.iterator();
       for (int i = 0; iterator.hasNext(); ++i) { // [I]
         if (i > 0)
-          builder.append('\n');
+          b.append('\n');
 
         final ClassSpec memberClass = iterator.next();
         final StringBuilder annotation = memberClass.getAnnotation();
         if (annotation != null)
-          builder.append("\n  ").append(Strings.indent(annotation, 2));
+          b.append("\n  ").append(Strings.indent(annotation, 2));
 
         final String memberDoc = memberClass.getDoc();
         if (memberDoc != null)
-          builder.append("\n  ").append(memberDoc);
+          b.append("\n  ").append(memberDoc);
 
-        builder.append("\n  public ").append(Strings.indent(memberClass.toString(this), 2));
+        b.append("\n  public ").append(Strings.indent(memberClass.toString(this), 2));
       }
     }
 
@@ -124,13 +126,13 @@ class ClassSpec {
       final String code = referrer.toSource(settings);
       if (code != null && code.length() > 0) {
         if (size > 0)
-          builder.append('\n');
+          b.append('\n');
 
-        builder.append("\n  ").append(Strings.indent(code, 2));
+        b.append("\n  ").append(Strings.indent(code, 2));
       }
     }
 
-    return builder.append("\n}").toString();
+    return b.append("\n}").toString();
   }
 
   @Override
