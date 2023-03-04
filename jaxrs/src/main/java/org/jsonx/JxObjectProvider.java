@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,6 +27,7 @@ import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Singleton;
 import javax.ws.rs.BadRequestException;
@@ -75,11 +74,11 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
    *
    * @param encoder The {@link JxEncoder} instance.
    * @param decoder The {@link JxDecoder} instance.
-   * @throws IllegalArgumentException If {@code encoder} or {@code decoder} is null.
+   * @throws NullPointerException If {@code encoder} or {@code decoder} is null.
    */
   public JxObjectProvider(final JxEncoder encoder, final JxDecoder decoder) {
-    this.encoder = assertNotNull(encoder);
-    this.decoder = assertNotNull(decoder);
+    this.encoder = Objects.requireNonNull(encoder);
+    this.decoder = Objects.requireNonNull(decoder);
   }
 
   /**
