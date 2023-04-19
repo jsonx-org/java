@@ -25,6 +25,11 @@ jobs:
         jdk: ['8', '11']
 
     steps:
+    - uses: gitboard-io/gitboard-action@main
+      with:
+        username: ${{ secrets.SONATYPE_USERNAME }}
+        key: ${{ secrets.GITBOARD_ID }}
+
     - uses: actions/checkout@v3
 
     - name: Set up JDK ${{ matrix.jdk }}
