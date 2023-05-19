@@ -474,7 +474,7 @@ public class JxEncoder {
 
     if (indent > 0) {
       b.append('\n');
-      for (int i = 0, i$ = (depth - 1) * 2; i < i$; ++i)
+      for (int i = 0, i$ = (depth - 1) * 2; i < i$; ++i) // [N]
         b.append(' ');
     }
 
@@ -485,7 +485,7 @@ public class JxEncoder {
   private Error appendValue(final StringBuilder b, final String name, final Object value, final Method getMethod, final Annotation annotation, final OnEncode onEncode, final int depth) {
     if (indent > 0) {
       b.append('\n');
-      for (int i = 0, i$ = depth * 2; i < i$; ++i)
+      for (int i = 0, i$ = depth * 2; i < i$; ++i) // [N]
         b.append(' ');
     }
 

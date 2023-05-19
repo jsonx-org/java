@@ -30,7 +30,9 @@ class ClassSpec {
   enum Scope {
     FIELD,
     GET,
-    SET
+    SET;
+
+    public static Scope[] values = values();
   }
 
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();

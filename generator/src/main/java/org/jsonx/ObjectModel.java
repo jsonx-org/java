@@ -787,7 +787,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           overridden.add(override.name());
 
         final int len = b.length();
-        b.append(property.member.toField(classType, override, setBuilder, ClassSpec.Scope.values()));
+        b.append(property.member.toField(classType, override, setBuilder, ClassSpec.Scope.values));
         appended = b.length() > len;
       }
     }

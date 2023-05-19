@@ -294,7 +294,7 @@ class Registry {
 
     public Generic asGeneric(final Wildcard wildcard) {
       if (wildcardToGeneric == null)
-        wildcardToGeneric = new IdentityHashMap<>(Wildcard.values().length);
+        wildcardToGeneric = new IdentityHashMap<>(2);
 
       Generic generic = wildcardToGeneric.get(wildcard);
       if (generic == null)

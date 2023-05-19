@@ -119,7 +119,7 @@ final class JsdUtil {
 
     final Class<?> returnType = getMethod.getReturnType();
     String setMethodName;
-    for (final Method method : methods)
+    for (final Method method : methods) // [A]
       if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == returnType && (setMethodName = method.getName()).length() == len0 && setMethodName.charAt(0) == firstChar && setMethodName.regionMatches(1, getMethodName, 1, len1))
         return method;
 
@@ -316,11 +316,11 @@ final class JsdUtil {
   }
 
   static Annotation[] flatten(final Annotation[] annotations) {
-    return flatten(annotations, 0, 0);
+    return flatten(annotations, annotations.length, 0, 0);
   }
 
-  private static Annotation[] flatten(final Annotation[] annotations, final int index, final int depth) {
-    if (index == annotations.length)
+  private static Annotation[] flatten(final Annotation[] annotations, final int length, final int index, final int depth) {
+    if (index == length)
       return new Annotation[depth];
 
     final Annotation annotation = annotations[index];
@@ -341,12 +341,12 @@ final class JsdUtil {
       repeatable = null;
 
     if (repeatable == null) {
-      final Annotation[] flattened = flatten(annotations, index + 1, depth + 1);
+      final Annotation[] flattened = flatten(annotations, length, index + 1, depth + 1);
       flattened[depth] = annotation;
       return flattened;
     }
 
-    final Annotation[] flattened = flatten(annotations, index + 1, depth + repeatable.length);
+    final Annotation[] flattened = flatten(annotations, length, index + 1, depth + repeatable.length);
     System.arraycopy(repeatable, 0, flattened, depth, repeatable.length);
     return flattened;
   }

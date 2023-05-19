@@ -23,15 +23,15 @@ import java.util.function.Predicate;
 abstract class ClassToGetMethods extends HashMap<Class<? extends JxObject>,Method[]> implements Predicate<Method> {
   private static final Method[] emptyMethods = new Method[0];
 
-  private Method[] getGetMethods(final Method[] methods, final int len, final int index, final int depth) {
-    if (index == len)
+  private Method[] getGetMethods(final Method[] methods, final int length, final int index, final int depth) {
+    if (index == length)
       return depth == 0 ? emptyMethods : new Method[depth];
 
     final Method method = methods[index];
     if (!test(method))
-      return getGetMethods(methods, len, index + 1, depth);
+      return getGetMethods(methods, length, index + 1, depth);
 
-    final Method[] getMethods = getGetMethods(methods, len, index + 1, depth + 1);
+    final Method[] getMethods = getGetMethods(methods, length, index + 1, depth + 1);
     getMethods[depth] = method;
     return getMethods;
   }
