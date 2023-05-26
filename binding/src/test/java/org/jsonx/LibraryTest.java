@@ -42,19 +42,25 @@ public class LibraryTest {
   private static final Logger logger = LoggerFactory.getLogger(LibraryTest.class);
   private static final JxEncoder encoder = JxEncoder.VALIDATING._2;
 
-  private static void test(final Object obj, final Class<? extends Annotation> annotationType) throws DecodeException, IOException {
-    final String json = annotationType != null ? encoder.toString((List<?>)obj, annotationType) : encoder.toString((JxObject)obj);
-    final Object decoded;
-    if (annotationType != null)
-      decoded = JxDecoder.VALIDATING.parseArray(annotationType, json);
-    else
-      decoded = JxDecoder.VALIDATING.parseObject(((JxObject)obj).getClass(), json);
+  @SafeVarargs
+  private static void testArray(final Object obj, final Class<? extends Annotation> annotationType, final Class<? extends Annotation> ... annotationTypes) throws DecodeException, IOException {
+    final String json = encoder.toString((List<?>)obj, annotationType);
+    try {
+      JxDecoder.VALIDATING.parseArray(json);
+    }
+    catch (final IllegalArgumentException e) {
+    }
 
+    final Object decoded = JxDecoder.VALIDATING.parseArray(json, annotationTypes);
     assertEquals(obj.toString(), decoded.toString());
   }
 
-  private static void test(final JxObject obj) throws DecodeException, IOException {
-    test(obj, null);
+  @SafeVarargs
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  private static void testObject(final JxObject obj, final Class ... classes) throws DecodeException, IOException {
+    final String json = encoder.toString(obj);
+    final Object decoded = JxDecoder.VALIDATING.parseObject(json, classes);
+    assertEquals(obj.toString(), decoded.toString());
   }
 
   private static String r(final String ... items) {
@@ -89,7 +95,7 @@ public class LibraryTest {
 
   @Test
   public void testAddress() throws DecodeException, IOException {
-    test(createAddress());
+    testObject(createAddress(), Book.class, Employee.class, Address.class, Library.class);
   }
 
   @Test
@@ -98,12 +104,12 @@ public class LibraryTest {
     for (int i = 0; i < 12; ++i) // [N]
       staff.add(createEmployee());
 
-    test(staff, Library.Staff.class);
+    testArray(staff, Library.Staff.class, TestArray.Array1d2.class, Library.Staff.class);
   }
 
   @Test
   public void testEmployee() throws DecodeException, IOException {
-    test(createEmployee());
+    testObject(createEmployee(), Book.class, Address.class, Employee.class, Library.class);
   }
 
   @Test
@@ -174,20 +180,20 @@ public class LibraryTest {
 
     final String json = encoder.toString(library);
     if (logger.isInfoEnabled()) logger.info(json);
-    JxDecoder.VALIDATING.parseObject(Library.class, json);
+    JxDecoder.VALIDATING.parseObject(json, Library.class);
   }
 
   @Test
   public void testOnPropertyDecode() throws DecodeException, IOException {
     final String json = "{\"year\":2003,\"publisher\":\"Science Publisher\",\"extra\":false}";
     try {
-      JxDecoder.VALIDATING.parseObject(Publishing.class, json);
+      JxDecoder.VALIDATING.parseObject(json, Publishing.class);
       fail("Expected DecodeException");
     }
     catch (final DecodeException e) {
       assertTrue(e.getMessage().startsWith("Unknown property: \"extra\""));
     }
 
-    JxDecoder.VALIDATING.parseObject(Publishing.class, json, (o, p, v) -> o instanceof Publishing);
+    JxDecoder.VALIDATING.parseObject(json, (o, p, v) -> o instanceof Publishing, Publishing.class);
   }
 }

@@ -103,7 +103,7 @@ class ObjectCodec extends Codec {
           if (error != null)
             return abort(error, reader, index);
 
-          value = primitiveCodec.parse(new String(buf, off, len));
+          value = primitiveCodec.parse(new String(buf, off, len), reader.isStrict());
         }
         else {
           if (codec instanceof AnyCodec) {
@@ -125,7 +125,8 @@ class ObjectCodec extends Codec {
                 return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
 
               final ArrayCodec arrayCodec = (ArrayCodec)codec;
-              value = ArrayCodec.decodeObject(arrayCodec.annotations, arrayCodec.idToElement.getMinIterate(), arrayCodec.idToElement.getMaxIterate(), arrayCodec.idToElement, reader, validate, onPropertyDecode);
+              final IdToElement idToElement = arrayCodec.idToElement;
+              value = ArrayCodec.decodeObject(arrayCodec.annotations, idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, onPropertyDecode);
             }
             else {
               throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());

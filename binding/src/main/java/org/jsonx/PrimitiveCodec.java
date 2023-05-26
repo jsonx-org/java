@@ -67,14 +67,14 @@ abstract class PrimitiveCodec extends Codec {
     return test(json.charAt(0)) ? validate(json, reader) : Error.EXPECTED_TYPE(name, elementName(), json, reader);
   }
 
-  final Object parse(final String json) {
+  final Object parse(final String json, final boolean strict) {
     if (getMethod.getReturnType().isPrimitive() && (nullable || use == Use.OPTIONAL) && decode() == null)
       throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) and primitive type: " + getMethod.getReturnType() + " must declare a \"decode\" binding to handle null values");
 
-    return parseValue(json);
+    return parseValue(json, strict);
   }
 
-  abstract Object parseValue(String json);
+  abstract Object parseValue(String json, boolean strict);
   abstract Error validate(String json, JsonReader reader);
   abstract boolean test(char firstChar);
 }

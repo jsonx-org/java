@@ -215,7 +215,7 @@ class ClassTrial extends Trial {
     Exception exception = null;
     JxObject decoded = null;
     try {
-      decoded = JxDecoder.VALIDATING.parseObject(binding.getClass(), new JsonReader(json), (o, n, v) -> {
+      decoded = JxDecoder.VALIDATING.parseObject(new JsonReader(json), (o, n, v) -> {
         if (n.equals(trial.name)) {
           if (object[0] != null)
             throw new IllegalStateException();
@@ -225,7 +225,7 @@ class ClassTrial extends Trial {
         }
 
         return false;
-      });
+      }, binding.getClass());
     }
     catch (final Exception e) {
       exception = e;

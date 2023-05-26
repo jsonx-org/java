@@ -32,8 +32,9 @@ import org.openjax.json.JsonUtil;
 
 class StringCodec extends PrimitiveCodec {
   static Object decodeObject(final Class<?> type, final Executable decode, final String json) {
-    final StringBuilder unescaped = new StringBuilder(json.length() - 2);
-    for (int i = 1, i$ = json.length() - 1; i < i$; ++i) { // [N]
+    int len1 = json.length() - 1;
+    final StringBuilder unescaped = new StringBuilder(len1 - 1);
+    for (int i = 1; i < len1; ++i) { // [N]
       char ch = json.charAt(i);
       if (ch == '\\') {
         ch = json.charAt(++i);
@@ -138,16 +139,16 @@ class StringCodec extends PrimitiveCodec {
   @Override
   Error validate(final String json, final JsonReader reader) {
     final char ch = json.charAt(0);
-    final int len = json.length();
-    if ((ch != '"' || json.charAt(len - 1) != '"') && (ch != '\'' || json.charAt(len - 1) != '\''))
+    final int len1 = json.length() - 1;
+    if ((ch != '"' || json.charAt(len1) != '"') && (ch != '\'' || json.charAt(len1) != '\''))
       return Error.NOT_A_STRING();
 
     final String value;
-    return pattern == null || pattern.matcher(value = json.substring(1, len - 1)).matches() ? null : Error.PATTERN_NOT_MATCHED(pattern.pattern(), value, reader);
+    return pattern == null || pattern.matcher(value = json.substring(1, len1)).matches() ? null : Error.PATTERN_NOT_MATCHED(pattern.pattern(), value, reader);
   }
 
   @Override
-  Object parseValue(final String json) {
+  Object parseValue(final String json, final boolean strict) {
     return decodeObject(type(), decode(), json);
   }
 

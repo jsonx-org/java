@@ -45,7 +45,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidName\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.InvalidName.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.InvalidName.class);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -70,7 +70,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.InvalidType.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.InvalidType.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -95,7 +95,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Bool.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -118,7 +118,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Bool.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Bool.class);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -143,7 +143,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"number\": 127}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.NumPrimitiveUse.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -166,7 +166,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"number\": 127}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveUse.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.NumPrimitiveUse.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -189,7 +189,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"number\": 127}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumPrimitiveScale.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.NumPrimitiveScale.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -212,7 +212,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": 7}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Num.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -235,7 +235,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": true}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Num.class);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -258,7 +258,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidForm\": 10.9}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Num.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Num.class);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -283,7 +283,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidRange\": 7}";
-        JxDecoder.VALIDATING.parseObject(Invalid.NumRange.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.NumRange.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -308,7 +308,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Str.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -331,7 +331,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Str.class);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -354,7 +354,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidPattern\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Str.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Str.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -379,7 +379,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidType\": [\"foo\"]}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Arr.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {
@@ -402,7 +402,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidAnnotation\": []}";
-        JxDecoder.VALIDATING.parseObject(Invalid.Arr.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.Arr.class);
         fail("Expected DecodeException");
       }
       catch (final DecodeException e) {
@@ -425,7 +425,7 @@ public class InvalidTest {
 
       try {
         final String json = "{\"invalidPattern\": \"foo\"}";
-        JxDecoder.VALIDATING.parseObject(Invalid.ArrAnnotationType.class, json);
+        JxDecoder.VALIDATING.parseObject(json, Invalid.ArrAnnotationType.class);
         fail("Expected ValidationException");
       }
       catch (final ValidationException e) {

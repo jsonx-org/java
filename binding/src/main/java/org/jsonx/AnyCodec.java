@@ -41,8 +41,9 @@ class AnyCodec extends Codec {
     Error error = null;
     if (firstChar == '[') {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.arrays}) {
-        if (AnyType.isEnabled(type.arrays())) {
-          final Object value = ArrayCodec.decodeArray(null, type.arrays(), null, token, reader, validate, onPropertyDecode);
+        final Class<? extends Annotation> arrays = type.arrays();
+        if (AnyType.isEnabled(arrays)) {
+          final Object value = ArrayCodec.decodeArray(null, arrays, null, token, reader, validate, onPropertyDecode);
           if (!(value instanceof Error))
             return value;
 
@@ -53,8 +54,9 @@ class AnyCodec extends Codec {
     }
     else if (firstChar == '{') {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.objects}) {
-        if (AnyType.isEnabled(type.objects())) {
-          final Object value = ObjectCodec.decodeArray(type.objects(), token, reader, validate, onPropertyDecode);
+        final Class<? extends JxObject> objects = type.objects();
+        if (AnyType.isEnabled(objects)) {
+          final Object value = ObjectCodec.decodeArray(objects, token, reader, validate, onPropertyDecode);
           if (!(value instanceof Error))
             return value;
 
@@ -65,18 +67,21 @@ class AnyCodec extends Codec {
     }
     else {
       for (final t type : types.length > 0 ? types : new t[] {AnyType.fromToken(token)}) {
-        if (AnyType.isEnabled(type.booleans())) {
-          final Object value = BooleanCodec.decodeArray(type.booleans().type(), type.booleans().decode(), token);
+        final BooleanType booleans;
+        final NumberType numbers;
+        final StringType strings;
+        if (AnyType.isEnabled(booleans = type.booleans())) {
+          final Object value = BooleanCodec.decodeArray(booleans.type(), booleans.decode(), token);
           if (value != null)
             return value;
         }
-        else if (AnyType.isEnabled(type.numbers())) {
-          final Object value = NumberCodec.decodeArray(type.numbers().type(), type.numbers().scale(), type.numbers().decode(), token);
+        else if (AnyType.isEnabled(numbers = type.numbers())) {
+          final Object value = NumberCodec.decodeArray(numbers.type(), numbers.scale(), numbers.decode(), token, reader.isStrict());
           if (value != null)
             return value;
         }
-        else if (AnyType.isEnabled(type.strings())) {
-          final Object value = StringCodec.decodeArray(type.strings().type(), type.strings().decode(), token);
+        else if (AnyType.isEnabled(strings = type.strings())) {
+          final Object value = StringCodec.decodeArray(strings.type(), strings.decode(), token);
           if (value != null)
             return value;
         }
@@ -90,19 +95,21 @@ class AnyCodec extends Codec {
     final t[] types = annotation.types();
     Error error = Error.NULL;
     for (final t type : types.length > 0 ? types : new t[] {AnyType.fromObject(object)}) {
-      if (AnyType.isEnabled(type.arrays())) {
-        error = ArrayCodec.encodeArray(annotation, type.arrays(), object, index, relations, idToElement, validate, onPropertyDecode);
+      final Class<? extends Annotation> arrays;
+      final BooleanType booleans;
+      final NumberType numbers;
+      final StringType strings;
+      if (AnyType.isEnabled(arrays = type.arrays())) {
+        error = ArrayCodec.encodeArray(annotation, arrays, object, index, relations, idToElement, validate, onPropertyDecode);
         if (error == null)
           return null;
       }
-      else if (AnyType.isEnabled(type.booleans())) {
-        final BooleanType booleans = type.booleans();
+      else if (AnyType.isEnabled(booleans = type.booleans())) {
         error = BooleanCodec.encodeArray(annotation, booleans.type(), booleans.encode(), object, index, relations);
         if (error == null)
           return null;
       }
-      else if (AnyType.isEnabled(type.numbers())) {
-        final NumberType numbers = type.numbers();
+      else if (AnyType.isEnabled(numbers = type.numbers())) {
         error = NumberCodec.encodeArray(annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, index, relations, validate);
         if (error == null)
           return null;
@@ -112,8 +119,7 @@ class AnyCodec extends Codec {
         if (error == null)
           return null;
       }
-      else if (AnyType.isEnabled(type.strings())) {
-        final StringType strings = type.strings();
+      else if (AnyType.isEnabled(strings = type.strings())) {
         error = StringCodec.encodeArray(annotation, strings.pattern(), strings.type(), strings.encode(), object, index, relations, validate);
         if (error == null)
           return null;
@@ -134,13 +140,17 @@ class AnyCodec extends Codec {
     Relations relations = null;
     StringBuilder builder = null;
     for (final t type : types.length > 0 ? types : new t[] {AnyType.fromObject(object)}) {
-      if (object instanceof List && AnyType.isEnabled(type.arrays())) {
+      final Class<? extends Annotation> arrays;
+      final BooleanType booleans;
+      final NumberType numbers;
+      final StringType strings;
+      if (object instanceof List && AnyType.isEnabled(arrays = type.arrays())) {
         if (relations == null)
           relations = new Relations();
         else
           relations.clear();
 
-        if ((error = ArrayCodec.encodeArray(null, type.arrays(), object, type.arrays().getAnnotation(ArrayType.class).elementIds()[0], relations, null, validate, null)) == null)
+        if ((error = ArrayCodec.encodeArray(null, arrays, object, arrays.getAnnotation(ArrayType.class).elementIds()[0], relations, null, validate, null)) == null)
           return relations;
       }
       else if (object instanceof JxObject && AnyType.isEnabled(type.objects())) {
@@ -152,22 +162,22 @@ class AnyCodec extends Codec {
         if ((error = jxEncoder.toString((JxObject)object, null, builder, depth)) == null)
           return builder.toString();
       }
-      else if (AnyType.isEnabled(type.booleans()) && Classes.isAssignableFrom(type.booleans().type(), object.getClass())) {
-        final Object encoded = BooleanCodec.encodeObject(type.booleans().type(), type.booleans().encode(), object);
+      else if (AnyType.isEnabled(booleans = type.booleans()) && Classes.isAssignableFrom(booleans.type(), object.getClass())) {
+        final Object encoded = BooleanCodec.encodeObject(booleans.type(), booleans.encode(), object);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else
           return encoded;
       }
-      else if (AnyType.isEnabled(type.numbers()) && Classes.isAssignableFrom(type.numbers().type(), object.getClass())) {
-        final Object encoded = NumberCodec.encodeObject(annotation, type.numbers().scale(), type.numbers().range(), type.numbers().type(), type.numbers().encode(), object, validate);
+      else if (AnyType.isEnabled(numbers = type.numbers()) && Classes.isAssignableFrom(numbers.type(), object.getClass())) {
+        final Object encoded = NumberCodec.encodeObject(annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else
           return encoded;
       }
-      else if (AnyType.isEnabled(type.strings()) && Classes.isAssignableFrom(type.strings().type(), object.getClass())) {
-        final Object encoded = StringCodec.encodeObject(annotation, getMethod, type.strings().pattern(), type.strings().type(), type.strings().encode(), object, validate);
+      else if (AnyType.isEnabled(strings = type.strings()) && Classes.isAssignableFrom(strings.type(), object.getClass())) {
+        final Object encoded = StringCodec.encodeObject(annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else

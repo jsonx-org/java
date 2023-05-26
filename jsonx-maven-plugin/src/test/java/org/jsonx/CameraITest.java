@@ -30,7 +30,7 @@ public class CameraITest {
     JxDecoder.set(JxDecoder.VALIDATING);
     final oz.Capture capture;
     try (final JsonReader in = new JsonReader(json)) {
-      capture = JxDecoder.get().parseObject(oz.Capture.class, in);
+      capture = JxDecoder.get().parseObject(in, oz.Capture.class);
     }
 
     System.out.println(capture);

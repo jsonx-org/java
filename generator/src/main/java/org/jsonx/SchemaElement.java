@@ -100,7 +100,7 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      final schema.Schema schema = JxDecoder.VALIDATING.parseObject(schema.Schema.class, in);
+      final schema.Schema schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
       return new SchemaElement(schema, prefix);
     }
   }

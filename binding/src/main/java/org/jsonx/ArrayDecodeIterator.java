@@ -114,7 +114,7 @@ class ArrayDecodeIterator extends ArrayIterator {
     }
     else if (codecType == NumberCodec.class) {
       final NumberElement element = (NumberElement)annotation;
-      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), token);
+      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), token, reader.isStrict());
     }
     else if (codecType == ObjectCodec.class) {
       value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), token, reader, validate, onPropertyDecode);

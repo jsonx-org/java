@@ -50,7 +50,7 @@ public class Range implements Serializable {
         b.append(ch);
       }
 
-      return b.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, b);
+      return b.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, b, true);
     }
     catch (final NumberFormatException e) {
       final ParseException pe = new ParseException(string, start);

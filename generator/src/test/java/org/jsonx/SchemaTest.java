@@ -337,7 +337,7 @@ public class SchemaTest {
 
   private static schema.Schema testParseSchema(final String jsd, final boolean test) throws DecodeException, IOException {
     try (final JsonReader reader = new JsonReader(jsd)) {
-      final schema.Schema schema1 = JxDecoder.VALIDATING.parseObject(schema.Schema.class, reader);
+      final schema.Schema schema1 = JxDecoder.VALIDATING.parseObject(reader, schema.Schema.class);
       if (test) {
         final String jsd1 = schema1.toString();
         final schema.Schema schema2 = testParseSchema(jsd1, false);

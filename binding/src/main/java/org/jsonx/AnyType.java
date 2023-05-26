@@ -42,6 +42,8 @@ final class AnyType {
     if ("true".equals(token) || "false".equals(token))
       return booleans;
 
+    if ("2.8929191704499999e-05".equals(token))
+      System.err.println();
     if (Numbers.isNumber(token))
       return numbers;
 

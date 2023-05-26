@@ -16,10 +16,14 @@
 
 package org.jsonx;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.List;
 
+import org.jsonx.ParseArrayTest.LongArray;
 import org.junit.Assert;
 import org.junit.Test;
 import org.libj.io.Readers;
@@ -34,10 +38,10 @@ public class AnyObjectTest {
 
   private static void testArray(final String fileName) throws DecodeException, IOException {
     try (final JsonReader reader = test(fileName)) {
-      final List<?> array0 = JxDecoder.VALIDATING.parseArray(AnyArray.class, reader);
+      final List<?> array0 = JxDecoder.VALIDATING.parseArray(reader, AnyArray.class);
       reader.reset();
 
-      final List<?> array1 = JxDecoder.VALIDATING.parseArray(AnyArray.class, reader);
+      final List<?> array1 = JxDecoder.VALIDATING.parseArray(reader, AnyArray.class);
       reader.reset();
 
       assertEquals(array0, array1);
@@ -50,10 +54,10 @@ public class AnyObjectTest {
 
   private static void testObject(final String fileName) throws DecodeException, IOException {
     try (final JsonReader reader = test(fileName)) {
-      final AnyObject object0 = JxDecoder.VALIDATING.parseObject(AnyObject.class, reader);
+      final AnyObject object0 = JxDecoder.VALIDATING.parseObject(reader, AnyObject.class);
       reader.reset();
 
-      final AnyObject object1 = JxDecoder.VALIDATING.parseObject(AnyObject.class, reader);
+      final AnyObject object1 = JxDecoder.VALIDATING.parseObject(reader, AnyObject.class);
       reader.reset();
 
       assertEquals(object0, object1);
@@ -66,6 +70,46 @@ public class AnyObjectTest {
 
   private static JsonReader test(final String fileName) {
     return new JsonReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)));
+  }
+
+  @Test
+  public void testNullReaderObject() throws DecodeException, IOException {
+    try {
+      JxDecoder.VALIDATING.parseObject((JsonReader)null, AnyObject.class);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+  }
+
+  @Test
+  public void testEmptyClassesObject() throws DecodeException, IOException {
+    try {
+      JxDecoder.VALIDATING.parseObject(new JsonReader(new StringReader("[]")));
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
+  }
+
+  @Test
+  public void testNullReaderArray() throws DecodeException, IOException {
+    try {
+      JxDecoder.VALIDATING.parseArray((JsonReader)null, LongArray.class);
+      fail("Expected NullPointerException");
+    }
+    catch (final NullPointerException e) {
+    }
+  }
+
+  @Test
+  public void testEmptyClassesArray() throws DecodeException, IOException {
+    try {
+      JxDecoder.VALIDATING.parseArray(new JsonReader(new StringReader("[]")));
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+    }
   }
 
   @Test

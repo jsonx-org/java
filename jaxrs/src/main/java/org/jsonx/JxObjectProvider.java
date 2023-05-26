@@ -124,12 +124,12 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
     try {
       if (JxObject.class.isAssignableFrom(type))
-        return getDecoder().parseObject((Class)type, new JsonReader(new InputStreamReader(entityStream)));
+        return getDecoder().parseObject(new JsonReader(new InputStreamReader(entityStream)), (Class)type);
 
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
         if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null)
-          return getDecoder().parseArray(annotationType, new JsonReader(new InputStreamReader(entityStream)));
+          return getDecoder().parseArray(new JsonReader(new InputStreamReader(entityStream)), annotationType);
       }
     }
     catch (final JsonParseException | DecodeException e) {

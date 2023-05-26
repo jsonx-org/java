@@ -79,7 +79,7 @@ public class ArrayCodecTest {
 
     try {
       final String inJson = in.toString();
-      final Object out = JxDecoder.VALIDATING.parseObject(in.getClass(), inJson);
+      final Object out = JxDecoder.VALIDATING.parseObject(inJson, in.getClass());
       final String outJson = out.toString();
       assertEquals(inJson, outJson);
       if (expected != null)

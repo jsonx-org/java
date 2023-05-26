@@ -30,6 +30,6 @@ public class InvoiceSampleTest {
   public void test() throws DecodeException, IOException {
     final Invoice invoice = InvoiceSample.createInvoice();
     final String json = JxEncoder.VALIDATING._2.toString(invoice);
-    assertEquals(invoice, JxDecoder.VALIDATING.parseObject(Invoice.class, json));
+    assertEquals(invoice, JxDecoder.VALIDATING.parseObject(json, Invoice.class));
   }
 }
