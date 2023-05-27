@@ -352,11 +352,11 @@
 
     </property>
     <property name="stringOptional" xsi:type="string" use="optional"/>
-    <property names="any[0-9a-f]+" xsi:type="any">
-      <binding lang="java" field="anyAny1"/>
-    </property>
     <property names="any\\d" xsi:type="any">
       <binding lang="java" field="anyAny2"/>
+    </property>
+    <property names="any[0-9a-f]+" xsi:type="any">
+      <binding lang="java" field="anyAny1"/>
     </property>
     <property name="stringOptionalNotNullable" xsi:type="string" use="optional" nullable="false"/>
     <property name="stringPattern" xsi:type="string" pattern="[valid]+"/>

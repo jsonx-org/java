@@ -92,17 +92,17 @@ abstract class Codec {
     catch (final IllegalAccessException e) {
       throw new RuntimeException(e);
     }
-    catch (final InvocationTargetException e) {
-      if (e.getCause() instanceof RuntimeException)
-        throw (RuntimeException)e.getCause();
-
-      throw new RuntimeException(e.getCause());
-    }
     catch (final IllegalArgumentException e) {
       if (e.getMessage() != null && "argument type mismatch".equals(e.getMessage()))
         throw new ValidationException(object.getClass().getName() + "." + getMethod.getName() + "():" + getMethod.getReturnType().getName() + " is not compatible with property \"" + name + "\" of type \"" + elementName() + "\" with value: " + value, e);
 
       throw new UnsupportedOperationException(e);
+    }
+    catch (final InvocationTargetException e) {
+      if (e.getCause() instanceof RuntimeException)
+        throw (RuntimeException)e.getCause();
+
+      throw new RuntimeException(e.getCause());
     }
   }
 

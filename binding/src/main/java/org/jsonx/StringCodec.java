@@ -123,11 +123,12 @@ class StringCodec extends PrimitiveCodec {
 
   StringCodec(final StringProperty property, final Method getMethod, final Method setMethod) {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use(), property.decode());
+    final String pattern = property.pattern();
     try {
-      this.pattern = property.pattern().isEmpty() ? null : Patterns.compile(property.pattern(), Pattern.DOTALL);
+      this.pattern = pattern.isEmpty() ? null : Patterns.compile(pattern, Pattern.DOTALL);
     }
     catch (final PatternSyntaxException e) {
-      throw new ValidationException("Malformed pattern: " + property.pattern());
+      throw new ValidationException("Malformed pattern: " + pattern);
     }
   }
 

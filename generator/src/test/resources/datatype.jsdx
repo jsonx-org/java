@@ -115,8 +115,8 @@
     <property names="anyNumStr" xsi:type="any" types="defaultDecimal charArray" use="optional" doc="Optional property named anyNumStr of type 'defaultDecimal' or 'charArray'"/>
   </object>
   <object name="objArr" doc="Object with array references">
-    <property names=".*" xsi:type="any" nullable="false" doc="Property accepting any name and any type">
-      <binding lang="java" field="any1"/>
+    <property names="anyNumStr" xsi:type="any" types="defaultDecimal charArray" use="optional" doc="Optional property named anyNumStr of type 'defaultDecimal' or 'charArray'">
+      <binding lang="java" field="any2"/>
     </property>
     <property name="arrayBool" xsi:type="reference" type="arrayBool" doc="Property with bool array">
       <binding lang="java" field="ab"/>
@@ -145,8 +145,8 @@
     <property name="arrayStrOptionalNotNullable" xsi:type="reference" type="arrayStr" use="optional" nullable="false" doc="Optional, not-nullable property with str array">
       <binding lang="java" field="asONN"/>
     </property>
-    <property names="anyNumStr" xsi:type="any" types="defaultDecimal charArray" use="optional" doc="Optional property named anyNumStr of type 'defaultDecimal' or 'charArray'">
-      <binding lang="java" field="any2"/>
+    <property names=".*" xsi:type="any" nullable="false" doc="Property accepting any name and any type">
+      <binding lang="java" field="any1"/>
     </property>
   </object>
   <object name="objBool" doc="Object with boolean properties">

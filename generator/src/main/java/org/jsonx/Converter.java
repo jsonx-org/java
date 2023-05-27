@@ -86,8 +86,7 @@ public final class Converter {
    *
    * @param url The {@link URL} of the content to convert.
    * @return The converted format.
-   * @throws IllegalArgumentException If the format of the content of the
-   *           specified file is malformed, or is not JSDx or JSD.
+   * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
    */
   public static String convert(final URL url) throws IOException {

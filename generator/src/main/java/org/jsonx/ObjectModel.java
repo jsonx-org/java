@@ -316,10 +316,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
           }
         }
 
-        element.getAttributes().remove("nullable");
-        element.getAttributes().remove("use");
-        element.getAttributes().remove("minOccurs");
-        element.getAttributes().remove("maxOccurs");
+        final Map<?,?> attrs = element.getAttributes();
+        attrs.remove("nullable");
+        attrs.remove("use");
+        attrs.remove("minOccurs");
+        attrs.remove("maxOccurs");
       }
 
       return element;

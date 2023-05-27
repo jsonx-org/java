@@ -261,11 +261,12 @@ final class Reference extends Member {
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
-      element.getAttributes().remove("minOccurs");
-      element.getAttributes().remove("maxOccurs");
-      element.getAttributes().remove("nullable");
-      element.getAttributes().remove("use");
-      element.getAttributes().putAll(attributes);
+      final Map<String,Object> attrs = element.getAttributes();
+      attrs.remove("minOccurs");
+      attrs.remove("maxOccurs");
+      attrs.remove("nullable");
+      attrs.remove("use");
+      attrs.putAll(attributes);
 
       return element;
     }

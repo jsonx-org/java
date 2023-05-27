@@ -429,10 +429,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final Id id = Id.named(type);
 
     final ArrayModel registered = (ArrayModel)registry.getModel(id);
-    if (registered != null)
-      return registered;
-
-    return new ArrayModel(registry, declarer, id, type, arrayAnnotation, minIterate, maxIterate, elementIds, topologicalOrder, declaringTypeName);
+    return registered != null ? registered : new ArrayModel(registry, declarer, id, type, arrayAnnotation, minIterate, maxIterate, elementIds, topologicalOrder, declaringTypeName);
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final Id id, final Registry.Type type, final Annotation arrayAnnotation, final int minIterate, final int maxIterate, final int[] elementIds, final LinkedHashMap<Integer,Annotation> topologicalOrder, final String declaringTypeName) {
@@ -613,8 +610,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
       final List<AnnotationType> inner = new ArrayList<>();
       if (arrayModel.classType() == null) {
         final ArrayList<Member> members = arrayModel.members;
-        final int[] indices = new int[members.size()];
-        for (int i = 0, i$ = indices.length; i < i$; ++i) { // [RA]
+        final int size = members.size();
+        final int[] indices = new int[size];
+        for (int i = 0; i < size; ++i) { // [RA]
           indices[i] = index + offset;
           offset += writeElementAnnotations(inner, members.get(i), index + offset, owner);
         }

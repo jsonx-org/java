@@ -31,7 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -100,8 +99,7 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      final schema.Schema schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
-      return new SchemaElement(schema, prefix);
+      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), prefix);
     }
   }
 
@@ -215,39 +213,41 @@ public final class SchemaElement extends Element implements Declarer {
     }
 
     final Collection<Model> models = registry.getModels();
-    if (models.size() > 0)
+    final int size = models.size();
+    if (size > 0)
       for (final Model model : models) // [C]
         if (model instanceof Referrer)
           ((Referrer<?>)model).resolveReferences();
 
     registry.resolveReferences();
 
-    if (models.size() > 0)
+    if (size > 0)
       for (final Model model : models) // [C]
         if (model instanceof Referrer)
           ((Referrer<?>)model).resolveOverrides();
   }
 
+  private static String memberToName(final $Member obj) {
+    if (obj instanceof Schema.Array)
+      return ((Schema.Array)obj).getName$().text();
+
+    if (obj instanceof Schema.Boolean)
+      return ((Schema.Boolean)obj).getName$().text();
+
+    if (obj instanceof Schema.Number)
+      return ((Schema.Number)obj).getName$().text();
+
+    if (obj instanceof Schema.String)
+      return ((Schema.String)obj).getName$().text();
+
+    if (obj instanceof Schema.Object)
+      return ((Schema.Object)obj).getName$().text();
+
+    throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
+  };
+
   private static void assertNoCycle(final Schema schema) throws ValidationException {
-    final Function<$Member,String> memberToName = obj -> {
-      if (obj instanceof Schema.Array)
-        return ((Schema.Array)obj).getName$().text();
-
-      if (obj instanceof Schema.Boolean)
-        return ((Schema.Boolean)obj).getName$().text();
-
-      if (obj instanceof Schema.Number)
-        return ((Schema.Number)obj).getName$().text();
-
-      if (obj instanceof Schema.String)
-        return ((Schema.String)obj).getName$().text();
-
-      if (obj instanceof Schema.Object)
-        return ((Schema.Object)obj).getName$().text();
-
-      throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
-    };
-    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", memberToName);
+    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::memberToName);
 
     final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
@@ -267,7 +267,7 @@ public final class SchemaElement extends Element implements Declarer {
 
     final List<$Member> cycle = digraph.getCycle();
     if (cycle != null)
-      throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(memberToName).collect(Collectors.joining(" -> ")));
+      throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::memberToName).collect(Collectors.joining(" -> ")));
   }
 
   /**
@@ -431,8 +431,9 @@ public final class SchemaElement extends Element implements Declarer {
     final int i$ = members.size();
     if (i$ > 0) {
       elements = new ArrayList<>();
-      for (int i = 0; i < i$; ++i) // [RA]
-        elements.add( members.get(i).toXml(settings, this, packageName));
+      int i = 0; do // [RA]
+        elements.add(members.get(i).toXml(settings, this, packageName));
+      while (++i < i$);
     }
     else {
       elements = null;

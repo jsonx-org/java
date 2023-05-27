@@ -17,19 +17,20 @@
 package org.jsonx;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import org.libj.util.Patterns;
 
 class PropertyToCodec {
-  private final HashMap<String,Codec> anyToCodec = new HashMap<>();
+  private final ArrayList<AnyCodec> anyCodecs = new ArrayList<>();
   private final HashMap<String,Codec> nameToCodec = new HashMap<>();
   final HashMap<Method,Codec> getMethodToCodec = new HashMap<>();
 
   void add(final Codec codec) {
-    (codec instanceof AnyCodec ? anyToCodec : nameToCodec).put(codec.name, codec);
+    if (codec instanceof AnyCodec)
+      anyCodecs.add((AnyCodec)codec);
+    else
+      nameToCodec.put(codec.name, codec);
+
     getMethodToCodec.put(codec.getMethod, codec);
   }
 
@@ -38,12 +39,10 @@ class PropertyToCodec {
     if (codec != null)
       return codec;
 
-    if (anyToCodec.size() > 0) {
-      for (final Map.Entry<String,Codec> entry : anyToCodec.entrySet()) { // [S]
-        final Pattern pattern = Patterns.compile(entry.getKey(), Pattern.DOTALL);
-        if (pattern.matcher(name).matches())
-          return entry.getValue();
-      }
+    for (int i = 0, i$ = anyCodecs.size(); i < i$; ++i) { // [RA]
+      final AnyCodec anyCodec = anyCodecs.get(i);
+      if (anyCodec.pattern().matcher(name).matches())
+        return anyCodec;
     }
 
     return null;

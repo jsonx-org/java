@@ -346,8 +346,9 @@ final class JsdUtil {
       return flattened;
     }
 
-    final Annotation[] flattened = flatten(annotations, length, index + 1, depth + repeatable.length);
-    System.arraycopy(repeatable, 0, flattened, depth, repeatable.length);
+    final int len = repeatable.length;
+    final Annotation[] flattened = flatten(annotations, length, index + 1, depth + len);
+    System.arraycopy(repeatable, 0, flattened, depth, len);
     return flattened;
   }
 

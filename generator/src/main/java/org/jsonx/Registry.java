@@ -408,10 +408,11 @@ class Registry {
 
   Registry(final String prefix) {
     this.isFromJsd = true;
-    if (prefix.length() > 0) {
-      final char lastChar = prefix.charAt(prefix.length() - 1);
+    final int length = prefix.length();
+    if (length > 0) {
+      final char lastChar = prefix.charAt(length - 1);
       if (lastChar == '.') {
-        this.packageName = prefix.substring(0, prefix.length() - 1);
+        this.packageName = prefix.substring(0, length - 1);
         this.classPrefix = "";
       }
       else {
