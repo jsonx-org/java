@@ -56,7 +56,7 @@ class NumberCodec extends PrimitiveCodec {
     return decode != null ? JsdUtil.invoke(decode, json) : type.isAssignableFrom(String.class) ? json : parseNumber((Class<? extends Number>)type, scale, json, strict);
   }
 
-  static Object decodeArray(final Class<?> type, final int scale, final String decode, String token, final boolean strict) {
+  static Object decodeArray(final Class<?> type, final int scale, final String decode, final String token, final boolean strict) {
     final char ch = token.charAt(0);
     if (ch != '-' && (ch < '0' || '9' < ch))
       return null;

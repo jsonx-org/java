@@ -85,45 +85,63 @@ class Registry {
     }
   }
 
-  final class Type {
-    final class Generic {
-      private final Type type = Type.this;
-      private final Wildcard wildcard;
+  final class GenericType extends Type {
+    private final Wildcard wildcard;
 
-      private Generic(final Wildcard wildcard) {
-        // Remove "? extends" if the target class is final
-        if (wildcard == Wildcard.EXTENDS && type.cls != null && Modifier.isFinal(type.cls.getModifiers()))
-          this.wildcard = null;
-        else
-          this.wildcard = wildcard;
-      }
-
-      private String toString(final boolean canonical) {
-        return wildcard != null ? wildcard + type.toString(canonical) : type.toString(canonical);
-      }
-
-      @Override
-      public String toString() {
-        return toString(false);
-      }
+    private GenericType(final Type type, final Wildcard wildcard) {
+      super(type, type.genericTypes);
+      // Remove "? extends" if the target class is final
+      if (wildcard == Wildcard.EXTENDS && cls != null && Modifier.isFinal(cls.getModifiers()))
+        this.wildcard = null;
+      else
+        this.wildcard = wildcard;
     }
 
-    private final Class<?> cls;
-    private final Kind kind;
-    private final boolean isArray;
-    private final boolean isPrimitive;
-    private final Type wrapper;
-    private final String packageName;
-    private final String canonicalPackageName;
-    private final String simpleName;
-    private final String compositeName;
-    private final String canonicalCompositeName;
-    private final String name;
-    private final String canonicalName;
-    private final Type superType;
-    private final Generic[] genericTypes;
+    @Override
+    String toString(final boolean canonical) {
+      return wildcard != null ? wildcard + super.toString(canonical) : super.toString(canonical);
+    }
 
-    Type(final Kind kind, final String packageName, String compositeName, Type superType, final Generic[] genericTypes) {
+    @Override
+    public String toString() {
+      return toString(false);
+    }
+  }
+
+  class Type {
+    final Class<?> cls;
+    final Kind kind;
+    final boolean isArray;
+    final boolean isPrimitive;
+    final Type wrapper;
+    final String packageName;
+    final String canonicalPackageName;
+    final String simpleName;
+    final String compositeName;
+    final String canonicalCompositeName;
+    final String name;
+    final String canonicalName;
+    final Type superType;
+    final Type[] genericTypes;
+
+    Type(final Type type, final Type[] genericTypes) {
+      this.cls = type.cls;
+      this.kind = type.kind;
+      this.isArray = type.isArray;
+      this.isPrimitive = type.isPrimitive;
+      this.wrapper = type.wrapper;
+      this.packageName = type.packageName;
+      this.canonicalPackageName = type.canonicalPackageName;
+      this.simpleName = type.simpleName;
+      this.compositeName = type.compositeName;
+      this.canonicalCompositeName = type.canonicalCompositeName;
+      this.name = type.name;
+      this.canonicalName = type.canonicalName;
+      this.superType = type.superType;
+      this.genericTypes = genericTypes;
+    }
+
+    Type(final Kind kind, final String packageName, String compositeName, Type superType, final GenericType[] genericTypes) {
       this.kind = kind;
       final boolean defaultPackage = packageName.length() == 0;
       final int dot = compositeName.lastIndexOf('.');
@@ -155,8 +173,8 @@ class Registry {
       qualifiedNameToType.put(toCanonicalString(), this);
     }
 
-    private Type(final Class<?> cls, final Generic[] genericTypes) {
-      this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (Generic[])null), genericTypes);
+    private Type(final Class<?> cls, final GenericType[] genericTypes) {
+      this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (GenericType[])null), genericTypes);
     }
 
     Type getSuperType() {
@@ -165,7 +183,7 @@ class Registry {
 
     Type getDeclaringType() {
       final String declaringClassName = Classes.getDeclaringClassName(compositeName);
-      return compositeName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, (Generic[])null);
+      return compositeName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, (GenericType[])null);
     }
 
     Type getGreatestCommonSuperType(final Type type) {
@@ -174,7 +192,7 @@ class Registry {
         Type b = type;
         do {
           if (a.name.equals(b.name))
-            return a;
+            return a.withCommonGeneric(b);
 
           b = b.superType;
         }
@@ -185,8 +203,26 @@ class Registry {
       return OBJECT;
     }
 
+    private Type withCommonGeneric(final Type b) {
+      if (genericTypes == null)
+        return this;
+
+      if (b.genericTypes == null)
+        return b;
+
+      final int len = genericTypes.length;
+      if (len != b.genericTypes.length)
+        throw new IllegalArgumentException("Incompatible types: " + this + " " + b);
+
+      final Type[] result = new Type[len];
+      for (int i = 0; i < len; ++i)  // [A]
+        result[i] = genericTypes[i].getGreatestCommonSuperType(b.genericTypes[i]).asGeneric(Wildcard.EXTENDS);
+
+      return new Type(this, result);
+    }
+
     Kind getKind() {
-      return this.kind;
+      return kind;
     }
 
     String getPackage() {
@@ -229,11 +265,11 @@ class Registry {
       return toString(true);
     }
 
-    private String toString(final boolean canonical) {
+    String toString(final boolean canonical) {
       final StringBuilder b = new StringBuilder(canonical ? canonicalName : name);
       if (genericTypes != null) {
         b.append('<');
-        for (final Generic genericType : genericTypes) // [A]
+        for (final Type genericType : genericTypes) // [A]
           b.append(canonical ? genericType.toString(canonical) : genericType.toString()).append(',');
 
         b.setCharAt(b.length() - 1, '>');
@@ -260,11 +296,11 @@ class Registry {
     }
 
     public boolean isArray() {
-      return this.isArray;
+      return isArray;
     }
 
     public Type getWrapper() {
-      return this.wrapper;
+      return wrapper;
     }
 
     public boolean isAssignableFrom(Type type) {
@@ -286,19 +322,19 @@ class Registry {
       return false;
     }
 
-    private IdentityHashMap<Wildcard,Generic> wildcardToGeneric;
+    private IdentityHashMap<Wildcard,GenericType> wildcardToGeneric;
 
-    public Generic asGeneric() {
+    public GenericType asGeneric() {
       return asGeneric(null);
     }
 
-    public Generic asGeneric(final Wildcard wildcard) {
+    public GenericType asGeneric(final Wildcard wildcard) {
       if (wildcardToGeneric == null)
         wildcardToGeneric = new IdentityHashMap<>(2);
 
-      Generic generic = wildcardToGeneric.get(wildcard);
+      GenericType generic = wildcardToGeneric.get(wildcard);
       if (generic == null)
-        wildcardToGeneric.put(wildcard, generic = new Generic(wildcard));
+        wildcardToGeneric.put(wildcard, generic = new GenericType(this, wildcard));
 
       return generic;
     }
@@ -336,7 +372,7 @@ class Registry {
     final int lt;
     // FIXME: What about "? extends" and "? super"?
     final int gt = className.lastIndexOf('>');
-    final Type.Generic genericType;
+    final GenericType genericType;
     if (gt > -1) {
       int i = lt = className.indexOf('<');
       // FIXME: This does not handle multiple generic type parameters (i.e. with `,`).
@@ -355,38 +391,42 @@ class Registry {
     return dot == -1 ? getType(kind, "", className, genericType) : getType(kind, className.substring(0, dot), className.substring(dot + 1, lt), genericType);
   }
 
-  Type getType(final Kind kind, final String packageName, final String compositeName, final Type.Generic ... genericTypes) {
+  Type getType(final Kind kind, final String packageName, final String compositeName, final GenericType ... genericTypes) {
     return getType(kind, packageName, compositeName, null, null, genericTypes);
   }
 
-  Type getType(final String packageName, final String compositeName, final String supercompositeName, final Type.Generic ... genericTypes) {
+  Type getType(final String packageName, final String compositeName, final String supercompositeName, final GenericType ... genericTypes) {
     return getType(Kind.CLASS, packageName, compositeName, packageName, supercompositeName, genericTypes);
   }
 
   Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName) {
-    return getType(kind, packageName, compositeName, superPackageName, supercompositeName, (Type.Generic[])null);
+    return getType(kind, packageName, compositeName, superPackageName, supercompositeName, (GenericType[])null);
   }
 
-  Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName, final Type.Generic ... genericTypes) {
+  Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName, final GenericType ... genericTypes) {
     final StringBuilder className = new StringBuilder();
     if (packageName.length() > 0)
       className.append(packageName).append('.');
 
     className.append(compositeName);
     final Type type = qualifiedNameToType.get(className.toString());
-    return type != null ? type : new Type(kind, packageName, compositeName, supercompositeName == null ? null : getType(Kind.CLASS, superPackageName, supercompositeName, null, null, (Type.Generic[])null), genericTypes);
+    return type != null ? type : new Type(kind, packageName, compositeName, supercompositeName == null ? null : getType(Kind.CLASS, superPackageName, supercompositeName, null, null, (GenericType[])null), genericTypes);
   }
 
-  Type getOptionalType(final Type.Generic genericType) {
+  Type getOptionalType(final GenericType genericType) {
     return getType(Optional.class, genericType);
   }
 
-  Type getType(final Class<?> cls, final Type.Generic ... genericTypes) {
+  Type getType(final Class<?> cls, final GenericType ... genericTypes) {
     final StringBuilder b = new StringBuilder(cls.getName());
     if (genericTypes != null) {
       b.append('<');
-      for (final Type.Generic genericType : genericTypes) // [A]
-        b.append(genericType.toString(true));
+      for (int i = 0, i$ = genericTypes.length; i < i$; ++i) { // [A]
+        if (i > 0)
+          b.append(',');
+
+        b.append(genericTypes[i].toString(true));
+      }
 
       b.append('>');
     }

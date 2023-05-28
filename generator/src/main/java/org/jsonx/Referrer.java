@@ -46,10 +46,8 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       count.set(count.get() + 1);
       int start = 0;
       final Member member0 = members.get(0);
-      if (visited.contains(member0))
+      if (!visited.add(member0))
         start = 1;
-      else
-        visited.add(member0);
 
       if (i$ == start)
         return null;

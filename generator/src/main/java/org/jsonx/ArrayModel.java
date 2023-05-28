@@ -31,6 +31,7 @@ import java.util.RandomAccess;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
+import org.jsonx.Registry.Wildcard;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember.MinIterate$;
@@ -460,8 +461,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
   @Override
   Registry.Type typeDefault() {
     // type can be null if there is a loop in the type graph
-    final Registry.Type type = getGreatestCommonSuperType(members);
-    return registry.getType(defaultClass(), (type == null ? registry.OBJECT : !type.isArray() && type.isPrimitive() ? type.getWrapper() : type).asGeneric());
+    Registry.Type type = getGreatestCommonSuperType(members);
+    type = type == null ? registry.OBJECT : !type.isArray() && type.isPrimitive() ? type.getWrapper() : type;
+    return registry.getType(defaultClass(), type.cls != null && List.class.isAssignableFrom(type.cls) ? type.asGeneric(Wildcard.EXTENDS) : type.asGeneric());
   }
 
   @Override
