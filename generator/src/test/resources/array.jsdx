@@ -18,6 +18,14 @@
   xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
+  <array name="coordinates">
+    <number minOccurs="2" maxOccurs="2" nullable="false">
+      <binding lang="java" type="java.lang.Double"/>
+    </number>
+  </array>
+  <array name="multiCoordinates">
+    <reference type="coordinates" nullable="false"/>
+  </array>
   <array name="bar-rootArray1">
     <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
   </array>
@@ -82,5 +90,10 @@
     <property name="arrayThree" xsi:type="reference" type="rootArray3"/>
     <property names="any2" xsi:type="any" nullable="false"/>
     <property name="arrayFour" xsi:type="reference" type="rootArray4" use="optional"/>
+  </object>
+  <object name="geometry">
+    <property name="coordinates" xsi:type="array" nullable="false">
+      <any types="coordinates multiCoordinates" nullable="false"/>
+    </property>
   </object>
 </schema>

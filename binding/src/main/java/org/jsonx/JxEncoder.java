@@ -423,19 +423,20 @@ public class JxEncoder {
         }
       }
 
-      final Class<?> returnType = getMethod.getReturnType();
-      if (nullable && use == Use.OPTIONAL && returnType != Optional.class)
-        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true && use=Use.OPTIONAL) must be of type: " + Optional.class.getName());
-
-      if (returnType.isPrimitive() && (nullable || use == Use.OPTIONAL))
-        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=Use.OPTIONAL) cannot be primitive type: " + returnType);
-
       if (name == null)
         continue;
 
+      final Class<?> returnType = getMethod.getReturnType();
+      final boolean isNotMap = !Map.class.isAssignableFrom(returnType);
+      if (isNotMap && nullable && use == Use.OPTIONAL && returnType != Optional.class)
+        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true && use=OPTIONAL) must be of type: " + Optional.class.getName());
+
+      if ((nullable || use == Use.OPTIONAL) && returnType.isPrimitive())
+        throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true || use=OPTIONAL) cannot be primitive type: " + returnType);
+
       final Object value = getValue(object, getMethod, annotation, name, use);
       if (value != null || nullable && use == Use.REQUIRED) {
-        if (!Map.class.isAssignableFrom(returnType)) {
+        if (isNotMap) {
           if (hasProperties)
             b.append(comma);
 

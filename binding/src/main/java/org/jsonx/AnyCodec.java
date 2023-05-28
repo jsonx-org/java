@@ -47,12 +47,15 @@ class AnyCodec extends Codec {
       int i = 0; do {
         final Class<? extends Annotation> arrays = type.arrays();
         if (AnyType.isEnabled(arrays)) {
+          final int index = reader.getIndex();
           final Object value = ArrayCodec.decodeArray(null, arrays, null, token, reader, validate, onPropertyDecode);
           if (!(value instanceof Error))
             return value;
 
           if (error == null || error.isBefore((Error)value))
             error = (Error)value;
+
+          reader.setIndex(index);
         }
 
         if (++i == len)

@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RuntimeTest {
-  private static final Logger logger = LoggerFactory.getLogger(RuntimeUtil.class);
+  private static final Logger logger = LoggerFactory.getLogger(RuntimeTest.class);
   private static int count;
 
   private static void test(final Class<? extends JxObject> cls) throws Exception {

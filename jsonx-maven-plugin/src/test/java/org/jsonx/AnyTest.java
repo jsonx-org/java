@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 JSONx
+/* Copyright (c) 2023 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,19 +18,13 @@ package org.jsonx;
 
 import java.io.IOException;
 
+import org.jsonx.array.Geometry;
 import org.junit.Test;
-import org.openjax.json.JsonReader;
 
-public class CameraITest {
-  private static final String json = "{\"cameras\":[{\"ordinal\":0,\"state\":\"manual\",\"dois\":5,\"pan\":0.0,\"tilt\":0.0,\"zoom\":1.0},{\"ordinal\":1,\"state\":\"manual\",\"dois\":5}],\"periods\":[[1619506964,60]],\"captureDelay\":0}";
-
+public class AnyTest {
   @Test
   public void test() throws IOException, DecodeException {
-    final oz.Capture capture;
-    try (final JsonReader in = new JsonReader(json)) {
-      capture = JxDecoder.VALIDATING.parseObject(in, oz.Capture.class);
-    }
-
-    System.out.println(capture);
+    JxDecoder.VALIDATING.parseObject("{\"coordinates\": [[3186,4096],[3197,0]]}", Geometry.class);
+    JxDecoder.VALIDATING.parseObject("{\"coordinates\": [[[3186,4096],[3197,0]]]}", Geometry.class);
   }
 }

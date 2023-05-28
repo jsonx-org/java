@@ -19,7 +19,7 @@ package org.jsonx;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class RuntimeUtil {
+final class RuntimeUtil {
   public static Runnable onExit(final Runnable willCallExit) throws Throwable {
     Objects.requireNonNull(willCallExit);
 
