@@ -1236,16 +1236,16 @@ public class schema {
   public abstract static class Object extends org.jsonx.schema.Member {
     public static class Properties implements org.jsonx.JxObject {
       @org.jsonx.AnyProperty(name=".*", types={@org.jsonx.t(objects=org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects=org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects=org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects=org.jsonx.schema.StringProperty.class)}, nullable=false)
-      public java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> getProperties() {
+      public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getProperties() {
         return properties;
       }
 
-      public Properties setProperties(final java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> properties) {
+      public Properties setProperties(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> properties) {
         this.properties = properties;
         return this;
       }
 
-      private java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> properties;
+      private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> properties;
 
       @java.lang.Override
       public boolean equals(final java.lang.Object obj) {
@@ -1884,16 +1884,16 @@ public class schema {
     private java.lang.String jx3aSchemaLocation;
 
     @org.jsonx.AnyProperty(name="[a-zA-Z_][-a-zA-Z\\d_]*", types={@org.jsonx.t(objects=org.jsonx.schema.Array.class), @org.jsonx.t(objects=org.jsonx.schema.Boolean.class), @org.jsonx.t(objects=org.jsonx.schema.Number.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects=org.jsonx.schema.String.class)}, nullable=false)
-    public java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> getDeclarations() {
+    public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getDeclarations() {
       return declarations;
     }
 
-    public Schema setDeclarations(final java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> declarations) {
+    public Schema setDeclarations(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> declarations) {
       this.declarations = declarations;
       return this;
     }
 
-    private java.util.LinkedHashMap<java.lang.String,? extends org.jsonx.schema.Member> declarations;
+    private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> declarations;
 
     /** Defines text comments. Optional. **/
     public Schema setDoc(final java.lang.String doc) {

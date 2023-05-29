@@ -358,10 +358,9 @@ abstract class Member extends Element {
     final StringBuilder b = new StringBuilder();
     final String classCase = (override != null ? override.fieldBinding : fieldBinding).classCase;
     final String instanceCase = (override != null ? override.fieldBinding : fieldBinding).instanceCase;
-    final boolean isRegex = this instanceof AnyModel && isMultiRegex(name());
     final Registry.Type type;
-    if (isRegex)
-      type = registry.getType(LinkedHashMap.class, registry.getType(String.class).asGeneric(null), type().asGeneric(Wildcard.EXTENDS));
+    if (this instanceof AnyModel && isMultiRegex(name()))
+      type = registry.getType(LinkedHashMap.class, registry.getType(String.class).asGeneric(null), type().asGeneric(null));
     else
       type = nullable.get == null && use.get == Use.OPTIONAL ? registry.getOptionalType(type().asGeneric(null)) : type();
 
