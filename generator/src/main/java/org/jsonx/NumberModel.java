@@ -18,7 +18,6 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
@@ -196,7 +195,7 @@ final class NumberModel extends Model {
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final BigInteger scale = jsd.getScale();
+    final Long scale = jsd.getScale();
     if (scale != null)
       xsb.setScale$(new $NumberMember.Scale$(scale));
 
@@ -244,7 +243,7 @@ final class NumberModel extends Model {
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), getDefaultClass(element.scale()), Number.class));
+      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), typeDefault(element.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -258,7 +257,7 @@ final class NumberModel extends Model {
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
     try {
       // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
-      final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), getDefaultClass(type.scale()), Number.class));
+      final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), typeDefault(type.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
 
       final NumberModel registered = (NumberModel)registry.getModel(id);
@@ -287,10 +286,6 @@ final class NumberModel extends Model {
 
   private static Range parseRange(final $NumberMember.Range$ range, final Class<?> type) throws ParseException {
     return range == null ? null : parseRange(range.text(), type);
-  }
-
-  private static Class<?> getDefaultClass(final int scale) {
-    return scale == 0 ? BigInteger.class : BigDecimal.class;
   }
 
   final int scale;
@@ -332,7 +327,7 @@ final class NumberModel extends Model {
   }
 
   private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName) throws ParseException {
-    final Binding.Type typeBinding = Binding.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), getDefaultClass(property.scale()));
+    final Binding.Type typeBinding = Binding.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), typeDefault(property.scale(), false, registry.settings));
     return new NumberModel(registry, declarer, property, getMethod, fieldName, typeBinding);
   }
 
@@ -354,9 +349,13 @@ final class NumberModel extends Model {
     this.range = parseRange(range, type);
   }
 
+  private static Class<?> typeDefault(final int scale, final boolean primitive, final Settings settings) {
+    return scale == 0 ? (primitive ? settings.getIntegerPrimitive() : settings.getIntegerObject()) : (primitive ? settings.getRealPrimitive() : settings.getRealObject());
+  }
+
   @Override
-  Registry.Type typeDefault() {
-    return registry.getType(getDefaultClass(scale));
+  Registry.Type typeDefault(final boolean primitive) {
+    return registry.getType(typeDefault(scale, primitive, registry.settings));
   }
 
   @Override

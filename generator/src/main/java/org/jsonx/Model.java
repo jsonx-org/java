@@ -121,7 +121,7 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName) {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
     final Map<String,Object> bindingAttributes = Binding.toXmlAttributes(owner, typeBinding, fieldBinding);
@@ -132,7 +132,7 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
+  Map<String,Object> toJson(final Element owner, final String packageName) {
     final Map<String,Object> properties = new LinkedHashMap<>();
     properties.put("jx:type", elementName());
 

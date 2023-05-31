@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import org.libj.lang.Classes;
 import org.libj.lang.ParseException;
+import org.libj.math.SafeMath;
 
 final class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final NumberProperty property) {
@@ -36,8 +37,13 @@ final class NumberTrial extends PropertyTrial<Number> {
       if (property.range().length() > 0)
         trials.add(new NumberTrial(RangeCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale(), makeInvalid(range)), property));
 
-      if (property.scale() != Integer.MAX_VALUE && BigDecimal.class.isAssignableFrom(JsdUtil.getRealType(getMethod)))
-        trials.add(new NumberTrial(ScaleCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale() + 1, makeValid(range)), property));
+      if (property.scale() != Integer.MAX_VALUE && Double.class.isAssignableFrom(JsdUtil.getRealType(getMethod))) {
+        final int invalidScale = property.scale() + 1;
+        final Object value = toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale() + 1, makeValid(range));
+        final String str = value.toString();
+        assertEquals(invalidScale, str.length() - str.indexOf('.') - 1);
+        trials.add(new NumberTrial(ScaleCase.CASE, getMethod, setMethod, object, value, property));
+      }
 
       if (getMethod.getReturnType().isPrimitive())
         return;
@@ -67,31 +73,37 @@ final class NumberTrial extends PropertyTrial<Number> {
     }
   }
 
-  private static BigDecimal makeValid(final Range range) {
+  private static Double makeValid(final Range range) {
     if (range == null)
       return null;
 
-    if (range.getMax() == null)
-      return range.getMin().add(BigDecimal.ONE);
+    if (range.getMax() == null) {
+      final double x = range.getMin().doubleValue() + 1d;
+      return x;
+    }
 
     if (range.getMin() == null)
-      return range.getMax().subtract(BigDecimal.ONE);
+      return range.getMax().doubleValue() - 1d;
 
-    return range.getMax().subtract(range.getMin()).multiply(BigDecimal.valueOf(random.nextDouble())).add(range.getMin());
+    return ((range.getMax().doubleValue() - range.getMin().doubleValue()) * random.nextDouble()) + range.getMin().doubleValue();
   }
 
-  private static BigDecimal makeInvalid(final Range range) {
-    return range.getMin() != null ? range.getMin().subtract(BigDecimal.ONE) : range.getMax().add(BigDecimal.ONE);
+  private static Double makeInvalid(final Range range) {
+    return range.getMin() != null ? range.getMin().doubleValue() - 1d : range.getMax().doubleValue() + 1d;
+  }
+
+  private static Number setScale(final Double value, final int scale) {
+    return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.longValue() : SafeMath.round(value, scale, RoundingMode.FLOOR);
   }
 
   private static Number setScale(final BigDecimal value, final int scale) {
-    return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.toBigInteger() : value.setScale(scale, RoundingMode.HALF_EVEN);
+    return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.longValue() : value.setScale(scale, RoundingMode.FLOOR);
   }
 
-  private static Object toProperForm(final Class<?> type, final String decode, final int scale, final BigDecimal value) {
+  private static Object toProperForm(final Class<?> type, final String decode, final int scale, final Double value) {
     final Number result;
     if (BigInteger.class.isAssignableFrom(type))
-      result = value == null ? BigInteger.valueOf(random.nextLong()) : value.toBigInteger();
+      result = BigInteger.valueOf(value == null ? random.nextLong() : value.longValue());
     else if (type == Long.class || type == long.class)
       result = value == null ? random.nextLong() : value.longValue();
     else if (type == Integer.class || type == int.class)
@@ -100,12 +112,12 @@ final class NumberTrial extends PropertyTrial<Number> {
       result = value == null ? (short)random.nextInt() : value.shortValue();
     else if (type == Byte.class || type == byte.class)
       result = value == null ? (byte)random.nextInt() : value.byteValue();
-    else if (type == Double.class || type == double.class)
-      result = value == null ? random.nextDouble() * random.nextLong() : value.doubleValue();
     else if (type == Float.class || type == float.class)
       result = value == null ? random.nextFloat() * random.nextInt() : value.floatValue();
+    else if (BigDecimal.class.isAssignableFrom(type))
+      result = setScale(value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : BigDecimal.valueOf(value), scale);
     else
-      result = setScale(value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : value, scale);
+      result = setScale(value == null ? random.nextDouble() * random.nextLong() : value, scale);
 
     if (decode != null && !decode.isEmpty())
       return JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), String.valueOf(result));

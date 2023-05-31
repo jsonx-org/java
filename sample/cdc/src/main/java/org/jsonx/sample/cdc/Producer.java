@@ -16,8 +16,6 @@
 
 package org.jsonx.sample.cdc;
 
-import java.math.BigInteger;
-
 public class Producer {
   public static String getProduct(final String version) {
     final Product product;
@@ -36,7 +34,7 @@ public class Producer {
       throw new UnsupportedOperationException("Unsupported product version: " + version);
     }
 
-    product.setCatalogueID(BigInteger.valueOf((long)(Math.random() * 100000)));
+    product.setCatalogueID((long)(Math.random() * 100000));
     product.setName("Pocket Protector");
     product.setManufacturer("ACME");
     product.setInStock(Math.random() < .5);

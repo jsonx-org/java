@@ -90,16 +90,16 @@ public final class SchemaElement extends Element implements Declarer {
    * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSD format.
    *
    * @param url The {@link URL} of the content to parse.
-   * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
    * @return The {@link SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code prefix} is null.
+   * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  public static SchemaElement parseJsd(final URL url, final String prefix) throws DecodeException, IOException {
+  public static SchemaElement parseJsd(final URL url, final Settings settings) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), prefix);
+      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), settings);
     }
   }
 
@@ -113,17 +113,17 @@ public final class SchemaElement extends Element implements Declarer {
    * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSDx format.
    *
    * @param url The {@link URL} of the content to parse.
-   * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
    * @return The {@link SchemaElement} instance.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a parse error has occurred.
    * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException} has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code prefix} is null.
+   * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  public static SchemaElement parseJsdx(final URL url, final String prefix) throws IOException, SAXException {
+  public static SchemaElement parseJsdx(final URL url, final Settings settings) throws IOException, SAXException {
     final Schema schema = (Schema)Bindings.parse(url, getErrorHandler());
-    return new SchemaElement(schema, prefix);
+    return new SchemaElement(schema, settings);
   }
 
   /**
@@ -131,20 +131,20 @@ public final class SchemaElement extends Element implements Declarer {
    * JSD. If the supplied file is not in one of the supported formats, an {@link IllegalArgumentException} is thrown.
    *
    * @param url The file from which to read the contents.
-   * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
    * @return A {@link SchemaElement} from the contents of the specified {@code file}.
    * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx or JSD.
    * @throws IOException If an I/O error has occurred.
-   * @throws NullPointerException If {@code url} of {@code prefix} is null.
+   * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  public static SchemaElement parse(final URL url, final String prefix) throws IOException {
+  public static SchemaElement parse(final URL url, final Settings settings) throws IOException {
     if (URLs.getName(url).endsWith(".jsd")) {
       try {
-        return parseJsd(url, prefix);
+        return parseJsd(url, settings);
       }
       catch (final DecodeException e0) {
         try {
-          return parseJsdx(url, prefix);
+          return parseJsdx(url, settings);
         }
         catch (final IOException | RuntimeException e1) {
           e1.addSuppressed(e0);
@@ -159,11 +159,11 @@ public final class SchemaElement extends Element implements Declarer {
     }
 
     try {
-      return parseJsdx(url, prefix);
+      return parseJsdx(url, settings);
     }
     catch (final SAXException e0) {
       try {
-        return parseJsd(url, prefix);
+        return parseJsd(url, settings);
       }
       catch (final IOException | RuntimeException e1) {
         e1.addSuppressed(e0);
@@ -184,13 +184,13 @@ public final class SchemaElement extends Element implements Declarer {
    * Creates a new {@link SchemaElement} from the specified XML binding, and with the provided package / class name prefix string.
    *
    * @param schema The XML binding (XSB).
-   * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
    * @throws ValidationException If a cycle is detected in the object hierarchy.
-   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
+   * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final Schema schema, final String prefix) throws ValidationException {
+  public SchemaElement(final Schema schema, final Settings settings) throws ValidationException {
     super(null, schema.getDoc$());
-    this.registry = new Registry(prefix);
+    this.registry = new Registry(settings);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);
@@ -274,12 +274,12 @@ public final class SchemaElement extends Element implements Declarer {
    * Creates a new {@link SchemaElement} from the specified JSD binding, and with the provided package / class name prefix string.
    *
    * @param schema The JSD binding.
-   * @param prefix The class name prefix to be prepended to the names of generated JSD bindings.
+   * @param settings The {@link Settings} to be used for the generated bindings.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code schema} or {@code prefix} is null.
+   * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final schema.Schema schema, final String prefix) throws ValidationException {
-    this(jsdToXsb(schema), prefix);
+  public SchemaElement(final schema.Schema schema, final Settings settings) throws ValidationException {
+    this(jsdToXsb(schema), settings);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -305,7 +305,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param filter The class {@link Predicate} allowing filtration of scanned classes.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
-   * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
+   * @throws NullPointerException If {@code pkg} or {@code settings} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, filter));
@@ -326,7 +326,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @param classLoader The {@link ClassLoader} containing the defined package.
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
-   * @throws NullPointerException If {@code pkg} or {@code prefix} is null.
+   * @throws NullPointerException If {@code pkg} or {@code settings} is null.
    */
   public SchemaElement(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
     this(findClasses(pkg, classLoader, null));
@@ -401,14 +401,14 @@ public final class SchemaElement extends Element implements Declarer {
     this.registry.resolveReferences();
   }
 
-  private ArrayList<Model> rootMembers(final Settings settings) {
+  private ArrayList<Model> rootMembers() {
     final Collection<Model> models = registry.getModels();
     if (models.size() == 0)
       return WrappedArrayList.EMPTY_LIST;
 
     final ArrayList<Model> members = new ArrayList<>();
     for (final Model model : models) // [C]
-      if (registry.isRootMember(model, settings))
+      if (registry.isRootMember(model))
         members.add(model);
 
     if (!registry.isFromJsd)
@@ -425,14 +425,14 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName) {
     final List<XmlElement> elements;
-    final ArrayList<Model> members = rootMembers(settings);
+    final ArrayList<Model> members = rootMembers();
     final int i$ = members.size();
     if (i$ > 0) {
       elements = new ArrayList<>();
       int i = 0; do // [RA]
-        elements.add(members.get(i).toXml(settings, this, packageName));
+        elements.add(members.get(i).toXml(this, packageName));
       while (++i < i$);
     }
     else {
@@ -447,16 +447,12 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   public XmlElement toXml() {
-    return toXml(null);
-  }
-
-  public XmlElement toXml(final Settings settings) {
-    return toXml(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
+    return toXml(this, registry.packageName);
   }
 
   @Override
-  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
-    final List<Model> members = rootMembers(settings);
+  Map<String,Object> toJson(final Element owner, final String packageName) {
+    final List<Model> members = rootMembers();
     final int i$ = members.size();
     if (i$ == 0)
       return null;
@@ -468,25 +464,17 @@ public final class SchemaElement extends Element implements Declarer {
       final Model member = members.get(i);
       final String id = member.id().toString();
       final String name = packageName.length() > 0 && id.startsWith(packageName) ? id.substring(packageName.length() + 1) : id;
-      properties.put(name, member.toJson(settings, this, packageName));
+      properties.put(name, member.toJson(this, packageName));
     }
 
     return properties;
   }
 
   public Map<String,Object> toJson() {
-    return toJson(null);
+    return toJson(this, registry.packageName);
   }
 
-  public Map<String,Object> toJson(final Settings settings) {
-    return toJson(settings == null ? Settings.DEFAULT : settings, this, registry.packageName);
-  }
-
-  public Map<String,String> toSource() {
-    return toSource(Settings.DEFAULT);
-  }
-
-  private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Settings settings, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {
+  private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {
     final Registry.Type declaringType = type.getDeclaringType();
     if (declaringType == null) {
       typeToJavaClass.put(type, classSpec);
@@ -495,15 +483,15 @@ public final class SchemaElement extends Element implements Declarer {
 
     ClassSpec parent = all.get(declaringType);
     if (parent == null) {
-      parent = new ClassSpec(declaringType, settings);
-      addParents(declaringType, parent, settings, typeToJavaClass, all);
+      parent = new ClassSpec(classSpec, declaringType);
+      addParents(declaringType, parent, typeToJavaClass, all);
       all.put(declaringType, parent);
     }
 
     parent.add(classSpec);
   }
 
-  public Map<String,String> toSource(final Settings settings) {
+  public Map<String,String> toSource() {
     final HashMap<Registry.Type,ClassSpec> all = new HashMap<>();
     final HashMap<Registry.Type,ClassSpec> typeToJavaClass = new HashMap<>();
     final Collection<Model> models = registry.getModels();
@@ -512,8 +500,8 @@ public final class SchemaElement extends Element implements Declarer {
         final Referrer<?> referrer;
         final Registry.Type type;
         if (member instanceof Referrer && (type = (referrer = (Referrer<?>)member).classType()) != null) {
-          final ClassSpec classSpec = new ClassSpec(referrer, settings);
-          addParents(type, classSpec, settings, typeToJavaClass, all);
+          final ClassSpec classSpec = new ClassSpec(referrer);
+          addParents(type, classSpec, typeToJavaClass, all);
           all.put(type, classSpec);
         }
       }
@@ -555,11 +543,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   public Map<String,String> toSource(final File dir) throws IOException {
-    return toSource(dir, Settings.DEFAULT);
-  }
-
-  public Map<String,String> toSource(final File dir, final Settings settings) throws IOException {
-    final Map<String,String> sources = toSource(settings);
+    final Map<String,String> sources = toSource();
     if (sources.size() > 0) {
       for (final Map.Entry<String,String> entry : sources.entrySet()) { // [S]
         final File file = new File(dir, entry.getKey().replace('.', '/') + ".java");

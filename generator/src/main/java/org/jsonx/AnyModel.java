@@ -400,7 +400,7 @@ final class AnyModel extends Referrer<AnyModel> {
   private Registry.Type type;
 
   @Override
-  Registry.Type typeDefault() {
+  Registry.Type typeDefault(final boolean primitive) {
     return type == null ? type = (this.types == null ? registry.OBJECT : getGreatestCommonSuperType(this.types)) : type;
   }
 

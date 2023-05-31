@@ -151,7 +151,8 @@ class Registry {
       if (isArray)
         compositeName = compositeName.substring(0, compositeName.length() - 2);
 
-      this.canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compositeName.substring(0, dot) : packageName + "." + compositeName.substring(0, dot);
+      final String canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compositeName.substring(0, dot) : packageName + "." + compositeName.substring(0, dot);;
+      this.canonicalPackageName = canonicalPackageName.length() == 0 ? null : canonicalPackageName;
       this.compositeName = compositeName;
       this.name = defaultPackage ? compositeName : packageName + "." + compositeName;
       this.canonicalCompositeName = Classes.toCanonicalClassName(compositeName);
@@ -174,7 +175,7 @@ class Registry {
     }
 
     private Type(final Class<?> cls, final GenericType[] genericTypes) {
-      this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (GenericType[])null), genericTypes);
+      this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (GenericType[])null), genericTypes);
     }
 
     Type getSuperType() {
@@ -314,8 +315,7 @@ class Registry {
       if (type.isPrimitive)
         type = type.wrapper;
 
-      final String str = target.toString();
-      for (; type != null; type = type.superType) // [X]
+      for (final String str = target.toString(); type != null; type = type.superType) // [X]
         if (str.equals(type.toString()))
           return true;
 
@@ -435,19 +435,27 @@ class Registry {
     return type != null ? type : new Type(cls, genericTypes);
   }
 
+  private static String getPackageName(final Class<?> cls) {
+    return cls.isPrimitive() ? "" : cls.getPackage().getName();
+  }
+
   Type getType(final Class<?> cls) {
-    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, cls.getPackage().getName(), Classes.getCompositeName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompositeName(cls.getSuperclass()));
+    return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), Classes.getCompositeName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompositeName(cls.getSuperclass()));
   }
 
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
+  final Settings settings;
   final boolean isFromJsd;
   final String packageName;
   final String classPrefix;
 
-  Registry(final String prefix) {
+  Registry(final Settings settings) {
+    this.settings = settings;
     this.isFromJsd = true;
+
+    final String prefix = settings.getPrefix();
     final int length = prefix.length();
     if (length > 0) {
       final char lastChar = prefix.charAt(length - 1);
@@ -469,6 +477,7 @@ class Registry {
 
   @SuppressWarnings("unchecked")
   Registry(final Declarer declarer, final Collection<Class<?>> classes) {
+    this.settings = Settings.DEFAULT;
     this.isFromJsd = false;
     if (classes.size() > 0) {
       for (final Class<?> cls : classes) { // [C]
@@ -578,7 +587,7 @@ class Registry {
     return refToModel.values();
   }
 
-  boolean isRootMember(final Member member, final Settings settings) {
+  boolean isRootMember(final Member member) {
     if (isFromJsd)
       return member.declarer instanceof SchemaElement;
 

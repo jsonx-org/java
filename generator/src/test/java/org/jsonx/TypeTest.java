@@ -30,7 +30,7 @@ public class TypeTest {
   private static Member toElement(final Registry.Type type) {
     return new Member(null, null, false, null, null, null, null, null, null, null, null, null) {
       @Override
-      Registry.Type typeDefault() {
+      Registry.Type typeDefault(final boolean primitive) {
         return type;
       }
 
@@ -65,12 +65,12 @@ public class TypeTest {
       }
 
       @Override
-      XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+      XmlElement toXml(final Element owner, final String packageName) {
         return null;
       }
 
       @Override
-      JSON toJson(final Settings settings, final Element owner, final String packageName) {
+      JSON toJson(final Element owner, final String packageName) {
         return null;
       }
     };
@@ -78,7 +78,7 @@ public class TypeTest {
 
   @Test
   public void testClass() {
-    final Registry registry = new Registry("");
+    final Registry registry = new Registry(Settings.DEFAULT);
 
     final Registry.Type type = registry.getType(Integer.class);
     assertEquals(Integer.class.getName(), type.toString());
@@ -88,7 +88,7 @@ public class TypeTest {
 
   @Test
   public void testName() {
-    final Registry registry = new Registry("");
+    final Registry registry = new Registry(Settings.DEFAULT);
 
     final Registry.Type type = registry.getType(TypeTest.class);
     assertEquals(TypeTest.class.getName(), type.toString());
@@ -98,7 +98,7 @@ public class TypeTest {
 
   @Test
   public void testNameSuperName() {
-    final Registry registry = new Registry("");
+    final Registry registry = new Registry(Settings.DEFAULT);
 
     final String packageName = "one";
     final String name = "One$Two$Three";
@@ -129,7 +129,7 @@ public class TypeTest {
 
   @Test
   public void testGenerics() {
-    final Registry registry = new Registry("");
+    final Registry registry = new Registry(Settings.DEFAULT);
 
     final String packageName0 = "org.jsonx.zero";
     final String name0 = "Zero";

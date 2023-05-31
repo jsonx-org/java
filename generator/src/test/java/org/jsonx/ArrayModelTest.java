@@ -18,7 +18,6 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
@@ -42,18 +41,18 @@ public class ArrayModelTest {
 
   @Test
   public void testGreatestCommonSuperObject() {
-    final Registry registry = new Registry(getClass().getPackage().getName());
+    final Registry registry = new Registry(new Settings.Builder().withPrefix(getClass().getPackage().getName()).build());
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));
-    number1.setScale$(new $Number.Scale$(BigInteger.ZERO));
+    number1.setScale$(new $Number.Scale$(0L));
     final NumberModel model1 = NumberModel.reference(registry, null, number1);
 
     final $Number number2 = new Number();
     number2.setName$(new $Number.Name$("integer2"));
-    number2.setScale$(new $Number.Scale$(BigInteger.ZERO));
+    number2.setScale$(new $Number.Scale$(0L));
     final NumberModel model2 = NumberModel.reference(registry, null, number2);
 
-    assertEquals(registry.getType(BigInteger.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));
+    assertEquals(registry.getType(Long.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));
   }
 }

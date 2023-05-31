@@ -56,6 +56,9 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
           out.add(item);
         }
       }
+      else if (item instanceof Double) {
+        out.add(new Double$((double)item));
+      }
       else {
         out.add(item);
       }
@@ -78,7 +81,7 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       expected = StringCodec.encodeObject(trial.encodedValue() == null ? null : String.valueOf(trial.encodedValue()));
     }
     else {
-      expected = ObjectUtil.toString(trial.encodedValue());
+      expected = ObjectUtil.toString(NumberCodec.format(trial.encodedValue()));
     }
 
     final String actual;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 JSONx
+/* Copyright (c) 2023 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,36 +16,54 @@
 
 package org.jsonx;
 
-import java.util.LinkedHashMap;
-import java.util.Objects;
+class Double$ extends Number {
+  private final double v;
 
-/**
- * A {@link JxObject} that represents any JSON object.
- */
-public class AnyObject implements JxObject {
-  private LinkedHashMap<String,Object> properties;
-
-  @AnyProperty(name=".*")
-  public LinkedHashMap<String,Object> getProperties() {
-    return properties;
+  Double$(final double v) {
+    this.v = v;
   }
 
-  public void setProperties(final LinkedHashMap<String,Object> properties) {
-    this.properties = properties;
+  @Override
+  public int intValue() {
+    return (int)v;
+  }
+
+  @Override
+  public long longValue() {
+    return (long)v;
+  }
+
+  @Override
+  public float floatValue() {
+    return (float)v;
+  }
+
+  @Override
+  public double doubleValue() {
+    return v;
   }
 
   @Override
   public boolean equals(final Object obj) {
-    return obj == this || obj instanceof AnyObject && Objects.equals(properties, ((AnyObject)obj).properties);
+    if (obj == this)
+      return true;
+
+    if (obj instanceof Double$)
+      return v == ((Double$)obj).v;
+
+    if (obj instanceof Double)
+      return v == (double)obj;
+
+    return false;
   }
 
   @Override
   public int hashCode() {
-    return properties != null ? 31 + properties.hashCode() : 1;
+    return Double.hashCode(v);
   }
 
   @Override
   public String toString() {
-    return JxEncoder.get().toString(this);
+    return NumberCodec.format(v);
   }
 }

@@ -64,7 +64,7 @@ public final class Converter {
    * @throws ValidationException If a validation error has occurred.
    */
   public static String jsdToJsdx(final URL url) throws DecodeException, IOException, ValidationException {
-    final XmlElement xml = SchemaElement.parseJsd(url, "").toXml();
+    final XmlElement xml = SchemaElement.parseJsd(url, Settings.DEFAULT).toXml();
     xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema-0.4.xsd");
     return xml.toString(2);
   }
@@ -78,7 +78,7 @@ public final class Converter {
    * @throws SAXException If a parse error has occurred.
    */
   public static String jsdxToJsd(final URL url) throws IOException, SAXException {
-    return JSON.toString(SchemaElement.parseJsdx(url, "").toJson(), 2);
+    return JSON.toString(SchemaElement.parseJsdx(url, Settings.DEFAULT).toJson(), 2);
   }
 
   /**

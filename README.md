@@ -537,10 +537,10 @@ public class Item implements JxObject {
   public String description;
 
   @NumberProperty(range="[1,]", scale=0, nullable=false)
-  public java.math.BigInteger code;
+  public long code;
 
   @NumberProperty(range="[1,]", scale=0, nullable=false)
-  public java.math.BigInteger quantity;
+  public long quantity;
 
   @NumberProperty(range="[1,]", scale=2, nullable=false)
   public java.math.BigDecimal price;
@@ -552,7 +552,7 @@ import org.jsonx.*;
 
 public class Invoice implements JxObject {
   @NumberProperty(range="[1,]", scale=0)
-  public java.math.BigInteger number;
+  public Long number;
 
   @StringProperty(pattern="-?\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(02-(0[1-9]|1\\d|2\\d))|((0[469]|11)-(0[1-9]|[12]\\d|30)))")
   public String date;
@@ -580,13 +580,13 @@ address.postalCode = "10043";
 address.country = "USA";
 
 Item item = new Item();
-item.code = BigInteger.valueOf(123);
+item.code = 123;
 item.description = "Pocket Protector";
 item.price = new BigDecimal("14.99");
-item.quantity = BigInteger.valueOf(5);
+item.quantity = 5;
 
 Invoice invoice = new Invoice();
-invoice.number = BigInteger.valueOf(14738);
+invoice.number = 14738L;
 invoice.date = "2019-05-13";
 invoice.billingAddress = address;
 invoice.shippingAddress = address;

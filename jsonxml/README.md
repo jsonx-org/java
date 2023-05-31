@@ -49,11 +49,11 @@ JsonXml is JSON expressed in XML. This document presents the structural part of 
 
 ### <b>1.1</b> Dependencies on Other Specifications
 
-The definition of the <ins>JsonXml API</ins> depends on the following specifications: [RFC4627<sup>❐</sup>][rfc4627] and [XMLSchema<sup>❐</sup>][xmlschema].
+The definition of the <ins>JSON Schema Definition Language</ins> depends on the following specifications: [RFC4627<sup>❐</sup>][rfc4627], [RFC7159<sup>❐</sup>][rfc7159], and [XMLSchema<sup>❐</sup>][xmlschema].
 
 ### <b>1.2</b> Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119][rfc2119].
 
 ## <b>2</b> <ins>Purpose</ins>
 
@@ -61,7 +61,7 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 ## <b>3</b> <ins>Requirements</ins>
 
-1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
+1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119][rfc2119].
 
 1. The <ins>JsonXml documents</ins> MUST be translatable to JSON documents, and vice versa, preserving all normative and non-normative features of the original document.
 
@@ -278,6 +278,8 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 [jsonxml-02]: http://www.jsonx.org/jsonxml-0.2.xsd
 [jsonxml-03]: http://www.jsonx.org/jsonxml-0.3.xsd
+[rfc2119]: https://www.ietf.org/rfc/rfc2119.txt
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
+[rfc7159]: https://www.ietf.org/rfc/rfc7159.txt
 [xmlschema]: http://www.w3.org/2001/XMLSchema
 [xmlentities]: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Predefined_entities_in_XML

@@ -50,6 +50,13 @@ class BooleanCodec extends PrimitiveCodec {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
+    return encodeObjectUnsafe(type, encode, object);
+  }
+
+  static Object encodeObjectUnsafe(final Class<?> type, final String encode, Object object) throws EncodeException, ValidationException {
+    if (!Classes.isInstance(type, object))
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
+
     final Executable method = getMethod(encodeToMethod, encode, object.getClass());
     if (method != null)
       return JsdUtil.invoke(method, object);

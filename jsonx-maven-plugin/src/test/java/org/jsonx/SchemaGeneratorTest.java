@@ -31,7 +31,7 @@ public class SchemaGeneratorTest {
 
   private static void test(final String version) throws IOException {
     final URL testJsdUrl = new URL("http://www.jsonx.org/schema-" + version + ".jsdx");
-    SchemaElement.parse(testJsdUrl, "org.jsonx.schema$").toSource(destDir);
+    SchemaElement.parse(testJsdUrl, new Settings.Builder().withPrefix("org.jsonx.schema$").build()).toSource(destDir);
 
     final File controlJavaFile = new File("../generator/src/main/java", javaPath);
     final File testJavaFile = new File(destDir, javaPath);

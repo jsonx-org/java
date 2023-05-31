@@ -35,7 +35,7 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  Registry.Type typeDefault() {
+  Registry.Type typeDefault(final boolean primitive) {
     throw new UnsupportedOperationException();
   }
 
@@ -70,12 +70,12 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
+  Map<String,Object> toJson(final Element owner, final String packageName) {
     throw new UnsupportedOperationException();
   }
 }

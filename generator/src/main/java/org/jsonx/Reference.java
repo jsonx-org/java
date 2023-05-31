@@ -178,7 +178,7 @@ final class Reference extends Member {
   }
 
   @Override
-  Registry.Type typeDefault() {
+  Registry.Type typeDefault(final boolean primitive) {
     return model.type();
   }
 
@@ -236,11 +236,11 @@ final class Reference extends Member {
 
   @Override
   @SuppressWarnings("unchecked")
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName) {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
-    if (!registry.isRootMember(model, settings)) {
-      final XmlElement element = model.toXml(settings, owner, packageName);
+    if (!registry.isRootMember(model)) {
+      final XmlElement element = model.toXml(owner, packageName);
       if (element.getElements() != null) {
         final XmlElement lastElement = Iterators.<XmlElement>lastElement(element.getElements().iterator());
         if ("binding".equals(lastElement.getName())) {
@@ -285,11 +285,11 @@ final class Reference extends Member {
   }
 
   @Override
-  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
+  Map<String,Object> toJson(final Element owner, final String packageName) {
     final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
     properties.put("jx:type", elementName());
 
-    final Map<String,Object> attributes = toXml(settings, owner, packageName).getAttributes();
+    final Map<String,Object> attributes = toXml(owner, packageName).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

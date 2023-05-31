@@ -17,7 +17,6 @@
 package org.jsonx.sample.invoice;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collections;
 
 import org.jsonx.JxEncoder;
@@ -36,13 +35,13 @@ public class InvoiceSample {
     address.setCountry("USA");
 
     final Item item = new Item();
-    item.setCode(BigInteger.valueOf(123));
+    item.setCode(123L);
     item.setDescription("Pocket Protector");
     item.setPrice(new BigDecimal("14.99"));
-    item.setQuantity(BigInteger.valueOf(5));
+    item.setQuantity(5L);
 
     final Invoice invoice = new Invoice();
-    invoice.setNumber(BigInteger.valueOf(14738));
+    invoice.setNumber(14738L);
     invoice.setDate("2019-05-13");
     invoice.setBillingAddress(address);
     invoice.setShippingAddress(address);

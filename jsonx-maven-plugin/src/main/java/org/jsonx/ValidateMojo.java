@@ -43,13 +43,18 @@ public class ValidateMojo extends PatternSetMojo {
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {
     try {
       final LinkedHashSet<URI> fileSets = configuration.getFileSets();
+      if (fileSets.size() == 0 && schemas.size() == 0) {
+        getLog().info("Nothing to do -- no schemas provided");
+        return;
+      }
+
       if (fileSets.size() > 0)
         for (final URI schema : fileSets) // [S]
-          SchemaElement.parse(schema.toURL(), "");
+          SchemaElement.parse(schema.toURL(), Settings.DEFAULT);
 
       if (schemas.size() > 0)
         for (final String schema : new LinkedHashSet<>(schemas)) // [S]
-          SchemaElement.parse(new URL(schema), "");
+          SchemaElement.parse(new URL(schema), Settings.DEFAULT);
     }
     catch (final IOException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);

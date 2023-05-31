@@ -32,12 +32,13 @@ import org.openjax.json.JsonReader;
 class AnyCodec extends Codec {
   static Object decode(final Annotation annotation, final String token, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     final t[] types;
-    if (annotation.annotationType() == AnyElement.class)
+    final Class<? extends Annotation> annotationType = annotation.annotationType();
+    if (annotationType == AnyElement.class)
       types = ((AnyElement)annotation).types();
-    else if (annotation.annotationType() == AnyProperty.class)
+    else if (annotationType == AnyProperty.class)
       types = ((AnyProperty)annotation).types();
     else
-      throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
+      throw new UnsupportedOperationException("Unsupported annotation type: " + annotationType.getName());
 
     final char firstChar = token.charAt(0);
     Error error = null;
@@ -182,21 +183,21 @@ class AnyCodec extends Codec {
       final BooleanType booleans;
       final Class<? extends Annotation> arrays;
       if (AnyType.isEnabled(strings = type.strings()) && Classes.isAssignableFrom(strings.type(), object.getClass())) {
-        final Object encoded = StringCodec.encodeObject(annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
+        final Object encoded = StringCodec.encodeObjectUnsafe(annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else
           return encoded;
       }
-      else if (AnyType.isEnabled(numbers = type.numbers()) && Classes.isAssignableFrom(numbers.type(), object.getClass())) {
-        final Object encoded = NumberCodec.encodeObject(annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
+      else if (AnyType.isEnabled(numbers = type.numbers()) && Number.class.isAssignableFrom(numbers.type()) && object instanceof Number) {
+        final Object encoded = NumberCodec.encodeObjectUnsafe(annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else
           return encoded;
       }
       else if (AnyType.isEnabled(booleans = type.booleans()) && Classes.isAssignableFrom(booleans.type(), object.getClass())) {
-        final Object encoded = BooleanCodec.encodeObject(booleans.type(), booleans.encode(), object);
+        final Object encoded = BooleanCodec.encodeObjectUnsafe(booleans.type(), booleans.encode(), object);
         if (encoded instanceof Error)
           error = (Error)encoded;
         else

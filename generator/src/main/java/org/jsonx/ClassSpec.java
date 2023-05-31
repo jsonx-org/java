@@ -37,19 +37,19 @@ class ClassSpec {
 
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
 
-  private final Settings settings;
   private final Referrer<?> referrer;
+  private final Settings settings;
   private final Registry.Type type;
 
-  ClassSpec(final Referrer<?> referrer, final Settings settings) {
-    this.settings = settings;
+  ClassSpec(final Referrer<?> referrer) {
     this.referrer = referrer;
+    this.settings = referrer.registry.settings;
     this.type = referrer.classType();
   }
 
-  ClassSpec(final Registry.Type type, final Settings settings) {
-    this.settings = settings;
+  ClassSpec(final ClassSpec parent, final Registry.Type type) {
     this.referrer = null;
+    this.settings = parent.settings;
     this.type = type;
   }
 

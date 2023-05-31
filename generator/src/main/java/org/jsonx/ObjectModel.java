@@ -303,8 +303,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    public XmlElement toXml(final Settings settings, final ObjectModel owner, final String packageName) {
-      final XmlElement element = member.toXml(settings, owner, packageName);
+    public XmlElement toXml(final ObjectModel owner, final String packageName) {
+      final XmlElement element = member.toXml(owner, packageName);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
         if (element.getElements() != null) {
@@ -327,8 +327,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     @SuppressWarnings("unchecked")
-    public Object toJson(final Settings settings, final ObjectModel owner, final String packageName) {
-      final Map<String,Object> object = (Map<String,Object>)member.toJson(settings, owner, packageName);
+    public Object toJson(final ObjectModel owner, final String packageName) {
+      final Map<String,Object> object = (Map<String,Object>)member.toJson(owner, packageName);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
         object.remove("bindings");
@@ -624,7 +624,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Registry.Type typeDefault() {
+  Registry.Type typeDefault(final boolean primitive) {
     return classType();
   }
 
@@ -713,8 +713,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
-    final XmlElement element = super.toXml(settings, owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName) {
+    final XmlElement element = super.toXml(owner, packageName);
     final int i$;
     if (properties == null || (i$ = properties.size()) == 0)
       return element;
@@ -722,7 +722,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final Collection superElements = element.getElements();
     final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (superElements != null ? superElements.size() : 0));
     for (final Property property : properties.values()) // [C]
-      elements.add(property.toXml(settings, this, packageName));
+      elements.add(property.toXml(this, packageName));
 
     if (superElements != null)
       elements.addAll(superElements);
@@ -732,15 +732,15 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,Object> element = super.toJson(settings, owner, packageName);
+  Map<String,Object> toJson(final Element owner, final String packageName) {
+    final Map<String,Object> element = super.toJson(owner, packageName);
     final int size;
     if (properties == null || (size = properties.size()) == 0)
       return element;
 
     final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
     for (final Property property : this.properties.values()) // [C]
-      properties.put(property.member.name(), property.toJson(settings, this, packageName));
+      properties.put(property.member.name(), property.toJson(this, packageName));
 
     element.put("properties", properties);
     return element;

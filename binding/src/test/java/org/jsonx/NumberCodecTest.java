@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 JSONx
+/* Copyright (c) 2018 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,25 +16,27 @@
 
 package org.jsonx;
 
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
+import static org.junit.Assert.*;
 
-import org.libj.lang.BigDecimals;
+import org.junit.Test;
+import org.libj.lang.Numbers;
 
-public final class TestHelper {
-  public static Long stringToLongOrNull(final String str) {
-    return str == null ? null : Long.valueOf(str);
-  }
+public class NumberCodecTest {
+  @Test
+  public void testPerformance() {
+    long t0 = 0;
+    long t1 = 0;
+    for (int i = 0; i < 1000000; ++i) {
+      final double d = Math.random();
+      long t = System.nanoTime();
+      final String expected = NumberCodec.decimalFormatLocal.get().format(d);
+      t0 += System.nanoTime() - t;
+      t = System.nanoTime();
+      final String actual = Numbers.stripTrailingZeros(String.format("%.23f", d));
+      t1 += System.nanoTime() - t;
+      assertEquals(expected, actual);
+    }
 
-  public static BigDecimal stringToBigDecimalOrNull(final String str) {
-    return str == null ? null : BigDecimals.intern(str);
-  }
-
-  public static URL stringToUrlOrNull(final String str) throws MalformedURLException {
-    return str == null ? null : new URL(str);
-  }
-
-  private TestHelper() {
+    System.err.println("DecimalFormat.format(d): " + t0 + "\n     printf(\"%.23f\", d): " + t1);
   }
 }

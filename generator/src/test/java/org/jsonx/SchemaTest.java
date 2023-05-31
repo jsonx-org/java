@@ -63,7 +63,11 @@ public class SchemaTest {
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
-  private static final ArrayList<Settings> settings = new ArrayList<>();
+  private static final ArrayList<Integer> settings = new ArrayList<>();
+
+  private static Settings getSettings(final String prefix, final int i) {
+    return new Settings.Builder().withPrefix(prefix).withTemplateThreshold(i).build();
+  }
 
   @BeforeClass
   public static void beforeClass() {
@@ -82,13 +86,13 @@ public class SchemaTest {
     }
 
     for (int i = 0; i < 10; i += 3) // [N]
-      settings.add(new Settings(i, true));
+      settings.add(i);
 
-    settings.add(new Settings(Integer.MAX_VALUE, true));
+    settings.add(Integer.MAX_VALUE);
   }
 
-  private static XmlElement toXml(final SchemaElement schema, final Settings settings) {
-    final XmlElement xml = schema.toXml(settings);
+  private static XmlElement toXml(final SchemaElement schema) {
+    final XmlElement xml = schema.toXml();
     xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd " + schemaXsd);
     return xml;
   }
@@ -107,9 +111,9 @@ public class SchemaTest {
   private static SchemaElement testParseSchema(final Schema controlBinding, final String prefix, final String fileName) throws IOException, SAXException {
     if (logger.isInfoEnabled()) logger.info("  Parse XML...");
     if (logger.isInfoEnabled()) logger.info("    a) XML(1) -> Schema");
-    final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
+    final SchemaElement controlSchema = new SchemaElement(controlBinding, new Settings.Builder().withPrefix(prefix).build());
     if (logger.isInfoEnabled()) logger.info("    b) Schema -> XML(2)");
-    final String xml = toXml(controlSchema, Settings.DEFAULT).toString();
+    final String xml = toXml(controlSchema).toString();
     if (logger.isInfoEnabled()) logger.info("    c) Validate XML: c-" + fileName);
     validate(xml, "c-" + fileName);
 
@@ -238,7 +242,7 @@ public class SchemaTest {
     if (logger.isInfoEnabled()) logger.info(fileName + "...");
     final Schema controlBinding = (Schema)Bindings.parse(resource);
     if (testJson) {
-      final String jsd = testJson(fileName, controlBinding, prefix);
+      final String jsd = testJson(fileName, controlBinding, new Settings.Builder().withPrefix(prefix).build());
       testConverter(jsd);
     }
 
@@ -256,7 +260,7 @@ public class SchemaTest {
       if (logger.isInfoEnabled()) logger.info("  6) Java(1) -> Schema");
       final SchemaElement test1Schema = newSchema(classLoader, packageName);
       if (logger.isInfoEnabled()) logger.info("  7) Schema -> XML");
-      final String xml = toXml(test1Schema, Settings.DEFAULT).toString();
+      final String xml = toXml(test1Schema).toString();
       if (logger.isInfoEnabled()) logger.info("  8) Validate XML: 8-" + fileName);
       validate(xml, "8-" + fileName);
 
@@ -271,9 +275,10 @@ public class SchemaTest {
   }
 
   private static void testSettings(final URL resource, final String fileName, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+    final String prefix = packageName + ".";
+
     for (int i = 0, i$ = SchemaTest.settings.size(); i < i$; ++i) { // [RA]
-      final Settings settings = SchemaTest.settings.get(i);
-      final String prefix = packageName + ".";
+      final Settings settings = getSettings(prefix, SchemaTest.settings.get(i));
       final int templateThreshold = settings.getTemplateThreshold();
 
       final String outFile = templateThreshold + "-" + fileName;
@@ -281,8 +286,8 @@ public class SchemaTest {
       final String outFile2 = "sb-" + outFile;
       if (logger.isInfoEnabled()) logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + " " + outFile2);
       final Schema controlBinding = (Schema)Bindings.parse(resource);
-      final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
-      final String xml1 = toXml(controlSchema, settings).toString();
+      final SchemaElement controlSchema = new SchemaElement(controlBinding, settings);
+      final String xml1 = toXml(controlSchema).toString();
       validate(xml1, outFile1);
 
       final Map<String,String> test1Sources = controlSchema.toSource(generatedSourcesDir);
@@ -295,16 +300,16 @@ public class SchemaTest {
 
         final ClassLoader classLoader = compiler.compile();
         final SchemaElement test1Schema = newSchema(classLoader, packageName);
-        final String xml2 = toXml(test1Schema, settings).toString();
+        final String xml2 = toXml(test1Schema).toString();
         validate(xml2, outFile2);
 
-        final SchemaElement test2Schema = new SchemaElement((Schema)Bindings.parse(xml2), prefix);
+        final SchemaElement test2Schema = new SchemaElement((Schema)Bindings.parse(xml2), settings);
         final Map<String,String> test2Sources = test2Schema.toSource();
         assertSources(test1Sources, test2Sources, false);
       }
 
       if (testJson)
-        testJson(fileName, controlBinding, prefix);
+        testJson(fileName, controlBinding, settings);
     }
   }
 
@@ -319,17 +324,17 @@ public class SchemaTest {
     assertEquals(null, expected, actual);
   }
 
-  private static String testJson(final String fileName, final Schema controlBinding, final String prefix) throws DecodeException, IOException, SAXException {
-    final SchemaElement controlSchema = new SchemaElement(controlBinding, prefix);
+  private static String testJson(final String fileName, final Schema controlBinding, final Settings settings) throws DecodeException, IOException, SAXException {
+    final SchemaElement controlSchema = new SchemaElement(controlBinding, settings);
     if (logger.isInfoEnabled()) logger.info("     testJson...");
     final String outFile = fileName + ".jsd";
     if (logger.isInfoEnabled()) logger.info("       a) Schema -> JSON " + outFile);
     final String jsd = JSON.toString(controlSchema.toJson(), 2);
     writeJsonFile(outFile, jsd);
     if (logger.isInfoEnabled()) logger.info("       b) JSON -> Schema");
-    final SchemaElement schema = new SchemaElement(testParseSchema(jsd, true), prefix);
+    final SchemaElement schema = new SchemaElement(testParseSchema(jsd, true), settings);
     if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
-    final String jsdx = toXml(schema, Settings.DEFAULT).toString();
+    final String jsdx = toXml(schema).toString();
     final Schema jsonBinding = (Schema)Bindings.parse(jsdx);
     AssertXml.compare(controlBinding.toDOM(), jsonBinding.toDOM()).assertEqual(true);
     return jsd;

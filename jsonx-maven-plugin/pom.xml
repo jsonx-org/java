@@ -97,6 +97,12 @@
                 <configuration>
                   <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
                   <prefix>org.jsonx.</prefix>
+                  <defaultBinding>
+                    <number>
+                      <integer primitive="long" object="java.lang.Long"/>
+                      <real primitive="double" object="java.lang.Double"/>
+                    </number>
+                  </defaultBinding>
                   <schemas>
                     <schema>src/test/resources/test.jsd</schema>
                     <schema>src/test/resources/test.jsdx</schema>

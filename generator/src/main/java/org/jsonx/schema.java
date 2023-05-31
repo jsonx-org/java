@@ -971,17 +971,17 @@ public class schema {
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
     @org.jsonx.NumberProperty(name="scale", scale=0, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.math.BigInteger getScale() {
+    public java.lang.Long getScale() {
       return scale;
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public Number setScale(final java.math.BigInteger scale) {
+    public Number setScale(final java.lang.Long scale) {
       this.scale = scale;
       return this;
     }
 
-    private java.math.BigInteger scale;
+    private java.lang.Long scale;
 
     @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
@@ -1097,7 +1097,7 @@ public class schema {
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public NumberElement setScale(final java.math.BigInteger scale) {
+    public NumberElement setScale(final java.lang.Long scale) {
       super.setScale(scale);
       return (NumberElement)this;
     }
@@ -1191,7 +1191,7 @@ public class schema {
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public NumberProperty setScale(final java.math.BigInteger scale) {
+    public NumberProperty setScale(final java.lang.Long scale) {
       super.setScale(scale);
       return (NumberProperty)this;
     }

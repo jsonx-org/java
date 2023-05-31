@@ -20,22 +20,48 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Annotations;
 import org.libj.lang.Classes;
+import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;
 
 class NumberCodec extends PrimitiveCodec {
+  static final ThreadLocal<DecimalFormat> decimalFormatLocal = new ThreadLocal<DecimalFormat>() {
+    @Override
+    protected DecimalFormat initialValue() {
+      final DecimalFormat decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+      decimalFormat.setMaximumFractionDigits(309);
+      return decimalFormat;
+    }
+  };
+
+  static String format(final Object object) {
+    return object instanceof Double ? format((double)object) : object instanceof Float ? format((float)object) : object.toString();
+  }
+
+  /**
+   * Returns the provided provided {@code double} as a string.
+   *
+   * @param value The {@code double} to return as a string.
+   * @return The provided provided {@code double} as a string.
+   * @implNote This method mimicks JavaScript's Double.toString() algorithm.
+   */
+  private static String format(final double value) {
+    return 0.000001 <= value && value <= 9.999999999999999E20 ? decimalFormatLocal.get().format(value) : Numbers.stripTrailingZeros(String.valueOf(value));
+  }
+
   private static Number parseDefaultNumber(final int scale, final String json, final boolean strict) {
     try {
-      return scale == 0 ? JsonUtil.parseNumber(BigInteger.class, json, strict) : JsonUtil.parseNumber(BigDecimal.class, json, strict);
+      return JsonUtil.parseNumber(scale == 0 ? Long.class : Double.class, json, strict);
     }
     catch (final JsonParseException | NumberFormatException e) {
       return null;
@@ -64,7 +90,7 @@ class NumberCodec extends PrimitiveCodec {
     return decodeObject(type, scale, getMethod(decodeToMethod, decode, String.class), token, strict);
   }
 
-  static Error encodeArray(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final int index, final Relations relations, final boolean validate) {
+  static Error encodeArray(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final int index, final Relations relations, final boolean validate) {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
@@ -79,18 +105,23 @@ class NumberCodec extends PrimitiveCodec {
     }
 
     final Executable method = getMethod(encodeToMethod, encode, cls);
-    if (method != null)
-      object = JsdUtil.invoke(method, object);
-
-    relations.set(index, new Relation(object, annotation));
+    // The logic here is a it mixed. Double and Float objects are converted to
+    // String, and everything else stays as is (to be turned into String later).
+    // I kept it like this to satisfy ArrayCodecTest
+    relations.set(index, new Relation(method != null ? JsdUtil.invoke(method, object) : object instanceof Double ? format((double)object) : object instanceof Float ? format((float)object) : object, annotation));
     return null;
   }
 
-  static Object encodeObject(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException, ValidationException {
+  static Object encodeObject(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, ValidationException {
     final Class<?> cls = object.getClass();
     if (!Classes.isAssignableFrom(type, cls, true))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
+    return encodeObjectUnsafe(annotation, scale, range, type, encode, object, validate);
+  }
+
+  static Object encodeObjectUnsafe(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, ValidationException {
+    final Class<?> cls = object.getClass();
     if (validate && object instanceof Number) {
       final Error error = validate(annotation, (Number)object, scale, range, type);
       if (error != null)
@@ -98,10 +129,7 @@ class NumberCodec extends PrimitiveCodec {
     }
 
     final Executable method = getMethod(encodeToMethod, encode, cls);
-    if (method != null)
-      object = JsdUtil.invoke(method, object);
-
-    return String.valueOf(object);
+    return method != null ? String.valueOf(JsdUtil.invoke(method, object)) : format(object);
   }
 
   private static Error validate(final Annotation annotation, final Number object, final int scale, final String range, final Class<?> type) {

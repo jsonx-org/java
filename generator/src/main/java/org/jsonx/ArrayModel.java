@@ -459,7 +459,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Registry.Type typeDefault() {
+  Registry.Type typeDefault(final boolean primitive) {
     // type can be null if there is a loop in the type graph
     Registry.Type type = getGreatestCommonSuperType(members);
     type = type == null ? registry.OBJECT : !type.isArray() && type.isPrimitive() ? type.getWrapper() : type;
@@ -534,14 +534,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  XmlElement toXml(final Settings settings, final Element owner, final String packageName) {
-    final XmlElement element = super.toXml(settings, owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName) {
+    final XmlElement element = super.toXml(owner, packageName);
     if (members.size() == 0)
       return element;
 
     final ArrayList<XmlElement> elements = new ArrayList<>();
     for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
-      elements.add(members.get(i).toXml(settings, this, packageName));
+      elements.add(members.get(i).toXml(this, packageName));
 
     if (element.getElements() != null)
       elements.addAll(element.getElements());
@@ -551,14 +551,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Map<String,Object> toJson(final Settings settings, final Element owner, final String packageName) {
-    final Map<String,Object> element = super.toJson(settings, owner, packageName);
+  Map<String,Object> toJson(final Element owner, final String packageName) {
+    final Map<String,Object> element = super.toJson(owner, packageName);
     if (members.size() == 0)
       return element;
 
     final ArrayList<Object> elements = new ArrayList<>();
     for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
-      elements.add(members.get(i).toJson(settings, this, packageName));
+      elements.add(members.get(i).toJson(this, packageName));
 
     element.put("elements", elements);
     return element;

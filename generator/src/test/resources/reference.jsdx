@@ -24,11 +24,29 @@
   </array>
   <boolean name="bool"/>
   <number name="num"/>
+  <number name="numPrimitive">
+    <binding lang="java" type="double"/>
+  </number>
   <number name="numInt" scale="0"/>
+  <number name="numIntPrimitive" scale="0">
+    <binding lang="java" type="long"/>
+  </number>
   <number name="numRange" range="[1E-100,]"/>
+  <number name="numRangePrimitive" range="[1E-100,]">
+    <binding lang="java" type="double"/>
+  </number>
   <number name="numIntRange" scale="0" range="[1E-20,]"/>
+  <number name="numIntRangePrimitive" scale="0" range="[1E-20,]">
+    <binding lang="java" type="long"/>
+  </number>
   <number name="numScale" scale="2" range="[1.11E-213,]"/>
+  <number name="numScalePrimitive" scale="2" range="[1.11E-213,]">
+    <binding lang="java" type="double"/>
+  </number>
   <number name="numScaleRange" scale="3" range="[2.222E-19,]"/>
+  <number name="numScaleRangePrimitive" scale="3" range="[2.222E-19,]">
+    <binding lang="java" type="double"/>
+  </number>
   <string name="str" doc="1"/>
   <string name="strDec" doc="2"/>
   <string name="strDecEnc" doc="3"/>
@@ -43,27 +61,27 @@
     <property name="boolOptionalNotNullable" xsi:type="reference" type="bool" use="optional" nullable="false"/>
     <property name="numRequired" xsi:type="reference" type="num"/>
     <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
-    <property name="numRequiredNotNullable" xsi:type="reference" type="num" nullable="false"/>
+    <property name="numRequiredNotNullable" xsi:type="reference" type="numPrimitive" nullable="false"/>
     <property name="numOptionalNotNullable" xsi:type="reference" type="num" use="optional" nullable="false"/>
     <property name="numIntRequired" xsi:type="reference" type="numInt"/>
     <property name="numIntOptional" xsi:type="reference" type="numInt" use="optional"/>
-    <property name="numIntRequiredNotNullable" xsi:type="reference" type="numInt" nullable="false"/>
+    <property name="numIntRequiredNotNullable" xsi:type="reference" type="numIntPrimitive" nullable="false"/>
     <property name="numIntOptionalNotNullable" xsi:type="reference" type="numInt" use="optional" nullable="false"/>
     <property name="numRangeRequired" xsi:type="reference" type="numRange"/>
     <property name="numRangeOptional" xsi:type="reference" type="numRange" use="optional"/>
-    <property name="numRangeRequiredNotNullable" xsi:type="reference" type="numRange" nullable="false"/>
+    <property name="numRangeRequiredNotNullable" xsi:type="reference" type="numRangePrimitive" nullable="false"/>
     <property name="numRangeOptionalNotNullable" xsi:type="reference" type="numRange" use="optional" nullable="false"/>
     <property name="numIntRangeRequired" xsi:type="reference" type="numIntRange"/>
     <property name="numIntRangeOptional" xsi:type="reference" type="numIntRange" use="optional"/>
-    <property name="numIntRangeRequiredNotNullable" xsi:type="reference" type="numIntRange" nullable="false"/>
+    <property name="numIntRangeRequiredNotNullable" xsi:type="reference" type="numIntRangePrimitive" nullable="false"/>
     <property name="numIntRangeOptionalNotNullable" xsi:type="reference" type="numIntRange" use="optional" nullable="false"/>
     <property name="numScaleRequired" xsi:type="reference" type="numScale"/>
     <property name="numScaleOptional" xsi:type="reference" type="numScale" use="optional"/>
-    <property name="numScaleRequiredNotNullable" xsi:type="reference" type="numScale" nullable="false"/>
+    <property name="numScaleRequiredNotNullable" xsi:type="reference" type="numScalePrimitive" nullable="false"/>
     <property name="numScaleOptionalNotNullable" xsi:type="reference" type="numScale" use="optional" nullable="false"/>
     <property name="numScaleRangeRequired" xsi:type="reference" type="numScaleRange"/>
     <property name="numScaleRangeOptional" xsi:type="reference" type="numScaleRange" use="optional"/>
-    <property name="numScaleRangeRequiredNotNullable" xsi:type="reference" type="numScaleRange" nullable="false"/>
+    <property name="numScaleRangeRequiredNotNullable" xsi:type="reference" type="numScaleRangePrimitive" nullable="false"/>
     <property name="numScaleRangeOptionalNotNullable" xsi:type="reference" type="numScaleRange" use="optional" nullable="false"/>
     <property name="str" xsi:type="reference" type="str"/>
     <property name="strOptional" xsi:type="reference" type="str" use="optional"/>

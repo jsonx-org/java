@@ -29,6 +29,7 @@ import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
+import org.libj.test.TestAide;
 import org.openjax.json.JsonReader;
 import org.xml.sax.SAXException;
 
@@ -140,6 +141,7 @@ class ClassTrial extends Trial {
     private String name;
     private int start;
     private int end;
+
     private Bounds(final Method getMethod, final String name, final int start, final int end) {
       this.getMethod = getMethod;
       this.name = name;
@@ -189,12 +191,16 @@ class ClassTrial extends Trial {
       ++count;
     }
     catch (final Throwable t) {
-//      invoke(trial);
       if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onEncode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
       if (logger.isErrorEnabled()) {
         logger.error("  Value: " + Strings.indent(String.valueOf(value), 2));
         logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
         logger.error(t.getMessage(), t);
+      }
+
+      if (TestAide.isInDebug()) {
+        System.err.println(">> Place breakpoint here <<");
+        invoke(trial);
       }
 
       throw t;

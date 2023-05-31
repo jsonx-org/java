@@ -97,7 +97,14 @@ class StringCodec extends PrimitiveCodec {
     return JsonUtil.escape(value).insert(0, '"').append('"').toString();
   }
 
-  static Object encodeObject(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException {
+  static Object encodeObject(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException {
+    if (!Classes.isInstance(type, object))
+      return Error.CONTENT_NOT_EXPECTED(object, null, null);
+
+    return encodeObjectUnsafe(annotation, getMethod, pattern, type, encode, object, validate);
+  }
+
+  static Object encodeObjectUnsafe(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 

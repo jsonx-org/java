@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.LinkedHashSet;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -41,7 +42,7 @@ public class ConvertMojo extends JxMojo {
     }
 
     try {
-      for (final String schema : schemas) { // [L]
+      for (final String schema : new LinkedHashSet<>(schemas)) { // [S]
         final URL url = new URL(schema);
         final String name = URLs.getName(url);
         final int dot = name.lastIndexOf('.') + 1;

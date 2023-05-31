@@ -30,10 +30,18 @@ public final class Generator {
     System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>");
     System.err.println();
     System.err.println("Mandatory arguments:");
-    System.err.println("  -d <DEST_DIR>      Specify the destination directory.");
+    System.err.println("  -d <DEST_DIR>                      Specify the destination directory.");
     System.err.println();
     System.err.println("Optional arguments:");
-    System.err.println("  --prefix <PREFIX>  Package prefix for generated classes.");
+    System.err.println("  --prefix <PREFIX>                  Package prefix for generated classes.");
+    System.err.println("  --defaultIntegerPrimitive <CLASS>  Name of primitive type to be used as default type binding for");
+    System.err.println("                                     \"number\" types with scale=0 && Use=REQUIRED && nullable=false.");
+    System.err.println("  --defaultIntegerObject <CLASS>     Name of non-primitive type to be used as default type binding for");
+    System.err.println("                                     \"number\" types with scale=0 && (Use=OPTIONAL || nullable=true).");
+    System.err.println("  --defaultRealPrimitive <CLASS>     Name of primitive type to be used as default type binding for");
+    System.err.println("                                     \"number\" types with scale>0 && Use=REQUIRED && nullable=false.");
+    System.err.println("  --defaultRealObject <CLASS>        Name of non-primitive type to be used as default type binding for");
+    System.err.println("                                     \"number\" types with scale>0 && (Use=OPTIONAL || nullable=true).");
     System.err.println();
     System.err.println("Supported SCHEMA_FILE formats:");
     System.err.println("                 <JSD|JSDx>");
@@ -45,12 +53,20 @@ public final class Generator {
     if (args.length == 0 || args[0] == null || args[0].length() == 0)
       trapPrintUsage();
 
-    String prefix = "";
+    final Settings.Builder settings = new Settings.Builder();
     File destDir = null;
     File schemaFile = null;
     for (int i = 0, i$ = args.length; i < i$; ++i) { // [A]
       if ("--prefix".equals(args[i]))
-        prefix = args[++i];
+        settings.withPrefix(args[++i]);
+      else if ("--defaultIntegerPrimitive".equals(args[i]))
+        settings.withIntegerPrimitive(args[++i]);
+      else if ("--defaultIntegerObject".equals(args[i]))
+        settings.withIntegerObject(args[++i]);
+      else if ("--defaultRealPrimitive".equals(args[i]))
+        settings.withRealPrimitive(args[++i]);
+      else if ("--defaultRealObject".equals(args[i]))
+        settings.withRealObject(args[++i]);
       else if ("-d".equals(args[i]))
         destDir = new File(args[++i]).getAbsoluteFile();
       else
@@ -60,6 +76,6 @@ public final class Generator {
     if (schemaFile == null)
       trapPrintUsage();
 
-    SchemaElement.parse(schemaFile.toURI().toURL(), prefix).toSource(destDir);
+    SchemaElement.parse(schemaFile.toURI().toURL(), settings.build()).toSource(destDir);
   }
 }

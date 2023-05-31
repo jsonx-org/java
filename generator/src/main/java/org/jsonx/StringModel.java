@@ -304,7 +304,7 @@ final class StringModel extends Model {
   }
 
   @Override
-  Registry.Type typeDefault() {
+  Registry.Type typeDefault(final boolean primitive) {
     return registry.getType(String.class);
   }
 

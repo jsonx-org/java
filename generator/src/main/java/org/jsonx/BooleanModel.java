@@ -281,8 +281,8 @@ final class BooleanModel extends Model {
   }
 
   @Override
-  Registry.Type typeDefault() {
-    return registry.getType(Boolean.class);
+  Registry.Type typeDefault(final boolean primitive) {
+    return registry.getType(primitive ? boolean.class : Boolean.class);
   }
 
   @Override

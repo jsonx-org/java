@@ -31,7 +31,6 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.Registry.Wildcard;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Boolean;
@@ -468,7 +467,11 @@ abstract class Member extends Element {
 
   final Registry.Type type() {
     final Registry.Type typeBinding = typeBinding();
-    return typeBinding != null ? typeBinding : typeDefault();
+    return typeBinding != null ? typeBinding : typeDefault(!(declarer instanceof ArrayModel) && use.get == null && Boolean.FALSE.equals(nullable.get)); // FIXME: Note that this line says: "if it's a list, it's always an object member" What about primitive arrays?!
+  }
+
+  final boolean typeIsDefault() {
+    return typeBinding() == null;
   }
 
   public final boolean isAssignableFrom(final Member m) {
@@ -520,7 +523,7 @@ abstract class Member extends Element {
     return type().isAssignableFrom(m.type());
   }
 
-  abstract Registry.Type typeDefault();
+  abstract Registry.Type typeDefault(boolean primitive);
   abstract String isValid(Binding.Type typeBinding);
   abstract String elementName();
   abstract Class<?> defaultClass();

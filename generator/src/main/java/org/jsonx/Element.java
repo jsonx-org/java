@@ -51,6 +51,6 @@ abstract class Element {
     return name;
   }
 
-  abstract XmlElement toXml(Settings settings, Element owner, String packageName);
-  abstract Object toJson(Settings settings, Element owner, String packageName);
+  abstract XmlElement toXml(Element owner, String packageName);
+  abstract Object toJson(Element owner, String packageName);
 }
