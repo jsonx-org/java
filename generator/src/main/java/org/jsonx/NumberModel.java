@@ -350,7 +350,13 @@ final class NumberModel extends Model {
   }
 
   private static Class<?> typeDefault(final int scale, final boolean primitive, final Settings settings) {
-    return scale == 0 ? (primitive ? settings.getIntegerPrimitive() : settings.getIntegerObject()) : (primitive ? settings.getRealPrimitive() : settings.getRealObject());
+    if (primitive) {
+      final Class<?> cls = scale == 0 ? settings.getIntegerPrimitive() : settings.getRealPrimitive();
+      if (cls != null)
+        return cls;
+    }
+
+    return scale == 0 ? settings.getIntegerObject() : settings.getRealObject();
   }
 
   @Override

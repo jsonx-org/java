@@ -20,6 +20,8 @@ import static org.libj.lang.Assertions.*;
 
 import java.io.Serializable;
 
+import org.libj.lang.Classes;
+
 public class Settings implements Serializable {
   public static final Settings DEFAULT = new Settings("", 1, true, long.class, Long.class, double.class, Double.class);
 
@@ -64,15 +66,14 @@ public class Settings implements Serializable {
      *           if the resolved {@link Class} is not primitive.
      */
     public Builder withIntegerPrimitive(final String integerPrimitive) {
-      try {
-        this.integerPrimitive = Class.forName(integerPrimitive, false, ClassLoader.getSystemClassLoader());
+      if (integerPrimitive == null) {
+        this.integerPrimitive = null;
       }
-      catch (final ClassNotFoundException e) {
-        throw new IllegalArgumentException(e);
+      else {
+        this.integerPrimitive = assertNotNull(Classes.forNamePrimitiveOrNull(integerPrimitive));
+        if (!this.integerPrimitive.isPrimitive())
+          throw new IllegalArgumentException("integerPrimitive must be a primitive type: " + this.integerPrimitive.getCanonicalName());
       }
-
-      if (!this.integerPrimitive.isPrimitive())
-        throw new IllegalArgumentException("integerPrimitive must be a primitive type: " + this.integerPrimitive.getCanonicalName());
 
       return this;
     }
@@ -116,15 +117,14 @@ public class Settings implements Serializable {
      *           the resolved {@link Class} is not primitive.
      */
     public Builder withRealPrimitive(final String realPrimitive) {
-      try {
-        this.realPrimitive = Class.forName(realPrimitive, false, ClassLoader.getSystemClassLoader());
+      if (realPrimitive == null) {
+        this.realPrimitive = null;
       }
-      catch (final ClassNotFoundException e) {
-        throw new IllegalArgumentException(e);
+      else {
+        this.integerPrimitive = assertNotNull(Classes.forNamePrimitiveOrNull(realPrimitive));
+        if (!this.realPrimitive.isPrimitive())
+          throw new IllegalArgumentException("realPrimitive must be a primitive type: " + this.realPrimitive.getCanonicalName());
       }
-
-      if (!this.realPrimitive.isPrimitive())
-        throw new IllegalArgumentException("realPrimitive must be a primitive type: " + this.realPrimitive.getCanonicalName());
 
       return this;
     }
@@ -172,16 +172,16 @@ public class Settings implements Serializable {
     this.prefix = assertNotNull(prefix);
     this.templateThreshold = assertNotNegative(templateThreshold, "templateThreshold (" + templateThreshold + ") must be non-negative");
     this.setBuilder = setBuilder;
-    this.integerPrimitive = assertNotNull(integerPrimitive);
-    if (!integerPrimitive.isPrimitive())
+    this.integerPrimitive = integerPrimitive;
+    if (integerPrimitive != null && !integerPrimitive.isPrimitive())
       throw new IllegalArgumentException("integerPrimitive must be a primitive type: " + integerPrimitive.getCanonicalName());
 
     this.integerObject = assertNotNull(integerObject);
     if (integerObject.isPrimitive())
       throw new IllegalArgumentException("integerObject must be a non-primitive type: " + integerObject.getCanonicalName());
 
-    this.realPrimitive = assertNotNull(realPrimitive);
-    if (!realPrimitive.isPrimitive())
+    this.realPrimitive = realPrimitive;
+    if (realPrimitive != null && !realPrimitive.isPrimitive())
       throw new IllegalArgumentException("realPrimitive must be a primitive type: " + realPrimitive.getCanonicalName());
 
     this.realObject = assertNotNull(realObject);
