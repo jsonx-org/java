@@ -144,22 +144,25 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
     return -1;
   }
 
-  @Override
-  public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
-    String json = null;
-    if (t instanceof JxObject) {
-      json = getEncoder().toString((JxObject)t);
-    }
-    else if (t instanceof List) {
+  private String marshal(final Object t, final Annotation[] annotations) {
+    if (t instanceof JxObject)
+      return getEncoder().toString((JxObject)t);
+
+    if (t instanceof List) {
+      final JxEncoder encoder = getEncoder();
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
-        if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null) {
-          json = getEncoder().toString((List<?>)t, annotationType);
-          break;
-        }
+        if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null)
+          return encoder.toString((List<?>)t, annotationType);
       }
     }
 
+    return null;
+  }
+
+  @Override
+  public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
+    final String json = marshal(t, annotations);
     if (json == null)
       throw new ProcessingException("Unknown type: " + rawType.getName());
 

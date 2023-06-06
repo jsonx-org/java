@@ -265,7 +265,7 @@ public final class JxConverter {
           prevWs = null;
         }
 
-        prevElem = !stack.isEmpty() && "a".equals(stack.peek()) ? "m" : localName;
+        prevElem = stack.size() > 0 && "a".equals(stack.peek()) ? "m" : localName;
         if ("o".equals(localName)) {
           b.append('}');
         }
@@ -340,7 +340,7 @@ public final class JxConverter {
                 // CharacterDatas.unescapeFromElem(b, value);
 
               final String ws = matcher.group("ws");
-              if (ws != null && !ws.isEmpty())
+              if (ws != null && ws.length() > 0)
                 prevWs = ws;
             }
 

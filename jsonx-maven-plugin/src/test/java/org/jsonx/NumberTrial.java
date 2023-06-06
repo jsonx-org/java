@@ -119,7 +119,7 @@ final class NumberTrial extends PropertyTrial<Number> {
     else
       result = setScale(value == null ? random.nextDouble() * random.nextLong() : value, scale);
 
-    if (decode != null && !decode.isEmpty())
+    if (decode != null && decode.length() > 0)
       return JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), String.valueOf(result));
 
     if (Classes.isAssignableFrom(type, result.getClass()))

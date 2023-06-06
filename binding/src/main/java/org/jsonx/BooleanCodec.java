@@ -27,7 +27,7 @@ import org.openjax.json.JsonReader;
 
 class BooleanCodec extends PrimitiveCodec {
   static Object decodeArray(final Class<?> type, final String decode, final String token) {
-    return decodeObject(type, decode == null || decode.isEmpty() ? null : getMethod(decodeToMethod, decode, String.class), token);
+    return decodeObject(type, decode == null || decode.length() == 0 ? null : getMethod(decodeToMethod, decode, String.class), token);
   }
 
   private static Object decodeObject(final Class<?> type, final Executable decode, final String json) {

@@ -24,7 +24,7 @@ import org.openjax.json.JsonReader;
 
 abstract class PrimitiveCodec extends Codec {
   static Executable getMethod(final HashMap<String,HashMap<String,Executable>> codecToMethod, final String identifier, final Class<?> parameterType) {
-    if (identifier.isEmpty())
+    if (identifier.length() == 0)
       return null;
 
     Executable method;

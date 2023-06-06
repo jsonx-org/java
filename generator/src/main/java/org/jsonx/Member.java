@@ -151,7 +151,7 @@ abstract class Member extends Element {
     if (!(declarer instanceof SchemaElement)) {
       b.append(JsdUtil.flipName(declarer.id().toString()));
       final String displayName = declarer.displayName();
-      if (!displayName.isEmpty())
+      if (displayName.length() > 0)
         b.append(" (").append(displayName).append(')');
     }
 
@@ -290,7 +290,7 @@ abstract class Member extends Element {
     if (declarer instanceof SchemaElement)
       return id().toString();
 
-    return name() != null && !name().isEmpty() ? name() : elementName();
+    return name() != null && name().length() > 0 ? name() : elementName();
   }
 
   @Override

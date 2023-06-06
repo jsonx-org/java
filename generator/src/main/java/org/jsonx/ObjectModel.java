@@ -640,7 +640,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   public String displayName() {
-    return name() != null && !name().isEmpty() ? name() : JsdUtil.flipName(id().toString());
+    return name() != null && name().length() > 0 ? name() : JsdUtil.flipName(id().toString());
   }
 
   @Override

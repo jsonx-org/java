@@ -52,7 +52,7 @@ final class StringTrial extends PropertyTrial<String> {
     private final Generex generex;
 
     private StringGen(String pattern) {
-      if (pattern.isEmpty()) {
+      if (pattern.length() == 0) {
         this.generex = null;
       }
       else {
@@ -173,7 +173,7 @@ final class StringTrial extends PropertyTrial<String> {
   }
 
   private static Object convertToDesiredType(final String decode, final String value) {
-    return decode == null || decode.isEmpty() ? value : JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), value);
+    return decode == null || decode.length() == 0 ? value : JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), value);
   }
 
   final String pattern;

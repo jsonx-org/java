@@ -197,18 +197,18 @@ class ObjectCodec extends Codec {
     final Method[] methods = cls.getMethods();
     for (final Method getMethod : classToGetMethods.get(cls)) { // [A]
       for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
-        if (annotation instanceof AnyProperty)
-          propertyToCodec.add(new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof ArrayProperty)
-          propertyToCodec.add(new ArrayCodec((ArrayProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof BooleanProperty)
-          propertyToCodec.add(new BooleanCodec((BooleanProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
+        if (annotation instanceof StringProperty)
+          propertyToCodec.add(new StringCodec((StringProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
         else if (annotation instanceof NumberProperty)
           propertyToCodec.add(new NumberCodec((NumberProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
         else if (annotation instanceof ObjectProperty)
           propertyToCodec.add(new ObjectCodec((ObjectProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof StringProperty)
-          propertyToCodec.add(new StringCodec((StringProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
+        else if (annotation instanceof ArrayProperty)
+          propertyToCodec.add(new ArrayCodec((ArrayProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
+        else if (annotation instanceof BooleanProperty)
+          propertyToCodec.add(new BooleanCodec((BooleanProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
+        else if (annotation instanceof AnyProperty)
+          propertyToCodec.add(new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
         else
           continue;
 

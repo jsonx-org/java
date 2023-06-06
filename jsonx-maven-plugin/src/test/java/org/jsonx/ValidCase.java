@@ -49,7 +49,7 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
       else if (item != null && (relation.annotation instanceof StringElement || relation instanceof StringType)) {
         final String encode = JsdUtil.getEncode(relation.annotation);
         if (escape) {
-          final String value = String.valueOf(encode == null || encode.isEmpty() ? item : JsdUtil.invoke(JsdUtil.parseExecutable(encode, item.getClass()), item));
+          final String value = String.valueOf(encode == null || encode.length() == 0 ? item : JsdUtil.invoke(JsdUtil.parseExecutable(encode, item.getClass()), item));
           out.add(JsonUtil.escape(new StringBuilder(value.length() + 2).append('"'), value).append('"').toString());
         }
         else {

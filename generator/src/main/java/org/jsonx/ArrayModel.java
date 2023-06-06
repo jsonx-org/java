@@ -308,18 +308,18 @@ final class ArrayModel extends Referrer<ArrayModel> {
       if (element == null)
         throw new AnnotationParameterException(annotation, declaringTypeName + ": @" + annotation.annotationType().getName() + " specifies non-existent element with id=" + elementId);
 
-      if (element instanceof AnyElement)
-        members.add(AnyModel.referenceOrDeclare(registry, referrer, (AnyElement)element));
-      else if (element instanceof ArrayElement)
-        members.add(ArrayModel.referenceOrDeclare(registry, referrer, (ArrayElement)element, idToElement, declaringTypeName));
-      else if (element instanceof BooleanElement)
-        members.add(BooleanModel.referenceOrDeclare(registry, referrer, (BooleanElement)element));
+      if (element instanceof StringElement)
+        members.add(StringModel.referenceOrDeclare(registry, referrer, (StringElement)element));
       else if (element instanceof NumberElement)
         members.add(NumberModel.referenceOrDeclare(registry, referrer, (NumberElement)element));
       else if (element instanceof ObjectElement)
         members.add(ObjectModel.referenceOrDeclare(registry, referrer, (ObjectElement)element));
-      else if (element instanceof StringElement)
-        members.add(StringModel.referenceOrDeclare(registry, referrer, (StringElement)element));
+      else if (element instanceof BooleanElement)
+        members.add(BooleanModel.referenceOrDeclare(registry, referrer, (BooleanElement)element));
+      else if (element instanceof ArrayElement)
+        members.add(ArrayModel.referenceOrDeclare(registry, referrer, (ArrayElement)element, idToElement, declaringTypeName));
+      else if (element instanceof AnyElement)
+        members.add(AnyModel.referenceOrDeclare(registry, referrer, (AnyElement)element));
       else
         throw new UnsupportedOperationException("Unsupported annotation type: " + element.annotationType().getName());
     }
@@ -379,8 +379,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
         continue;
 
       final int id;
-      if (elementAnnotation instanceof AnyElement) {
-        id = ((AnyElement)elementAnnotation).id();
+      if (elementAnnotation instanceof StringElement) {
+        id = ((StringElement)elementAnnotation).id();
+      }
+      else if (elementAnnotation instanceof NumberElement) {
+        id = ((NumberElement)elementAnnotation).id();
+      }
+      else if (elementAnnotation instanceof ObjectElement) {
+        id = ((ObjectElement)elementAnnotation).id();
       }
       else if (elementAnnotation instanceof ArrayElement) {
         id = ((ArrayElement)elementAnnotation).id();
@@ -390,14 +396,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
       else if (elementAnnotation instanceof BooleanElement) {
         id = ((BooleanElement)elementAnnotation).id();
       }
-      else if (elementAnnotation instanceof NumberElement) {
-        id = ((NumberElement)elementAnnotation).id();
-      }
-      else if (elementAnnotation instanceof ObjectElement) {
-        id = ((ObjectElement)elementAnnotation).id();
-      }
-      else if (elementAnnotation instanceof StringElement) {
-        id = ((StringElement)elementAnnotation).id();
+      else if (elementAnnotation instanceof AnyElement) {
+        id = ((AnyElement)elementAnnotation).id();
       }
       else {
         throw new UnsupportedOperationException("Unsupported annotation type: " + elementAnnotation.annotationType().getName());

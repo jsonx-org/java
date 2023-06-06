@@ -163,26 +163,12 @@ final class ArrayValidator {
       final boolean nullable;
       final Class<? extends Codec> codecType;
       final Annotation annotation = annotations[a];
-      if (annotation instanceof AnyElement) {
-        final AnyElement element = (AnyElement)annotation;
-        minOccurs = element.minOccurs();
-        maxOccurs = element.maxOccurs();
-        nullable = element.nullable();
-        codecType = AnyCodec.class;
-      }
-      else if (annotation instanceof ArrayElement) {
-        final ArrayElement element = (ArrayElement)annotation;
+      if (annotation instanceof StringElement) {
+        final StringElement element = (StringElement)annotation;
         minOccurs = validate ? element.minOccurs() : 0;
         maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
-        codecType = ArrayCodec.class;
-      }
-      else if (annotation instanceof BooleanElement) {
-        final BooleanElement element = (BooleanElement)annotation;
-        minOccurs = validate ? element.minOccurs() : 0;
-        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
-        nullable = element.nullable();
-        codecType = BooleanCodec.class;
+        codecType = StringCodec.class;
       }
       else if (annotation instanceof NumberElement) {
         final NumberElement element = (NumberElement)annotation;
@@ -198,12 +184,26 @@ final class ArrayValidator {
         nullable = element.nullable();
         codecType = ObjectCodec.class;
       }
-      else if (annotation instanceof StringElement) {
-        final StringElement element = (StringElement)annotation;
+      else if (annotation instanceof ArrayElement) {
+        final ArrayElement element = (ArrayElement)annotation;
         minOccurs = validate ? element.minOccurs() : 0;
         maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
         nullable = element.nullable();
-        codecType = StringCodec.class;
+        codecType = ArrayCodec.class;
+      }
+      else if (annotation instanceof BooleanElement) {
+        final BooleanElement element = (BooleanElement)annotation;
+        minOccurs = validate ? element.minOccurs() : 0;
+        maxOccurs = validate ? element.maxOccurs() : Integer.MAX_VALUE;
+        nullable = element.nullable();
+        codecType = BooleanCodec.class;
+      }
+      else if (annotation instanceof AnyElement) {
+        final AnyElement element = (AnyElement)annotation;
+        minOccurs = element.minOccurs();
+        maxOccurs = element.maxOccurs();
+        nullable = element.nullable();
+        codecType = AnyCodec.class;
       }
       else {
         throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());

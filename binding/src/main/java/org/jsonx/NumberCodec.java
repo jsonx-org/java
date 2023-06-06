@@ -95,7 +95,7 @@ class NumberCodec extends PrimitiveCodec {
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final Class<?> cls = object.getClass();
-    if (validate && (scale != Integer.MAX_VALUE || (range != null && !range.isEmpty()))) {
+    if (validate && (scale != Integer.MAX_VALUE || (range != null && range.length() > 0))) {
       if (!Classes.isAssignableFrom(Number.class, cls))
         throw new ValidationException("Invalid array member: " + annotation + ": Value conditions can only be defined if \"type\" is a subclass of: " + Number.class.getName());
 

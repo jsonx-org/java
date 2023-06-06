@@ -86,7 +86,7 @@ class StringCodec extends PrimitiveCodec {
       object = JsdUtil.invoke(method, object);
 
     final String string = object.toString();
-    if (validate && !pattern.isEmpty() && !Patterns.compile(pattern, Pattern.DOTALL).matcher(string).matches())
+    if (validate && pattern.length() > 0 && !Patterns.compile(pattern, Pattern.DOTALL).matcher(string).matches())
       return Error.PATTERN_NOT_MATCHED(pattern, string, null);
 
     relations.set(index, new Relation(encodeObject(string), annotation));
@@ -123,7 +123,7 @@ class StringCodec extends PrimitiveCodec {
   }
 
   private static Error validate(final Annotation annotation, final Method getMethod, final String object, final String pattern) {
-    return pattern.isEmpty() || Patterns.compile(pattern, Pattern.DOTALL).matcher(object).matches() ? null : Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, getMethod, object);
+    return pattern.length() == 0 || Patterns.compile(pattern, Pattern.DOTALL).matcher(object).matches() ? null : Error.PATTERN_NOT_MATCHED_ANNOTATION(annotation, getMethod, object);
   }
 
   private final Pattern pattern;
@@ -132,7 +132,7 @@ class StringCodec extends PrimitiveCodec {
     super(getMethod, setMethod, property.name(), property.nullable(), property.use(), property.decode());
     final String pattern = property.pattern();
     try {
-      this.pattern = pattern.isEmpty() ? null : Patterns.compile(pattern, Pattern.DOTALL);
+      this.pattern = pattern.length() == 0 ? null : Patterns.compile(pattern, Pattern.DOTALL);
     }
     catch (final PatternSyntaxException e) {
       throw new ValidationException("Malformed pattern: " + pattern);

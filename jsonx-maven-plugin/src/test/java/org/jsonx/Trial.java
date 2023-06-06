@@ -20,17 +20,9 @@ import java.lang.annotation.Annotation;
 
 abstract class Trial extends Asserting {
   static Object createValidNonNullArrayMember(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      throw new UnsupportedOperationException();
-
-    if (annotation instanceof ArrayElement) {
-      final ArrayElement element = (ArrayElement)annotation;
-      return ArrayTrial.createValid(element.type(), element.minIterate(), element.maxIterate(), element.elementIds(), new IdToElement());
-    }
-
-    if (annotation instanceof BooleanElement) {
-      final BooleanElement element = (BooleanElement)annotation;
-      return BooleanTrial.createValid(element.type(), element.decode());
+    if (annotation instanceof StringElement) {
+      final StringElement element = (StringElement)annotation;
+      return StringTrial.createValid(element.type(), element.decode(), element.pattern());
     }
 
     if (annotation instanceof NumberElement) {
@@ -43,10 +35,18 @@ abstract class Trial extends Asserting {
       return ObjectTrial.createValid(element.type());
     }
 
-    if (annotation instanceof StringElement) {
-      final StringElement element = (StringElement)annotation;
-      return StringTrial.createValid(element.type(), element.decode(), element.pattern());
+    if (annotation instanceof ArrayElement) {
+      final ArrayElement element = (ArrayElement)annotation;
+      return ArrayTrial.createValid(element.type(), element.minIterate(), element.maxIterate(), element.elementIds(), new IdToElement());
     }
+
+    if (annotation instanceof BooleanElement) {
+      final BooleanElement element = (BooleanElement)annotation;
+      return BooleanTrial.createValid(element.type(), element.decode());
+    }
+
+    if (annotation instanceof AnyElement)
+      throw new UnsupportedOperationException();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }

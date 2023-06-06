@@ -39,12 +39,12 @@ final class Binding {
 
     static Type from(final Registry registry, final java.lang.reflect.Method getMethod, final boolean nullable, final Use use, final String decode, final String encode, final Class<?> defaultClass) {
       final String typeName = Model.isAssignable(getMethod, false, defaultClass, false, nullable, use) ? null : getClassName(getMethod, nullable, use);
-      return typeName == null && (encode == null || encode.isEmpty()) && (decode == null || decode.isEmpty()) ? null : new Type(registry, typeName, decode, encode);
+      return typeName == null && (encode == null || encode.length() == 0) && (decode == null || decode.length() == 0) ? null : new Type(registry, typeName, decode, encode);
     }
 
     static Type from(final Registry registry, final Class<?> type, final String decode, final String encode, final Class<?> ... defaultClasses) {
       final String typeName = ArrayUtil.contains(defaultClasses, type) ? null : getClassName(type);
-      return typeName == null && (encode == null || encode.isEmpty()) && (decode == null || decode.isEmpty()) ? null : new Type(registry, typeName, decode, encode);
+      return typeName == null && (encode == null || encode.length() == 0) && (decode == null || decode.length() == 0) ? null : new Type(registry, typeName, decode, encode);
     }
 
     static String getClassName(final java.lang.reflect.Method getMethod, final boolean nullable, final Use use) {
@@ -78,8 +78,8 @@ final class Binding {
 
     private Type(final Registry registry, final String typeName, final String decode, final String encode) {
       this.type = typeName == null ? null : registry.getType(Registry.Kind.CLASS, typeName);
-      this.decode = decode == null || decode.isEmpty() ? null : decode;
-      this.encode = encode == null || encode.isEmpty() ? null : encode;
+      this.decode = decode == null || decode.length() == 0 ? null : decode;
+      this.encode = encode == null || encode.length() == 0 ? null : encode;
       if (type == null && decode == null && encode == null)
         throw new IllegalArgumentException();
 

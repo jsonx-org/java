@@ -379,29 +379,8 @@ public class JxEncoder {
       final Annotation[] annotations = Classes.getAnnotations(getMethod);
       for (int j = 0, j$ = annotations.length; j < j$; ++j) { // [A]
         annotation = annotations[j];
-        if (annotation instanceof AnyProperty) {
-          final AnyProperty property = (AnyProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof ArrayProperty) {
-          final ArrayProperty property = (ArrayProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof ObjectProperty) {
-          final ObjectProperty property = (ObjectProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof BooleanProperty) {
-          final BooleanProperty property = (BooleanProperty)annotation;
+        if (annotation instanceof StringProperty) {
+          final StringProperty property = (StringProperty)annotation;
           name = property.name();
           nullable = property.nullable();
           use = property.use();
@@ -414,8 +393,29 @@ public class JxEncoder {
           use = property.use();
           break;
         }
-        else if (annotation instanceof StringProperty) {
-          final StringProperty property = (StringProperty)annotation;
+        else if (annotation instanceof ObjectProperty) {
+          final ObjectProperty property = (ObjectProperty)annotation;
+          name = property.name();
+          nullable = property.nullable();
+          use = property.use();
+          break;
+        }
+        else if (annotation instanceof ArrayProperty) {
+          final ArrayProperty property = (ArrayProperty)annotation;
+          name = property.name();
+          nullable = property.nullable();
+          use = property.use();
+          break;
+        }
+        else if (annotation instanceof BooleanProperty) {
+          final BooleanProperty property = (BooleanProperty)annotation;
+          name = property.name();
+          nullable = property.nullable();
+          use = property.use();
+          break;
+        }
+        else if (annotation instanceof AnyProperty) {
+          final AnyProperty property = (AnyProperty)annotation;
           name = property.name();
           nullable = property.nullable();
           use = property.use();

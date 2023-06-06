@@ -144,21 +144,21 @@ final class JsdUtil {
     Annotation annotation = null;
     int[] elementIds = null;
     for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
-      if (annotations[i] instanceof ArrayType) {
-        final ArrayType arrayType = (ArrayType)annotations[i];
-        elementIds = arrayType.elementIds();
-        idToElement.setMinIterate(arrayType.minIterate());
-        idToElement.setMaxIterate(arrayType.maxIterate());
-        annotation = arrayType;
-        break;
-      }
-
       if (annotations[i] instanceof ArrayProperty) {
         final ArrayProperty arrayProperty = (ArrayProperty)annotations[i];
         elementIds = arrayProperty.elementIds();
         idToElement.setMinIterate(arrayProperty.minIterate());
         idToElement.setMaxIterate(arrayProperty.maxIterate());
         annotation = arrayProperty;
+        break;
+      }
+
+      if (annotations[i] instanceof ArrayType) {
+        final ArrayType arrayType = (ArrayType)annotations[i];
+        elementIds = arrayType.elementIds();
+        idToElement.setMinIterate(arrayType.minIterate());
+        idToElement.setMaxIterate(arrayType.maxIterate());
+        annotation = arrayType;
         break;
       }
     }
@@ -173,14 +173,8 @@ final class JsdUtil {
   }
 
   static boolean isNullable(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).nullable();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).nullable();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).nullable();
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).nullable();
 
     if (annotation instanceof NumberElement)
       return ((NumberElement)annotation).nullable();
@@ -188,21 +182,21 @@ final class JsdUtil {
     if (annotation instanceof ObjectElement)
       return ((ObjectElement)annotation).nullable();
 
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).nullable();
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).nullable();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).nullable();
+
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).nullable();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
   static int getId(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).id();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).id();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).id();
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).id();
 
     if (annotation instanceof NumberElement)
       return ((NumberElement)annotation).id();
@@ -210,21 +204,21 @@ final class JsdUtil {
     if (annotation instanceof ObjectElement)
       return ((ObjectElement)annotation).id();
 
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).id();
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).id();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).id();
+
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).id();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
   static int getMinOccurs(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).minOccurs();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).minOccurs();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).minOccurs();
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).minOccurs();
 
     if (annotation instanceof NumberElement)
       return ((NumberElement)annotation).minOccurs();
@@ -232,21 +226,21 @@ final class JsdUtil {
     if (annotation instanceof ObjectElement)
       return ((ObjectElement)annotation).minOccurs();
 
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).minOccurs();
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).minOccurs();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).minOccurs();
+
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).minOccurs();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
   static int getMaxOccurs(final Annotation annotation) {
-    if (annotation instanceof AnyElement)
-      return ((AnyElement)annotation).maxOccurs();
-
-    if (annotation instanceof ArrayElement)
-      return ((ArrayElement)annotation).maxOccurs();
-
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).maxOccurs();
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).maxOccurs();
 
     if (annotation instanceof NumberElement)
       return ((NumberElement)annotation).maxOccurs();
@@ -254,35 +248,35 @@ final class JsdUtil {
     if (annotation instanceof ObjectElement)
       return ((ObjectElement)annotation).maxOccurs();
 
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).maxOccurs();
+    if (annotation instanceof ArrayElement)
+      return ((ArrayElement)annotation).maxOccurs();
+
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).maxOccurs();
+
+    if (annotation instanceof AnyElement)
+      return ((AnyElement)annotation).maxOccurs();
 
     throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
   }
 
   static String getEncode(final Annotation annotation) {
-    if (annotation instanceof BooleanElement)
-      return ((BooleanElement)annotation).encode();
+    if (annotation instanceof StringElement)
+      return ((StringElement)annotation).encode();
 
     if (annotation instanceof NumberElement)
       return ((NumberElement)annotation).encode();
 
-    if (annotation instanceof StringElement)
-      return ((StringElement)annotation).encode();
+    if (annotation instanceof BooleanElement)
+      return ((BooleanElement)annotation).encode();
 
     return null;
   }
 
   static String getName(final Method getMethod) {
     for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
-      if (annotation instanceof AnyProperty)
-        return ((AnyProperty)annotation).name();
-
-      if (annotation instanceof ArrayProperty)
-        return ((ArrayProperty)annotation).name();
-
-      if (annotation instanceof BooleanProperty)
-        return ((BooleanProperty)annotation).name();
+      if (annotation instanceof StringProperty)
+        return ((StringProperty)annotation).name();
 
       if (annotation instanceof NumberProperty)
         return ((NumberProperty)annotation).name();
@@ -290,8 +284,14 @@ final class JsdUtil {
       if (annotation instanceof ObjectProperty)
         return ((ObjectProperty)annotation).name();
 
-      if (annotation instanceof StringProperty)
-        return ((StringProperty)annotation).name();
+      if (annotation instanceof ArrayProperty)
+        return ((ArrayProperty)annotation).name();
+
+      if (annotation instanceof BooleanProperty)
+        return ((BooleanProperty)annotation).name();
+
+      if (annotation instanceof AnyProperty)
+        return ((AnyProperty)annotation).name();
     }
 
     return null;
@@ -300,18 +300,18 @@ final class JsdUtil {
   static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
     annotations = JsdUtil.flatten(annotations);
     for (final Annotation annotation : annotations) { // [A]
-      if (annotation instanceof AnyElement)
-        idToElement.put(((AnyElement)annotation).id(), annotation);
-      else if (annotation instanceof ArrayElement)
-        idToElement.put(((ArrayElement)annotation).id(), annotation);
-      else if (annotation instanceof BooleanElement)
-        idToElement.put(((BooleanElement)annotation).id(), annotation);
+      if (annotation instanceof StringElement)
+        idToElement.put(((StringElement)annotation).id(), annotation);
       else if (annotation instanceof NumberElement)
         idToElement.put(((NumberElement)annotation).id(), annotation);
       else if (annotation instanceof ObjectElement)
         idToElement.put(((ObjectElement)annotation).id(), annotation);
-      else if (annotation instanceof StringElement)
-        idToElement.put(((StringElement)annotation).id(), annotation);
+      else if (annotation instanceof ArrayElement)
+        idToElement.put(((ArrayElement)annotation).id(), annotation);
+      else if (annotation instanceof BooleanElement)
+        idToElement.put(((BooleanElement)annotation).id(), annotation);
+      else if (annotation instanceof AnyElement)
+        idToElement.put(((AnyElement)annotation).id(), annotation);
     }
   }
 
@@ -325,18 +325,18 @@ final class JsdUtil {
 
     final Annotation annotation = annotations[index];
     final Annotation[] repeatable;
-    if (AnyElements.class.equals(annotation.annotationType()))
-      repeatable = ((AnyElements)annotation).value();
-    else if (ArrayElements.class.equals(annotation.annotationType()))
-      repeatable = ((ArrayElements)annotation).value();
-    else if (BooleanElements.class.equals(annotation.annotationType()))
-      repeatable = ((BooleanElements)annotation).value();
+    if (StringElements.class.equals(annotation.annotationType()))
+      repeatable = ((StringElements)annotation).value();
     else if (NumberElements.class.equals(annotation.annotationType()))
       repeatable = ((NumberElements)annotation).value();
     else if (ObjectElements.class.equals(annotation.annotationType()))
       repeatable = ((ObjectElements)annotation).value();
-    else if (StringElements.class.equals(annotation.annotationType()))
-      repeatable = ((StringElements)annotation).value();
+    else if (ArrayElements.class.equals(annotation.annotationType()))
+      repeatable = ((ArrayElements)annotation).value();
+    else if (BooleanElements.class.equals(annotation.annotationType()))
+      repeatable = ((BooleanElements)annotation).value();
+    else if (AnyElements.class.equals(annotation.annotationType()))
+      repeatable = ((AnyElements)annotation).value();
     else
       repeatable = null;
 
