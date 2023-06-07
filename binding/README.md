@@ -61,7 +61,7 @@ This document specifies the <ins>JSONx Binding API</ins>, which offers facilitie
 
 ## <b>1</b> <ins>Introduction</ins>
 
-This document sets out the structural part of the <ins>JSONx Binding API</ins>. It also contains a directory of links to these related resources.
+This document sets out the structural part of the <ins>JSONx Binding API</ins>. It also contains a directory of links to related resources.
 
 The <ins>JSONx Binding API</ins> is designed to bind JSON documents to Java objects. More specifically, the <ins>JSONx Binding API</ins> provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][schema] to be parsed and marshaled, to and from Java objects of strongly-typed classes. The <ins>JSONx Binding API</ins> can also be used to validate JSON documents as they are parsed from text or marshaled from Java objects against a JSD. Thus, the <ins>JSONx Binding API</ins> is a reference implementation of the validation and binding functionalities of the [<ins>JSON Schema Definition Language</ins>][schema].
 
