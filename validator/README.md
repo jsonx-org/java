@@ -1,4 +1,4 @@
-# JSONx Binding Validator
+# JSONx Validator
 
 > **JSON Schema for the enterprise**
 
@@ -10,7 +10,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONx Binding Validator</ins>, which offers facilities for validating JSON documents agains a [JSD schema][schema].
+This document specifies the <ins>JSONx Validator</ins>, which offers facilities for validating JSON documents agains a [JSD schema][schema].
 
 ## Table of Contents
 

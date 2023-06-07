@@ -12,6 +12,7 @@
 |:-|:-|
 | [binding][binding] | API to bind Java classes to JSON objects whose structure is expressed in the<br>[<ins>JSON Schema Definition Language</ins>][schema]. |
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
+| [validator][validator] | Utility to validate JSON documents against a JSD(x) schema. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
 | [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [<ins>JSONx Binding API</ins>][#binding]. |
 | [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
@@ -47,26 +48,33 @@ This document introduces the <ins>JSONx Framework for Java</ins>, and presents a
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.1 [Generator](#531-generator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.3.2 [Converter][#converter]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>5.4 [Specification](#54-specification)<br>
-<samp>&nbsp;&nbsp;</samp>6 [<ins>JSONx Integration for JAX-RS</ins>](#6-jsonx-integration-for-jax-rs)<br>
+<samp>&nbsp;&nbsp;</samp>6 [<ins>JSONx Validator</ins>](#6-jsonx-validator)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.1 [Purpose](#61-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [Requirements](#62-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3 [Getting Started](#63-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.1 [Valid Case](#631-valid-case)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.3.2 [Invalid Case](#632-invalid-case)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.4 [Specification](#64-specification)<br>
-<samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Maven Plugin</ins>](#7-jsonx-maven-plugin)<br>
+<samp>&nbsp;&nbsp;</samp>7 [<ins>JSONx Integration for JAX-RS</ins>](#7-jsonx-integration-for-jax-rs)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Purpose](#71-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.2 [Requirements](#72-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.3 [Getting Started](#73-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.4 [Specification](#74-specification)<br>
-<samp>&nbsp;&nbsp;</samp>8 [<ins>JsonXml</ins>](#8-jsonxml)<br>
+<samp>&nbsp;&nbsp;</samp>8 [<ins>JSONx Maven Plugin</ins>](#8-jsonx-maven-plugin)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.1 [Purpose](#81-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.2 [Requirements](#82-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3 [Getting Started](#83-getting-started)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3.1 [JSON-to-XML](#831-json-to-xml)<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.3.2 [XML-to-JSON](#832-xml-to-json)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>8.4 [Specification](#84-specification)<br>
-<samp>&nbsp;&nbsp;</samp>9 [<ins>Contributing</ins>](#9-contributing)<br>
-<samp>&nbsp;&nbsp;</samp>10 [<ins>Special Thanks</ins>](#10-special-thanks)<br>
-<samp>&nbsp;&nbsp;</samp>11 [<ins>License</ins>](#11-license)
+<samp>&nbsp;&nbsp;</samp>9 [<ins>JsonXml</ins>](#9-jsonxml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>9.1 [Purpose](#91-purpose)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>9.2 [Requirements](#92-requirements)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>9.3 [Getting Started](#93-getting-started)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>9.3.1 [JSON-to-XML](#931-json-to-xml)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>9.3.2 [XML-to-JSON](#932-xml-to-json)<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>9.4 [Specification](#94-specification)<br>
+<samp>&nbsp;&nbsp;</samp>10 [<ins>Contributing</ins>](#10-contributing)<br>
+<samp>&nbsp;&nbsp;</samp>11 [<ins>Special Thanks</ins>](#11-special-thanks)<br>
+<samp>&nbsp;&nbsp;</samp>12 [<ins>License</ins>](#12-license)
 
 ## <b>1</b> <ins>Introduction</ins>
 
@@ -687,15 +695,66 @@ java -cp ... org.jsonx.Converter src/main/resources/example.jsd target/generated
 
 _For a detailed specification of the <ins>binding generator</ins>, see **[<ins>JSONx Binding Generator</ins>][generator]**._
 
-## <b>6</b> <ins>JSONx Integration for JAX-RS</ins>
+## <b>6</b> <ins>JSONx Validator</ins>
+
+The <ins>JSONx Validator</ins> consumes a JSD schema and a JSON document, and returns successfully if the specified documents are valid against the provided schema, or fails with an exception specifying the validation error if the specified document is invalid against the provided schema. The <ins>JSONx Validator</ins> utilizes the <ins>JSONx Binding Generator</ins> to perform its validation.
+
+## <b>6.1</b> <ins>Purpose</ins>
+
+Provide a <ins>validator</ins> utility for automatic validation of JSON documents against a <ins>schema document</ins>.
+
+## <b>6.2</b> <ins>Requirements</ins>
+
+1. The <ins>validator</ins> MUST be able to consume a <ins>JSON document</ins>, and validate its contents agains a provided <ins>schema document</ins>.
+
+1. The <ins>validator</ins> MUST return successfully if a <ins>JSON document</ins> conforms to the provided <ins>schema document</ins>.
+
+1. The <ins>validator</ins> MUST throw an exception specifying the validation error if a <ins>JSON document</ins> does not conform to the provided <ins>schema document</ins>.
+
+## <b>6.3</b> <ins>Getting Started</ins>
+
+The <ins>JSONx Validator</ins> provides convenience utilities for validating a <ins>JSON document</ins> agains a <ins>schema document</ins>. The following illustrates example usage of the `Validator`.
+
+### <b>6.3.1</b> Valid Case
+
+The following example uses the `Validator` to validate a <i>valid</i> <ins>JSON document</ins> against a <ins>schema document</ins>.
+
+```bash
+$ java -cp ... org.jsonx.Validator src/main/resources/example.jsd src/main/resources/valid.json
+$ echo $?
+0
+```
+
+### <b>6.3.2</b> Invalid Case
+
+The following example uses the `Validator` to validate an <i>invalid</i> <ins>JSON document</ins> against a <ins>schema document</ins>.
+
+```bash
+$ java -cp ... org.jsonx.Validator src/main/resources/example.jsd src/main/resources/invalid.json
+Invalid content was found in empty array: @org.jsonx.StringElement(id=0, pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"): Content is not complete
+$ echo $?
+1
+```
+
+## <b>6.4</b> <ins>Specification</ins>
+
+The `Validator` is a utility class that can be used on the CLI to validate a <ins>JSON document</ins> against a <ins>schema document</ins>. The `Validator` class has the following usage specification:
+
+```
+Usage: Usage: Validator <SCHEMA> <JSON...>
+Supported SCHEMA formats:
+                 <JSD|JSDx>
+```
+
+## <b>7</b> <ins>JSONx Integration for JAX-RS</ins>
 
 Implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in the JAX-RS API to integrate with JAX-RS server runtimes.
 
-### <b>6.1</b> Purpose
+### <b>7.1</b> Purpose
 
 Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java object instances of binding classes in a JAX-RS runtime.
 
-### <b>6.2</b> Requirements
+### <b>7.2</b> Requirements
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST support validation of JSON upon the consumption and production of documents in a JAX-RS runtime.
 
@@ -703,7 +762,7 @@ Provide <ins>JSONx Integration for JAX-RS</ins> for parsing and marshaling Java 
 
 1. The <ins>JSONx Integration for JAX-RS</ins> MUST be automatic and free of any configuration that would couple an application to the <ins>JSONx Framework for Java</ins>.
 
-### <b>6.3</b> Getting Started
+### <b>7.3</b> Getting Started
 
 The <ins>JSONx Integration for JAX-RS</ins> sub-project provides a `Provider` implementing the `MessageBodyReader` and `MessageBodyWriter` interfaces that can be registered with a JAX-RS runtime.
 
@@ -833,19 +892,19 @@ public class AccountService {
 }
 ```
 
-### <b>6.4</b> Specification
+### <b>7.4</b> Specification
 
 _For a detailed specification of <ins>JSONx Integration for JAX-RS</ins>, see **[<ins>JSONx Integration for JAX-RS</ins>][jaxrs]**._
 
-## <b>7</b> <ins>JSONx Maven Plugin</ins>
+## <b>8</b> <ins>JSONx Maven Plugin</ins>
 
 A Maven plugin for generating JSONx and JSD bindings.
 
-### <b>7.1</b> Purpose
+### <b>8.1</b> Purpose
 
 Provide schema <ins>validation</ins>, schema <ins>conversion</ins>, and Java binding source <ins>generation</ins> in a <ins>Maven plugin</ins>.
 
-### <b>7.2</b> Requirements
+### <b>8.2</b> Requirements
 
 1. The <ins>JSONx Maven plugin</ins> MUST offer utilities for the generation of Java binding sources from a specified <ins>schema document</ins>.
 
@@ -855,7 +914,7 @@ Provide schema <ins>validation</ins>, schema <ins>conversion</ins>, and Java bin
 
 1. The <ins>JSONx Maven plugin</ins> MUST present clear and informative errors and warnings that arise during parsing and validation of <ins>schema document</ins>s and JSON documents with an associated schema.
 
-### <b>7.3</b> Getting Started
+### <b>8.3</b> Getting Started
 
 The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a `pom.xml`. The following illustrates an example usage.
 
@@ -882,19 +941,19 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 </plugin>
 ```
 
-### <b>7.4</b> Specification
+### <b>8.4</b> Specification
 
 _For a detailed specification of the Maven plugin, see **[<ins>JSONx Maven Plugin</ins>][jsonx-maven-plugin]**._
 
-## <b>8</b> <ins>JsonXml</ins>
+## <b>9</b> <ins>JsonXml</ins>
 
 Offers facilities for converting JSON documents to XML, and vice-versa.
 
-### <b>8.1</b> Purpose
+### <b>9.1</b> Purpose
 
 Provide an encoding of JSON documents in an analogous form that uses XML semantics, referred to as <ins>JsonXml documents</ins>.
 
-### <b>8.2</b> Requirements
+### <b>9.2</b> Requirements
 
 1. The <ins>JsonXml documents</ins> MUST be able to represent any and all legal JSON documents, as specified by [RFC2119](https://www.ietf.org/rfc/rfc2119.txt).
 
@@ -902,38 +961,38 @@ Provide an encoding of JSON documents in an analogous form that uses XML semanti
 
 1. The <ins>JsonXml documents</ins> MUST provide meaningful and useful validation features via XSD validation.
 
-### <b>8.3</b> Getting Started
+### <b>9.3</b> Getting Started
 
 The <ins>JsonXml</ins> sub-project provides convenience utilities for converting JSON documents to XML. The following illustrates example usage of the `JxConverter` class.
 
-#### <b>8.3.1</b> JSON-to-XML
+#### <b>9.3.1</b> JSON-to-XML
 
 ```java
 String xml = JxConverter.jsonToXml(new JsonReader(new FileReader("example.json")));
 ```
 
-#### <b>8.3.2</b> XML-to-JSON
+#### <b>9.3.2</b> XML-to-JSON
 
 ```java
 String json = JxConverter.xmlToJson(new FileInputStream("example.xml"));
 ```
 
-### <b>8.4</b> Specification
+### <b>9.4</b> Specification
 
 _For a detailed specification of JsonXml, see **[<ins>JsonXml</ins>][jsonxml]**._
 
-## <b>9</b> <ins>Contributing</ins>
+## <b>10</b> <ins>Contributing</ins>
 
 Pull requests are welcome. For major changes, please [open an issue](../../issues) first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-## <b>10</b> <ins>Special Thanks</ins>
+## <b>11</b> <ins>Special Thanks</ins>
 
 [![Java Profiler](https://www.ej-technologies.com/images/product_banners/jprofiler_small.png)](https://www.ej-technologies.com/products/jprofiler/overview.html)
 <br><sub>_Special thanks to [EJ Technologies](https://www.ej-technologies.com/) for providing their award winning Java Profiler ([JProfiler](https://www.ej-technologies.com/products/jprofiler/overview.html)) for development of the JSONx Framework._</sub>
 
-## <b>11</b> License
+## <b>12</b> License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
@@ -944,6 +1003,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 
 [binding]: binding
 [generator]: generator
+[validator]: validator
 [jaxrs]: jaxrs
 [jsonx-maven-plugin]: jsonx-maven-plugin
 [jsonxml]: jsonxml
