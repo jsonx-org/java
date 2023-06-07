@@ -18,17 +18,27 @@
   xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
-  <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
-  <object name="id" abstract="true">
-    <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
-  </object>
+
+  <string name="id" pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/>
+  <string name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}"/>
+  <string name="sha256" pattern="[0-9a-f]{64}"/>
+
+  <array name="ids">
+    <reference type="id"/>
+  </array>
+
   <object name="credentials">
-    <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
-    <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
+    <property name="email" xsi:type="reference" type="email" nullable="false"/>
+    <property name="password" xsi:type="reference" type="sha256" use="optional" nullable="false"/>
   </object>
+
   <object name="account" extends="credentials">
-    <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
+    <property name="id" xsi:type="reference" type="id" nullable="false" use="optional"/>
     <property name="firstName" xsi:type="string" nullable="false"/>
     <property name="lastName" xsi:type="string" nullable="false"/>
   </object>
+  <array name="accounts">
+    <reference type="account"/>
+  </array>
+
 </schema>
