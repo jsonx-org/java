@@ -45,7 +45,7 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 
 ## <b>1</b> <ins>Introduction</ins>
 
-JsonXml is JSON expressed in XML. This document presents the structural part of JsonXml, as well as the normative specification of the <ins>JsonXml API</ins>. It also contains a directory of links to these related resources.
+JsonXml is JSON expressed in XML. This document presents the structural part of JsonXml, as well as the normative specification of the <ins>JsonXml API</ins>. It also contains a directory of links to related resources.
 
 ### <b>1.1</b> Dependencies on Other Specifications
 

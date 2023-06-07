@@ -30,7 +30,7 @@ This document specifies the <ins>JSONx Binding Generator</ins>, which offers fac
 
 ## <b>1</b> <ins>Introduction</ins>
 
-This document presents the functionality of the <ins>JSONx Binding Generator</ins>. It also contains a directory of links to these related resources.
+This document presents the functionality of the <ins>JSONx Binding Generator</ins>. It also contains a directory of links to related resources.
 
 The <ins>JSONx Binding Generator</ins> consumes a JSD schema, and produces Java classes in the form of `.java` files. The generated classes have code that relies on the <ins>JSONx Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 

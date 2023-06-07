@@ -29,7 +29,7 @@ This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offer
 
 ## <b>1</b> <ins>Introduction</ins>
 
-This document sets out the structural part of the <ins>JSONx Integration for JAX-RS</ins>. It also contains a directory of links to these related resources.
+This document sets out the structural part of the <ins>JSONx Integration for JAX-RS</ins>. It also contains a directory of links to related resources.
 
 The <ins>JSONx Integration for JAX-RS</ins> is implemented to the specification of the JAX-RS API. <ins>JSONx Integration for JAX-RS</ins> implements the `MessageBodyReader` and `MessageBodyWriter` interfaces in `JxObjectProvider` to integrate with JAX-RS server runtimes.
 
@@ -64,18 +64,21 @@ The following illustrates example usage.
 ```json
 {
   "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
-
-  "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
-  "id": { "jx:type": "object", "abstract": true, "properties": {
-    "id": { "jx:type": "reference", "nullable": false, "type": "uuid" } } },
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema-0.3.jsd",
+  "id": { "jx:type": "string", "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}" },
+  "email": { "jx:type": "string", "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
+  "sha256": {"jx:type": "string", "pattern": "[0-9a-f]{64}" },
+  "ids": { "jx:type": "array", "elements": [{ "jx:type": "reference", "type": "id" }] },
   "credentials": { "jx:type": "object", "properties": {
-    "email": { "jx:type": "string", "nullable": false, "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
-    "password": { "jx:type": "string", "nullable": false, "pattern": "[0-9a-f]{64}", "use": "optional" } } },
+    "email": { "jx:type": "reference", "type": "email", "nullable": false },
+    "password": { "jx:type": "reference", "type": "sha256", "use": "optional", "nullable": false }}
+  },
   "account": { "jx:type": "object", "extends": "credentials", "properties": {
-    "id": { "jx:type": "reference", "nullable": false, "type": "uuid", "use": "optional" },
+    "id": { "jx:type": "reference", "type": "id", "use": "optional", "nullable": false },
     "firstName": { "jx:type": "string", "nullable": false },
-    "lastName": { "jx:type": "string", "nullable": false } } }
+    "lastName": { "jx:type": "string", "nullable": false }}
+  },
+  "accounts": { "jx:type": "array", "elements": [{ "jx:type": "reference", "type": "account" }]}
 }
 ```
 
@@ -87,19 +90,27 @@ The following illustrates example usage.
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
 
-  <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
-  <object name="id" abstract="true">
-    <property name="id" xsi:type="reference" type="uuid" nullable="false"/>
-  </object>
+  <string name="id" pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/>
+  <string name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}"/>
+  <string name="sha256" pattern="[0-9a-f]{64}"/>
+  
+  <array name="ids">
+    <reference type="id"/>
+  </array>
+
   <object name="credentials">
-    <property xsi:type="string" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}" nullable="false"/>
-    <property xsi:type="string" name="password" pattern="[0-9a-f]{64}" use="optional" nullable="false"/>
+    <property name="email" xsi:type="reference" type="email" nullable="false"/>
+    <property name="password" xsi:type="reference" type="sha256" use="optional" nullable="false"/>
   </object>
+
   <object name="account" extends="credentials">
-    <property name="id" xsi:type="reference" type="uuid" nullable="false" use="optional"/>
+    <property name="id" xsi:type="reference" type="id" nullable="false" use="optional"/>
     <property name="firstName" xsi:type="string" nullable="false"/>
     <property name="lastName" xsi:type="string" nullable="false"/>
   </object>
+  <array name="accounts">
+    <reference type="account"/>
+  </array>
 
 </schema>
 ```
