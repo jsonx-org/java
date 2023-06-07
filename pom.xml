@@ -65,6 +65,7 @@
     <module>jsonxml</module>
     <module>binding</module>
     <module>generator</module>
+    <module>validator</module>
     <module>jsonx-maven-plugin</module>
     <module>jaxrs</module>
     <module>sample</module>
