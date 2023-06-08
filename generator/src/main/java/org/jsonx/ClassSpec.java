@@ -37,19 +37,19 @@ class ClassSpec {
 
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();
 
-  private final Referrer<?> referrer;
-  private final Settings settings;
+  final Referrer<?> referrer;
+  private final Registry registry;
   private final Registry.Type type;
 
   ClassSpec(final Referrer<?> referrer) {
     this.referrer = referrer;
-    this.settings = referrer.registry.settings;
+    this.registry = referrer.registry;
     this.type = referrer.classType();
   }
 
   ClassSpec(final ClassSpec parent, final Registry.Type type) {
     this.referrer = null;
-    this.settings = parent.settings;
+    this.registry = parent.registry;
     this.type = type;
   }
 
@@ -112,20 +112,23 @@ class ClassSpec {
           b.append('\n');
 
         final ClassSpec memberClass = iterator.next();
-        final StringBuilder annotation = memberClass.getAnnotation();
-        if (annotation != null)
-          b.append("\n  ").append(Strings.indent(annotation, 2));
 
         final String memberDoc = memberClass.getDoc();
         if (memberDoc != null)
           b.append("\n  ").append(memberDoc);
+
+        b.append("\n  @").append(JxBinding.class.getName()).append("(targetNamespace=\"").append(registry.targetNamespace).append("\")");
+
+        final StringBuilder annotation = memberClass.getAnnotation();
+        if (annotation != null)
+          b.append("\n  ").append(Strings.indent(annotation, 2));
 
         b.append("\n  public ").append(Strings.indent(memberClass.toString(this), 2));
       }
     }
 
     if (referrer != null) {
-      final String code = referrer.toSource(settings);
+      final String code = referrer.toSource(registry.settings);
       if (code != null && code.length() > 0) {
         if (size > 0)
           b.append('\n');

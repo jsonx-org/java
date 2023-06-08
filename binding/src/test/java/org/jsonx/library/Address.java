@@ -37,7 +37,7 @@ public class Address implements JxObject {
 
   private String street;
 
-  @StringProperty(name="street", pattern="(\\S)|(\\S.*\\S)")
+  @StringProperty(name="street", pattern="\\S|\\S.*\\S")
   public String getStreet() {
     return this.street;
   }

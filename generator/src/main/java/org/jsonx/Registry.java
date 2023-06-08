@@ -143,7 +143,7 @@ class Registry {
 
     Type(final Kind kind, final String packageName, String compositeName, Type superType, final GenericType[] genericTypes) {
       this.kind = kind;
-      final boolean defaultPackage = packageName.length() == 0;
+      final boolean isDefaultPackage = packageName.length() == 0;
       final int dot = compositeName.lastIndexOf('.');
       this.packageName = packageName;
 
@@ -151,13 +151,13 @@ class Registry {
       if (isArray)
         compositeName = compositeName.substring(0, compositeName.length() - 2);
 
-      final String canonicalPackageName = dot == -1 ? packageName : defaultPackage ? compositeName.substring(0, dot) : packageName + "." + compositeName.substring(0, dot);;
+      final String canonicalPackageName = dot == -1 ? packageName : isDefaultPackage ? compositeName.substring(0, dot) : packageName + "." + compositeName.substring(0, dot);
       this.canonicalPackageName = canonicalPackageName.length() == 0 ? null : canonicalPackageName;
       this.compositeName = compositeName;
-      this.name = defaultPackage ? compositeName : packageName + "." + compositeName;
+      this.name = isDefaultPackage ? compositeName : packageName + "." + compositeName;
       this.canonicalCompositeName = Classes.toCanonicalClassName(compositeName);
       this.simpleName = canonicalCompositeName.substring(canonicalCompositeName.lastIndexOf('.') + 1);
-      this.canonicalName = defaultPackage ? canonicalCompositeName : packageName + "." + canonicalCompositeName;
+      this.canonicalName = isDefaultPackage ? canonicalCompositeName : packageName + "." + canonicalCompositeName;
       this.cls = Classes.forNameOrNull(name, false, ClassLoader.getSystemClassLoader());
       if (superType == null && this.cls != null && this.cls != Object.class) {
         superType = cls.getSuperclass() == null ? null : getType(cls.getSuperclass());
@@ -446,12 +446,14 @@ class Registry {
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
+  final String targetNamespace;
   final Settings settings;
   final boolean isFromJsd;
   final String packageName;
   final String classPrefix;
 
-  Registry(final Settings settings) {
+  Registry(final String targetNamespace, final Settings settings) {
+    this.targetNamespace = targetNamespace;
     this.settings = settings;
     this.isFromJsd = true;
 
@@ -475,8 +477,25 @@ class Registry {
     }
   }
 
+  private static String detectTargetNamespace(final Collection<Class<?>> classes) {
+    String targetNamespace = null;
+    for (final Class<?> cls : classes) { // [C]
+      final JxBinding annotation = cls.getAnnotation(JxBinding.class);
+      if (annotation != null) {
+        final String value = annotation.targetNamespace();
+        if (targetNamespace == null)
+          targetNamespace = value;
+        else if (!targetNamespace.equals(value))
+          throw new ValidationException("Conflicting targetNamespace declarations: " + targetNamespace + " and " + value);
+      }
+    }
+
+    return targetNamespace;
+  }
+
   @SuppressWarnings("unchecked")
   Registry(final Declarer declarer, final Collection<Class<?>> classes) {
+    this.targetNamespace = detectTargetNamespace(classes);
     this.settings = Settings.DEFAULT;
     this.isFromJsd = false;
     if (classes.size() > 0) {

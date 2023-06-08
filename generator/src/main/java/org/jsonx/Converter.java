@@ -32,10 +32,7 @@ import org.xml.sax.SAXException;
  */
 public final class Converter {
   private static void trapPrintUsage() {
-    System.err.println("Usage: Converter <SCHEMA_IN> [SCHEMA_OUT]");
-    System.err.println();
-    System.err.println("Supported SCHEMA_IN|OUT formats:");
-    System.err.println("                 <JSD|JSDx>");
+    System.err.println("Usage: Converter <SCHEMA_IN.jsd|SCHEMA_IN.jsdx> [SCHEMA_OUT.jsd|SCHEMA_OUT.jsdx]");
     System.exit(1);
   }
 

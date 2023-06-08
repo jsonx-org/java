@@ -79,6 +79,10 @@ public final class SchemaElement extends Element implements Declarer {
       }
     }
 
+    final String targetNamespace = jsd.getJx3aTargetNamespace();
+    if (targetNamespace != null && targetNamespace.length() > 0)
+      xsb.setTargetNamespace$(targetNamespace);
+
     final String doc = jsd.getDoc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
@@ -190,7 +194,7 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public SchemaElement(final Schema schema, final Settings settings) throws ValidationException {
     super(null, schema.getDoc$());
-    this.registry = new Registry(settings);
+    this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), settings);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);
@@ -443,6 +447,10 @@ public final class SchemaElement extends Element implements Declarer {
     attributes.put("xmlns", version + ".xsd");
     attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     attributes.put("xsi:schemaLocation", version + ".xsd " + version + ".xsd");
+    final String targetNamespace = registry.targetNamespace;
+    if (targetNamespace != null)
+      attributes.put("targetNamespace", targetNamespace.endsWith(".jsd") ? targetNamespace + "x" : targetNamespace);
+
     return new XmlElement("schema", attributes, elements);
   }
 
@@ -460,6 +468,10 @@ public final class SchemaElement extends Element implements Declarer {
     final Map<String,Object> properties = new LinkedHashMap<>(toXmlAttributes(owner, packageName));
     properties.put("jx:ns", version + ".jsd");
     properties.put("jx:schemaLocation", version + ".jsd " + version + ".jsd");
+    final String targetNamespace = registry.targetNamespace;
+    if (targetNamespace != null)
+      properties.put("jx:targetNamespace", targetNamespace.endsWith(".jsdx") ? targetNamespace.substring(0, targetNamespace.length() - 1) : targetNamespace);
+
     for (int i = 0; i < i$; ++i) { // [RA]
       final Model member = members.get(i);
       final String id = member.id().toString();
@@ -527,6 +539,9 @@ public final class SchemaElement extends Element implements Declarer {
 
         if (canonicalPackageName != null)
           b.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
+
+        if (classSpec.referrer != null)
+          b.append("\n@").append(JxBinding.class.getName()).append("(targetNamespace=\"").append(registry.targetNamespace).append("\")");
 
         b.append("\npublic ").append(classSpec);
         sources.put(type.getName(), b.toString());

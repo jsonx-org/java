@@ -27,7 +27,7 @@ public final class Generator {
   }
 
   private static void trapPrintUsage() {
-    System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>");
+    System.err.println("Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx>");
     System.err.println();
     System.err.println("Mandatory arguments:");
     System.err.println("  -d <DEST_DIR>                      Specify the destination directory.");
@@ -42,9 +42,6 @@ public final class Generator {
     System.err.println("                                     \"number\" types with scale>0 && Use=REQUIRED && nullable=false.");
     System.err.println("  --defaultRealObject <CLASS>        Name of non-primitive type to be used as default type binding for");
     System.err.println("                                     \"number\" types with scale>0 && (Use=OPTIONAL || nullable=true).");
-    System.err.println();
-    System.err.println("Supported SCHEMA_FILE formats:");
-    System.err.println("                 <JSD|JSDx>");
     System.exit(1);
   }
 

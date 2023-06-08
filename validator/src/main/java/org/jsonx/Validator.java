@@ -16,8 +16,8 @@
 
 package org.jsonx;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -38,9 +38,7 @@ import org.openjax.json.JsonReader;
  */
 public class Validator {
   private static void trapPrintUsage() {
-    System.err.println("Usage: Validator <SCHEMA> <JSON...>");
-    System.err.println("Supported SCHEMA formats:");
-    System.err.println("                 <JSD|JSDx>");
+    System.err.println("Usage: Validator <SCHEMA.jsd|SCHEMA.jsdx> <JSON>...");
     System.exit(1);
   }
 
@@ -91,17 +89,19 @@ public class Validator {
     final HashSet<Class<? extends JxObject>> objectClasses = new HashSet<>();
     final HashSet<Class<? extends Annotation>> arrayClasses = new HashSet<>();
     PackageLoader.getPackageLoader(classLoader).loadPackage(prefix, cls -> {
-      if (Annotation.class.isAssignableFrom(cls))
-        arrayClasses.add((Class<? extends Annotation>)cls);
-      else if (!Modifier.isAbstract(cls.getModifiers()) && JxObject.class.isAssignableFrom(cls))
-        objectClasses.add((Class<? extends JxObject>)cls);
+      if (cls.getDeclaringClass() == null) {
+        if (Annotation.class.isAssignableFrom(cls))
+          arrayClasses.add((Class<? extends Annotation>)cls);
+        else if (!Modifier.isAbstract(cls.getModifiers()) && JxObject.class.isAssignableFrom(cls))
+          objectClasses.add((Class<? extends JxObject>)cls);
+      }
 
       return true;
     });
 
     final ArrayList<String> errors = new ArrayList<>();
     for (int i = 1, i$ = args.length; i < i$; ++i) {// [A]
-      try (final JsonReader reader = new JsonReader(new FileReader(args[i]))) {
+      try (final JsonReader reader = new JsonReader(new InputStreamReader(URLs.fromStringPath(args[i]).openStream()))) {
         validate(reader, objectClasses, arrayClasses, errors);
       }
     }

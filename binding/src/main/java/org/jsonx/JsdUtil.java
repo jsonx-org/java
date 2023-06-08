@@ -31,6 +31,7 @@ import org.libj.lang.Annotations;
 import org.libj.lang.Classes;
 import org.libj.lang.Identifiers;
 import org.libj.lang.Strings;
+import org.libj.util.ArrayUtil;
 import org.libj.util.Comparators;
 
 final class JsdUtil {
@@ -319,6 +320,10 @@ final class JsdUtil {
     return flatten(annotations, annotations.length, 0, 0);
   }
 
+  private static final Class<?>[] elementAnnotationClasses = {StringElement.class, NumberElement.class, ObjectElement.class, ArrayElement.class, BooleanElement.class, AnyElement.class};
+  private static final Class<?>[] propertyAnnotationClasses = {StringProperty.class, NumberProperty.class, ObjectProperty.class, ArrayProperty.class, BooleanProperty.class, AnyProperty.class};
+  private static final Class<?>[] typeAnnotationClasses = {StringType.class, NumberType.class, ArrayType.class, BooleanType.class, AnyType.class};
+
   private static Annotation[] flatten(final Annotation[] annotations, final int length, final int index, final int depth) {
     if (index == length)
       return new Annotation[depth];
@@ -341,6 +346,9 @@ final class JsdUtil {
       repeatable = null;
 
     if (repeatable == null) {
+      if (!ArrayUtil.contains(elementAnnotationClasses, annotation.annotationType()) && !ArrayUtil.contains(propertyAnnotationClasses, annotation.annotationType()) && !ArrayUtil.contains(typeAnnotationClasses, annotation.annotationType()))
+        return flatten(annotations, length, index + 1, depth);
+
       final Annotation[] flattened = flatten(annotations, length, index + 1, depth + 1);
       flattened[depth] = annotation;
       return flattened;
