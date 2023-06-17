@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -33,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import javax.annotation.Generated;
 
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
@@ -57,6 +60,8 @@ import org.xml.sax.SAXException;
  * The root {@link Element} of a JSON Schema Document.
  */
 public final class SchemaElement extends Element implements Declarer {
+  private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
+
   private static Schema jsdToXsb(final schema.Schema jsd) {
     final Schema xsb = new Schema();
     final LinkedHashMap<String,? extends schema.Member> declarations = jsd.getDeclarations();
@@ -543,6 +548,7 @@ public final class SchemaElement extends Element implements Declarer {
         if (classSpec.referrer != null)
           b.append("\n@").append(JxBinding.class.getName()).append("(targetNamespace=\"").append(registry.targetNamespace).append("\")");
 
+        b.append("\n@").append(Generated.class.getName()).append(GENERATED);
         b.append("\npublic ").append(classSpec);
         sources.put(type.getName(), b.toString());
         b.setLength(0);
