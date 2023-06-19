@@ -103,7 +103,7 @@ public class ArrayCodecTest {
     IdToElement idToElement = classToIdToElement.get(annotationType);
     if (idToElement == null) {
       idToElement = new IdToElement();
-      JsdUtil.fillIdToElement(idToElement, annotationType.getAnnotations());
+      idToElement.putAll(annotationType.getAnnotations());
       classToIdToElement.put(annotationType, idToElement);
     }
 

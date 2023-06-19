@@ -29,6 +29,25 @@ class IdToElement extends ObservableMap<Integer,Annotation> {
     super(new HashMap<>());
   }
 
+  void putAll(final Annotation[] annotations) {
+    JsdUtil.forEach(annotations, this::put);
+  }
+
+  void put(final Annotation annotation) {
+    if (annotation instanceof StringElement)
+      put(((StringElement)annotation).id(), annotation);
+    else if (annotation instanceof NumberElement)
+      put(((NumberElement)annotation).id(), annotation);
+    else if (annotation instanceof ObjectElement)
+      put(((ObjectElement)annotation).id(), annotation);
+    else if (annotation instanceof ArrayElement)
+      put(((ArrayElement)annotation).id(), annotation);
+    else if (annotation instanceof BooleanElement)
+      put(((BooleanElement)annotation).id(), annotation);
+    else if (annotation instanceof AnyElement)
+      put(((AnyElement)annotation).id(), annotation);
+  }
+
   int getMinIterate() {
     return this.minIterate;
   }

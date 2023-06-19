@@ -25,6 +25,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.libj.lang.Annotations;
@@ -139,36 +140,35 @@ final class JsdUtil {
     return digest(Classes.getAnnotations(getMethod), getFullyQualifiedMethodName(getMethod), idToElement);
   }
 
+  private static int[] checkElementIds(final int[] elementIds, final Annotation annotation, final String declarerName) {
+    if (elementIds.length == 0)
+      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES, true));
+
+    return elementIds;
+  }
+
   static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
-    annotations = JsdUtil.flatten(annotations);
-    JsdUtil.fillIdToElement(idToElement, annotations);
-    Annotation annotation = null;
-    int[] elementIds = null;
-    for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
-      if (annotations[i] instanceof ArrayProperty) {
-        final ArrayProperty arrayProperty = (ArrayProperty)annotations[i];
-        elementIds = arrayProperty.elementIds();
+    idToElement.putAll(annotations);
+    final int[] elementIds = (int[])JsdUtil.forEach(annotations, annotation -> {
+      if (annotation instanceof ArrayProperty) {
+        final ArrayProperty arrayProperty = (ArrayProperty)annotation;
         idToElement.setMinIterate(arrayProperty.minIterate());
         idToElement.setMaxIterate(arrayProperty.maxIterate());
-        annotation = arrayProperty;
-        break;
+        return checkElementIds(arrayProperty.elementIds(), annotation, declarerName);
       }
 
-      if (annotations[i] instanceof ArrayType) {
-        final ArrayType arrayType = (ArrayType)annotations[i];
-        elementIds = arrayType.elementIds();
+      if (annotation instanceof ArrayType) {
+        final ArrayType arrayType = (ArrayType)annotation;
         idToElement.setMinIterate(arrayType.minIterate());
         idToElement.setMaxIterate(arrayType.maxIterate());
-        annotation = arrayType;
-        break;
+        return checkElementIds(arrayType.elementIds(), annotation, declarerName);
       }
-    }
 
-    if (annotation == null)
+      return null;
+    });
+
+    if (elementIds == null)
       throw new ValidationException(declarerName + " does not declare @" + ArrayType.class.getSimpleName() + " or @" + ArrayProperty.class.getSimpleName());
-
-    if (elementIds == null || elementIds.length == 0)
-      throw new ValidationException("elementIds property cannot be empty: " + declarerName + ": " + Annotations.toSortedString(annotation, ATTRIBUTES, true));
 
     return elementIds;
   }
@@ -298,66 +298,69 @@ final class JsdUtil {
     return null;
   }
 
-  static void fillIdToElement(final IdToElement idToElement, Annotation[] annotations) {
-    annotations = JsdUtil.flatten(annotations);
-    for (final Annotation annotation : annotations) { // [A]
-      if (annotation instanceof StringElement)
-        idToElement.put(((StringElement)annotation).id(), annotation);
-      else if (annotation instanceof NumberElement)
-        idToElement.put(((NumberElement)annotation).id(), annotation);
-      else if (annotation instanceof ObjectElement)
-        idToElement.put(((ObjectElement)annotation).id(), annotation);
-      else if (annotation instanceof ArrayElement)
-        idToElement.put(((ArrayElement)annotation).id(), annotation);
-      else if (annotation instanceof BooleanElement)
-        idToElement.put(((BooleanElement)annotation).id(), annotation);
-      else if (annotation instanceof AnyElement)
-        idToElement.put(((AnyElement)annotation).id(), annotation);
-    }
-  }
-
-  static Annotation[] flatten(final Annotation[] annotations) {
-    return flatten(annotations, annotations.length, 0, 0);
-  }
-
   private static final Class<?>[] elementAnnotationClasses = {StringElement.class, NumberElement.class, ObjectElement.class, ArrayElement.class, BooleanElement.class, AnyElement.class};
   private static final Class<?>[] propertyAnnotationClasses = {StringProperty.class, NumberProperty.class, ObjectProperty.class, ArrayProperty.class, BooleanProperty.class, AnyProperty.class};
   private static final Class<?>[] typeAnnotationClasses = {StringType.class, NumberType.class, ArrayType.class, BooleanType.class, AnyType.class};
 
-  private static Annotation[] flatten(final Annotation[] annotations, final int length, final int index, final int depth) {
-    if (index == length)
-      return new Annotation[depth];
-
-    final Annotation annotation = annotations[index];
-    final Annotation[] repeatable;
-    if (StringElements.class.equals(annotation.annotationType()))
-      repeatable = ((StringElements)annotation).value();
-    else if (NumberElements.class.equals(annotation.annotationType()))
-      repeatable = ((NumberElements)annotation).value();
-    else if (ObjectElements.class.equals(annotation.annotationType()))
-      repeatable = ((ObjectElements)annotation).value();
-    else if (ArrayElements.class.equals(annotation.annotationType()))
-      repeatable = ((ArrayElements)annotation).value();
-    else if (BooleanElements.class.equals(annotation.annotationType()))
-      repeatable = ((BooleanElements)annotation).value();
-    else if (AnyElements.class.equals(annotation.annotationType()))
-      repeatable = ((AnyElements)annotation).value();
-    else
-      repeatable = null;
-
-    if (repeatable == null) {
-      if (!ArrayUtil.contains(elementAnnotationClasses, annotation.annotationType()) && !ArrayUtil.contains(propertyAnnotationClasses, annotation.annotationType()) && !ArrayUtil.contains(typeAnnotationClasses, annotation.annotationType()))
-        return flatten(annotations, length, index + 1, depth);
-
-      final Annotation[] flattened = flatten(annotations, length, index + 1, depth + 1);
-      flattened[depth] = annotation;
-      return flattened;
+  private static Object forEach0(final Annotation[] annotations, final Function<Annotation,Object> function) {
+    for (final Annotation annotation : annotations) { // [A]
+      final Object obj = function.apply(annotation);
+      if (obj != null)
+        return obj;
     }
 
-    final int len = repeatable.length;
-    final Annotation[] flattened = flatten(annotations, length, index + 1, depth + len);
-    System.arraycopy(repeatable, 0, flattened, depth, len);
-    return flattened;
+    return null;
+  }
+
+  private static Object forEach(final Annotation[] annotations, final Function<Annotation,Object> function) {
+    for (final Annotation annotation : annotations) { // [A]
+      final Class<? extends Annotation> annotationType = annotation.annotationType();
+      if (StringElements.class.equals(annotationType))
+        forEach0(((StringElements)annotation).value(), function);
+      else if (NumberElements.class.equals(annotationType))
+        forEach0(((NumberElements)annotation).value(), function);
+      else if (ObjectElements.class.equals(annotationType))
+        forEach0(((ObjectElements)annotation).value(), function);
+      else if (ArrayElements.class.equals(annotationType))
+        forEach0(((ArrayElements)annotation).value(), function);
+      else if (BooleanElements.class.equals(annotationType))
+        forEach0(((BooleanElements)annotation).value(), function);
+      else if (AnyElements.class.equals(annotationType))
+        forEach0(((AnyElements)annotation).value(), function);
+      else if (ArrayUtil.contains(elementAnnotationClasses, annotationType) || ArrayUtil.contains(propertyAnnotationClasses, annotationType) || ArrayUtil.contains(typeAnnotationClasses, annotationType)) {
+        final Object obj = function.apply(annotation);
+        if (obj != null)
+          return obj;
+      }
+    }
+
+    return null;
+  }
+
+  private static void forEach0(final Annotation[] annotations, final Consumer<Annotation> consumer) {
+    for (final Annotation annotation : annotations) // [A]
+      consumer.accept(annotation);
+  }
+
+  static void forEach(final Annotation[] annotations, final Consumer<Annotation> consumer) {
+    for (final Annotation annotation : annotations) { // [A]
+      final Class<? extends Annotation> annotationType = annotation.annotationType();
+      if (StringElements.class.equals(annotationType))
+        forEach0(((StringElements)annotation).value(), consumer);
+      else if (NumberElements.class.equals(annotationType))
+        forEach0(((NumberElements)annotation).value(), consumer);
+      else if (ObjectElements.class.equals(annotationType))
+        forEach0(((ObjectElements)annotation).value(), consumer);
+      else if (ArrayElements.class.equals(annotationType))
+        forEach0(((ArrayElements)annotation).value(), consumer);
+      else if (BooleanElements.class.equals(annotationType))
+        forEach0(((BooleanElements)annotation).value(), consumer);
+      else if (AnyElements.class.equals(annotationType))
+        forEach0(((AnyElements)annotation).value(), consumer);
+      else if (ArrayUtil.contains(elementAnnotationClasses, annotationType) || ArrayUtil.contains(propertyAnnotationClasses, annotationType) || ArrayUtil.contains(typeAnnotationClasses, annotationType)) {
+        consumer.accept(annotation);
+      }
+    }
   }
 
   static Executable parseExecutable(final String identifier, final Class<?> parameterType) {

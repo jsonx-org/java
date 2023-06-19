@@ -374,41 +374,41 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static LinkedHashMap<Integer,Annotation> parseIdToElement(final Annotation[] annotations, final String declaringTypeName) {
     final HashMap<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
-    for (final Annotation elementAnnotation : JsdUtil.flatten(annotations)) { // [A]
-      if (elementAnnotation instanceof ArrayProperty || elementAnnotation instanceof ArrayType || elementAnnotation instanceof Retention)
-        continue;
+    JsdUtil.forEach(annotations, annotation -> {
+      if (annotation instanceof ArrayProperty || annotation instanceof ArrayType || annotation instanceof Retention)
+        return;
 
       final int id;
-      if (elementAnnotation instanceof StringElement) {
-        id = ((StringElement)elementAnnotation).id();
+      if (annotation instanceof StringElement) {
+        id = ((StringElement)annotation).id();
       }
-      else if (elementAnnotation instanceof NumberElement) {
-        id = ((NumberElement)elementAnnotation).id();
+      else if (annotation instanceof NumberElement) {
+        id = ((NumberElement)annotation).id();
       }
-      else if (elementAnnotation instanceof ObjectElement) {
-        id = ((ObjectElement)elementAnnotation).id();
+      else if (annotation instanceof ObjectElement) {
+        id = ((ObjectElement)annotation).id();
       }
-      else if (elementAnnotation instanceof ArrayElement) {
-        id = ((ArrayElement)elementAnnotation).id();
-        for (final Integer elementId : ((ArrayElement)elementAnnotation).elementIds()) // [A]
+      else if (annotation instanceof ArrayElement) {
+        id = ((ArrayElement)annotation).id();
+        for (final Integer elementId : ((ArrayElement)annotation).elementIds()) // [A]
           digraph.add(id, elementId);
       }
-      else if (elementAnnotation instanceof BooleanElement) {
-        id = ((BooleanElement)elementAnnotation).id();
+      else if (annotation instanceof BooleanElement) {
+        id = ((BooleanElement)annotation).id();
       }
-      else if (elementAnnotation instanceof AnyElement) {
-        id = ((AnyElement)elementAnnotation).id();
+      else if (annotation instanceof AnyElement) {
+        id = ((AnyElement)annotation).id();
       }
       else {
-        throw new UnsupportedOperationException("Unsupported annotation type: " + elementAnnotation.annotationType().getName());
+        throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
       }
 
       if (idToElement.containsKey(id))
-        throw new AnnotationParameterException(elementAnnotation, declaringTypeName + ": @" + elementAnnotation.annotationType().getName() + "(id=" + id + ") cannot share the same id value with another @*Element(id=?) annotation on the same field");
+        throw new AnnotationParameterException(annotation, declaringTypeName + ": @" + annotation.annotationType().getName() + "(id=" + id + ") cannot share the same id value with another @*Element(id=?) annotation on the same field");
 
       digraph.add(id);
-      idToElement.put(id, elementAnnotation);
-    }
+      idToElement.put(id, annotation);
+    });
 
     final List<Integer> cycle = digraph.getCycle();
     if (cycle != null)
