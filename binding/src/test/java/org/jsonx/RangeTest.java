@@ -60,7 +60,7 @@ public class RangeTest {
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
-      assertEquals("scale must be positive", e.getMessage());
+      assertEquals("scale (-1) must be positive", e.getMessage());
     }
 
     try {
