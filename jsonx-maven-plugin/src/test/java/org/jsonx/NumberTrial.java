@@ -31,7 +31,7 @@ final class NumberTrial extends PropertyTrial<Number> {
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final NumberProperty property) {
     try {
       if (logger.isDebugEnabled()) logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
-      final Range range = property.range().length() == 0 ? null : Range.from(property.range(), JsdUtil.getRealType(getMethod));
+      final Range range = property.range().length() == 0 ? null : Range.from(property.range(), property.scale(), JsdUtil.getRealType(getMethod));
       trials.add(new NumberTrial(ValidCase.CASE, getMethod, setMethod, object, toProperForm(JsdUtil.getRealType(getMethod), property.decode(), property.scale(), makeValid(range)), property));
 
       if (property.range().length() > 0)
@@ -66,7 +66,7 @@ final class NumberTrial extends PropertyTrial<Number> {
 
   static Object createValid(final Class<?> type, final String decode, final String range, final int scale) {
     try {
-      return toProperForm(type, decode, scale, range.length() == 0 ? null : makeValid(Range.from(range, type)));
+      return toProperForm(type, decode, scale, range.length() == 0 ? null : makeValid(Range.from(range, scale, type)));
     }
     catch (final ParseException e) {
       throw new IllegalArgumentException(e);
@@ -137,6 +137,6 @@ final class NumberTrial extends PropertyTrial<Number> {
   private NumberTrial(final Case<? extends PropertyTrial<? super Number>> kase, final Method getMethod, final Method setMethod, final Object object, final Object value, final NumberProperty property) throws ParseException {
     super(kase, JsdUtil.getRealType(getMethod), getMethod, setMethod, object, value, property.name(), property.use(), property.decode(), property.encode(), false);
     this.scale = property.scale();
-    this.range = property.range().length() == 0 ? null : Range.from(property.range(), JsdUtil.getRealType(getMethod));
+    this.range = property.range().length() == 0 ? null : Range.from(property.range(), property.scale(), JsdUtil.getRealType(getMethod));
   }
 }

@@ -81,7 +81,7 @@ public class Validator {
     final String prefix = "jsonx";
     final Map<String,String> source = SchemaElement.parse(URLs.fromStringPath(args[0]), new Settings.Builder().withPrefix(prefix + ".").build()).toSource();
     final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final Map.Entry<String,String> entry : source.entrySet())
+    for (final Map.Entry<String,String> entry : source.entrySet()) // [S]
       compiler.addSource(entry.getValue());
 
     final ClassLoader classLoader = compiler.compile();

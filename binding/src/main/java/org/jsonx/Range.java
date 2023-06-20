@@ -16,27 +16,45 @@
 
 package org.jsonx;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Objects;
+import static org.libj.lang.Assertions.*;
 
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.libj.lang.Classes;
 import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
 import org.openjax.json.JsonUtil;
 
 public class Range implements Serializable {
-  private static final HashMap<String,Range> instances = new HashMap<>();
+  private static final ConcurrentHashMap<Class<?>,ConcurrentHashMap<String,Range>> instances = new ConcurrentHashMap<>();
 
-  public static Range from(final String string, final Class<?> type) throws ParseException {
-    Range range = instances.get(string);
-    if (range == null)
-      instances.put(string, range = new Range(string, type));
+  @SuppressWarnings("unchecked")
+  public static Range from(final String string, final int scale, Class<?> type) throws ParseException {
+    assertNotNegative(scale, () -> "scale (" + scale + ") must be positive");
+    final Class<? extends Number> numberType;
+    if (type == null || type == Number.class || !Number.class.isAssignableFrom(type = Classes.toWrapper(type)))
+      numberType = NumberCodec.getDefaultClass(scale);
+    else
+      numberType = (Class<? extends Number>)type;
 
+    Range range;
+    ConcurrentHashMap<String,Range> stringToRange = instances.get(numberType);
+    if (stringToRange == null) {
+      instances.put(numberType, stringToRange = new ConcurrentHashMap<>());
+    }
+    else {
+      range = stringToRange.get(string);
+      if (range != null)
+        return range;
+    }
+
+    stringToRange.put(string, range = new Range(string, numberType));
     return range;
   }
 
-  private static BigDecimal parseNumber(final StringBuilder b, final String string, final int start, final boolean commaOk) throws ParseException {
+  private static <N extends Number>N parseNumber(final StringBuilder b, final String string, final int start, final boolean commaOk, final Class<N> type) throws ParseException {
     try {
       for (int i = start, end = string.length() - 1; i < end; ++i) { // [N]
         final char ch = string.charAt(i);
@@ -50,73 +68,57 @@ public class Range implements Serializable {
         b.append(ch);
       }
 
-      return b.length() == 0 ? null : JsonUtil.parseNumber(BigDecimal.class, b, true);
+      return b.length() == 0 ? null : JsonUtil.parseNumber(type, b, true);
     }
     catch (final NumberFormatException e) {
-      final ParseException pe = new ParseException(string, start);
-      pe.initCause(e);
-      throw pe;
+      throw new ParseException(string, start, e);
     }
   }
 
-  private static void checkType(final String string, final Number value, final Class<?> type) {
-    final int signum;
-    if (!type.isPrimitive() && !Number.class.isAssignableFrom(type) || (signum = Numbers.signum(value)) == 0)
-      return;
-
-    final long limit;
-    if (type == Long.class || type == long.class)
-      limit = signum == -1 ? Long.MIN_VALUE : Long.MAX_VALUE;
-    else if (type == Integer.class || type == int.class)
-      limit = signum == -1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-    else if (type == Short.class || type == short.class)
-      limit = signum == -1 ? Short.MIN_VALUE : Short.MAX_VALUE;
-    else if (type == Byte.class || type == byte.class)
-      limit = signum == -1 ? Byte.MIN_VALUE : Byte.MAX_VALUE;
-    else
-      return;
-
-    if (Numbers.compare(value, limit) == signum)
-      throw new IllegalArgumentException(string + " defines a range that cannot be represented by " + type.getCanonicalName());
-  }
-
-  private void checkMinMax(final String string, final Class<?> type) {
+  private void checkMinMax(final String string) {
     if (min == null || max == null)
       return;
 
-    final int compare = min.compareTo(max);
+    final int compare = Numbers.compare(min, max);
     if (compare > 0)
-      throw new IllegalArgumentException("min=\"" + min + "\" > max=\"" + max + "\"");
+      throw new IllegalArgumentException("min=\"" + minStr + "\" > max=\"" + maxStr + "\"");
 
     if (compare == 0 && minInclusive != maxInclusive)
       throw new IllegalArgumentException(string + " defines an empty range");
-
-    if (type == null)
-      return;
-
-    if (min != null)
-      checkType(string, min, type);
-
-    if (max != null)
-      checkType(string, max, type);
   }
 
-  private final BigDecimal min;
+  private static String toString(final Number number) {
+    if (number == null)
+      return "null";
+
+    if (Double.class.equals(number.getClass()))
+      return NumberCodec.format(number.doubleValue());
+
+    return number.toString();
+  }
+
+  private final Number min;
+  private final String minStr;
   private final boolean minInclusive;
-  private final BigDecimal max;
+  private final Number max;
+  private final String maxStr;
   private final boolean maxInclusive;
+  private final int hashCode;
   private final String toString;
 
-  Range(final BigDecimal min, final boolean minInclusive, final BigDecimal max, final boolean maxInclusive, final Class<?> type) {
+  <N extends Number>Range(final N min, final boolean minInclusive, final N max, final boolean maxInclusive) {
     this.min = min;
+    this.minStr = toString(min);
     this.minInclusive = minInclusive;
     this.max = max;
+    this.maxStr = toString(max);
     this.maxInclusive = maxInclusive;
+    this.hashCode = getHashCode();
     this.toString = getString();
-    checkMinMax(toString(), type);
+    checkMinMax(this.toString);
   }
 
-  private Range(final String string, final Class<?> type) throws ParseException {
+  private Range(final String string, final Class<? extends Number> type) throws ParseException {
     final int len = string.length();
     if (len < 4)
       throw new IllegalArgumentException("Range min length is 4, but was " + len + (len > 0 ? ": " + string : ""));
@@ -126,37 +128,53 @@ public class Range implements Serializable {
       throw new ParseException("Missing '[' or '(' in string: \"" + string + "\"", 0);
 
     final StringBuilder b = new StringBuilder();
-    this.min = parseNumber(b, string, 1, true);
+    this.min = parseNumber(b, string, 1, true, type);
+    this.minStr = toString(min);
     final int length = b.length() + 1;
     if (string.charAt(length) != ',')
       throw new ParseException("Missing ',' in string: \"" + string + "\"", length + 1);
 
     b.setLength(0);
-    this.max = parseNumber(b, string, length + 1, false);
+    this.max = parseNumber(b, string, length + 1, false, type);
+    this.maxStr = toString(max);
 
     ch = string.charAt(len - 1);
     if (!(this.maxInclusive = ch == ']') && ch != ')')
       throw new ParseException("Missing ']' or ')' in string: \"" + string + "\"", 0);
 
+    this.hashCode = getHashCode();
     this.toString = getString();
-    checkMinMax(string, type);
+    checkMinMax(string);
+  }
+
+  private int getHashCode() {
+    int hashCode = 1;
+    if (min != null)
+      hashCode = 31 * hashCode + min.hashCode();
+
+    hashCode = 31 * hashCode + Boolean.hashCode(minInclusive);
+    if (max != null)
+      hashCode = 31 * hashCode + max.hashCode();
+
+    hashCode = 31 * hashCode + Boolean.hashCode(maxInclusive);
+    return hashCode;
   }
 
   private String getString() {
     final StringBuilder b = new StringBuilder();
     b.append(minInclusive ? '[' : '(');
     if (min != null)
-      b.append(min);
+      b.append(minStr);
 
     b.append(',');
     if (max != null)
-      b.append(max);
+      b.append(maxStr);
 
     b.append(maxInclusive ? ']' : ')');
     return b.toString();
   }
 
-  public BigDecimal getMin() {
+  public Number getMin() {
     return min;
   }
 
@@ -164,7 +182,7 @@ public class Range implements Serializable {
     return minInclusive;
   }
 
-  public BigDecimal getMax() {
+  public Number getMax() {
     return max;
   }
 
@@ -173,11 +191,8 @@ public class Range implements Serializable {
   }
 
   public boolean isValid(final Number value) {
-    final boolean minValid = min == null || Integer.compare(Numbers.compare(min, value), 0) < (minInclusive ? 1 : 0);
-    if (!minValid)
-      return false;
-
-    return max == null || Integer.compare(Numbers.compare(value, max), 0) < (maxInclusive ? 1 : 0);
+    return (min == null || Integer.compare(Numbers.compare(min, value), 0) < (minInclusive ? 1 : 0))
+        && (max == null || Integer.compare(Numbers.compare(value, max), 0) < (maxInclusive ? 1 : 0));
   }
 
   @Override
@@ -206,15 +221,6 @@ public class Range implements Serializable {
 
   @Override
   public int hashCode() {
-    int hashCode = 1;
-    if (min != null)
-      hashCode = 31 * hashCode + min.hashCode();
-
-    hashCode = 31 * hashCode + Boolean.hashCode(minInclusive);
-    if (max != null)
-      hashCode = 31 * hashCode + max.hashCode();
-
-    hashCode = 31 * hashCode + Boolean.hashCode(maxInclusive);
     return hashCode;
   }
 

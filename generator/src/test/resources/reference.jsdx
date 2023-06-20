@@ -32,12 +32,12 @@
   <number name="numIntPrimitive" scale="0">
     <binding lang="java" type="long"/>
   </number>
-  <number name="numRange" range="[1E-100,]"/>
-  <number name="numRangePrimitive" range="[1E-100,]">
+  <number name="numRange" range="[1E10,]"/>
+  <number name="numRangePrimitive" range="[7E-10,]">
     <binding lang="java" type="double"/>
   </number>
-  <number name="numIntRange" scale="0" range="[1E-20,]"/>
-  <number name="numIntRangePrimitive" scale="0" range="[1E-20,]">
+  <number name="numIntRange" scale="0" range="[-1E10,]"/>
+  <number name="numIntRangePrimitive" scale="0" range="[-1E10,]">
     <binding lang="java" type="long"/>
   </number>
   <number name="numScale" scale="2" range="[1.11E-213,]"/>

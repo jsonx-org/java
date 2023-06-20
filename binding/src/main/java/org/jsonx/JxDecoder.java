@@ -261,7 +261,7 @@ public final class JxDecoder {
   @SuppressWarnings({"null", "unchecked"})
   public final <T extends JxObject>T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> ... types) throws DecodeException, IOException, JsonParseException {
     DecodeException exception = null;
-    for (final Class<? extends T> type : assertNotEmpty(types)) {
+    for (final Class<? extends T> type : assertNotEmpty(types)) { // [A]
       final Object result = parseObject(reader, onPropertyDecode, type, exception);
       if (result instanceof DecodeException)
         exception = (DecodeException)result;
@@ -297,7 +297,7 @@ public final class JxDecoder {
   @SuppressWarnings({"null", "unchecked"})
   public final <T extends JxObject>T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Collection<Class<? extends T>> types) throws DecodeException, IOException, JsonParseException {
     DecodeException exception = null;
-    for (final Class<? extends T> type : assertNotEmpty(types)) {
+    for (final Class<? extends T> type : assertNotEmpty(types)) { // [C]
       final Object result = parseObject(reader, onPropertyDecode, type, exception);
       if (result instanceof DecodeException)
         exception = (DecodeException)result;
@@ -531,7 +531,7 @@ public final class JxDecoder {
   @SuppressWarnings("null")
   public final ArrayList<?> parseArray(final JsonReader reader, final Class<? extends Annotation> ... annotationTypes) throws DecodeException, JsonParseException, IOException {
     DecodeException exception = null;
-    for (final Class<? extends Annotation> annotationType : assertNotEmpty(annotationTypes)) {
+    for (final Class<? extends Annotation> annotationType : assertNotEmpty(annotationTypes)) { // [A]
       final Object result = parseArray(reader, annotationType, exception);
       if (result instanceof DecodeException)
         exception = (DecodeException)result;
@@ -562,7 +562,7 @@ public final class JxDecoder {
   @SuppressWarnings("null")
   public final ArrayList<?> parseArray(final JsonReader reader, final Collection<Class<? extends Annotation>> annotationTypes) throws DecodeException, JsonParseException, IOException {
     DecodeException exception = null;
-    for (final Class<? extends Annotation> annotationType : assertNotEmpty(annotationTypes)) {
+    for (final Class<? extends Annotation> annotationType : assertNotEmpty(annotationTypes)) { // [C]
       final Object result = parseArray(reader, annotationType, exception);
       if (result instanceof DecodeException)
         exception = (DecodeException)result;

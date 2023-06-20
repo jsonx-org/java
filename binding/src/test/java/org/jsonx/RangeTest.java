@@ -41,14 +41,14 @@ public class RangeTest {
   @Test
   public void test() throws ParseException {
     try {
-      Range.from(null, null);
+      Range.from(null, 0, null);
       fail("Expected NullPointerException");
     }
     catch (final NullPointerException e) {
     }
 
     try {
-      Range.from("", null);
+      Range.from("", 0, Integer.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
@@ -56,7 +56,15 @@ public class RangeTest {
     }
 
     try {
-      Range.from("4323", null);
+      Range.from("[1,1]", -1, Integer.class);
+      fail("Expected IllegalArgumentException");
+    }
+    catch (final IllegalArgumentException e) {
+      assertEquals("scale must be positive", e.getMessage());
+    }
+
+    try {
+      Range.from("4323", 0, Integer.class);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -64,7 +72,7 @@ public class RangeTest {
     }
 
     try {
-      Range.from("[4323", null);
+      Range.from("[4323", 0, Integer.class);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -72,7 +80,7 @@ public class RangeTest {
     }
 
     try {
-      Range.from("[4323]", null);
+      Range.from("[4323]", 0, Integer.class);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -80,7 +88,7 @@ public class RangeTest {
     }
 
     try {
-      Range.from("[,,4323]", null);
+      Range.from("[,,4323]", 0, Integer.class);
       fail("Expected ParseException");
     }
     catch (final ParseException e) {
@@ -88,7 +96,7 @@ public class RangeTest {
     }
 
     try {
-      Range.from("[10,1]", null);
+      Range.from("[10,1]", 0, Integer.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
@@ -96,26 +104,26 @@ public class RangeTest {
     }
 
     try {
-      Range.from("(10,10]", null);
+      Range.from("(10,10]", 0, Integer.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
       assertEquals("(10,10] defines an empty range", e.getMessage());
     }
 
-    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, true, byte.class), Range.from("[1,10]", byte.class));
-    assertEquals(new Range(BigDecimal.ONE, false, BigDecimal.TEN, true, short.class), Range.from("(1,10]", short.class));
-    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, false, int.class), Range.from("[1,10)", int.class));
-    assertEquals(new Range(BigDecimal.ONE, false, BigDecimal.TEN, false, BigInteger.class), Range.from("(1,10)", BigInteger.class));
-    assertEquals(new Range(BigDecimal.TEN, true, BigDecimal.TEN, true, byte.class), Range.from("[10,10]", byte.class));
+    assertEquals(new Range(BigDecimal.ONE, true, BigDecimal.TEN, true), Range.from("[1,10]", 0, BigDecimal.class));
+    assertEquals(new Range((short)1, false, (short)10, true), Range.from("(1,10]", 0, short.class));
+    assertEquals(new Range(1, true, 10, false), Range.from("[1,10)", 0, int.class));
+    assertEquals(new Range(BigInteger.ONE, false, BigInteger.TEN, false), Range.from("(1,10)", 0, BigInteger.class));
+    assertEquals(new Range((byte)10, true, (byte)10, true), Range.from("[10,10]", 0, byte.class));
 
-    assertEquals(new Range(null, true, BigDecimal.TEN, true, short.class), Range.from("[,10]", short.class));
-    assertEquals(new Range(BigDecimal.TEN, true, null, true, int.class), Range.from("[10,]", int.class));
+    assertEquals(new Range(null, true, (short)10, true), Range.from("[,10]", 0, short.class));
+    assertEquals(new Range(10, true, null, true), Range.from("[10,]", 0, int.class));
 
-    final Range range = Range.from("[10,10]", byte.class);
-    assertEquals(BigDecimal.valueOf(10), range.getMin());
+    final Range range = Range.from("[10,10]", 0, byte.class);
+    assertEquals((byte)10, range.getMin());
     assertTrue(range.isMinInclusive());
-    assertEquals(BigDecimal.valueOf(10), range.getMax());
+    assertEquals((byte)10, range.getMax());
     assertTrue(range.isMaxInclusive());
     assertEquals(range, range);
     assertNotEquals("", range);
@@ -123,14 +131,14 @@ public class RangeTest {
 
   private static void assertPass(final Class<? extends Number> type, final String ... values) throws ParseException {
     for (int i = 0, i$ = values.length; i < i$; ++i) // [A]
-      Range.from(values[i], type);
+      Range.from(values[i], 0, type);
   }
 
   @SafeVarargs
   private static void assertFail(final String[] values, final Class<? extends Number> type, final Class<? extends Exception> ... exceptions) throws ParseException {
     for (int i = 0, i$ = values.length; i < i$; ++i) { // [A]
       try {
-        Range.from(values[i], type);
+        Range.from(values[i], 0, type);
         fail("Expected " + Arrays.toString(exceptions) + ": " + values[i]);
       }
       catch (final Exception e) {
@@ -152,7 +160,7 @@ public class RangeTest {
   }
 
   private static void assertFailType(final Class<? extends Number> type, final String ... values) throws ParseException {
-    assertFail(values, type, IllegalArgumentException.class);
+    assertFail(values, type, ParseException.class);
   }
 
   @Test
@@ -160,24 +168,24 @@ public class RangeTest {
     assertPass(byte.class, "[-0,1]", "(-2,-1)", "[0,1)", "(0,1]");
     assertPass(float.class, "[0.1,1.1]", "(0.1,1.1)", "[-2.1,-1.1)", "(0.1,1.1]");
     assertPass(double.class, "[0,1.1]", "(0,1.1)", "[0,1.1)", "(-2,-1.1]");
-    assertPass(byte.class, "[0.1,1]", "(0.1,1)", "[0.1,1)", "(0.1,1]");
+    assertPass(byte.class, "[1,2]", "(1,2)", "[1,2)", "(1,2]");
 
     assertPass(short.class, "[,-1]", "(,-1)", "[,1)", "(,1]");
-    assertPass(int.class, "[,1.1]", "(,1.1)", "[,1.1)", "(,1.1]");
+    assertPass(int.class, "[,3]", "(,3)", "[,3)", "(,3]");
 
     assertPass(long.class, "[-0,]", "(-0,)", "[0,)", "(0,]");
-    assertPass(BigInteger.class, "[-0.1,]", "(0.1,)", "[0.1,)", "(-0.1,]");
+    assertPass(BigInteger.class, "[-0,]", "(0,)", "[0,)", "(-0,]");
 
     assertPass(float.class, "[-0E1,1e2]", "(-1E3,-1e2)", "[0e1,1E2)", "(0e1,1E2]");
     assertPass(BigDecimal.class, "[0.1E-3,1.1]", "(0.1E-3,1.1)", "[-2.1e-3,-0.00001)", "(0.1e-3,1.1]");
-    assertPass(BigInteger.class, "[0,1.1]", "(0,1.1)", "[0,1.1)", "(-2,-1.1]");
+    assertPass(BigInteger.class, "[0,1]", "(0,1)", "[0,1)", "(-2,-1]");
     assertPass(double.class, "[0.1,1]", "(0.1,1)", "[0.1,1)", "(0.1,1]");
 
     assertPass(float.class, "[,-1]", "(,-1)", "[,1)", "(,1]");
     assertPass(double.class, "[,1.1]", "(,1.1)", "[,1.1)", "(,1.1]");
 
     assertPass(short.class, "[-0,]", "(-0,)", "[0,)", "(0,]");
-    assertPass(long.class, "[-0.1,]", "(0.1,)", "[0.1,)", "(-0.1,]");
+    assertPass(long.class, "[-0,]", "(0,)", "[0,)", "(-0,]");
   }
 
   @Test

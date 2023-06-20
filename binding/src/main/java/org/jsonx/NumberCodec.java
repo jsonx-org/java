@@ -55,13 +55,17 @@ class NumberCodec extends PrimitiveCodec {
    * @return The provided provided {@code double} as a string.
    * @implNote This method mimicks JavaScript's Double.toString() algorithm.
    */
-  private static String format(final double value) {
+  static String format(final double value) {
     return 0.000001 <= value && value <= 9.999999999999999E20 ? decimalFormatLocal.get().format(value) : Numbers.stripTrailingZeros(String.valueOf(value));
+  }
+
+  static Class<? extends Number> getDefaultClass(final int scale) {
+    return scale == 0 ? Long.class : Double.class;
   }
 
   private static Number parseDefaultNumber(final int scale, final String json, final boolean strict) {
     try {
-      return JsonUtil.parseNumber(scale == 0 ? Long.class : Double.class, json, strict);
+      return JsonUtil.parseNumber(getDefaultClass(scale), json, strict);
     }
     catch (final JsonParseException | NumberFormatException e) {
       return null;
@@ -144,7 +148,7 @@ class NumberCodec extends PrimitiveCodec {
 
     if (range.length() > 0) {
       try {
-        if (!Range.from(range, type).isValid(object))
+        if (!Range.from(range, scale, type).isValid(object))
           return Error.RANGE_NOT_MATCHED(range, object, null);
       }
       catch (final ParseException e) {
@@ -167,7 +171,7 @@ class NumberCodec extends PrimitiveCodec {
     }
     else {
       try {
-        this.range = Range.from(range, JsdUtil.getRealType(getMethod));
+        this.range = Range.from(range, scale, JsdUtil.getRealType(getMethod));
       }
       catch (final ParseException e) {
         throw new ValidationException("Invalid range attribute: " + Annotations.toSortedString(property, JsdUtil.ATTRIBUTES, true), e);

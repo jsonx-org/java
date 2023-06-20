@@ -26,7 +26,7 @@ public class NumberCodecTest {
   public void testPerformance() {
     long t0 = 0;
     long t1 = 0;
-    for (int i = 0; i < 1000000; ++i) {
+    for (int i = 0; i < 1000000; ++i) { // [N]
       final double d = Math.random();
       long t = System.nanoTime();
       final String expected = NumberCodec.decimalFormatLocal.get().format(d);

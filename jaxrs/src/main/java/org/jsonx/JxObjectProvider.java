@@ -167,7 +167,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       throw new ProcessingException("Unknown type: " + rawType.getName());
 
     final Charset charset = getCharset(mediaType);
-    if (bufferSize < json.length()) {
+    if (bufferSize / 2 < json.length()) { // FIXME: This is just an estimate, because UTF-8 can be 1, 2, 3, and 4 bytes; UTF-16 can be 2 or 4 bytes; UTF-32 is 4 bytes. To do this right, we need to count the bytes without encoding them.
       final Writer writer = Channels.newWriter(Channels.newChannel(entityStream), charset.newEncoder(), bufferSize);
       writer.write(json);
       writer.flush();
@@ -176,6 +176,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       final byte[] bytes = json.getBytes(charset);
       httpHeaders.putSingle(HttpHeaders.CONTENT_LENGTH, bytes.length);
       entityStream.write(bytes);
+      entityStream.flush();
     }
   }
 }

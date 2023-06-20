@@ -66,10 +66,11 @@ class StringCodec extends PrimitiveCodec {
       throw new RuntimeException(e);
     }
     catch (final InvocationTargetException e) {
-      if (e.getCause() instanceof RuntimeException)
-        throw (RuntimeException)e.getCause();
+      final Throwable cause = e.getCause();
+      if (cause instanceof RuntimeException)
+        throw (RuntimeException)cause;
 
-      throw new RuntimeException(e.getCause());
+      throw new RuntimeException(cause);
     }
   }
 

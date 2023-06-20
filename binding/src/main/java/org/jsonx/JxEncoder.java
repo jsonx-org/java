@@ -180,7 +180,7 @@ public class JxEncoder {
    */
   JxEncoder(final int indent, final boolean validate) {
     if (indent < 0)
-      throw new IllegalArgumentException("Indent must be a non-negative: " + indent);
+      throw new IllegalArgumentException("Indent must be non-negative: " + indent);
 
     this.indent = indent;
     this.validate = validate;
@@ -217,10 +217,11 @@ public class JxEncoder {
       throw new RuntimeException(e);
     }
     catch (final InvocationTargetException e) {
-      if (e.getCause() instanceof RuntimeException)
-        throw (RuntimeException)e.getCause();
+      final Throwable cause = e.getCause();
+      if (cause instanceof RuntimeException)
+        throw (RuntimeException)cause;
 
-      throw new RuntimeException(e.getCause());
+      throw new RuntimeException(cause);
     }
   }
 
@@ -371,14 +372,16 @@ public class JxEncoder {
   Error toString(final JxObject object, final OnEncode onEncode, final StringBuilder b, final int depth) {
     b.append('{');
     boolean hasProperties = false;
+    Annotation[] annotations;
+    Annotation annotation = null;
+    String name;
+    boolean nullable = false;
+    Use use = null;
     for (final Method getMethod : classToOrderedMethods.get(object.getClass())) { // [A]
-      Annotation annotation = null;
-      String name = null;
-      boolean nullable = false;
-      Use use = null;
-      final Annotation[] annotations = Classes.getAnnotations(getMethod);
-      for (int j = 0, j$ = annotations.length; j < j$; ++j) { // [A]
-        annotation = annotations[j];
+      annotations = Classes.getAnnotations(getMethod);
+      name = null;
+      for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
+        annotation = annotations[i];
         if (annotation instanceof StringProperty) {
           final StringProperty property = (StringProperty)annotation;
           name = property.name();

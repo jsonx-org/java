@@ -43,15 +43,15 @@ public class GenerateMojo extends JxMojo {
   private boolean setBuilder = true;
 
   private static void processConfiguration(final Settings.Builder builder, final Xpp3Dom root) throws MojoExecutionException {
-    for (int i = 0, i$ = root.getChildCount(); i < i$; ++i) {
+    for (int i = 0, i$ = root.getChildCount(); i < i$; ++i) { // [RA]
       final Xpp3Dom child0 = root.getChild(i);
       if ("defaultBinding".equals(child0.getName())) {
-        for (int j = 0, j$ = child0.getChildCount(); j < j$; ++j) {
+        for (int j = 0, j$ = child0.getChildCount(); j < j$; ++j) { // [RA]
           final Xpp3Dom child1 = child0.getChild(j);
           if (!"number".equals(child1.getName()))
             throw new MojoExecutionException("Unsupported element: configuration/defaultBinding/" + child1.getName());
 
-          for (int k = 0, k$ = child1.getChildCount(); k < k$; ++k) {
+          for (int k = 0, k$ = child1.getChildCount(); k < k$; ++k) { // [RA]
             final Xpp3Dom child2 = child1.getChild(k);
             final String name = child2.getName();
             if ("integer".equals(name)) {
