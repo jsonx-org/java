@@ -34,7 +34,7 @@ public class Range implements Serializable {
   public static Range from(final String string, final int scale, Class<?> type) throws ParseException {
     assertNotNegative(scale, () -> "scale (" + scale + ") must be positive");
     final Class<? extends Number> numberType;
-    if (type == null || type == Number.class || !Number.class.isAssignableFrom(type = Classes.toWrapper(type)))
+    if (type == null || type == Number.class || !Number.class.isAssignableFrom(type = Classes.box(type)))
       numberType = NumberCodec.getDefaultClass(scale);
     else
       numberType = (Class<? extends Number>)type;

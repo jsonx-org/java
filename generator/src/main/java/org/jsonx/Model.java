@@ -49,7 +49,7 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   static boolean isAssignable(final Method getMethod, final boolean canWrap, final Class<?> cls, final boolean isRegex, final boolean nullable, final Use use) {
-    final Class<?> type = canWrap && getMethod.getReturnType().isPrimitive() ? Classes.toWrapper(getMethod.getReturnType()) : getMethod.getReturnType();
+    final Class<?> type = canWrap && getMethod.getReturnType().isPrimitive() ? Classes.box(getMethod.getReturnType()) : getMethod.getReturnType();
     if (isRegex) {
       if (!Map.class.isAssignableFrom(type))
         return false;

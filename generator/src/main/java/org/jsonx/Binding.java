@@ -16,6 +16,7 @@
 
 package org.jsonx;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 import java.util.Objects;
@@ -37,7 +38,7 @@ final class Binding {
       return (typeBinding == null || typeBinding.type == null) && decode == null && encode == null ? null : new Type(typeBinding, decode, encode);
     }
 
-    static Type from(final Registry registry, final java.lang.reflect.Method getMethod, final boolean nullable, final Use use, final String decode, final String encode, final Class<?> defaultClass) {
+    static Type from(final Registry registry, final Method getMethod, final boolean nullable, final Use use, final String decode, final String encode, final Class<?> defaultClass) {
       final String typeName = Model.isAssignable(getMethod, false, defaultClass, false, nullable, use) ? null : getClassName(getMethod, nullable, use);
       return typeName == null && (encode == null || encode.length() == 0) && (decode == null || decode.length() == 0) ? null : new Type(registry, typeName, decode, encode);
     }
@@ -47,7 +48,7 @@ final class Binding {
       return typeName == null && (encode == null || encode.length() == 0) && (decode == null || decode.length() == 0) ? null : new Type(registry, typeName, decode, encode);
     }
 
-    static String getClassName(final java.lang.reflect.Method getMethod, final boolean nullable, final Use use) {
+    static String getClassName(final Method getMethod, final boolean nullable, final Use use) {
       final boolean expectOptional = nullable && use == Use.OPTIONAL;
       final Class<?> returnType = getMethod.getReturnType();
       if (returnType.isArray())

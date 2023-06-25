@@ -401,11 +401,12 @@ public final class SchemaElement extends Element implements Declarer {
     this.version = name.namespaceURI().substring(0, name.namespaceURI().lastIndexOf('.'));
 
     this.registry.resolveReferences();
-    final int len = registry.getModels().size();
-    final Model[] models = registry.getModels().toArray(new Model[len]);
+    final Collection<Model> models = registry.getModels();
+    final int len = models.size();
+    final Model[] array = models.toArray(new Model[len]);
     for (int i = 0; i < len; ++i) // [A]
-      if (models[i] instanceof Referrer)
-        ((Referrer<?>)models[i]).resolveOverrides();
+      if (array[i] instanceof Referrer)
+        ((Referrer<?>)array[i]).resolveOverrides();
 
     this.registry.resolveReferences();
   }
@@ -466,8 +467,8 @@ public final class SchemaElement extends Element implements Declarer {
   @Override
   Map<String,Object> toJson(final Element owner, final String packageName) {
     final List<Model> members = rootMembers();
-    final int i$ = members.size();
-    if (i$ == 0)
+    final int size = members.size();
+    if (size == 0)
       return null;
 
     final Map<String,Object> properties = new LinkedHashMap<>(toXmlAttributes(owner, packageName));
@@ -477,10 +478,11 @@ public final class SchemaElement extends Element implements Declarer {
     if (targetNamespace != null)
       properties.put("jx:targetNamespace", targetNamespace.endsWith(".jsdx") ? targetNamespace.substring(0, targetNamespace.length() - 1) : targetNamespace);
 
-    for (int i = 0; i < i$; ++i) { // [RA]
+    final int len = packageName.length();
+    for (int i = 0; i < size; ++i) { // [RA]
       final Model member = members.get(i);
       final String id = member.id().toString();
-      final String name = packageName.length() > 0 && id.startsWith(packageName) ? id.substring(packageName.length() + 1) : id;
+      final String name = len > 0 && id.startsWith(packageName) ? id.substring(len + 1) : id;
       properties.put(name, member.toJson(this, packageName));
     }
 

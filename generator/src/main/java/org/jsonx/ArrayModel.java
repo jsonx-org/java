@@ -651,8 +651,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
       return null;
 
     final ArrayList<AnnotationType> annotations = new ArrayList<>();
-    int index = 0;
-    for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
+    for (int i = 0, i$ = members.size(), index = 0; i < i$; ++i) // [RA]
       index += writeElementAnnotations(annotations, members.get(i), index, this);
 
     return annotations;

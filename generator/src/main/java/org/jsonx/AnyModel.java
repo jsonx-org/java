@@ -251,10 +251,11 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   private static Class<?> getFieldType(final t[] types) {
-    if (types.length == 0)
+    final int len = types.length;
+    if (len == 0)
       return null;
 
-    final ArrayList<Class<?>> members = new ArrayList<>(types.length);
+    final ArrayList<Class<?>> members = new ArrayList<>(len);
     for (final t type : types) { // [A]
       if (AnyType.isEnabled(type.arrays()))
         members.add(List.class);
@@ -272,10 +273,11 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   private ArrayList<Member> getMemberTypes(final t[] types) {
-    if (types.length == 0)
+    final int len = types.length;
+    if (len == 0)
       return null;
 
-    final ArrayList<Member> members = new ArrayList<>(types.length);
+    final ArrayList<Member> members = new ArrayList<>(len);
     for (final t type : types) { // [A]
       Member member = null;
       if (AnyType.isEnabled(type.arrays()))
