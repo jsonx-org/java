@@ -51,8 +51,8 @@ import org.openjax.json.JsonReader;
  */
 @Provider
 @Singleton
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+@Consumes({"application/*+json", "text/json"})
+@Produces({"application/*+json", "text/json"})
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
   private static final int bufferSize = Streams.DEFAULT_SOCKET_BUFFER_SIZE;
   private static final Charset defaultCharset = StandardCharsets.UTF_8;
