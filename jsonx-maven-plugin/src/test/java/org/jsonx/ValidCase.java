@@ -33,14 +33,14 @@ final class ValidCase<T> extends SuccessCase<PropertyTrial<T>> {
   private static final String listDelimiter = "," + Strings.repeat(' ', JxEncoder.get().indent);
 
   private static List<Object> format(final List<?> list, final Relations relations, final boolean escape) {
-    final int i$ = list.size();
-    if (i$ == 0)
+    final int size = list.size();
+    if (size == 0)
       return Collections.EMPTY_LIST;
 
-    final ArrayList<Object> out = new ArrayList<>(i$);
+    final ArrayList<Object> out = new ArrayList<>(size);
     final Iterator<?> itemIterator = list.iterator();
     final Iterator<Relation> relationIterator = relations.iterator();
-    while (itemIterator.hasNext()) { // [I]
+    while (itemIterator.hasNext()) {
       final Object item = itemIterator.next();
       final Relation relation = relationIterator.next();
       if (item instanceof List) {

@@ -190,7 +190,7 @@ public class ArrayCodecTest {
 
     final Iterator<?> expectedIterator = expected.iterator();
     final Iterator<Relation> actualIterator = actual.iterator();
-    while (expectedIterator.hasNext()) { // [I]
+    while (expectedIterator.hasNext()) {
       final Object member = expectedIterator.next();
       final Relation relation = actualIterator.next();
       if (member instanceof List) {
