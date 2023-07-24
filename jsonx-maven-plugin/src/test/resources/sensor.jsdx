@@ -18,9 +18,9 @@
   xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd"
-  targetNamespace="http://www.jsonx.org/jsonx-maven-plugin/test/camera.jsdx">
+  targetNamespace="http://www.jsonx.org/jsonx-maven-plugin/test/sensor.jsdx">
   
-  <number name="ordinal" scale="0" range="[0,1]">
+  <number name="index" scale="0" range="[0,1]">
     <binding lang="java" type="byte"/>
   </number>
   <number name="degreeDecimal360" scale="1" range="[0,360)"/>
@@ -37,36 +37,37 @@
   <number name="positiveInt" scale="0" range="[1,2147483647]">
     <binding lang="java" type="int"/>
   </number>
+  
   <array name="tupleInt">
     <reference type="nonNegativeInt" minOccurs="1" maxOccurs="2" nullable="false"/>
   </array>
   <array name="tupleInts">
     <reference type="tupleInt" minOccurs="0" nullable="false"/>
   </array>
-  <string name="state" pattern="manual|stopped|error"/>
+  <string name="mode" pattern="auto|manual|stopped|error"/>
   
-  <object name="ptz">
-    <property name="pan" xsi:type="reference" type="degreeDecimal360" nullable="false" use="optional"/>
-    <property name="tilt" xsi:type="reference" type="degreeDecimal90" nullable="false" use="optional"/>
-    <property name="zoom" xsi:type="number" scale="1" range="[0,100]" nullable="false" use="optional"/>
+  <object name="vector">
+    <property name="x" xsi:type="reference" type="degreeDecimal360" nullable="false" use="optional"/>
+    <property name="y" xsi:type="reference" type="degreeDecimal90" nullable="false" use="optional"/>
+    <property name="z" xsi:type="number" scale="1" range="[0,100]" nullable="false" use="optional"/>
   </object>
   
-  <object name="camera" extends="ptz">
-    <property name="ordinal" xsi:type="reference" type="ordinal" nullable="false"/>
-    <property name="dois" xsi:type="reference" type="positiveByteObj" nullable="false" use="optional"/>
-    <property name="state" xsi:type="reference" type="state" nullable="false" use="optional"/>
+  <object name="sensor" extends="vector">
+    <property name="index" xsi:type="reference" type="index" nullable="false"/>
+    <property name="facets" xsi:type="reference" type="positiveByteObj" nullable="false" use="optional"/>
+    <property name="mode" xsi:type="reference" type="mode" nullable="false" use="optional"/>
   </object>
   
-  <object name="Oz" abstract="true">
-    <property name="uptime" xsi:type="object" nullable="false" use="optional">
-      <property name="uptime" xsi:type="reference" type="positiveInt" nullable="false"/>
+  <object name="Stub" abstract="true">
+    <property name="runtime" xsi:type="object" nullable="false" use="optional">
+      <property name="runtime" xsi:type="reference" type="positiveInt" nullable="false"/>
     </property>
-    <property name="capture" xsi:type="object" nullable="false" use="optional">
-      <property name="cameras" xsi:type="array" nullable="false">
-        <reference type="camera" minOccurs="1" maxOccurs="2" nullable="false"/>
+    <property name="assembly" xsi:type="object" nullable="false" use="optional">
+      <property name="sensors" xsi:type="array" nullable="false">
+        <reference type="sensor" minOccurs="1" maxOccurs="2" nullable="false"/>
       </property>
-      <property name="periods" xsi:type="reference" type="tupleInts" nullable="false" use="optional"/>
-      <property name="captureDelay" xsi:type="reference" type="nonNegativeByteObj" nullable="false" use="optional"/>
+      <property name="sequences" xsi:type="reference" type="tupleInts" nullable="false" use="optional"/>
+      <property name="delay" xsi:type="reference" type="nonNegativeByteObj" nullable="false" use="optional"/>
     </property>
   </object>
   

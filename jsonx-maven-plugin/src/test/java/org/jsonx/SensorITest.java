@@ -21,16 +21,16 @@ import java.io.IOException;
 import org.junit.Test;
 import org.openjax.json.JsonReader;
 
-public class CameraITest {
-  private static final String json = "{\"cameras\":[{\"ordinal\":0,\"state\":\"manual\",\"dois\":5,\"pan\":0.0,\"tilt\":0.0,\"zoom\":1.0},{\"ordinal\":1,\"state\":\"manual\",\"dois\":5}],\"periods\":[[1619506964,60]],\"captureDelay\":0}";
+public class SensorITest {
+  private static final String json = "{\"sensors\":[{\"index\":0,\"mode\":\"auto\",\"facets\":5,\"x\":0.0,\"y\":0.0,\"z\":1.0},{\"index\":1,\"mode\":\"auto\",\"facets\":5}],\"sequences\":[[1619506964,60]],\"delay\":0}";
 
   @Test
   public void test() throws IOException, DecodeException {
-    final oz.Capture capture;
+    final stub.Assembly assembly;
     try (final JsonReader in = new JsonReader(json)) {
-      capture = JxDecoder.VALIDATING.parseObject(in, oz.Capture.class);
+      assembly = JxDecoder.VALIDATING.parseObject(in, stub.Assembly.class);
     }
 
-    System.out.println(capture);
+    System.out.println(assembly);
   }
 }

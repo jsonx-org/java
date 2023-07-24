@@ -84,7 +84,7 @@
                   <schemas>
                     <schema>src/test/resources/test.jsd</schema>
                     <schema>src/test/resources/test.jsdx</schema>
-                    <schema>src/test/resources/camera.jsdx</schema>
+                    <schema>src/test/resources/sensor.jsdx</schema>
                   </schemas>
                 </configuration>
               </execution>
@@ -106,7 +106,7 @@
                   <schemas>
                     <schema>src/test/resources/test.jsd</schema>
                     <schema>src/test/resources/test.jsdx</schema>
-                    <schema>src/test/resources/camera.jsdx</schema>
+                    <schema>src/test/resources/sensor.jsdx</schema>
                   </schemas>
                 </configuration>
               </execution>
@@ -120,7 +120,7 @@
                   <schemas>
                     <schema>src/test/resources/test.jsd</schema>
                     <schema>src/test/resources/test.jsdx</schema>
-                    <schema>src/test/resources/camera.jsdx</schema>
+                    <schema>src/test/resources/sensor.jsdx</schema>
                   </schemas>
                 </configuration>
               </execution>

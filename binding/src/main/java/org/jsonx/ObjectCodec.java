@@ -160,10 +160,11 @@ class ObjectCodec extends Codec {
       return abort(Error.DECODE_EXCEPTION(reader, e), reader, index);
     }
     catch (final InvocationTargetException e) {
-      if (e.getCause() instanceof IOException)
-        throw (IOException)e.getCause();
+      final Throwable cause = e.getCause();
+      if (cause instanceof IOException)
+        throw (IOException)cause;
 
-      return abort(Error.DECODE_EXCEPTION(reader, e.getCause()), reader, index);
+      return abort(Error.DECODE_EXCEPTION(reader, cause), reader, index);
     }
     catch (final InstantiationException e) {
       throw new RuntimeException(Throwables.copy(e, new InstantiationException(type.getName())));
