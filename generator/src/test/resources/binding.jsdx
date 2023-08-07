@@ -17,11 +17,11 @@
 <schema
   xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd file:/Users/seva/Work/org/jsonx/schema/schema-0.4/schema-0.4.xsd"
   targetNamespace="http://www.jsonx.org/generator/test/binding.jsdx"
   doc="Schema focusing on bindings">
 
-  <boolean name="defaultBoolean"/>
+  <boolean name="bool"/>
   <boolean name="primitiveBoolean">
     <binding lang="java" type="boolean"/>
   </boolean>
@@ -90,17 +90,16 @@
   <string name="iso8601">
     <binding lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/>
   </string>
-  <string name="uuid">
+  <string name="uuid" pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}">
     <binding lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/>
   </string>
 
   <array name="arrayReferences">
-    <reference type="defaultBoolean"/>
+    <reference type="bool"/>
     <reference type="primitiveBoolean" nullable="false"/>
     <reference type="intBoolean" nullable="false"/>
     <reference type="StringBoolean"/>
 
-    <reference type="defaultDecimal"/>
     <reference type="defaultInteger"/>
     <reference type="byte" nullable="false"/>
     <reference type="Byte"/>
@@ -212,7 +211,7 @@
       <binding lang="java" field="objRefArrayReferences"/>
     </property>
 
-    <property name="defaultBoolean" xsi:type="reference" type="defaultBoolean">
+    <property name="bool" xsi:type="reference" type="bool">
       <binding lang="java" field="objRefDefaultBoolean"/>
     </property>
     <property name="primitiveBoolean" xsi:type="reference" type="primitiveBoolean" nullable="false">
@@ -378,12 +377,11 @@
       <reference type="arrayDirect"/>
       <reference type="arrayReferences"/>
 
-      <reference type="defaultBoolean"/>
+      <reference type="bool"/>
       <reference type="primitiveBoolean" nullable="false"/>
       <reference type="intBoolean" nullable="false"/>
       <reference type="StringBoolean"/>
 
-      <reference type="defaultDecimal"/>
       <reference type="defaultInteger"/>
       <reference type="byte" nullable="false"/>
       <reference type="Byte"/>
@@ -410,7 +408,7 @@
       <binding lang="java" field="objDirArrayReferences"/>
     </property>
 
-    <property name="defaultBoolean" xsi:type="boolean">
+    <property name="bool" xsi:type="boolean">
       <binding lang="java" field="objDirDefaultBoolean"/>
     </property>
     <property name="primitiveBoolean" xsi:type="boolean" nullable="false" doc="objDirPrimitiveBoolean">
@@ -493,6 +491,549 @@
 
     <property name="object" xsi:type="object" extends="objDir">
       <binding lang="java" field="objDirObject"/>
+    </property>
+  </object>
+
+  <array name="a">
+    <string/>
+    <number/>
+    <boolean/>
+    <any/>
+    <array>
+      <string/>
+      <number/>
+      <boolean/>
+      <any/>
+      <array>
+        <string/>
+        <number/>
+        <boolean/>
+        <any/>
+        <array>
+          <string/>
+          <number/>
+          <boolean/>
+          <any/>
+          <array>
+            <string/>
+            <number/>
+            <boolean/>
+            <any/>
+            <array>
+              <string/>
+              <number/>
+              <boolean/>
+              <any/>
+              <array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                </array>
+              </array>
+            </array>
+          </array>
+        </array>
+      </array>
+    </array>
+  </array>
+  <object name="o" doc="Object other objects">
+    <property names="x.*" xsi:type="any"/>
+    <property name="a" xsi:type="array">
+      <string/>
+      <number/>
+      <boolean/>
+      <any/>
+      <array>
+        <string/>
+        <number/>
+        <boolean/>
+        <any/>
+        <array>
+          <string/>
+          <number/>
+          <boolean/>
+          <any/>
+          <array>
+            <string/>
+            <number/>
+            <boolean/>
+            <any/>
+            <array>
+              <string/>
+              <number/>
+              <boolean/>
+              <any/>
+              <array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                  </array>
+                </array>
+              </array>
+            </array>
+          </array>
+        </array>
+      </array>
+    </property>
+    <property name="s" xsi:type="string"/>
+    <property name="n" xsi:type="number"/>
+    <property name="b" xsi:type="boolean"/>
+    <property name="r" xsi:type="reference" type="uuid"/>
+    <property name="p" xsi:type="object">
+      <property names="x.*" xsi:type="any"/>
+      <property name="a" xsi:type="array">
+        <string/>
+        <number/>
+        <boolean/>
+        <any/>
+        <array>
+          <string/>
+          <number/>
+          <boolean/>
+          <any/>
+          <array>
+            <string/>
+            <number/>
+            <boolean/>
+            <any/>
+            <array>
+              <string/>
+              <number/>
+              <boolean/>
+              <any/>
+              <array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                      </array>
+                    </array>
+                  </array>
+                </array>
+              </array>
+            </array>
+          </array>
+        </array>
+      </property>
+      <property name="s" xsi:type="string"/>
+      <property name="n" xsi:type="number"/>
+      <property name="b" xsi:type="boolean"/>
+      <property name="r" xsi:type="reference" type="uuid"/>
+      <property name="p" xsi:type="object">
+        <property names="x.*" xsi:type="any"/>
+        <property name="a" xsi:type="array">
+          <string/>
+          <number/>
+          <boolean/>
+          <any/>
+          <array>
+            <string/>
+            <number/>
+            <boolean/>
+            <any/>
+            <array>
+              <string/>
+              <number/>
+              <boolean/>
+              <any/>
+              <array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                        <array>
+                          <string/>
+                          <number/>
+                          <boolean/>
+                          <any/>
+                        </array>
+                      </array>
+                    </array>
+                  </array>
+                </array>
+              </array>
+            </array>
+          </array>
+        </property>
+        <property name="s" xsi:type="string"/>
+        <property name="n" xsi:type="number"/>
+        <property name="b" xsi:type="boolean"/>
+        <property name="r" xsi:type="reference" type="uuid"/>
+        <property name="p" xsi:type="object">
+          <property names="x.*" xsi:type="any"/>
+          <property name="a" xsi:type="array">
+            <string/>
+            <number/>
+            <boolean/>
+            <any/>
+            <array>
+              <string/>
+              <number/>
+              <boolean/>
+              <any/>
+              <array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                        <array>
+                          <string/>
+                          <number/>
+                          <boolean/>
+                          <any/>
+                          <array>
+                            <string/>
+                            <number/>
+                            <boolean/>
+                            <any/>
+                          </array>
+                        </array>
+                      </array>
+                    </array>
+                  </array>
+                </array>
+              </array>
+            </array>
+          </property>
+          <property name="s" xsi:type="string"/>
+          <property name="n" xsi:type="number"/>
+          <property name="b" xsi:type="boolean"/>
+          <property name="r" xsi:type="reference" type="uuid"/>
+          <property name="p" xsi:type="object">
+            <property names="x.*" xsi:type="any"/>
+            <property name="a" xsi:type="array">
+              <string/>
+              <number/>
+              <boolean/>
+              <any/>
+              <array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                        <array>
+                          <string/>
+                          <number/>
+                          <boolean/>
+                          <any/>
+                          <array>
+                            <string/>
+                            <number/>
+                            <boolean/>
+                            <any/>
+                            <array>
+                              <string/>
+                              <number/>
+                              <boolean/>
+                              <any/>
+                            </array>
+                          </array>
+                        </array>
+                      </array>
+                    </array>
+                  </array>
+                </array>
+              </array>
+            </property>
+            <property name="s" xsi:type="string"/>
+            <property name="n" xsi:type="number"/>
+            <property name="b" xsi:type="boolean"/>
+            <property name="r" xsi:type="reference" type="uuid"/>
+            <property name="p" xsi:type="object">
+              <property names="x.*" xsi:type="any"/>
+              <property name="a" xsi:type="array">
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+                <array>
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                        <array>
+                          <string/>
+                          <number/>
+                          <boolean/>
+                          <any/>
+                          <array>
+                            <string/>
+                            <number/>
+                            <boolean/>
+                            <any/>
+                            <array>
+                              <string/>
+                              <number/>
+                              <boolean/>
+                              <any/>
+                              <array>
+                                <string/>
+                                <number/>
+                                <boolean/>
+                                <any/>
+                              </array>
+                            </array>
+                          </array>
+                        </array>
+                      </array>
+                    </array>
+                  </array>
+                </array>
+              </property>
+              <property name="s" xsi:type="string"/>
+              <property name="n" xsi:type="number"/>
+              <property name="b" xsi:type="boolean"/>
+              <property name="r" xsi:type="reference" type="uuid"/>
+              <property name="p" xsi:type="object">
+                <property names="x.*" xsi:type="any"/>
+                <property name="a" xsi:type="array">
+                  <string/>
+                  <number/>
+                  <boolean/>
+                  <any/>
+                  <array>
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                        <array>
+                          <string/>
+                          <number/>
+                          <boolean/>
+                          <any/>
+                          <array>
+                            <string/>
+                            <number/>
+                            <boolean/>
+                            <any/>
+                            <array>
+                              <string/>
+                              <number/>
+                              <boolean/>
+                              <any/>
+                              <array>
+                                <string/>
+                                <number/>
+                                <boolean/>
+                                <any/>
+                                <array>
+                                  <string/>
+                                  <number/>
+                                  <boolean/>
+                                  <any/>
+                                </array>
+                              </array>
+                            </array>
+                          </array>
+                        </array>
+                      </array>
+                    </array>
+                  </array>
+                </property>
+                <property name="s" xsi:type="string"/>
+                <property name="n" xsi:type="number"/>
+                <property name="b" xsi:type="boolean"/>
+                <property name="r" xsi:type="reference" type="uuid"/>
+                <property name="p" xsi:type="object">
+                  <property names="x.*" xsi:type="any"/>
+                  <property name="a" xsi:type="array">
+                    <string/>
+                    <number/>
+                    <boolean/>
+                    <any/>
+                    <array>
+                      <string/>
+                      <number/>
+                      <boolean/>
+                      <any/>
+                      <array>
+                        <string/>
+                        <number/>
+                        <boolean/>
+                        <any/>
+                        <array>
+                          <string/>
+                          <number/>
+                          <boolean/>
+                          <any/>
+                          <array>
+                            <string/>
+                            <number/>
+                            <boolean/>
+                            <any/>
+                            <array>
+                              <string/>
+                              <number/>
+                              <boolean/>
+                              <any/>
+                              <array>
+                                <string/>
+                                <number/>
+                                <boolean/>
+                                <any/>
+                                <array>
+                                  <string/>
+                                  <number/>
+                                  <boolean/>
+                                  <any/>
+                                  <array>
+                                    <string/>
+                                    <number/>
+                                    <boolean/>
+                                    <any/>
+                                  </array>
+                                </array>
+                              </array>
+                            </array>
+                          </array>
+                        </array>
+                      </array>
+                    </array>
+                  </property>
+                  <property name="s" xsi:type="string"/>
+                  <property name="n" xsi:type="number"/>
+                  <property name="b" xsi:type="boolean"/>
+                  <property name="r" xsi:type="reference" type="uuid"/>
+                </property>
+              </property>
+            </property>
+          </property>
+        </property>
+      </property>
     </property>
   </object>
 
