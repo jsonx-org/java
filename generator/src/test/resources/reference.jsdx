@@ -25,29 +25,17 @@
   </array>
   <boolean name="bool"/>
   <number name="num"/>
-  <number name="numPrimitive">
-    <binding lang="java" type="double"/>
-  </number>
+  <number name="numPrimitive"/>
   <number name="numInt" scale="0"/>
-  <number name="numIntPrimitive" scale="0">
-    <binding lang="java" type="long"/>
-  </number>
+  <number name="numIntPrimitive" scale="0"/>
   <number name="numRange" range="[1E10,]"/>
-  <number name="numRangePrimitive" range="[7E-10,]">
-    <binding lang="java" type="double"/>
-  </number>
+  <number name="numRangePrimitive" range="[7E-10,]"/>
   <number name="numIntRange" scale="0" range="[-1E10,]"/>
-  <number name="numIntRangePrimitive" scale="0" range="[-1E10,]">
-    <binding lang="java" type="long"/>
-  </number>
+  <number name="numIntRangePrimitive" scale="0" range="[-1E10,]"/>
   <number name="numScale" scale="2" range="[1.11E-213,]"/>
-  <number name="numScalePrimitive" scale="2" range="[1.11E-213,]">
-    <binding lang="java" type="double"/>
-  </number>
+  <number name="numScalePrimitive" scale="2" range="[1.11E-213,]"/>
   <number name="numScaleRange" scale="3" range="[2.222E-19,]"/>
-  <number name="numScaleRangePrimitive" scale="3" range="[2.222E-19,]">
-    <binding lang="java" type="double"/>
-  </number>
+  <number name="numScaleRangePrimitive" scale="3" range="[2.222E-19,]"/>
   <string name="str" doc="1"/>
   <string name="strDec" doc="2"/>
   <string name="strDecEnc" doc="3"/>

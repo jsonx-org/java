@@ -22,9 +22,7 @@
   doc="Schema focusing on overrides">
 
   <object name="parent" abstract="true">
-    <property name="obj" xsi:type="reference" type="parent" nullable="false" use="optional">
-      <binding lang="java" field="child"/>
-    </property>
+    <property name="obj" xsi:type="reference" type="parent" nullable="false" use="optional"/>
   </object>
 
   <object name="father" extends="parent">

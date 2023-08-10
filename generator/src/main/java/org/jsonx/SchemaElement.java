@@ -39,10 +39,8 @@ import javax.annotation.Generated;
 
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember.Extends$;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.WrappedArrayList;
@@ -53,6 +51,7 @@ import org.libj.util.Iterators;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.SilentErrorHandler;
+import org.w3.www._2001.XMLSchema.yAA;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
@@ -62,23 +61,26 @@ import org.xml.sax.SAXException;
 public final class SchemaElement extends Element implements Declarer {
   private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
 
-  private static Schema jsdToXsb(final schema.Schema jsd) {
-    final Schema xsb = new Schema();
+  private static xL1gluGCXAA.Binding jsdToXsb(final binding.Binding jsd) {
+  }
+
+  private static xL0gluGCXAA.Schema jsdToXsb(final schema.Schema jsd) {
+    final xL0gluGCXAA.Schema xsb = new xL0gluGCXAA.Schema();
     final LinkedHashMap<String,? extends schema.Member> declarations = jsd.getDeclarations();
     if (declarations != null && declarations.size() > 0) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) { // [S]
         final String name = entry.getKey();
         final schema.Member declaration = entry.getValue();
         if (declaration instanceof schema.Array)
-          xsb.addArray((Schema.Array)ArrayModel.jsdToXsb((schema.Array)declaration, name));
+          xsb.addArray((xL0gluGCXAA.Schema.Array)ArrayModel.jsdToXsb((schema.Array)declaration, name));
         else if (declaration instanceof schema.Boolean)
-          xsb.addBoolean((Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)declaration, name));
+          xsb.addBoolean((xL0gluGCXAA.Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)declaration, name));
         else if (declaration instanceof schema.Number)
-          xsb.addNumber((Schema.Number)NumberModel.jsdToXsb((schema.Number)declaration, name));
+          xsb.addNumber((xL0gluGCXAA.Schema.Number)NumberModel.jsdToXsb((schema.Number)declaration, name));
         else if (declaration instanceof schema.ObjectType)
-          xsb.addObject((Schema.Object)ObjectModel.jsdToXsb((schema.Object)declaration, name));
+          xsb.addObject((xL0gluGCXAA.Schema.Object)ObjectModel.jsdToXsb((schema.Object)declaration, name));
         else if (declaration instanceof schema.String)
-          xsb.addString((Schema.String)StringModel.jsdToXsb((schema.String)declaration, name));
+          xsb.addString((xL0gluGCXAA.Schema.String)StringModel.jsdToXsb((schema.String)declaration, name));
         else
           throw new UnsupportedOperationException("Unsupported type: " + declaration.getClass().getName());
       }
@@ -90,7 +92,7 @@ public final class SchemaElement extends Element implements Declarer {
 
     final String doc = jsd.getDoc();
     if (doc != null && doc.length() > 0)
-      xsb.setDoc$(new $Documented.Doc$(doc));
+      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(doc));
 
     return xsb;
   }
@@ -108,7 +110,26 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public static SchemaElement parseJsd(final URL url, final Settings settings) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), settings);
+      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), null, settings);
+    }
+  }
+
+  /**
+   * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSB format.
+   *
+   * @param url The {@link URL} of the content to parse.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
+   * @return The {@link SchemaElement} instance.
+   * @throws IOException If an I/O error has occurred.
+   * @throws DecodeException If a decode error has occurred.
+   * @throws ValidationException If a validation error has occurred.
+   * @throws NullPointerException If {@code url} of {@code settings} is null.
+   */
+  public static SchemaElement parseJsb(final URL url, final Settings settings) throws DecodeException, IOException {
+    try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
+      final binding.Binding binding = JxDecoder.VALIDATING.parseObject(in, binding.Binding.class);
+      final schema.Schema schema = binding.getInclude();
+      return new SchemaElement(schema, binding, settings);
     }
   }
 
@@ -131,8 +152,31 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
   public static SchemaElement parseJsdx(final URL url, final Settings settings) throws IOException, SAXException {
-    final Schema schema = (Schema)Bindings.parse(url, getErrorHandler());
-    return new SchemaElement(schema, settings);
+    final xL0gluGCXAA.Schema schema = (xL0gluGCXAA.Schema)Bindings.parse(url, getErrorHandler());
+    return new SchemaElement(schema, null, settings);
+  }
+
+  /**
+   * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSBx format.
+   *
+   * @param url The {@link URL} of the content to parse.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
+   * @return The {@link SchemaElement} instance.
+   * @throws IOException If an I/O error has occurred.
+   * @throws SAXException If a parse error has occurred.
+   * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException} has occurred.
+   * @throws ValidationException If a validation error has occurred.
+   * @throws NullPointerException If {@code url} of {@code settings} is null.
+   */
+  @SuppressWarnings("rawtypes")
+  public static SchemaElement parseJsbx(final URL url, final Settings settings) throws IOException, SAXException {
+    final xL1gluGCXAA.Binding binding = (xL1gluGCXAA.Binding)Bindings.parse(url, getErrorHandler());
+    final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
+    final yAA.$AnyType schema = iterator.next();
+    if (!(schema instanceof xL0gluGCXAA.Schema))
+      throw new IllegalArgumentException(schema.name() + " is not jx:schema element");
+
+    return new SchemaElement((xL0gluGCXAA.Schema)schema, binding, settings);
   }
 
   /**
@@ -197,26 +241,26 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final Schema schema, final Settings settings) throws ValidationException {
+  public SchemaElement(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
     super(null, schema.getDoc$());
     this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), settings);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);
 
-    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
+    final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (elementIterator.hasNext()) {
-      final $Member member = ($Member)elementIterator.next();
-      if (member instanceof Schema.Array)
-        ArrayModel.declare(registry, this, (Schema.Array)member);
-      else if (member instanceof Schema.Boolean)
-        BooleanModel.declare(registry, this, (Schema.Boolean)member);
-      else if (member instanceof Schema.Number)
-        NumberModel.declare(registry, this, (Schema.Number)member);
-      else if (member instanceof Schema.String)
-        StringModel.declare(registry, this, (Schema.String)member);
-      else if (member instanceof Schema.Object)
-        ObjectModel.declare(registry, this, (Schema.Object)member);
+      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
+      if (member instanceof xL0gluGCXAA.Schema.Array)
+        ArrayModel.declare(registry, this, (xL0gluGCXAA.Schema.Array)member);
+      else if (member instanceof xL0gluGCXAA.Schema.Boolean)
+        BooleanModel.declare(registry, this, (xL0gluGCXAA.Schema.Boolean)member);
+      else if (member instanceof xL0gluGCXAA.Schema.Number)
+        NumberModel.declare(registry, this, (xL0gluGCXAA.Schema.Number)member);
+      else if (member instanceof xL0gluGCXAA.Schema.String)
+        StringModel.declare(registry, this, (xL0gluGCXAA.Schema.String)member);
+      else if (member instanceof xL0gluGCXAA.Schema.Object)
+        ObjectModel.declare(registry, this, (xL0gluGCXAA.Schema.Object)member);
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
@@ -236,34 +280,34 @@ public final class SchemaElement extends Element implements Declarer {
           ((Referrer<?>)model).resolveOverrides();
   }
 
-  private static String memberToName(final $Member obj) {
-    if (obj instanceof Schema.Array)
-      return ((Schema.Array)obj).getName$().text();
+  private static String memberToName(final xL0gluGCXAA.$Member obj) {
+    if (obj instanceof xL0gluGCXAA.Schema.Array)
+      return ((xL0gluGCXAA.Schema.Array)obj).getName$().text();
 
-    if (obj instanceof Schema.Boolean)
-      return ((Schema.Boolean)obj).getName$().text();
+    if (obj instanceof xL0gluGCXAA.Schema.Boolean)
+      return ((xL0gluGCXAA.Schema.Boolean)obj).getName$().text();
 
-    if (obj instanceof Schema.Number)
-      return ((Schema.Number)obj).getName$().text();
+    if (obj instanceof xL0gluGCXAA.Schema.Number)
+      return ((xL0gluGCXAA.Schema.Number)obj).getName$().text();
 
-    if (obj instanceof Schema.String)
-      return ((Schema.String)obj).getName$().text();
+    if (obj instanceof xL0gluGCXAA.Schema.String)
+      return ((xL0gluGCXAA.Schema.String)obj).getName$().text();
 
-    if (obj instanceof Schema.Object)
-      return ((Schema.Object)obj).getName$().text();
+    if (obj instanceof xL0gluGCXAA.Schema.Object)
+      return ((xL0gluGCXAA.Schema.Object)obj).getName$().text();
 
     throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
   };
 
-  private static void assertNoCycle(final Schema schema) throws ValidationException {
-    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::memberToName);
+  private static void assertNoCycle(final xL0gluGCXAA.Schema schema) throws ValidationException {
+    final StrictRefDigraph<xL0gluGCXAA.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::memberToName);
 
-    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
+    final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (elementIterator.hasNext()) {
-      final $Member member = ($Member)elementIterator.next();
-      if (member instanceof Schema.Object) {
-        final Schema.Object object = (Schema.Object)member;
-        final Extends$ extends$ = object.getExtends$();
+      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
+      if (member instanceof xL0gluGCXAA.Schema.Object) {
+        final xL0gluGCXAA.Schema.Object object = (xL0gluGCXAA.Schema.Object)member;
+        final xL0gluGCXAA.$ObjectMember.Extends$ extends$ = object.getExtends$();
         if (extends$ != null)
           digraph.add(object, extends$.text());
         else
@@ -274,7 +318,7 @@ public final class SchemaElement extends Element implements Declarer {
       }
     }
 
-    final List<$Member> cycle = digraph.getCycle();
+    final List<xL0gluGCXAA.$Member> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::memberToName).collect(Collectors.joining(" -> ")));
   }
@@ -287,8 +331,8 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final schema.Schema schema, final Settings settings) throws ValidationException {
-    this(jsdToXsb(schema), settings);
+  public SchemaElement(final schema.Schema schema, final binding.Binding binding, final Settings settings) throws ValidationException {
+    this(jsdToXsb(schema), jsdToXsb(binding), settings);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -397,7 +441,7 @@ public final class SchemaElement extends Element implements Declarer {
   public SchemaElement(final Collection<Class<?>> classes) {
     super(null, null);
     this.registry = new Registry(this, classes);
-    final QName name = Schema.class.getAnnotation(QName.class);
+    final QName name = xL0gluGCXAA.Schema.class.getAnnotation(QName.class);
     this.version = name.namespaceURI().substring(0, name.namespaceURI().lastIndexOf('.'));
 
     this.registry.resolveReferences();
