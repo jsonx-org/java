@@ -32,7 +32,7 @@ class ClassSpec {
     GET,
     SET;
 
-    public static Scope[] values = values();
+    public static final Scope[] values = values();
   }
 
   private final TreeMap<String,ClassSpec> nameToClassSpec = new TreeMap<>();

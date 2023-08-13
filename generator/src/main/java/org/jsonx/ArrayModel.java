@@ -216,14 +216,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (ArrayType.class.equals(property.type())) {
       final ArrayModel model = newArrayModel(registry, referrer, property, property.minIterate(), property.maxIterate(), property.elementIds(), fieldAnnotations, null, declaringTypeName);
       final Id id = model.id();
-
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
       return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
     final Registry.Type type = registry.getType(property.type());
     final Id id = Id.named(type);
-
     if (registry.isPending(id))
       return Reference.defer(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, null, () -> registry.getModel(id));
 
@@ -235,14 +233,12 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (ArrayType.class.equals(arrayElement.type())) {
       final ArrayModel model = new ArrayModel(registry, referrer, arrayElement, idToElement, declaringTypeName);
       final Id id = model.id();
-
       final ArrayModel registered = (ArrayModel)registry.getModel(id);
       return new Reference(registry, referrer, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
 
     final Registry.Type type = registry.getType(arrayElement.type());
     final Id id = Id.named(type);
-
     if (registry.isPending(id))
       return Reference.defer(registry, referrer, arrayElement.nullable(), arrayElement.minOccurs(), arrayElement.maxOccurs(), () -> registry.getModel(id));
 
@@ -428,7 +424,6 @@ final class ArrayModel extends Referrer<ArrayModel> {
     final LinkedHashMap<Integer,Annotation> topologicalOrder = parseIdToElement(annotations, declaringTypeName);
     // FIXME: Is this correct?!!...
     final Id id = Id.named(type);
-
     final ArrayModel registered = (ArrayModel)registry.getModel(id);
     return registered != null ? registered : new ArrayModel(registry, declarer, id, type, arrayAnnotation, minIterate, maxIterate, elementIds, topologicalOrder, declaringTypeName);
   }

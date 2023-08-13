@@ -205,7 +205,6 @@ final class StringModel extends Model {
   static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.String xsb) {
     final StringModel model = new StringModel(registry, referrer, xsb);
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
@@ -213,7 +212,6 @@ final class StringModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Method getMethod, final String fieldName) {
     final StringModel model = newStringModel(registry, referrer, property, getMethod, fieldName);
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -221,7 +219,6 @@ final class StringModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, referrer, element.nullable(), element.pattern(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), String.class));
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -230,7 +227,6 @@ final class StringModel extends Model {
     // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
     final StringModel model = new StringModel(registry, referrer, false, type.pattern(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), String.class));
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }

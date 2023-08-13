@@ -77,8 +77,8 @@ public final class JxDecoder {
     }
   }
 
-  public static JxDecoder VALIDATING = new JxDecoder(true, null);
-  public static JxDecoder NON_VALIDATING = new JxDecoder(false, null);
+  public static final JxDecoder VALIDATING = new JxDecoder(true, null);
+  public static final JxDecoder NON_VALIDATING = new JxDecoder(false, null);
 
   private static JxDecoder global = new JxDecoder(false);
 

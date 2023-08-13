@@ -236,7 +236,7 @@ public final class SchemaElement extends Element implements Declarer {
   /**
    * Creates a new {@link SchemaElement} from the specified XML binding, and with the provided package / class name prefix string.
    *
-   * @param schema The XML binding (XSB).
+   * @param schema The XML binding (JAX-SB).
    * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.

@@ -135,7 +135,6 @@ final class AnyModel extends Referrer<AnyModel> {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Method getMethod, final String fieldName) {
     final AnyModel model = new AnyModel(registry, referrer, property, getMethod, fieldName);
     final Id id = model.id();
-
     final AnyModel registered = (AnyModel)registry.getModel(id);
     return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -143,7 +142,6 @@ final class AnyModel extends Referrer<AnyModel> {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyElement element) {
     final AnyModel model = new AnyModel(registry, referrer, element);
     final Id id = model.id();
-
     final AnyModel registered = (AnyModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }

@@ -198,7 +198,6 @@ final class BooleanModel extends Model {
   static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb) {
     final BooleanModel model = new BooleanModel(registry, referrer, xsb);
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
@@ -206,7 +205,6 @@ final class BooleanModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Method getMethod, final String fieldName) {
     final BooleanModel model = newBooleanModel(registry, referrer, property, getMethod, fieldName);
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -214,7 +212,6 @@ final class BooleanModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
     final BooleanModel model = new BooleanModel(registry, referrer, element.nullable(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), Boolean.class));
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -223,7 +220,6 @@ final class BooleanModel extends Model {
     // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
     final BooleanModel model = new BooleanModel(registry, referrer, false, Binding.Type.from(registry, type.type(), type.decode(), type.encode(), Boolean.class));
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }

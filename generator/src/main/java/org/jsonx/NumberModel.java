@@ -232,7 +232,6 @@ final class NumberModel extends Model {
     try {
       final NumberModel model = newNumberModel(registry, referrer, property, getMethod, fieldName);
       final Id id = model.id();
-
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
@@ -245,7 +244,6 @@ final class NumberModel extends Model {
     try {
       final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), typeDefault(element.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
-
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
@@ -259,7 +257,6 @@ final class NumberModel extends Model {
       // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
       final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), typeDefault(type.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
-
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
     }
