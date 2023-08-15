@@ -48,6 +48,7 @@ import org.libj.net.URLs;
 import org.libj.util.CollectionUtil;
 import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
+import org.libj.util.StringPaths;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.SilentErrorHandler;
@@ -61,7 +62,56 @@ import org.xml.sax.SAXException;
 public final class SchemaElement extends Element implements Declarer {
   private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
 
-  private static xL1gluGCXAA.Binding jsdToXsb(final binding.Binding jsd) {
+  private static <T extends xL1gluGCXAA.$FieldBindings>T jsdToXsbField(final T xsb, final String path, final List<binding.FieldBinding> bindings) {
+    xsb.setPath$(path);
+    for (int i = 0, i$ = bindings.size(); i < i$; ++i) { // [L]
+      final binding.FieldBinding fieldBinding = bindings.get(i);
+      final xL1gluGCXAA.$FieldBindings.Bind bind = new xL1gluGCXAA.$FieldBindings.Bind();
+      bind.setLang$(fieldBinding.getLang());
+      bind.setField$(fieldBinding.getField());
+      xsb.addBind(bind);
+    }
+
+    return xsb;
+  }
+
+  private static <T extends xL1gluGCXAA.$TypeFieldBindings>T jsdToXsbTypeField(final T xsb, final String path, final List<binding.TypeFieldBinding> bindings) {
+    xsb.setPath$(path);
+    for (int i = 0, i$ = bindings.size(); i < i$; ++i) { // [L]
+      final binding.TypeFieldBinding fieldBinding = bindings.get(i);
+      final xL1gluGCXAA.$TypeFieldBindings.Bind bind = new xL1gluGCXAA.$TypeFieldBindings.Bind();
+      bind.setLang$(fieldBinding.getLang());
+      bind.setField$(fieldBinding.getField());
+      xsb.addBind(bind);
+    }
+
+    return xsb;
+  }
+
+  private static xL1gluGCXAA.Binding jsdToXsb(final @binding.Binding List<?> jsd) {
+    final xL1gluGCXAA.Binding xsb = new xL1gluGCXAA.Binding();
+    xsb.setJxSchema(jsdToXsb((schema.Schema)jsd.get(0)));
+    for (int i = 1, i$ = jsd.size(); i < i$; ++i) { // [RA]
+      final binding.Path member = (binding.Path)jsd.get(i);
+      if (member instanceof binding.Any)
+        xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), member.getPath(), ((binding.FieldBindings)member).getBindings()));
+      else if (member instanceof binding.Reference)
+        xsb.addReference(jsdToXsbField(new xL1gluGCXAA.Binding.Reference(), member.getPath(), ((binding.FieldBindings)member).getBindings()));
+      else if (member instanceof binding.Array)
+        xsb.addArray(jsdToXsbField(new xL1gluGCXAA.Binding.Array(), member.getPath(), ((binding.FieldBindings)member).getBindings()));
+      else if (member instanceof binding.Object)
+        xsb.addObject(jsdToXsbField(new xL1gluGCXAA.Binding.Object(), member.getPath(), ((binding.FieldBindings)member).getBindings()));
+      else if (member instanceof binding.Boolean)
+        xsb.addBoolean(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Boolean(), member.getPath(), ((binding.TypeFieldBindings)member).getBindings()));
+      else if (member instanceof binding.Number)
+        xsb.addNumber(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Number(), member.getPath(), ((binding.TypeFieldBindings)member).getBindings()));
+      else if (member instanceof binding.String)
+        xsb.addString(jsdToXsbTypeField(new xL1gluGCXAA.Binding.String(), member.getPath(), ((binding.TypeFieldBindings)member).getBindings()));
+      else
+        throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
+    }
+
+    return xsb;
   }
 
   private static xL0gluGCXAA.Schema jsdToXsb(final schema.Schema jsd) {
@@ -126,11 +176,19 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
   public static SchemaElement parseJsb(final URL url, final Settings settings) throws DecodeException, IOException {
+    final @binding.Binding List<?> binding;
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      final binding.Binding binding = JxDecoder.VALIDATING.parseObject(in, binding.Binding.class);
-      final schema.Schema schema = binding.getInclude();
-      return new SchemaElement(schema, binding, settings);
+      binding = JxDecoder.VALIDATING.parseArray(in, binding.Binding.class);
     }
+
+    final String pathOfSchemaFromInclude = null;
+    final URL schemaUrl = StringPaths.isAbsolute(pathOfSchemaFromInclude) ? URLs.create(pathOfSchemaFromInclude) : URLs.toCanonicalURL(StringPaths.getCanonicalParent(url.toString()));
+    final schema.Schema schema;
+    try (final JsonReader in = new JsonReader(new InputStreamReader(schemaUrl.openStream()))) {
+      schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
+    }
+
+    return new SchemaElement(schema, binding, settings);
   }
 
   private static ErrorHandler errorHandler;
@@ -331,7 +389,7 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final schema.Schema schema, final binding.Binding binding, final Settings settings) throws ValidationException {
+  public SchemaElement(final schema.Schema schema, final @binding.Binding List<?> binding, final Settings settings) throws ValidationException {
     this(jsdToXsb(schema), jsdToXsb(binding), settings);
   }
 
