@@ -159,11 +159,11 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final String fieldName, final Binding.Type typeBinding, final Supplier<? extends Model> model) {
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final String fieldName, final Bind.Type typeBinding, final Supplier<? extends Model> model) {
     return new Deferred<>(false, name, fieldName, () -> new Reference(registry, declarer, name, nullable, use, fieldName, typeBinding, model.get()));
   }
 
-  Reference(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final String fieldName, final Binding.Type typeBinding, final Model model) {
+  Reference(final Registry registry, final Declarer declarer, final String name, final Boolean nullable, final Use use, final String fieldName, final Bind.Type typeBinding, final Model model) {
     super(registry, declarer, false, Id.hashed("r", typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), null, name, nullable, use, null, null, fieldName, typeBinding);
     this.model = model;
   }
@@ -183,7 +183,7 @@ final class Reference extends Member {
   }
 
   @Override
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     return model.isValid(typeBinding);
   }
 
@@ -223,7 +223,7 @@ final class Reference extends Member {
   }
 
   private Map<String,Object> getBindingAttributes(final Element owner) {
-    final Map<String,Object> bindingAttributes = Binding.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
     if (bindingAttributes == null)
       return null;
 

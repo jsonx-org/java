@@ -233,7 +233,7 @@ public class SchemaTest {
     }
   }
 
-  private static final String packagePrefix = "org.jsonx.";
+  private static final String packagePrefix = "org.jsonx.test.";
 
   private static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String fileName = URLs.getName(resource);

@@ -201,10 +201,10 @@ final class AnyModel extends Referrer<AnyModel> {
     final Class<?> requiredFieldType = types.length == 0 ? defaultClass() : getFieldType(types);
     final boolean isRegex = isMultiRegex(property.name());
     if (isRegex && !Map.class.isAssignableFrom(getMethod.getReturnType()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Bind.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
 
     if (!isAssignable(getMethod, true, requiredFieldType, isRegex, property.nullable(), property.use()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Binding.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Bind.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
 
     validateTypeBinding();
   }
@@ -405,7 +405,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     return typeBinding.type == null ? null : "Cannot override the type for \"any\"";
   }
 

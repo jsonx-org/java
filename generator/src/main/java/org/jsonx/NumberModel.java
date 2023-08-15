@@ -242,7 +242,7 @@ final class NumberModel extends Model {
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberElement element) {
     try {
-      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), typeDefault(element.scale(), false, registry.settings), Number.class));
+      final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Bind.Type.from(registry, element.type(), element.decode(), element.encode(), typeDefault(element.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
@@ -255,7 +255,7 @@ final class NumberModel extends Model {
   static NumberModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final NumberType type) {
     try {
       // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
-      final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), typeDefault(type.scale(), false, registry.settings), Number.class));
+      final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Bind.Type.from(registry, type.type(), type.decode(), type.encode(), typeDefault(type.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
@@ -306,17 +306,17 @@ final class NumberModel extends Model {
     if (binding == null)
       return new NumberModel(registry, declarer, xsb, null, null);
 
-    return new NumberModel(registry, declarer, xsb, binding.getField$(), Binding.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
+    return new NumberModel(registry, declarer, xsb, binding.getField$(), Bind.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $FieldIdentifier fieldName, final Binding.Type typeBinding) throws ParseException {
+  private NumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $FieldIdentifier fieldName, final Bind.Type typeBinding) throws ParseException {
     super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$(), parseScale(xsb.getScale$()), null)), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), fieldName, typeBinding);
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();
     this.range = parseRange(xsb.getRange$(), scale, type);
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final $Array.Number xsb, final Binding.Type typeBinding) throws ParseException {
+  private NumberModel(final Registry registry, final Declarer declarer, final $Array.Number xsb, final Bind.Type typeBinding) throws ParseException {
     super(registry, declarer, Id.hashed("n", typeBinding, parseScale(xsb.getScale$()), parseRange(xsb.getRange$(), parseScale(xsb.getScale$()), null)), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), typeBinding);
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();
@@ -324,11 +324,11 @@ final class NumberModel extends Model {
   }
 
   private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName) throws ParseException {
-    final Binding.Type typeBinding = Binding.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), typeDefault(property.scale(), false, registry.settings));
+    final Bind.Type typeBinding = Bind.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), typeDefault(property.scale(), false, registry.settings));
     return new NumberModel(registry, declarer, property, getMethod, fieldName, typeBinding);
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName, final Binding.Type typeBinding) throws ParseException {
+  private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName, final Bind.Type typeBinding) throws ParseException {
     super(registry, declarer, Id.hashed("n", typeBinding, property.scale(), parseRange(property.range(), property.scale(), null)), property.nullable(), property.use(), fieldName, typeBinding);
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
     if (!isAssignable(getMethod, true, defaultClass(), false, property.nullable(), property.use()) && !isAssignable(getMethod, true, CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
@@ -339,7 +339,7 @@ final class NumberModel extends Model {
     this.range = parseRange(property.range(), scale, type);
   }
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Boolean nullable, final int scale, final String range, final Binding.Type typeBinding) throws ParseException {
+  private NumberModel(final Registry registry, final Declarer declarer, final Boolean nullable, final int scale, final String range, final Bind.Type typeBinding) throws ParseException {
     super(registry, declarer, Id.hashed("n", typeBinding, scale, parseRange(range, scale, null)), nullable, null, null, typeBinding);
     this.scale = scale;
     final Class<?> type = validateTypeBinding();
@@ -363,7 +363,7 @@ final class NumberModel extends Model {
 
   @Override
   @SuppressWarnings("unchecked")
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     if (typeBinding.type == null)
       return null;
 

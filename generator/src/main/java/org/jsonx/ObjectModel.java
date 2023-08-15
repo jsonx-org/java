@@ -629,7 +629,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     return typeBinding.type == null ? null : "Cannot override the type for \"object\"";
   }
 

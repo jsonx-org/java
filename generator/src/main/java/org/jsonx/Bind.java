@@ -27,15 +27,10 @@ import org.libj.lang.Identifiers;
 import org.libj.lang.ObjectUtil;
 import org.libj.util.ArrayUtil;
 
-final class Binding {
+final class Bind {
   static class Type {
     static Type from(final Registry registry, final $TypeBinding.Type$ type, final $TypeBinding.Decode$ decode, final $TypeBinding.Encode$ encode) {
       return type == null && decode == null && encode == null ? null : new Type(registry, type == null ? null : type.text(), decode == null ? null : decode.text(), encode == null ? null : encode.text());
-//      return (type == null || type.text() == null) && (decode == null || decode.text() == null) && (encode == null || encode.text() == null) ? null : new Type(registry, type == null ? null : type.text(), decode == null ? null : decode.text(), encode == null ? null : encode.text());
-    }
-
-    static Type from2(final Type typeBinding, final $TypeBinding.Decode$ decode, final $TypeBinding.Encode$ encode) {
-      return (typeBinding == null || typeBinding.type == null) && decode == null && encode == null ? null : new Type(typeBinding, decode, encode);
     }
 
     static Type from(final Registry registry, final Method getMethod, final boolean nullable, final Use use, final String decode, final String encode, final Class<?> defaultClass) {
@@ -248,6 +243,6 @@ final class Binding {
     return attributes;
   }
 
-  private Binding() {
+  private Bind() {
   }
 }

@@ -40,7 +40,7 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     throw new UnsupportedOperationException();
   }
 
