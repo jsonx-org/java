@@ -81,11 +81,11 @@ abstract class Member extends Element {
     return null;
   }
 
-  static Binding.Type getBinding(final Registry registry, final $TypeBinding binding) {
-    return binding == null ? null : Binding.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$());
+  static Bind.Type getBinding(final Registry registry, final $TypeBinding binding) {
+    return binding == null ? null : Bind.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$());
   }
 
-  static Binding.Type getBinding(final Registry registry, final List<? extends $TypeBinding> bindings) {
+  static Bind.Type getBinding(final Registry registry, final List<? extends $TypeBinding> bindings) {
     final $TypeBinding binding = getBinding(bindings);
     return getBinding(registry, binding);
   }
@@ -169,10 +169,10 @@ abstract class Member extends Element {
   final Spec<Use> use;
   final Spec<Integer> minOccurs;
   final Spec<Integer> maxOccurs;
-  final Binding.Field fieldBinding;
-  final Binding.Type typeBinding;
+  final Bind.Field fieldBinding;
+  final Bind.Type typeBinding;
 
-  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs, final String fieldName, final Binding.Type typeBinding) {
+  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final String name, final Boolean nullable, final Use use, final Integer minOccurs, final Integer maxOccurs, final String fieldName, final Bind.Type typeBinding) {
     super(name, doc);
     this.registry = registry;
     this.declarer = declarer;
@@ -184,15 +184,15 @@ abstract class Member extends Element {
     this.minOccurs = Spec.from(minOccurs, minOccurs == null || minOccurs == 1 ? null : minOccurs);
     this.maxOccurs = Spec.from(maxOccurs, maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs);
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
-    this.fieldBinding = Binding.Field.from(name, fieldName);
+    this.fieldBinding = Bind.Field.from(name, fieldName);
     this.typeBinding = typeBinding;
   }
 
-  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Binding.Type typeBinding) {
+  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Bind.Type typeBinding) {
     this(registry, declarer, isFromSchema, id, doc, null, nullable == null || nullable.isDefault() ? null : nullable.text(), null, minOccurs.text().intValue(), parseMaxCardinality((BigInteger)minOccurs.text(), maxOccurs, "Occurs", Integer.MAX_VALUE), null, typeBinding);
   }
 
-  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  Member(final Registry registry, final Declarer declarer, final boolean isFromSchema, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
     this(registry, declarer, isFromSchema, id, doc, (String)name.text(), nullable == null || nullable.isDefault() ? null : nullable.text(), use == null || use.isDefault() ? null : Use.valueOf(use.text().toUpperCase()), null, null, fieldName == null ? null : fieldName.text(), typeBinding);
   }
 
@@ -524,7 +524,7 @@ abstract class Member extends Element {
   }
 
   abstract Registry.Type typeDefault(boolean primitive);
-  abstract String isValid(Binding.Type typeBinding);
+  abstract String isValid(Bind.Type typeBinding);
   abstract String elementName();
   abstract Class<?> defaultClass();
   abstract Class<? extends Annotation> propertyAnnotation();

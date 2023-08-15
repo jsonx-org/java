@@ -212,7 +212,7 @@ final class BooleanModel extends Model {
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
-    final BooleanModel model = new BooleanModel(registry, referrer, element.nullable(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), Boolean.class));
+    final BooleanModel model = new BooleanModel(registry, referrer, element.nullable(), Bind.Type.from(registry, element.type(), element.decode(), element.encode(), Boolean.class));
     final Id id = model.id();
 
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
@@ -221,7 +221,7 @@ final class BooleanModel extends Model {
 
   static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanType type) {
     // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
-    final BooleanModel model = new BooleanModel(registry, referrer, false, Binding.Type.from(registry, type.type(), type.decode(), type.encode(), Boolean.class));
+    final BooleanModel model = new BooleanModel(registry, referrer, false, Bind.Type.from(registry, type.type(), type.decode(), type.encode(), Boolean.class));
     final Id id = model.id();
 
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
@@ -246,25 +246,25 @@ final class BooleanModel extends Model {
     if (binding == null)
       return new BooleanModel(registry, declarer, xsb, null, null);
 
-    return new BooleanModel(registry, declarer, xsb, binding.getField$(), Binding.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
+    return new BooleanModel(registry, declarer, xsb, binding.getField$(), Bind.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  private BooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("b", typeBinding), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), fieldName, typeBinding);
     validateTypeBinding();
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final $Array.Boolean xsb, final Binding.Type typeBinding) {
+  private BooleanModel(final Registry registry, final Declarer declarer, final $Array.Boolean xsb, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("b", typeBinding), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), typeBinding);
     validateTypeBinding();
   }
 
   private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final BooleanProperty property, final Method getMethod, final String fieldName) {
-    final Binding.Type typeBinding = Binding.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), Boolean.class);
+    final Bind.Type typeBinding = Bind.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), Boolean.class);
     return new BooleanModel(registry, declarer, property, getMethod, fieldName, typeBinding);
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final BooleanProperty property, final Method getMethod, final String fieldName, final Binding.Type typeBinding) {
+  private BooleanModel(final Registry registry, final Declarer declarer, final BooleanProperty property, final Method getMethod, final String fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("b", typeBinding), property.nullable(), property.use(), fieldName, typeBinding);
     // If there is a "decode" spec, then skip the check to verify field<-->{CharSequence,char[]} compatibility
     final boolean hasDecode = typeBinding != null && typeBinding.decode != null;
@@ -275,7 +275,7 @@ final class BooleanModel extends Model {
     validateTypeBinding();
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final Boolean nullable, final Binding.Type typeBinding) {
+  private BooleanModel(final Registry registry, final Declarer declarer, final Boolean nullable, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("b", typeBinding), nullable, null, null, typeBinding);
     validateTypeBinding();
   }
@@ -286,7 +286,7 @@ final class BooleanModel extends Model {
   }
 
   @Override
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     return null;
   }
 

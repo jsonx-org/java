@@ -34,7 +34,7 @@ final class Id {
   }
 
   static Id hashed(final String prefix, final Object ... variables) {
-    if (!"!".equals(prefix) && !"a".equals(prefix) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Binding.Type || variables[0] instanceof $Binding))
+    if (!"!".equals(prefix) && !"a".equals(prefix) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Bind.Type || variables[0] instanceof $Binding))
       throw new IllegalArgumentException("First variable expected to be Binding, but was: " + Arrays.toString(variables));
 
     return variables == null || variables.length == 0 ? new Id(prefix) : new Id(prefix + hash(variables));

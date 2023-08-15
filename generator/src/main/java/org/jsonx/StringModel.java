@@ -219,7 +219,7 @@ final class StringModel extends Model {
   }
 
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
-    final StringModel model = new StringModel(registry, referrer, element.nullable(), element.pattern(), Binding.Type.from(registry, element.type(), element.decode(), element.encode(), String.class));
+    final StringModel model = new StringModel(registry, referrer, element.nullable(), element.pattern(), Bind.Type.from(registry, element.type(), element.decode(), element.encode(), String.class));
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getModel(id);
@@ -228,7 +228,7 @@ final class StringModel extends Model {
 
   static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringType type) {
     // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
-    final StringModel model = new StringModel(registry, referrer, false, type.pattern(), Binding.Type.from(registry, type.type(), type.decode(), type.encode(), String.class));
+    final StringModel model = new StringModel(registry, referrer, false, type.pattern(), Bind.Type.from(registry, type.type(), type.decode(), type.encode(), String.class));
     final Id id = model.id();
 
     final StringModel registered = (StringModel)registry.getModel(id);
@@ -265,27 +265,27 @@ final class StringModel extends Model {
     if (binding == null)
       return new StringModel(registry, declarer, xsb, null, null);
 
-    return new StringModel(registry, declarer, xsb, binding.getField$(), Binding.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
+    return new StringModel(registry, declarer, xsb, binding.getField$(), Bind.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$()));
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final $String xsb, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  private StringModel(final Registry registry, final Declarer declarer, final $String xsb, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("s", typeBinding, parseString(xsb.getPattern$())), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), fieldName, typeBinding);
     this.pattern = parseString(xsb.getPattern$());
     validateTypeBinding();
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final $Array.String xsb, final Binding.Type typeBinding) {
+  private StringModel(final Registry registry, final Declarer declarer, final $Array.String xsb, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("s", typeBinding, parseString(xsb.getPattern$())), xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), typeBinding);
     this.pattern = parseString(xsb.getPattern$());
     validateTypeBinding();
   }
 
   private static StringModel newStringModel(final Registry registry, final Declarer declarer, final StringProperty property, final Method getMethod, final String fieldName) {
-    final Binding.Type typeBinding = Binding.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), String.class);
+    final Bind.Type typeBinding = Bind.Type.from(registry, getMethod, property.nullable(), property.use(), property.decode(), property.encode(), String.class);
     return new StringModel(registry, declarer, property, getMethod, fieldName, typeBinding);
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final StringProperty property, final Method getMethod, final String fieldName, final Binding.Type typeBinding) {
+  private StringModel(final Registry registry, final Declarer declarer, final StringProperty property, final Method getMethod, final String fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("s", typeBinding, parseString(property.pattern())), property.nullable(), property.use(), fieldName, typeBinding);
     // If there is a "decode" spec, then skip the check to verify field<-->{CharSequence,char[]} compatibility
     final boolean hasDecode = typeBinding != null && typeBinding.decode != null;
@@ -297,7 +297,7 @@ final class StringModel extends Model {
     validateTypeBinding();
   }
 
-  private StringModel(final Registry registry, final Declarer declarer, final Boolean nullable, final String pattern, final Binding.Type typeBinding) {
+  private StringModel(final Registry registry, final Declarer declarer, final Boolean nullable, final String pattern, final Bind.Type typeBinding) {
     super(registry, declarer, Id.hashed("s", typeBinding, parseString(pattern)), nullable, null, null, typeBinding);
     this.pattern = parseString(pattern);
     validateTypeBinding();
@@ -309,7 +309,7 @@ final class StringModel extends Model {
   }
 
   @Override
-  String isValid(final Binding.Type typeBinding) {
+  String isValid(final Bind.Type typeBinding) {
     return null;
   }
 

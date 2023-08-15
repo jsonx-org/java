@@ -86,19 +86,19 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls == null || cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType<?> name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Binding.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType<?> name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, name, nullable, use, fieldName, typeBinding);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Binding.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, nullable, minOccurs, maxOccurs, typeBinding);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final String name, final Binding.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final String name, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, name, null, null, null, null, null, typeBinding);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final Boolean nullable, final Use use, final String fieldName, final Binding.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final Boolean nullable, final Use use, final String fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, false, id, null, null, nullable, use, null, null, fieldName, typeBinding);
   }
 
@@ -124,7 +124,7 @@ abstract class Model extends Member implements Comparable<Model> {
   XmlElement toXml(final Element owner, final String packageName) {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final Map<String,Object> bindingAttributes = Binding.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
     if (bindingAttributes != null)
       element.setElements(CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes)));
 
@@ -141,7 +141,7 @@ abstract class Model extends Member implements Comparable<Model> {
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    final Map<String,Object> bindingAttributes = Binding.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
     if (bindingAttributes != null)
       properties.put("bindings", Collections.singletonList(bindingAttributes));
 
