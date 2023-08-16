@@ -24,17 +24,18 @@ import java.util.List;
 import java.util.RandomAccess;
 
 import org.jsonx.schema.TypeBinding;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Boolean;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$BooleanMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
 
@@ -191,12 +192,12 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb) {
-    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb), null);
+  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb, binding), null);
   }
 
-  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb) {
-    final BooleanModel model = new BooleanModel(registry, referrer, xsb);
+  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    final BooleanModel model = new BooleanModel(registry, referrer, xsb, binding);
     final Id id = model.id();
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
@@ -224,21 +225,20 @@ final class BooleanModel extends Model {
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb) {
-    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, binding)), referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb) {
-    return registry.reference(newBooleanModel(registry, referrer, xsb), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.reference(newBooleanModel(registry, referrer, xsb, binding), referrer);
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
+  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, binding));
     validateTypeBinding();
   }
 
-  private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb) {
-    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+  private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
     if (binding == null)
       return new BooleanModel(registry, declarer, xsb, null, null);
 

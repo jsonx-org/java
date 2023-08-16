@@ -301,7 +301,7 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public SchemaElement(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
     super(null, schema.getDoc$());
-    this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), settings);
+    this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), binding, settings);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);

@@ -26,6 +26,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$AnyMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
@@ -150,8 +151,8 @@ final class AnyModel extends Referrer<AnyModel> {
     return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb) {
-    return registry.reference(new AnyModel(registry, referrer, xsb, getBinding(xsb.getBinding())), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, binding), referrer);
   }
 
   private static final Name$ anonymousReferenceName = new Name$("");
@@ -182,7 +183,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private final ArrayList<Member> types;
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
     this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
     validateTypeBinding();
@@ -216,7 +217,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   // FIXME: This can be converted to recursive algo
-  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
+  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $AnyMember.Types$ refs) {
     final List<String> idrefs;
     final int i$;
     if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
@@ -237,7 +238,7 @@ final class AnyModel extends Referrer<AnyModel> {
     return types;
   }
 
-  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, Use use) {
+  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use) {
     final Id id = Id.hashed(idref);
     types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
       final Member model = registry.getModel(id);

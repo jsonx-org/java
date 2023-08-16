@@ -33,6 +33,7 @@ import java.util.Set;
 import org.jsonx.Registry.Type;
 import org.jsonx.schema.FieldBinding;
 import org.jsonx.schema.Object.Properties;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
@@ -165,8 +166,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return registry.declare(xsb).value(new ObjectModel(registry, declarer, xsb), null);
   }
 
-  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb) {
-    return registry.declare(xsb).value(new ObjectModel(registry, referrer, xsb, getBinding(xsb.getBinding())), referrer);
+  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb, final xL1gluGCXAA.$FieldBinding binding) {
+    return registry.declare(xsb).value(new ObjectModel(registry, referrer, xsb, binding), referrer);
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Class<?> cls, final String name, final String fieldName) {
@@ -237,7 +238,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel) {
+  private LinkedHashMap<String,Member> parseMembers(final Schema.Object xsb, final ObjectModel objectModel) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
@@ -361,7 +362,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     validateTypeBinding();
   }
 
-  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb) {
+  private LinkedHashMap<String,Property> parseProperties(final Schema.Object xsb) {
     final LinkedHashMap<String,Member> members = parseMembers(xsb, this);
     if (members == null)
       return null;
@@ -425,7 +426,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this(registry, declarer, element.type(), element.nullable(), null, null);
   }
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final $FieldBinding binding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final xL1gluGCXAA.$FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), binding == null ? null : binding.getField$(), null);
     this.superObject = getReference(xsb.getExtends$());
     this.isAbstract = false;

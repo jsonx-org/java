@@ -26,16 +26,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
 import org.libj.util.CollectionUtil;
 import org.openjax.xml.api.XmlElement;
-import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
-import org.w3.www._2001.XMLSchema.yAA.$Boolean;
-import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
-import org.w3.www._2001.XMLSchema.yAA.$String;
+import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Model extends Member implements Comparable<Model> {
   static Class<?> toClass(final Type type) {
@@ -86,11 +83,11 @@ abstract class Model extends Member implements Comparable<Model> {
     return cls == null || cls.isAssignableFrom(genericTypes[0]);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType<?> name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, name, nullable, use, fieldName, typeBinding);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Bind.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, nullable, minOccurs, maxOccurs, typeBinding);
   }
 

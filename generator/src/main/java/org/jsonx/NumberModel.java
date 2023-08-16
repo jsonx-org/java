@@ -26,18 +26,19 @@ import java.util.RandomAccess;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.schema.TypeBinding;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember.Range$;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
@@ -206,22 +207,22 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
-    return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb), null);
+  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb, binding), null);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
     try {
-      return registry.reference(newNumberModel(registry, referrer, xsb), referrer);
+      return registry.reference(newNumberModel(registry, referrer, xsb, binding), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
+      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, binding)), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
@@ -288,8 +289,8 @@ final class NumberModel extends Model {
   final int scale;
   final Range range;
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
+  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, binding));
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();
     final Range$ range$ = xsb.getRange$();
@@ -301,8 +302,7 @@ final class NumberModel extends Model {
     }
   }
 
-  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb) throws ParseException {
-    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final xL1gluGCXAA.$TypeFieldBinding binding) throws ParseException {
     if (binding == null)
       return new NumberModel(registry, declarer, xsb, null, null);
 

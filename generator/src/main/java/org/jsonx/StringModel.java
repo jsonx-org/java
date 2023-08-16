@@ -25,17 +25,18 @@ import java.util.Map;
 import java.util.RandomAccess;
 
 import org.jsonx.schema.TypeBinding;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$String;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$StringMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
@@ -198,12 +199,12 @@ final class StringModel extends Model {
     return xsb;
   }
 
-  static StringModel declare(final Registry registry, final Declarer declarer, final Schema.String xsb) {
-    return registry.declare(xsb).value(new StringModel(registry, declarer, xsb), null);
+  static StringModel declare(final Registry registry, final Declarer declarer, final Schema.String xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.declare(xsb).value(new StringModel(registry, declarer, xsb, binding), null);
   }
 
-  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.String xsb) {
-    final StringModel model = new StringModel(registry, referrer, xsb);
+  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.String xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    final StringModel model = new StringModel(registry, referrer, xsb, binding);
     final Id id = model.id();
     final StringModel registered = (StringModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
@@ -231,12 +232,12 @@ final class StringModel extends Model {
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String xsb) {
-    return registry.reference(new StringModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.reference(new StringModel(registry, referrer, xsb, getBinding(registry, binding)), referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String xsb) {
-    return registry.reference(newStringModel(registry, referrer, xsb), referrer);
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    return registry.reference(newStringModel(registry, referrer, xsb, binding), referrer);
   }
 
   private static String parseString(final String str) {
@@ -249,15 +250,14 @@ final class StringModel extends Model {
 
   final String pattern;
 
-  private StringModel(final Registry registry, final Declarer declarer, final Schema.String xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
+  private StringModel(final Registry registry, final Declarer declarer, final Schema.String xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, binding));
     this.pattern = parseString(xsb.getPattern$());
 
     validateTypeBinding();
   }
 
-  private static StringModel newStringModel(final Registry registry, final Declarer declarer, final $String xsb) {
-    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+  private static StringModel newStringModel(final Registry registry, final Declarer declarer, final $String xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
     if (binding == null)
       return new StringModel(registry, declarer, xsb, null, null);
 

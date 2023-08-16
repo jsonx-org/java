@@ -28,11 +28,11 @@ import java.util.function.Supplier;
 
 import org.jsonx.Registry.Type;
 import org.jsonx.schema.FieldBinding;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
@@ -140,11 +140,11 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Reference xsb, final Supplier<? extends Model> model) {
-    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get(), getBinding(xsb.getBinding())));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Reference xsb, final xL1gluGCXAA.$FieldBinding binding, final Supplier<? extends Model> model) {
+    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get(), binding));
   }
 
-  private Reference(final Registry registry, final Declarer declarer, final $Reference xsb, final Model model, final $FieldBinding binding) {
+  private Reference(final Registry registry, final Declarer declarer, final $Reference xsb, final Model model, final xL1gluGCXAA.$FieldBinding binding) {
     super(registry, declarer, true, Id.hashed("r", model.typeBinding, model.id(), model.minOccurs.get, model.maxOccurs.get, model.nullable.get, model.use.get), xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), binding == null ? null : binding.getField$(), model.typeBinding);
     this.model = model;
     validateTypeBinding();

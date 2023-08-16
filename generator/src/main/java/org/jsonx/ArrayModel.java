@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.Registry.Wildcard;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember.MinIterate$;
@@ -250,8 +251,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return registry.reference(new ArrayModel(registry, referrer, xsb), referrer);
   }
 
-  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final $Array xsb) {
-    return registry.reference(new ArrayModel(registry, referrer, xsb, getBinding(xsb.getBinding())), referrer);
+  static ArrayModel reference(final Registry registry, final Referrer<?> referrer, final $Array xsb, final xL1gluGCXAA.$FieldBinding binding) {
+    return registry.reference(new ArrayModel(registry, referrer, xsb, binding), referrer);
   }
 
   private void writeElementIdsClause(final AttributeMap attributes, final int[] indices) {
@@ -345,7 +346,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     validateTypeBinding();
   }
 
-  private ArrayModel(final Registry registry, final Declarer declarer, final $Array xsb, final $FieldBinding binding) {
+  private ArrayModel(final Registry registry, final Declarer declarer, final $Array xsb, final xL1gluGCXAA.$FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
     this.members = parseMembers(registry, this, xsb);
     final MinIterate$ minIterate$ = xsb.getMinIterate$();

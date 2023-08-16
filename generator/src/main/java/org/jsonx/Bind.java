@@ -22,14 +22,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.libj.lang.Identifiers;
 import org.libj.lang.ObjectUtil;
 import org.libj.util.ArrayUtil;
 
 final class Bind {
   static class Type {
-    static Type from(final Registry registry, final $TypeBinding.Type$ type, final $TypeBinding.Decode$ decode, final $TypeBinding.Encode$ encode) {
+    static Type from(final Registry registry, final $TypeFieldBinding.Type$ type, final $TypeFieldBinding.Decode$ decode, final $TypeFieldBinding.Encode$ encode) {
       return type == null && decode == null && encode == null ? null : new Type(registry, type == null ? null : type.text(), decode == null ? null : decode.text(), encode == null ? null : encode.text());
     }
 
@@ -82,7 +82,7 @@ final class Bind {
       this.id = Id.hashed("!", String.valueOf(type), decode, encode);
     }
 
-    private Type(final Type binding, final $TypeBinding.Decode$ decode, final $TypeBinding.Encode$ encode) {
+    private Type(final Type binding, final $TypeFieldBinding.Decode$ decode, final $TypeFieldBinding.Encode$ encode) {
       this.type = binding == null ? null : binding.type;
       this.decode = decode == null ? null : decode.text();
       this.encode = encode == null ? null : encode.text();
