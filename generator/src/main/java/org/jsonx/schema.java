@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-06-17T14:26:40.669")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-18T12:51:48.050")
 public class schema {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
   public abstract static class Any extends org.jsonx.schema.Member {
@@ -183,18 +183,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public AnyProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
     public AnyProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (AnyProperty)this;
@@ -226,9 +214,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(use, that.use))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -240,9 +225,6 @@ public class schema {
 
       if (use != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
 
       return hashCode;
     }
@@ -482,18 +464,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public ArrayProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
     public ArrayProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (ArrayProperty)this;
@@ -532,9 +502,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(use, that.use))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -547,56 +514,7 @@ public class schema {
       if (use != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
 
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
-
       return hashCode;
-    }
-  }
-
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  public abstract static class Binding implements org.jsonx.JxObject {
-    /** Specifies the language to which this binding applies. **/
-    @org.jsonx.StringProperty(name="lang", pattern="\\S|\\S.*\\S", nullable=false)
-    public java.lang.String getLang() {
-      return lang;
-    }
-
-    /** Specifies the language to which this binding applies. **/
-    public Binding setLang(final java.lang.String lang) {
-      this.lang = lang;
-      return this;
-    }
-
-    private java.lang.String lang;
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.Binding))
-        return false;
-
-      final org.jsonx.schema.Binding that = (org.jsonx.schema.Binding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(lang, that.lang))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = 2147169354;
-      if (lang != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(lang);
-
-      return hashCode;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.jsonx.JxEncoder.get().toString(this);
     }
   }
 
@@ -613,18 +531,6 @@ public class schema {
     }
 
     private java.lang.String jx3aType;
-
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return bindings;
-    }
-
-    public Boolean setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
 
     /** Defines text comments. Optional. **/
     public Boolean setDoc(final java.lang.String doc) {
@@ -644,9 +550,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -655,9 +558,6 @@ public class schema {
       int hashCode = -1974865427 * 31 + super.hashCode();
       if (jx3aType != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
 
       return hashCode;
     }
@@ -775,11 +675,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return super.getBindings();
-    }
-
     public BooleanProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (BooleanProperty)this;
@@ -868,62 +763,6 @@ public class schema {
     }
   }
 
-  /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  public static class FieldBinding extends org.jsonx.schema.Binding {
-    /** Specifies the "field" identifier. **/
-    @org.jsonx.StringProperty(name="field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.lang.String getField() {
-      return field;
-    }
-
-    /** Specifies the "field" identifier. **/
-    public FieldBinding setField(final java.lang.String field) {
-      this.field = field;
-      return this;
-    }
-
-    private java.lang.String field;
-
-    /** Specifies the language to which this binding applies. **/
-    public FieldBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (FieldBinding)this;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.FieldBinding) || !super.equals(obj))
-        return false;
-
-      final org.jsonx.schema.FieldBinding that = (org.jsonx.schema.FieldBinding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(field, that.field))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = -1808808570 * 31 + super.hashCode();
-      if (field != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(field);
-
-      return hashCode;
-    }
-  }
-
-  /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.FieldBinding.class, nullable=false)
-  @org.jsonx.ArrayType(elementIds={0})
-  public static @interface FieldBindings {
-  }
-
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
   public abstract static class Member extends org.jsonx.schema.Documented {
     /** Defines text comments. Optional. **/
@@ -999,18 +838,6 @@ public class schema {
 
     private java.lang.Long scale;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return bindings;
-    }
-
-    public Number setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
-
     /** Defines text comments. Optional. **/
     public Number setDoc(final java.lang.String doc) {
       super.setDoc(doc);
@@ -1035,9 +862,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(scale, that.scale))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -1052,9 +876,6 @@ public class schema {
 
       if (scale != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(scale);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
 
       return hashCode;
     }
@@ -1188,11 +1009,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return super.getBindings();
-    }
-
     public NumberProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (NumberProperty)this;
@@ -1256,16 +1072,16 @@ public class schema {
     @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
     public static class Properties implements org.jsonx.JxObject {
       @org.jsonx.AnyProperty(name=".*", types={@org.jsonx.t(objects=org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects=org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects=org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects=org.jsonx.schema.StringProperty.class)}, nullable=false)
-      public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getProperties() {
-        return properties;
+      public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> get2e2a() {
+        return _2e2a;
       }
 
-      public Properties setProperties(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> properties) {
-        this.properties = properties;
+      public Properties set2e2a(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _2e2a) {
+        this._2e2a = _2e2a;
         return this;
       }
 
-      private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> properties;
+      private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _2e2a;
 
       @java.lang.Override
       public boolean equals(final java.lang.Object obj) {
@@ -1276,7 +1092,7 @@ public class schema {
           return false;
 
         final org.jsonx.schema.Object.Properties that = (org.jsonx.schema.Object.Properties)obj;
-        if (!org.libj.lang.ObjectUtil.equals(properties, that.properties))
+        if (!org.libj.lang.ObjectUtil.equals(_2e2a, that._2e2a))
           return false;
 
         return true;
@@ -1285,8 +1101,8 @@ public class schema {
       @java.lang.Override
       public int hashCode() {
         int hashCode = -946499747;
-        if (properties != null)
-          hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(properties);
+        if (_2e2a != null)
+          hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_2e2a);
 
         return hashCode;
       }
@@ -1501,18 +1317,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public ObjectProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
     public ObjectProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (ObjectProperty)this;
@@ -1550,9 +1354,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(use, that.use))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -1564,9 +1365,6 @@ public class schema {
 
       if (use != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
 
       return hashCode;
     }
@@ -1818,18 +1616,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.FieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public ReferenceProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
     public ReferenceProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (ReferenceProperty)this;
@@ -1862,9 +1648,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(use, that.use))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -1876,9 +1659,6 @@ public class schema {
 
       if (use != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
 
       return hashCode;
     }
@@ -1923,16 +1703,16 @@ public class schema {
     private java.lang.String jx3aTargetNamespace;
 
     @org.jsonx.AnyProperty(name="[a-zA-Z_][-a-zA-Z\\d_]*", types={@org.jsonx.t(objects=org.jsonx.schema.Array.class), @org.jsonx.t(objects=org.jsonx.schema.Boolean.class), @org.jsonx.t(objects=org.jsonx.schema.Number.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects=org.jsonx.schema.String.class)}, nullable=false)
-    public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getDeclarations() {
-      return declarations;
+    public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> get5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a() {
+      return _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
     }
 
-    public Schema setDeclarations(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> declarations) {
-      this.declarations = declarations;
+    public Schema set5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a) {
+      this._5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a = _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
       return this;
     }
 
-    private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> declarations;
+    private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
 
     /** Defines text comments. Optional. **/
     public Schema setDoc(final java.lang.String doc) {
@@ -1958,7 +1738,7 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(jx3aTargetNamespace, that.jx3aTargetNamespace))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(declarations, that.declarations))
+      if (!org.libj.lang.ObjectUtil.equals(_5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a, that._5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a))
         return false;
 
       return true;
@@ -1976,8 +1756,8 @@ public class schema {
       if (jx3aTargetNamespace != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aTargetNamespace);
 
-      if (declarations != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(declarations);
+      if (_5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a);
 
       return hashCode;
     }
@@ -2009,18 +1789,6 @@ public class schema {
 
     private java.lang.String pattern;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return bindings;
-    }
-
-    public String setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
-
     /** Defines text comments. Optional. **/
     public String setDoc(final java.lang.String doc) {
       super.setDoc(doc);
@@ -2042,9 +1810,6 @@ public class schema {
       if (!org.libj.lang.ObjectUtil.equals(pattern, that.pattern))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
-        return false;
-
       return true;
     }
 
@@ -2056,9 +1821,6 @@ public class schema {
 
       if (pattern != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(pattern);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
 
       return hashCode;
     }
@@ -2181,11 +1943,6 @@ public class schema {
 
     private java.lang.String use;
 
-    @org.jsonx.ArrayProperty(name="bindings", type=org.jsonx.schema.TypeFieldBindings.class, use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return super.getBindings();
-    }
-
     public StringProperty setJx3aType(final java.lang.String jx3aType) {
       super.setJx3aType(jx3aType);
       return (StringProperty)this;
@@ -2231,175 +1988,5 @@ public class schema {
 
       return hashCode;
     }
-  }
-
-  /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  public static class TypeBinding extends org.jsonx.schema.Binding {
-    /** Specifies the "type" qualified identifier. **/
-    @org.jsonx.StringProperty(name="type", pattern="(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\[\\])?", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.lang.String getType() {
-      return type;
-    }
-
-    /** Specifies the "type" qualified identifier. **/
-    public TypeBinding setType(final java.lang.String type) {
-      this.type = type;
-      return this;
-    }
-
-    private java.lang.String type;
-
-    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    @org.jsonx.StringProperty(name="decode", pattern="(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\.<init>)?", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.lang.String getDecode() {
-      return decode;
-    }
-
-    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    public TypeBinding setDecode(final java.lang.String decode) {
-      this.decode = decode;
-      return this;
-    }
-
-    private java.lang.String decode;
-
-    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    @org.jsonx.StringProperty(name="encode", pattern="(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\.<init>)?", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.lang.String getEncode() {
-      return encode;
-    }
-
-    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    public TypeBinding setEncode(final java.lang.String encode) {
-      this.encode = encode;
-      return this;
-    }
-
-    private java.lang.String encode;
-
-    /** Specifies the language to which this binding applies. **/
-    public TypeBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (TypeBinding)this;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.TypeBinding) || !super.equals(obj))
-        return false;
-
-      final org.jsonx.schema.TypeBinding that = (org.jsonx.schema.TypeBinding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(type, that.type))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(decode, that.decode))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(encode, that.encode))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = 559947056 * 31 + super.hashCode();
-      if (type != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(type);
-
-      if (decode != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(decode);
-
-      if (encode != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(encode);
-
-      return hashCode;
-    }
-  }
-
-  /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.TypeBinding.class, nullable=false)
-  @org.jsonx.ArrayType(elementIds={0})
-  public static @interface TypeBindings {
-  }
-
-  /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  public static class TypeFieldBinding extends org.jsonx.schema.TypeBinding {
-    /** Specifies the "field" identifier. **/
-    @org.jsonx.StringProperty(name="field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
-    public java.lang.String getField() {
-      return field;
-    }
-
-    /** Specifies the "field" identifier. **/
-    public TypeFieldBinding setField(final java.lang.String field) {
-      this.field = field;
-      return this;
-    }
-
-    private java.lang.String field;
-
-    /** Specifies the "type" qualified identifier. **/
-    public TypeFieldBinding setType(final java.lang.String type) {
-      super.setType(type);
-      return (TypeFieldBinding)this;
-    }
-
-    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    public TypeFieldBinding setDecode(final java.lang.String decode) {
-      super.setDecode(decode);
-      return (TypeFieldBinding)this;
-    }
-
-    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    public TypeFieldBinding setEncode(final java.lang.String encode) {
-      super.setEncode(encode);
-      return (TypeFieldBinding)this;
-    }
-
-    /** Specifies the language to which this binding applies. **/
-    public TypeFieldBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (TypeFieldBinding)this;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.TypeFieldBinding) || !super.equals(obj))
-        return false;
-
-      final org.jsonx.schema.TypeFieldBinding that = (org.jsonx.schema.TypeFieldBinding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(field, that.field))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = -1642693536 * 31 + super.hashCode();
-      if (field != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(field);
-
-      return hashCode;
-    }
-  }
-
-  /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.TypeFieldBinding.class, nullable=false)
-  @org.jsonx.ArrayType(elementIds={0})
-  public static @interface TypeFieldBindings {
   }
 }

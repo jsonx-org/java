@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
@@ -37,6 +39,10 @@ import org.w3.www._2001.XMLSchema.yAA.$String;
 abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer {
   private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
   private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
+
+  static $FieldBinding.Field$ getField(final xL1gluGCXAA.$FieldBinding binding) {
+    return binding == null ? null : binding.getField$();
+  }
 
   static Registry.Type getGreatestCommonSuperType(final List<? extends Member> members) {
     final int i$ = assertPositive(members.size());

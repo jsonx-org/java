@@ -19,26 +19,19 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.RandomAccess;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.schema.TypeBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$NumberMember.Range$;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
@@ -47,43 +40,10 @@ import org.libj.lang.ParseException;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class NumberModel extends Model {
-  private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
-    final $TypeBinding xsb = new $ArrayMember.Number.Binding();
-    xsb.setLang$(new $Binding.Lang$(jsd.getLang()));
-    final String type = jsd.getType();
-    if (type != null)
-      xsb.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = jsd.getDecode();
-    if (decode != null)
-      xsb.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = jsd.getEncode();
-    if (encode != null)
-      xsb.setEncode$(new $TypeBinding.Encode$(encode));
-
-    return xsb;
-  }
-
   private static Schema.Number type(final schema.Number jsd, final String name) {
     final Schema.Number xsb = new Schema.Number();
     if (name != null)
       xsb.setName$(new Schema.Number.Name$(name));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -107,45 +67,7 @@ final class NumberModel extends Model {
     if (use != null)
       xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(use)));
 
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
-          addBinding(xsb, (schema.TypeFieldBinding)i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Number xsb, final schema.TypeFieldBinding binding) {
-    final $TypeFieldBinding bind = new $Number.Binding();
-    bind.setLang$(new $Binding.Lang$(binding.getLang()));
-
-    final String type = binding.getType();
-    if (type != null)
-      bind.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = binding.getDecode();
-    if (decode != null)
-      bind.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = binding.getEncode();
-    if (encode != null)
-      bind.setEncode$(new $TypeBinding.Encode$(encode));
-
-    final String field = binding.getField();
-    if (field != null)
-      bind.setField$(new $TypeFieldBinding.Field$(field));
-
-    xsb.addBinding(bind);
   }
 
   private static $ArrayMember.Number element(final schema.NumberElement jsd) {
@@ -162,21 +84,6 @@ final class NumberModel extends Model {
     final String maxOccurs = jsd.getMaxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Number.MaxOccurs$(maxOccurs));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }

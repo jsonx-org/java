@@ -19,68 +19,27 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.RandomAccess;
 
-import org.jsonx.schema.TypeBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$String;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$StringMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA;
 
 final class StringModel extends Model {
-  private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
-    final $TypeBinding xsb = new $ArrayMember.String.Binding();
-    final String lang = jsd.getLang();
-    xsb.setLang$(new $Binding.Lang$(lang));
-    final String type = jsd.getType();
-    if (type != null)
-      xsb.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = jsd.getDecode();
-    if (decode != null)
-      xsb.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = jsd.getEncode();
-    if (encode != null)
-      xsb.setEncode$(new $TypeBinding.Encode$(encode));
-
-    return xsb;
-  }
-
   private static Schema.String type(final schema.String jsd, final String name) {
     final Schema.String xsb = new Schema.String();
     if (name != null)
       xsb.setName$(new Schema.String.Name$(name));
-
-    final List<schema.TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -104,45 +63,7 @@ final class StringModel extends Model {
     if (use != null)
       xsb.setUse$(new $String.Use$($String.Use$.Enum.valueOf(use)));
 
-    final List<schema.TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
-          addBinding(xsb, (schema.TypeFieldBinding)i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $String xsb, final schema.TypeFieldBinding binding) {
-    final $TypeFieldBinding bind = new $String.Binding();
-    bind.setLang$(new $Binding.Lang$(binding.getLang()));
-
-    final String type = binding.getType();
-    if (type != null)
-      bind.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = binding.getDecode();
-    if (decode != null)
-      bind.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = binding.getEncode();
-    if (encode != null)
-      bind.setEncode$(new $TypeBinding.Encode$(encode));
-
-    final String field = binding.getField();
-    if (field != null)
-      bind.setField$(new $TypeFieldBinding.Field$(field));
-
-    xsb.addBinding(bind);
   }
 
   private static $ArrayMember.String element(final schema.StringElement jsd) {
@@ -159,21 +80,6 @@ final class StringModel extends Model {
     final String maxOccurs = jsd.getMaxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.String.MaxOccurs$(maxOccurs));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }

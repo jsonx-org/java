@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,10 +38,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Generated;
 
+import org.jaxsb.runtime.Binding;
+import org.jaxsb.runtime.BindingList;
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.WrappedArrayList;
@@ -53,6 +57,7 @@ import org.openjax.json.JsonReader;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.SilentErrorHandler;
 import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
@@ -88,11 +93,11 @@ public final class SchemaElement extends Element implements Declarer {
     return xsb;
   }
 
-  private static xL1gluGCXAA.Binding jsdToXsb(final @binding.Binding List<?> jsd) {
+  private static xL1gluGCXAA.Binding jsdToXsb(final @binding.Binding List<?> jsb) {
     final xL1gluGCXAA.Binding xsb = new xL1gluGCXAA.Binding();
-    xsb.setJxSchema(jsdToXsb((schema.Schema)jsd.get(0)));
-    for (int i = 1, i$ = jsd.size(); i < i$; ++i) { // [RA]
-      final binding.Path member = (binding.Path)jsd.get(i);
+    xsb.setJxSchema(jsdToXsb((schema.Schema)jsb.get(0)));
+    for (int i = 1, i$ = jsb.size(); i < i$; ++i) { // [RA]
+      final binding.Path member = (binding.Path)jsb.get(i);
       if (member instanceof binding.Any)
         xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), member.getPath(), ((binding.FieldBindings)member).getBindings()));
       else if (member instanceof binding.Reference)
@@ -116,7 +121,7 @@ public final class SchemaElement extends Element implements Declarer {
 
   private static xL0gluGCXAA.Schema jsdToXsb(final schema.Schema jsd) {
     final xL0gluGCXAA.Schema xsb = new xL0gluGCXAA.Schema();
-    final LinkedHashMap<String,? extends schema.Member> declarations = jsd.getDeclarations();
+    final LinkedHashMap<String,? extends schema.Member> declarations = jsd.get5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a();
     if (declarations != null && declarations.size() > 0) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) { // [S]
         final String name = entry.getKey();
@@ -288,6 +293,75 @@ public final class SchemaElement extends Element implements Declarer {
     }
   }
 
+  private static $Documented resolve($Documented element, final JsonPath path) {
+    final Iterator<Object> pathIterator = path.iterator();
+    Iterator<yAA.$AnyType> xsbIterator = element.elementIterator();
+    OUT:
+    while (pathIterator.hasNext()) {
+      final Object term = pathIterator.next();
+      if (term instanceof String) {
+        while (xsbIterator.hasNext()) {
+          element = ($Documented)xsbIterator.next();
+          final Iterator<$AnySimpleType> attributeIterator = element.attributeIterator();
+          while (attributeIterator.hasNext()) {
+            final $AnySimpleType attribute = attributeIterator.next();
+            if ("name".equals(attribute.name().getLocalPart()) && attribute.text().equals(term)) {
+              xsbIterator = element.elementIterator();
+              break OUT;
+            }
+          }
+        }
+      }
+      else if (term instanceof Integer) {
+        for (int index = 0; xsbIterator.hasNext();) {
+          element = ($Documented)xsbIterator.next();
+          if (index == (int)term)
+            break OUT;
+        }
+      }
+      else {
+        throw new IllegalStateException("Unknown term class: " + term.getClass().getName());
+      }
+    }
+
+    return element;
+  }
+
+  private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding) {
+    final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> elementToBinding = new IdentityHashMap<>();
+    final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
+    iterator.next(); // Skip schema element
+    while (iterator.hasNext()) {
+      final xL1gluGCXAA.$Path bindings = (xL1gluGCXAA.$Path)iterator.next();
+      final $Documented element = resolve(schema, new JsonPath(bindings.getPath$().text()));
+      if (bindings instanceof xL1gluGCXAA.$FieldBindings) {
+        final BindingList<xL1gluGCXAA.$FieldBinding> b = ((xL1gluGCXAA.$FieldBindings)bindings).getBind();
+        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
+          final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
+          if ("java".equals(fieldBinding.getLang$().text())) {
+            elementToBinding.put(element, fieldBinding);
+            break;
+          }
+        }
+      }
+      else if (bindings instanceof xL1gluGCXAA.$TypeFieldBindings) {
+        final BindingList<xL1gluGCXAA.$TypeFieldBinding> b = ((xL1gluGCXAA.$TypeFieldBindings)bindings).getBind();
+        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
+          final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
+          if ("java".equals(fieldBinding.getLang$().text())) {
+            elementToBinding.put(element, fieldBinding);
+            break;
+          }
+        }
+      }
+      else {
+        throw new ValidationException("Unexpected element type: " + bindings.name());
+      }
+    }
+
+    return elementToBinding;
+  }
+
   private final Registry registry;
   private final String version;
 
@@ -301,24 +375,26 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public SchemaElement(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
     super(null, schema.getDoc$());
-    this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), binding, settings);
+    this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), settings);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);
+
+    final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = initBindingMap(schema, binding);
 
     final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (elementIterator.hasNext()) {
       final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
       if (member instanceof xL0gluGCXAA.Schema.Array)
-        ArrayModel.declare(registry, this, (xL0gluGCXAA.Schema.Array)member);
+        ArrayModel.declare(registry, this, (xL0gluGCXAA.Schema.Array)member, xsbToBinding);
       else if (member instanceof xL0gluGCXAA.Schema.Boolean)
-        BooleanModel.declare(registry, this, (xL0gluGCXAA.Schema.Boolean)member);
+        BooleanModel.declare(registry, this, (xL0gluGCXAA.Schema.Boolean)member, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(member));
       else if (member instanceof xL0gluGCXAA.Schema.Number)
-        NumberModel.declare(registry, this, (xL0gluGCXAA.Schema.Number)member);
+        NumberModel.declare(registry, this, (xL0gluGCXAA.Schema.Number)member, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(member));
       else if (member instanceof xL0gluGCXAA.Schema.String)
-        StringModel.declare(registry, this, (xL0gluGCXAA.Schema.String)member);
+        StringModel.declare(registry, this, (xL0gluGCXAA.Schema.String)member, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(member));
       else if (member instanceof xL0gluGCXAA.Schema.Object)
-        ObjectModel.declare(registry, this, (xL0gluGCXAA.Schema.Object)member);
+        ObjectModel.declare(registry, this, (xL0gluGCXAA.Schema.Object)member, xsbToBinding);
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }

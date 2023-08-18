@@ -31,9 +31,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$AnyMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference;
@@ -42,7 +40,6 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
-import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
 
 final class AnyModel extends Referrer<AnyModel> {
   private static $Any property(final schema.AnyProperty jsd, final String name) {
@@ -68,29 +65,7 @@ final class AnyModel extends Referrer<AnyModel> {
     if (use != null)
       xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(use)));
 
-    final List<schema.FieldBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
-          addBinding(xsb, bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.FieldBinding> i = bindings.iterator(); do // [I]
-          addBinding(xsb, i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Any xsb, final schema.FieldBinding binding) {
-    final $Any.Binding bin = new $Any.Binding();
-    bin.setLang$(new $Binding.Lang$(binding.getLang()));
-    bin.setField$(new $Any.Binding.Field$(binding.getField()));
-    xsb.addBinding(bin);
   }
 
   private static $ArrayMember.Any element(final schema.AnyElement jsd) {
@@ -147,8 +122,8 @@ final class AnyModel extends Referrer<AnyModel> {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb) {
-    return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, binding), referrer);
   }
 
   static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
@@ -185,13 +160,13 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), binding);
     validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), binding);
     validateTypeBinding();
   }
 
@@ -217,7 +192,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   // FIXME: This can be converted to recursive algo
-  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $AnyMember.Types$ refs) {
+  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $AnyMember.Types$ refs, final xL1gluGCXAA.$FieldBinding binding) {
     final List<String> idrefs;
     final int i$;
     if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
@@ -226,21 +201,21 @@ final class AnyModel extends Referrer<AnyModel> {
     final ArrayList<Member> types = new ArrayList<>(i$);
     if (idrefs instanceof RandomAccess) {
       int i = 0; do // [RA]
-        addReference(types, idrefs.get(i), nullable, use);
+        addReference(types, idrefs.get(i), nullable, use, binding);
       while (++i < i$);
     }
     else {
       final Iterator<String> i = idrefs.iterator(); do // [I]
-        addReference(types, i.next(), nullable, use);
+        addReference(types, i.next(), nullable, use, binding);
       while (i.hasNext());
     }
 
     return types;
   }
 
-  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use) {
+  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use, final xL1gluGCXAA.$FieldBinding binding) {
     final Id id = Id.hashed(idref);
-    types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
+    types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), binding, () -> {
       final Member model = registry.getModel(id);
       if (model == null)
         throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");

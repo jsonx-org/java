@@ -24,18 +24,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
-import org.jaxsb.runtime.BindingList;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Object;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.Strings;
-import org.w3.www._2001.XMLSchema.yAA;
 
 class Registry {
   private static final String[] primitiveTypeNames = {"boolean", "byte", "char", "double", "float", "int", "long", "short"};
@@ -448,50 +443,8 @@ class Registry {
     return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), Classes.getCompositeName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompositeName(cls.getSuperclass()));
   }
 
-  private static HashMap<String,xL1gluGCXAA.$FieldBinding> initBindings(final xL1gluGCXAA.Binding binding) {
-    if (binding == null)
-      return null;
-
-    final HashMap<String,xL1gluGCXAA.$FieldBinding> pathToBinding = new HashMap<>();
-    final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
-    while (iterator.hasNext()) {
-      final yAA.$AnyType element = iterator.next();
-      if (element instanceof xL0gluGCXAA.Schema)
-        continue;
-
-      if (element instanceof xL1gluGCXAA.$FieldBindings) {
-        final xL1gluGCXAA.$FieldBindings element2 = (xL1gluGCXAA.$FieldBindings)element;
-        final BindingList<xL1gluGCXAA.$FieldBinding> b = element2.getBind();
-        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
-          if ("java".equals(fieldBinding.getLang$().text())) {
-            pathToBinding.put(element2.getPath$().text(), fieldBinding);
-            break;
-          }
-        }
-      }
-      else if (element instanceof xL1gluGCXAA.$TypeFieldBindings) {
-        final xL1gluGCXAA.$TypeFieldBindings element2 = (xL1gluGCXAA.$TypeFieldBindings)element;
-        final BindingList<xL1gluGCXAA.$TypeFieldBinding> b = element2.getBind();
-        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
-          if ("java".equals(fieldBinding.getLang$().text())) {
-            pathToBinding.put(element2.getPath$().text(), fieldBinding);
-            break;
-          }
-        }
-      }
-      else {
-        throw new ValidationException("Unexpected element type: " + element.name());
-      }
-    }
-
-    return pathToBinding;
-  }
-
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
-  private final HashMap<String,xL1gluGCXAA.$FieldBinding> pathToBinding;
 
   final String targetNamespace;
   final Settings settings;
@@ -499,9 +452,8 @@ class Registry {
   final String packageName;
   final String classPrefix;
 
-  Registry(final String targetNamespace, final xL1gluGCXAA.Binding binding, final Settings settings) {
+  Registry(final String targetNamespace, final Settings settings) {
     this.targetNamespace = targetNamespace;
-    this.pathToBinding = initBindings(binding);
     this.settings = settings;
     this.isFromJsd = true;
 

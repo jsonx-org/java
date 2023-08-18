@@ -46,12 +46,12 @@ public class ArrayModelTest {
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));
     number1.setScale$(new $Number.Scale$(0L));
-    final NumberModel model1 = NumberModel.reference(registry, null, number1);
+    final NumberModel model1 = NumberModel.reference(registry, null, number1, null);
 
     final $Number number2 = new Number();
     number2.setName$(new $Number.Name$("integer2"));
     number2.setScale$(new $Number.Scale$(0L));
-    final NumberModel model2 = NumberModel.reference(registry, null, number2);
+    final NumberModel model2 = NumberModel.reference(registry, null, number2, null);
 
     assertEquals(registry.getType(Long.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));
   }

@@ -20,18 +20,15 @@ import java.lang.annotation.Annotation;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import org.jsonx.Registry.Type;
-import org.jsonx.schema.FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
@@ -84,29 +81,7 @@ final class Reference extends Member {
     if (use != null)
       xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(use)));
 
-    final List<FieldBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (CollectionUtil.isRandomAccess(bindings)) {
-        int i = 0; do // [RA]
-          addBinding(xsb, bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.FieldBinding> it = bindings.iterator(); do // [I]
-          addBinding(xsb, it.next());
-        while (it.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Reference xsb, final schema.FieldBinding binding) {
-    final $Reference.Binding bin = new $Reference.Binding();
-    bin.setLang$(new $Binding.Lang$(binding.getLang()));
-    bin.setField$(new $Reference.Binding.Field$(binding.getField()));
-    xsb.addBinding(bin);
   }
 
   static $ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
