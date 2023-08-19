@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-15T19:28:19.823")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-19T14:47:31.795")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {
@@ -92,11 +92,66 @@ public class binding {
   }
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.AnyElement(id=1, types={@org.jsonx.t(objects=org.jsonx.binding.Any.class), @org.jsonx.t(objects=org.jsonx.binding.Reference.class), @org.jsonx.t(objects=org.jsonx.binding.Array.class), @org.jsonx.t(objects=org.jsonx.binding.Object.class), @org.jsonx.t(objects=org.jsonx.binding.Boolean.class), @org.jsonx.t(objects=org.jsonx.binding.Number.class), @org.jsonx.t(objects=org.jsonx.binding.String.class)}, nullable=false)
-  @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.Schema.class)
-  @org.jsonx.ArrayType(elementIds={0, 1})
-  public static @interface Binding {
+  public static class Binding implements org.jsonx.JxObject {
+    @org.jsonx.ObjectProperty(name="schema", nullable=false)
+    public org.jsonx.schema.Schema getSchema() {
+      return schema;
+    }
+
+    public Binding setSchema(final org.jsonx.schema.Schema schema) {
+      this.schema = schema;
+      return this;
+    }
+
+    private org.jsonx.schema.Schema schema;
+
+    @org.jsonx.AnyElement(id=0, types={@org.jsonx.t(objects=org.jsonx.binding.Any.class), @org.jsonx.t(objects=org.jsonx.binding.Reference.class), @org.jsonx.t(objects=org.jsonx.binding.Array.class), @org.jsonx.t(objects=org.jsonx.binding.Object.class), @org.jsonx.t(objects=org.jsonx.binding.Boolean.class), @org.jsonx.t(objects=org.jsonx.binding.Number.class), @org.jsonx.t(objects=org.jsonx.binding.String.class)}, nullable=false)
+    @org.jsonx.ArrayProperty(name="bindings", elementIds={0}, nullable=false)
+    public java.util.List<java.lang.Object> getBindings() {
+      return bindings;
+    }
+
+    public Binding setBindings(final java.util.List<java.lang.Object> bindings) {
+      this.bindings = bindings;
+      return this;
+    }
+
+    private java.util.List<java.lang.Object> bindings;
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this)
+        return true;
+
+      if (!(obj instanceof org.jsonx.binding.Binding))
+        return false;
+
+      final org.jsonx.binding.Binding that = (org.jsonx.binding.Binding)obj;
+      if (!org.libj.lang.ObjectUtil.equals(schema, that.schema))
+        return false;
+
+      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+        return false;
+
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      int hashCode = 17404510;
+      if (schema != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(schema);
+
+      if (bindings != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+
+      return hashCode;
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+      return org.jsonx.JxEncoder.get().toString(this);
+    }
   }
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")

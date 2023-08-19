@@ -93,11 +93,12 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  private static xL1gluGCXAA.Binding jsdToXsb(final @binding.Binding List<?> jsb) {
+  private static xL1gluGCXAA.Binding jsdToXsb(final binding.Binding jsb) {
     final xL1gluGCXAA.Binding xsb = new xL1gluGCXAA.Binding();
-    xsb.setJxSchema(jsdToXsb((schema.Schema)jsb.get(0)));
-    for (int i = 1, i$ = jsb.size(); i < i$; ++i) { // [RA]
-      final binding.Path member = (binding.Path)jsb.get(i);
+    xsb.setJxSchema(jsdToXsb(jsb.getSchema()));
+    final List<Object> bindings = jsb.getBindings();
+    for (int i = 0, i$ = bindings.size(); i < i$; ++i) { // [L]
+      final binding.Path member = (binding.Path)bindings.get(i);
       if (member instanceof binding.Any)
         xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), member.getPath(), ((binding.FieldBindings)member).getBindings()));
       else if (member instanceof binding.Reference)
@@ -181,9 +182,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
   public static SchemaElement parseJsb(final URL url, final Settings settings) throws DecodeException, IOException {
-    final @binding.Binding List<?> binding;
+    final binding.Binding binding;
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      binding = JxDecoder.VALIDATING.parseArray(in, binding.Binding.class);
+      binding = JxDecoder.VALIDATING.parseObject(in, binding.Binding.class);
     }
 
     final String pathOfSchemaFromInclude = null;
@@ -485,8 +486,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final @binding.Binding List<?> binding, final Settings settings) throws ValidationException {
-    this(jsdToXsb((schema.Schema)binding.get(0)), initBindingMap(jsdToXsb(binding)), settings);
+  public SchemaElement(final binding.Binding binding, final Settings settings) throws ValidationException {
+    this(jsdToXsb(binding.getSchema()), initBindingMap(jsdToXsb(binding)), settings);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {

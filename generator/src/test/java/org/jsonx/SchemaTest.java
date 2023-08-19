@@ -372,7 +372,7 @@ public class SchemaTest {
     if (logger.isInfoEnabled()) logger.info("       b) JSON -> Schema");
 
     if (controlBinding != null) {
-      final @binding.Binding ArrayList<?> binding = testParseBinding(json, true);
+      final binding.Binding binding = testParseBinding(json, true);
 
       if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
       final String jsbx = toXml(new SchemaElement(binding, settings)).toString();
@@ -407,9 +407,9 @@ public class SchemaTest {
     }
   }
 
-  private static @binding.Binding ArrayList<?> testParseBinding(final String jsb, final boolean test) throws DecodeException, IOException {
+  private static binding.Binding testParseBinding(final String jsb, final boolean test) throws DecodeException, IOException {
     try (final JsonReader reader = new JsonReader(jsb)) {
-      final @binding.Binding ArrayList<?> binding1 = JxDecoder.VALIDATING.parseArray(reader, binding.Binding.class);
+      final binding.Binding binding1 = JxDecoder.VALIDATING.parseObject(reader, binding.Binding.class);
       if (test) {
         final String jsb1 = binding1.toString();
         final schema.Schema schema2 = testParseSchema(jsb1, false);
