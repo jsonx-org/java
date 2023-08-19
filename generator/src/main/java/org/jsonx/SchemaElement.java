@@ -64,7 +64,7 @@ import org.xml.sax.SAXException;
 /**
  * The root {@link Element} of a JSON Schema Document.
  */
-public final class SchemaElement extends Element implements Declarer {
+public final class SchemaElement extends Element implements Declarer { // FIXME: Rename SchemaElement to something better
   private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
 
   private static <T extends xL1gluGCXAA.$FieldBindings>T jsdToXsbField(final T xsb, final String path, final List<binding.FieldBinding> bindings) {
@@ -165,7 +165,7 @@ public final class SchemaElement extends Element implements Declarer {
    */
   public static SchemaElement parseJsd(final URL url, final Settings settings) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), null, settings);
+      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), settings);
     }
   }
 
@@ -193,7 +193,7 @@ public final class SchemaElement extends Element implements Declarer {
       schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
     }
 
-    return new SchemaElement(schema, binding, settings);
+    return new SchemaElement(jsdToXsb(schema), initBindingMap(jsdToXsb(binding)), settings);
   }
 
   private static ErrorHandler errorHandler;
@@ -231,15 +231,8 @@ public final class SchemaElement extends Element implements Declarer {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  @SuppressWarnings("rawtypes")
   public static SchemaElement parseJsbx(final URL url, final Settings settings) throws IOException, SAXException {
-    final xL1gluGCXAA.Binding binding = (xL1gluGCXAA.Binding)Bindings.parse(url, getErrorHandler());
-    final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
-    final yAA.$AnyType schema = iterator.next();
-    if (!(schema instanceof xL0gluGCXAA.Schema))
-      throw new IllegalArgumentException(schema.name() + " is not jx:schema element");
-
-    return new SchemaElement((xL0gluGCXAA.Schema)schema, binding, settings);
+    return new SchemaElement((xL1gluGCXAA.Binding)Bindings.parse(url, getErrorHandler()), settings);
   }
 
   /**
@@ -327,7 +320,8 @@ public final class SchemaElement extends Element implements Declarer {
     return element;
   }
 
-  private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding) {
+  private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL1gluGCXAA.Binding binding) {
+    final xL0gluGCXAA.Schema schema = binding.getJxSchema();
     final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> elementToBinding = new IdentityHashMap<>();
     final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
     iterator.next(); // Skip schema element
@@ -368,19 +362,33 @@ public final class SchemaElement extends Element implements Declarer {
   /**
    * Creates a new {@link SchemaElement} from the specified XML binding, and with the provided package / class name prefix string.
    *
-   * @param schema The XML binding (JAX-SB).
+   * @param schema JSDx as a JAX-SB object.
    * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
+  public SchemaElement(final xL0gluGCXAA.Schema schema, final Settings settings) throws ValidationException {
+    this(schema, null, settings);
+  }
+
+  /**
+   * Creates a new {@link SchemaElement} from the specified XML binding, and with the provided package / class name prefix string.
+   *
+   * @param binding JSBx as a JAX-SB object.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
+   * @throws ValidationException If a cycle is detected in the object hierarchy.
+   * @throws NullPointerException If {@code schema} or {@code settings} is null.
+   */
+  public SchemaElement(final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
+    this(binding.getJxSchema(), initBindingMap(binding), settings);
+  }
+
+  private SchemaElement(final xL0gluGCXAA.Schema schema, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding, final Settings settings) throws ValidationException {
     super(null, schema.getDoc$());
     this.registry = new Registry(schema.getTargetNamespace$() == null ? null : schema.getTargetNamespace$().text(), settings);
     this.version = schema.name().getNamespaceURI().substring(0, schema.name().getNamespaceURI().lastIndexOf('.'));
 
     assertNoCycle(schema);
-
-    final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = initBindingMap(schema, binding);
 
     final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
     while (elementIterator.hasNext()) {
@@ -460,13 +468,25 @@ public final class SchemaElement extends Element implements Declarer {
   /**
    * Creates a new {@link SchemaElement} from the specified JSD binding, and with the provided package / class name prefix string.
    *
-   * @param schema The JSD binding.
+   * @param schema JSD as a JSONx object.
    * @param settings The {@link Settings} to be used for the generated bindings.
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final schema.Schema schema, final @binding.Binding List<?> binding, final Settings settings) throws ValidationException {
-    this(jsdToXsb(schema), jsdToXsb(binding), settings);
+  public SchemaElement(final schema.Schema schema, final Settings settings) throws ValidationException {
+    this(jsdToXsb(schema), null, settings);
+  }
+
+  /**
+   * Creates a new {@link SchemaElement} from the specified JSD binding, and with the provided package / class name prefix string.
+   *
+   * @param binding JSB as a JSONx object.
+   * @param settings The {@link Settings} to be used for the generated bindings.
+   * @throws ValidationException If a validation error has occurred.
+   * @throws NullPointerException If {@code schema} or {@code settings} is null.
+   */
+  public SchemaElement(final @binding.Binding List<?> binding, final Settings settings) throws ValidationException {
+    this(jsdToXsb((schema.Schema)binding.get(0)), initBindingMap(jsdToXsb(binding)), settings);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
