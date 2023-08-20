@@ -250,7 +250,6 @@ final class Reference extends Member {
     properties.put("jx:type", elementName());
 
     final Map<String,Object> attributes = toXml(owner, packageName, cursor, pathToBinding).getAttributes();
-    cursor.pushName((String)attributes.get("name"));
 
     attributes.remove(nameName());
     attributes.remove("xsi:type");

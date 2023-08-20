@@ -1678,7 +1678,7 @@ public class schema {
 
     private java.lang.String jx3aNs;
 
-    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="http://www.jsonx.org/schema-0.4.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.String getJx3aSchemaLocation() {
       return jx3aSchemaLocation;
     }

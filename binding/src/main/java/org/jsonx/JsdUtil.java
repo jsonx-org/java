@@ -36,7 +36,7 @@ import org.libj.util.ArrayUtil;
 import org.libj.util.Comparators;
 
 final class JsdUtil {
-  static final Comparator<String> ATTRIBUTES = Comparators.newFixedOrderComparator("id", "name", "names", "xsi:type", "abstract", "extends", "lang", "type", "field", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable", "decode", "encode");
+  static final Comparator<String> ATTRIBUTES = Comparators.newFixedOrderComparator("jx:ns", "jx:type", "id", "name", "names", "xsi:type", "abstract", "extends", "lang", "type", "field", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable", "decode", "encode");
   private static final char prefix = '_';
   private static final Function<Character,String> classSubs = c -> c == null ? "_" : c != '_' ? Integer.toHexString(c) : "__";
   private static final Function<Character,String> camelSubs = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? Integer.toHexString(c) : "__";

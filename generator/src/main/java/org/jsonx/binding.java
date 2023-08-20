@@ -1,7 +1,9 @@
 package org.jsonx;
 
+import org.jsonx.schema.Schema;
+
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-19T14:47:31.795")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-20T15:28:00.849")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {
@@ -16,11 +18,6 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
-
-    public Any setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (Any)this;
-    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -61,11 +58,6 @@ public class binding {
 
     private java.lang.String jx3aType;
 
-    public Array setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (Array)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -93,6 +85,74 @@ public class binding {
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Binding implements org.jsonx.JxObject {
+    @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+    public static class Bindings implements org.jsonx.JxObject {
+      @org.jsonx.AnyProperty(name="\\S|\\S.*\\S", types={@org.jsonx.t(objects=org.jsonx.binding.Any.class), @org.jsonx.t(objects=org.jsonx.binding.Reference.class), @org.jsonx.t(objects=org.jsonx.binding.Array.class), @org.jsonx.t(objects=org.jsonx.binding.Object.class), @org.jsonx.t(objects=org.jsonx.binding.Boolean.class), @org.jsonx.t(objects=org.jsonx.binding.Number.class), @org.jsonx.t(objects=org.jsonx.binding.String.class)}, nullable=false)
+      public java.util.LinkedHashMap<java.lang.String,java.lang.Object> get5cS7c5cS2e2a5cS() {
+        return _5cS7c5cS2e2a5cS;
+      }
+
+      public Bindings set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5cS7c5cS2e2a5cS) {
+        this._5cS7c5cS2e2a5cS = _5cS7c5cS2e2a5cS;
+        return this;
+      }
+
+      private java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5cS7c5cS2e2a5cS;
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this)
+          return true;
+
+        if (!(obj instanceof org.jsonx.binding.Binding.Bindings))
+          return false;
+
+        final org.jsonx.binding.Binding.Bindings that = (org.jsonx.binding.Binding.Bindings)obj;
+        if (!org.libj.lang.ObjectUtil.equals(_5cS7c5cS2e2a5cS, that._5cS7c5cS2e2a5cS))
+          return false;
+
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        int hashCode = -1005233612;
+        if (_5cS7c5cS2e2a5cS != null)
+          hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_5cS7c5cS2e2a5cS);
+
+        return hashCode;
+      }
+
+      @java.lang.Override
+      public java.lang.String toString() {
+        return org.jsonx.JxEncoder.get().toString(this);
+      }
+    }
+
+    @org.jsonx.StringProperty(name="jx:ns", pattern="http://www.jsonx.org/binding-0.4.jsd", nullable=false)
+    public java.lang.String getJx3aNs() {
+      return jx3aNs;
+    }
+
+    public Binding setJx3aNs(final java.lang.String jx3aNs) {
+      this.jx3aNs = jx3aNs;
+      return this;
+    }
+
+    private java.lang.String jx3aNs;
+
+    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    public java.lang.String getJx3aSchemaLocation() {
+      return jx3aSchemaLocation;
+    }
+
+    public Binding setJx3aSchemaLocation(final java.lang.String jx3aSchemaLocation) {
+      this.jx3aSchemaLocation = jx3aSchemaLocation;
+      return this;
+    }
+
+    private java.lang.String jx3aSchemaLocation;
+
     @org.jsonx.ObjectProperty(name="schema", nullable=false)
     public org.jsonx.schema.Schema getSchema() {
       return schema;
@@ -105,18 +165,17 @@ public class binding {
 
     private org.jsonx.schema.Schema schema;
 
-    @org.jsonx.AnyElement(id=0, types={@org.jsonx.t(objects=org.jsonx.binding.Any.class), @org.jsonx.t(objects=org.jsonx.binding.Reference.class), @org.jsonx.t(objects=org.jsonx.binding.Array.class), @org.jsonx.t(objects=org.jsonx.binding.Object.class), @org.jsonx.t(objects=org.jsonx.binding.Boolean.class), @org.jsonx.t(objects=org.jsonx.binding.Number.class), @org.jsonx.t(objects=org.jsonx.binding.String.class)}, nullable=false)
-    @org.jsonx.ArrayProperty(name="bindings", elementIds={0}, nullable=false)
-    public java.util.List<java.lang.Object> getBindings() {
+    @org.jsonx.ObjectProperty(name="bindings", nullable=false)
+    public org.jsonx.binding.Binding.Bindings getBindings() {
       return bindings;
     }
 
-    public Binding setBindings(final java.util.List<java.lang.Object> bindings) {
+    public Binding setBindings(final org.jsonx.binding.Binding.Bindings bindings) {
       this.bindings = bindings;
       return this;
     }
 
-    private java.util.List<java.lang.Object> bindings;
+    private org.jsonx.binding.Binding.Bindings bindings;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -127,6 +186,12 @@ public class binding {
         return false;
 
       final org.jsonx.binding.Binding that = (org.jsonx.binding.Binding)obj;
+      if (!org.libj.lang.ObjectUtil.equals(jx3aNs, that.jx3aNs))
+        return false;
+
+      if (!org.libj.lang.ObjectUtil.equals(jx3aSchemaLocation, that.jx3aSchemaLocation))
+        return false;
+
       if (!org.libj.lang.ObjectUtil.equals(schema, that.schema))
         return false;
 
@@ -139,6 +204,12 @@ public class binding {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 17404510;
+      if (jx3aNs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aNs);
+
+      if (jx3aSchemaLocation != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aSchemaLocation);
+
       if (schema != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(schema);
 
@@ -167,11 +238,6 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
-
-    public Boolean setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (Boolean)this;
-    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -261,11 +327,6 @@ public class binding {
 
     private java.util.List<org.jsonx.binding.FieldBinding> bindings;
 
-    public FieldBindings setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (FieldBindings)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -351,11 +412,6 @@ public class binding {
 
     private java.lang.String jx3aType;
 
-    public Number setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (Number)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -395,11 +451,6 @@ public class binding {
 
     private java.lang.String jx3aType;
 
-    public Object setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (Object)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -427,18 +478,6 @@ public class binding {
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public abstract static class Path implements org.jsonx.JxObject {
-    @org.jsonx.StringProperty(name="path", nullable=false)
-    public java.lang.String getPath() {
-      return path;
-    }
-
-    public Path setPath(final java.lang.String path) {
-      this.path = path;
-      return this;
-    }
-
-    private java.lang.String path;
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -447,19 +486,12 @@ public class binding {
       if (!(obj instanceof org.jsonx.binding.Path))
         return false;
 
-      final org.jsonx.binding.Path that = (org.jsonx.binding.Path)obj;
-      if (!org.libj.lang.ObjectUtil.equals(path, that.path))
-        return false;
-
       return true;
     }
 
     @java.lang.Override
     public int hashCode() {
       int hashCode = -874989844;
-      if (path != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(path);
-
       return hashCode;
     }
 
@@ -482,11 +514,6 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
-
-    public Reference setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (Reference)this;
-    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -526,11 +553,6 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
-
-    public String setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (String)this;
-    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -725,11 +747,6 @@ public class binding {
     }
 
     private java.util.List<org.jsonx.binding.TypeFieldBinding> bindings;
-
-    public TypeFieldBindings setPath(final java.lang.String path) {
-      super.setPath(path);
-      return (TypeFieldBindings)this;
-    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {

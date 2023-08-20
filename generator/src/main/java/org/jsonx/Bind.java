@@ -240,7 +240,7 @@ final class Bind {
       return null;
 
     attributes.put("lang", "java");
-    attributes.put("element", elementName);
+    attributes.put("jx:type", elementName);
     return attributes;
   }
 
