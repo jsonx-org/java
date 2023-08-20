@@ -288,7 +288,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           while (iterator.hasNext()) {
             final XmlElement child = (XmlElement)iterator.next();
             if ("binding".equals(child.getName()))
-              throw new UnsupportedOperationException();
+              throw new RuntimeException("...Remove this code");
           }
         }
 

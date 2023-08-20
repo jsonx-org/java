@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +43,10 @@ import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.BindingList;
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
+import org.jsonx.binding.TypeFieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBindings;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBindings;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema.TargetNamespace$;
@@ -67,26 +71,28 @@ import org.xml.sax.SAXException;
 public final class SchemaElement extends Element implements Declarer { // FIXME: Rename SchemaElement to something better
   private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
 
-  private static <T extends xL1gluGCXAA.$FieldBindings>T jsdToXsbField(final T xsb, final String path, final List<binding.FieldBinding> bindings) {
+  private static <T extends $FieldBindings>T jsdToXsbField(final T xsb, final String path, final Map<String,binding.FieldBinding> bindings) {
     xsb.setPath$(path);
-    for (int i = 0, i$ = bindings.size(); i < i$; ++i) { // [L]
-      final binding.FieldBinding fieldBinding = bindings.get(i);
-      final xL1gluGCXAA.$FieldBindings.Bind bind = new xL1gluGCXAA.$FieldBindings.Bind();
-      bind.setLang$(fieldBinding.getLang());
-      bind.setField$(fieldBinding.getField());
+    for (final Map.Entry<String,binding.FieldBinding> entry : bindings.entrySet()) { // [S]
+      final $FieldBindings.Bind bind = new $FieldBindings.Bind();
+      bind.setLang$(entry.getKey());
+      bind.setField$(entry.getValue().getField());
       xsb.addBind(bind);
     }
 
     return xsb;
   }
 
-  private static <T extends xL1gluGCXAA.$TypeFieldBindings>T jsdToXsbTypeField(final T xsb, final String path, final List<binding.TypeFieldBinding> bindings) {
+  private static <T extends $TypeFieldBindings>T jsdToXsbTypeField(final T xsb, final String path, final Map<String,binding.TypeFieldBinding> bindings) {
     xsb.setPath$(path);
-    for (int i = 0, i$ = bindings.size(); i < i$; ++i) { // [L]
-      final binding.TypeFieldBinding fieldBinding = bindings.get(i);
-      final xL1gluGCXAA.$TypeFieldBindings.Bind bind = new xL1gluGCXAA.$TypeFieldBindings.Bind();
-      bind.setLang$(fieldBinding.getLang());
-      bind.setField$(fieldBinding.getField());
+    for (final Map.Entry<String,binding.TypeFieldBinding> entry : bindings.entrySet()) { // [S]
+      final $TypeFieldBindings.Bind bind = new $TypeFieldBindings.Bind();
+      bind.setLang$(entry.getKey());
+      final TypeFieldBinding value = entry.getValue();
+      bind.setField$(value.getField());
+      bind.setDecode$(value.getDecode());
+      bind.setEncode$(value.getEncode());
+      bind.setType$(value.getType());
       xsb.addBind(bind);
     }
 
@@ -99,21 +105,21 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     final LinkedHashMap<String,Object> bindings = jsb.getBindings().get5cS7c5cS2e2a5cS();
     for (final Map.Entry<String,Object> entry : bindings.entrySet()) { // [L]
       final String path = entry.getKey();
-      final binding.Path member = (binding.Path)entry.getValue();
+      final JxObject member = (JxObject)entry.getValue();
       if (member instanceof binding.Any)
-        xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), path, ((binding.FieldBindings)member).getBindings()));
+        xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
       else if (member instanceof binding.Reference)
-        xsb.addReference(jsdToXsbField(new xL1gluGCXAA.Binding.Reference(), path, ((binding.FieldBindings)member).getBindings()));
+        xsb.addReference(jsdToXsbField(new xL1gluGCXAA.Binding.Reference(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
       else if (member instanceof binding.Array)
-        xsb.addArray(jsdToXsbField(new xL1gluGCXAA.Binding.Array(), path, ((binding.FieldBindings)member).getBindings()));
+        xsb.addArray(jsdToXsbField(new xL1gluGCXAA.Binding.Array(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
       else if (member instanceof binding.Object)
-        xsb.addObject(jsdToXsbField(new xL1gluGCXAA.Binding.Object(), path, ((binding.FieldBindings)member).getBindings()));
+        xsb.addObject(jsdToXsbField(new xL1gluGCXAA.Binding.Object(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
       else if (member instanceof binding.Boolean)
-        xsb.addBoolean(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Boolean(), path, ((binding.TypeFieldBindings)member).getBindings()));
+        xsb.addBoolean(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Boolean(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
       else if (member instanceof binding.Number)
-        xsb.addNumber(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Number(), path, ((binding.TypeFieldBindings)member).getBindings()));
+        xsb.addNumber(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Number(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
       else if (member instanceof binding.String)
-        xsb.addString(jsdToXsbTypeField(new xL1gluGCXAA.Binding.String(), path, ((binding.TypeFieldBindings)member).getBindings()));
+        xsb.addString(jsdToXsbTypeField(new xL1gluGCXAA.Binding.String(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
       else
         throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
     }
@@ -195,7 +201,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
     }
 
-    return new SchemaElement(jsdToXsb(schema), initBindingMap(jsdToXsb(binding)), settings);
+    binding.setSchema(schema);
+    final xL1gluGCXAA.Binding xsb = jsdToXsb(binding);
+    return new SchemaElement(xsb.getJxSchema(), xsb, settings);
   }
 
   private static ErrorHandler errorHandler;
@@ -288,16 +296,15 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     }
   }
 
-  private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL1gluGCXAA.Binding binding) {
-    final xL0gluGCXAA.Schema schema = binding.getJxSchema();
+  private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding) {
     final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = new IdentityHashMap<>();
     final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
     iterator.next(); // Skip schema element
     while (iterator.hasNext()) {
       final xL1gluGCXAA.$Path bindings = (xL1gluGCXAA.$Path)iterator.next();
       final $Documented element = new JsonPath(bindings.getPath$().text()).resolve(schema);
-      if (bindings instanceof xL1gluGCXAA.$FieldBindings) {
-        final BindingList<xL1gluGCXAA.$FieldBinding> b = ((xL1gluGCXAA.$FieldBindings)bindings).getBind();
+      if (bindings instanceof $FieldBindings) {
+        final BindingList<xL1gluGCXAA.$FieldBinding> b = (($FieldBindings)bindings).getBind();
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
@@ -306,8 +313,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
           }
         }
       }
-      else if (bindings instanceof xL1gluGCXAA.$TypeFieldBindings) {
-        final BindingList<xL1gluGCXAA.$TypeFieldBinding> b = ((xL1gluGCXAA.$TypeFieldBindings)bindings).getBind();
+      else if (bindings instanceof $TypeFieldBindings) {
+        final BindingList<xL1gluGCXAA.$TypeFieldBinding> b = (($TypeFieldBindings)bindings).getBind();
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
@@ -348,11 +355,12 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   public SchemaElement(final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
-    this(binding.getJxSchema(), initBindingMap(binding), settings);
+    this(binding.getJxSchema(), binding, settings);
   }
 
-  private SchemaElement(final xL0gluGCXAA.Schema schema, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding, final Settings settings) throws ValidationException {
-    super(null, schema.getDoc$());
+  private SchemaElement(xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
+    super(null, (schema == null ? schema = binding.getJxSchema() : schema).getDoc$());
+    final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
     final TargetNamespace$ targetNamespace = schema.getTargetNamespace$();
     this.registry = new Registry(targetNamespace == null ? null : targetNamespace.text(), settings);
     final String namespaceURI = schema.name().getNamespaceURI();
@@ -456,7 +464,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   public SchemaElement(final binding.Binding binding, final Settings settings) throws ValidationException {
-    this(jsdToXsb(binding.getSchema()), initBindingMap(jsdToXsb(binding)), settings);
+    this(null, jsdToXsb(binding), settings);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -605,32 +613,54 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
   @Override
   XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final List<XmlElement> elements;
+    final ArrayList<XmlElement> schemaElems;
     final ArrayList<Model> members = rootMembers();
     final int i$ = members.size();
     if (i$ > 0) {
-      elements = new ArrayList<>();
+      schemaElems = new ArrayList<>();
       int i = 0; do // [RA]
-        elements.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
+        schemaElems.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
       while (++i < i$);
     }
     else {
-      elements = null;
+      schemaElems = null;
     }
 
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
-    attributes.put("xmlns", "http://www.jsonx.org/schema-" + version + ".xsd");
-    attributes.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    attributes.put("xsi:schemaLocation", "http://www.jsonx.org/schema-" + version + ".xsd http://www.jsonx.org/schema-" + version + ".xsd");
+    final Map<String,Object> schemaAttrs = super.toXmlAttributes(owner, packageName);
+    schemaAttrs.put("xmlns", "http://www.jsonx.org/schema-" + version + ".xsd");
+    schemaAttrs.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    schemaAttrs.put("xsi:schemaLocation", "http://www.jsonx.org/schema-" + version + ".xsd http://www.jsonx.org/schema-" + version + ".xsd");
     final String targetNamespace = registry.targetNamespace;
     if (targetNamespace != null)
-      attributes.put("targetNamespace", targetNamespace.endsWith(".jsd") ? targetNamespace + "x" : targetNamespace);
+      schemaAttrs.put("targetNamespace", targetNamespace.endsWith(".jsd") ? targetNamespace + "x" : targetNamespace);
 
-    return new XmlElement("schema", attributes, elements);
+    final int noBindings = pathToBinding.size();
+    final XmlElement schema = new XmlElement("schema", schemaAttrs, schemaElems);
+    if (noBindings == 0)
+      return schema;
+
+    final LinkedHashMap<String,Object> bindingAttrs = new LinkedHashMap<>();
+    bindingAttrs.put("xmlns", "http://www.jsonx.org/binding-" + version + ".xsd");
+
+    schemaAttrs.remove("xmlns:xsi");
+    bindingAttrs.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+    schemaAttrs.remove("xsi:schemaLocation");
+    bindingAttrs.put("xsi:schemaLocation", "http://www.jsonx.org/binding-" + version + ".xsd http://www.jsonx.org/binding-" + version + ".xsd");
+
+    final ArrayList<XmlElement> bindingElems = new ArrayList<>(noBindings + 1);
+    bindingElems.add(schema);
+
+    for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) { // [S]
+      final LinkedHashMap<String,Object> bind = new LinkedHashMap<>(entry.getValue());
+      bindingElems.add(new XmlElement((String)bind.remove("jx:type"), Collections.singletonMap("path", entry.getKey()), Collections.singletonList(new XmlElement("bind", bind, null))));
+    }
+
+    return new XmlElement("binding", bindingAttrs, bindingElems);
   }
 
   public XmlElement toXml() {
-    return toXml(this, registry.packageName, new JsonPath.Cursor(), new HashMap<>());
+    return toXml(this, registry.packageName, new JsonPath.Cursor(), new LinkedHashMap<>());
   }
 
   @Override
@@ -666,14 +696,19 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     binding.put("schema", schema);
     final Map<String,Object> bindings = new LinkedHashMap<>();
     binding.put("bindings", bindings);
-    for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) // [S]
-      bindings.put(entry.getKey(), entry.getValue());
+    for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) { // [S]
+      final LinkedHashMap<String,Object> bind = new LinkedHashMap<>(entry.getValue());
+      final LinkedHashMap<String,Object> value = new LinkedHashMap<>();
+      value.put("jx:type", bind.remove("jx:type"));
+      value.put((String)bind.remove("lang"), bind);
+      bindings.put(entry.getKey(), value);
+    }
 
     return binding;
   }
 
   public Map<String,Object> toJson() {
-    return toJson(this, registry.packageName, new JsonPath.Cursor(), new HashMap<>());
+    return toJson(this, registry.packageName, new JsonPath.Cursor(), new LinkedHashMap<>());
   }
 
   private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {

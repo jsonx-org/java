@@ -50,7 +50,6 @@ import org.libj.test.JUnitUtil;
 import org.libj.util.StringPaths;
 import org.openjax.json.JSON;
 import org.openjax.json.JsonReader;
-import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +59,6 @@ import org.xml.sax.SAXException;
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
   private static final boolean testJson = true;
-  private static final URL schemaXsd = URLs.create("http://www.jsonx.org/schema.xsd");
   private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
@@ -92,12 +90,6 @@ public class SchemaTest {
     settings.add(Integer.MAX_VALUE);
   }
 
-  private static XmlElement toXml(final SchemaElement schema) {
-    final XmlElement xml = schema.toXml();
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd " + schemaXsd);
-    return xml;
-  }
-
   private static void validate(final String xml, final String fileName) throws IOException, SAXException {
     writeXmlFile(fileName, xml);
     try {
@@ -115,7 +107,7 @@ public class SchemaTest {
     final Settings settings = new Settings.Builder().withPrefix(prefix).build();
     final SchemaElement model = controlBinding != null ? new SchemaElement(controlBinding, settings) : new SchemaElement(controlSchema, settings);
     if (logger.isInfoEnabled()) logger.info("    b) Schema -> XML(2)");
-    final String xml = toXml(model).toString();
+    final String xml = model.toXml().toString();
     if (logger.isInfoEnabled()) logger.info("    c) Validate XML: c-" + fileName);
     validate(xml, "c-" + fileName);
 
@@ -276,7 +268,7 @@ public class SchemaTest {
       if (logger.isInfoEnabled()) logger.info("  6) Java(1) -> Schema");
       final SchemaElement test1Schema = newSchema(classLoader, packageName);
       if (logger.isInfoEnabled()) logger.info("  7) Schema -> XML");
-      final String xml = toXml(test1Schema).toString();
+      final String xml = test1Schema.toXml().toString();
       if (logger.isInfoEnabled()) logger.info("  8) Validate XML: 8-" + fileName);
       validate(xml, "8-" + fileName);
 
@@ -324,7 +316,7 @@ public class SchemaTest {
       }
 
       final SchemaElement schema = controlBinding != null ? new SchemaElement(controlBinding, settings) : new SchemaElement(controlSchema, settings);
-      final String xml1 = toXml(schema).toString();
+      final String xml1 = schema.toXml().toString();
       validate(xml1, outFile1);
 
       final Map<String,String> test1Sources = schema.toSource(generatedSourcesDir);
@@ -337,7 +329,7 @@ public class SchemaTest {
 
         final ClassLoader classLoader = compiler.compile();
         final SchemaElement test1Schema = newSchema(classLoader, packageName);
-        final String xml2 = toXml(test1Schema).toString();
+        final String xml2 = test1Schema.toXml().toString();
         validate(xml2, outFile2);
 
         final SchemaElement test2Schema = controlBinding != null ? new SchemaElement((Binding)Bindings.parse(xml2), settings) : new SchemaElement((Schema)Bindings.parse(xml2), settings);
@@ -375,7 +367,8 @@ public class SchemaTest {
       final binding.Binding binding = testParseBinding(json, true);
 
       if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
-      final String jsbx = toXml(new SchemaElement(binding, settings)).toString();
+      final String jsbx = new SchemaElement(binding, settings).toXml().toString();
+      System.err.println(jsbx);
       final Binding xsb = (Binding)Bindings.parse(jsbx);
       AssertXml.compare(controlBinding.toDOM(), xsb.toDOM()).assertEqual(true);
     }
@@ -383,7 +376,7 @@ public class SchemaTest {
       final schema.Schema schema = testParseSchema(json, true);
 
       if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
-      final String jsdx = toXml(new SchemaElement(schema, settings)).toString();
+      final String jsdx = new SchemaElement(schema, settings).toXml().toString();
       final Schema xsb = (Schema)Bindings.parse(jsdx);
       AssertXml.compare(controlSchema.toDOM(), xsb.toDOM()).assertEqual(true);
     }
@@ -413,10 +406,10 @@ public class SchemaTest {
       final binding.Binding binding1 = JxDecoder.VALIDATING.parseObject(reader, binding.Binding.class);
       if (test) {
         final String jsb1 = binding1.toString();
-        final schema.Schema schema2 = testParseSchema(jsb1, false);
-        final String jsb2 = schema2.toString();
+        final binding.Binding binding2 = testParseBinding(jsb1, false);
+        final String jsb2 = binding2.toString();
 
-        assertEquals(binding1, schema2);
+        assertEquals(binding1, binding2);
         assertEquals(jsb1, jsb2);
       }
 

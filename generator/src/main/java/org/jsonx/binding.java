@@ -1,9 +1,7 @@
 package org.jsonx;
 
-import org.jsonx.schema.Schema;
-
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-20T15:28:00.849")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-20T16:07:45.793")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {
@@ -266,7 +264,7 @@ public class binding {
 
   /** Specifies language-specific binding. **/
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  public static class FieldBinding extends org.jsonx.binding.Lang {
+  public static class FieldBinding implements org.jsonx.JxObject {
     /** Specifies the "field" identifier. **/
     @org.jsonx.StringProperty(name="field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.String getField() {
@@ -281,18 +279,12 @@ public class binding {
 
     private java.lang.String field;
 
-    /** Specifies the language to which this binding applies. **/
-    public FieldBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (FieldBinding)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
 
-      if (!(obj instanceof org.jsonx.binding.FieldBinding) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.binding.FieldBinding))
         return false;
 
       final org.jsonx.binding.FieldBinding that = (org.jsonx.binding.FieldBinding)obj;
@@ -304,39 +296,43 @@ public class binding {
 
     @java.lang.Override
     public int hashCode() {
-      int hashCode = 361567218 * 31 + super.hashCode();
+      int hashCode = 361567218;
       if (field != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(field);
 
       return hashCode;
     }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+      return org.jsonx.JxEncoder.get().toString(this);
+    }
   }
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  public abstract static class FieldBindings extends org.jsonx.binding.Path {
-    @org.jsonx.ObjectElement(id=0, type=org.jsonx.binding.FieldBinding.class, nullable=false)
-    @org.jsonx.ArrayProperty(name="bindings", elementIds={0}, nullable=false)
-    public java.util.List<org.jsonx.binding.FieldBinding> getBindings() {
-      return bindings;
+  public abstract static class FieldBindings implements org.jsonx.JxObject {
+    @org.jsonx.AnyProperty(name="\\S|\\S.*\\S", types=@org.jsonx.t(objects=org.jsonx.binding.FieldBinding.class), nullable=false)
+    public java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> get5cS7c5cS2e2a5cS() {
+      return _5cS7c5cS2e2a5cS;
     }
 
-    public FieldBindings setBindings(final java.util.List<org.jsonx.binding.FieldBinding> bindings) {
-      this.bindings = bindings;
+    public FieldBindings set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS) {
+      this._5cS7c5cS2e2a5cS = _5cS7c5cS2e2a5cS;
       return this;
     }
 
-    private java.util.List<org.jsonx.binding.FieldBinding> bindings;
+    private java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
 
-      if (!(obj instanceof org.jsonx.binding.FieldBindings) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.binding.FieldBindings))
         return false;
 
       final org.jsonx.binding.FieldBindings that = (org.jsonx.binding.FieldBindings)obj;
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_5cS7c5cS2e2a5cS, that._5cS7c5cS2e2a5cS))
         return false;
 
       return true;
@@ -344,50 +340,9 @@ public class binding {
 
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1676318015 * 31 + super.hashCode();
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
-
-      return hashCode;
-    }
-  }
-
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  public abstract static class Lang implements org.jsonx.JxObject {
-    /** Specifies the language to which this binding applies. **/
-    @org.jsonx.StringProperty(name="lang", pattern="\\S|\\S.*\\S", nullable=false)
-    public java.lang.String getLang() {
-      return lang;
-    }
-
-    /** Specifies the language to which this binding applies. **/
-    public Lang setLang(final java.lang.String lang) {
-      this.lang = lang;
-      return this;
-    }
-
-    private java.lang.String lang;
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.binding.Lang))
-        return false;
-
-      final org.jsonx.binding.Lang that = (org.jsonx.binding.Lang)obj;
-      if (!org.libj.lang.ObjectUtil.equals(lang, that.lang))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = -875109195;
-      if (lang != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(lang);
+      int hashCode = -1676318015;
+      if (_5cS7c5cS2e2a5cS != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_5cS7c5cS2e2a5cS);
 
       return hashCode;
     }
@@ -477,31 +432,6 @@ public class binding {
   }
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  public abstract static class Path implements org.jsonx.JxObject {
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.binding.Path))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = -874989844;
-      return hashCode;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.jsonx.JxEncoder.get().toString(this);
-    }
-  }
-
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Reference extends org.jsonx.binding.FieldBindings {
     @org.jsonx.StringProperty(name="jx:type", pattern="reference", nullable=false)
     public java.lang.String getJx3aType() {
@@ -581,7 +511,7 @@ public class binding {
 
   /** Specifies language-specific binding. **/
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  public static class TypeBinding extends org.jsonx.binding.Lang {
+  public static class TypeBinding implements org.jsonx.JxObject {
     /** Specifies the "type" qualified identifier. **/
     @org.jsonx.StringProperty(name="type", pattern="(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\[\\])?", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.String getType() {
@@ -624,18 +554,12 @@ public class binding {
 
     private java.lang.String encode;
 
-    /** Specifies the language to which this binding applies. **/
-    public TypeBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (TypeBinding)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
 
-      if (!(obj instanceof org.jsonx.binding.TypeBinding) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.binding.TypeBinding))
         return false;
 
       final org.jsonx.binding.TypeBinding that = (org.jsonx.binding.TypeBinding)obj;
@@ -653,7 +577,7 @@ public class binding {
 
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1725345468 * 31 + super.hashCode();
+      int hashCode = -1725345468;
       if (type != null)
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(type);
 
@@ -664,6 +588,11 @@ public class binding {
         hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(encode);
 
       return hashCode;
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+      return org.jsonx.JxEncoder.get().toString(this);
     }
   }
 
@@ -702,12 +631,6 @@ public class binding {
       return (TypeFieldBinding)this;
     }
 
-    /** Specifies the language to which this binding applies. **/
-    public TypeFieldBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (TypeFieldBinding)this;
-    }
-
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -734,30 +657,29 @@ public class binding {
   }
 
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
-  public abstract static class TypeFieldBindings extends org.jsonx.binding.Path {
-    @org.jsonx.ObjectElement(id=0, type=org.jsonx.binding.TypeFieldBinding.class, nullable=false)
-    @org.jsonx.ArrayProperty(name="bindings", elementIds={0}, nullable=false)
-    public java.util.List<org.jsonx.binding.TypeFieldBinding> getBindings() {
-      return bindings;
+  public abstract static class TypeFieldBindings implements org.jsonx.JxObject {
+    @org.jsonx.AnyProperty(name="\\S|\\S.*\\S", types=@org.jsonx.t(objects=org.jsonx.binding.TypeFieldBinding.class), nullable=false)
+    public java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> get5cS7c5cS2e2a5cS() {
+      return _5cS7c5cS2e2a5cS;
     }
 
-    public TypeFieldBindings setBindings(final java.util.List<org.jsonx.binding.TypeFieldBinding> bindings) {
-      this.bindings = bindings;
+    public TypeFieldBindings set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> _5cS7c5cS2e2a5cS) {
+      this._5cS7c5cS2e2a5cS = _5cS7c5cS2e2a5cS;
       return this;
     }
 
-    private java.util.List<org.jsonx.binding.TypeFieldBinding> bindings;
+    private java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> _5cS7c5cS2e2a5cS;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
 
-      if (!(obj instanceof org.jsonx.binding.TypeFieldBindings) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.binding.TypeFieldBindings))
         return false;
 
       final org.jsonx.binding.TypeFieldBindings that = (org.jsonx.binding.TypeFieldBindings)obj;
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_5cS7c5cS2e2a5cS, that._5cS7c5cS2e2a5cS))
         return false;
 
       return true;
@@ -765,11 +687,16 @@ public class binding {
 
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -943200985 * 31 + super.hashCode();
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      int hashCode = -943200985;
+      if (_5cS7c5cS2e2a5cS != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_5cS7c5cS2e2a5cS);
 
       return hashCode;
+    }
+
+    @java.lang.Override
+    public java.lang.String toString() {
+      return org.jsonx.JxEncoder.get().toString(this);
     }
   }
 }
