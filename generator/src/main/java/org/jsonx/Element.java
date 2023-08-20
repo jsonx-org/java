@@ -16,8 +16,10 @@
 
 package org.jsonx;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 
@@ -27,8 +29,8 @@ abstract class Element {
 
   Element(final String name, final $Documented.Doc$ doc) {
     this.name = name;
-    final String str;
-    this.doc = doc == null || doc.text() == null || (str = doc.text().trim()).length() == 0 ? null : str;
+    String str;
+    this.doc = doc == null || (str = doc.text()) == null || (str = str.trim()).length() == 0 ? null : str;
   }
 
   /**
@@ -51,6 +53,6 @@ abstract class Element {
     return name;
   }
 
-  abstract XmlElement toXml(Element owner, String packageName);
-  abstract Object toJson(Element owner, String packageName);
+  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
+  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
 }

@@ -24,7 +24,6 @@ import java.util.IdentityHashMap;
 import org.jaxsb.runtime.Binding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Boolean;
@@ -102,15 +101,12 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static void correlate(final xL0gluGCXAA.Schema.Boolean xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
-    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb, binding), null);
-  }
-
-  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
-    final BooleanModel model = new BooleanModel(registry, referrer, xsb, binding);
+  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    final BooleanModel model = new BooleanModel(registry, referrer, xsb, xsbToBinding);
     final Id id = model.id();
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
@@ -138,16 +134,16 @@ final class BooleanModel extends Model {
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
-    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, binding)), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
-    return registry.reference(newBooleanModel(registry, referrer, xsb, binding), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    return registry.reference(newBooleanModel(registry, referrer, xsb, xsbToBinding == null ? null : (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final xL1gluGCXAA.$TypeFieldBinding binding) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, binding));
+  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(xsb)));
     validateTypeBinding();
   }
 

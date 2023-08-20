@@ -35,7 +35,6 @@ import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.Registry.Wildcard;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember.MinIterate$;
@@ -249,19 +248,19 @@ final class ArrayModel extends Referrer<ArrayModel> {
     while (iterator.hasNext()) {
       final $Member member = ($Member)iterator.next();
       if (member instanceof $Array.Any) {
-        members.add(AnyModel.reference(registry, referrer, ($Array.Any)member, xsbToBinding.get(member)));
+        members.add(AnyModel.reference(registry, referrer, ($Array.Any)member, xsbToBinding));
       }
       else if (member instanceof $Array.Array) {
         members.add(ArrayModel.reference(registry, referrer, ($Array.Array)member, xsbToBinding));
       }
       else if (member instanceof $Array.Boolean) {
-        members.add(BooleanModel.reference(registry, referrer, ($Array.Boolean)member, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(member)));
+        members.add(BooleanModel.reference(registry, referrer, ($Array.Boolean)member, xsbToBinding));
       }
       else if (member instanceof $Array.Number) {
-        members.add(NumberModel.reference(registry, referrer, ($Array.Number)member, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(member)));
+        members.add(NumberModel.reference(registry, referrer, ($Array.Number)member, xsbToBinding));
       }
       else if (member instanceof $Array.String) {
-        members.add(StringModel.reference(registry, referrer, ($Array.String)member, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(member)));
+        members.add(StringModel.reference(registry, referrer, ($Array.String)member, xsbToBinding));
       }
       else if (member instanceof $Array.Reference) {
         final $Array.Reference reference = ($Array.Reference)member;
@@ -513,14 +512,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName) {
-    final XmlElement element = super.toXml(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     if (members.size() == 0)
       return element;
 
     final ArrayList<XmlElement> elements = new ArrayList<>();
     for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
-      elements.add(members.get(i).toXml(this, packageName));
+      elements.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
 
     if (element.getElements() != null)
       elements.addAll(element.getElements());
@@ -530,14 +529,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
-    final Map<String,Object> element = super.toJson(owner, packageName);
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     if (members.size() == 0)
       return element;
 
     final ArrayList<Object> elements = new ArrayList<>();
     for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
-      elements.add(members.get(i).toJson(this, packageName));
+      elements.add(members.get(i).toJson(this, packageName, cursor, pathToBinding));
 
     element.put("elements", elements);
     return element;

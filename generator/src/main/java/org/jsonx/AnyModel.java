@@ -20,12 +20,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 
+import org.jaxsb.runtime.Binding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$AnyMember;
@@ -122,12 +124,12 @@ final class AnyModel extends Referrer<AnyModel> {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
-    return registry.reference(new AnyModel(registry, referrer, xsb, binding), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
-    return registry.reference(new AnyModel(registry, referrer, xsb, binding), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding == null ? null : (xL1gluGCXAA.$FieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
   private static final Name$ anonymousReferenceName = new Name$("");
@@ -164,9 +166,9 @@ final class AnyModel extends Referrer<AnyModel> {
     validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), binding);
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), xsbToBinding == null ? null : (xL1gluGCXAA.$FieldBinding)xsbToBinding.get(xsb));
     validateTypeBinding();
   }
 

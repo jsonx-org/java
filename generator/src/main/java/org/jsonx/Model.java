@@ -20,8 +20,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -30,7 +29,6 @@ import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
-import org.libj.util.CollectionUtil;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA;
 
@@ -118,29 +116,31 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+    cursor.pushName((String)attributes.get("name"));
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding);
     if (bindingAttributes != null)
-      element.setElements(CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes)));
+      pathToBinding.put(cursor.toString(), bindingAttributes);
 
     return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
     final Map<String,Object> properties = new LinkedHashMap<>();
     properties.put("jx:type", elementName());
 
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+    cursor.pushName((String)attributes.get("name"));
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding);
     if (bindingAttributes != null)
-      properties.put("bindings", Collections.singletonList(bindingAttributes));
+      pathToBinding.put(cursor.toString(), bindingAttributes);
 
     return properties;
   }

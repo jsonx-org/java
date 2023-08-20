@@ -220,7 +220,7 @@ final class Bind {
     }
   }
 
-  public static Map<String,Object> toXmlAttributes(final Element owner, final Type type, final Field field) {
+  public static Map<String,Object> toXmlAttributes(final String elementName, final Element owner, final Type type, final Field field) {
     final AttributeMap attributes = new AttributeMap();
     if (type != null) {
       if (type.type != null)
@@ -240,6 +240,7 @@ final class Bind {
       return null;
 
     attributes.put("lang", "java");
+    attributes.put("element", elementName);
     return attributes;
   }
 

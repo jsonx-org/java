@@ -217,41 +217,41 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
-      final $Member member = ($Member)iterator.next();
-      if (member instanceof $Any) {
-        final $Any any = ($Any)member;
-        members.put(any.getNames$().text(), AnyModel.reference(registry, objectModel, any, xsbToBinding.get(any)));
+      final $Member next = ($Member)iterator.next();
+      if (next instanceof $Any) {
+        final $Any member = ($Any)next;
+        members.put(member.getNames$().text(), AnyModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Array) {
-        final $Array array = ($Array)member;
-        final ArrayModel child = ArrayModel.reference(registry, objectModel, array, xsbToBinding);
-        members.put(array.getName$().text(), child);
+      else if (next instanceof $Array) {
+        final $Array member = ($Array)next;
+        final ArrayModel child = ArrayModel.reference(registry, objectModel, member, xsbToBinding);
+        members.put(member.getName$().text(), child);
       }
-      else if (member instanceof $Boolean) {
-        final $Boolean bool = ($Boolean)member;
-        members.put(bool.getName$().text(), BooleanModel.reference(registry, objectModel, bool, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(bool)));
+      else if (next instanceof $Boolean) {
+        final $Boolean member = ($Boolean)next;
+        members.put(member.getName$().text(), BooleanModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Number) {
-        final $Number number = ($Number)member;
-        members.put(number.getName$().text(), NumberModel.reference(registry, objectModel, number, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(number)));
+      else if (next instanceof $Number) {
+        final $Number member = ($Number)next;
+        members.put(member.getName$().text(), NumberModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Object) {
-        final $Object object = ($Object)member;
-        final ObjectModel child = declare(registry, objectModel, object, xsbToBinding);
-        members.put(object.getName$().text(), child);
+      else if (next instanceof $Object) {
+        final $Object member = ($Object)next;
+        final ObjectModel child = declare(registry, objectModel, member, xsbToBinding);
+        members.put(member.getName$().text(), child);
       }
-      else if (member instanceof $Reference) {
-        final $Reference reference = ($Reference)member;
-        final Id id = Id.named(reference.getType$());
+      else if (next instanceof $Reference) {
+        final $Reference member = ($Reference)next;
+        final Id id = Id.named(member.getType$());
         final Member child = registry.getModel(id);
-        members.put(reference.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, reference, xsbToBinding.get(reference),  () -> registry.reference(registry.getModel(id), objectModel)));
+        members.put(member.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, member, xsbToBinding == null ? null : xsbToBinding.get(member), () -> registry.reference(registry.getModel(id), objectModel)));
       }
-      else if (member instanceof $String) {
-        final $String string = ($String)member;
-        members.put(string.getName$().text(), StringModel.reference(registry, objectModel, string, (xL1gluGCXAA.$TypeFieldBinding)xsbToBinding.get(string)));
+      else if (next instanceof $String) {
+        final $String member = ($String)next;
+        members.put(member.getName$().text(), StringModel.reference(registry, objectModel, member, xsbToBinding));
       }
       else {
-        throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
+        throw new UnsupportedOperationException("Unsupported " + next.getClass().getSimpleName() + " member type: " + next.getClass().getName());
       }
     }
 
@@ -279,8 +279,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    public XmlElement toXml(final ObjectModel owner, final String packageName) {
-      final XmlElement element = member.toXml(owner, packageName);
+    XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+      final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
         if (element.getElements() != null) {
@@ -288,7 +288,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           while (iterator.hasNext()) {
             final XmlElement child = (XmlElement)iterator.next();
             if ("binding".equals(child.getName()))
-              iterator.remove();
+              throw new UnsupportedOperationException();
           }
         }
 
@@ -303,8 +303,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     @SuppressWarnings("unchecked")
-    public Object toJson(final ObjectModel owner, final String packageName) {
-      final Map<String,Object> object = (Map<String,Object>)member.toJson(owner, packageName);
+    Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+      final Map<String,Object> object = (Map<String,Object>)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
         object.remove("bindings");
@@ -385,10 +385,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
         if (superProperty.member.isAssignableFrom(property.member))
           property.setOverride(superProperty.member);
-        else {
-          superProperty.member.isAssignableFrom(property.member);
+        else
           throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
-        }
       }
     }
   }
@@ -689,8 +687,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName) {
-    final XmlElement element = super.toXml(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     final int i$;
     if (properties == null || (i$ = properties.size()) == 0)
       return element;
@@ -698,7 +696,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final Collection superElements = element.getElements();
     final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (superElements != null ? superElements.size() : 0));
     for (final Property property : properties.values()) // [C]
-      elements.add(property.toXml(this, packageName));
+      elements.add(property.toXml(this, packageName, cursor, pathToBinding));
 
     if (superElements != null)
       elements.addAll(superElements);
@@ -708,15 +706,15 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
-    final Map<String,Object> element = super.toJson(owner, packageName);
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     final int size;
     if (properties == null || (size = properties.size()) == 0)
       return element;
 
     final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
     for (final Property property : this.properties.values()) // [C]
-      properties.put(property.member.name(), property.toJson(this, packageName));
+      properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
 
     element.put("properties", properties);
     return element;

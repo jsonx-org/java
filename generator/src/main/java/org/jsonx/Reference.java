@@ -18,8 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,6 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ReferenceMember;
-import org.libj.util.CollectionUtil;
-import org.libj.util.Iterators;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -198,7 +195,7 @@ final class Reference extends Member {
   }
 
   private Map<String,Object> getBindingAttributes(final Element owner) {
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding);
     if (bindingAttributes == null)
       return null;
 
@@ -210,27 +207,16 @@ final class Reference extends Member {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  XmlElement toXml(final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+    cursor.pushName((String)attributes.get("name"));
+
     final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
+    if (bindingAttributes != null)
+      pathToBinding.put(cursor.toString(), bindingAttributes);
+
     if (!registry.isRootMember(model)) {
-      final XmlElement element = model.toXml(owner, packageName);
-      if (element.getElements() != null) {
-        final XmlElement lastElement = Iterators.<XmlElement>lastElement(element.getElements().iterator());
-        if ("binding".equals(lastElement.getName())) {
-          // Remove "field", because the type of the reference cannot define a "field"
-          lastElement.getAttributes().remove("field");
-          if (bindingAttributes != null)
-            lastElement.getAttributes().putAll(bindingAttributes);
-        }
-        else if (bindingAttributes != null) {
-          element.getElements().add(new XmlElement("binding", bindingAttributes));
-        }
-      }
-      else if (bindingAttributes != null) {
-        element.setElements(CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes)));
-      }
+      final XmlElement element = model.toXml(owner, packageName, null, pathToBinding);
 
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
@@ -251,27 +237,28 @@ final class Reference extends Member {
       attributes.put("type", subName);
     }
 
-    final List<XmlElement> bindingXmls = bindingAttributes == null ? null : CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes));
     if (!(owner instanceof ObjectModel))
-      return new XmlElement(elementName(), attributes, bindingXmls);
+      return new XmlElement(elementName(), attributes);
 
     attributes.put("xsi:type", elementName());
-    return new XmlElement("property", attributes, bindingXmls);
+    return new XmlElement("property", attributes);
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
     final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
     properties.put("jx:type", elementName());
 
-    final Map<String,Object> attributes = toXml(owner, packageName).getAttributes();
+    final Map<String,Object> attributes = toXml(owner, packageName, cursor, pathToBinding).getAttributes();
+    cursor.pushName((String)attributes.get("name"));
+
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
     final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
     if (bindingAttributes != null)
-      properties.put("bindings", Collections.singletonList(bindingAttributes));
+      pathToBinding.put(cursor.toString(), bindingAttributes);
 
     return properties;
   }

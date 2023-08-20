@@ -378,7 +378,7 @@ public class SchemaTest {
       final String jsbx = toXml(new SchemaElement(binding, settings)).toString();
       final Binding xsb = (Binding)Bindings.parse(jsbx);
       AssertXml.compare(controlBinding.toDOM(), xsb.toDOM()).assertEqual(true);
-}
+    }
     else {
       final schema.Schema schema = testParseSchema(json, true);
 
@@ -408,6 +408,7 @@ public class SchemaTest {
   }
 
   private static binding.Binding testParseBinding(final String jsb, final boolean test) throws DecodeException, IOException {
+    System.err.println(jsb);
     try (final JsonReader reader = new JsonReader(jsb)) {
       final binding.Binding binding1 = JxDecoder.VALIDATING.parseObject(reader, binding.Binding.class);
       if (test) {

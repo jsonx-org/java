@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jsonx.Registry.Kind;
 import org.junit.Test;
@@ -65,12 +67,12 @@ public class TypeTest {
       }
 
       @Override
-      XmlElement toXml(final Element owner, final String packageName) {
+      XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
         return null;
       }
 
       @Override
-      JSON toJson(final Element owner, final String packageName) {
+      JSON toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
         return null;
       }
     };
