@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 public final class Converter {
   private static void trapPrintUsage() {
     System.err.println("Usage: Converter <SCHEMA_IN.jsd|SCHEMA_IN.jsdx> [SCHEMA_OUT.jsd|SCHEMA_OUT.jsdx]");
+    System.err.println("            (or) <BINDING_IN.jsb|BINDING_IN.jsbx> [BINDING_OUT.jsb|BINDING_OUT.jsbx]");
     System.exit(1);
   }
 
@@ -60,9 +61,9 @@ public final class Converter {
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
    */
-  public static String jsdToJsdx(final URL url) throws DecodeException, IOException, ValidationException {
-    final XmlElement xml = SchemaElement.parseJsd(url, Settings.DEFAULT).toXml();
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema-0.4.xsd");
+  public static String jsonToXml(final URL url) throws DecodeException, IOException, ValidationException {
+    final XmlElement xml = SchemaElement.parseJson(url, Settings.DEFAULT).toXml();
+//    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema-0.4.xsd");
     return xml.toString(2);
   }
 
@@ -74,8 +75,8 @@ public final class Converter {
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a parse error has occurred.
    */
-  public static String jsdxToJsd(final URL url) throws IOException, SAXException {
-    return JSON.toString(SchemaElement.parseJsdx(url, Settings.DEFAULT).toJson(), 2);
+  public static String xmlToJson(final URL url) throws IOException, SAXException {
+    return JSON.toString(SchemaElement.parseXml(url, Settings.DEFAULT).toJson(), 2);
   }
 
   /**
@@ -87,13 +88,14 @@ public final class Converter {
    * @throws IOException If an I/O error has occurred.
    */
   public static String convert(final URL url) throws IOException {
-    if (URLs.getName(url).endsWith(".jsd")) {
+    final String name = URLs.getName(url);
+    if (name.endsWith(".jsd") || name.endsWith(".jsb")) {
       try {
-        return jsdToJsdx(url);
+        return jsonToXml(url);
       }
       catch (final DecodeException e0) {
         try {
-          return jsdxToJsd(url);
+          return xmlToJson(url);
         }
         catch (final IOException | RuntimeException e1) {
           e1.addSuppressed(e0);
@@ -108,11 +110,11 @@ public final class Converter {
     }
 
     try {
-      return jsdxToJsd(url);
+      return xmlToJson(url);
     }
     catch (final SAXException e0) {
       try {
-        return jsdToJsdx(url);
+        return jsonToXml(url);
       }
       catch (final IOException | RuntimeException e1) {
         e1.addSuppressed(e0);

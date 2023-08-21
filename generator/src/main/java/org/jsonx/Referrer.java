@@ -21,10 +21,12 @@ import static org.libj.lang.Assertions.*;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.jaxsb.runtime.Binding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
@@ -40,7 +42,11 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
   private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
   private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
 
-  static $FieldBinding.Field$ getField(final xL1gluGCXAA.$FieldBinding binding) {
+  static $FieldBinding.Field$ getField(final IdentityHashMap<Binding,$FieldBinding> xsbToBinding, final Binding xsb) {
+    if (xsbToBinding == null)
+      return null;
+
+    final $FieldBinding binding = xsbToBinding.get(xsb);
     return binding == null ? null : binding.getField$();
   }
 

@@ -31,7 +31,7 @@ public class SchemaSpecTest {
       version = "-" + version;
 
     final URL testJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsdx");
-    final String testJsd = Converter.jsdxToJsd(testJsdUrl);
+    final String testJsd = Converter.xmlToJson(testJsdUrl);
 
     final URL controlJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsd");
     final String controlJsd = new String(URLs.readBytes(controlJsdUrl));

@@ -53,6 +53,7 @@ import org.openjax.json.JsonReader;
 import org.openjax.xml.sax.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 import org.xml.sax.SAXException;
 
 @RunWith(Parameterized.class)
@@ -101,19 +102,30 @@ public class SchemaTest {
     }
   }
 
-  private static SchemaElement testParseSchema(final Schema controlSchema, final Binding controlBinding, final String prefix, final String fileName) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final Schema schema, final Binding binding, final String prefix, final String fileName) throws IOException, SAXException {
     if (logger.isInfoEnabled()) logger.info("  Parse XML...");
     if (logger.isInfoEnabled()) logger.info("    a) XML(1) -> Schema");
     final Settings settings = new Settings.Builder().withPrefix(prefix).build();
-    final SchemaElement model = controlBinding != null ? new SchemaElement(controlBinding, settings) : new SchemaElement(controlSchema, settings);
+    final SchemaElement model = binding != null ? new SchemaElement(binding, settings) : new SchemaElement(schema, settings);
     if (logger.isInfoEnabled()) logger.info("    b) Schema -> XML(2)");
     final String xml = model.toXml().toString();
     if (logger.isInfoEnabled()) logger.info("    c) Validate XML: c-" + fileName);
     validate(xml, "c-" + fileName);
 
-    final Schema testBinding = (Schema)Bindings.parse(xml);
+    final $AnyType<?> control;
+    final $AnyType<?> test;
+    if (binding != null) {
+      control = binding;
+      test = Bindings.parse(xml);
+    }
+    else {
+      control = schema;
+      test = Bindings.parse(xml);
+    }
+
     if (logger.isInfoEnabled()) logger.info("    d) XML(1) == XML(2)");
-    AssertXml.compare(controlSchema.toDOM(), testBinding.toDOM()).assertEqual(true);
+    AssertXml.compare(control.toDOM(), test.toDOM()).assertEqual(true);
+
     return model;
   }
 
@@ -417,21 +429,21 @@ public class SchemaTest {
     }
   }
 
-  private static void testConverter(final String jsd) throws DecodeException, IOException, SAXException {
-    final URL jsdUrl = MemoryURLStreamHandler.createURL(jsd.getBytes());
-    final String jsdx = Converter.jsdToJsdx(jsdUrl);
-    final URL jsdxUrl = MemoryURLStreamHandler.createURL(jsdx.getBytes());
-    final String jsd2 = Converter.jsdxToJsd(jsdxUrl);
-    assertEquals(jsd, jsd2);
+  private static void testConverter(final String json) throws DecodeException, IOException, SAXException {
+    final URL jsonUrl = MemoryURLStreamHandler.createURL(json.getBytes());
+    final String xml = Converter.jsonToXml(jsonUrl);
+    final URL xmlUrl = MemoryURLStreamHandler.createURL(xml.getBytes());
+    final String json2 = Converter.xmlToJson(xmlUrl);
+    assertEquals(json, json2);
 
-    final URL jsd2Url = MemoryURLStreamHandler.createURL(jsd2.getBytes());
-    final String jsdx2 = Converter.jsdToJsdx(jsd2Url);
-    assertEquals(jsdx, jsdx2);
+    final URL jsd2Url = MemoryURLStreamHandler.createURL(json2.getBytes());
+    final String jsdx2 = Converter.jsonToXml(jsd2Url);
+    assertEquals(xml, jsdx2);
   }
 
   @Parameterized.Parameters(name = "{0}")
   public static URL[] resources() throws IOException {
-    return JUnitUtil.sortBySize(JUnitUtil.getResources("", ".*\\.js[bd]x"));
+    return JUnitUtil.sortBySize(JUnitUtil.getResources("", ".*\\.js[db]x"));
   }
 
   @Parameterized.Parameter(0)

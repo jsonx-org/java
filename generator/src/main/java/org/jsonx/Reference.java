@@ -216,7 +216,7 @@ final class Reference extends Member {
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
     if (!registry.isRootMember(model)) {
-      final XmlElement element = model.toXml(owner, packageName, null, pathToBinding);
+      final XmlElement element = model.toXml(owner, packageName, cursor, pathToBinding);
 
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened

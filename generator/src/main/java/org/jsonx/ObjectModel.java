@@ -400,7 +400,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
-    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding.get(xsb)), null);
+    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding, xsb), null);
     this.superObject = getReference(xsb.getExtends$());
     this.isAbstract = false;
     this.properties = parseProperties(xsb, xsbToBinding);

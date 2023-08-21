@@ -61,7 +61,7 @@ import org.libj.util.StringPaths;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.SilentErrorHandler;
-import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
@@ -99,9 +99,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  private static xL1gluGCXAA.Binding jsdToXsb(final binding.Binding jsb) {
+  private static xL1gluGCXAA.Binding jxToXsb(final binding.Binding jsb) {
     final xL1gluGCXAA.Binding xsb = new xL1gluGCXAA.Binding();
-    xsb.setJxSchema(jsdToXsb(jsb.getSchema()));
+    xsb.setJxSchema(jxToXsb(jsb.getSchema()));
     final LinkedHashMap<String,Object> bindings = jsb.getBindings().get5cS7c5cS2e2a5cS();
     for (final Map.Entry<String,Object> entry : bindings.entrySet()) { // [L]
       final String path = entry.getKey();
@@ -127,7 +127,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  private static xL0gluGCXAA.Schema jsdToXsb(final schema.Schema jsd) {
+  private static xL0gluGCXAA.Schema jxToXsb(final schema.Schema jsd) {
     final xL0gluGCXAA.Schema xsb = new xL0gluGCXAA.Schema();
     final LinkedHashMap<String,? extends schema.Member> declarations = jsd.get5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a();
     if (declarations != null && declarations.size() > 0) {
@@ -171,9 +171,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  public static SchemaElement parseJsd(final URL url, final Settings settings) throws DecodeException, IOException {
+  public static SchemaElement parseJson(final URL url, final Settings settings) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class), settings);
+      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class, binding.Binding.class), settings);
     }
   }
 
@@ -188,7 +188,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  public static SchemaElement parseJsb(final URL url, final Settings settings) throws DecodeException, IOException {
+  private static SchemaElement parseJsb(final URL url, final Settings settings) throws DecodeException, IOException {
     final binding.Binding binding;
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
       binding = JxDecoder.VALIDATING.parseObject(in, binding.Binding.class);
@@ -202,7 +202,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     }
 
     binding.setSchema(schema);
-    final xL1gluGCXAA.Binding xsb = jsdToXsb(binding);
+    final xL1gluGCXAA.Binding xsb = jxToXsb(binding);
     return new SchemaElement(xsb.getJxSchema(), xsb, settings);
   }
 
@@ -224,9 +224,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  public static SchemaElement parseJsdx(final URL url, final Settings settings) throws IOException, SAXException {
-    final xL0gluGCXAA.Schema schema = (xL0gluGCXAA.Schema)Bindings.parse(url, getErrorHandler());
-    return new SchemaElement(schema, null, settings);
+  public static SchemaElement parseXml(final URL url, final Settings settings) throws IOException, SAXException {
+    return new SchemaElement(Bindings.parse(url, getErrorHandler()), settings);
   }
 
   /**
@@ -259,11 +258,11 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   public static SchemaElement parse(final URL url, final Settings settings) throws IOException {
     if (URLs.getName(url).endsWith(".jsd")) {
       try {
-        return parseJsd(url, settings);
+        return parseJson(url, settings);
       }
       catch (final DecodeException e0) {
         try {
-          return parseJsdx(url, settings);
+          return parseXml(url, settings);
         }
         catch (final IOException | RuntimeException e1) {
           e1.addSuppressed(e0);
@@ -278,11 +277,11 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     }
 
     try {
-      return parseJsdx(url, settings);
+      return parseXml(url, settings);
     }
     catch (final SAXException e0) {
       try {
-        return parseJsd(url, settings);
+        return parseJson(url, settings);
       }
       catch (final IOException | RuntimeException e1) {
         e1.addSuppressed(e0);
@@ -298,7 +297,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
   private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding) {
     final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = new IdentityHashMap<>();
-    final Iterator<yAA.$AnyType> iterator = binding.elementIterator();
+    final Iterator<$AnyType> iterator = binding.elementIterator();
     iterator.next(); // Skip schema element
     while (iterator.hasNext()) {
       final xL1gluGCXAA.$Path bindings = (xL1gluGCXAA.$Path)iterator.next();
@@ -452,7 +451,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   public SchemaElement(final schema.Schema schema, final Settings settings) throws ValidationException {
-    this(jsdToXsb(schema), null, settings);
+    this(jxToXsb(schema), null, settings);
   }
 
   /**
@@ -464,7 +463,15 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   public SchemaElement(final binding.Binding binding, final Settings settings) throws ValidationException {
-    this(null, jsdToXsb(binding), settings);
+    this(null, jxToXsb(binding), settings);
+  }
+
+  public SchemaElement(final $AnyType<?> object, final Settings settings) {
+    this(object instanceof xL0gluGCXAA.Schema ? (xL0gluGCXAA.Schema)object : null, object instanceof xL1gluGCXAA.Binding ? (xL1gluGCXAA.Binding)object : null, settings);
+  }
+
+  public SchemaElement(final JxObject object, final Settings settings) {
+    this(object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb((binding.Binding)object) : null, settings);
   }
 
   private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
