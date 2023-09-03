@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.jaxsb.runtime.Binding;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
@@ -47,8 +46,6 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       return null;
 
     final $FieldBinding binding = xsbToBinding.get(xsb);
-    if (binding != null && binding.toString().contains("\"opr\""))
-      System.err.println();
     return binding == null ? null : binding.getField$();
   }
 

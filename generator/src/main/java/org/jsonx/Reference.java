@@ -195,7 +195,7 @@ final class Reference extends Member {
   }
 
   private Map<String,Object> getBindingAttributes(final Element owner, final Map<String,Object> attributes) {
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(model instanceof AnyModel ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(model instanceof AnyModel || model instanceof ArrayModel && ((ArrayModel)model).classType() == null ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes);
     if (bindingAttributes == null)
       return null;
 
@@ -214,9 +214,6 @@ final class Reference extends Member {
     final Map<String,Object> bindingAttributes = getBindingAttributes(owner, attributes);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
-
-    if (pathToBinding.containsKey("objRefs.bo.ol"))
-      cursor.toString();
 
     final XmlElement element;
     if (registry.isRootMember(model)) {

@@ -54,14 +54,12 @@ class JsonPath implements Iterable<Object> {
       else
         path.add(name);
 
-//      System.err.println(">> " + name + "     " + this);
       nextIndex.push(0);
       this.nextWillBeIndex.push(nextWillBeIndex);
     }
 
     void popName() {
-      final Object x = path.removeLast();
-//      System.err.println("<< " + x + "     " + this);
+      path.removeLast();
       nextIndex.pop();
       nextWillBeIndex.pop();
       nextIndex.set(nextIndex.size() - 1, nextIndex.peek() + 1);
@@ -138,24 +136,6 @@ class JsonPath implements Iterable<Object> {
     if (!indexes)
       path.add(unescapeTerm(str.substring(start)).toString());
   }
-
-//  private static LinkedList<Object> xxx(final $Documented b, final boolean isInArray) {
-//    if (b == null)
-//      return new LinkedList<>();
-//
-//    final $Documented owner = ($Documented)b.owner();
-//    final Iterator<$AnySimpleType> attributeIterator = owner.attributeIterator();
-//    while (attributeIterator.hasNext()) {
-//      final $AnySimpleType attribute = attributeIterator.next();
-//      if ("name".equals(attribute.name().getLocalPart())) {
-//        final String name = (String)attribute.text();
-//        final LinkedList<Object> xxx = xxx(b, false);
-//        xxx.add(name);
-//        return xxx;
-//      }
-//    }
-//
-//  }
 
   $Documented resolve($Documented element) {
     final Iterator<Object> pathIterator = iterator();

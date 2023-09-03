@@ -45,7 +45,6 @@ import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
 import org.jsonx.binding.TypeFieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBindings;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBindings;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA;
@@ -312,16 +311,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
-            if (fieldBinding.toString().contains("<jb:bind xmlns:jb=\"http://www.jsonx.org/binding-0.4.xsd\" lang=\"java\" field=\"objRefDefaultBoolean\"></jb:bind>")) {
-              System.err.println(bindings.getPath$().text());
-              new JsonPath(bindings.getPath$().text()).resolve(schema);
-              x = element;
-            }
-            final $FieldBinding put = xsbToBinding.put(element, fieldBinding);
-            if (put != null) {
-              System.err.println(put.toString());
+            if (xsbToBinding.put(element, fieldBinding) != null)
               throw new IllegalStateException();
-            }
+
             break;
           }
         }
@@ -331,16 +323,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
-            if (fieldBinding.toString().contains("<jb:bind xmlns:jb=\"http://www.jsonx.org/binding-0.4.xsd\" lang=\"java\" type=\"java.lang.Boolean\" decode=\"java.lang.Boolean.getBoolean\"></jb:bind>")) {
-              System.err.println(bindings.getPath$().text());
-              new JsonPath(bindings.getPath$().text()).resolve(schema);
-              x = element;
-            }
-            final $FieldBinding put = xsbToBinding.put(element, fieldBinding);
-            if (put != null) {
-              System.err.println(put.toString());
+            if (xsbToBinding.put(element, fieldBinding) != null)
               throw new IllegalStateException();
-            }
 
             break;
           }

@@ -234,9 +234,6 @@ final class Bind {
       if (name == null)
         name = attributes.get("names");
 
-      if (name == null)
-        System.err.println();
-
       if (!field.field.equals(JsdUtil.getFieldName(JsdUtil.fixReserved((String)name))))
         bindingAttrs.put("field", field.field);
     }
