@@ -194,8 +194,8 @@ final class Reference extends Member {
     return model.typeAnnotation();
   }
 
-  private Map<String,Object> getBindingAttributes(final Element owner) {
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding);
+  private Map<String,Object> getBindingAttributes(final Element owner, final Map<String,Object> attributes) {
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(model instanceof AnyModel ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes);
     if (bindingAttributes == null)
       return null;
 
@@ -203,7 +203,7 @@ final class Reference extends Member {
     bindingAttributes.remove("decode");
     bindingAttributes.remove("encode");
     // If there's only lang="java", then remove the binding element
-    return bindingAttributes.size() <= 1 ? null : bindingAttributes;
+    return bindingAttributes.size() <= 2 ? null : bindingAttributes;
   }
 
   @Override
@@ -211,12 +211,30 @@ final class Reference extends Member {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     cursor.pushName((String)attributes.get("name"));
 
-    final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
+    final Map<String,Object> bindingAttributes = getBindingAttributes(owner, attributes);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
-    if (!registry.isRootMember(model)) {
-      final XmlElement element = model.toXml(owner, packageName, cursor, pathToBinding);
+    if (pathToBinding.containsKey("objRefs.bo.ol"))
+      cursor.toString();
+
+    final XmlElement element;
+    if (registry.isRootMember(model)) {
+      if (model != null) {
+        final String subName = Registry.getSubName(model.id().toString(), packageName);
+        attributes.put("type", subName);
+      }
+
+      if (owner instanceof ObjectModel) {
+        attributes.put("xsi:type", elementName());
+        element = new XmlElement("property", attributes);
+      }
+      else {
+        element = new XmlElement(elementName(), attributes);
+      }
+    }
+    else {
+      element = model.toXml(owner, packageName, cursor, pathToBinding);
 
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
@@ -228,20 +246,10 @@ final class Reference extends Member {
       attrs.remove("nullable");
       attrs.remove("use");
       attrs.putAll(attributes);
-
-      return element;
     }
 
-    if (model != null) {
-      final String subName = Registry.getSubName(model.id().toString(), packageName);
-      attributes.put("type", subName);
-    }
-
-    if (!(owner instanceof ObjectModel))
-      return new XmlElement(elementName(), attributes);
-
-    attributes.put("xsi:type", elementName());
-    return new XmlElement("property", attributes);
+    cursor.popName();
+    return element;
   }
 
   @Override
@@ -250,15 +258,10 @@ final class Reference extends Member {
     properties.put("jx:type", elementName());
 
     final Map<String,Object> attributes = toXml(owner, packageName, cursor, pathToBinding).getAttributes();
-
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
-    if (bindingAttributes != null)
-      pathToBinding.put(cursor.toString(), bindingAttributes);
-
     return properties;
   }
 

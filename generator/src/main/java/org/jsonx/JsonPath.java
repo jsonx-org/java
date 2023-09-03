@@ -20,36 +20,72 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.libj.lang.Strings;
+import org.libj.util.primitive.ArrayBooleanList;
+import org.libj.util.primitive.ArrayIntList;
+import org.openjax.json.JsonUtil;
 import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 
 class JsonPath implements Iterable<Object> {
+  private static String escapeTerm(final String term) {
+    final StringBuilder b = JsonUtil.escape(term);
+    Strings.replace(b, "\\", "\\\\");
+    Strings.replace(b, ".", "\\.");
+    return b.toString();
+  }
+
+  private static String unescapeTerm(final String term) {
+    final StringBuilder b = new StringBuilder(term);
+    Strings.replace(b, "\\.", ".");
+    Strings.replace(b, "\\\\", "\\");
+    return JsonUtil.unescape(b).toString();
+  }
+
   static class Cursor {
     private final LinkedList<Object> path = new LinkedList<>();
-    private int index = -1;
+    private final ArrayIntList nextIndex = new ArrayIntList(new int[] {0});
+    private final ArrayBooleanList nextWillBeIndex = new ArrayBooleanList(new boolean[] {false});
 
     void pushName(final String name) {
-      if (index == -1 && name != null)
+      final boolean nextWillBeIndex = this.nextWillBeIndex.peek();
+      if (nextWillBeIndex || name == null) // Name can be null for <any>
+        path.add(nextIndex.peek());
+      else
         path.add(name);
+
+//      System.err.println(">> " + name + "     " + this);
+      nextIndex.push(0);
+      this.nextWillBeIndex.push(nextWillBeIndex);
     }
 
     void popName() {
-
+      final Object x = path.removeLast();
+//      System.err.println("<< " + x + "     " + this);
+      nextIndex.pop();
+      nextWillBeIndex.pop();
+      nextIndex.set(nextIndex.size() - 1, nextIndex.peek() + 1);
     }
 
-    void pushIndex() {
-      path.add(++index);
+    void inArray() {
+      if (path.size() == 0)
+        throw new IllegalStateException();
+
+      nextWillBeIndex.set(nextIndex.size() - 1, true);
     }
 
     @Override
     public String toString() {
+      if (path.size() == 0)
+        return "";
+
       final StringBuilder b = new StringBuilder();
       for (final Object term : path) { // [L]
         if (term instanceof String) {
           if (b.length() > 0)
             b.append('.');
 
-          b.append(term);
+          b.append(escapeTerm((String)term));
         }
         else if (term instanceof Integer) {
           b.append('[').append(term).append(']');
@@ -59,7 +95,10 @@ class JsonPath implements Iterable<Object> {
         }
       }
 
-      return b.toString();
+      final String str = b.toString();
+      if ("o.p".endsWith(str))
+        System.err.println();
+      return str;
     }
   }
 
@@ -71,20 +110,22 @@ class JsonPath implements Iterable<Object> {
     boolean escape = false;
     boolean indexes = false;
     int start = 0;
-    for (int i = 0, i$ = str.length(); i < i$; ++i) {
+    for (int i = 0, i$ = str.length(); i < i$; ++i) { // [ST]
       final char ch = str.charAt(i);
       if (ch == '\\') {
         escape = !escape;
       }
       else if (escape) {
         escape = false;
+        if (ch == '\\')
+          ++i;
       }
       else if (ch == '.') {
-        path.add(str.substring(start, i));
+        path.add(unescapeTerm(str.substring(start, i)).toString());
         start = ++i;
       }
       else if (ch == '[') {
-        path.add(str.substring(start, i));
+        path.add(unescapeTerm(str.substring(start, i)).toString());
         start = ++i;
         indexes = true;
       }
@@ -95,7 +136,7 @@ class JsonPath implements Iterable<Object> {
     }
 
     if (!indexes)
-      path.add(str.substring(start));
+      path.add(unescapeTerm(str.substring(start)).toString());
   }
 
 //  private static LinkedList<Object> xxx(final $Documented b, final boolean isInArray) {
@@ -118,34 +159,40 @@ class JsonPath implements Iterable<Object> {
 
   $Documented resolve($Documented element) {
     final Iterator<Object> pathIterator = iterator();
-    Iterator<yAA.$AnyType> xsbIterator = element.elementIterator();
+    Iterator<yAA.$AnyType> xsbIterator;
+
     OUT:
     while (pathIterator.hasNext()) {
+      xsbIterator = element.elementIterator();
+      element = null;
       final Object term = pathIterator.next();
       if (term instanceof String) {
+        final String name = (String)term;
         while (xsbIterator.hasNext()) {
           element = ($Documented)xsbIterator.next();
           final Iterator<$AnySimpleType> attributeIterator = element.attributeIterator();
           while (attributeIterator.hasNext()) {
             final $AnySimpleType attribute = attributeIterator.next();
-            if ("name".equals(attribute.name().getLocalPart()) && attribute.text().equals(term)) {
-              xsbIterator = element.elementIterator();
+            if ("name".equals(attribute.name().getLocalPart()) && attribute.text().equals(name))
               continue OUT;
-            }
           }
         }
       }
       else if (term instanceof Integer) {
-        for (int index = 0; xsbIterator.hasNext();) {
+        final int index = (int)term;
+        for (int i = 0; xsbIterator.hasNext(); ++i) { // [I]
           element = ($Documented)xsbIterator.next();
-          if (index == (int)term)
-            break OUT;
+          if (i == index)
+            continue OUT;
         }
       }
       else {
         throw new IllegalStateException("Unknown term class: " + term.getClass().getName());
       }
     }
+
+    if (element == null)
+      throw new IllegalStateException("JsonPath \"" + toString() + "\" not found");
 
     return element;
   }
@@ -157,6 +204,9 @@ class JsonPath implements Iterable<Object> {
 
   @Override
   public String toString() {
+    if ("o.p".endsWith(str))
+      System.err.println();
+
     return str;
   }
 }

@@ -33,7 +33,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -45,6 +45,7 @@ import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
 import org.jsonx.binding.TypeFieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBindings;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBindings;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA;
@@ -59,6 +60,7 @@ import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
 import org.libj.util.StringPaths;
 import org.openjax.json.JsonReader;
+import org.openjax.xml.api.CharacterDatas;
 import org.openjax.xml.api.XmlElement;
 import org.openjax.xml.sax.SilentErrorHandler;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
@@ -103,25 +105,27 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     final xL1gluGCXAA.Binding xsb = new xL1gluGCXAA.Binding();
     xsb.setJxSchema(jxToXsb(jsb.getSchema()));
     final LinkedHashMap<String,Object> bindings = jsb.getBindings().get5cS7c5cS2e2a5cS();
-    for (final Map.Entry<String,Object> entry : bindings.entrySet()) { // [L]
-      final String path = entry.getKey();
-      final JxObject member = (JxObject)entry.getValue();
-      if (member instanceof binding.Any)
-        xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else if (member instanceof binding.Reference)
-        xsb.addReference(jsdToXsbField(new xL1gluGCXAA.Binding.Reference(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else if (member instanceof binding.Array)
-        xsb.addArray(jsdToXsbField(new xL1gluGCXAA.Binding.Array(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else if (member instanceof binding.Object)
-        xsb.addObject(jsdToXsbField(new xL1gluGCXAA.Binding.Object(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else if (member instanceof binding.Boolean)
-        xsb.addBoolean(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Boolean(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else if (member instanceof binding.Number)
-        xsb.addNumber(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Number(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else if (member instanceof binding.String)
-        xsb.addString(jsdToXsbTypeField(new xL1gluGCXAA.Binding.String(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
-      else
-        throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
+    if (bindings.size() > 0) {
+      for (final Map.Entry<String,Object> entry : bindings.entrySet()) { // [S]
+        final String path = CharacterDatas.escapeForAttr(entry.getKey().replace("\\\\", "\\"), '"').toString();
+        final JxObject member = (JxObject)entry.getValue();
+        if (member instanceof binding.Any)
+          xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else if (member instanceof binding.Reference)
+          xsb.addReference(jsdToXsbField(new xL1gluGCXAA.Binding.Reference(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else if (member instanceof binding.Array)
+          xsb.addArray(jsdToXsbField(new xL1gluGCXAA.Binding.Array(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else if (member instanceof binding.Object)
+          xsb.addObject(jsdToXsbField(new xL1gluGCXAA.Binding.Object(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else if (member instanceof binding.Boolean)
+          xsb.addBoolean(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Boolean(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else if (member instanceof binding.Number)
+          xsb.addNumber(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Number(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else if (member instanceof binding.String)
+          xsb.addString(jsdToXsbTypeField(new xL1gluGCXAA.Binding.String(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+        else
+          throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
+      }
     }
 
     return xsb;
@@ -299,6 +303,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = new IdentityHashMap<>();
     final Iterator<$AnyType> iterator = binding.elementIterator();
     iterator.next(); // Skip schema element
+    Object x = null;
     while (iterator.hasNext()) {
       final xL1gluGCXAA.$Path bindings = (xL1gluGCXAA.$Path)iterator.next();
       final $Documented element = new JsonPath(bindings.getPath$().text()).resolve(schema);
@@ -307,7 +312,16 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
-            xsbToBinding.put(element, fieldBinding);
+            if (fieldBinding.toString().contains("<jb:bind xmlns:jb=\"http://www.jsonx.org/binding-0.4.xsd\" lang=\"java\" field=\"objRefDefaultBoolean\"></jb:bind>")) {
+              System.err.println(bindings.getPath$().text());
+              new JsonPath(bindings.getPath$().text()).resolve(schema);
+              x = element;
+            }
+            final $FieldBinding put = xsbToBinding.put(element, fieldBinding);
+            if (put != null) {
+              System.err.println(put.toString());
+              throw new IllegalStateException();
+            }
             break;
           }
         }
@@ -317,7 +331,17 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
-            xsbToBinding.put(element, fieldBinding);
+            if (fieldBinding.toString().contains("<jb:bind xmlns:jb=\"http://www.jsonx.org/binding-0.4.xsd\" lang=\"java\" type=\"java.lang.Boolean\" decode=\"java.lang.Boolean.getBoolean\"></jb:bind>")) {
+              System.err.println(bindings.getPath$().text());
+              new JsonPath(bindings.getPath$().text()).resolve(schema);
+              x = element;
+            }
+            final $FieldBinding put = xsbToBinding.put(element, fieldBinding);
+            if (put != null) {
+              System.err.println(put.toString());
+              throw new IllegalStateException();
+            }
+
             break;
           }
         }
@@ -474,7 +498,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     this(object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb((binding.Binding)object) : null, settings);
   }
 
-  private static Set<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
+  private static Collection<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     final HashSet<Class<?>> classes = new HashSet<>();
     PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
       if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
@@ -485,7 +509,15 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       return false;
     });
 
-    return classes;
+    // FIXME: Remove this...
+    if (false)
+      return classes;
+
+    final TreeMap<String,Class<?>> x = new TreeMap<>();
+    for (final Class<?> cls : classes)
+      x.put(cls.getName(), cls);
+
+    return x.values();
   }
 
   /**
@@ -660,7 +692,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
     for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) { // [S]
       final LinkedHashMap<String,Object> bind = new LinkedHashMap<>(entry.getValue());
-      bindingElems.add(new XmlElement((String)bind.remove("jx:type"), Collections.singletonMap("path", entry.getKey()), Collections.singletonList(new XmlElement("bind", bind, null))));
+      bindingElems.add(new XmlElement((String)bind.remove("jx:type"), Collections.singletonMap("path", CharacterDatas.escapeForAttr(entry.getKey(), '"').toString()), Collections.singletonList(new XmlElement("bind", bind, null))));
     }
 
     return new XmlElement("binding", bindingAttrs, bindingElems);
@@ -677,7 +709,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     if (size == 0)
       return null;
 
-    final Map<String,Object> schema = new LinkedHashMap<>();
+    final LinkedHashMap<String,Object> schema = new LinkedHashMap<>();
     schema.put("jx:ns", "http://www.jsonx.org/schema-" + version + ".jsd");
     schema.put("jx:schemaLocation", "http://www.jsonx.org/schema-" + version + ".jsd http://www.jsonx.org/schema-" + version + ".jsd");
     schema.putAll(toXmlAttributes(owner, packageName));
@@ -697,11 +729,11 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       return schema;
 
     schema.remove("jx:schemaLocation");
-    final Map<String,Object> binding = new LinkedHashMap<>();
+    final LinkedHashMap<String,Object> binding = new LinkedHashMap<>();
     binding.put("jx:ns", "http://www.jsonx.org/binding-" + version + ".jsd");
     binding.put("jx:schemaLocation", "http://www.jsonx.org/binding-" + version + ".jsd http://www.jsonx.org/binding-" + version + ".jsd");
     binding.put("schema", schema);
-    final Map<String,Object> bindings = new LinkedHashMap<>();
+    final LinkedHashMap<String,Object> bindings = new LinkedHashMap<>();
     binding.put("bindings", bindings);
     for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) { // [S]
       final LinkedHashMap<String,Object> bind = new LinkedHashMap<>(entry.getValue());

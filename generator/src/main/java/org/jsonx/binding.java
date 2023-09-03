@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-08-20T16:07:45.793")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-02T19:51:28.915")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {
@@ -16,6 +16,11 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
+
+    public Any set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (Any)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -55,6 +60,11 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
+
+    public Array set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (Array)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -237,6 +247,11 @@ public class binding {
 
     private java.lang.String jx3aType;
 
+    public Boolean set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (Boolean)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -367,6 +382,11 @@ public class binding {
 
     private java.lang.String jx3aType;
 
+    public Number set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (Number)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -405,6 +425,11 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
+
+    public Object set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (Object)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -445,6 +470,11 @@ public class binding {
 
     private java.lang.String jx3aType;
 
+    public Reference set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (Reference)this;
+    }
+
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
@@ -483,6 +513,11 @@ public class binding {
     }
 
     private java.lang.String jx3aType;
+
+    public String set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> _5cS7c5cS2e2a5cS) {
+      super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
+      return (String)this;
+    }
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {

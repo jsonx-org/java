@@ -21,7 +21,7 @@
 
   <schema xmlns="http://www.jsonx.org/schema-0.4.xsd" doc="Schema focusing on bindings">
 
-    <boolean name="bo.ol"/>
+    <boolean name="bo-ol"/>
     <boolean name="primitiveBoolean"/>
     <boolean name="intBoolean"/> <!-- This is actually an invalid type definition, which won't execute cause java.lang.Integer.parseInt("false") will lead to NumberFormatException -->
     <boolean name="StringBoolean"/>
@@ -51,7 +51,7 @@
     <string name="uuid" pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/>
 
     <array name="arrayReferences">
-      <reference type="bo.ol"/>
+      <reference type="bo-ol"/>
       <reference type="primitiveBoolean" nullable="false"/>
       <reference type="intBoolean" nullable="false"/>
       <reference type="StringBoolean"/>
@@ -117,7 +117,7 @@
       <property name="arrayDirect" xsi:type="reference" type="arrayDirect"/>
       <property name="arrayReferences" xsi:type="reference" type="arrayReferences"/>
 
-      <property name="bo.ol" xsi:type="reference" type="bo.ol"/>
+      <property name="bo.ol" xsi:type="reference" type="bo-ol"/>
       <property name="primitiveBoolean" xsi:type="reference" type="primitiveBoolean" nullable="false"/>
       <property name="intBoolean" xsi:type="reference" type="intBoolean" nullable="false"/>
       <property name="StringBoolean" xsi:type="reference" type="StringBoolean"/>
@@ -183,7 +183,7 @@
         <reference type="arrayDirect"/>
         <reference type="arrayReferences"/>
 
-        <reference type="bo.ol"/>
+        <reference type="bo-ol"/>
         <reference type="primitiveBoolean" nullable="false"/>
         <reference type="intBoolean" nullable="false"/>
         <reference type="StringBoolean"/>
@@ -245,540 +245,541 @@
     </object>
 
     <array name="a">
-      <string/>
-      <number/>
-      <boolean/>
-      <any/>
-      <array>
-        <string/>
-        <number/>
-        <boolean/>
-        <any/>
-        <array>
-          <string/>
-          <number/>
-          <boolean/>
-          <any/>
-          <array>
-            <string/>
-            <number/>
-            <boolean/>
-            <any/>
-            <array>
-              <string/>
-              <number/>
-              <boolean/>
-              <any/>
-              <array>
-                <string/>
-                <number/>
-                <boolean/>
-                <any/>
-                <array>
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
+      <array doc="a1">
+        <array doc="a2">
+          <array doc="a3">
+            <array doc="a4">
+              <array doc="a5">
+                <array doc="a6">
+                  <array doc="a7">
+                    <array doc="a8">
                       <string/>
-                      <number/>
-                      <boolean/>
+                      <number scale="0" nullable="false"/>
+                      <boolean nullable="false"/>
                       <any/>
                     </array>
-                  </array>
-                </array>
-              </array>
-            </array>
-          </array>
-        </array>
-      </array>
-    </array>
-    <object name="o" doc="Object other objects">
-      <property names="x.*" xsi:type="any"/>
-      <property name="a" xsi:type="array">
-        <string/>
-        <number/>
-        <boolean/>
-        <any/>
-        <array>
-          <string/>
-          <number/>
-          <boolean/>
-          <any/>
-          <array>
-            <string/>
-            <number/>
-            <boolean/>
-            <any/>
-            <array>
-              <string/>
-              <number/>
-              <boolean/>
-              <any/>
-              <array>
-                <string/>
-                <number/>
-                <boolean/>
-                <any/>
-                <array>
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
                     <string/>
                     <number/>
                     <boolean/>
                     <any/>
-                    <array>
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
+                  </array>
+                  <string/>
+                  <number scale="0" nullable="false"/>
+                  <boolean nullable="false"/>
+                  <any/>
+                </array>
+                <string/>
+                <number/>
+                <boolean/>
+                <any/>
+              </array>
+              <string/>
+              <number scale="0" nullable="false"/>
+              <boolean/>
+              <any/>
+            </array>
+            <string/>
+            <number/>
+            <boolean nullable="false"/>
+            <any/>
+          </array>
+          <string/>
+          <number scale="0" nullable="false"/>
+          <boolean nullable="false"/>
+          <any/>
+        </array>
+        <string/>
+        <number/>
+        <boolean/>
+        <any/>
+      </array>
+      <string/>
+      <number scale="0" nullable="false"/>
+      <boolean nullable="false"/>
+      <any/>
+    </array>
+
+    <object name="o" doc="Object other objects">
+      <property name="a" xsi:type="array">
+        <array doc="oa1">
+          <array doc="oa2">
+            <array doc="oa3">
+              <array doc="oa4">
+                <array doc="oa5">
+                  <array doc="oa6">
+                    <array doc="oa7">
+                      <array doc="oa8">
                         <string/>
-                        <number/>
+                        <number scale="0"/>
                         <boolean/>
                         <any/>
                       </array>
-                    </array>
-                  </array>
-                </array>
-              </array>
-            </array>
-          </array>
-        </array>
-      </property>
-      <property name="s" xsi:type="string"/>
-      <property name="n" xsi:type="number"/>
-      <property name="b" xsi:type="boolean"/>
-      <property name="r" xsi:type="reference" type="uuid"/>
-      <property name="p" xsi:type="object">
-        <property names="x.*" xsi:type="any"/>
-        <property name="a" xsi:type="array">
-          <string/>
-          <number/>
-          <boolean/>
-          <any/>
-          <array>
-            <string/>
-            <number/>
-            <boolean/>
-            <any/>
-            <array>
-              <string/>
-              <number/>
-              <boolean/>
-              <any/>
-              <array>
-                <string/>
-                <number/>
-                <boolean/>
-                <any/>
-                <array>
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
                       <string/>
-                      <number/>
+                      <number scale="0"/>
                       <boolean/>
                       <any/>
-                      <array>
-                        <string/>
-                        <number/>
-                        <boolean/>
-                        <any/>
-                        <array>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                  <string/>
+                  <number scale="0"/>
+                  <boolean/>
+                  <any/>
+                </array>
+                <string/>
+                <number scale="0"/>
+                <boolean/>
+                <any/>
+              </array>
+              <string/>
+              <number scale="0"/>
+              <boolean/>
+              <any/>
+            </array>
+            <string/>
+            <number scale="0"/>
+            <boolean/>
+            <any/>
+          </array>
+          <string/>
+          <number scale="0"/>
+          <boolean/>
+          <any/>
+        </array>
+        <string/>
+        <number scale="0"/>
+        <boolean/>
+        <any/>
+      </property>
+      <property names="x.*" xsi:type="any"/>
+      <property name="s" xsi:type="string"/>
+      <property name="n" xsi:type="number" scale="0"/>
+      <property name="b" xsi:type="boolean"/>
+      <property name="r" xsi:type="reference" type="uuid"/>
+      <property name="p0" xsi:type="object">
+        <property name="a" xsi:type="array">
+          <array doc="pa1">
+            <array doc="pa2">
+              <array doc="pa3">
+                <array doc="pa4">
+                  <array doc="pa5">
+                    <array doc="pa6">
+                      <array doc="pa7">
+                        <array doc="pa8">
                           <string/>
-                          <number/>
+                          <number scale="0"/>
                           <boolean/>
                           <any/>
                         </array>
-                      </array>
-                    </array>
-                  </array>
-                </array>
-              </array>
-            </array>
-          </array>
-        </property>
-        <property name="s" xsi:type="string"/>
-        <property name="n" xsi:type="number"/>
-        <property name="b" xsi:type="boolean"/>
-        <property name="r" xsi:type="reference" type="uuid"/>
-        <property name="p" xsi:type="object">
-          <property names="x.*" xsi:type="any"/>
-          <property name="a" xsi:type="array">
-            <string/>
-            <number/>
-            <boolean/>
-            <any/>
-            <array>
-              <string/>
-              <number/>
-              <boolean/>
-              <any/>
-              <array>
-                <string/>
-                <number/>
-                <boolean/>
-                <any/>
-                <array>
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
                         <string/>
-                        <number/>
+                        <number scale="0"/>
                         <boolean/>
                         <any/>
-                        <array>
-                          <string/>
-                          <number/>
-                          <boolean/>
-                          <any/>
-                          <array>
+                      </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                  <string/>
+                  <number scale="0"/>
+                  <boolean/>
+                  <any/>
+                </array>
+                <string/>
+                <number scale="0"/>
+                <boolean/>
+                <any/>
+              </array>
+              <string/>
+              <number scale="0"/>
+              <boolean/>
+              <any/>
+            </array>
+            <string/>
+            <number scale="0"/>
+            <boolean/>
+            <any/>
+          </array>
+          <string/>
+          <number scale="0"/>
+          <boolean/>
+          <any/>
+        </property>
+        <property names="x.*" xsi:type="any"/>
+        <property name="s" xsi:type="string"/>
+        <property name="n" xsi:type="number" scale="0"/>
+        <property name="b" xsi:type="boolean"/>
+        <property name="r" xsi:type="reference" type="uuid"/>
+        <property name="p1" xsi:type="object">
+          <property name="a" xsi:type="array">
+            <array doc="p2a1">
+              <array doc="p2a2">
+                <array doc="p2a3">
+                  <array doc="p2a4">
+                    <array doc="p2a5">
+                      <array doc="p2a6">
+                        <array doc="p2a7">
+                          <array doc="p2a8">
                             <string/>
-                            <number/>
+                            <number scale="0"/>
                             <boolean/>
                             <any/>
                           </array>
-                        </array>
-                      </array>
-                    </array>
-                  </array>
-                </array>
-              </array>
-            </array>
-          </property>
-          <property name="s" xsi:type="string"/>
-          <property name="n" xsi:type="number"/>
-          <property name="b" xsi:type="boolean"/>
-          <property name="r" xsi:type="reference" type="uuid"/>
-          <property name="p" xsi:type="object">
-            <property names="x.*" xsi:type="any"/>
-            <property name="a" xsi:type="array">
-              <string/>
-              <number/>
-              <boolean/>
-              <any/>
-              <array>
-                <string/>
-                <number/>
-                <boolean/>
-                <any/>
-                <array>
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
-                        <string/>
-                        <number/>
-                        <boolean/>
-                        <any/>
-                        <array>
                           <string/>
-                          <number/>
+                          <number scale="0"/>
                           <boolean/>
                           <any/>
-                          <array>
-                            <string/>
-                            <number/>
-                            <boolean/>
-                            <any/>
-                            <array>
+                        </array>
+                        <string/>
+                        <number scale="0"/>
+                        <boolean/>
+                        <any/>
+                      </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                  <string/>
+                  <number scale="0"/>
+                  <boolean/>
+                  <any/>
+                </array>
+                <string/>
+                <number scale="0"/>
+                <boolean/>
+                <any/>
+              </array>
+              <string/>
+              <number scale="0"/>
+              <boolean/>
+              <any/>
+            </array>
+            <string/>
+            <number scale="0"/>
+            <boolean/>
+            <any/>
+          </property>
+          <property names="x.*" xsi:type="any"/>
+          <property name="s" xsi:type="string"/>
+          <property name="n" xsi:type="number" scale="0"/>
+          <property name="b" xsi:type="boolean"/>
+          <property name="r" xsi:type="reference" type="uuid"/>
+          <property name="p2" xsi:type="object">
+            <property name="a" xsi:type="array">
+              <array doc="p3a1">
+                <array doc="p3a2">
+                  <array doc="p3a3">
+                    <array doc="p3a4">
+                      <array doc="p3a5">
+                        <array doc="p3a6">
+                          <array doc="p3a7">
+                            <array doc="p3a8">
                               <string/>
-                              <number/>
+                              <number scale="0"/>
                               <boolean/>
                               <any/>
                             </array>
-                          </array>
-                        </array>
-                      </array>
-                    </array>
-                  </array>
-                </array>
-              </array>
-            </property>
-            <property name="s" xsi:type="string"/>
-            <property name="n" xsi:type="number"/>
-            <property name="b" xsi:type="boolean"/>
-            <property name="r" xsi:type="reference" type="uuid"/>
-            <property name="p" xsi:type="object">
-              <property names="x.*" xsi:type="any"/>
-              <property name="a" xsi:type="array">
-                <string/>
-                <number/>
-                <boolean/>
-                <any/>
-                <array>
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
-                        <string/>
-                        <number/>
-                        <boolean/>
-                        <any/>
-                        <array>
-                          <string/>
-                          <number/>
-                          <boolean/>
-                          <any/>
-                          <array>
                             <string/>
-                            <number/>
+                            <number scale="0"/>
                             <boolean/>
                             <any/>
-                            <array>
-                              <string/>
-                              <number/>
-                              <boolean/>
-                              <any/>
-                              <array>
+                          </array>
+                          <string/>
+                          <number scale="0"/>
+                          <boolean/>
+                          <any/>
+                        </array>
+                        <string/>
+                        <number scale="0"/>
+                        <boolean/>
+                        <any/>
+                      </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                  <string/>
+                  <number scale="0"/>
+                  <boolean/>
+                  <any/>
+                </array>
+                <string/>
+                <number scale="0"/>
+                <boolean/>
+                <any/>
+              </array>
+              <string/>
+              <number scale="0"/>
+              <boolean/>
+              <any/>
+            </property>
+            <property names="x.*" xsi:type="any"/>
+            <property name="s" xsi:type="string"/>
+            <property name="n" xsi:type="number" scale="0"/>
+            <property name="b" xsi:type="boolean"/>
+            <property name="r" xsi:type="reference" type="uuid"/>
+            <property name="p3" xsi:type="object">
+              <property name="a" xsi:type="array">
+                <array doc="p4a1">
+                  <array doc="p4a2">
+                    <array doc="p4a3">
+                      <array doc="p4a4">
+                        <array doc="p4a5">
+                          <array doc="p4a6">
+                            <array doc="p4a7">
+                              <array doc="p4a8">
                                 <string/>
-                                <number/>
+                                <number scale="0"/>
                                 <boolean/>
                                 <any/>
                               </array>
-                            </array>
-                          </array>
-                        </array>
-                      </array>
-                    </array>
-                  </array>
-                </array>
-              </property>
-              <property name="s" xsi:type="string"/>
-              <property name="n" xsi:type="number"/>
-              <property name="b" xsi:type="boolean"/>
-              <property name="r" xsi:type="reference" type="uuid"/>
-              <property name="p" xsi:type="object">
-                <property names="x.*" xsi:type="any"/>
-                <property name="a" xsi:type="array">
-                  <string/>
-                  <number/>
-                  <boolean/>
-                  <any/>
-                  <array>
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
-                        <string/>
-                        <number/>
-                        <boolean/>
-                        <any/>
-                        <array>
-                          <string/>
-                          <number/>
-                          <boolean/>
-                          <any/>
-                          <array>
-                            <string/>
-                            <number/>
-                            <boolean/>
-                            <any/>
-                            <array>
                               <string/>
-                              <number/>
+                              <number scale="0"/>
                               <boolean/>
                               <any/>
-                              <array>
-                                <string/>
-                                <number/>
-                                <boolean/>
-                                <any/>
-                                <array>
+                            </array>
+                            <string/>
+                            <number scale="0"/>
+                            <boolean/>
+                            <any/>
+                          </array>
+                          <string/>
+                          <number scale="0"/>
+                          <boolean/>
+                          <any/>
+                        </array>
+                        <string/>
+                        <number scale="0"/>
+                        <boolean/>
+                        <any/>
+                      </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                  <string/>
+                  <number scale="0"/>
+                  <boolean/>
+                  <any/>
+                </array>
+                <string/>
+                <number scale="0"/>
+                <boolean/>
+                <any/>
+              </property>
+              <property names="x.*" xsi:type="any"/>
+              <property name="s" xsi:type="string"/>
+              <property name="n" xsi:type="number" scale="0"/>
+              <property name="b" xsi:type="boolean"/>
+              <property name="r" xsi:type="reference" type="uuid"/>
+              <property name="p4" xsi:type="object">
+                <property name="a" xsi:type="array">
+                  <array doc="p5a1">
+                    <array doc="p5a2">
+                      <array doc="p5a3">
+                        <array doc="p5a4">
+                          <array doc="p5a5">
+                            <array doc="p5a6">
+                              <array doc="p5a7">
+                                <array doc="p5a8">
                                   <string/>
-                                  <number/>
+                                  <number scale="0"/>
                                   <boolean/>
                                   <any/>
                                 </array>
-                              </array>
-                            </array>
-                          </array>
-                        </array>
-                      </array>
-                    </array>
-                  </array>
-                </property>
-                <property name="s" xsi:type="string"/>
-                <property name="n" xsi:type="number"/>
-                <property name="b" xsi:type="boolean"/>
-                <property name="r" xsi:type="reference" type="uuid"/>
-                <property name="p" xsi:type="object">
-                  <property names="x.*" xsi:type="any"/>
-                  <property name="a" xsi:type="array">
-                    <string/>
-                    <number/>
-                    <boolean/>
-                    <any/>
-                    <array>
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
-                        <string/>
-                        <number/>
-                        <boolean/>
-                        <any/>
-                        <array>
-                          <string/>
-                          <number/>
-                          <boolean/>
-                          <any/>
-                          <array>
-                            <string/>
-                            <number/>
-                            <boolean/>
-                            <any/>
-                            <array>
-                              <string/>
-                              <number/>
-                              <boolean/>
-                              <any/>
-                              <array>
                                 <string/>
-                                <number/>
+                                <number scale="0"/>
                                 <boolean/>
                                 <any/>
-                                <array>
-                                  <string/>
-                                  <number/>
-                                  <boolean/>
-                                  <any/>
-                                  <array>
+                              </array>
+                              <string/>
+                              <number scale="0"/>
+                              <boolean/>
+                              <any/>
+                            </array>
+                            <string/>
+                            <number scale="0"/>
+                            <boolean/>
+                            <any/>
+                          </array>
+                          <string/>
+                          <number scale="0"/>
+                          <boolean/>
+                          <any/>
+                        </array>
+                        <string/>
+                        <number scale="0"/>
+                        <boolean/>
+                        <any/>
+                      </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </array>
+                  <string/>
+                  <number scale="0"/>
+                  <boolean/>
+                  <any/>
+                </property>
+                <property names="x.*" xsi:type="any"/>
+                <property name="s" xsi:type="string"/>
+                <property name="n" xsi:type="number" scale="0"/>
+                <property name="b" xsi:type="boolean"/>
+                <property name="r" xsi:type="reference" type="uuid"/>
+                <property name="p5" xsi:type="object">
+                  <property name="a" xsi:type="array">
+                    <array doc="p6a1">
+                      <array doc="p6a2">
+                        <array doc="p6a3">
+                          <array doc="p6a4">
+                            <array doc="p6a5">
+                              <array doc="p6a6">
+                                <array doc="p6a7">
+                                  <array doc="p6a8">
                                     <string/>
-                                    <number/>
+                                    <number scale="0"/>
                                     <boolean/>
                                     <any/>
                                   </array>
-                                </array>
-                              </array>
-                            </array>
-                          </array>
-                        </array>
-                      </array>
-                    </array>
-                  </property>
-                  <property name="s" xsi:type="string"/>
-                  <property name="n" xsi:type="number"/>
-                  <property name="b" xsi:type="boolean"/>
-                  <property name="r" xsi:type="reference" type="uuid"/>
-                  <property name="p" xsi:type="object">
-                    <property names="x.*" xsi:type="any"/>
-                    <property name="a" xsi:type="array">
-                      <string/>
-                      <number/>
-                      <boolean/>
-                      <any/>
-                      <array>
-                        <string/>
-                        <number/>
-                        <boolean/>
-                        <any/>
-                        <array>
-                          <string/>
-                          <number/>
-                          <boolean/>
-                          <any/>
-                          <array>
-                            <string/>
-                            <number/>
-                            <boolean/>
-                            <any/>
-                            <array>
-                              <string/>
-                              <number/>
-                              <boolean/>
-                              <any/>
-                              <array>
-                                <string/>
-                                <number/>
-                                <boolean/>
-                                <any/>
-                                <array>
                                   <string/>
-                                  <number/>
+                                  <number scale="0"/>
                                   <boolean/>
                                   <any/>
-                                  <array>
-                                    <string/>
-                                    <number/>
-                                    <boolean/>
-                                    <any/>
-                                    <array>
+                                </array>
+                                <string/>
+                                <number scale="0"/>
+                                <boolean/>
+                                <any/>
+                              </array>
+                              <string/>
+                              <number scale="0"/>
+                              <boolean/>
+                              <any/>
+                            </array>
+                            <string/>
+                            <number scale="0"/>
+                            <boolean/>
+                            <any/>
+                          </array>
+                          <string/>
+                          <number scale="0"/>
+                          <boolean/>
+                          <any/>
+                        </array>
+                        <string/>
+                        <number scale="0"/>
+                        <boolean/>
+                        <any/>
+                      </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
+                    </array>
+                    <string/>
+                    <number scale="0"/>
+                    <boolean/>
+                    <any/>
+                  </property>
+                  <property names="x.*" xsi:type="any"/>
+                  <property name="s" xsi:type="string"/>
+                  <property name="n" xsi:type="number" scale="0"/>
+                  <property name="b" xsi:type="boolean"/>
+                  <property name="r" xsi:type="reference" type="uuid"/>
+                  <property name="p6" xsi:type="object">
+                    <property name="a" xsi:type="array">
+                      <array doc="p7a1">
+                        <array doc="p7a2">
+                          <array doc="p7a3">
+                            <array doc="p7a4">
+                              <array doc="p7a5">
+                                <array doc="p7a6">
+                                  <array doc="p7a7">
+                                    <array doc="p7a8">
                                       <string/>
-                                      <number/>
+                                      <number scale="0"/>
                                       <boolean/>
                                       <any/>
                                     </array>
+                                    <string/>
+                                    <number scale="0"/>
+                                    <boolean/>
+                                    <any/>
                                   </array>
+                                  <string/>
+                                  <number scale="0"/>
+                                  <boolean/>
+                                  <any/>
                                 </array>
+                                <string/>
+                                <number scale="0"/>
+                                <boolean/>
+                                <any/>
                               </array>
+                              <string/>
+                              <number scale="0"/>
+                              <boolean/>
+                              <any/>
                             </array>
+                            <string/>
+                            <number scale="0"/>
+                            <boolean/>
+                            <any/>
                           </array>
+                          <string/>
+                          <number scale="0"/>
+                          <boolean/>
+                          <any/>
                         </array>
+                        <string/>
+                        <number scale="0"/>
+                        <boolean/>
+                        <any/>
                       </array>
+                      <string/>
+                      <number scale="0"/>
+                      <boolean/>
+                      <any/>
                     </property>
+                    <property names="x.*" xsi:type="any"/>
                     <property name="s" xsi:type="string"/>
-                    <property name="n" xsi:type="number"/>
+                    <property name="n" xsi:type="number" scale="0"/>
                     <property name="b" xsi:type="boolean"/>
                     <property name="r" xsi:type="reference" type="uuid"/>
-                    <property name="p" xsi:type="object"/>
+                    <property name="p7" xsi:type="object"/>
                   </property>
                 </property>
               </property>
@@ -790,8 +791,8 @@
 
   </schema>
 
-
-  <boolean path="primitiveBoolean"><bind lang="java" type="boolean"/></boolean>
+  <boolean path="bo-ol"><bind lang="java" type="java.lang.Boolean" decode="java.lang.Boolean.parseBoolean"/></boolean>
+  <boolean path="primitiveBoolean"><bind lang="java" type="java.lang.Boolean" decode="org.libj.lang.Booleans.valueOf"/></boolean>
   <boolean path="intBoolean"><bind lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/></boolean> <!-- This is actually an invalid type definition, which won't execute cause java.lang.Integer.parseInt("false") will lead to NumberFormatException -->
   <boolean path="StringBoolean"><bind lang="java" type="java.lang.String"/></boolean>
 
@@ -808,13 +809,15 @@
   <number path="double"><bind lang="java" type="double"/></number>
   <number path="Double"><bind lang="java" type="java.lang.Double"/></number>
   <number path="StringDecimal"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></number>
+  <number path="CharSequenceDecimal"><bind lang="java" type="java.lang.CharSequence"/></number>
 
   <string path="charArray"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <string path="charSequence"><bind lang="java" type="java.lang.CharSequence"/></string>
   <string path="stringBigDecimal"><bind lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString"/></string>
   <string path="iso8601"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <string path="uuid"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
 
-  <boolean path="arrayDirect[2]"><bind lang="java" type="boolean"/></boolean>
+  <boolean path="arrayDirect[2]"><bind lang="java" type="java.lang.Boolean" decode="org.libj.lang.Booleans.valueOf"/></boolean>
   <boolean path="arrayDirect[3]"><bind lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/></boolean>
   <boolean path="arrayDirect[4]"><bind lang="java" type="java.lang.String"/></boolean>
   <number path="arrayDirect[5]"><bind lang="java" type="byte"/></number>
@@ -835,7 +838,7 @@
   <string path="arrayDirect[20]"><bind lang="java" type="java.lang.CharSequence"/></string>
   <string path="arrayDirect[21]"><bind lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString"/></string>
   <string path="arrayDirect[22]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="arrayDirect[23]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
+  <string path="arrayDirect[24]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
 
   <any path="objRefs[0]"><bind lang="java" field="objRefAny"/></any>
   <reference path="objRefs.arrayDirect"><bind lang="java" field="objRefArrayDirect"/></reference>
@@ -869,7 +872,7 @@
   <reference path="objRefs.object"><bind lang="java" field="objRefObject"/></reference>
 
   <array path="objDir.arrayDirect"><bind lang="java" field="objDirArrayDirect"/></array>
-  <boolean path="objDir.arrayDirect[1]"><bind lang="java" type="boolean"/></boolean>
+  <boolean path="objDir.arrayDirect[1]"><bind lang="java" type="java.lang.Boolean" decode="org.libj.lang.Booleans.valueOf"/></boolean>
   <boolean path="objDir.arrayDirect[2]"><bind lang="java" type="int" decode="java.lang.Integer.parseInt" encode="java.lang.String.valueOf"/></boolean>
   <boolean path="objDir.arrayDirect[3]"><bind lang="java" type="java.lang.String"/></boolean>
   <number path="objDir.arrayDirect[4]"><bind lang="java" type="byte"/></number>
@@ -920,314 +923,314 @@
   <string path="objDir.iso8601"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601" field="objDirIso8601"/></string>
   <string path="objDir.uuid"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull" field="objDirUuid"/></string>
   <object path="objDir.object"><bind lang="java" field="objDirObject"/></object>
-
-  <any path="o[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p.p[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p.p.p[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p.p.p.p[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p.p.p.p.p[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p.p.p.p.p.p[0]"><bind lang="java" field="a1"/></any>
-  <any path="o.p.p.p.p.p.p.p[0]"><bind lang="java" field="a1"/></any>
-
-  <reference path="o.r"><bind lang="java" field="longs"/></reference>
-  <reference path="o.p.r"><bind lang="java" field="shars"/></reference>
-  <reference path="o.p.p.r"><bind lang="java" field="longs"/></reference>
-  <reference path="o.p.p.p.r"><bind lang="java" field="bytes"/></reference>
-  <reference path="o.p.p.p.p.r"><bind lang="java" field="longs"/></reference>
-  <reference path="o.p.p.p.p.p.r"><bind lang="java" field="shars"/></reference>
-  <reference path="o.p.p.p.p.p.p.r"><bind lang="java" field="longs"/></reference>
-  <reference path="o.p.p.p.p.p.p.p.r"><bind lang="java" field="bytes"/></reference>
-
+  
+  <string path="a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="short"/></number>
+  <boolean path="a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="java.lang.Boolean" decode="java.lang.Boolean.parseBoolean"/></boolean>
+  <string path="a[0][0][0][0][0][0][0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][0][0][0][0][0][2]"><bind lang="java" type="java.lang.Float"/></number>
+  <boolean path="a[0][0][0][0][0][0][0][3]"><bind lang="java" type="java.lang.Boolean" decode="org.libj.lang.Booleans.valueOf"/></boolean>
+  <string path="a[0][0][0][0][0][0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][0][0][0][0][2]"><bind lang="java" type="short"/></number>
+  <boolean path="a[0][0][0][0][0][0][3]"><bind lang="java" type="boolean"/></boolean>
+  <string path="a[0][0][0][0][0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][0][0][0][2]"><bind lang="java" type="java.lang.Float"/></number>
+  <boolean path="a[0][0][0][0][0][3]"><bind lang="java" type="java.lang.Boolean" decode="java.lang.Boolean.parseBoolean"/></boolean>
+  <string path="a[0][0][0][0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][0][0][2]"><bind lang="java" type="short"/></number>
+  <boolean path="a[0][0][0][0][3]"><bind lang="java" type="java.lang.Boolean" decode="org.libj.lang.Booleans.valueOf"/></boolean>
+  <string path="a[0][0][0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][0][2]"><bind lang="java" type="java.lang.Float"/></number>
+  <boolean path="a[0][0][0][3]"><bind lang="java" type="boolean"/></boolean>
+  <string path="a[0][0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][0][2]"><bind lang="java" type="short"/></number>
+  <boolean path="a[0][0][3]"><bind lang="java" type="java.lang.Boolean" decode="java.lang.Boolean.parseBoolean"/></boolean>
+  <string path="a[0][1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[0][2]"><bind lang="java" type="java.lang.Float"/></number>
+  <boolean path="a[0][3]"><bind lang="java" type="java.lang.Boolean" decode="java.lang.Boolean.getBoolean"/></boolean>
+  <string path="a[1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
+  <number path="a[2]"><bind lang="java" type="short"/></number>
+  <boolean path="a[3]"><bind lang="java" type="boolean"/></boolean>
+  
   <array path="o.a"><bind lang="java" field="oa"/></array>
-  <array path="o.p.a"><bind lang="java" field="opa"/></array>
-  <array path="o.p.p.a"><bind lang="java" field="oppa"/></array>
-  <array path="o.p.p.p.a"><bind lang="java" field="opppa"/></array>
-  <array path="o.p.p.p.p.a"><bind lang="java" field="oppppa"/></array>
-  <array path="o.p.p.p.p.p.a"><bind lang="java" field="opppppa"/></array>
-  <array path="o.p.p.p.p.p.p.a"><bind lang="java" field="oppppppa"/></array>
-  <array path="o.p.p.p.p.p.p.p.a"><bind lang="java" field="opppppppa"/></array>
-
-  <object path="o.p"><bind lang="java" field="op"/></object>
-  <object path="o.p.p"><bind lang="java" field="opp"/></object>
-  <object path="o.p.p.p"><bind lang="java" field="oppp"/></object>
-  <object path="o.p.p.p.p"><bind lang="java" field="opppp"/></object>
-  <object path="o.p.p.p.p.p"><bind lang="java" field="oppppp"/></object>
-  <object path="o.p.p.p.p.p.p"><bind lang="java" field="opppppp"/></object>
-  <object path="o.p.p.p.p.p.p.p"><bind lang="java" field="oppppppp"/></object>
-  <object path="o.p.p.p.p.p.p.p.p"><bind lang="java" field="opppppppp"/></object>
-
-  <boolean path="bo\.ol"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.b"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.b"><bind lang="java" field="shars" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.b"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.b"><bind lang="java" field="bytes" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.b"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.b"><bind lang="java" field="shars" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.b"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.b"><bind lang="java" field="bytes" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][4][4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][4][4][4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][4][4][4][4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></boolean>
-  <boolean path="o.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <boolean path="o.p.p.p.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <boolean path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][4][4][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-
-  <number path="CharSequenceDecimal"><bind lang="java" type="java.lang.CharSequence"/></number>
-  <number path="o.n"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.n"><bind lang="java" field="shars" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.n"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.n"><bind lang="java" field="bytes" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.n"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.n"><bind lang="java" field="shars" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.n"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.n"><bind lang="java" field="bytes" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][4][4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][4][4][4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][4][4][4][4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></number>
-  <number path="o.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-  <number path="o.p.p.p.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></number>
-  <number path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
-  <number path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][4][4][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></number>
-
-  <string path="uuid"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.s"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.s"><bind lang="java" field="shars" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.s"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.s"><bind lang="java" field="bytes" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.s"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.s"><bind lang="java" field="shars" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.s"><bind lang="java" field="longs" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.s"><bind lang="java" field="bytes" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][4][4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][4][4][4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][4][4][4][4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
-  <string path="o.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
-  <string path="o.p.p.p.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
-  <string path="o.p.p.p.p.p.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
-  <string path="o.p.p.p.p.p.p.p.a[4][4][4][4][4][4][4][4][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <string path="o.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.a[3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <any path="o[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.s"><bind lang="java" field="os" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.n"><bind lang="java" field="on" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.b"><bind lang="java" field="ob" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <reference path="o.r"><bind lang="java" field="or"/></reference>
+  <object path="o.p0"><bind lang="java" field="op"/></object>
+  <array path="o.p0.a"><bind lang="java" field="opa"/></array>
+  <string path="o.p0.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][0][0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.a[1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.a[2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.a[3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <any path="o.p0[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.s"><bind lang="java" field="ops" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.b"><bind lang="java" field="opb" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <reference path="o.p0.r"><bind lang="java" field="opr"/></reference>
+  <object path="o.p0.p1"><bind lang="java" field="opp"/></object>
+  <array path="o.p0.p1.a"><bind lang="java" field="oppa"/></array>
+  <string path="o.p0.p1.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.a[3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <any path="o.p0.p1[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.p1.s"><bind lang="java" field="opps" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.n"><bind lang="java" field="oppn" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.b"><bind lang="java" field="oppb" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <reference path="o.p0.p1.r"><bind lang="java" field="oppr"/></reference>
+  <object path="o.p0.p1.p2"><bind lang="java" field="oppp"/></object>
+  <array path="o.p0.p1.p2.a"><bind lang="java" field="opppa"/></array>
+  <string path="o.p0.p1.p2.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][0][0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.a[1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.a[2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.a[3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <any path="o.p0.p1.p2[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.p1.p2.s"><bind lang="java" field="oppps" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.b"><bind lang="java" field="opppb" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <reference path="o.p0.p1.p2.r"><bind lang="java" field="opppr"/></reference>
+  <object path="o.p0.p1.p2.p3"><bind lang="java" field="opppp"/></object>
+  <array path="o.p0.p1.p2.p3.a"><bind lang="java" field="oppppa"/></array>
+  <string path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.a[3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <any path="o.p0.p1.p2.p3[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.p1.p2.p3.s"><bind lang="java" field="opppps" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.n"><bind lang="java" field="oppppn" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.b"><bind lang="java" field="oppppb" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <reference path="o.p0.p1.p2.p3.r"><bind lang="java" field="oppppr"/></reference>
+  <object path="o.p0.p1.p2.p3.p4"><bind lang="java" field="oppppp"/></object>
+  <array path="o.p0.p1.p2.p3.p4.a"><bind lang="java" field="opppppa"/></array>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[0][1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[0][2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[0][3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.a[1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.a[2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.a[3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <any path="o.p0.p1.p2.p3.p4[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.p1.p2.p3.p4.s"><bind lang="java" field="oppppps" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
+  <number path="o.p0.p1.p2.p3.p4.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.b"><bind lang="java" field="opppppb" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
+  <reference path="o.p0.p1.p2.p3.p4.r"><bind lang="java" field="opppppr"/></reference>
+  <object path="o.p0.p1.p2.p3.p4.p5"><bind lang="java" field="opppppp"/></object>
+  <array path="o.p0.p1.p2.p3.p4.p5.a"><bind lang="java" field="oppppppa"/></array>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[0][1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[0][2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[0][3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.a[1]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.a[2]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.a[3]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <any path="o.p0.p1.p2.p3.p4.p5[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.p1.p2.p3.p4.p5.s"><bind lang="java" field="opppppps" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.n"><bind lang="java" field="oppppppn" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.b"><bind lang="java" field="oppppppb" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
+  <reference path="o.p0.p1.p2.p3.p4.p5.r"><bind lang="java" field="oppppppr"/></reference>
+  <object path="o.p0.p1.p2.p3.p4.p5.p6"><bind lang="java" field="oppppppp"/></object>
+  <array path="o.p0.p1.p2.p3.p4.p5.p6.a"><bind lang="java" field="opppppppa"/></array>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[0][3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.a[1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.a[2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <any path="o.p0.p1.p2.p3.p4.p5.p6[1]"><bind lang="java" field="a1"/></any>
+  
+  <string path="o.p0.p1.p2.p3.p4.p5.p6.s"><bind lang="java" field="oppppppps" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
+  <number path="o.p0.p1.p2.p3.p4.p5.p6.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
+  <boolean path="o.p0.p1.p2.p3.p4.p5.p6.b"><bind lang="java" field="opppppppb" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
+  <reference path="o.p0.p1.p2.p3.p4.p5.p6.r"><bind lang="java" field="opppppppr"/></reference>
+  <object path="o.p0.p1.p2.p3.p4.p5.p6.p7"><bind lang="java" field="opppppppp"/></object>
 
 </binding>

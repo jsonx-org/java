@@ -21,6 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -497,6 +498,44 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    final int size = members.size();
+    if (size > 0) {
+      final Collection superElements = element.getElements();
+      final ArrayList<XmlElement> elements = new ArrayList<>(size + (superElements != null ? superElements.size() : 0));
+      cursor.inArray();
+      for (int i = 0; i < size; ++i) // [RA]
+        elements.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
+
+      if (superElements != null)
+        elements.addAll(superElements);
+
+      element.setElements(elements);
+    }
+
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+    if (members.size() > 0) {
+      final ArrayList<Object> elements = new ArrayList<>();
+      cursor.inArray();
+      for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
+        elements.add(members.get(i).toJson(this, packageName, cursor, pathToBinding));
+
+      element.put("elements", elements);
+    }
+
+    cursor.popName();
+    return element;
+  }
+
+  @Override
   Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     if (owner instanceof SchemaElement)
@@ -511,44 +550,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
     return attributes;
   }
 
-  @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
-    if (members.size() == 0)
-      return element;
-
-    final ArrayList<XmlElement> elements = new ArrayList<>();
-    for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
-      elements.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
-
-    if (element.getElements() != null)
-      elements.addAll(element.getElements());
-
-    element.setElements(elements);
-    return element;
-  }
-
-  @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
-    if (members.size() == 0)
-      return element;
-
-    final ArrayList<Object> elements = new ArrayList<>();
-    for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
-      elements.add(members.get(i).toJson(this, packageName, cursor, pathToBinding));
-
-    element.put("elements", elements);
-    return element;
-  }
-
   private void renderAnnotations(final AttributeMap attributes, final List<? super AnnotationType> annotations) {
     final int len = members.size();
     final int[] indices = new int[len];
-    for (int i = 0, index = 0; i < len; ++i) { // [RA]
-      indices[i] = index;
-      index += writeElementAnnotations(annotations, members.get(i), index, this);
-    }
+    for (int i = 0, index = 0; i < len; ++i) // [RA]
+      index += writeElementAnnotations(annotations, members.get(i), indices[i] = index, this);
 
     writeElementIdsClause(attributes, indices);
   }

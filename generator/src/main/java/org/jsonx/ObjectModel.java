@@ -224,8 +224,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
       else if (next instanceof $Array) {
         final $Array member = ($Array)next;
-        final ArrayModel child = ArrayModel.reference(registry, objectModel, member, xsbToBinding);
-        members.put(member.getName$().text(), child);
+        members.put(member.getName$().text(), ArrayModel.reference(registry, objectModel, member, xsbToBinding));
       }
       else if (next instanceof $Boolean) {
         final $Boolean member = ($Boolean)next;
@@ -237,8 +236,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       }
       else if (next instanceof $Object) {
         final $Object member = ($Object)next;
-        final ObjectModel child = declare(registry, objectModel, member, xsbToBinding);
-        members.put(member.getName$().text(), child);
+        members.put(member.getName$().text(), declare(registry, objectModel, member, xsbToBinding));
       }
       else if (next instanceof $Reference) {
         final $Reference member = ($Reference)next;
@@ -258,7 +256,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return members;
   }
 
-  class Property {
+  private class Property {
     private final Member member;
     private boolean overrideSet;
     private Member override;
@@ -279,15 +277,16 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
       final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
-        if (element.getElements() != null) {
-          final Iterator<?> iterator = element.getElements().iterator();
+        final Collection<?> elements = element.getElements();
+        if (elements != null && elements.size() > 0) {
+          final Iterator<?> iterator = elements.iterator();
           while (iterator.hasNext()) {
             final XmlElement child = (XmlElement)iterator.next();
-            if ("binding".equals(child.getName()))
+            if ("binding".equals(child.getName())) // FIXME:...!!
               throw new RuntimeException("...Remove this code");
           }
         }
@@ -303,7 +302,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     @SuppressWarnings("unchecked")
-    Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
       final Map<String,Object> object = (Map<String,Object>)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
@@ -318,7 +317,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  final LinkedHashMap<String,Property> properties;
+  private final LinkedHashMap<String,Property> properties;
   private Member superObject;
   final boolean isAbstract;
 
@@ -589,9 +588,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private PropertySpec getSuperObjectProperty(final Method method) {
     final String methodName = method.getName();
     for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
-      final PropertySpec annotation = parent.getMethodToPropertySpec.get(methodName);
-      if (annotation != null)
-        return annotation;
+      final PropertySpec propertySpec = parent.getMethodToPropertySpec.get(methodName);
+      if (propertySpec != null)
+        return propertySpec;
     }
 
     return null;
@@ -671,6 +670,42 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    final int size;
+    if (properties != null && (size = properties.size()) > 0) {
+      final Collection superElements = element.getElements();
+      final ArrayList<XmlElement> elements = new ArrayList<>(size + (superElements != null ? superElements.size() : 0));
+      for (final Property property : properties.values()) // [C]
+        elements.add(property.toXml(this, packageName, cursor, pathToBinding));
+
+      if (superElements != null)
+        elements.addAll(superElements);
+
+      element.setElements(elements);
+    }
+
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+    final int size;
+    if (properties != null && (size = properties.size()) > 0) {
+      final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
+      element.put("properties", properties);
+      for (final Property property : this.properties.values()) // [C]
+        properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
+    }
+
+    cursor.popName();
+    return element;
+  }
+
+  @Override
   Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
     final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
     final String name = name();
@@ -683,41 +718,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
       attributes.put("abstract", isAbstract);
 
     return attributes;
-  }
-
-  @Override
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
-    final int i$;
-    if (properties == null || (i$ = properties.size()) == 0)
-      return element;
-
-    final Collection superElements = element.getElements();
-    final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (superElements != null ? superElements.size() : 0));
-    for (final Property property : properties.values()) // [C]
-      elements.add(property.toXml(this, packageName, cursor, pathToBinding));
-
-    if (superElements != null)
-      elements.addAll(superElements);
-
-    element.setElements(elements);
-    return element;
-  }
-
-  @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
-    final int size;
-    if (properties == null || (size = properties.size()) == 0)
-      return element;
-
-    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
-    for (final Property property : this.properties.values()) // [C]
-      properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
-
-    element.put("properties", properties);
-    return element;
   }
 
   @Override

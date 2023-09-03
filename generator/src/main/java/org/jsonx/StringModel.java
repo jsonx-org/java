@@ -19,6 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$StringMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
+import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA;
 
 final class StringModel extends Model {
@@ -240,6 +242,20 @@ final class StringModel extends Model {
   @Override
   Class<? extends Annotation> typeAnnotation() {
     return StringType.class;
+  }
+
+  @Override
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
   }
 
   @Override

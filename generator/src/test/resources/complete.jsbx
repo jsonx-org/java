@@ -29,7 +29,7 @@
         <array maxOccurs="14" maxIterate="5">
           <boolean nullable="false" doc="Not nullable boolean"/>
           <any types="rootNumberReal rootMultiArray" minOccurs="2" maxOccurs="3" nullable="false" doc="Any real number of multi array"/>
-          <number scale="0" range="(1.2E1,2.4E3)" maxOccurs="3" doc="Number with scale"/>
+          <number scale="0" range="(12,2400)" maxOccurs="3" doc="Number with scale"/>
         </array>
         <array minOccurs="2" maxOccurs="13" minIterate="2" maxIterate="3" doc="Another array">
           <reference type="rootArrayBool" minOccurs="2" nullable="false" doc="Reference to array bool"/>
@@ -50,8 +50,8 @@
     <number name="long" scale="0" range="[-9223372036854775808,9223372036854775807]"/>
     <number name="StringDecimal"/>
     <number name="rootNumberInteger" scale="0" range="(2,9)" doc="Root number integer"/>
-    <number name="rootNumberReal" range="[2.3392E2,9.87832e3)" doc="Root number real"/>
-    <number name="rootNumberPrimitive" range="[2.3392E2,9.87832e3)" doc="Root number real"/>
+    <number name="rootNumberReal" range="[233.92,9878.32)" doc="Root number real"/>
+    <number name="rootNumberPrimitive" range="[233.92,9878.32)" doc="Root number real"/>
     <string name="charArray"/>
     <string name="iso8601"/>
     <string name="rootString" pattern="[a-z]+" doc="Root string"/>
@@ -100,8 +100,8 @@
       <property name="numberDefault" xsi:type="number" scale="0" nullable="false"/>
       <property name="numberOptional" xsi:type="number" use="optional"/>
       <property name="numberOptionalNotNullable" xsi:type="number" use="optional" nullable="false"/>
-      <property name="numberMin" xsi:type="number" range="[0e2,]" nullable="false"/>
-      <property name="numberMax" xsi:type="number" range="[,0E1]" scale="0"/>
+      <property name="numberMin" xsi:type="number" range="[0,]" nullable="false"/>
+      <property name="numberMax" xsi:type="number" range="[,0]" scale="0"/>
       <property name="numberInteger" xsi:type="number" scale="0"/>
       <property name="numberScale" xsi:type="number" scale="1"/>
     </object>
@@ -424,8 +424,8 @@
   <object path="xyz-objects.objectExtendsAbstract.objectExtendsBooleans"><bind lang="java" field="objEB"/></object>
   <object path="xyz-objects.objectExtendsAbstract.objectExtendsBooleansOptional2"><bind lang="java" field="objEBO2"/></object>
   <object path="xyz-objects.objectExtendsAbstract.objectExtendsBooleansOptionalNullable2"><bind lang="java" field="objEBON2"/></object>
-  <reference path="xyz-objects.objectExtendsAbstract.objectOptionalExtendsAbstract.objectStringNotNullable"><bind lang="java" field="objStrNum"/></reference>
   <object path="xyz-objects.objectExtendsAbstract.objectOptionalExtendsAbstract"><bind lang="java" field="objOEA"/></object>
+  <reference path="xyz-objects.objectExtendsAbstract.objectOptionalExtendsAbstract.objectStringNotNullable"><bind lang="java" field="objStrNum"/></reference>
   <number path="xyz-objects.objectExtendsAbstract.objectOptionalExtendsAbstract.objectNumber"><bind lang="java" field="objNum"/></number>
   <number path="xyz-objects.objectExtendsAbstract.objectOptionalNotNullableExtendsAbstract.objectNumber"><bind lang="java" field="numOptShort" type="java.lang.Double"/></number>
   <string path="xyz-objects.objectExtendsStrings.additionalString"><bind lang="java" field="charArray" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>

@@ -19,6 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
+import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class NumberModel extends Model {
@@ -312,6 +314,20 @@ final class NumberModel extends Model {
   @Override
   Class<? extends Annotation> typeAnnotation() {
     return NumberType.class;
+  }
+
+  @Override
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
   }
 
   @Override

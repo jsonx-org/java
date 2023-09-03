@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
+import org.openjax.xml.api.XmlElement;
 
 final class AnyModel extends Referrer<AnyModel> {
   private static $Any property(final schema.AnyProperty jsd, final String name) {
@@ -410,6 +412,20 @@ final class AnyModel extends Referrer<AnyModel> {
   @Override
   Class<? extends Annotation> elementAnnotation() {
     return AnyElement.class;
+  }
+
+  @Override
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
   }
 
   @Override

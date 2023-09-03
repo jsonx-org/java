@@ -99,6 +99,6 @@
     </object>
   </schema>
 
-  <number path="coordinates[0]"><bind lang="java" type="java.lang.Double"/></number>
+  <number path="coordinates[0]"><bind lang="java" type="java.lang.Float"/></number>
 
 </binding>

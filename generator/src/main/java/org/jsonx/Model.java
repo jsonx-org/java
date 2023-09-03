@@ -34,38 +34,35 @@ import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Model extends Member implements Comparable<Model> {
   static Class<?> toClass(final Type type) {
-    if (type instanceof Class)
-      return (Class<?>)type;
-
-    if (type instanceof WildcardType)
-      return (Class<?>)((WildcardType)type).getUpperBounds()[0];
-
-    return null;
+    return type instanceof Class ? (Class<?>)type : type instanceof WildcardType ? (Class<?>)((WildcardType)type).getUpperBounds()[0] : null;
   }
 
   static boolean isAssignable(final Method getMethod, final boolean canWrap, final Class<?> cls, final boolean isRegex, final boolean nullable, final Use use) {
-    final Class<?> type = canWrap && getMethod.getReturnType().isPrimitive() ? Classes.box(getMethod.getReturnType()) : getMethod.getReturnType();
+    final Class<?> returnType = getMethod.getReturnType();
+    final Class<?> type = canWrap && returnType.isPrimitive() ? Classes.box(returnType) : returnType;
     if (isRegex) {
       if (!Map.class.isAssignableFrom(type))
         return false;
 
-      final Type genericType = getMethod.getGenericReturnType();
-      if (!(genericType instanceof ParameterizedType))
+      final Type genericReturnType = getMethod.getGenericReturnType();
+      if (!(genericReturnType instanceof ParameterizedType))
         return false;
 
-      final Type[] genericTypes = ((ParameterizedType)genericType).getActualTypeArguments();
+      final Type[] genericTypes = ((ParameterizedType)genericReturnType).getActualTypeArguments();
       if (genericTypes.length != 2)
         return false;
 
-      if (!(genericTypes[1] instanceof ParameterizedType))
-        return cls == null || toClass(genericTypes[1]).isAssignableFrom(cls);
+      final Type genericType = genericTypes[1];
+      if (!(genericType instanceof ParameterizedType))
+        return cls == null || toClass(genericType).isAssignableFrom(cls);
 
-      final Class<?> valueType = (Class<?>)((ParameterizedType)genericTypes[1]).getRawType();
-      if (valueType != Optional.class)
+      final ParameterizedType parameterizedType = (ParameterizedType)genericType;
+      if (parameterizedType.getRawType() != Optional.class)
         return false;
 
-      final Type[] args = ((ParameterizedType)genericTypes[1]).getActualTypeArguments();
-      return args.length == 1 && (cls == null || cls.isAssignableFrom(args[0] instanceof ParameterizedType ? (Class<?>)((ParameterizedType)args[0]).getRawType() : toClass(args[0])));
+      final Type[] args = parameterizedType.getActualTypeArguments();
+      final Type arg;
+      return args.length == 1 && (cls == null || cls.isAssignableFrom((arg = args[0]) instanceof ParameterizedType ? (Class<?>)((ParameterizedType)arg).getRawType() : toClass(arg)));
     }
 
     if (use != Use.OPTIONAL || !nullable)
@@ -75,10 +72,7 @@ abstract class Model extends Member implements Comparable<Model> {
       return false;
 
     final Class<?>[] genericTypes = Classes.getGenericParameters(getMethod);
-    if (genericTypes.length == 0 || genericTypes[0] == null)
-      return false;
-
-    return cls == null || cls.isAssignableFrom(genericTypes[0]);
+    return genericTypes.length != 0 && genericTypes[0] != null && (cls == null || cls.isAssignableFrom(genericTypes[0]));
   }
 
   Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
@@ -107,20 +101,12 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
-    if (owner instanceof ObjectModel)
-      attributes.put("xsi:type", elementName());
-
-    return attributes;
-  }
-
-  @Override
   XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     cursor.pushName((String)attributes.get("name"));
+
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding);
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding, attributes);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
@@ -129,19 +115,28 @@ abstract class Model extends Member implements Comparable<Model> {
 
   @Override
   Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> properties = new LinkedHashMap<>();
+    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
     properties.put("jx:type", elementName());
 
     final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     cursor.pushName((String)attributes.get("name"));
+    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding, attributes);
+    if (bindingAttributes != null)
+      pathToBinding.put(cursor.toString(), bindingAttributes);
+
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding);
-    if (bindingAttributes != null)
-      pathToBinding.put(cursor.toString(), bindingAttributes);
-
     return properties;
+  }
+
+  @Override
+  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
+    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+    if (owner instanceof ObjectModel)
+      attributes.put("xsi:type", elementName());
+
+    return attributes;
   }
 }

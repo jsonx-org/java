@@ -47,6 +47,8 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
       return null;
 
     final $FieldBinding binding = xsbToBinding.get(xsb);
+    if (binding != null && binding.toString().contains("\"opr\""))
+      System.err.println();
     return binding == null ? null : binding.getField$();
   }
 

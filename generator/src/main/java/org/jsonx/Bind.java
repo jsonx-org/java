@@ -135,15 +135,11 @@ final class Bind {
   }
 
   static class Field {
-    static Field from(final String propertyName, final String fieldName) {
-      return new Field(propertyName, fieldName);
-    }
-
     final String instanceCase;
     final String classCase;
     final String field;
 
-    private Field(final String propertyName, final String fieldName) {
+    Field(final String propertyName, final String fieldName) {
       this.field = fieldName;
       if (propertyName == null) {
         this.instanceCase = null;
@@ -220,28 +216,37 @@ final class Bind {
     }
   }
 
-  public static Map<String,Object> toXmlAttributes(final String elementName, final Element owner, final Type type, final Field field) {
-    final AttributeMap attributes = new AttributeMap();
+  public static Map<String,Object> toXmlAttributes(final String elementName, final Element owner, final Type type, final Field field, final Map<String,Object> attributes) {
+    final AttributeMap bindingAttrs = new AttributeMap();
     if (type != null) {
       if (type.type != null)
-        attributes.put("type", type.type.toString());
+        bindingAttrs.put("type", type.type.toString());
 
       if (type.decode != null)
-        attributes.put("decode", type.decode);
+        bindingAttrs.put("decode", type.decode);
 
       if (type.encode != null)
-        attributes.put("encode", type.encode);
+        bindingAttrs.put("encode", type.encode);
     }
 
-    if (!(owner instanceof SchemaElement) && !(owner instanceof ArrayModel) && field != null && field.field != null)
-      attributes.put("field", field.field);
+    if (!(owner instanceof SchemaElement) && !(owner instanceof ArrayModel) && field != null && field.field != null) {
+      Object name = attributes.get("name");
+      if (name == null)
+        name = attributes.get("names");
 
-    if (attributes.size() == 0)
+      if (name == null)
+        System.err.println();
+
+      if (!field.field.equals(JsdUtil.getFieldName(JsdUtil.fixReserved((String)name))))
+        bindingAttrs.put("field", field.field);
+    }
+
+    if (bindingAttrs.size() == 0)
       return null;
 
-    attributes.put("lang", "java");
-    attributes.put("jx:type", elementName);
-    return attributes;
+    bindingAttrs.put("lang", "java");
+    bindingAttrs.put("jx:type", elementName);
+    return bindingAttrs;
   }
 
   private Bind() {

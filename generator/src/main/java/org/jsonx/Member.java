@@ -183,7 +183,7 @@ abstract class Member extends Element {
     this.minOccurs = Spec.from(minOccurs, minOccurs == null || minOccurs == 1 ? null : minOccurs);
     this.maxOccurs = Spec.from(maxOccurs, maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs);
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
-    this.fieldBinding = Bind.Field.from(name, fieldName);
+    this.fieldBinding = new Bind.Field(name, fieldName);
     this.typeBinding = typeBinding;
   }
 

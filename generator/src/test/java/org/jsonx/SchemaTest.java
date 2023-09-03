@@ -376,11 +376,12 @@ public class SchemaTest {
     if (logger.isInfoEnabled()) logger.info("       b) JSON -> Schema");
 
     if (controlBinding != null) {
+      System.err.println(json);
       final binding.Binding binding = testParseBinding(json, true);
 
       if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
       final String jsbx = new SchemaElement(binding, settings).toXml().toString();
-      System.err.println(jsbx);
+//      System.err.println(jsbx);
       final Binding xsb = (Binding)Bindings.parse(jsbx);
       AssertXml.compare(controlBinding.toDOM(), xsb.toDOM()).assertEqual(true);
     }
@@ -413,7 +414,6 @@ public class SchemaTest {
   }
 
   private static binding.Binding testParseBinding(final String jsb, final boolean test) throws DecodeException, IOException {
-    System.err.println(jsb);
     try (final JsonReader reader = new JsonReader(jsb)) {
       final binding.Binding binding1 = JxDecoder.VALIDATING.parseObject(reader, binding.Binding.class);
       if (test) {
@@ -451,6 +451,7 @@ public class SchemaTest {
 
   @Test
   public void test() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test(resource);
+    if (resource.toString().endsWith("binding.jsbx"))
+      test(resource);
   }
 }

@@ -19,7 +19,6 @@ package org.jsonx;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jsonx.www.binding_0_4.xL1gluGCXAA;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 
@@ -32,6 +31,9 @@ abstract class Element {
     String str;
     this.doc = doc == null || (str = doc.text()) == null || (str = str.trim()).length() == 0 ? null : str;
   }
+
+  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
+  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
 
   /**
    * Intended to be overridden by each concrete subclass, this method returns a {@code Map<String,String>} of name/value attributes
@@ -52,7 +54,4 @@ abstract class Element {
   public final String name() {
     return name;
   }
-
-  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
-  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
 }

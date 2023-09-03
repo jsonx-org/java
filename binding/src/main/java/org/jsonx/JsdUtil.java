@@ -65,7 +65,7 @@ final class JsdUtil {
       return str.charAt(0) == prefix && name.charAt(0) != prefix ? str.substring(1) : str;
     }
 
-    return Identifiers.toInstanceCase(name, prefix, classSubs);
+    return getFieldName(name);
   }
 
   static String toIdentifier(final String name) {
@@ -81,8 +81,12 @@ final class JsdUtil {
     return Arrays.binarySearch(reservedWords, name) < 0 ? name : "_" + name;
   }
 
+  static String getFieldName(final String name) {
+    return Identifiers.toInstanceCase(name, prefix, classSubs);
+  }
+
   static String getFieldName(final Method getMethod) {
-    return Identifiers.toInstanceCase(getMethod.getName().substring(3));
+    return getFieldName(getMethod.getName().substring(3));
   }
 
   static Class<?> getRealType(final Method getMethod) {
