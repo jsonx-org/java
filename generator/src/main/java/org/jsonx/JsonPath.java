@@ -43,30 +43,30 @@ class JsonPath implements Iterable<Object> {
   }
 
   static class Cursor {
-    private final LinkedList<Object> path = new LinkedList<>();
+    private final LinkedList<Object> terms = new LinkedList<>();
     private final ArrayIntList nextIndex = new ArrayIntList(new int[] {0});
     private final ArrayBooleanList nextWillBeIndex = new ArrayBooleanList(new boolean[] {false});
 
     void pushName(final String name) {
       final boolean nextWillBeIndex = this.nextWillBeIndex.peek();
       if (nextWillBeIndex || name == null) // Name can be null for <any>
-        path.add(nextIndex.peek());
+        terms.add(nextIndex.peek());
       else
-        path.add(name);
+        terms.add(name);
 
       nextIndex.push(0);
       this.nextWillBeIndex.push(nextWillBeIndex);
     }
 
     void popName() {
-      path.removeLast();
+      terms.removeLast();
       nextIndex.pop();
       nextWillBeIndex.pop();
       nextIndex.set(nextIndex.size() - 1, nextIndex.peek() + 1);
     }
 
     void inArray() {
-      if (path.size() == 0)
+      if (terms.size() == 0)
         throw new IllegalStateException();
 
       nextWillBeIndex.set(nextIndex.size() - 1, true);
@@ -74,11 +74,11 @@ class JsonPath implements Iterable<Object> {
 
     @Override
     public String toString() {
-      if (path.size() == 0)
+      if (terms.size() == 0)
         return "";
 
       final StringBuilder b = new StringBuilder();
-      for (final Object term : path) { // [L]
+      for (final Object term : terms) { // [L]
         if (term instanceof String) {
           if (b.length() > 0)
             b.append('.');
@@ -93,10 +93,7 @@ class JsonPath implements Iterable<Object> {
         }
       }
 
-      final String str = b.toString();
-      if ("o.p".endsWith(str))
-        System.err.println();
-      return str;
+      return b.toString();
     }
   }
 
@@ -172,7 +169,7 @@ class JsonPath implements Iterable<Object> {
     }
 
     if (element == null)
-      throw new IllegalStateException("JsonPath \"" + toString() + "\" not found");
+      throw new IllegalArgumentException("JsonPath \"" + toString() + "\" not found");
 
     return element;
   }
@@ -184,9 +181,6 @@ class JsonPath implements Iterable<Object> {
 
   @Override
   public String toString() {
-    if ("o.p".endsWith(str))
-      System.err.println();
-
     return str;
   }
 }
