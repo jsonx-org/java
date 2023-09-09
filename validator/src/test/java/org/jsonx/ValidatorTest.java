@@ -30,7 +30,6 @@ import org.junit.Test;
 import org.libj.jci.CompilationException;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.Strings;
-import org.libj.util.function.Throwing;
 
 public class ValidatorTest {
   private static File getFile(final String fileName) {
@@ -47,19 +46,13 @@ public class ValidatorTest {
   }
 
   private static File schemaFile = getFile("account.jsdx");
-  private static Runnable onFinished;
 
   @AfterClass
-  public static void afterClass() {
-    onFinished.run();
-  }
-
-  @Test
-  public void testUsage() throws Throwable {
-    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
+  public static void afterClass() throws Throwable {
+    RuntimeUtil.onExit(() -> {
       Validator.main(Strings.EMPTY_ARRAY);
       fail("Expected System.exit()");
-    }));
+    });
   }
 
   private static void testFile(final File file, final boolean isValid) throws CompilationException, IOException, PackageNotFoundException {

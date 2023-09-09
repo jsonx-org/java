@@ -19,8 +19,10 @@ package org.jsonx;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.function.ThrowingRunnable;
+
 final class RuntimeUtil {
-  public static Runnable onExit(final Runnable willCallExit) throws Throwable {
+  public static void onExit(final ThrowingRunnable willCallExit) throws Throwable {
     Objects.requireNonNull(willCallExit);
 
     Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -68,19 +70,17 @@ final class RuntimeUtil {
     if (t != null)
       throw t;
 
-    return () -> {
-      new Thread() {
-        @Override
-        public void run() {
-          try {
-            Thread.sleep(100);
-          }
-          catch (final InterruptedException ignore) {
-          }
-          Runtime.getRuntime().halt(0);
+    new Thread() {
+      @Override
+      public void run() {
+        try {
+          Thread.sleep(100);
         }
-      }.start();
-    };
+        catch (final InterruptedException ignore) {
+        }
+        Runtime.getRuntime().halt(0);
+      }
+    }.start();
   }
 
   private RuntimeUtil() {

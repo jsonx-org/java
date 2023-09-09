@@ -25,7 +25,6 @@ import java.net.URL;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.libj.lang.Strings;
-import org.libj.util.function.Throwing;
 
 public class GeneratorTest {
   private static final File destDir = new File("target/generated-test-sources/jsonx");
@@ -35,23 +34,16 @@ public class GeneratorTest {
     return new File(url.getPath());
   }
 
-  private static Runnable onFinished;
-
   @AfterClass
-  public static void afterClass() {
-    onFinished.run();
-  }
-
-  @Test
-  public void testUsage() throws Throwable {
-    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
+  public static void afterClass() throws Throwable {
+    RuntimeUtil.onExit(() -> {
       Generator.main(Strings.EMPTY_ARRAY);
       fail("Expected System.exit()");
-    }));
+    });
   }
 
   @Test
   public void test() throws IOException {
-    Generator.main(new String[] {"--prefix", "org.jsonx.invoice", "-d", destDir.getAbsolutePath(), getFile("account.jsdx").getAbsolutePath()});
+    Generator.main(new String[] {"-p", "urn:test:account", "org.jsonx.account", "-d", destDir.getAbsolutePath(), getFile("account.jsdx").getAbsolutePath()});
   }
 }

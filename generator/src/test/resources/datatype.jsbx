@@ -17,9 +17,13 @@
 <binding
   xmlns="http://www.jsonx.org/binding-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd /Users/seva/Work/org/jsonx/schema/schema-0.4/binding-0.4.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd http://www.jsonx.org/binding-0.4.xsd">
 
-  <schema xmlns="http://www.jsonx.org/schema-0.4.xsd" doc="Schema intended to express full variability of type declarations">
+  <schema
+    xmlns="http://www.jsonx.org/schema-0.4.xsd"
+    targetNamespace="urn:test:datatype"
+    doc="Schema intended to express full variability of type declarations">
+
     <array name="arrayArr" doc="Array of arrays">
       <reference type="arrayBool" maxOccurs="1" doc="Reference to array of booleans"/>
       <reference type="arrayNum" maxOccurs="1" doc="Reference to array of numbers"/>
@@ -182,6 +186,7 @@
       <property name="nonEmptyStringOptional" xsi:type="reference" type="nonEmptyString" use="optional" doc="Optional property referencing 'nonEmptyString' type"/>
       <property name="nonEmptyStringOptionalNotNullable" xsi:type="reference" type="nonEmptyString" use="optional" nullable="false" doc="Optional, not-nullable property referencing 'nonEmptyString' type"/>
     </object>
+
   </schema>
 
   <boolean path="primitiveBoolean"><bind lang="java" type="boolean" encode="java.lang.String.valueOf"/></boolean>

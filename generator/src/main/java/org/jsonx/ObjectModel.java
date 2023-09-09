@@ -30,10 +30,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jaxsb.runtime.Binding;
 import org.jsonx.Registry.Type;
 import org.jsonx.schema.Object.Properties;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Boolean;
@@ -51,6 +50,7 @@ import org.libj.lang.ObjectUtil;
 import org.libj.lang.Strings;
 import org.libj.util.Iterators;
 import org.openjax.xml.api.XmlElement;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class ObjectModel extends Referrer<ObjectModel> {
   private static Schema.Object type(final schema.ObjectType jsd, final String name) {
@@ -137,11 +137,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static ObjectModel declare(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  static ObjectModel declare(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     return registry.declare(xsb).value(new ObjectModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     return registry.declare(xsb).value(new ObjectModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
@@ -213,7 +213,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
@@ -324,7 +324,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private final Class<?> cls;
   private final Map<String,PropertySpec> getMethodToPropertySpec;
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text());
     this.isAbstract = xsb.getAbstract$().text();
     this.superObject = getReference(xsb.getExtends$());
@@ -336,7 +336,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     validateTypeBinding();
   }
 
-  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     final LinkedHashMap<String,Member> members = parseMembers(xsb, this, xsbToBinding);
     if (members == null)
       return null;
@@ -398,7 +398,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this(registry, declarer, element.type(), element.nullable(), null, null);
   }
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding, xsb), null);
     this.superObject = getReference(xsb.getExtends$());
     this.isAbstract = false;

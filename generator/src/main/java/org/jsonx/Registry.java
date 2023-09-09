@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
@@ -43,6 +44,8 @@ class Registry {
       if (refToModel.containsKey(name))
         throw new IllegalArgumentException("Value name=\"" + name + "\" already registered");
 
+      if (name.startsWith("jx:"))
+        System.err.println();
       refToModel.put(name, null);
       this.name = name;
     }
@@ -443,6 +446,7 @@ class Registry {
     return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), Classes.getCompositeName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompositeName(cls.getSuperclass()));
   }
 
+  private final HashMap<String,Registry> namespaceToRegistry;
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
 
@@ -452,12 +456,16 @@ class Registry {
   final String packageName;
   final String classPrefix;
 
-  Registry(final String targetNamespace, final Settings settings) {
+  Registry(final HashMap<String,Registry> namespaceToRegistry, final String targetNamespace, final Settings settings) {
+    this.namespaceToRegistry = namespaceToRegistry;
     this.targetNamespace = targetNamespace;
+    if (namespaceToRegistry.put(targetNamespace, this) != null)
+      throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
+
     this.settings = settings;
     this.isFromJsd = true;
 
-    final String prefix = settings.getPrefix();
+    final String prefix = settings.getPrefix(targetNamespace);
     final int length = prefix.length();
     if (length > 0) {
       final char lastChar = prefix.charAt(length - 1);
@@ -478,6 +486,9 @@ class Registry {
   }
 
   private static String detectTargetNamespace(final Collection<Class<?>> classes) {
+    if (classes.size() == 0)
+      return null;
+
     String targetNamespace = null;
     for (final Class<?> cls : classes) { // [C]
       final JxBinding annotation = cls.getAnnotation(JxBinding.class);
@@ -494,8 +505,12 @@ class Registry {
   }
 
   @SuppressWarnings("unchecked")
-  Registry(final Declarer declarer, final Collection<Class<?>> classes) {
+  Registry(final HashMap<String,Registry> namespaceToRegistry, final Declarer declarer, final Collection<Class<?>> classes) {
+    this.namespaceToRegistry = namespaceToRegistry;
     this.targetNamespace = detectTargetNamespace(classes);
+    if (namespaceToRegistry.put(targetNamespace, this) != null)
+      throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
+
     this.settings = Settings.DEFAULT;
     this.isFromJsd = false;
     if (classes.size() > 0) {
@@ -512,13 +527,21 @@ class Registry {
   }
 
   private String getClassPrefix() {
-    final HashSet<Registry.Type> types = new HashSet<>();
     final Collection<Model> models = getModels();
-    if (models != null && models.size() > 0)
-      for (final Model member : models) // [C]
-        member.getDeclaredTypes(types);
+    if (models == null || models.size() == 0)
+      return null;
 
-    return Strings.getCommonPrefix(types.stream().map(Registry.Type::getPackage).toArray(String[]::new));
+    final HashSet<Registry.Type> types = new HashSet<>();
+    for (final Model model : models) // [C]
+      model.getDeclaredTypes(types);
+
+    final int size = types.size();
+    final String[] packages = new String[size];
+    final Iterator<Registry.Type> iterator = types.iterator();
+    for (int i = 0; i < size; ++i) // [S]
+      packages[i] = iterator.next().getPackage();
+
+    return Strings.getCommonPrefix(packages);
   }
 
   private static class ReferrerManifest {
@@ -584,6 +607,7 @@ class Registry {
       if (referrer != null)
         referrers.add(referrer);
     });
+
     return model;
   }
 
@@ -599,7 +623,10 @@ class Registry {
   }
 
   Model getModel(final Id id) {
-    return refToModel.get(id.toString());
+    final Model x = refToModel.get(id.toString());
+    // FIXME: Clean up
+    System.err.println(id + " " + x);
+    return x;
   }
 
   Collection<Model> getModels() {

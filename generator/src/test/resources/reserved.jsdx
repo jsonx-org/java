@@ -18,8 +18,9 @@
   xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema-0.4.xsd"
-  targetNamespace="http://www.jsonx.org/generator/test/reserved.jsdx"
+  targetNamespace="urn:test:reserved"
   doc="Schema with names that overlap with Java's reserved words">
+
   <array name="break" maxIterate="2">
     <reference type="extends" minOccurs="9" maxOccurs="10"/>
     <reference type="import" minOccurs="7" maxOccurs="8"/>
@@ -59,4 +60,5 @@
     <property name="final" xsi:type="string"/>
     <property name="finally" xsi:type="reference" type="abstract"/>
   </object>
+
 </schema>

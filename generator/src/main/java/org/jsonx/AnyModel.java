@@ -28,8 +28,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 
-import org.jaxsb.runtime.Binding;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$AnyMember;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
@@ -44,6 +43,7 @@ import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
 import org.openjax.xml.api.XmlElement;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class AnyModel extends Referrer<AnyModel> {
   private static $Any property(final schema.AnyProperty jsd, final String name) {
@@ -126,12 +126,12 @@ final class AnyModel extends Referrer<AnyModel> {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
-    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding == null ? null : (xL1gluGCXAA.$FieldBinding)xsbToBinding.get(xsb)), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
   private static final Name$ anonymousReferenceName = new Name$("");
@@ -162,15 +162,15 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private final ArrayList<Member> types;
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final xL1gluGCXAA.$FieldBinding binding) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
     this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), binding);
     validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), xsbToBinding == null ? null : (xL1gluGCXAA.$FieldBinding)xsbToBinding.get(xsb));
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb));
     validateTypeBinding();
   }
 
@@ -196,7 +196,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   // FIXME: This can be converted to recursive algo
-  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $AnyMember.Types$ refs, final xL1gluGCXAA.$FieldBinding binding) {
+  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $AnyMember.Types$ refs, final $FieldBinding binding) {
     final List<String> idrefs;
     final int i$;
     if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
@@ -217,7 +217,7 @@ final class AnyModel extends Referrer<AnyModel> {
     return types;
   }
 
-  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use, final xL1gluGCXAA.$FieldBinding binding) {
+  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use, final $FieldBinding binding) {
     final Id id = Id.hashed(idref);
     types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), binding, () -> {
       final Member model = registry.getModel(id);

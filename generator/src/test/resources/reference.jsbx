@@ -18,9 +18,13 @@
   xmlns="http://www.jsonx.org/binding-0.4.xsd"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd /Users/seva/Work/org/jsonx/schema/schema-0.4/binding-0.4.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd http://www.jsonx.org/binding-0.4.xsd">
 
-  <schema xmlns="http://www.jsonx.org/schema-0.4.xsd" doc="Schema focusing on references">
+  <schema
+    xmlns="http://www.jsonx.org/schema-0.4.xsd"
+    targetNamespace="urn:test:reference"
+    doc="Schema focusing on references">
+
     <array name="arrayObj">
       <reference type="objArr" maxOccurs="1"/>
     </array>
@@ -98,6 +102,7 @@
       <property name="strPatternEncOptional" xsi:type="reference" type="strPatternEnc" use="optional"/>
       <property name="strPatternEncOptionalNotNullable" xsi:type="reference" type="strPatternEnc" use="optional" nullable="false"/>
     </object>
+
   </schema>
 
   <number path="numPrimitive"><bind lang="java" type="double"/></number>

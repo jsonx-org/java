@@ -27,22 +27,14 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
-import org.libj.util.function.Throwing;
 
 public class ConverterTest {
-  private static Runnable onFinished;
-
   @AfterClass
-  public static void afterClass() {
-    onFinished.run();
-  }
-
-  @Test
-  public void testUsage() throws Throwable {
-    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
+  public static void afterClass() throws Throwable {
+    RuntimeUtil.onExit(() -> {
       Converter.main(Strings.EMPTY_ARRAY);
       fail("Expected System.exit()");
-    }));
+    });
   }
 
   @Test

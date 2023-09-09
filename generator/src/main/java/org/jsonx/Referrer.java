@@ -33,6 +33,7 @@ import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
 import org.libj.util.CollectionUtil;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
 import org.w3.www._2001.XMLSchema.yAA.$String;
@@ -41,7 +42,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
   private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
   private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
 
-  static $FieldBinding.Field$ getField(final IdentityHashMap<Binding,$FieldBinding> xsbToBinding, final Binding xsb) {
+  static $FieldBinding.Field$ getField(final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding, final Binding xsb) {
     if (xsbToBinding == null)
       return null;
 

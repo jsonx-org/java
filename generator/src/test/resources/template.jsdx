@@ -18,7 +18,9 @@
   xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema-0.4.xsd"
+  targetNamespace="urn:test:template"
   doc="Schema expressing the variations of templates">
+
   <array name="arrayDepthFour" minIterate="4" maxIterate="4" doc="Array template">
     <reference type="arrayDepthThree" minOccurs="9" maxOccurs="10" doc="Reference to arrayDepthThree"/>
     <reference type="arrayDepthTwo" minOccurs="7" maxOccurs="8" doc="Reference to arrayDepthTwo"/>
@@ -62,4 +64,5 @@
     <property name="stringOptional" xsi:type="reference" type="rootString" use="optional" doc="Optional property referencing rootString"/>
     <property names="any6" xsi:type="any" types="arrayDepthTwo arrayDepthThree" doc="Property named 'any6' accepting type 'arrayDepthTwo' or 'arrayDepthTree'"/>
   </object>
+
 </schema>

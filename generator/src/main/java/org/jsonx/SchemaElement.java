@@ -18,8 +18,6 @@ package org.jsonx;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,32 +37,29 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Generated;
 
-import org.jaxsb.runtime.Binding;
 import org.jaxsb.runtime.BindingList;
-import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
 import org.jsonx.binding.TypeFieldBinding;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBindings;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$Path;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBindings;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA;
+import org.jsonx.www.binding_0_4.xL1gluGCXAA.Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
+import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema.TargetNamespace$;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.WrappedArrayList;
-import org.libj.net.URLs;
 import org.libj.util.CollectionUtil;
 import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
-import org.libj.util.StringPaths;
-import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
 import org.openjax.xml.api.XmlElement;
-import org.openjax.xml.sax.SilentErrorHandler;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
 
 /**
  * The root {@link Element} of a JSON Schema Document.
@@ -100,8 +95,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  private static xL1gluGCXAA.Binding jxToXsb(final binding.Binding jsb) {
-    final xL1gluGCXAA.Binding xsb = new xL1gluGCXAA.Binding();
+  static Binding jxToXsb(final binding.Binding jsb) {
+    final Binding xsb = new Binding();
     xsb.setJxSchema(jxToXsb(jsb.getSchema()));
     final LinkedHashMap<String,Object> bindings = jsb.getBindings().get5cS7c5cS2e2a5cS();
     if (bindings.size() > 0) {
@@ -109,19 +104,19 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
         final String path = CharacterDatas.escapeForAttr(entry.getKey().replace("\\\\", "\\"), '"').toString();
         final JxObject member = (JxObject)entry.getValue();
         if (member instanceof binding.Any)
-          xsb.addAny(jsdToXsbField(new xL1gluGCXAA.Binding.Any(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addAny(jsdToXsbField(new Binding.Any(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Reference)
-          xsb.addReference(jsdToXsbField(new xL1gluGCXAA.Binding.Reference(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addReference(jsdToXsbField(new Binding.Reference(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Array)
-          xsb.addArray(jsdToXsbField(new xL1gluGCXAA.Binding.Array(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addArray(jsdToXsbField(new Binding.Array(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Object)
-          xsb.addObject(jsdToXsbField(new xL1gluGCXAA.Binding.Object(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addObject(jsdToXsbField(new Binding.Object(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Boolean)
-          xsb.addBoolean(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Boolean(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addBoolean(jsdToXsbTypeField(new Binding.Boolean(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Number)
-          xsb.addNumber(jsdToXsbTypeField(new xL1gluGCXAA.Binding.Number(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addNumber(jsdToXsbTypeField(new Binding.Number(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.String)
-          xsb.addString(jsdToXsbTypeField(new xL1gluGCXAA.Binding.String(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addString(jsdToXsbTypeField(new Binding.String(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else
           throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
       }
@@ -130,23 +125,23 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  private static xL0gluGCXAA.Schema jxToXsb(final schema.Schema jsd) {
-    final xL0gluGCXAA.Schema xsb = new xL0gluGCXAA.Schema();
+  private static Schema jxToXsb(final schema.Schema jsd) {
+    final Schema xsb = new Schema();
     final LinkedHashMap<String,? extends schema.Member> declarations = jsd.get5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a();
     if (declarations != null && declarations.size() > 0) {
       for (final Map.Entry<String,? extends schema.Member> entry : declarations.entrySet()) { // [S]
         final String name = entry.getKey();
         final schema.Member declaration = entry.getValue();
         if (declaration instanceof schema.Array)
-          xsb.addArray((xL0gluGCXAA.Schema.Array)ArrayModel.jsdToXsb((schema.Array)declaration, name));
+          xsb.addArray((Schema.Array)ArrayModel.jsdToXsb((schema.Array)declaration, name));
         else if (declaration instanceof schema.Boolean)
-          xsb.addBoolean((xL0gluGCXAA.Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)declaration, name));
+          xsb.addBoolean((Schema.Boolean)BooleanModel.jsdToXsb((schema.Boolean)declaration, name));
         else if (declaration instanceof schema.Number)
-          xsb.addNumber((xL0gluGCXAA.Schema.Number)NumberModel.jsdToXsb((schema.Number)declaration, name));
+          xsb.addNumber((Schema.Number)NumberModel.jsdToXsb((schema.Number)declaration, name));
         else if (declaration instanceof schema.ObjectType)
-          xsb.addObject((xL0gluGCXAA.Schema.Object)ObjectModel.jsdToXsb((schema.Object)declaration, name));
+          xsb.addObject((Schema.Object)ObjectModel.jsdToXsb((schema.Object)declaration, name));
         else if (declaration instanceof schema.String)
-          xsb.addString((xL0gluGCXAA.Schema.String)StringModel.jsdToXsb((schema.String)declaration, name));
+          xsb.addString((Schema.String)StringModel.jsdToXsb((schema.String)declaration, name));
         else
           throw new UnsupportedOperationException("Unsupported type: " + declaration.getClass().getName());
       }
@@ -158,158 +153,22 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
     final String doc = jsd.getDoc();
     if (doc != null && doc.length() > 0)
-      xsb.setDoc$(new xL0gluGCXAA.$Documented.Doc$(doc));
+      xsb.setDoc$(new $Documented.Doc$(doc));
 
     return xsb;
   }
 
-  /**
-   * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSD format.
-   *
-   * @param url The {@link URL} of the content to parse.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return The {@link SchemaElement} instance.
-   * @throws IOException If an I/O error has occurred.
-   * @throws DecodeException If a decode error has occurred.
-   * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
-   */
-  public static SchemaElement parseJson(final URL url, final Settings settings) throws DecodeException, IOException {
-    try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      return new SchemaElement(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class, binding.Binding.class), settings);
-    }
-  }
-
-  /**
-   * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSB format.
-   *
-   * @param url The {@link URL} of the content to parse.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return The {@link SchemaElement} instance.
-   * @throws IOException If an I/O error has occurred.
-   * @throws DecodeException If a decode error has occurred.
-   * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
-   */
-  private static SchemaElement parseJsb(final URL url, final Settings settings) throws DecodeException, IOException {
-    final binding.Binding binding;
-    try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
-      binding = JxDecoder.VALIDATING.parseObject(in, binding.Binding.class);
-    }
-
-    final String pathOfSchemaFromInclude = null;
-    final URL schemaUrl = StringPaths.isAbsolute(pathOfSchemaFromInclude) ? URLs.create(pathOfSchemaFromInclude) : URLs.toCanonicalURL(StringPaths.getCanonicalParent(url.toString()));
-    final schema.Schema schema;
-    try (final JsonReader in = new JsonReader(new InputStreamReader(schemaUrl.openStream()))) {
-      schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
-    }
-
-    binding.setSchema(schema);
-    final xL1gluGCXAA.Binding xsb = jxToXsb(binding);
-    return new SchemaElement(xsb.getJxSchema(), xsb, settings);
-  }
-
-  private static ErrorHandler errorHandler;
-
-  private static ErrorHandler getErrorHandler() {
-    return errorHandler == null ? errorHandler = new SilentErrorHandler() : errorHandler;
-  }
-
-  /**
-   * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSDx format.
-   *
-   * @param url The {@link URL} of the content to parse.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return The {@link SchemaElement} instance.
-   * @throws IOException If an I/O error has occurred.
-   * @throws SAXException If a parse error has occurred.
-   * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException} has occurred.
-   * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
-   */
-  public static SchemaElement parseXml(final URL url, final Settings settings) throws IOException, SAXException {
-    return new SchemaElement(Bindings.parse(url, getErrorHandler()), settings);
-  }
-
-  /**
-   * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSBx format.
-   *
-   * @param url The {@link URL} of the content to parse.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return The {@link SchemaElement} instance.
-   * @throws IOException If an I/O error has occurred.
-   * @throws SAXException If a parse error has occurred.
-   * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException} has occurred.
-   * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
-   */
-  public static SchemaElement parseJsbx(final URL url, final Settings settings) throws IOException, SAXException {
-    return new SchemaElement((xL1gluGCXAA.Binding)Bindings.parse(url, getErrorHandler()), settings);
-  }
-
-  /**
-   * Creates a {@link SchemaElement} from the contents of the specified {@code file}. The supported content formats are JSDx and
-   * JSD. If the supplied file is not in one of the supported formats, an {@link IllegalArgumentException} is thrown.
-   *
-   * @param url The file from which to read the contents.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return A {@link SchemaElement} from the contents of the specified {@code file}.
-   * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx or JSD.
-   * @throws IOException If an I/O error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
-   */
-  public static SchemaElement parse(final URL url, final Settings settings) throws IOException {
-    if (URLs.getName(url).endsWith(".jsd")) {
-      try {
-        return parseJson(url, settings);
-      }
-      catch (final DecodeException e0) {
-        try {
-          return parseXml(url, settings);
-        }
-        catch (final IOException | RuntimeException e1) {
-          e1.addSuppressed(e0);
-          throw e1;
-        }
-        catch (final Exception e1) {
-          final IllegalArgumentException e = new IllegalArgumentException(e0);
-          e.addSuppressed(e1);
-          throw e;
-        }
-      }
-    }
-
-    try {
-      return parseXml(url, settings);
-    }
-    catch (final SAXException e0) {
-      try {
-        return parseJson(url, settings);
-      }
-      catch (final IOException | RuntimeException e1) {
-        e1.addSuppressed(e0);
-        throw e1;
-      }
-      catch (final Exception e1) {
-        final IllegalArgumentException e = new IllegalArgumentException(e1);
-        e.addSuppressed(e0);
-        throw e;
-      }
-    }
-  }
-
-  private static IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> initBindingMap(final xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding) {
-    final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = new IdentityHashMap<>();
+  private static IdentityHashMap<$AnyType,$FieldBinding> initBindingMap(final Schema schema, final Binding binding) {
+    final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding = new IdentityHashMap<>();
     final Iterator<$AnyType> iterator = binding.elementIterator();
     iterator.next(); // Skip schema element
-    Object x = null;
     while (iterator.hasNext()) {
-      final xL1gluGCXAA.$Path bindings = (xL1gluGCXAA.$Path)iterator.next();
+      final $Path bindings = ($Path)iterator.next();
       final $Documented element = new JsonPath(bindings.getPath$().text()).resolve(schema);
       if (bindings instanceof $FieldBindings) {
-        final BindingList<xL1gluGCXAA.$FieldBinding> b = (($FieldBindings)bindings).getBind();
+        final BindingList<$FieldBinding> b = (($FieldBindings)bindings).getBind();
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
+          final $FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
             if (xsbToBinding.put(element, fieldBinding) != null)
               throw new IllegalStateException();
@@ -319,9 +178,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
         }
       }
       else if (bindings instanceof $TypeFieldBindings) {
-        final BindingList<xL1gluGCXAA.$TypeFieldBinding> b = (($TypeFieldBindings)bindings).getBind();
+        final BindingList<$TypeFieldBinding> b = (($TypeFieldBindings)bindings).getBind();
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final xL1gluGCXAA.$FieldBinding fieldBinding = b.get(i);
+          final $FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {
             if (xsbToBinding.put(element, fieldBinding) != null)
               throw new IllegalStateException();
@@ -349,8 +208,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final xL0gluGCXAA.Schema schema, final Settings settings) throws ValidationException {
-    this(schema, null, settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Schema schema, final Settings settings) throws ValidationException {
+    this(namespaceToRegistry, schema, null, settings);
   }
 
   /**
@@ -361,33 +220,33 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
-    this(binding.getJxSchema(), binding, settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Binding binding, final Settings settings) throws ValidationException {
+    this(namespaceToRegistry, binding.getJxSchema(), binding, settings);
   }
 
-  private SchemaElement(xL0gluGCXAA.Schema schema, final xL1gluGCXAA.Binding binding, final Settings settings) throws ValidationException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, Schema schema, final Binding binding, final Settings settings) throws ValidationException {
     super(null, (schema == null ? schema = binding.getJxSchema() : schema).getDoc$());
-    final IdentityHashMap<Binding,xL1gluGCXAA.$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
+    final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
     final TargetNamespace$ targetNamespace = schema.getTargetNamespace$();
-    this.registry = new Registry(targetNamespace == null ? null : targetNamespace.text(), settings);
+    this.registry = new Registry(namespaceToRegistry, targetNamespace == null ? null : targetNamespace.text(), settings);
     final String namespaceURI = schema.name().getNamespaceURI();
     this.version = namespaceURI.substring(namespaceURI.lastIndexOf('-') + 1, namespaceURI.lastIndexOf('.'));
 
     assertNoCycle(schema);
 
-    final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
-      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
-      if (member instanceof xL0gluGCXAA.Schema.Array)
-        ArrayModel.declare(registry, this, (xL0gluGCXAA.Schema.Array)member, xsbToBinding);
-      else if (member instanceof xL0gluGCXAA.Schema.Boolean)
-        BooleanModel.declare(registry, this, (xL0gluGCXAA.Schema.Boolean)member, xsbToBinding);
-      else if (member instanceof xL0gluGCXAA.Schema.Number)
-        NumberModel.declare(registry, this, (xL0gluGCXAA.Schema.Number)member, xsbToBinding);
-      else if (member instanceof xL0gluGCXAA.Schema.String)
-        StringModel.declare(registry, this, (xL0gluGCXAA.Schema.String)member, xsbToBinding);
-      else if (member instanceof xL0gluGCXAA.Schema.Object)
-        ObjectModel.declare(registry, this, (xL0gluGCXAA.Schema.Object)member, xsbToBinding);
+      final $Member member = ($Member)elementIterator.next();
+      if (member instanceof Schema.Array)
+        ArrayModel.declare(registry, this, (Schema.Array)member, xsbToBinding);
+      else if (member instanceof Schema.Boolean)
+        BooleanModel.declare(registry, this, (Schema.Boolean)member, xsbToBinding);
+      else if (member instanceof Schema.Number)
+        NumberModel.declare(registry, this, (Schema.Number)member, xsbToBinding);
+      else if (member instanceof Schema.String)
+        StringModel.declare(registry, this, (Schema.String)member, xsbToBinding);
+      else if (member instanceof Schema.Object)
+        ObjectModel.declare(registry, this, (Schema.Object)member, xsbToBinding);
       else
         throw new UnsupportedOperationException("Unsupported member type: " + member.getClass().getName());
     }
@@ -407,34 +266,34 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
           ((Referrer<?>)model).resolveOverrides();
   }
 
-  private static String memberToName(final xL0gluGCXAA.$Member obj) {
-    if (obj instanceof xL0gluGCXAA.Schema.Array)
-      return ((xL0gluGCXAA.Schema.Array)obj).getName$().text();
+  private static String memberToName(final $Member obj) {
+    if (obj instanceof Schema.Array)
+      return ((Schema.Array)obj).getName$().text();
 
-    if (obj instanceof xL0gluGCXAA.Schema.Boolean)
-      return ((xL0gluGCXAA.Schema.Boolean)obj).getName$().text();
+    if (obj instanceof Schema.Boolean)
+      return ((Schema.Boolean)obj).getName$().text();
 
-    if (obj instanceof xL0gluGCXAA.Schema.Number)
-      return ((xL0gluGCXAA.Schema.Number)obj).getName$().text();
+    if (obj instanceof Schema.Number)
+      return ((Schema.Number)obj).getName$().text();
 
-    if (obj instanceof xL0gluGCXAA.Schema.String)
-      return ((xL0gluGCXAA.Schema.String)obj).getName$().text();
+    if (obj instanceof Schema.String)
+      return ((Schema.String)obj).getName$().text();
 
-    if (obj instanceof xL0gluGCXAA.Schema.Object)
-      return ((xL0gluGCXAA.Schema.Object)obj).getName$().text();
+    if (obj instanceof Schema.Object)
+      return ((Schema.Object)obj).getName$().text();
 
     throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
   };
 
-  private static void assertNoCycle(final xL0gluGCXAA.Schema schema) throws ValidationException {
-    final StrictRefDigraph<xL0gluGCXAA.$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::memberToName);
+  private static void assertNoCycle(final Schema schema) throws ValidationException {
+    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::memberToName);
 
-    final Iterator<? super xL0gluGCXAA.$Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof xL0gluGCXAA.$Member);
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
-      final xL0gluGCXAA.$Member member = (xL0gluGCXAA.$Member)elementIterator.next();
-      if (member instanceof xL0gluGCXAA.Schema.Object) {
-        final xL0gluGCXAA.Schema.Object object = (xL0gluGCXAA.Schema.Object)member;
-        final xL0gluGCXAA.$ObjectMember.Extends$ extends$ = object.getExtends$();
+      final $Member member = ($Member)elementIterator.next();
+      if (member instanceof Schema.Object) {
+        final Schema.Object object = (Schema.Object)member;
+        final $ObjectMember.Extends$ extends$ = object.getExtends$();
         if (extends$ != null)
           digraph.add(object, extends$.text());
         else
@@ -445,9 +304,25 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       }
     }
 
-    final List<xL0gluGCXAA.$Member> cycle = digraph.getCycle();
+    final List<$Member> cycle = digraph.getCycle();
     if (cycle != null)
       throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::memberToName).collect(Collectors.joining(" -> ")));
+  }
+
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final Object obj, final Settings settings) {
+    if (obj instanceof Schema)
+      return new SchemaElement(namespaceToRegistry, (Schema)obj, settings);
+
+    if (obj instanceof Binding)
+      return new SchemaElement(namespaceToRegistry, (Binding)obj, settings);
+
+    if (obj instanceof schema.Schema)
+      return new SchemaElement(namespaceToRegistry, (schema.Schema)obj, settings);
+
+    if (obj instanceof binding.Binding)
+      return new SchemaElement(namespaceToRegistry, (binding.Binding)obj, settings);
+
+    throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
   }
 
   /**
@@ -458,8 +333,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final schema.Schema schema, final Settings settings) throws ValidationException {
-    this(jxToXsb(schema), null, settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final schema.Schema schema, final Settings settings) throws ValidationException {
+    this(namespaceToRegistry, jxToXsb(schema), null, settings);
   }
 
   /**
@@ -470,16 +345,16 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  public SchemaElement(final binding.Binding binding, final Settings settings) throws ValidationException {
-    this(null, jxToXsb(binding), settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final binding.Binding binding, final Settings settings) throws ValidationException {
+    this(namespaceToRegistry, null, jxToXsb(binding), settings);
   }
 
-  public SchemaElement(final $AnyType<?> object, final Settings settings) {
-    this(object instanceof xL0gluGCXAA.Schema ? (xL0gluGCXAA.Schema)object : null, object instanceof xL1gluGCXAA.Binding ? (xL1gluGCXAA.Binding)object : null, settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final $AnyType<?> object, final Settings settings) {
+    this(namespaceToRegistry, object instanceof Schema ? (Schema)object : null, object instanceof Binding ? (Binding)object : null, settings);
   }
 
-  public SchemaElement(final JxObject object, final Settings settings) {
-    this(object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb((binding.Binding)object) : null, settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final JxObject object, final Settings settings) {
+    this(namespaceToRegistry, object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb((binding.Binding)object) : null, settings);
   }
 
   private static Collection<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -515,8 +390,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws PackageNotFoundException If the specified package is not found.
    * @throws NullPointerException If {@code pkg} or {@code settings} is null.
    */
-  public SchemaElement(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
-    this(findClasses(pkg, classLoader, filter));
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
+    this(namespaceToRegistry, findClasses(pkg, classLoader, filter));
   }
 
   /**
@@ -536,8 +411,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws PackageNotFoundException If the specified package is not found.
    * @throws NullPointerException If {@code pkg} or {@code settings} is null.
    */
-  public SchemaElement(final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
-    this(findClasses(pkg, classLoader, null));
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
+    this(namespaceToRegistry, findClasses(pkg, classLoader, null));
   }
 
   /**
@@ -556,8 +431,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
-  public SchemaElement(final Package pkg, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
-    this(pkg, Thread.currentThread().getContextClassLoader(), filter);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
+    this(namespaceToRegistry, pkg, Thread.currentThread().getContextClassLoader(), filter);
   }
 
   /**
@@ -575,8 +450,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws IOException If an I/O error has occurred.
    * @throws PackageNotFoundException If the specified package is not found.
    */
-  public SchemaElement(final Package pkg) throws IOException, PackageNotFoundException {
-    this(pkg, Thread.currentThread().getContextClassLoader(), null);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg) throws IOException, PackageNotFoundException {
+    this(namespaceToRegistry, pkg, Thread.currentThread().getContextClassLoader(), null);
   }
 
   /**
@@ -584,8 +459,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    *
    * @param classes The classes to scan.
    */
-  public SchemaElement(final Class<?> ... classes) {
-    this(CollectionUtil.asCollection(new IdentityHashSet<>(classes.length), classes));
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Class<?> ... classes) {
+    this(namespaceToRegistry, CollectionUtil.asCollection(new IdentityHashSet<>(classes.length), classes));
   }
 
   /**
@@ -593,10 +468,11 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    *
    * @param classes The classes to scan.
    */
-  public SchemaElement(final Collection<Class<?>> classes) {
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Collection<Class<?>> classes) {
     super(null, null);
-    this.registry = new Registry(this, classes);
-    final QName name = xL0gluGCXAA.Schema.class.getAnnotation(QName.class);
+    this.registry = new Registry(namespaceToRegistry, this, classes);
+    namespaceToRegistry.put(registry.targetNamespace, registry);
+    final QName name = Schema.class.getAnnotation(QName.class);
     final String namespaceURI = name.namespaceURI();
     this.version = namespaceURI.substring(namespaceURI.lastIndexOf('-') + 1, name.namespaceURI().lastIndexOf('.'));
 

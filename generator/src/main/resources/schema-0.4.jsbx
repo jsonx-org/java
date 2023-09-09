@@ -18,7 +18,7 @@
   xmlns="http://www.jsonx.org/binding-0.4.xsd"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd /Users/seva/Work/org/jsonx/schema/schema-0.4/binding-0.4.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd http://www.jsonx.org/binding-0.4.xsd">
 
   <xi:include href="/Users/seva/Work/org/jsonx/schema/schema-0.4/schema-0.4.jsdx"/>
 

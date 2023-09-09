@@ -32,28 +32,28 @@ public class SettingsTest {
     }
 
     try {
-      new Settings("", -1, true, Long.class, Long.class, double.class, Double.class);
+      new Settings(null, 1, true, Long.class, Long.class, double.class, Double.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     try {
-      new Settings("", -1, true, long.class, long.class, double.class, Double.class);
+      new Settings(null, 1, true, long.class, long.class, double.class, Double.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     try {
-      new Settings("", -1, true, long.class, Long.class, Double.class, Double.class);
+      new Settings(null, 1, true, long.class, Long.class, Double.class, Double.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {
     }
 
     try {
-      new Settings("", 1, true, long.class, Long.class, double.class, double.class);
+      new Settings(null, 1, true, long.class, Long.class, double.class, double.class);
       fail("Expected IllegalArgumentException");
     }
     catch (final IllegalArgumentException e) {

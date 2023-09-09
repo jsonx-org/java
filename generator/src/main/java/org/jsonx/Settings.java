@@ -18,24 +18,115 @@ package org.jsonx;
 
 import static org.libj.lang.Assertions.*;
 
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.function.Function;
 
 import org.libj.lang.Classes;
+import org.libj.lang.Identifiers;
 
-public class Settings implements Serializable {
-  public static final Settings DEFAULT = new Settings("", 1, true, long.class, Long.class, double.class, Double.class);
+public class Settings {
+  public static final Settings DEFAULT = new Settings(new NamespaceToPrefix(), 1, true, long.class, Long.class, double.class, Double.class);
+
+  private static class NamespaceToPrefix {
+    private static String validatePrefix(final String prefix) {
+      if (prefix == null)
+        return null;
+
+      final char lastChar = prefix.length() == 0 ? '\0' : prefix.charAt(prefix.length() - 1);
+      if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? prefix.substring(0, prefix.length() - 1) : prefix))
+        throw new IllegalArgumentException("Illegal \"prefix\" parameter: " + prefix);
+
+      return prefix;
+    }
+
+    private HashMap<String,String> namespaceToPrefixMap;
+    private Function<String,String> namespaceToPrefixFunction;
+    private String defaultPrefixString;
+
+    private void set(final String namespace, final String prefix) {
+      if (namespaceToPrefixMap == null)
+        namespaceToPrefixMap = new HashMap<>();
+
+      final String value = namespaceToPrefixMap.put(assertNotNull(namespace), validatePrefix(assertNotNull(prefix)));
+      if (value != null)
+        throw new IllegalArgumentException("Key \"" + namespace + "\" maps to multiple values: {\"" + value + "\", \"" + prefix + "\"}");
+    }
+
+    private void set(final String defaultPrefix) {
+      this.defaultPrefixString = validatePrefix(assertNotNull(defaultPrefix));
+    }
+
+    private void set(final Function<String,String> namespaceToPrefix) {
+      this.namespaceToPrefixFunction = assertNotNull(namespaceToPrefix);
+    }
+
+    private String get(final String namespace) {
+      String prefix = null;
+      if (namespaceToPrefixMap != null)
+        prefix = namespaceToPrefixMap.get(namespace);
+
+      if (prefix != null)
+        return prefix;
+
+      if (namespaceToPrefixFunction != null)
+        prefix = validatePrefix(namespaceToPrefixFunction.apply(namespace));
+
+      if (prefix != null)
+        return prefix;
+
+      return defaultPrefixString != null ? defaultPrefixString : "";
+    }
+  }
 
   public static class Builder {
-    private String prefix = "";
+    private NamespaceToPrefix namespaceToPrefix;
+
+    private NamespaceToPrefix getNamespaceToPrefix() {
+      return namespaceToPrefix == null ? namespaceToPrefix = new NamespaceToPrefix() : namespaceToPrefix;
+    }
 
     /**
-     * Sets the class name prefix to be prepended to the names of generated bindings, and returns {@code this} builder.
+     * Sets the class name prefix to be prepended to the names of generated bindings for the provided namespace, and returns
+     * {@code this} builder.
      *
+     * @param namespace The namespace for which the prefix is to be applied.
      * @param prefix The class name prefix to be prepended to the names of generated bindings.
      * @return {@code this} builder.
+     * @throws IllegalArgumentException If {@code namespace} or {@code prefix} is null.
+     * @throws IllegalArgumentException If {@code prefix} maps to multiple values.
+     * @throws IllegalArgumentException If {@code prefix} is not a valid Java identifier.
      */
-    public Builder withPrefix(final String prefix) {
-      this.prefix = assertNotNull(prefix);
+    public Builder withPrefix(final String namespace, final String prefix) {
+      getNamespaceToPrefix().set(namespace, prefix);
+      return this;
+    }
+
+    /**
+     * Sets the default class name prefix to be prepended to the names of generated bindings for prefixes not specified via
+     * {@link #withPrefix(String,String)}, and returns {@code this} builder.
+     *
+     * @param defaultPrefix The class name prefix to be prepended to the names of generated bindings for prefixes not specified via
+     *          {@link #withPrefix(String,String)}.
+     * @return {@code this} builder.
+     * @throws IllegalArgumentException If {@code defaultPrefix} is null.
+     * @throws IllegalArgumentException If {@code defaultPrefix} is not a valid Java identifier.
+     */
+    public Builder withDefaultPrefix(final String defaultPrefix) {
+      getNamespaceToPrefix().set(defaultPrefix);
+      return this;
+    }
+
+    /**
+     * Sets the {@link Function} to dereference a provided namespace to a class name prefix to be prepended to the names of
+     * generated bindings, and returns {@code this} builder.
+     *
+     * @param namespaceToPrefix The {@link Function} to dereference a provided namespace to a class name prefix to be prepended to
+     *          the names of generated bindings.
+     * @return {@code this} builder.
+     * @throws IllegalArgumentException If {@code namespaceToPrefix} is null.
+     */
+    public Builder withPrefix(final Function<String,String> namespaceToPrefix) {
+      getNamespaceToPrefix().set(namespaceToPrefix);
       return this;
     }
 
@@ -156,11 +247,11 @@ public class Settings implements Serializable {
     }
 
     public Settings build() {
-      return new Settings(prefix, templateThreshold, setBuilder, integerPrimitive, integerObject, realPrimitive, realObject);
+      return new Settings(namespaceToPrefix, templateThreshold, setBuilder, integerPrimitive, integerObject, realPrimitive, realObject);
     }
   }
 
-  private final String prefix;
+  private final NamespaceToPrefix namespaceToPrefix;
   private final int templateThreshold;
   private final boolean setBuilder;
   private final Class<?> integerPrimitive;
@@ -168,8 +259,8 @@ public class Settings implements Serializable {
   private final Class<?> realPrimitive;
   private final Class<?> realObject;
 
-  Settings(final String prefix, final int templateThreshold, final boolean setBuilder, final Class<?> integerPrimitive, final Class<?> integerObject, final Class<?> realPrimitive, final Class<?> realObject) {
-    this.prefix = assertNotNull(prefix);
+  Settings(final NamespaceToPrefix namespaceToPrefix, final int templateThreshold, final boolean setBuilder, final Class<?> integerPrimitive, final Class<?> integerObject, final Class<?> realPrimitive, final Class<?> realObject) {
+    this.namespaceToPrefix = namespaceToPrefix;
     this.templateThreshold = assertNotNegative(templateThreshold, "templateThreshold (" + templateThreshold + ") must be non-negative");
     this.setBuilder = setBuilder;
     this.integerPrimitive = integerPrimitive;
@@ -189,8 +280,8 @@ public class Settings implements Serializable {
       throw new IllegalArgumentException("realObject must be a non-primitive type: " + realObject.getCanonicalName());
   }
 
-  public String getPrefix() {
-    return prefix;
+  public String getPrefix(final String namespace) {
+    return namespaceToPrefix != null ? namespaceToPrefix.get(namespace) : "";
   }
 
   /**

@@ -18,9 +18,12 @@
   xmlns="http://www.jsonx.org/binding-0.4.xsd"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd /Users/seva/Work/org/jsonx/schema/schema-0.4/binding-0.4.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd http://www.jsonx.org/binding-0.4.xsd">
 
-  <schema xmlns="http://www.jsonx.org/schema-0.4.xsd">
+  <schema
+    xmlns="http://www.jsonx.org/schema-0.4.xsd"
+    targetNamespace="urn:test:array">
+    
     <array name="coordinates">
       <number minOccurs="2" maxOccurs="2" nullable="false"/>
     </array>
@@ -97,6 +100,7 @@
         <any types="coordinates multiCoordinates" nullable="false"/>
       </property>
     </object>
+    
   </schema>
 
   <number path="coordinates[0]"><bind lang="java" type="java.lang.Float"/></number>

@@ -28,14 +28,10 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.libj.lang.Identifiers;
 
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
 @Execute(goal="generate")
 public class GenerateMojo extends JxMojo {
-  @Parameter(property="prefix", required=true)
-  private String prefix;
-
   @Parameter(property="templateThreshold", required=false)
   private int templateThreshold = 1;
 
@@ -45,7 +41,18 @@ public class GenerateMojo extends JxMojo {
   private static void processConfiguration(final Settings.Builder builder, final Xpp3Dom root) throws MojoExecutionException {
     for (int i = 0, i$ = root.getChildCount(); i < i$; ++i) { // [RA]
       final Xpp3Dom child0 = root.getChild(i);
-      if ("defaultBinding".equals(child0.getName())) {
+      if ("namespacePrefixes".equals(child0.getName())) {
+        for (int j = 0, j$ = child0.getChildCount(); j < j$; ++j) { // [RA]
+          final Xpp3Dom child1 = child0.getChild(j);
+          if (!"namespacePrefix".equals(child1.getName()))
+            throw new MojoExecutionException("Unsupported element: configuration/namespacePrefixes/" + child1.getName());
+
+          final String namespace = child1.getAttribute("namespace");
+          final String prefix = child1.getAttribute("prefix");
+          builder.withPrefix(namespace != null ? namespace : "", prefix);
+        }
+      }
+      else if ("defaultBinding".equals(child0.getName())) {
         for (int j = 0, j$ = child0.getChildCount(); j < j$; ++j) { // [RA]
           final Xpp3Dom child1 = child0.getChild(j);
           if (!"number".equals(child1.getName()))
@@ -109,16 +116,10 @@ public class GenerateMojo extends JxMojo {
       throw new IllegalStateException();
 
     processConfiguration(builder, execution.getConfiguration());
-
-    final char lastChar = prefix == null ? '\0' : prefix.charAt(prefix.length() - 1);
-    if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? prefix.substring(0, prefix.length() - 1) : prefix))
-      throw new IllegalArgumentException("Illegal \"prefix\" parameter: " + prefix);
-
-    final Settings settings = builder.withPrefix(prefix).withTemplateThreshold(templateThreshold).withSetBuilder(setBuilder).build();
+    final Settings settings = builder.withTemplateThreshold(templateThreshold).withSetBuilder(setBuilder).build();
 
     try {
-      for (final String schema : new LinkedHashSet<>(schemas)) // [S]
-        SchemaElement.parse(new URL(schema), settings).toSource(configuration.getDestDir());
+      Generator.generate(configuration.getDestDir(), settings, new LinkedHashSet<>(schemas).toArray(new URL[0]));
     }
     catch (final IOException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);
