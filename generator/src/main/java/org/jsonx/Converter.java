@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.libj.net.URLs;
 import org.openjax.json.JSON;
@@ -62,7 +64,7 @@ public final class Converter {
    * @throws ValidationException If a validation error has occurred.
    */
   public static String jsonToXml(final URL url) throws DecodeException, IOException, ValidationException {
-    final XmlElement xml = SchemaElement.parseJson(url, Settings.DEFAULT).toXml();
+    final XmlElement xml = SchemaElement.parse(new HashMap<>(), Generator.parseJson(url), Settings.DEFAULT).toXml();
 //    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema-0.4.xsd");
     return xml.toString(2);
   }
@@ -76,7 +78,8 @@ public final class Converter {
    * @throws SAXException If a parse error has occurred.
    */
   public static String xmlToJson(final URL url) throws IOException, SAXException {
-    return JSON.toString(SchemaElement.parseXml(url, Settings.DEFAULT).toJson(), 2);
+    final Map<String,Object> json = SchemaElement.parse(new HashMap<>(), Generator.parseXml(url), Settings.DEFAULT).toJson();
+    return JSON.toString(json, 2);
   }
 
   /**

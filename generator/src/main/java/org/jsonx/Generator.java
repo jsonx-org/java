@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.jaxsb.runtime.Bindings;
@@ -123,13 +124,13 @@ public final class Generator {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  private static JxObject parseJson(final URL url) throws DecodeException, IOException {
+  static JxObject parseJson(final URL url) throws DecodeException, IOException {
     final JxObject obj;
     try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
       obj = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class, binding.Binding.class);
     }
 
-    return obj instanceof binding.Binding ? getSchema(url, (binding.Binding)obj) : obj;
+    return obj;
   }
 
   /**
@@ -146,7 +147,7 @@ public final class Generator {
     final String pathOfSchemaFromInclude = null;
     final URL schemaUrl = StringPaths.isAbsolute(pathOfSchemaFromInclude) ? URLs.create(pathOfSchemaFromInclude) : URLs.toCanonicalURL(StringPaths.getCanonicalParent(url.toString()));
     try (final JsonReader in = new JsonReader(new InputStreamReader(schemaUrl.openStream()))) {
-      binding.setSchema(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class));
+      binding.set40schema(JxDecoder.VALIDATING.parseObject(in, schema.Schema.class));
     }
 
     return binding;
@@ -170,7 +171,7 @@ public final class Generator {
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
-  private static $AnyType<?> parseXml(final URL url) throws IOException, SAXException {
+  static $AnyType<?> parseXml(final URL url) throws IOException, SAXException {
     return Bindings.parse(url, getErrorHandler());
   }
 
@@ -228,13 +229,14 @@ public final class Generator {
   }
 
   private static String[] getImports(final schema.Schema schema) {
-    final List<Schema.Import> imports = schema.getImports();
+    final List<schema.Import> imports = schema.get40imports();
     if (imports.size() == 0)
       return Strings.EMPTY_ARRAY;
 
     final String[] namespaces = new String[imports.size()];
+    final Iterator<schema.Import> iterator = imports.iterator();
     for (int i = 0, i$ = imports.size(); i < i$; ++i) // [RA]
-      namespaces[i] = imports.get(i).getNamespace$().text().toString();
+      namespaces[i] = iterator.next().get40namespace();
 
     return namespaces;
   }
@@ -250,7 +252,7 @@ public final class Generator {
       return getImports((schema.Schema)o);
 
     if (o instanceof binding.Binding)
-      return getImports(((binding.Binding)o).getSchema());
+      return getImports(((binding.Binding)o).get40schema());
 
     throw new IllegalArgumentException("Unsupported object of class: " + o.getClass().getName());
   }
@@ -282,10 +284,10 @@ public final class Generator {
         return ((Binding)o).getJxSchema().getTargetNamespace$().text();
 
       if (o instanceof schema.Schema)
-        return ((schema.Schema)o).getJx3aTargetNamespace();
+        return ((schema.Schema)o).get40targetNamespace();
 
       if (o instanceof binding.Binding)
-        return ((binding.Binding)o).getSchema().getJx3aTargetNamespace();
+        return ((binding.Binding)o).get40schema().get40targetNamespace();
 
       throw new IllegalArgumentException("Unsupported object of class: " + o.getClass().getName());
     });

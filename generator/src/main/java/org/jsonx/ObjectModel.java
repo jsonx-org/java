@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jsonx.Registry.Type;
-import org.jsonx.schema.Object.Properties;
+import org.jsonx.schema.Object._40properties;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
@@ -58,8 +58,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new Schema.Object.Name$(name));
 
-    if (jsd.getAbstract() != null)
-      xsb.setAbstract$(new Schema.Object.Abstract$(jsd.getAbstract()));
+    if (jsd.get40abstract() != null)
+      xsb.setAbstract$(new Schema.Object.Abstract$(jsd.get40abstract()));
 
     return xsb;
   }
@@ -75,15 +75,15 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new $Object.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Object.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Object.Use$($Object.Use$.Enum.valueOf(use)));
 
-    final String extends$ = jsd.getExtends();
+    final String extends$ = jsd.get40extends();
     if (extends$ != null)
       xsb.setExtends$(new $ObjectMember.Extends$(extends$));
 
@@ -99,15 +99,15 @@ final class ObjectModel extends Referrer<ObjectModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final String extends$ = jsd.getExtends();
+    final String extends$ = jsd.get40extends();
     if (extends$ != null)
       xsb.setExtends$(new $ObjectMember.Extends$(extends$));
 
-    final Properties properties$ = jsd.getProperties();
+    final _40properties properties$ = jsd.get40properties();
     if (properties$ != null) {
       final LinkedHashMap<String,? extends schema.Member> properties = properties$.get2e2a();
       if (properties != null && properties.size() > 0) {
@@ -214,7 +214,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
-    final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member next = ($Member)iterator.next();
@@ -277,7 +277,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
       final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
@@ -301,16 +301,15 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return element;
     }
 
-    @SuppressWarnings("unchecked")
-    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-      final Map<String,Object> object = (Map<String,Object>)member.toJson(owner, packageName, cursor, pathToBinding);
+    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+      final StrictPropertyMap<Object> object = (StrictPropertyMap)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
-        object.remove("bindings");
-        object.remove("nullable");
-        object.remove("use");
-        object.remove("minOccurs");
-        object.remove("maxOccurs");
+        object.remove("@bindings");
+        object.remove("@nullable");
+        object.remove("@use");
+        object.remove("@minOccurs");
+        object.remove("@maxOccurs");
       }
 
       return object;
@@ -342,7 +341,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return null;
 
     final int size = members.size();
-    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size);
+    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size); // FIXME: Does this need to be a LinkedHashMap?
     if (size > 0)
       for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
         properties.put(entry.getKey(), new Property(entry.getValue()));
@@ -444,7 +443,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final Class<?> superClass = cls.getSuperclass();
     this.isAbstract = Modifier.isAbstract(cls.getModifiers());
     this.superObject = superClass == null || !JxObject.class.isAssignableFrom(superClass) ? null : referenceOrDeclare(registry, declarer, superClass);
-    this.properties = new LinkedHashMap<>();
+    this.properties = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
 
     this.cls = cls;
     this.getMethodToPropertySpec = new HashMap<>();
@@ -671,7 +670,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     final int size;
     if (properties != null && (size = properties.size()) > 0) {
@@ -691,12 +690,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     final int size;
     if (properties != null && (size = properties.size()) > 0) {
-      final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
-      element.put("properties", properties);
+      final StrictPropertyMap<Object> properties = new StrictPropertyMap<>(size);
+      element.put("@properties", properties);
       for (final Property property : this.properties.values()) // [C]
         properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
     }
@@ -706,16 +705,16 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     final String name = name();
     attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
-      attributes.put("extends", JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
+      attributes.put(toJx(toJx, "extends"), JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
 
     if (isAbstract)
-      attributes.put("abstract", isAbstract);
+      attributes.put(toJx(toJx, "abstract"), isAbstract);
 
     return attributes;
   }

@@ -19,9 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Map;
 
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
@@ -58,11 +56,11 @@ final class BooleanModel extends Model {
     if (name != null)
       xsb.setName$(new $Boolean.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Boolean.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Boolean.Use$($Boolean.Use$.Enum.valueOf(use)));
 
@@ -72,15 +70,15 @@ final class BooleanModel extends Model {
   private static $ArrayMember.Boolean element(final schema.BooleanElement jsd) {
     final $ArrayMember.Boolean xsb = new $ArrayMember.Boolean();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Boolean.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Boolean.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Boolean.MaxOccurs$(maxOccurs));
 
@@ -98,7 +96,7 @@ final class BooleanModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
@@ -225,15 +223,15 @@ final class BooleanModel extends Model {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return properties;
   }

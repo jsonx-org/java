@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.TreeMap;
 
 import org.libj.util.ObservableMap;
@@ -55,7 +57,8 @@ class AttributeMap extends ObservableMap<String,Object> {
     // Commented out, because <binding field="..."> may end up being overwritten for non-root-based reference/model pairs
     // if (oldValue != null && !oldValue.equals(newValue) && !"xsi:schemaLocation".equals(key))
     //   throw new IllegalArgumentException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
-
+    assertNotNull(key, "key cannot be null");
+    assertNotNull(newValue, "value cannot be null");
     target.put(prefix != null ? prefix + key : key, newValue);
     return preventDefault;
   }

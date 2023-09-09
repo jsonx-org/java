@@ -19,6 +19,7 @@ package org.jsonx;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
@@ -41,7 +42,7 @@ public class ArrayModelTest {
 
   @Test
   public void testGreatestCommonSuperObject() {
-    final Registry registry = new Registry(null, new Settings.Builder().withPrefix("", getClass().getPackage().getName()).build());
+    final Registry registry = new Registry(new HashMap<>(), null, new Settings.Builder().withPrefix("", getClass().getPackage().getName()).build());
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));

@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -57,15 +56,15 @@ final class AnyModel extends Referrer<AnyModel> {
     if (name != null)
       xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name).toString()));
 
-    final String types = jsd.getTypes();
+    final String types = jsd.get40types();
     if (types != null)
       xsb.setTypes$(new $Any.Types$(Strings.split(types, ' ')));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Any.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(use)));
 
@@ -75,19 +74,19 @@ final class AnyModel extends Referrer<AnyModel> {
   private static $ArrayMember.Any element(final schema.AnyElement jsd) {
     final $ArrayMember.Any xsb = new $ArrayMember.Any();
 
-    final String types = jsd.getTypes();
+    final String types = jsd.get40types();
     if (types != null)
       xsb.setTypes$(new $ArrayMember.Any.Types$(Strings.split(types, ' ')));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Any.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Any.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Any.MaxOccurs$(maxOccurs));
 
@@ -105,7 +104,7 @@ final class AnyModel extends Referrer<AnyModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
@@ -415,22 +414,22 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return properties;
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     if (types != null) {
       final StringBuilder b = new StringBuilder();
       for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
@@ -440,7 +439,7 @@ final class AnyModel extends Referrer<AnyModel> {
         b.append(Registry.getSubName(types.get(i).id().toString(), packageName));
       }
 
-      attributes.put("types", b.toString());
+      attributes.put(toJx(toJx, "types"), b.toString());
     }
 
     return attributes;

@@ -16,9 +16,10 @@
 
 package org.jsonx;
 
+import static org.jsonx.Element.*;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -216,17 +217,17 @@ final class Bind {
     }
   }
 
-  public static Map<String,Object> toXmlAttributes(final String elementName, final Element owner, final Type type, final Field field, final Map<String,Object> attributes) {
+  static AttributeMap toBindingAttributes(final String elementName, final Element owner, final Type type, final Field field, final AttributeMap attributes, final boolean toJx) {
     final AttributeMap bindingAttrs = new AttributeMap();
     if (type != null) {
       if (type.type != null)
-        bindingAttrs.put("type", type.type.toString());
+        bindingAttrs.put(toJx(toJx, "type"), type.type.toString());
 
       if (type.decode != null)
-        bindingAttrs.put("decode", type.decode);
+        bindingAttrs.put(toJx(toJx, "decode"), type.decode);
 
       if (type.encode != null)
-        bindingAttrs.put("encode", type.encode);
+        bindingAttrs.put(toJx(toJx, "encode"), type.encode);
     }
 
     if (!(owner instanceof SchemaElement) && !(owner instanceof ArrayModel) && field != null && field.field != null) {
@@ -235,14 +236,15 @@ final class Bind {
         name = attributes.get("names");
 
       if (!field.field.equals(JsdUtil.getFieldName(JsdUtil.fixReserved((String)name))))
-        bindingAttrs.put("field", field.field);
+        bindingAttrs.put(toJx(toJx, "field"), field.field);
     }
 
     if (bindingAttrs.size() == 0)
       return null;
 
-    bindingAttrs.put("lang", "java");
-    bindingAttrs.put("jx:type", elementName);
+    bindingAttrs.put(toJx(toJx, "lang"), "java");
+    bindingAttrs.put("@", elementName);
+
     return bindingAttrs;
   }
 

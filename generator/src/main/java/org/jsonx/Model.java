@@ -20,8 +20,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -101,12 +99,12 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, false);
     cursor.pushName((String)attributes.get("name"));
 
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding, attributes);
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, false);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
@@ -114,28 +112,27 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jx:type", elementName());
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> properties = new StrictPropertyMap<>();
+    properties.put("@", elementName());
 
-    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, true);
     cursor.pushName((String)attributes.get("name"));
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(elementName(), owner, typeBinding, fieldBinding, attributes);
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, true);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
     attributes.remove(nameName());
-    attributes.remove("xsi:type");
 
     properties.putAll(attributes);
     return properties;
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     if (owner instanceof ObjectModel)
-      attributes.put("xsi:type", elementName());
+      attributes.put(toJx ? "@" : "xsi:type", elementName());
 
     return attributes;
   }

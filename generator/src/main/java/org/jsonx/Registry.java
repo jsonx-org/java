@@ -44,8 +44,6 @@ class Registry {
       if (refToModel.containsKey(name))
         throw new IllegalArgumentException("Value name=\"" + name + "\" already registered");
 
-      if (name.startsWith("jx:"))
-        System.err.println();
       refToModel.put(name, null);
       this.name = name;
     }
@@ -447,8 +445,8 @@ class Registry {
   }
 
   private final HashMap<String,Registry> namespaceToRegistry;
-  private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
-  private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
+  private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
+  private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
 
   final String targetNamespace;
   final Settings settings;
@@ -623,10 +621,7 @@ class Registry {
   }
 
   Model getModel(final Id id) {
-    final Model x = refToModel.get(id.toString());
-    // FIXME: Clean up
-    System.err.println(id + " " + x);
-    return x;
+    return refToModel.get(id.toString());
   }
 
   Collection<Model> getModels() {

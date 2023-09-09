@@ -16,9 +16,6 @@
 
 package org.jsonx;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 
@@ -32,8 +29,12 @@ abstract class Element {
     this.doc = doc == null || (str = doc.text()) == null || (str = str.trim()).length() == 0 ? null : str;
   }
 
-  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
-  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, HashMap<String,Map<String,Object>> pathToBinding);
+  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, StrictPropertyMap<AttributeMap> pathToBinding);
+  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, StrictPropertyMap<AttributeMap> pathToBinding);
+
+  static String toJx(final boolean toJx, final String name) {
+    return toJx ? "@" + name : name;
+  }
 
   /**
    * Intended to be overridden by each concrete subclass, this method returns a {@code Map<String,String>} of name/value attributes
@@ -43,10 +44,10 @@ abstract class Element {
    * @param packageName The package name declared in the schema element.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
     final AttributeMap attributes = new AttributeMap();
     if (doc != null)
-      attributes.put("doc", doc);
+      attributes.put(toJx(toJx, "doc"), doc);
 
     return attributes;
   }

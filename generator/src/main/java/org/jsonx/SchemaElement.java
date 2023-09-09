@@ -72,7 +72,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     for (final Map.Entry<String,binding.FieldBinding> entry : bindings.entrySet()) { // [S]
       final $FieldBindings.Bind bind = new $FieldBindings.Bind();
       bind.setLang$(entry.getKey());
-      bind.setField$(entry.getValue().getField());
+      bind.setField$(entry.getValue().get40field());
       xsb.addBind(bind);
     }
 
@@ -85,10 +85,10 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       final $TypeFieldBindings.Bind bind = new $TypeFieldBindings.Bind();
       bind.setLang$(entry.getKey());
       final TypeFieldBinding value = entry.getValue();
-      bind.setField$(value.getField());
-      bind.setDecode$(value.getDecode());
-      bind.setEncode$(value.getEncode());
-      bind.setType$(value.getType());
+      bind.setField$(value.get40field());
+      bind.setDecode$(value.get40decode());
+      bind.setEncode$(value.get40encode());
+      bind.setType$(value.get40type());
       xsb.addBind(bind);
     }
 
@@ -97,8 +97,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
   static Binding jxToXsb(final binding.Binding jsb) {
     final Binding xsb = new Binding();
-    xsb.setJxSchema(jxToXsb(jsb.getSchema()));
-    final LinkedHashMap<String,Object> bindings = jsb.getBindings().get5cS7c5cS2e2a5cS();
+    xsb.setJxSchema(jxToXsb(jsb.get40schema()));
+    final LinkedHashMap<String,Object> bindings = jsb.get5cS7c5cS2e2a5cS();
     if (bindings.size() > 0) {
       for (final Map.Entry<String,Object> entry : bindings.entrySet()) { // [S]
         final String path = CharacterDatas.escapeForAttr(entry.getKey().replace("\\\\", "\\"), '"').toString();
@@ -147,11 +147,11 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       }
     }
 
-    final String targetNamespace = jsd.getJx3aTargetNamespace();
+    final String targetNamespace = jsd.get40targetNamespace();
     if (targetNamespace != null && targetNamespace.length() > 0)
       xsb.setTargetNamespace$(targetNamespace);
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
@@ -208,7 +208,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Schema schema, final Settings settings) throws ValidationException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Schema schema, final Settings settings) throws ValidationException {
     this(namespaceToRegistry, schema, null, settings);
   }
 
@@ -220,7 +220,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a cycle is detected in the object hierarchy.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Binding binding, final Settings settings) throws ValidationException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Binding binding, final Settings settings) throws ValidationException {
     this(namespaceToRegistry, binding.getJxSchema(), binding, settings);
   }
 
@@ -333,7 +333,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final schema.Schema schema, final Settings settings) throws ValidationException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final schema.Schema schema, final Settings settings) throws ValidationException {
     this(namespaceToRegistry, jxToXsb(schema), null, settings);
   }
 
@@ -345,7 +345,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws ValidationException If a validation error has occurred.
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final binding.Binding binding, final Settings settings) throws ValidationException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final binding.Binding binding, final Settings settings) throws ValidationException {
     this(namespaceToRegistry, null, jxToXsb(binding), settings);
   }
 
@@ -390,7 +390,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws PackageNotFoundException If the specified package is not found.
    * @throws NullPointerException If {@code pkg} or {@code settings} is null.
    */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     this(namespaceToRegistry, findClasses(pkg, classLoader, filter));
   }
 
@@ -511,7 +511,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final ArrayList<XmlElement> schemaElems;
     final ArrayList<Model> members = rootMembers();
     final int i$ = members.size();
@@ -525,7 +525,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       schemaElems = null;
     }
 
-    final Map<String,Object> schemaAttrs = super.toXmlAttributes(owner, packageName);
+    final Map<String,Object> schemaAttrs = super.toSchemaAttributes(owner, packageName, false);
     schemaAttrs.put("xmlns", "http://www.jsonx.org/schema-" + version + ".xsd");
     schemaAttrs.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
     schemaAttrs.put("xsi:schemaLocation", "http://www.jsonx.org/schema-" + version + ".xsd http://www.jsonx.org/schema-" + version + ".xsd");
@@ -538,7 +538,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     if (noBindings == 0)
       return schema;
 
-    final LinkedHashMap<String,Object> bindingAttrs = new LinkedHashMap<>();
+    final StrictPropertyMap<Object> bindingAttrs = new StrictPropertyMap<>();
     bindingAttrs.put("xmlns", "http://www.jsonx.org/binding-" + version + ".xsd");
 
     schemaAttrs.remove("xmlns:xsi");
@@ -550,32 +550,32 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     final ArrayList<XmlElement> bindingElems = new ArrayList<>(noBindings + 1);
     bindingElems.add(schema);
 
-    for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) { // [S]
-      final LinkedHashMap<String,Object> bind = new LinkedHashMap<>(entry.getValue());
-      bindingElems.add(new XmlElement((String)bind.remove("jx:type"), Collections.singletonMap("path", CharacterDatas.escapeForAttr(entry.getKey(), '"').toString()), Collections.singletonList(new XmlElement("bind", bind, null))));
+    for (final Map.Entry<String,AttributeMap> entry : pathToBinding.entrySet()) { // [S]
+      final StrictPropertyMap<Object> bind = new StrictPropertyMap<>(entry.getValue());
+      bindingElems.add(new XmlElement((String)bind.remove("@"), Collections.singletonMap("path", CharacterDatas.escapeForAttr(entry.getKey(), '"').toString()), Collections.singletonList(new XmlElement("bind", bind, null))));
     }
 
     return new XmlElement("binding", bindingAttrs, bindingElems);
   }
 
   public XmlElement toXml() {
-    return toXml(this, registry.packageName, new JsonPath.Cursor(), new LinkedHashMap<>());
+    return toXml(this, registry.packageName, new JsonPath.Cursor(), new StrictPropertyMap<>());
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final List<Model> members = rootMembers();
     final int size = members.size();
     if (size == 0)
       return null;
 
-    final LinkedHashMap<String,Object> schema = new LinkedHashMap<>();
-    schema.put("jx:ns", "http://www.jsonx.org/schema-" + version + ".jsd");
-    schema.put("jx:schemaLocation", "http://www.jsonx.org/schema-" + version + ".jsd http://www.jsonx.org/schema-" + version + ".jsd");
-    schema.putAll(toXmlAttributes(owner, packageName));
+    final StrictPropertyMap<Object> schema = new StrictPropertyMap<>();
+    schema.put("@ns", "http://www.jsonx.org/schema-" + version + ".jsd");
+    schema.put("@schemaLocation", "http://www.jsonx.org/schema-" + version + ".jsd http://www.jsonx.org/schema-" + version + ".jsd");
+    schema.putAll(toSchemaAttributes(owner, packageName, true));
     final String targetNamespace = registry.targetNamespace;
     if (targetNamespace != null)
-      schema.put("jx:targetNamespace", targetNamespace.endsWith(".jsdx") ? targetNamespace.substring(0, targetNamespace.length() - 1) : targetNamespace);
+      schema.put("@targetNamespace", targetNamespace.endsWith(".jsdx") ? targetNamespace.substring(0, targetNamespace.length() - 1) : targetNamespace);
 
     final int len = packageName.length();
     for (int i = 0; i < size; ++i) { // [RA]
@@ -588,26 +588,24 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     if (pathToBinding.size() == 0)
       return schema;
 
-    schema.remove("jx:schemaLocation");
-    final LinkedHashMap<String,Object> binding = new LinkedHashMap<>();
-    binding.put("jx:ns", "http://www.jsonx.org/binding-" + version + ".jsd");
-    binding.put("jx:schemaLocation", "http://www.jsonx.org/binding-" + version + ".jsd http://www.jsonx.org/binding-" + version + ".jsd");
-    binding.put("schema", schema);
-    final LinkedHashMap<String,Object> bindings = new LinkedHashMap<>();
-    binding.put("bindings", bindings);
-    for (final Map.Entry<String,Map<String,Object>> entry : pathToBinding.entrySet()) { // [S]
-      final LinkedHashMap<String,Object> bind = new LinkedHashMap<>(entry.getValue());
-      final LinkedHashMap<String,Object> value = new LinkedHashMap<>();
-      value.put("jx:type", bind.remove("jx:type"));
-      value.put((String)bind.remove("lang"), bind);
-      bindings.put(entry.getKey(), value);
+    schema.remove("@schemaLocation");
+    final StrictPropertyMap<Object> binding = new StrictPropertyMap<>();
+    binding.put("@ns", "http://www.jsonx.org/binding-" + version + ".jsd");
+    binding.put("@schemaLocation", "http://www.jsonx.org/binding-" + version + ".jsd http://www.jsonx.org/binding-" + version + ".jsd");
+    binding.put("@schema", schema);
+    for (final Map.Entry<String,AttributeMap> entry : pathToBinding.entrySet()) { // [S]
+      final StrictPropertyMap<Object> bind = new StrictPropertyMap<>(entry.getValue());
+      final StrictPropertyMap<Object> value = new StrictPropertyMap<>();
+      value.put("@", bind.remove("@"));
+      value.put((String)bind.remove("@lang"), bind);
+      binding.put(entry.getKey(), value);
     }
 
     return binding;
   }
 
-  public Map<String,Object> toJson() {
-    return toJson(this, registry.packageName, new JsonPath.Cursor(), new LinkedHashMap<>());
+  public StrictPropertyMap<Object> toJson() {
+    return toJson(this, registry.packageName, new JsonPath.Cursor(), new StrictPropertyMap<>());
   }
 
   private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {

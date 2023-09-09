@@ -18,8 +18,6 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -42,15 +40,15 @@ final class Reference extends Member {
   private static $ArrayMember.Reference element(final schema.ReferenceElement jsd) {
     final $ArrayMember.Reference xsb = new $ArrayMember.Reference();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Reference.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Reference.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Reference.MaxOccurs$(maxOccurs));
 
@@ -70,11 +68,11 @@ final class Reference extends Member {
     if (name != null)
       xsb.setName$(new $Reference.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Reference.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(use)));
 
@@ -90,11 +88,11 @@ final class Reference extends Member {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final String type = jsd.getType();
+    final String type = jsd.get40type();
     if (type != null)
       xsb.setType$(new $ReferenceMember.Type$(type));
 
@@ -194,24 +192,28 @@ final class Reference extends Member {
     return model.typeAnnotation();
   }
 
-  private Map<String,Object> getBindingAttributes(final Element owner, final Map<String,Object> attributes) {
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(model instanceof AnyModel || model instanceof ArrayModel && ((ArrayModel)model).classType() == null ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes);
+  private AttributeMap getBindingAttributes(final Element owner, final AttributeMap attributes, final boolean toJx) {
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(model instanceof AnyModel || model instanceof ArrayModel && ((ArrayModel)model).classType() == null ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes, toJx);
     if (bindingAttributes == null)
       return null;
 
-    bindingAttributes.remove("type");
-    bindingAttributes.remove("decode");
-    bindingAttributes.remove("encode");
+    bindingAttributes.remove(toJx(toJx, "type"));
+    bindingAttributes.remove(toJx(toJx, "decode"));
+    bindingAttributes.remove(toJx(toJx, "encode"));
     // If there's only lang="java", then remove the binding element
     return bindingAttributes.size() <= 2 ? null : bindingAttributes;
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    return toXml(owner, packageName, cursor, pathToBinding, false);
+  }
+
+  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding, final boolean toJx) {
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, toJx);
     cursor.pushName((String)attributes.get("name"));
 
-    final Map<String,Object> bindingAttributes = getBindingAttributes(owner, attributes);
+    final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, toJx);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
@@ -219,11 +221,11 @@ final class Reference extends Member {
     if (registry.isRootMember(model)) {
       if (model != null) {
         final String subName = Registry.getSubName(model.id().toString(), packageName);
-        attributes.put("type", subName);
+        attributes.put(toJx(toJx, "type"), subName);
       }
 
       if (owner instanceof ObjectModel) {
-        attributes.put("xsi:type", elementName());
+        attributes.put(toJx ? "@" : "xsi:type", elementName());
         element = new XmlElement("property", attributes);
       }
       else {
@@ -238,10 +240,10 @@ final class Reference extends Member {
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
       final Map<String,Object> attrs = element.getAttributes();
-      attrs.remove("minOccurs");
-      attrs.remove("maxOccurs");
-      attrs.remove("nullable");
-      attrs.remove("use");
+      attrs.remove(toJx(toJx, "minOccurs"));
+      attrs.remove(toJx(toJx, "maxOccurs"));
+      attrs.remove(toJx(toJx, "nullable"));
+      attrs.remove(toJx(toJx, "use"));
       attrs.putAll(attributes);
     }
 
@@ -250,11 +252,11 @@ final class Reference extends Member {
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jx:type", elementName());
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> properties = new StrictPropertyMap<>();
+    properties.put("@", elementName());
 
-    final Map<String,Object> attributes = toXml(owner, packageName, cursor, pathToBinding).getAttributes();
+    final AttributeMap attributes = (AttributeMap)toXml(owner, packageName, cursor, pathToBinding, true).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

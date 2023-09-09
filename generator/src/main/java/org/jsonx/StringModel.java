@@ -19,9 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Map;
 
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
@@ -60,11 +58,11 @@ final class StringModel extends Model {
     if (name != null)
       xsb.setName$(new $String.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $String.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $String.Use$($String.Use$.Enum.valueOf(use)));
 
@@ -74,15 +72,15 @@ final class StringModel extends Model {
   private static $ArrayMember.String element(final schema.StringElement jsd) {
     final $ArrayMember.String xsb = new $ArrayMember.String();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.String.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.String.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.String.MaxOccurs$(maxOccurs));
 
@@ -100,12 +98,13 @@ final class StringModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    if (jsd.getPattern() != null)
-      xsb.setPattern$(new $StringMember.Pattern$(jsd.getPattern()));
+    final String pattern = jsd.get40pattern();
+    if (pattern != null)
+      xsb.setPattern$(new $StringMember.Pattern$(pattern));
 
     return xsb;
   }
@@ -246,24 +245,24 @@ final class StringModel extends Model {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return properties;
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     if (pattern != null)
-      attributes.put("pattern", pattern);
+      attributes.put(toJx(toJx, "pattern"), pattern);
 
     return attributes;
   }

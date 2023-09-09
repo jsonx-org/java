@@ -19,9 +19,7 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
@@ -63,11 +61,11 @@ final class NumberModel extends Model {
     if (name != null)
       xsb.setName$(new $Number.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Number.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(use)));
 
@@ -77,15 +75,15 @@ final class NumberModel extends Model {
   private static $ArrayMember.Number element(final schema.NumberElement jsd) {
     final $ArrayMember.Number xsb = new $ArrayMember.Number();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Number.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Number.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Number.MaxOccurs$(maxOccurs));
 
@@ -103,15 +101,15 @@ final class NumberModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final Long scale = jsd.getScale();
+    final Long scale = jsd.get40scale();
     if (scale != null)
       xsb.setScale$(new $NumberMember.Scale$(scale));
 
-    final String range = jsd.getRange();
+    final String range = jsd.get40range();
     if (range != null)
       xsb.setRange$(new $NumberMember.Range$(range));
 
@@ -317,27 +315,27 @@ final class NumberModel extends Model {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return properties;
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     if (scale != Integer.MAX_VALUE)
-      attributes.put("scale", scale);
+      attributes.put(toJx(toJx, "scale"), scale);
 
     if (range != null)
-      attributes.put("range", range.toString());
+      attributes.put(toJx(toJx, "range"), range.toString());
 
     return attributes;
   }

@@ -71,11 +71,11 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (name != null)
       xsb.setName$(new $Array.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Array.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Array.Use$($Array.Use$.Enum.valueOf(use)));
 
@@ -85,15 +85,15 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static $ArrayMember.Array element(final schema.ArrayElement jsd) {
     final $ArrayMember.Array xsb = new $ArrayMember.Array();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Array.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Array.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Array.MaxOccurs$(maxOccurs));
 
@@ -113,19 +113,19 @@ final class ArrayModel extends Referrer<ArrayModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final String minIterate = jsd.getMinIterate();
+    final String minIterate = jsd.get40minIterate();
     if (minIterate != null)
       xsb.setMinIterate$(new $ArrayMember.MinIterate$(new BigInteger(minIterate)));
 
-    final String maxIterate = jsd.getMaxIterate();
+    final String maxIterate = jsd.get40maxIterate();
     if (maxIterate != null)
       xsb.setMaxIterate$(new $ArrayMember.MaxIterate$(maxIterate));
 
-    final List<org.jsonx.schema.Member> elements = jsd.getElements();
+    final List<org.jsonx.schema.Member> elements = jsd.get40elements();
     final int i$;
     if (elements != null && (i$ = elements.size()) > 0) {
       if (elements instanceof RandomAccess)
@@ -499,7 +499,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     final int size = members.size();
     if (size > 0) {
@@ -520,15 +520,15 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final HashMap<String,Map<String,Object>> pathToBinding) {
-    final Map<String,Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    final StrictPropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     if (members.size() > 0) {
       final ArrayList<Object> elements = new ArrayList<>();
       cursor.inArray();
       for (int i = 0, i$ = members.size(); i < i$; ++i) // [RA]
         elements.add(members.get(i).toJson(this, packageName, cursor, pathToBinding));
 
-      element.put("elements", elements);
+      element.put("@elements", elements);
     }
 
     cursor.popName();
@@ -536,16 +536,16 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     if (owner instanceof SchemaElement)
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id().toString());
 
     if (minIterate != null)
-      attributes.put("minIterate", String.valueOf(minIterate));
+      attributes.put(toJx(toJx, "minIterate"), String.valueOf(minIterate));
 
     if (maxIterate != null)
-      attributes.put("maxIterate", maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
+      attributes.put(toJx(toJx, "maxIterate"), maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
 
     return attributes;
   }

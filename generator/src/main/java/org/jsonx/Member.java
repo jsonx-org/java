@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.Function;
@@ -293,8 +292,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
     if (name() != null)
       attributes.put(nameName(), name());
     else if (owner instanceof SchemaElement && !(this instanceof Referrer))
@@ -302,17 +301,17 @@ abstract class Member extends Element {
 
     if (!(owner instanceof SchemaElement)) {
       if (nullable.get != null)
-        attributes.put("nullable", nullable.get);
+        attributes.put(toJx(toJx, "nullable"), nullable.get);
 
       if (use.get != null)
-        attributes.put("use", use.get.toString().toLowerCase());
+        attributes.put(toJx(toJx, "use"), use.get.toString().toLowerCase());
     }
 
     if (minOccurs.get != null)
-      attributes.put("minOccurs", String.valueOf(minOccurs.get));
+      attributes.put(toJx(toJx, "minOccurs"), String.valueOf(minOccurs.get));
 
     if (maxOccurs.get != null)
-      attributes.put("maxOccurs", String.valueOf(maxOccurs.get));
+      attributes.put(toJx(toJx, "maxOccurs"), String.valueOf(maxOccurs.get));
 
     return attributes;
   }
