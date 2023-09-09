@@ -499,7 +499,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     final int size = members.size();
     if (size > 0) {
@@ -520,8 +520,8 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
-    final StrictPropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     if (members.size() > 0) {
       final ArrayList<Object> elements = new ArrayList<>();
       cursor.inArray();

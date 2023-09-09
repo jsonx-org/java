@@ -414,15 +414,15 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return element;
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
-    final StrictPropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return properties;
   }

@@ -66,12 +66,12 @@ public class TypeTest {
       }
 
       @Override
-      XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+      XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
         return null;
       }
 
       @Override
-      JSON toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+      JSON toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
         return null;
       }
     };

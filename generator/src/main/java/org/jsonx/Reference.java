@@ -205,11 +205,11 @@ final class Reference extends Member {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     return toXml(owner, packageName, cursor, pathToBinding, false);
   }
 
-  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding, final boolean toJx) {
+  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean toJx) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, toJx);
     cursor.pushName((String)attributes.get("name"));
 
@@ -252,8 +252,8 @@ final class Reference extends Member {
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
-    final StrictPropertyMap<Object> properties = new StrictPropertyMap<>();
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = new PropertyMap<>();
     properties.put("@", elementName());
 
     final AttributeMap attributes = (AttributeMap)toXml(owner, packageName, cursor, pathToBinding, true).getAttributes();

@@ -69,12 +69,12 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     throw new UnsupportedOperationException();
   }
 }

@@ -511,7 +511,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final ArrayList<XmlElement> schemaElems;
     final ArrayList<Model> members = rootMembers();
     final int i$ = members.size();
@@ -538,7 +538,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     if (noBindings == 0)
       return schema;
 
-    final StrictPropertyMap<Object> bindingAttrs = new StrictPropertyMap<>();
+    final PropertyMap<Object> bindingAttrs = new PropertyMap<>();
     bindingAttrs.put("xmlns", "http://www.jsonx.org/binding-" + version + ".xsd");
 
     schemaAttrs.remove("xmlns:xsi");
@@ -551,7 +551,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     bindingElems.add(schema);
 
     for (final Map.Entry<String,AttributeMap> entry : pathToBinding.entrySet()) { // [S]
-      final StrictPropertyMap<Object> bind = new StrictPropertyMap<>(entry.getValue());
+      final PropertyMap<Object> bind = new PropertyMap<>(entry.getValue());
       bindingElems.add(new XmlElement((String)bind.remove("@"), Collections.singletonMap("path", CharacterDatas.escapeForAttr(entry.getKey(), '"').toString()), Collections.singletonList(new XmlElement("bind", bind, null))));
     }
 
@@ -559,17 +559,17 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   }
 
   public XmlElement toXml() {
-    return toXml(this, registry.packageName, new JsonPath.Cursor(), new StrictPropertyMap<>());
+    return toXml(this, registry.packageName, new JsonPath.Cursor(), new PropertyMap<>());
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final List<Model> members = rootMembers();
     final int size = members.size();
     if (size == 0)
       return null;
 
-    final StrictPropertyMap<Object> schema = new StrictPropertyMap<>();
+    final PropertyMap<Object> schema = new PropertyMap<>();
     schema.put("@ns", "http://www.jsonx.org/schema-" + version + ".jsd");
     schema.put("@schemaLocation", "http://www.jsonx.org/schema-" + version + ".jsd http://www.jsonx.org/schema-" + version + ".jsd");
     schema.putAll(toSchemaAttributes(owner, packageName, true));
@@ -589,13 +589,13 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       return schema;
 
     schema.remove("@schemaLocation");
-    final StrictPropertyMap<Object> binding = new StrictPropertyMap<>();
+    final PropertyMap<Object> binding = new PropertyMap<>();
     binding.put("@ns", "http://www.jsonx.org/binding-" + version + ".jsd");
     binding.put("@schemaLocation", "http://www.jsonx.org/binding-" + version + ".jsd http://www.jsonx.org/binding-" + version + ".jsd");
     binding.put("@schema", schema);
     for (final Map.Entry<String,AttributeMap> entry : pathToBinding.entrySet()) { // [S]
-      final StrictPropertyMap<Object> bind = new StrictPropertyMap<>(entry.getValue());
-      final StrictPropertyMap<Object> value = new StrictPropertyMap<>();
+      final PropertyMap<Object> bind = new PropertyMap<>(entry.getValue());
+      final PropertyMap<Object> value = new PropertyMap<>();
       value.put("@", bind.remove("@"));
       value.put((String)bind.remove("@lang"), bind);
       binding.put(entry.getKey(), value);
@@ -604,8 +604,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return binding;
   }
 
-  public StrictPropertyMap<Object> toJson() {
-    return toJson(this, registry.packageName, new JsonPath.Cursor(), new StrictPropertyMap<>());
+  public PropertyMap<Object> toJson() {
+    return toJson(this, registry.packageName, new JsonPath.Cursor(), new PropertyMap<>());
   }
 
   private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {

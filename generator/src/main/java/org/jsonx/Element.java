@@ -29,8 +29,8 @@ abstract class Element {
     this.doc = doc == null || (str = doc.text()) == null || (str = str.trim()).length() == 0 ? null : str;
   }
 
-  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, StrictPropertyMap<AttributeMap> pathToBinding);
-  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, StrictPropertyMap<AttributeMap> pathToBinding);
+  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, PropertyMap<AttributeMap> pathToBinding);
+  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, PropertyMap<AttributeMap> pathToBinding);
 
   static String toJx(final boolean toJx, final String name) {
     return toJx ? "@" + name : name;

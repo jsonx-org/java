@@ -99,7 +99,7 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, false);
     cursor.pushName((String)attributes.get("name"));
 
@@ -112,8 +112,8 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
-    final StrictPropertyMap<Object> properties = new StrictPropertyMap<>();
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = new PropertyMap<>();
     properties.put("@", elementName());
 
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, true);

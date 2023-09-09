@@ -277,7 +277,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
       final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
@@ -301,8 +301,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return element;
     }
 
-    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
-      final StrictPropertyMap<Object> object = (StrictPropertyMap)member.toJson(owner, packageName, cursor, pathToBinding);
+    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+      final PropertyMap<Object> object = (PropertyMap)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
         object.remove("@bindings");
@@ -670,7 +670,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     final int size;
     if (properties != null && (size = properties.size()) > 0) {
@@ -690,11 +690,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  StrictPropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final StrictPropertyMap<AttributeMap> pathToBinding) {
-    final StrictPropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     final int size;
     if (properties != null && (size = properties.size()) > 0) {
-      final StrictPropertyMap<Object> properties = new StrictPropertyMap<>(size);
+      final PropertyMap<Object> properties = new PropertyMap<>(size);
       element.put("@properties", properties);
       for (final Property property : this.properties.values()) // [C]
         properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
