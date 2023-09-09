@@ -50,7 +50,7 @@ public final class Generator {
   }
 
   private static void trapPrintUsage() {
-    System.err.println("Usage: Generator <-p [NAMESPACE] PREFIX>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsb|SCHEMA.jsdx|SCHEMA.jsbx>...");
+    System.err.println("Usage: Generator <-p [NAMESPACE] PREFIX>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx>...");
     System.err.println("  -p [NAMESPACE] <PREFIX>  Package prefix of generated classes for provided namespace, recurrable.");
     System.err.println("  -d <DEST_DIR>            The destination directory.");
     System.exit(1);

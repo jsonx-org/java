@@ -38,7 +38,7 @@ import org.openjax.json.JsonReader;
  */
 public class Validator {
   private static void trapPrintUsage() {
-    System.err.println("Usage: Validator <SCHEMA.jsd|SCHEMA.jsdx> <JSON>...");
+    System.err.println("Usage: Validator <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx> <JSON>...");
     System.exit(1);
   }
 

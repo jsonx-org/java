@@ -111,14 +111,7 @@ final class Reference extends Member {
   }
 
   static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Reference xsb, final $FieldBinding binding, final Supplier<? extends Model> model) {
-    return new Deferred<>(true, null, null, () -> {
-      if (model.get() == null) {
-        model.get();
-        System.err.println();
-      }
-
-      return new Reference(registry, declarer, xsb, model.get(), binding);
-    });
+    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get(), binding));
   }
 
   private Reference(final Registry registry, final Declarer declarer, final $Reference xsb, final Model model, final $FieldBinding binding) {
