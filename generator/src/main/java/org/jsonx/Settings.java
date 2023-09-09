@@ -280,7 +280,7 @@ public class Settings {
       throw new IllegalArgumentException("realObject must be a non-primitive type: " + realObject.getCanonicalName());
   }
 
-  public String getPrefix(final String namespace) {
+  public String getBasePath(final String namespace) {
     return namespaceToPrefix != null ? namespaceToPrefix.get(namespace) : "";
   }
 

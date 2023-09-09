@@ -320,7 +320,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final Schema.Array xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$(), xsb.getName$().text());
+    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$(), xsb.getName$().text());
     this.members = parseMembers(registry, this, xsb, xsbToBinding);
     final MinIterate$ minIterate$ = xsb.getMinIterate$();
     this.minIterate = parseIterate(minIterate$.text());

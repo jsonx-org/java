@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-09T12:27:19.635")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-09T18:25:34.214")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {

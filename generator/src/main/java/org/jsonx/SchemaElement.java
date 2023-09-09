@@ -36,9 +36,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Generated;
+import javax.xml.namespace.QName;
 
 import org.jaxsb.runtime.BindingList;
-import org.jaxsb.runtime.QName;
 import org.jsonx.binding.TypeFieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBindings;
@@ -59,6 +59,7 @@ import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
 import org.openjax.xml.api.CharacterDatas;
 import org.openjax.xml.api.XmlElement;
+import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 /**
@@ -95,7 +96,17 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  static Binding jxToXsb(final binding.Binding jsb) {
+  static $AnyType jxToXsb(final JxObject jsb) {
+    if (jsb instanceof schema.Schema)
+      return jxToXsb((schema.Schema)jsb);
+
+    if (jsb instanceof binding.Binding)
+      return jxToXsb((binding.Binding)jsb);
+
+    throw new IllegalArgumentException("Unsupported object of class: " + jsb.getClass().getName());
+  }
+
+  private static Binding jxToXsb(final binding.Binding jsb) {
     final Binding xsb = new Binding();
     xsb.setJxSchema(jxToXsb(jsb.get40schema()));
     final LinkedHashMap<String,Object> bindings = jsb.get5cS7c5cS2e2a5cS();
@@ -224,16 +235,28 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     this(namespaceToRegistry, binding.getJxSchema(), binding, settings);
   }
 
+  private static HashMap<String,String> initPrefixNamespaceMap(final Iterator<$AnySimpleType> attributes) {
+    final HashMap<String,String> prefixToNamespace = new HashMap<>();
+    while (attributes.hasNext()) {
+      final $AnySimpleType attribute = attributes.next();
+      final QName name = attribute.name();
+      if ("jxns".equals(name.getPrefix()))
+        prefixToNamespace.put(name.getLocalPart(), attribute.text().toString());
+    }
+
+    return prefixToNamespace;
+  }
+
   SchemaElement(final HashMap<String,Registry> namespaceToRegistry, Schema schema, final Binding binding, final Settings settings) throws ValidationException {
     super(null, (schema == null ? schema = binding.getJxSchema() : schema).getDoc$());
-    final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
     final TargetNamespace$ targetNamespace = schema.getTargetNamespace$();
-    this.registry = new Registry(namespaceToRegistry, targetNamespace == null ? null : targetNamespace.text(), settings);
+    this.registry = new Registry(namespaceToRegistry, initPrefixNamespaceMap(binding != null ? binding.attributeIterator() : schema.attributeIterator()), targetNamespace == null ? null : targetNamespace.text(), settings);
     final String namespaceURI = schema.name().getNamespaceURI();
     this.version = namespaceURI.substring(namespaceURI.lastIndexOf('-') + 1, namespaceURI.lastIndexOf('.'));
 
     assertNoCycle(schema);
 
+    final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
     final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
       final $Member member = ($Member)elementIterator.next();
@@ -309,18 +332,32 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::memberToName).collect(Collectors.joining(" -> ")));
   }
 
-  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final Object obj, final Settings settings) {
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final $AnyType obj, final Settings settings) {
     if (obj instanceof Schema)
       return new SchemaElement(namespaceToRegistry, (Schema)obj, settings);
 
     if (obj instanceof Binding)
       return new SchemaElement(namespaceToRegistry, (Binding)obj, settings);
 
+    throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
+  }
+
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final JxObject obj, final Settings settings) {
     if (obj instanceof schema.Schema)
       return new SchemaElement(namespaceToRegistry, (schema.Schema)obj, settings);
 
     if (obj instanceof binding.Binding)
       return new SchemaElement(namespaceToRegistry, (binding.Binding)obj, settings);
+
+    throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
+  }
+
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final Object obj, final Settings settings) {
+    if (obj instanceof JxObject)
+      return parse(namespaceToRegistry, (JxObject)obj, settings);
+
+    if (obj instanceof $AnyType)
+      return parse(namespaceToRegistry, ($AnyType)obj, settings);
 
     throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
   }
@@ -472,7 +509,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     super(null, null);
     this.registry = new Registry(namespaceToRegistry, this, classes);
     namespaceToRegistry.put(registry.targetNamespace, registry);
-    final QName name = Schema.class.getAnnotation(QName.class);
+    final org.jaxsb.runtime.QName name = Schema.class.getAnnotation(org.jaxsb.runtime.QName.class);
     final String namespaceURI = name.namespaceURI();
     this.version = namespaceURI.substring(namespaceURI.lastIndexOf('-') + 1, name.namespaceURI().lastIndexOf('.'));
 

@@ -16,6 +16,7 @@
 
 package org.jsonx;
 
+import org.jsonx.test.datatype.ObjArr;
 import org.jsonx.test.datatype.ObjBool;
 import org.jsonx.test.datatype.ObjNum;
 import org.jsonx.test.datatype.ObjObj;

@@ -445,6 +445,7 @@ class Registry {
   }
 
   private final HashMap<String,Registry> namespaceToRegistry;
+  private final HashMap<String,String> prefixToNamespace;
   private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
   private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
 
@@ -452,34 +453,35 @@ class Registry {
   final Settings settings;
   final boolean isFromJsd;
   final String packageName;
-  final String classPrefix;
+  final String classBasePath;
 
-  Registry(final HashMap<String,Registry> namespaceToRegistry, final String targetNamespace, final Settings settings) {
+  Registry(final HashMap<String,Registry> namespaceToRegistry, final HashMap<String,String> prefixToNamespace, final String targetNamespace, final Settings settings) {
     this.namespaceToRegistry = namespaceToRegistry;
+    this.prefixToNamespace = prefixToNamespace;
     this.targetNamespace = targetNamespace;
-    if (namespaceToRegistry.put(targetNamespace, this) != null)
+    if (namespaceToRegistry.put(this.targetNamespace, this) != null)
       throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
 
     this.settings = settings;
     this.isFromJsd = true;
 
-    final String prefix = settings.getPrefix(targetNamespace);
-    final int length = prefix.length();
+    final String basePath = settings.getBasePath(this.targetNamespace);
+    final int length = basePath.length();
     if (length > 0) {
-      final char lastChar = prefix.charAt(length - 1);
+      final char lastChar = basePath.charAt(length - 1);
       if (lastChar == '.') {
-        this.packageName = prefix.substring(0, length - 1);
-        this.classPrefix = "";
+        this.packageName = basePath.substring(0, length - 1);
+        this.classBasePath = "";
       }
       else {
-        final int index = prefix.lastIndexOf('.');
-        this.packageName = prefix.substring(0, index);
-        this.classPrefix = prefix.substring(index + 1);
+        final int index = basePath.lastIndexOf('.');
+        this.packageName = basePath.substring(0, index);
+        this.classBasePath = basePath.substring(index + 1);
       }
     }
     else {
       this.packageName = "";
-      this.classPrefix = "";
+      this.classBasePath = "";
     }
   }
 
@@ -505,6 +507,7 @@ class Registry {
   @SuppressWarnings("unchecked")
   Registry(final HashMap<String,Registry> namespaceToRegistry, final Declarer declarer, final Collection<Class<?>> classes) {
     this.namespaceToRegistry = namespaceToRegistry;
+    this.prefixToNamespace = null;
     this.targetNamespace = detectTargetNamespace(classes);
     if (namespaceToRegistry.put(targetNamespace, this) != null)
       throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
@@ -521,7 +524,7 @@ class Registry {
     }
 
     this.packageName = getClassPrefix();
-    this.classPrefix = "";
+    this.classBasePath = "";
   }
 
   private String getClassPrefix() {
@@ -617,11 +620,30 @@ class Registry {
   }
 
   boolean isPending(final Id id) {
-    return refToModel.get(id.toString()) == null && refToModel.containsKey(id.toString());
+    final String prefix = id.getPrefix();
+    final String localName = id.toString();
+    if (prefix == null)
+      return refToModel.get(localName) == null && refToModel.containsKey(localName);
+
+    final String namespace = prefixToNamespace.get(prefix);
+    if (namespace == null)
+      throw new IllegalStateException("Namespace is null for prefix: " + prefix);
+
+    final Registry registry = namespaceToRegistry.get(namespace);
+    return registry.refToModel.get(localName) == null && registry.refToModel.containsKey(localName);
   }
 
   Model getModel(final Id id) {
-    return refToModel.get(id.toString());
+    final String prefix = id.getPrefix();
+    if (prefix == null)
+      return refToModel.get(id.toString());
+
+    final String namespace = prefixToNamespace.get(prefix);
+    if (namespace == null)
+      throw new IllegalStateException("Namespace is null for prefix: " + prefix);
+
+    final Registry registry = namespaceToRegistry.get(namespace);
+    return registry.refToModel.get(id.getLocalName());
   }
 
   Collection<Model> getModels() {

@@ -61,6 +61,16 @@ final class Id {
     this.id = String.valueOf(id);
   }
 
+  String getPrefix() {
+    final int c = id.indexOf(':');
+    return c < 0 ? null : id.substring(0, c);
+  }
+
+  String getLocalName() {
+    final int c = id.indexOf(':');
+    return c < 0 ? id : id.substring(c + 1);
+  }
+
   @Override
   public boolean equals(final Object obj) {
     return obj == this || obj instanceof Id && toString().equals(obj.toString());

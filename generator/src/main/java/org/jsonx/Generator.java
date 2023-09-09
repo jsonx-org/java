@@ -24,8 +24,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.Binding;
@@ -175,11 +177,11 @@ public final class Generator {
     return Bindings.parse(url, getErrorHandler());
   }
 
-  private static Object parse(final URL url) throws IOException { // [A]
+  private static $AnyType parse(final URL url) throws IOException { // [A]
     final String name = URLs.getName(url);
     if (name.endsWith(".jsd") || name.endsWith(".jsb") || name.endsWith(".json")) {
       try {
-        return parseJson(url);
+        return SchemaElement.jxToXsb(parseJson(url));
       }
       catch (final DecodeException e0) {
         try {
@@ -202,7 +204,7 @@ public final class Generator {
     }
     catch (final SAXException e0) {
       try {
-        return parseJson(url);
+        return SchemaElement.jxToXsb(parseJson(url));
       }
       catch (final IOException | RuntimeException e1) {
         e1.addSuppressed(e0);
@@ -218,7 +220,7 @@ public final class Generator {
 
   private static String[] getImports(final Schema schema) {
     final List<Schema.Import> imports = schema.getImport();
-    if (imports.size() == 0)
+    if (imports == null || imports.size() == 0)
       return Strings.EMPTY_ARRAY;
 
     final String[] namespaces = new String[imports.size()];
@@ -241,20 +243,65 @@ public final class Generator {
     return namespaces;
   }
 
-  private static String[] getImports(final Object o) {
-    if (o instanceof Schema)
-      return getImports((Schema)o);
+  private static String[] getImports(final $AnyType xsb) {
+    if (xsb instanceof Schema)
+      return getImports((Schema)xsb);
 
-    if (o instanceof Binding)
-      return getImports(((Binding)o).getJxSchema());
+    if (xsb instanceof Binding)
+      return getImports(((Binding)xsb).getJxSchema());
 
-    if (o instanceof schema.Schema)
-      return getImports((schema.Schema)o);
+    throw new IllegalArgumentException("Unsupported object of class: " + xsb.getClass().getName());
+  }
 
-    if (o instanceof binding.Binding)
-      return getImports(((binding.Binding)o).get40schema());
+  private static URL getLocation(final URL referer, final String path) {
+    return StringPaths.isAbsolute(path) ? URLs.toCanonicalURL(path) : URLs.toCanonicalURL(URLs.getCanonicalParent(referer) + "/" + path);
+  }
 
-    throw new IllegalArgumentException("Unsupported object of class: " + o.getClass().getName());
+  private static void addImport(final StrictRefDigraph<$AnyType,String> digraph, final Set<URL> set, final URL location) throws IOException {
+    if (set.add(location)) {
+      final $AnyType jsbx = parse(location);
+      final String[] imports = getImports(jsbx);
+      final int len = imports.length;
+      if (len == 0) {
+        digraph.add(jsbx);
+      }
+      else {
+        int i = 0; do { // [A]
+          final String importPath = imports[i];
+          addImport(digraph, set, getLocation(location, importPath));
+          digraph.add(jsbx, importPath);
+        }
+        while (++i < len);
+      }
+    }
+  }
+
+  static SchemaElement[] parse(final Settings settings, final URL ... urls) throws IOException {
+    assertNotEmpty(urls);
+
+    final StrictRefDigraph<$AnyType,String> digraph = new StrictRefDigraph<>("Schema cannot include itself", (final $AnyType xsb) -> {
+      if (xsb instanceof Schema)
+        return ((Schema)xsb).getTargetNamespace$().text();
+
+      if (xsb instanceof Binding)
+        return ((Binding)xsb).getJxSchema().getTargetNamespace$().text();
+
+      throw new IllegalArgumentException("Unsupported object of class: " + xsb.getClass().getName());
+    });
+
+    for (int i = 0, i$ = urls.length; i < i$; ++i) // [A]
+      addImport(digraph, new HashSet<>(), urls[i]);
+
+    if (digraph.hasCycle())
+      throw new IllegalStateException("Cycle exists in schema hierarchy: " + CollectionUtil.toString(digraph.getCycle(), " -> "));
+
+    final HashMap<String,Registry> namespaceToRegistry = new HashMap<>();
+    final ArrayList<$AnyType> topologicalOrder = digraph.getTopologicalOrder();
+    final SchemaElement[] schemas = new SchemaElement[topologicalOrder.size()];
+    for (int i = topologicalOrder.size() - 1; i >= 0; --i) // [RA]
+      schemas[i] = SchemaElement.parse(namespaceToRegistry, topologicalOrder.get(i), settings);
+
+    return schemas;
   }
 
   /**
@@ -270,40 +317,8 @@ public final class Generator {
    * @throws NullPointerException If {@code url} of {@code settings} is null.
    */
   public static void generate(final File destDir, final Settings settings, final URL ... urls) throws IOException {
-    assertNotEmpty(urls);
-    if (urls.length == 1) {
-      SchemaElement.parse(new HashMap<>(1), parse(urls[0]), settings);
-      return;
-    }
-
-    final StrictRefDigraph<Object,String> digraph = new StrictRefDigraph<>("Schema cannot include itself", o -> {
-      if (o instanceof Schema)
-        return ((Schema)o).getTargetNamespace$().text();
-
-      if (o instanceof Binding)
-        return ((Binding)o).getJxSchema().getTargetNamespace$().text();
-
-      if (o instanceof schema.Schema)
-        return ((schema.Schema)o).get40targetNamespace();
-
-      if (o instanceof binding.Binding)
-        return ((binding.Binding)o).get40schema().get40targetNamespace();
-
-      throw new IllegalArgumentException("Unsupported object of class: " + o.getClass().getName());
-    });
-
-    for (int i = 0, i$ = urls.length; i < i$; ++i) { // [A]
-      final Object schema = parse(urls[i]);
-      for (final String _import : getImports(schema))
-        digraph.add(schema, _import);
-    }
-
-    if (digraph.hasCycle())
-      throw new IllegalStateException("Cycle exists in schema hierarchy: " + CollectionUtil.toString(digraph.getCycle(), " -> "));
-
-    final HashMap<String,Registry> namespaceToRegistry = new HashMap<>();
-    final ArrayList<Object> topologicalOrder = digraph.getTopologicalOrder();
-    for (int i = topologicalOrder.size() - 1; i >= 0; --i) // [RA]
-      SchemaElement.parse(namespaceToRegistry, topologicalOrder.get(i), settings).toSource(destDir);
+    final SchemaElement[] schemas = parse(settings, urls);
+    for (final SchemaElement schema : schemas) // [A]
+      schema.toSource(destDir);
   }
 }

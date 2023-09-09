@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-09T12:25:16.172")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-09T18:25:34.214")
 public class schema {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
   public abstract static class Any extends org.jsonx.schema.Member {

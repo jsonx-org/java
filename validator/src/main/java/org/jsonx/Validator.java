@@ -79,10 +79,13 @@ public class Validator {
   @SuppressWarnings("unchecked")
   static int validate(final String[] args) throws CompilationException, IOException, PackageNotFoundException {
     final String prefix = "jsonx";
-    final Map<String,String> source = SchemaElement.parse(URLs.fromStringPath(args[0]), new Settings.Builder().withPrefix(t -> prefix + "._" + t.hashCode()).build()).toSource();
+    final SchemaElement[] schemas = Generator.parse(new Settings.Builder().withPrefix(t -> prefix + "._" + t.hashCode()).build(), URLs.fromStringPath(args[0]));
     final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final Map.Entry<String,String> entry : source.entrySet()) // [S]
-      compiler.addSource(entry.getValue());
+    for (final SchemaElement schema : schemas) { // [A]
+      final Map<String,String> source = schema.toSource();
+      for (final Map.Entry<String,String> entry : source.entrySet()) // [S]
+        compiler.addSource(entry.getValue());
+    }
 
     final ClassLoader classLoader = compiler.compile();
 

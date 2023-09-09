@@ -42,7 +42,7 @@ public class ArrayModelTest {
 
   @Test
   public void testGreatestCommonSuperObject() {
-    final Registry registry = new Registry(new HashMap<>(), null, new Settings.Builder().withPrefix("", getClass().getPackage().getName()).build());
+    final Registry registry = new Registry(new HashMap<>(), null, null, new Settings.Builder().withPrefix("", getClass().getPackage().getName()).build());
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));
