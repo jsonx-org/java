@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class DigraphTest {
+public class StrictDigraphTest {
   @Test
-  public void testDigraph() {
+  public void testStrictDigraph() {
     final StrictDigraph<String> digraph = new StrictDigraph<>("hello");
     try {
       digraph.add("a", "a");
@@ -33,7 +33,7 @@ public class DigraphTest {
   }
 
   @Test
-  public void testRefDigraph() {
+  public void testStrictRefDigraph() {
     final StrictRefDigraph<String,String> digraph = new StrictRefDigraph<>("hello", s -> s);
     try {
       digraph.add("a", "a");
