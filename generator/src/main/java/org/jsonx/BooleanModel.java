@@ -103,11 +103,11 @@ final class BooleanModel extends Model {
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     final BooleanModel model = new BooleanModel(registry, referrer, xsb, xsbToBinding);
     final Id id = model.id();
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
@@ -136,15 +136,15 @@ final class BooleanModel extends Model {
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.reference(newBooleanModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
     validateTypeBinding();
   }

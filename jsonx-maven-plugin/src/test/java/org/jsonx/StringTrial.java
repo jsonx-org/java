@@ -128,9 +128,9 @@ final class StringTrial extends PropertyTrial<String> {
   }
 
   static Object createValid(final Class<?> type, final String decode, String pattern) {
-    String prefix = "";
+    String root = "";
     if (type == URL.class) {
-      prefix = "https://jsonx.org/";
+      root = "https://jsonx.org/";
       pattern = "([a-zA-Z0-9]+/)+";
     }
 
@@ -141,12 +141,12 @@ final class StringTrial extends PropertyTrial<String> {
     if (pass == null)
       throw new IllegalStateException("Could not generate a pass string for regex: " + pattern);
 
-    return convertToDesiredType(decode, prefix + pass);
+    return convertToDesiredType(decode, root + pass);
   }
 
   @SuppressWarnings("null")
   private static Object createInvalid(final Class<?> type, final String decode, final String regex) {
-    String prefix = "";
+    String root = "";
     String fail = null;
     for (int i = 0; i < 1000; ++i) { // [N]
       if (type == UUID.class) {
@@ -169,7 +169,7 @@ final class StringTrial extends PropertyTrial<String> {
     if (fail.matches(regex))
       throw new IllegalStateException("Could not generate a fail string for regex: " + regex);
 
-    return convertToDesiredType(decode, prefix + fail);
+    return convertToDesiredType(decode, root + fail);
   }
 
   private static Object convertToDesiredType(final String decode, final String value) {

@@ -45,9 +45,11 @@
         </executions>
         <configuration>
           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-          <prefix>org.jsonx.sample.invoice.</prefix>
+          <namespacePackages>
+            <namespacePackage package="org.jsonx.sample.invoice."/>
+          </namespacePackages>
           <schemas>
-            <schema>src/main/resources/invoice.jsdx</schema>
+            <schema>src/main/resources/invoice.jsbx</schema>
           </schemas>
         </configuration>
       </plugin>

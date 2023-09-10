@@ -25,14 +25,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_4.xL1gluGCXAA.Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
-import org.libj.lang.Strings;
 import org.libj.net.URLs;
 import org.libj.util.CollectionUtil;
 import org.libj.util.StringPaths;
@@ -50,9 +49,9 @@ public final class Generator {
   }
 
   private static void trapPrintUsage() {
-    System.err.println("Usage: Generator <-p [NAMESPACE] PREFIX>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx>...");
-    System.err.println("  -p [NAMESPACE] <PREFIX>  Package prefix of generated classes for provided namespace, recurrable.");
-    System.err.println("  -d <DEST_DIR>            The destination directory.");
+    System.err.println("Usage: Generator <-p [NAMESPACE] PACKAGE>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx>...");
+    System.err.println("  -p [NAMESPACE] <PACKAGE>  Package prefix of generated classes for provided namespace, recurrable.");
+    System.err.println("  -d <DEST_DIR>             The destination directory.");
     System.exit(1);
   }
 
@@ -72,16 +71,16 @@ public final class Generator {
           trapPrintUsage();
 
         final String namespace = args[++i];
-        final String prefix = ++i < len ? args[i] : null;
-        if (prefix == null) {
-          settings.withDefaultPrefix(namespace);
+        final String pkg = ++i < len ? args[i] : null;
+        if (pkg == null) {
+          settings.withDefaultPackage(namespace);
         }
-        else if (prefix.startsWith("-")) {
-          settings.withDefaultPrefix(namespace);
+        else if (pkg.startsWith("-")) {
+          settings.withDefaultPackage(namespace);
           --i;
         }
         else {
-          settings.withPrefix(namespace, prefix);
+          settings.withNamespacePackage(namespace, pkg);
         }
       }
       else if ("-d".equals(args[i])) {
@@ -177,7 +176,7 @@ public final class Generator {
     return Bindings.parse(url, getErrorHandler());
   }
 
-  private static $AnyType parse(final URL url) throws IOException { // [A]
+  private static $AnyType<?> parse(final URL url) throws IOException { // [A]
     final String name = URLs.getName(url);
     if (name.endsWith(".jsd") || name.endsWith(".jsb") || name.endsWith(".json")) {
       try {
@@ -218,37 +217,26 @@ public final class Generator {
     }
   }
 
-  private static String[] getImports(final Schema schema) {
+  private static HashMap<String,URL> getImports(final URL location, final Schema schema) {
     final List<Schema.Import> imports = schema.getImport();
     if (imports == null || imports.size() == 0)
-      return Strings.EMPTY_ARRAY;
+      return null;
 
-    final String[] namespaces = new String[imports.size()];
-    for (int i = 0, i$ = imports.size(); i < i$; ++i) // [RA]
-      namespaces[i] = imports.get(i).getNamespace$().text().toString();
-
-    return namespaces;
-  }
-
-  private static String[] getImports(final schema.Schema schema) {
-    final List<schema.Import> imports = schema.get40imports();
-    if (imports.size() == 0)
-      return Strings.EMPTY_ARRAY;
-
-    final String[] namespaces = new String[imports.size()];
-    final Iterator<schema.Import> iterator = imports.iterator();
-    for (int i = 0, i$ = imports.size(); i < i$; ++i) // [RA]
-      namespaces[i] = iterator.next().get40namespace();
+    final HashMap<String,URL> namespaces = new HashMap<>(imports.size());
+    for (int i = 0, i$ = imports.size(); i < i$; ++i) { // [RA]
+      final Schema.Import import1 = imports.get(i);
+      namespaces.put(import1.getNamespace$().text().toString(), getLocation(location, import1.getSchemaLocation$().text().toString()));
+    }
 
     return namespaces;
   }
 
-  private static String[] getImports(final $AnyType xsb) {
+  private static HashMap<String,URL> getImports(final URL location, final $AnyType<?> xsb) {
     if (xsb instanceof Schema)
-      return getImports((Schema)xsb);
+      return getImports(location, (Schema)xsb);
 
     if (xsb instanceof Binding)
-      return getImports(((Binding)xsb).getJxSchema());
+      return getImports(location, ((Binding)xsb).getJxSchema());
 
     throw new IllegalArgumentException("Unsupported object of class: " + xsb.getClass().getName());
   }
@@ -257,21 +245,44 @@ public final class Generator {
     return StringPaths.isAbsolute(path) ? URLs.toCanonicalURL(path) : URLs.toCanonicalURL(URLs.getCanonicalParent(referer) + "/" + path);
   }
 
-  private static void addImport(final StrictRefDigraph<$AnyType,String> digraph, final Set<URL> set, final URL location) throws IOException {
-    if (set.add(location)) {
-      final $AnyType jsbx = parse(location);
-      final String[] imports = getImports(jsbx);
-      final int len = imports.length;
-      if (len == 0) {
-        digraph.add(jsbx);
-      }
-      else {
-        int i = 0; do { // [A]
-          final String importPath = imports[i];
-          addImport(digraph, set, getLocation(location, importPath));
-          digraph.add(jsbx, importPath);
-        }
-        while (++i < len);
+  private static String getTargetNamespace(final $AnyType<?> xsb) {
+    final Schema.TargetNamespace$ targetNamespace;
+    if (xsb instanceof Schema)
+      targetNamespace = ((Schema)xsb).getTargetNamespace$();
+    else if (xsb instanceof Binding)
+      targetNamespace = ((Binding)xsb).getJxSchema().getTargetNamespace$();
+    else
+      throw new IllegalArgumentException("Unsupported object of class: " + xsb.getClass().getName());
+
+    return targetNamespace != null ? targetNamespace.text() : "";
+  }
+
+  private static void addImport(final StrictRefDigraph<$AnyType<?>,String> digraph, final ArrayList<$AnyType<?>> schemasWithoutTargetNamespace, final Set<URL> addedLocations, final HashMap<String,URL> namespaceToLocation, final URL location) throws IOException {
+    if (!addedLocations.add(location))
+      return;
+
+    final $AnyType<?> schema = parse(location);
+    final String targetNamespace = getTargetNamespace(schema);
+    if (targetNamespace.length() == 0) {
+      if (schemasWithoutTargetNamespace == null)
+        throw new ValidationException("Imported schema does not declare a targetNamespace: " + location);
+
+      schemasWithoutTargetNamespace.add(schema);
+      return;
+    }
+
+    namespaceToLocation.put(targetNamespace, location);
+    final HashMap<String,URL> imports = getImports(location, schema);
+    if (imports == null) {
+      digraph.add(schema);
+    }
+    else {
+      for (final Map.Entry<String,URL> entry : imports.entrySet()) { // [S]
+        final String namespace = entry.getKey();
+        final URL newLocation = entry.getValue();
+        namespaceToLocation.put(namespace, newLocation);
+        addImport(digraph, null, addedLocations, namespaceToLocation, newLocation);
+        digraph.add(schema, namespace);
       }
     }
   }
@@ -279,27 +290,43 @@ public final class Generator {
   static SchemaElement[] parse(final Settings settings, final URL ... urls) throws IOException {
     assertNotEmpty(urls);
 
-    final StrictRefDigraph<$AnyType,String> digraph = new StrictRefDigraph<>("Schema cannot include itself", (final $AnyType xsb) -> {
-      if (xsb instanceof Schema)
-        return ((Schema)xsb).getTargetNamespace$().text();
+    final StrictRefDigraph<$AnyType<?>,String> digraph = new StrictRefDigraph<>("Schema cannot include itself", Generator::getTargetNamespace);
 
-      if (xsb instanceof Binding)
-        return ((Binding)xsb).getJxSchema().getTargetNamespace$().text();
-
-      throw new IllegalArgumentException("Unsupported object of class: " + xsb.getClass().getName());
-    });
-
+    final ArrayList<$AnyType<?>> schemasWithoutTargetNamespace = new ArrayList<>();
     for (int i = 0, i$ = urls.length; i < i$; ++i) // [A]
-      addImport(digraph, new HashSet<>(), urls[i]);
+      addImport(digraph, schemasWithoutTargetNamespace, new HashSet<>(), new HashMap<String,URL>() {
+        @Override
+        public URL put(final String key, final URL value) {
+          final URL old = super.put(key, value);
+          if (old != null && !old.equals(value))
+            throw new IllegalArgumentException("Imports for namespace \"" + key + "\" conflicting locations: {\"" + old + "\", \"" + value + "\"}");
+
+          return old;
+        }
+      }, urls[i]);
 
     if (digraph.hasCycle())
       throw new IllegalStateException("Cycle exists in schema hierarchy: " + CollectionUtil.toString(digraph.getCycle(), " -> "));
 
-    final HashMap<String,Registry> namespaceToRegistry = new HashMap<>();
-    final ArrayList<$AnyType> topologicalOrder = digraph.getTopologicalOrder();
-    final SchemaElement[] schemas = new SchemaElement[topologicalOrder.size()];
-    for (int i = topologicalOrder.size() - 1; i >= 0; --i) // [RA]
-      schemas[i] = SchemaElement.parse(namespaceToRegistry, topologicalOrder.get(i), settings);
+    final ArrayList<$AnyType<?>> topologicalOrder = digraph.getTopologicalOrder();
+    final int sizeDigraph = topologicalOrder.size();
+    final int sizeNoNs = schemasWithoutTargetNamespace.size();
+    final SchemaElement[] schemas = new SchemaElement[sizeDigraph + sizeNoNs];
+    int i = sizeDigraph - 1;
+    int j = 0;
+
+    if (sizeDigraph > 0) {
+      final HashMap<String,Registry> namespaceToRegistry = new HashMap<>();
+      do // [A]
+        schemas[j++] = SchemaElement.parse(namespaceToRegistry, topologicalOrder.get(i), settings);
+      while (--i >= 0);
+    }
+
+    if (sizeNoNs > 0) {
+      i = 0; do // [RA]
+        schemas[j++] = SchemaElement.parse(new HashMap<>(), schemasWithoutTargetNamespace.get(i), settings);
+      while (++i < sizeNoNs);
+    }
 
     return schemas;
   }

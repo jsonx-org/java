@@ -111,7 +111,9 @@ The following schema presents a message declaration for each type of identifier 
       <phase>generate-test-sources</phase>
       <configuration>
         <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
-        <prefix>com.example.bank.</prefix>
+        <namespacePackages>
+          <namespacePackage package="com.example.bank."/>
+        </namespacePackages>
         <schemas>
           <schema>src/test/resources/message.jsd</schema> <!-- or message.jsdx -->
         </schemas>

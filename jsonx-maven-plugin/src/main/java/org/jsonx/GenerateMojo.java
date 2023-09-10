@@ -18,7 +18,9 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -28,6 +30,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.libj.net.URLs;
 
 @Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
 @Execute(goal="generate")
@@ -38,18 +41,60 @@ public class GenerateMojo extends JxMojo {
   @Parameter(property="setBuilder", required=false)
   private boolean setBuilder = true;
 
+  @Parameter(property="namespacePackages", required=false)
+  private List namespacePackages;
+
+  @Parameter(property="defaultBinding", required=false)
+  private DefaultBinding defaultBinding; // FIXME: Remove this.
+
+  public static class DefaultBinding {
+    public static class Number {
+      private String integer;
+      private String real;
+
+      public String getInteger() {
+        return this.integer;
+      }
+
+      public void setInteger(String integer) {
+        this.integer = integer;
+      }
+
+      public String getReal() {
+        return this.real;
+      }
+
+      public void setReal(String real) {
+        this.real = real;
+      }
+    }
+
+    private Number number;
+
+    public Number getNumber() {
+      return this.number;
+    }
+
+    public void setNumber(Number number) {
+      this.number = number;
+    }
+  }
+
   private static void processConfiguration(final Settings.Builder builder, final Xpp3Dom root) throws MojoExecutionException {
     for (int i = 0, i$ = root.getChildCount(); i < i$; ++i) { // [RA]
       final Xpp3Dom child0 = root.getChild(i);
-      if ("namespacePrefixes".equals(child0.getName())) {
+      if ("namespacePackages".equals(child0.getName())) {
         for (int j = 0, j$ = child0.getChildCount(); j < j$; ++j) { // [RA]
           final Xpp3Dom child1 = child0.getChild(j);
-          if (!"namespacePrefix".equals(child1.getName()))
-            throw new MojoExecutionException("Unsupported element: configuration/namespacePrefixes/" + child1.getName());
+          if (!"namespacePackage".equals(child1.getName()))
+            throw new MojoExecutionException("Unsupported element: configuration/namespacePackages/" + child1.getName());
 
           final String namespace = child1.getAttribute("namespace");
-          final String prefix = child1.getAttribute("prefix");
-          builder.withPrefix(namespace != null ? namespace : "", prefix);
+          final String pkg = child1.getAttribute("package");
+          if (namespace != null)
+            builder.withNamespacePackage(namespace, pkg);
+          else
+            builder.withDefaultPackage(pkg);
         }
       }
       else if ("defaultBinding".equals(child0.getName())) {
@@ -119,7 +164,14 @@ public class GenerateMojo extends JxMojo {
     final Settings settings = builder.withTemplateThreshold(templateThreshold).withSetBuilder(setBuilder).build();
 
     try {
-      Generator.generate(configuration.getDestDir(), settings, new LinkedHashSet<>(schemas).toArray(new URL[0]));
+      final LinkedHashSet<String> set = new LinkedHashSet<>(schemas);
+      final int size = set.size();
+      final URL[] urls = new URL[size];
+      final Iterator<String> iterator = set.iterator();
+      for (int i = 0; i < size; ++i)
+        urls[i] = URLs.create(iterator.next());
+
+      Generator.generate(configuration.getDestDir(), settings, urls);
     }
     catch (final IOException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);

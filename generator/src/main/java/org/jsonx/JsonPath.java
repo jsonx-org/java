@@ -136,7 +136,7 @@ class JsonPath implements Iterable<Object> {
 
   $Documented resolve($Documented element) {
     final Iterator<Object> pathIterator = iterator();
-    Iterator<yAA.$AnyType> xsbIterator;
+    Iterator<yAA.$AnyType<?>> xsbIterator;
 
     OUT:
     while (pathIterator.hasNext()) {
@@ -147,9 +147,9 @@ class JsonPath implements Iterable<Object> {
         final String name = (String)term;
         while (xsbIterator.hasNext()) {
           element = ($Documented)xsbIterator.next();
-          final Iterator<$AnySimpleType> attributeIterator = element.attributeIterator();
+          final Iterator<$AnySimpleType<?>> attributeIterator = element.attributeIterator();
           while (attributeIterator.hasNext()) {
-            final $AnySimpleType attribute = attributeIterator.next();
+            final $AnySimpleType<?> attribute = attributeIterator.next();
             if ("name".equals(attribute.name().getLocalPart()) && attribute.text().equals(name))
               continue OUT;
           }

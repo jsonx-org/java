@@ -116,11 +116,11 @@ final class NumberModel extends Model {
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     try {
       return registry.reference(newNumberModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
     }
@@ -129,7 +129,7 @@ final class NumberModel extends Model {
     }
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     try {
       return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
     }
@@ -198,7 +198,7 @@ final class NumberModel extends Model {
   final int scale;
   final Range range;
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();

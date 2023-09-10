@@ -32,11 +32,11 @@ final class Id {
     return Long.toString(crc.getValue(), 16);
   }
 
-  static Id hashed(final String prefix, final Object ... variables) {
-    if (!"!".equals(prefix) && !"a".equals(prefix) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Bind.Type))
+  static Id hashed(final String designation, final Object ... variables) {
+    if (!"!".equals(designation) && !"a".equals(designation) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Bind.Type))
       throw new IllegalArgumentException("First variable expected to be Binding, but was: " + Arrays.toString(variables));
 
-    return variables == null || variables.length == 0 ? new Id(prefix) : new Id(prefix + hash(variables));
+    return variables == null || variables.length == 0 ? new Id(designation) : new Id(designation + hash(variables));
   }
 
   static Id named(final Registry.Type type) {

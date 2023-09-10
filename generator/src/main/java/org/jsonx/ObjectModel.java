@@ -137,11 +137,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static ObjectModel declare(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static ObjectModel declare(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.declare(xsb).value(new ObjectModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.declare(xsb).value(new ObjectModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
@@ -213,7 +213,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
@@ -301,8 +301,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return element;
     }
 
+    @SuppressWarnings("unchecked")
     private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-      final PropertyMap<Object> object = (PropertyMap)member.toJson(owner, packageName, cursor, pathToBinding);
+      final PropertyMap<Object> object = (PropertyMap<Object>)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
         object.remove("@bindings");
@@ -323,7 +324,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private final Class<?> cls;
   private final Map<String,PropertySpec> getMethodToPropertySpec;
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     super(registry, declarer, registry.getType(registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text());
     this.isAbstract = xsb.getAbstract$().text();
     this.superObject = getReference(xsb.getExtends$());
@@ -335,7 +336,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     validateTypeBinding();
   }
 
-  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     final LinkedHashMap<String,Member> members = parseMembers(xsb, this, xsbToBinding);
     if (members == null)
       return null;
@@ -397,7 +398,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this(registry, declarer, element.type(), element.nullable(), null, null);
   }
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classBasePath + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding, xsb), null);
     this.superObject = getReference(xsb.getExtends$());
     this.isAbstract = false;

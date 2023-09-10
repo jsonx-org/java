@@ -465,7 +465,7 @@ class Registry {
     this.settings = settings;
     this.isFromJsd = true;
 
-    final String basePath = settings.getBasePath(this.targetNamespace);
+    final String basePath = settings.getPackage(targetNamespace);
     final int length = basePath.length();
     if (length > 0) {
       final char lastChar = basePath.charAt(length - 1);
@@ -523,11 +523,11 @@ class Registry {
       }
     }
 
-    this.packageName = getClassPrefix();
+    this.packageName = getPackageName();
     this.classBasePath = "";
   }
 
-  private String getClassPrefix() {
+  private String getPackageName() {
     final Collection<Model> models = getModels();
     if (models == null || models.size() == 0)
       return null;

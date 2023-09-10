@@ -197,7 +197,9 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
       <phase>generate-sources</phase>
       <configuration>
         <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-        <prefix>com.example.invoice.</prefix>
+        <namespacePackages>
+          <namespacePackage package="com.example.invoice."/>
+        </namespacePackages>
         <schemas>
           <schema>src/main/resources/invoice.jsd</schema> <!-- or invoice.jsdx -->
         </schemas>

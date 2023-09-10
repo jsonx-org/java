@@ -66,8 +66,8 @@ public class SchemaTest {
   private static final File compiledClassesDir = new File("target/test-classes");
   private static final ArrayList<Integer> settings = new ArrayList<>();
 
-  private static Settings getSettings(final String namespace, final String prefix, final int i) {
-    return new Settings.Builder().withPrefix(namespace, prefix).withTemplateThreshold(i).build();
+  private static Settings getSettings(final String namespace, final String pkg, final int i) {
+    return new Settings.Builder().withNamespacePackage(namespace, pkg).withTemplateThreshold(i).build();
   }
 
   @BeforeClass
@@ -103,10 +103,10 @@ public class SchemaTest {
     }
   }
 
-  private static SchemaElement testParseSchema(final Schema schema, final Binding binding, final String namespace, final String prefix, final String fileName) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final Schema schema, final Binding binding, final String namespace, final String pkg, final String fileName) throws IOException, SAXException {
     if (logger.isInfoEnabled()) logger.info("  Parse XML...");
     if (logger.isInfoEnabled()) logger.info("    a) XML(1) -> Schema");
-    final Settings settings = new Settings.Builder().withPrefix(namespace, prefix).build();
+    final Settings settings = new Settings.Builder().withNamespacePackage(namespace, pkg).build();
     final SchemaElement model = binding != null ? new SchemaElement(new HashMap<>(), binding, settings) : new SchemaElement(new HashMap<>(), schema, settings);
     if (logger.isInfoEnabled()) logger.info("    b) Schema -> XML(2)");
     final String xml = model.toXml().toString();
@@ -240,13 +240,13 @@ public class SchemaTest {
     }
   }
 
-  private static final String packagePrefix = "org.jsonx.test.";
+  private static final String namespacePackage = "org.jsonx.test.";
 
   private static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String fileName = URLs.getName(resource);
     final String namespace = "urn:test:" + StringPaths.getSimpleName(fileName);
-    final String packageName = packagePrefix + StringPaths.getSimpleName(fileName);
-    final String prefix = packageName + ".";
+    final String packageName = namespacePackage + StringPaths.getSimpleName(fileName);
+    final String pkg = packageName + ".";
 
     final Binding controlBinding;
     final Schema controlSchema;
@@ -264,12 +264,12 @@ public class SchemaTest {
     }
 
     if (testJson) {
-      final String jsd = testJson(fileName, controlSchema, controlBinding, new Settings.Builder().withPrefix(namespace, prefix).build());
+      final String jsd = testJson(fileName, controlSchema, controlBinding, new Settings.Builder().withNamespacePackage(namespace, pkg).build());
       testConverter(jsd);
     }
 
     if (logger.isInfoEnabled()) logger.info("  4) Schema -> Java(1)");
-    final SchemaElement schema = testParseSchema(controlSchema, controlBinding, namespace, prefix, fileName);
+    final SchemaElement schema = testParseSchema(controlSchema, controlBinding, namespace, pkg, fileName);
     final Map<String,String> test1Sources = schema.toSource(generatedSourcesDir);
     if (test1Sources.size() > 0) {
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -289,10 +289,10 @@ public class SchemaTest {
       final SchemaElement test2Schema;
       if (controlBinding != null) {
         final Binding binding = (Binding)Bindings.parse(xml);
-        test2Schema = testParseSchema(binding.getJxSchema(), binding, namespace, prefix, fileName);
+        test2Schema = testParseSchema(binding.getJxSchema(), binding, namespace, pkg, fileName);
       }
       else {
-        test2Schema = testParseSchema((Schema)Bindings.parse(xml), null, namespace, prefix, fileName);
+        test2Schema = testParseSchema((Schema)Bindings.parse(xml), null, namespace, pkg, fileName);
       }
 
       if (logger.isInfoEnabled()) logger.info("  9) Schema -> Java(2)");
@@ -305,10 +305,10 @@ public class SchemaTest {
   }
 
   private static void testSettings(final URL resource, final String fileName, final String namespace, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    final String prefix = packageName + ".";
+    final String pkg = packageName + ".";
 
     for (int i = 0, i$ = SchemaTest.settings.size(); i < i$; ++i) { // [RA]
-      final Settings settings = getSettings(namespace, prefix, SchemaTest.settings.get(i));
+      final Settings settings = getSettings(namespace, pkg, SchemaTest.settings.get(i));
       final int templateThreshold = settings.getTemplateThreshold();
 
       final String outFile = templateThreshold + "-" + fileName;

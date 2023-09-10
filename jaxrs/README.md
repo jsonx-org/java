@@ -133,7 +133,9 @@ The following illustrates example usage.
       </goals>
       <configuration>
         <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-        <prefix>com.example.jsonx.</prefix>
+        <namespacePackages>
+          <namespacePackage package="com.example.jsonx."/>
+        </namespacePackages>
         <schemas>
           <schema>src/main/resources/account.jsonx</schema>
         </schemas>

@@ -96,7 +96,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  static $AnyType jxToXsb(final JxObject jsb) {
+  static $AnyType<?> jxToXsb(final JxObject jsb) {
     if (jsb instanceof schema.Schema)
       return jxToXsb((schema.Schema)jsb);
 
@@ -169,9 +169,9 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsb;
   }
 
-  private static IdentityHashMap<$AnyType,$FieldBinding> initBindingMap(final Schema schema, final Binding binding) {
-    final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding = new IdentityHashMap<>();
-    final Iterator<$AnyType> iterator = binding.elementIterator();
+  private static IdentityHashMap<$AnyType<?>,$FieldBinding> initBindingMap(final Schema schema, final Binding binding) {
+    final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding = new IdentityHashMap<>();
+    final Iterator<$AnyType<?>> iterator = binding.elementIterator();
     iterator.next(); // Skip schema element
     while (iterator.hasNext()) {
       final $Path bindings = ($Path)iterator.next();
@@ -212,7 +212,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   private final String version;
 
   /**
-   * Creates a new {@link SchemaElement} from the specified XML binding, and with the provided package / class name prefix string.
+   * Creates a new {@link SchemaElement} from the specified XML binding.
    *
    * @param schema JSDx as a JAX-SB object.
    * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
@@ -224,7 +224,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   }
 
   /**
-   * Creates a new {@link SchemaElement} from the specified XML binding, and with the provided package / class name prefix string.
+   * Creates a new {@link SchemaElement} from the specified XML binding.
    *
    * @param binding JSBx as a JAX-SB object.
    * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
@@ -235,10 +235,10 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     this(namespaceToRegistry, binding.getJxSchema(), binding, settings);
   }
 
-  private static HashMap<String,String> initPrefixNamespaceMap(final Iterator<$AnySimpleType> attributes) {
+  private static HashMap<String,String> initPrefixNamespaceMap(final Iterator<$AnySimpleType<?>> attributes) {
     final HashMap<String,String> prefixToNamespace = new HashMap<>();
     while (attributes.hasNext()) {
-      final $AnySimpleType attribute = attributes.next();
+      final $AnySimpleType<?> attribute = attributes.next();
       final QName name = attribute.name();
       if ("jxns".equals(name.getPrefix()))
         prefixToNamespace.put(name.getLocalPart(), attribute.text().toString());
@@ -256,7 +256,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
     assertNoCycle(schema);
 
-    final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
+    final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
     final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
       final $Member member = ($Member)elementIterator.next();
@@ -332,7 +332,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::memberToName).collect(Collectors.joining(" -> ")));
   }
 
-  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final $AnyType obj, final Settings settings) {
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final $AnyType<?> obj, final Settings settings) {
     if (obj instanceof Schema)
       return new SchemaElement(namespaceToRegistry, (Schema)obj, settings);
 
@@ -356,14 +356,14 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     if (obj instanceof JxObject)
       return parse(namespaceToRegistry, (JxObject)obj, settings);
 
-    if (obj instanceof $AnyType)
-      return parse(namespaceToRegistry, ($AnyType)obj, settings);
+    if (obj instanceof $AnyType<?>)
+      return parse(namespaceToRegistry, ($AnyType<?>)obj, settings);
 
     throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
   }
 
   /**
-   * Creates a new {@link SchemaElement} from the specified JSD binding, and with the provided package / class name prefix string.
+   * Creates a new {@link SchemaElement} from the specified JSD binding.
    *
    * @param schema JSD as a JSONx object.
    * @param settings The {@link Settings} to be used for the generated bindings.
@@ -375,7 +375,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   }
 
   /**
-   * Creates a new {@link SchemaElement} from the specified JSD binding, and with the provided package / class name prefix string.
+   * Creates a new {@link SchemaElement} from the specified JSD binding.
    *
    * @param binding JSB as a JSONx object.
    * @param settings The {@link Settings} to be used for the generated bindings.

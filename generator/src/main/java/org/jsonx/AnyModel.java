@@ -125,11 +125,11 @@ final class AnyModel extends Referrer<AnyModel> {
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
@@ -167,7 +167,7 @@ final class AnyModel extends Referrer<AnyModel> {
     validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
     this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb));
     validateTypeBinding();

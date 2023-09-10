@@ -42,7 +42,7 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
   private static final ThreadLocal<Integer> count = ThreadLocal.withInitial(() -> 0);
   private static final ThreadLocal<Set<Member>> visited = ThreadLocal.withInitial(HashSet::new);
 
-  static $FieldBinding.Field$ getField(final IdentityHashMap<$AnyType,$FieldBinding> xsbToBinding, final Binding xsb) {
+  static $FieldBinding.Field$ getField(final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding, final Binding xsb) {
     if (xsbToBinding == null)
       return null;
 

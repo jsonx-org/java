@@ -39,8 +39,8 @@ public class ConverterTest {
 
   @Test
   public void testConvertSchema() throws IOException {
-    Converter.convert(new URL("http://www.jsonx.org/schema.jsd"));
     Converter.convert(new URL("http://www.jsonx.org/schema.jsdx"));
+    Converter.convert(new URL("http://www.jsonx.org/schema.jsd"));
   }
 
   @Test

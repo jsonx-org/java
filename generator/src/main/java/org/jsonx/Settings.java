@@ -25,108 +25,108 @@ import org.libj.lang.Classes;
 import org.libj.lang.Identifiers;
 
 public class Settings {
-  public static final Settings DEFAULT = new Settings(new NamespaceToPrefix(), 1, true, long.class, Long.class, double.class, Double.class);
+  public static final Settings DEFAULT = new Settings(new NamespaceToPackage(), 1, true, long.class, Long.class, double.class, Double.class);
 
-  private static class NamespaceToPrefix {
-    private static String validatePrefix(final String prefix) {
-      if (prefix == null)
+  private static class NamespaceToPackage {
+    private static String validatePackage(final String pkg) {
+      if (pkg == null)
         return null;
 
-      final char lastChar = prefix.length() == 0 ? '\0' : prefix.charAt(prefix.length() - 1);
-      if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? prefix.substring(0, prefix.length() - 1) : prefix))
-        throw new IllegalArgumentException("Illegal \"prefix\" parameter: " + prefix);
+      final char lastChar = pkg.length() == 0 ? '\0' : pkg.charAt(pkg.length() - 1);
+      if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? pkg.substring(0, pkg.length() - 1) : pkg))
+        throw new IllegalArgumentException("Illegal base path parameter: " + pkg);
 
-      return prefix;
+      return pkg;
     }
 
-    private HashMap<String,String> namespaceToPrefixMap;
-    private Function<String,String> namespaceToPrefixFunction;
-    private String defaultPrefixString;
+    private HashMap<String,String> namespaceToPackage;
+    private Function<String,String> namespaceToPackageFunction;
+    private String defaultPackage;
 
-    private void set(final String namespace, final String prefix) {
-      if (namespaceToPrefixMap == null)
-        namespaceToPrefixMap = new HashMap<>();
+    private void set(final String namespace, final String pkg) {
+      if (namespaceToPackage == null)
+        namespaceToPackage = new HashMap<>();
 
-      final String value = namespaceToPrefixMap.put(assertNotNull(namespace), validatePrefix(assertNotNull(prefix)));
+      final String value = namespaceToPackage.put(assertNotNull(namespace), validatePackage(assertNotNull(pkg)));
       if (value != null)
-        throw new IllegalArgumentException("Key \"" + namespace + "\" maps to multiple values: {\"" + value + "\", \"" + prefix + "\"}");
+        throw new IllegalArgumentException("Key \"" + namespace + "\" maps to multiple values: {\"" + value + "\", \"" + pkg + "\"}");
     }
 
-    private void set(final String defaultPrefix) {
-      this.defaultPrefixString = validatePrefix(assertNotNull(defaultPrefix));
+    private void set(final String defaultPackage) {
+      this.defaultPackage = validatePackage(assertNotNull(defaultPackage));
     }
 
-    private void set(final Function<String,String> namespaceToPrefix) {
-      this.namespaceToPrefixFunction = assertNotNull(namespaceToPrefix);
+    private void set(final Function<String,String> namespaceToPackage) {
+      this.namespaceToPackageFunction = assertNotNull(namespaceToPackage);
     }
 
     private String get(final String namespace) {
-      String prefix = null;
-      if (namespaceToPrefixMap != null)
-        prefix = namespaceToPrefixMap.get(namespace);
+      String pkg = null;
+      if (namespaceToPackage != null)
+        pkg = namespaceToPackage.get(namespace);
 
-      if (prefix != null)
-        return prefix;
+      if (pkg != null)
+        return pkg;
 
-      if (namespaceToPrefixFunction != null)
-        prefix = validatePrefix(namespaceToPrefixFunction.apply(namespace));
+      if (namespaceToPackageFunction != null)
+        pkg = validatePackage(namespaceToPackageFunction.apply(namespace));
 
-      if (prefix != null)
-        return prefix;
+      if (pkg != null)
+        return pkg;
 
-      return defaultPrefixString != null ? defaultPrefixString : "";
+      return defaultPackage != null ? defaultPackage : "";
     }
   }
 
   public static class Builder {
-    private NamespaceToPrefix namespaceToPrefix;
+    private NamespaceToPackage namespaceToPackage;
 
-    private NamespaceToPrefix getNamespaceToPrefix() {
-      return namespaceToPrefix == null ? namespaceToPrefix = new NamespaceToPrefix() : namespaceToPrefix;
+    private NamespaceToPackage getNamespaceToPackage() {
+      return namespaceToPackage == null ? namespaceToPackage = new NamespaceToPackage() : namespaceToPackage;
     }
 
     /**
-     * Sets the class name prefix to be prepended to the names of generated bindings for the provided namespace, and returns
+     * Sets the class name base path to be prepended to the names of generated bindings for the provided namespace, and returns
      * {@code this} builder.
      *
-     * @param namespace The namespace for which the prefix is to be applied.
-     * @param prefix The class name prefix to be prepended to the names of generated bindings.
+     * @param namespace The namespace for which the base path is to be applied.
+     * @param pkg The class name base path to be prepended to the names of generated bindings.
      * @return {@code this} builder.
-     * @throws IllegalArgumentException If {@code namespace} or {@code prefix} is null.
-     * @throws IllegalArgumentException If {@code prefix} maps to multiple values.
-     * @throws IllegalArgumentException If {@code prefix} is not a valid Java identifier.
+     * @throws IllegalArgumentException If {@code namespace} or {@code pkg} is null.
+     * @throws IllegalArgumentException If {@code pkg} maps to multiple values.
+     * @throws IllegalArgumentException If {@code pkg} is not a valid Java identifier.
      */
-    public Builder withPrefix(final String namespace, final String prefix) {
-      getNamespaceToPrefix().set(namespace, prefix);
+    public Builder withNamespacePackage(final String namespace, final String pkg) {
+      getNamespaceToPackage().set(namespace, pkg);
       return this;
     }
 
     /**
-     * Sets the default class name prefix to be prepended to the names of generated bindings for prefixes not specified via
-     * {@link #withPrefix(String,String)}, and returns {@code this} builder.
+     * Sets the default class name base path to be prepended to the names of generated bindings for base paths not specified via
+     * {@link #withNamespacePackage(String,String)}, and returns {@code this} builder.
      *
-     * @param defaultPrefix The class name prefix to be prepended to the names of generated bindings for prefixes not specified via
-     *          {@link #withPrefix(String,String)}.
+     * @param defaultPackage The class name base path to be prepended to the names of generated bindings for base paths not
+     *          specified via {@link #withNamespacePackage(String,String)}.
      * @return {@code this} builder.
-     * @throws IllegalArgumentException If {@code defaultPrefix} is null.
-     * @throws IllegalArgumentException If {@code defaultPrefix} is not a valid Java identifier.
+     * @throws IllegalArgumentException If {@code defaultPackage} is null.
+     * @throws IllegalArgumentException If {@code defaultPackage} is not a valid Java identifier.
      */
-    public Builder withDefaultPrefix(final String defaultPrefix) {
-      getNamespaceToPrefix().set(defaultPrefix);
+    public Builder withDefaultPackage(final String defaultPackage) {
+      getNamespaceToPackage().set(defaultPackage);
       return this;
     }
 
     /**
-     * Sets the {@link Function} to dereference a provided namespace to a class name prefix to be prepended to the names of
+     * Sets the {@link Function} to dereference a provided namespace to a class name base path to be prepended to the names of
      * generated bindings, and returns {@code this} builder.
      *
-     * @param namespaceToPrefix The {@link Function} to dereference a provided namespace to a class name prefix to be prepended to
-     *          the names of generated bindings.
+     * @param namespaceToPackage The {@link Function} to dereference a provided namespace to a class name base path to be prepended
+     *          to the names of generated bindings.
      * @return {@code this} builder.
-     * @throws IllegalArgumentException If {@code namespaceToPrefix} is null.
+     * @throws IllegalArgumentException If {@code namespaceToPackage} is null.
      */
-    public Builder withPrefix(final Function<String,String> namespaceToPrefix) {
-      getNamespaceToPrefix().set(namespaceToPrefix);
+    public Builder withNamespacePackage(final Function<String,String> namespaceToPackage) {
+      getNamespaceToPackage().set(namespaceToPackage);
       return this;
     }
 
@@ -247,11 +247,11 @@ public class Settings {
     }
 
     public Settings build() {
-      return new Settings(namespaceToPrefix, templateThreshold, setBuilder, integerPrimitive, integerObject, realPrimitive, realObject);
+      return new Settings(namespaceToPackage, templateThreshold, setBuilder, integerPrimitive, integerObject, realPrimitive, realObject);
     }
   }
 
-  private final NamespaceToPrefix namespaceToPrefix;
+  private final NamespaceToPackage namespaceToPackage;
   private final int templateThreshold;
   private final boolean setBuilder;
   private final Class<?> integerPrimitive;
@@ -259,8 +259,8 @@ public class Settings {
   private final Class<?> realPrimitive;
   private final Class<?> realObject;
 
-  Settings(final NamespaceToPrefix namespaceToPrefix, final int templateThreshold, final boolean setBuilder, final Class<?> integerPrimitive, final Class<?> integerObject, final Class<?> realPrimitive, final Class<?> realObject) {
-    this.namespaceToPrefix = namespaceToPrefix;
+  Settings(final NamespaceToPackage namespaceToPackage, final int templateThreshold, final boolean setBuilder, final Class<?> integerPrimitive, final Class<?> integerObject, final Class<?> realPrimitive, final Class<?> realObject) {
+    this.namespaceToPackage = namespaceToPackage;
     this.templateThreshold = assertNotNegative(templateThreshold, "templateThreshold (" + templateThreshold + ") must be non-negative");
     this.setBuilder = setBuilder;
     this.integerPrimitive = integerPrimitive;
@@ -280,8 +280,8 @@ public class Settings {
       throw new IllegalArgumentException("realObject must be a non-primitive type: " + realObject.getCanonicalName());
   }
 
-  public String getBasePath(final String namespace) {
-    return namespaceToPrefix != null ? namespaceToPrefix.get(namespace) : "";
+  public String getPackage(final String namespace) {
+    return namespaceToPackage != null ? namespaceToPackage.get(namespace) : "";
   }
 
   /**

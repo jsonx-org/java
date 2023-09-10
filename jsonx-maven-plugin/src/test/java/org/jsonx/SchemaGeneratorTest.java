@@ -32,7 +32,7 @@ public class SchemaGeneratorTest {
   private static void test(final String version) throws IOException {
     final String namespace = "http://www.jsonx.org/schema-" + version + ".jsdx";
     final URL testJsdUrl = new URL(namespace);
-    Generator.generate(destDir, new Settings.Builder().withPrefix(namespace, "org.jsonx.schema$").build(), testJsdUrl);
+    Generator.generate(destDir, new Settings.Builder().withNamespacePackage(namespace, "org.jsonx.schema$").build(), testJsdUrl);
 
     final File controlJavaFile = new File("../generator/src/main/java", javaPath);
     final File testJavaFile = new File(destDir, javaPath);

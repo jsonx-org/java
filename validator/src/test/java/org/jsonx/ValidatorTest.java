@@ -35,10 +35,10 @@ public class ValidatorTest {
   private static File getFile(final String fileName) {
     final File dir = new File("target/generated-test-resources");
     dir.mkdirs();
-    final File jsdFile = new File(dir, "account.jsdx");
+    final File jsdxFile = new File(dir, fileName);
     try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
-      Files.copy(in, jsdFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      return jsdFile;
+      Files.copy(in, jsdxFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      return jsdxFile;
     }
     catch (final IOException e) {
       throw new UncheckedIOException(e);

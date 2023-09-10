@@ -55,8 +55,16 @@ public class ConvertMojo extends JxMojo {
           destName = shortName + "jsdx";
           converted = Converter.jsonToXml(url);
         }
+        else if ("jsb".equals(ext)) {
+          destName = shortName + "jsbx";
+          converted = Converter.jsonToXml(url);
+        }
         else if ("jsdx".equals(ext)) {
           destName = shortName + "jsd";
+          converted = Converter.xmlToJson(url);
+        }
+        else if ("jsbx".equals(ext)) {
+          destName = shortName + "jsb";
           converted = Converter.xmlToJson(url);
         }
         else {
