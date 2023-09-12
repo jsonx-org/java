@@ -16,12 +16,12 @@
 
 package org.jsonx;
 
-import org.jsonx.datatype.ObjArr;
-import org.jsonx.datatype.ObjBool;
-import org.jsonx.datatype.ObjNum;
-import org.jsonx.datatype.ObjObj;
-import org.jsonx.datatype.ObjStr;
-import org.jsonx.datatype.ObjTest;
+import org.jsonx.test.datatype.ObjArr;
+import org.jsonx.test.datatype.ObjBool;
+import org.jsonx.test.datatype.ObjNum;
+import org.jsonx.test.datatype.ObjObj;
+import org.jsonx.test.datatype.ObjStr;
+import org.jsonx.test.datatype.ObjTest;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.slf4j.Logger;

@@ -18,7 +18,7 @@ package org.jsonx;
 
 import java.io.IOException;
 
-import org.jsonx.array.Geometry;
+import org.jsonx.test.array.Geometry;
 import org.junit.Test;
 
 public class AnyTest {
