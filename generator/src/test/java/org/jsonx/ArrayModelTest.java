@@ -18,12 +18,12 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
 import org.junit.Test;
+import org.libj.lang.WrappedArrayList;
 
 public class ArrayModelTest {
   private static class Number extends $Number {
@@ -42,7 +42,7 @@ public class ArrayModelTest {
 
   @Test
   public void testGreatestCommonSuperObject() {
-    final Registry registry = new Registry(new HashMap<>(), null, null, new Settings.Builder().withNamespacePackage("", getClass().getPackage().getName()).build());
+    final Registry registry = new Registry(new HashMap<>(), null, "", new Settings.Builder().withNamespacePackage("", getClass().getPackage().getName()).build());
 
     final $Number number1 = new Number();
     number1.setName$(new $Number.Name$("integer1"));
@@ -54,6 +54,6 @@ public class ArrayModelTest {
     number2.setScale$(new $Number.Scale$(0L));
     final NumberModel model2 = NumberModel.reference(registry, null, number2, null);
 
-    assertEquals(registry.getType(Long.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(model1, model2)));
+    assertEquals(registry.getType(Long.class), ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(model1, model2)));
   }
 }

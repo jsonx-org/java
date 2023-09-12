@@ -23,23 +23,27 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.libj.net.URLs;
 import org.libj.test.JUnitUtil;
+import org.openjax.json.JSON;
 
 @RunWith(Parameterized.class)
 public class IncludeModelTest extends ModelTest {
-  private static final String path = "href/";
-
-  private static void test(final String name) throws IOException {
+  private static void test(final String name, final URL jsbx, final URL jsb) throws IOException {
     final String namespace = "urn:test:" + name;
-    final String packageName = "org.jsonx.href." + name;
+    final String packageName = "org.jsonx.test.include." + name;
     final Settings settings = new Settings.Builder().withNamespacePackage(namespace, packageName + ".").build();
 
     if (logger.isInfoEnabled()) logger.info(name + "...");
 
-    final SchemaElement jsbxSchema = Generator.parse(settings, ClassLoader.getSystemClassLoader().getResource(path + name + ".jsbx"))[0];
-    final Map<String,String> jsbxSources = jsbxSchema.toSource();
+    final SchemaElement jsbxSchema = Generator.parse(settings, jsbx)[0];
+    System.err.println(jsb);
+    final SchemaElement jsbSchema = Generator.parse(settings, jsb)[0];
 
-    final SchemaElement jsbSchema = Generator.parse(settings, ClassLoader.getSystemClassLoader().getResource(path + name + ".jsb"))[0];
+    assertEquals(jsbxSchema.toXml().toString(), jsbSchema.toXml().toString());
+    assertEquals(JSON.toString(jsbxSchema.toJson(), 2), JSON.toString(jsbSchema.toJson(), 2));
+
+    final Map<String,String> jsbxSources = jsbxSchema.toSource();
     final Map<String,String> jsbSources = jsbSchema.toSource();
 
     assertEquals(jsbxSources, jsbSources);
@@ -47,7 +51,7 @@ public class IncludeModelTest extends ModelTest {
 
   @Parameterized.Parameters(name = "{0}")
   public static URL[] resources() throws IOException {
-    return JUnitUtil.sortBySize(JUnitUtil.getResources("include", ".*\\.js[db]x"));
+    return JUnitUtil.sortBySize(JUnitUtil.getResources("include", ".*\\.jsbx"));
   }
 
   @Parameterized.Parameter(0)
@@ -55,6 +59,8 @@ public class IncludeModelTest extends ModelTest {
 
   @Test
   public void test() throws IOException {
-    test("account");
+    final String name = URLs.getSimpleName(resource);
+    final URL jsb = URLs.create(URLs.getCanonicalParent(resource), name + ".jsb");
+    test(name, resource, jsb);
   }
 }

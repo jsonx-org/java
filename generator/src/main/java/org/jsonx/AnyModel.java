@@ -195,7 +195,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   // FIXME: This can be converted to recursive algo
-  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $AnyMember.Types$ refs, final $FieldBinding binding) {
+  private ArrayList<Member> getTypes(final Boolean nullable, final Use use, final $AnyMember.Types$ refs, final $FieldBinding binding) {
     final List<String> idrefs;
     final int i$;
     if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
@@ -232,21 +232,33 @@ final class AnyModel extends Referrer<AnyModel> {
     if (len == 0)
       return null;
 
-    final ArrayList<Class<?>> members = new ArrayList<>(len);
-    for (final t type : types) { // [A]
-      if (AnyType.isEnabled(type.arrays()))
-        members.add(List.class);
-      else if (AnyType.isEnabled(type.booleans()))
-        members.add(Boolean.class);
-      else if (AnyType.isEnabled(type.numbers()))
-        members.add(type.numbers().type());
-      else if (AnyType.isEnabled(type.objects()))
-        members.add(type.objects());
-      else if (AnyType.isEnabled(type.strings()))
-        members.add(type.strings().type());
+    boolean isObjectModel = true;
+    final Class<?>[] members = new Class<?>[len];
+    for (int i = 0; i < len; ++i) { // [A]
+      final t type = types[i];
+      if (AnyType.isEnabled(type.arrays())) {
+        members[i] = List.class;
+        isObjectModel = false;
+      }
+      else if (AnyType.isEnabled(type.booleans())) {
+        members[i] = Boolean.class;
+        isObjectModel = false;
+      }
+      else if (AnyType.isEnabled(type.numbers())) {
+        members[i] = type.numbers().type();
+        isObjectModel = false;
+      }
+      else if (AnyType.isEnabled(type.objects())) {
+        members[i] = type.objects();
+      }
+      else if (AnyType.isEnabled(type.strings())) {
+        members[i] = type.strings().type();
+        isObjectModel = false;
+      }
     }
 
-    return Classes.getGreatestCommonSuperclass(members.toArray(new Class[members.size()]));
+    final Class<?> gcc = Classes.getGreatestCommonSuperclass(members);
+    return gcc != Object.class ? gcc : isObjectModel ? JxObject.class : Object.class;
   }
 
   private ArrayList<Member> getMemberTypes(final t[] types) {

@@ -19,17 +19,18 @@ package org.jsonx;
 import static org.junit.Assert.*;
 
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.jsonx.Registry.Kind;
 import org.junit.Test;
+import org.libj.lang.WrappedArrayList;
 import org.openjax.json.JSON;
 import org.openjax.xml.api.XmlElement;
 
 public class TypeTest {
   private static Member toElement(final Registry.Type type) {
-    return new Member(null, null, false, null, null, null, null, null, null, null, null, null) {
+    return new Member
+        (null, null, false, null, null, null, null, null, null, null, null, null) {
       @Override
       Registry.Type typeDefault(final boolean primitive) {
         return type;
@@ -79,7 +80,7 @@ public class TypeTest {
 
   @Test
   public void testClass() {
-    final Registry registry = new Registry(new HashMap<>(), null, null, Settings.DEFAULT);
+    final Registry registry = new Registry(new HashMap<>(), null, "", Settings.DEFAULT);
 
     final Registry.Type type = registry.getType(Integer.class);
     assertEquals(Integer.class.getName(), type.toString());
@@ -89,7 +90,7 @@ public class TypeTest {
 
   @Test
   public void testName() {
-    final Registry registry = new Registry(new HashMap<>(), null, null, Settings.DEFAULT);
+    final Registry registry = new Registry(new HashMap<>(), null, "", Settings.DEFAULT);
 
     final Registry.Type type = registry.getType(TypeTest.class);
     assertEquals(TypeTest.class.getName(), type.toString());
@@ -99,7 +100,7 @@ public class TypeTest {
 
   @Test
   public void testNameSuperName() {
-    final Registry registry = new Registry(new HashMap<>(), null, null, Settings.DEFAULT);
+    final Registry registry = new Registry(new HashMap<>(), null, "", Settings.DEFAULT);
 
     final String packageName = "one";
     final String name = "One$Two$Three";
@@ -130,7 +131,7 @@ public class TypeTest {
 
   @Test
   public void testGenerics() {
-    final Registry registry = new Registry(new HashMap<>(), null, null, Settings.DEFAULT);
+    final Registry registry = new Registry(new HashMap<>(), null, "", Settings.DEFAULT);
 
     final String packageName0 = "org.jsonx.zero";
     final String name0 = "Zero";
@@ -170,11 +171,11 @@ public class TypeTest {
 
     assertEquals(registry.OBJECT, type2.getGreatestCommonSuperType(type3));
 
-    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0))));
-    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0), toElement(type2))));
-    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0), toElement(type1), toElement(type2))));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0))));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0), toElement(type2))));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0), toElement(type1), toElement(type2))));
 
-    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type1), toElement(type3))));
-    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(Arrays.asList(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
+    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type1), toElement(type3))));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
   }
 }

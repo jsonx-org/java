@@ -44,6 +44,6 @@ public class GeneratorTest {
 
   @Test
   public void test() throws IOException {
-    Generator.main(new String[] {"-p", "urn:test:account", "org.jsonx.account", "-d", destDir.getAbsolutePath(), getFile("account.jsdx").getAbsolutePath()});
+    Generator.main(new String[] {"-p", "urn:test:account", "org.jsonx.account", "-d", destDir.getAbsolutePath(), getFile("schema/account.jsdx").getAbsolutePath()});
   }
 }

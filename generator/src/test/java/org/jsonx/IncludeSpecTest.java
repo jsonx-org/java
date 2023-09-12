@@ -21,14 +21,14 @@ import java.io.IOException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-public class SchemaSpecTest extends SpecTest {
+public class IncludeSpecTest extends SpecTest {
   @Test
   public void test() throws IOException, SAXException {
-    test("schema", "");
+    test("include", "");
   }
 
   @Test
   public void test04() throws IOException, SAXException {
-    test("schema", "0.4");
+    test("include", "0.4");
   }
 }

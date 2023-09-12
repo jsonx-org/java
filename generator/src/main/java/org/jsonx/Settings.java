@@ -19,6 +19,7 @@ package org.jsonx;
 import static org.libj.lang.Assertions.*;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.libj.lang.Classes;
@@ -29,8 +30,8 @@ public class Settings {
 
   private static class NamespaceToPackage {
     private static String validatePackage(final String pkg) {
-      if (pkg == null)
-        return null;
+      if (pkg == null || pkg.length() == 0)
+        return pkg;
 
       final char lastChar = pkg.length() == 0 ? '\0' : pkg.charAt(pkg.length() - 1);
       if (!Identifiers.isValid(lastChar == '$' || lastChar == '.' ? pkg.substring(0, pkg.length() - 1) : pkg))
@@ -61,6 +62,8 @@ public class Settings {
     }
 
     private String get(final String namespace) {
+      Objects.requireNonNull(namespace);
+
       String pkg = null;
       if (namespaceToPackage != null)
         pkg = namespaceToPackage.get(namespace);

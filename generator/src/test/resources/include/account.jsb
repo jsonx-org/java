@@ -3,7 +3,7 @@
   "@schemaLocation": "http://www.jsonx.org/binding-0.4.jsd http://www.jsonx.org/binding.jsd",
   "@schema": {
     "@ns": "http://www.jsonx.org/include-0.4.jsd",
-    "href": "../account.jsd"
+    "href": "account.jsd"
   },
   "id": {
     "@": "string",

@@ -33,9 +33,8 @@ import org.libj.lang.Strings;
 
 public class ValidatorTest {
   private static File getFile(final String fileName) {
-    final File dir = new File("target/generated-test-resources");
-    dir.mkdirs();
-    final File jsdxFile = new File(dir, fileName);
+    final File jsdxFile = new File("target/generated-test-resources", fileName);
+    jsdxFile.getParentFile().mkdirs();
     try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
       Files.copy(in, jsdxFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
       return jsdxFile;
@@ -45,7 +44,7 @@ public class ValidatorTest {
     }
   }
 
-  private static File schemaFile = getFile("account.jsdx");
+  private static File schemaFile = getFile("schema/account.jsdx");
 
   @AfterClass
   public static void afterClass() throws Throwable {

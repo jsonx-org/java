@@ -47,7 +47,7 @@ public class ConverterTest {
   public void testMain() throws Exception {
     final File jsdFile = Files.createTempFile("jsd", null).toFile();
     jsdFile.deleteOnExit();
-    Converter.main(new String[] {"src/test/resources/account.jsdx", jsdFile.getAbsolutePath()});
+    Converter.main(new String[] {"src/test/resources/schema/account.jsdx", jsdFile.getAbsolutePath()});
     final String jsd1 = new String(Files.readAllBytes(jsdFile.toPath()));
     final String jsdx = Converter.convert(jsdFile.toURI().toURL());
     final URL jsdxUrl = MemoryURLStreamHandler.createURL(jsdx.getBytes());

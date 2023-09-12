@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -205,8 +207,8 @@ class Registry {
       return OBJECT;
     }
 
-    Type filterObjectArrayType(final Type type, final boolean isArray) {
-      return Object.class != type.cls ? type : isArray ? OBJECT : JX_OBJECT;
+    Type filterJxObjectType(final boolean isObjectModel) {
+      return Object.class != cls ? this : isObjectModel ? JX_OBJECT : OBJECT;
     }
 
     private Type withCommonGeneric(final Type b) {
@@ -450,8 +452,8 @@ class Registry {
   Registry(final HashMap<String,Registry> namespaceToRegistry, final HashMap<String,String> prefixToNamespace, final String targetNamespace, final Settings settings) {
     this.namespaceToRegistry = namespaceToRegistry;
     this.prefixToNamespace = prefixToNamespace;
-    this.targetNamespace = targetNamespace;
-    if (namespaceToRegistry.put(this.targetNamespace, this) != null)
+    this.targetNamespace = assertNotNull(targetNamespace);
+    if (namespaceToRegistry.put(targetNamespace, this) != null)
       throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
 
     this.settings = settings;
@@ -636,6 +638,9 @@ class Registry {
       throw new IllegalStateException("Namespace is null for prefix: " + prefix);
 
     final Registry registry = namespaceToRegistry.get(namespace);
+    if (registry == null)
+      throw new IllegalStateException("Unable to find Registry for namespace \"" + namespace + "\"");
+
     return registry.refToModel.get(id.getLocalName());
   }
 

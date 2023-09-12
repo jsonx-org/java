@@ -61,6 +61,7 @@ abstract class ModelTest {
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
   private static final ArrayList<Integer> settings = new ArrayList<>();
+  private static final boolean deleteAllBeforeTest = false;
 
   private static Settings getSettings(final String namespace, final String pkg, final int i) {
     return new Settings.Builder().withNamespacePackage(namespace, pkg).withTemplateThreshold(i).build();
@@ -70,16 +71,18 @@ abstract class ModelTest {
   public static void beforeClass() {
     generatedSourcesDir.mkdirs();
     generatedResourcesDir.mkdirs();
-    try {
-      Files
-        .walk(generatedSourcesDir.toPath())
-        .sorted(Comparator.reverseOrder())
-        .map(Path::toFile)
-        .filter(f -> !f.equals(generatedSourcesDir))
-        .forEach(File::delete);
-    }
-    catch (final IOException e) {
-      throw new ExceptionInInitializerError(e);
+    if (deleteAllBeforeTest) {
+      try {
+        Files
+          .walk(generatedSourcesDir.toPath())
+          .sorted(Comparator.reverseOrder())
+          .map(Path::toFile)
+          .filter(f -> !f.equals(generatedSourcesDir))
+          .forEach(File::delete);
+      }
+      catch (final IOException e) {
+        throw new ExceptionInInitializerError(e);
+      }
     }
 
     for (int i = 0; i < 10; i += 3) // [N]

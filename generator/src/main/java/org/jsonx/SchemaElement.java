@@ -122,12 +122,12 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
       try (final JsonReader in = new JsonReader(new InputStreamReader(url.openStream()))) {
         schema = JxDecoder.VALIDATING.parseObject(in, schema.Schema.class);
       }
-
-      xsb.setJxSchema(jxToXsb(schema));
     }
     else {
       throw new ValidationException("Unknown member type: " + jx.getClass().getName());
     }
+
+    xsb.setJxSchema(jxToXsb(schema));
 
     final LinkedHashMap<String,JxObject> bindings = jsb.get5cS7c5cS2e2a5cS();
     if (bindings.size() > 0) {
@@ -228,6 +228,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsbToBinding;
   }
 
+  private final URL location;
   private final Registry registry;
   private final String version;
 
@@ -240,7 +241,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final Schema schema, final Settings settings) throws ValidationException {
-    this(namespaceToRegistry, schema, null, settings);
+    this(namespaceToRegistry, location, schema, null, settings);
   }
 
   /**
@@ -252,7 +253,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final Binding binding, final Settings settings) throws ValidationException {
-    this(namespaceToRegistry, binding.getJxSchema(), binding, settings);
+    this(namespaceToRegistry, location, binding.getJxSchema(), binding, settings);
   }
 
   private static HashMap<String,String> initPrefixNamespaceMap(final Iterator<$AnySimpleType<?>> attributes) {
@@ -267,10 +268,11 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return prefixToNamespace;
   }
 
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, Schema schema, final Binding binding, final Settings settings) throws ValidationException {
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, Schema schema, final Binding binding, final Settings settings) throws ValidationException {
     super(null, (schema == null ? schema = binding.getJxSchema() : schema).getDoc$());
+    this.location = location;
     final TargetNamespace$ targetNamespace = schema.getTargetNamespace$();
-    this.registry = new Registry(namespaceToRegistry, initPrefixNamespaceMap(binding != null ? binding.attributeIterator() : schema.attributeIterator()), targetNamespace == null ? null : targetNamespace.text(), settings);
+    this.registry = new Registry(namespaceToRegistry, initPrefixNamespaceMap(binding != null ? binding.attributeIterator() : schema.attributeIterator()), targetNamespace == null ? "" : targetNamespace.text(), settings);
     final String namespaceURI = schema.name().getNamespaceURI();
     this.version = namespaceURI.substring(namespaceURI.lastIndexOf('-') + 1, namespaceURI.lastIndexOf('.'));
 
@@ -391,7 +393,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final schema.Schema schema, final Settings settings) throws ValidationException {
-    this(namespaceToRegistry, jxToXsb(schema), null, settings);
+    this(namespaceToRegistry, location, jxToXsb(schema), null, settings);
   }
 
   /**
@@ -405,15 +407,15 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    * @throws NullPointerException If {@code schema} or {@code settings} is null.
    */
   SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final binding.Binding binding, final Settings settings) throws DecodeException, IOException, ValidationException {
-    this(namespaceToRegistry, (Schema)null, jxToXsb(location, binding), settings);
+    this(namespaceToRegistry, location, (Schema)null, jxToXsb(location, binding), settings);
   }
 
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final $AnyType<?> object, final Settings settings) {
-    this(namespaceToRegistry, object instanceof Schema ? (Schema)object : null, object instanceof Binding ? (Binding)object : null, settings);
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final $AnyType<?> object, final Settings settings) {
+    this(namespaceToRegistry, location, object instanceof Schema ? (Schema)object : null, object instanceof Binding ? (Binding)object : null, settings);
   }
 
   private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final JxObject object, final Settings settings) throws DecodeException, IOException, ValidationException {
-    this(namespaceToRegistry, object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb(location, (binding.Binding)object) : null, settings);
+    this(namespaceToRegistry, location, object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb(location, (binding.Binding)object) : null, settings);
   }
 
   private static Collection<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
@@ -529,6 +531,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
    */
   private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Collection<Class<?>> classes) {
     super(null, null);
+    this.location = null;
     this.registry = new Registry(namespaceToRegistry, this, classes);
     namespaceToRegistry.put(registry.targetNamespace, registry);
     final org.jaxsb.runtime.QName name = Schema.class.getAnnotation(org.jaxsb.runtime.QName.class);
@@ -567,6 +570,10 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   @Override
   public Id id() {
     return ID;
+  }
+
+  URL getLocation() {
+    return location;
   }
 
   @Override
