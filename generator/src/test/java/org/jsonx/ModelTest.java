@@ -36,9 +36,6 @@ import org.jsonx.www.binding_0_4.xL1gluGCXAA.Binding;
 import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.libj.jci.CompilationException;
 import org.libj.jci.InMemoryCompiler;
 import org.libj.lang.Classes;
@@ -47,7 +44,6 @@ import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
 import org.libj.net.URLs;
 import org.libj.test.AssertXml;
-import org.libj.test.JUnitUtil;
 import org.libj.util.StringPaths;
 import org.openjax.json.JSON;
 import org.openjax.json.JsonReader;
@@ -57,9 +53,8 @@ import org.slf4j.LoggerFactory;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 import org.xml.sax.SAXException;
 
-@RunWith(Parameterized.class)
-public class SchemaTest {
-  private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
+abstract class ModelTest {
+  static final Logger logger = LoggerFactory.getLogger(ModelTest.class);
   private static final boolean testJson = true;
   private static final String namespacePackage = "org.jsonx.test.";
   static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
@@ -104,11 +99,11 @@ public class SchemaTest {
     }
   }
 
-  private static SchemaElement testParseSchema(final Schema schema, final Binding binding, final String namespace, final String pkg, final String fileName) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final URL location, final Schema schema, final Binding binding, final String namespace, final String pkg, final String fileName) throws IOException, SAXException {
     if (logger.isInfoEnabled()) logger.info("  Parse XML...");
     if (logger.isInfoEnabled()) logger.info("    a) XML(1) -> Schema");
     final Settings settings = new Settings.Builder().withNamespacePackage(namespace, pkg).build();
-    final SchemaElement model = binding != null ? new SchemaElement(new HashMap<>(), binding, settings) : new SchemaElement(new HashMap<>(), schema, settings);
+    final SchemaElement model = binding != null ? new SchemaElement(new HashMap<>(), location, binding, settings) : new SchemaElement(new HashMap<>(), location, schema, settings);
     if (logger.isInfoEnabled()) logger.info("    b) Schema -> XML(2)");
     final String xml = model.toXml().toString();
     if (logger.isInfoEnabled()) logger.info("    c) Validate XML: c-" + fileName);
@@ -241,7 +236,7 @@ public class SchemaTest {
     }
   }
 
-  private static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+  static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String fileName = URLs.getName(resource);
     final String namespace = "urn:test:" + StringPaths.getSimpleName(fileName);
     final String packageName = namespacePackage + StringPaths.getSimpleName(fileName);
@@ -263,10 +258,10 @@ public class SchemaTest {
     }
 
     if (testJson)
-      testConverter(testJson(fileName, controlSchema, controlBinding, new Settings.Builder().withNamespacePackage(namespace, pkg).build()));
+      testConverter(testJson(resource, fileName, controlSchema, controlBinding, new Settings.Builder().withNamespacePackage(namespace, pkg).build()));
 
     if (logger.isInfoEnabled()) logger.info("  4) Schema -> Java(1)");
-    final SchemaElement schema = testParseSchema(controlSchema, controlBinding, namespace, pkg, fileName);
+    final SchemaElement schema = testParseSchema(resource, controlSchema, controlBinding, namespace, pkg, fileName);
     final Map<String,String> test1Sources = schema.toSource(generatedSourcesDir);
     if (test1Sources.size() > 0) {
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -286,10 +281,10 @@ public class SchemaTest {
       final SchemaElement test2Schema;
       if (controlBinding != null) {
         final Binding binding = (Binding)Bindings.parse(xml);
-        test2Schema = testParseSchema(binding.getJxSchema(), binding, namespace, pkg, fileName);
+        test2Schema = testParseSchema(resource, binding.getJxSchema(), binding, namespace, pkg, fileName);
       }
       else {
-        test2Schema = testParseSchema((Schema)Bindings.parse(xml), null, namespace, pkg, fileName);
+        test2Schema = testParseSchema(resource, (Schema)Bindings.parse(xml), null, namespace, pkg, fileName);
       }
 
       if (logger.isInfoEnabled()) logger.info("  9) Schema -> Java(2)");
@@ -304,8 +299,8 @@ public class SchemaTest {
   private static void testSettings(final URL resource, final String fileName, final String namespace, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String pkg = packageName + ".";
 
-    for (int i = 0, i$ = SchemaTest.settings.size(); i < i$; ++i) { // [RA]
-      final Settings settings = getSettings(namespace, pkg, SchemaTest.settings.get(i));
+    for (int i = 0, i$ = ModelTest.settings.size(); i < i$; ++i) { // [RA]
+      final Settings settings = getSettings(namespace, pkg, ModelTest.settings.get(i));
       final int templateThreshold = settings.getTemplateThreshold();
 
       final String outFile = templateThreshold + "-" + fileName;
@@ -326,7 +321,7 @@ public class SchemaTest {
         throw new IllegalArgumentException(resource.toString());
       }
 
-      final SchemaElement schema = controlBinding != null ? new SchemaElement(new HashMap<>(), controlBinding, settings) : new SchemaElement(new HashMap<>(), controlSchema, settings);
+      final SchemaElement schema = controlBinding != null ? new SchemaElement(new HashMap<>(), resource, controlBinding, settings) : new SchemaElement(new HashMap<>(), resource, controlSchema, settings);
       final String xml1 = schema.toXml().toString();
       validate(xml1, outFile1);
 
@@ -343,14 +338,14 @@ public class SchemaTest {
         final String xml2 = test1Schema.toXml().toString();
         validate(xml2, outFile2);
 
-        final SchemaElement test2Schema = controlBinding != null ? new SchemaElement(new HashMap<>(), (Binding)Bindings.parse(xml2), settings) : new SchemaElement(new HashMap<>(), (Schema)Bindings.parse(xml2), settings);
+        final SchemaElement test2Schema = controlBinding != null ? new SchemaElement(new HashMap<>(), resource, (Binding)Bindings.parse(xml2), settings) : new SchemaElement(new HashMap<>(), resource, (Schema)Bindings.parse(xml2), settings);
 
         final Map<String,String> test2Sources = test2Schema.toSource();
         assertSources(test1Sources, test2Sources, false);
       }
 
       if (testJson)
-        testJson(fileName, controlSchema, controlBinding, settings);
+        testJson(resource, fileName, controlSchema, controlBinding, settings);
     }
   }
 
@@ -365,8 +360,8 @@ public class SchemaTest {
     assertEquals(null, expected, actual);
   }
 
-  private static String testJson(final String fileName, final Schema controlSchema, final Binding controlBinding, final Settings settings) throws DecodeException, IOException, SAXException {
-    final SchemaElement model = controlBinding != null ? new SchemaElement(new HashMap<>(), controlBinding, settings) : new SchemaElement(new HashMap<>(), controlSchema, settings);
+  private static String testJson(final URL location, final String fileName, final Schema controlSchema, final Binding controlBinding, final Settings settings) throws DecodeException, IOException, SAXException {
+    final SchemaElement model = controlBinding != null ? new SchemaElement(new HashMap<>(), location, controlBinding, settings) : new SchemaElement(new HashMap<>(), location, controlSchema, settings);
     if (logger.isInfoEnabled()) logger.info("     testJson...");
     final String outFile = fileName + (controlBinding != null ? ".jsb" : ".jsd");
     if (logger.isInfoEnabled()) logger.info("       a) Schema -> JSON " + outFile);
@@ -378,7 +373,7 @@ public class SchemaTest {
       final binding.Binding binding = testParseBinding(json, true);
 
       if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
-      final String jsbx = new SchemaElement(new HashMap<>(), binding, settings).toXml().toString();
+      final String jsbx = new SchemaElement(new HashMap<>(), location, binding, settings).toXml().toString();
       final Binding xsb = (Binding)Bindings.parse(jsbx);
       AssertXml.compare(controlBinding.toDOM(), xsb.toDOM()).assertEqual(true);
     }
@@ -386,7 +381,7 @@ public class SchemaTest {
       final schema.Schema schema = testParseSchema(json, true);
 
       if (logger.isInfoEnabled()) logger.info("       c) Schema -> XML(3)");
-      final String jsdx = new SchemaElement(new HashMap<>(), schema, settings).toXml().toString();
+      final String jsdx = new SchemaElement(new HashMap<>(), location, schema, settings).toXml().toString();
       final Schema xsb = (Schema)Bindings.parse(jsdx);
       AssertXml.compare(controlSchema.toDOM(), xsb.toDOM()).assertEqual(true);
     }
@@ -436,18 +431,5 @@ public class SchemaTest {
     final URL jsd2Url = MemoryURLStreamHandler.createURL(json2.getBytes());
     final String jsdx2 = Converter.jsonToXml(jsd2Url);
     assertEquals(xml, jsdx2);
-  }
-
-  @Parameterized.Parameters(name = "{0}")
-  public static URL[] resources() throws IOException {
-    return JUnitUtil.sortBySize(JUnitUtil.getResources("", ".*\\.js[db]x"));
-  }
-
-  @Parameterized.Parameter(0)
-  public URL resource;
-
-  @Test
-  public void test() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
-    test(resource);
   }
 }

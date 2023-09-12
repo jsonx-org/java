@@ -18,43 +18,27 @@ package org.jsonx;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.libj.jci.CompilationException;
+import org.libj.lang.PackageNotFoundException;
 import org.libj.test.JUnitUtil;
+import org.xml.sax.SAXException;
 
 @RunWith(Parameterized.class)
-public class IncludeModelTest extends ModelTest {
-  private static final String path = "href/";
-
-  private static void test(final String name) throws IOException {
-    final String namespace = "urn:test:" + name;
-    final String packageName = "org.jsonx.href." + name;
-    final Settings settings = new Settings.Builder().withNamespacePackage(namespace, packageName + ".").build();
-
-    if (logger.isInfoEnabled()) logger.info(name + "...");
-
-    final SchemaElement jsbxSchema = Generator.parse(settings, ClassLoader.getSystemClassLoader().getResource(path + name + ".jsbx"))[0];
-    final Map<String,String> jsbxSources = jsbxSchema.toSource();
-
-    final SchemaElement jsbSchema = Generator.parse(settings, ClassLoader.getSystemClassLoader().getResource(path + name + ".jsb"))[0];
-    final Map<String,String> jsbSources = jsbSchema.toSource();
-
-    assertEquals(jsbxSources, jsbSources);
-  }
-
+public class BindingModelTest extends ModelTest {
   @Parameterized.Parameters(name = "{0}")
   public static URL[] resources() throws IOException {
-    return JUnitUtil.sortBySize(JUnitUtil.getResources("include", ".*\\.js[db]x"));
+    return JUnitUtil.sortBySize(JUnitUtil.getResources("binding", ".*\\.jsbx"));
   }
 
   @Parameterized.Parameter(0)
   public URL resource;
 
   @Test
-  public void test() throws IOException {
-    test("account");
+  public void test() throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
+    test(resource);
   }
 }
