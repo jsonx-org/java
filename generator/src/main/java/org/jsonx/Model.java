@@ -129,10 +129,10 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (owner instanceof ObjectModel)
-      attributes.put(toJx ? "@" : "xsi:type", elementName());
+      attributes.put(jsd ? "@" : "xsi:type", elementName());
 
     return attributes;
   }

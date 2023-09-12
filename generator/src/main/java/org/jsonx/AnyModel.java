@@ -428,8 +428,8 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (types != null) {
       final StringBuilder b = new StringBuilder();
       for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
@@ -439,7 +439,7 @@ final class AnyModel extends Referrer<AnyModel> {
         b.append(Registry.getSubName(types.get(i).id().toString(), packageName));
       }
 
-      attributes.put(toJx(toJx, "types"), b.toString());
+      attributes.put(jsd(jsd, "types"), b.toString());
     }
 
     return attributes;

@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -118,12 +119,11 @@ public final class Generator {
    * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSD format.
    *
    * @param url The {@link URL} of the content to parse.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return The {@link SchemaElement} instance.
+   * @return The {@link JxObject} representation of the parsed file.
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
+   * @throws NullPointerException If {@code url} or {@code settings} is null.
    */
   static JxObject parseJson(final URL url) throws DecodeException, IOException {
     final JxObject obj;
@@ -142,7 +142,7 @@ public final class Generator {
    * @throws IOException If an I/O error has occurred.
    * @throws DecodeException If a decode error has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
+   * @throws NullPointerException If {@code url} or {@code settings} is null.
    */
   private static binding.Binding getSchema(final URL url, final binding.Binding binding) throws DecodeException, IOException {
     final String pathOfSchemaFromInclude = null;
@@ -164,13 +164,12 @@ public final class Generator {
    * Creates a {@link SchemaElement} from the content of the specified file that is expected to be in JSDx format.
    *
    * @param url The {@link URL} of the content to parse.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return The {@link SchemaElement} instance.
+   * @return The {@link $AnyType} representation of the parsed file.
    * @throws IOException If an I/O error has occurred.
    * @throws SAXException If a parse error has occurred.
    * @throws IllegalArgumentException If a {@link org.xml.sax.SAXParseException} has occurred.
    * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
+   * @throws NullPointerException If {@code url} or {@code settings} is null.
    */
   static $AnyType<?> parseXml(final URL url) throws IOException, SAXException {
     return Bindings.parse(url, getErrorHandler());
@@ -180,7 +179,7 @@ public final class Generator {
     final String name = URLs.getName(url);
     if (name.endsWith(".jsd") || name.endsWith(".jsb") || name.endsWith(".json")) {
       try {
-        return SchemaElement.jxToXsb(parseJson(url));
+        return SchemaElement.jxToXsb(url, parseJson(url));
       }
       catch (final DecodeException e0) {
         try {
@@ -203,7 +202,7 @@ public final class Generator {
     }
     catch (final SAXException e0) {
       try {
-        return SchemaElement.jxToXsb(parseJson(url));
+        return SchemaElement.jxToXsb(url, parseJson(url));
       }
       catch (final IOException | RuntimeException e1) {
         e1.addSuppressed(e0);
@@ -241,7 +240,7 @@ public final class Generator {
     throw new IllegalArgumentException("Unsupported object of class: " + xsb.getClass().getName());
   }
 
-  private static URL getLocation(final URL referer, final String path) {
+  static URL getLocation(final URL referer, final String path) {
     return StringPaths.isAbsolute(path) ? URLs.toCanonicalURL(path) : URLs.toCanonicalURL(URLs.getCanonicalParent(referer) + "/" + path);
   }
 
@@ -257,11 +256,12 @@ public final class Generator {
     return targetNamespace != null ? targetNamespace.text() : "";
   }
 
-  private static void addImport(final StrictRefDigraph<$AnyType<?>,String> digraph, final ArrayList<$AnyType<?>> schemasWithoutTargetNamespace, final Set<URL> addedLocations, final HashMap<String,URL> namespaceToLocation, final URL location) throws IOException {
+  private static void addImport(final StrictRefDigraph<$AnyType<?>,String> digraph, final ArrayList<$AnyType<?>> schemasWithoutTargetNamespace, final IdentityHashMap<$AnyType<?>,URL> schemaToLocation, final Set<URL> addedLocations, final HashMap<String,URL> namespaceToLocation, final URL location) throws IOException {
     if (!addedLocations.add(location))
       return;
 
     final $AnyType<?> schema = parse(location);
+    schemaToLocation.put(schema, location);
     final String targetNamespace = getTargetNamespace(schema);
     if (targetNamespace.length() == 0) {
       if (schemasWithoutTargetNamespace == null)
@@ -281,7 +281,7 @@ public final class Generator {
         final String namespace = entry.getKey();
         final URL newLocation = entry.getValue();
         namespaceToLocation.put(namespace, newLocation);
-        addImport(digraph, null, addedLocations, namespaceToLocation, newLocation);
+        addImport(digraph, null, schemaToLocation, addedLocations, namespaceToLocation, newLocation);
         digraph.add(schema, namespace);
       }
     }
@@ -292,9 +292,10 @@ public final class Generator {
 
     final StrictRefDigraph<$AnyType<?>,String> digraph = new StrictRefDigraph<>("Schema cannot include itself", Generator::getTargetNamespace);
 
+    final IdentityHashMap<$AnyType<?>,URL> schemaToLocation = new IdentityHashMap<>();
     final ArrayList<$AnyType<?>> schemasWithoutTargetNamespace = new ArrayList<>();
     for (int i = 0, i$ = urls.length; i < i$; ++i) // [A]
-      addImport(digraph, schemasWithoutTargetNamespace, new HashSet<>(), new HashMap<String,URL>() {
+      addImport(digraph, schemasWithoutTargetNamespace, schemaToLocation, new HashSet<>(), new HashMap<String,URL>() {
         @Override
         public URL put(final String key, final URL value) {
           final URL old = super.put(key, value);
@@ -317,14 +318,18 @@ public final class Generator {
 
     if (sizeDigraph > 0) {
       final HashMap<String,Registry> namespaceToRegistry = new HashMap<>();
-      do // [A]
-        schemas[j++] = SchemaElement.parse(namespaceToRegistry, topologicalOrder.get(i), settings);
+      do { // [A]
+        final $AnyType<?> schema = topologicalOrder.get(i);
+        schemas[j++] = SchemaElement.parse(namespaceToRegistry, schemaToLocation.get(schema), schema, settings);
+      }
       while (--i >= 0);
     }
 
     if (sizeNoNs > 0) {
-      i = 0; do // [RA]
-        schemas[j++] = SchemaElement.parse(new HashMap<>(), schemasWithoutTargetNamespace.get(i), settings);
+      i = 0; do { // [RA]
+        final $AnyType<?> schema = schemasWithoutTargetNamespace.get(i);
+        schemas[j++] = SchemaElement.parse(new HashMap<>(), schemaToLocation.get(schema), schema, settings);
+      }
       while (++i < sizeNoNs);
     }
 
@@ -332,16 +337,17 @@ public final class Generator {
   }
 
   /**
-   * Creates a {@link SchemaElement} from the contents of the specified {@code file}. The supported content formats are JSDx and
-   * JSD. If the supplied file is not in one of the supported formats, an {@link IllegalArgumentException} is thrown.
+   * Generates the sources in the specified {@code destDir}, utilizing the given {@link Settings}, for the provided file
+   * {@code urls}.
    *
-   * @param url The file from which to read the contents.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @return A {@link SchemaElement} from the contents of the specified {@code file}.
+   * @param destDir The destination directory of the generated sources.
+   * @param settings The {@link Settings} to be used when constructing {@link SchemaElement}s for the provided {@code urls}.
+   * @param urls The {@link URL}s of the JSDx, JSBx, JSD or JSB documents to generate.
    * @throws IOException If an I/O error has occurred.
-   * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx or JSD.
+   * @throws IllegalArgumentException If the format of the content of the specified file is malformed, or is not JSDx, JSBx, JSD, or
+   *           JSB.
    * @throws IllegalArgumentException If {@code urls} is an empty array.
-   * @throws NullPointerException If {@code url} of {@code settings} is null.
+   * @throws NullPointerException If {@code urls} or {@code settings} is null.
    */
   public static void generate(final File destDir, final Settings settings, final URL ... urls) throws IOException {
     final SchemaElement[] schemas = parse(settings, urls);

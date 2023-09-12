@@ -53,11 +53,13 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
   static Registry.Type getGreatestCommonSuperType(final List<? extends Member> members) {
     final int i$ = assertPositive(members.size());
 
+    boolean isArray;
     final Set<Member> visited = Referrer.visited.get();
     try {
       count.set(count.get() + 1);
       int start = 0;
       final Member member0 = members.get(0);
+      isArray = member0.type().isArray;
       if (!visited.add(member0))
         start = 1;
 
@@ -70,17 +72,23 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
 
       Registry.Type gct = members.get(start).type();
       if (CollectionUtil.isRandomAccess(members)) {
-        do // [RA]
-          gct = getGreatestCommonSuperType(gct, members.get(i));
+        do { // [RA]
+          final Member member = members.get(i);
+          isArray |= member0.type().isArray;
+          gct = getGreatestCommonSuperType(gct, member);
+        }
         while (++i < i$);
       }
       else {
-        final Iterator<? extends Member> it = members.iterator(); do // [I]
-          gct = getGreatestCommonSuperType(gct, it.next());
+        final Iterator<? extends Member> it = members.iterator(); do { // [I]
+          final Member member = it.next();
+          isArray |= member0.type().isArray;
+          gct = getGreatestCommonSuperType(gct, member);
+        }
         while (it.hasNext());
       }
 
-      return gct;
+      return gct.filterObjectArrayType(gct, isArray);
     }
     finally {
       final int count = Referrer.count.get() - 1;

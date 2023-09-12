@@ -205,6 +205,10 @@ class Registry {
       return OBJECT;
     }
 
+    Type filterObjectArrayType(final Type type, final boolean isArray) {
+      return Object.class != type.cls ? type : isArray ? OBJECT : JX_OBJECT;
+    }
+
     private Type withCommonGeneric(final Type b) {
       if (genericTypes == null)
         return this;
@@ -285,24 +289,12 @@ class Registry {
 
     String getNativeName() {
       if (!isArray)
-        return isPrimitive() ? getWrapper().getName() : getName();
+        return isPrimitive ? wrapper.getName() : getName();
 
       if (!isPrimitive)
         return "[L" + getName() + ";";
 
       return "[" + getName().substring(0, 1).toUpperCase();
-    }
-
-    boolean isPrimitive() {
-      return isPrimitive;
-    }
-
-    public boolean isArray() {
-      return isArray;
-    }
-
-    public Type getWrapper() {
-      return wrapper;
     }
 
     public boolean isAssignableFrom(Type type) {
@@ -566,6 +558,7 @@ class Registry {
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   private final ArrayList<Runnable> deferredReferences = new ArrayList<>();
   final Type OBJECT = getType(Object.class);
+  private final Type JX_OBJECT = getType(JxObject.class);
 
   Value declare(final Schema.Boolean xsb) {
     return new Value(xsb.getName$().text());

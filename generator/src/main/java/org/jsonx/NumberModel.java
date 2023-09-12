@@ -329,13 +329,13 @@ final class NumberModel extends Model {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (scale != Integer.MAX_VALUE)
-      attributes.put(toJx(toJx, "scale"), scale);
+      attributes.put(jsd(jsd, "scale"), scale);
 
     if (range != null)
-      attributes.put(toJx(toJx, "range"), range.toString());
+      attributes.put(jsd(jsd, "range"), range.toString());
 
     return attributes;
   }

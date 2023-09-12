@@ -706,16 +706,16 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     final String name = name();
     attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
-      attributes.put(toJx(toJx, "extends"), JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
+      attributes.put(jsd(jsd, "extends"), JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
 
     if (isAbstract)
-      attributes.put(toJx(toJx, "abstract"), isAbstract);
+      attributes.put(jsd(jsd, "abstract"), isAbstract);
 
     return attributes;
   }
@@ -811,9 +811,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
           final Type memberType = member.type();
           final String instanceCase = member.fieldBinding.instanceCase;
-          if (!isOptionalType && memberType.isArray())
+          if (!isOptionalType && memberType.isArray)
             b.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
-          else if (!isOptionalType && memberType.isPrimitive())
+          else if (!isOptionalType && memberType.isPrimitive)
             b.append("\n  if (").append(instanceCase).append(" != that.").append(instanceCase);
           else
             b.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
@@ -836,10 +836,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
           final Member member = property.member;
           final Type memberType = member.type();
-          final boolean isPrimitive = memberType.isPrimitive();
+          final boolean isPrimitive = memberType.isPrimitive;
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
 
-          final boolean isArray = memberType.isArray();
+          final boolean isArray = memberType.isArray;
           final String indent = !isPrimitive || isArray ? "    " : "  ";
           final String header = "\n" + indent + "hashCode = 31 * hashCode + ";
 
@@ -851,7 +851,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           if (!isOptionalType && isArray)
             b.append(Arrays.class.getName()).append(".hashCode(").append(instanceCase).append(");");
           else if (!isOptionalType && isPrimitive)
-            b.append(memberType.getWrapper()).append(".hashCode(").append(instanceCase).append(");");
+            b.append(memberType.wrapper).append(".hashCode(").append(instanceCase).append(");");
           else
             b.append(ObjectUtil.class.getName()).append(".hashCode(").append(instanceCase).append(");");
 

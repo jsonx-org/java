@@ -32,8 +32,8 @@ abstract class Element {
   abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, PropertyMap<AttributeMap> pathToBinding);
   abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, PropertyMap<AttributeMap> pathToBinding);
 
-  static String toJx(final boolean toJx, final String name) {
-    return toJx ? "@" + name : name;
+  static String jsd(final boolean jsd, final String name) {
+    return jsd ? "@" + name : name;
   }
 
   /**
@@ -42,12 +42,13 @@ abstract class Element {
    *
    * @param owner The {@link Element} that owns (contains) {@code this} element.
    * @param packageName The package name declared in the schema element.
+   * @param jsd When {@code true}, property names will comply to JSD format; when {@code false}, property names will comply to JSDx format.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
     final AttributeMap attributes = new AttributeMap();
     if (doc != null)
-      attributes.put(toJx(toJx, "doc"), doc);
+      attributes.put(jsd(jsd, "doc"), doc);
 
     return attributes;
   }

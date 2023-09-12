@@ -259,10 +259,10 @@ final class StringModel extends Model {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (pattern != null)
-      attributes.put(toJx(toJx, "pattern"), pattern);
+      attributes.put(jsd(jsd, "pattern"), pattern);
 
     return attributes;
   }

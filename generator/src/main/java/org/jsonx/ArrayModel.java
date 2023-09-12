@@ -441,7 +441,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   Registry.Type typeDefault(final boolean primitive) {
     // type can be null if there is a loop in the type graph
     Registry.Type type = getGreatestCommonSuperType(members);
-    type = type == null ? registry.OBJECT : !type.isArray() && type.isPrimitive() ? type.getWrapper() : type;
+    type = type == null ? registry.OBJECT : !type.isArray && type.isPrimitive ? type.wrapper : type;
     return registry.getType(defaultClass(), type.cls != null && List.class.isAssignableFrom(type.cls) ? type.asGeneric(Wildcard.EXTENDS) : type.asGeneric());
   }
 
@@ -536,16 +536,16 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (owner instanceof SchemaElement)
       attributes.put("name", classType() != null ? JsdUtil.flipName(classType().getSubName(packageName)) : id().toString());
 
     if (minIterate != null)
-      attributes.put(toJx(toJx, "minIterate"), String.valueOf(minIterate));
+      attributes.put(jsd(jsd, "minIterate"), String.valueOf(minIterate));
 
     if (maxIterate != null)
-      attributes.put(toJx(toJx, "maxIterate"), maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
+      attributes.put(jsd(jsd, "maxIterate"), maxIterate == Integer.MAX_VALUE ? "unbounded" : String.valueOf(maxIterate));
 
     return attributes;
   }

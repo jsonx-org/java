@@ -74,7 +74,10 @@ public class Settings {
       if (pkg != null)
         return pkg;
 
-      return defaultPackage != null ? defaultPackage : "";
+      if (namespace.length() == 0)
+        return defaultPackage != null ? defaultPackage : "";
+
+      throw new IllegalStateException("Missing package binding for namespace \"" + namespace + "\"");
     }
   }
 

@@ -217,17 +217,17 @@ final class Bind {
     }
   }
 
-  static AttributeMap toBindingAttributes(final String elementName, final Element owner, final Type type, final Field field, final AttributeMap attributes, final boolean toJx) {
+  static AttributeMap toBindingAttributes(final String elementName, final Element owner, final Type type, final Field field, final AttributeMap attributes, final boolean jsd) {
     final AttributeMap bindingAttrs = new AttributeMap();
     if (type != null) {
       if (type.type != null)
-        bindingAttrs.put(toJx(toJx, "type"), type.type.toString());
+        bindingAttrs.put(jsd(jsd, "type"), type.type.toString());
 
       if (type.decode != null)
-        bindingAttrs.put(toJx(toJx, "decode"), type.decode);
+        bindingAttrs.put(jsd(jsd, "decode"), type.decode);
 
       if (type.encode != null)
-        bindingAttrs.put(toJx(toJx, "encode"), type.encode);
+        bindingAttrs.put(jsd(jsd, "encode"), type.encode);
     }
 
     if (!(owner instanceof SchemaElement) && !(owner instanceof ArrayModel) && field != null && field.field != null) {
@@ -236,13 +236,13 @@ final class Bind {
         name = attributes.get("names");
 
       if (!field.field.equals(JsdUtil.getFieldName(JsdUtil.fixReserved((String)name))))
-        bindingAttrs.put(toJx(toJx, "field"), field.field);
+        bindingAttrs.put(jsd(jsd, "field"), field.field);
     }
 
     if (bindingAttrs.size() == 0)
       return null;
 
-    bindingAttrs.put(toJx(toJx, "lang"), "java");
+    bindingAttrs.put(jsd(jsd, "lang"), "java");
     bindingAttrs.put("@", elementName);
 
     return bindingAttrs;

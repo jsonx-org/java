@@ -105,32 +105,30 @@ class ObjectCodec extends Codec {
 
           value = primitiveCodec.parse(new String(buf, off, len), reader.isStrict());
         }
+        else if (codec instanceof AnyCodec) {
+          final AnyCodec anyCodec = (AnyCodec)codec;
+          final String token = new String(buf, off, len);
+          value = AnyCodec.decode(anyCodec.property, token, reader, validate, null);
+        }
         else {
-          if (codec instanceof AnyCodec) {
-            final AnyCodec anyCodec = (AnyCodec)codec;
-            final String token = new String(buf, off, len);
-            value = AnyCodec.decode(anyCodec.property, token, reader, validate, null);
+          c0 = reader.bufToChar(off);
+          if (codec instanceof ObjectCodec) {
+            if (c0 != '{')
+              return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
+
+            final ObjectCodec objectCodec = (ObjectCodec)codec;
+            value = decodeObject(objectCodec.type, reader, validate, null); // NOTE: Setting `onPropertyDecode = null` here on purpose!
+          }
+          else if (codec instanceof ArrayCodec) {
+            if (c0 != '[')
+              return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
+
+            final ArrayCodec arrayCodec = (ArrayCodec)codec;
+            final IdToElement idToElement = arrayCodec.idToElement;
+            value = ArrayCodec.decodeObject(arrayCodec.annotations, idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, onPropertyDecode);
           }
           else {
-            c0 = reader.bufToChar(off);
-            if (codec instanceof ObjectCodec) {
-              if (c0 != '{')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
-
-              final ObjectCodec objectCodec = (ObjectCodec)codec;
-              value = decodeObject(objectCodec.type, reader, validate, null); // NOTE: Setting `onPropertyDecode = null` here on purpose!
-            }
-            else if (codec instanceof ArrayCodec) {
-              if (c0 != '[')
-                return abort(Error.EXPECTED_TOKEN(codec.name, codec.elementName(), new String(buf, off, len), reader), reader, index);
-
-              final ArrayCodec arrayCodec = (ArrayCodec)codec;
-              final IdToElement idToElement = arrayCodec.idToElement;
-              value = ArrayCodec.decodeObject(arrayCodec.annotations, idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, onPropertyDecode);
-            }
-            else {
-              throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
-            }
+            throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codec.getClass().getName());
           }
         }
 

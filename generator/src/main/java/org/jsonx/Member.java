@@ -204,7 +204,7 @@ abstract class Member extends Element {
       return null;
 
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
-    if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
+    if (typeBinding.type.isPrimitive && !typeBinding.type.isArray && !hasDecodeBinding) {
       if (use.set == Use.OPTIONAL)
         throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
@@ -292,8 +292,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean toJx) {
-    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, toJx);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (name() != null)
       attributes.put(nameName(), name());
     else if (owner instanceof SchemaElement && !(this instanceof Referrer))
@@ -301,17 +301,17 @@ abstract class Member extends Element {
 
     if (!(owner instanceof SchemaElement)) {
       if (nullable.get != null)
-        attributes.put(toJx(toJx, "nullable"), nullable.get);
+        attributes.put(jsd(jsd, "nullable"), nullable.get);
 
       if (use.get != null)
-        attributes.put(toJx(toJx, "use"), use.get.toString().toLowerCase());
+        attributes.put(jsd(jsd, "use"), use.get.toString().toLowerCase());
     }
 
     if (minOccurs.get != null)
-      attributes.put(toJx(toJx, "minOccurs"), String.valueOf(minOccurs.get));
+      attributes.put(jsd(jsd, "minOccurs"), String.valueOf(minOccurs.get));
 
     if (maxOccurs.get != null)
-      attributes.put(toJx(toJx, "maxOccurs"), String.valueOf(maxOccurs.get));
+      attributes.put(jsd(jsd, "maxOccurs"), String.valueOf(maxOccurs.get));
 
     return attributes;
   }

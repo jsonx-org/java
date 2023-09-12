@@ -61,7 +61,8 @@ import org.xml.sax.SAXException;
 public class SchemaTest {
   private static final Logger logger = LoggerFactory.getLogger(SchemaTest.class);
   private static final boolean testJson = true;
-  private static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
+  private static final String namespacePackage = "org.jsonx.test.";
+  static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
   private static final File generatedResourcesDir = new File("target/generated-test-resources");
   private static final File compiledClassesDir = new File("target/test-classes");
   private static final ArrayList<Integer> settings = new ArrayList<>();
@@ -240,8 +241,6 @@ public class SchemaTest {
     }
   }
 
-  private static final String namespacePackage = "org.jsonx.test.";
-
   private static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String fileName = URLs.getName(resource);
     final String namespace = "urn:test:" + StringPaths.getSimpleName(fileName);
@@ -263,10 +262,8 @@ public class SchemaTest {
       throw new IllegalArgumentException(resource.toString());
     }
 
-    if (testJson) {
-      final String jsd = testJson(fileName, controlSchema, controlBinding, new Settings.Builder().withNamespacePackage(namespace, pkg).build());
-      testConverter(jsd);
-    }
+    if (testJson)
+      testConverter(testJson(fileName, controlSchema, controlBinding, new Settings.Builder().withNamespacePackage(namespace, pkg).build()));
 
     if (logger.isInfoEnabled()) logger.info("  4) Schema -> Java(1)");
     final SchemaElement schema = testParseSchema(controlSchema, controlBinding, namespace, pkg, fileName);

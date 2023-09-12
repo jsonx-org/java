@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-09T18:25:34.214")
+@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-12T12:16:24.632")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {
@@ -117,29 +117,29 @@ public class binding {
 
     private java.lang.String _40schemaLocation;
 
-    @org.jsonx.ObjectProperty(name="@schema", nullable=false)
-    public org.jsonx.schema.Schema get40schema() {
+    @org.jsonx.AnyProperty(name="@schema", types={@org.jsonx.t(objects=org.jsonx.schema.Schema.class), @org.jsonx.t(objects=org.jsonx.include.Include.class)}, nullable=false)
+    public org.jsonx.JxObject get40schema() {
       return _40schema;
     }
 
-    public Binding set40schema(final org.jsonx.schema.Schema _40schema) {
+    public Binding set40schema(final org.jsonx.JxObject _40schema) {
       this._40schema = _40schema;
       return this;
     }
 
-    private org.jsonx.schema.Schema _40schema;
+    private org.jsonx.JxObject _40schema;
 
     @org.jsonx.AnyProperty(name="\\S|\\S.*\\S", types={@org.jsonx.t(objects=org.jsonx.binding.Any.class), @org.jsonx.t(objects=org.jsonx.binding.Reference.class), @org.jsonx.t(objects=org.jsonx.binding.Array.class), @org.jsonx.t(objects=org.jsonx.binding.Object.class), @org.jsonx.t(objects=org.jsonx.binding.Boolean.class), @org.jsonx.t(objects=org.jsonx.binding.Number.class), @org.jsonx.t(objects=org.jsonx.binding.String.class)}, nullable=false)
-    public java.util.LinkedHashMap<java.lang.String,java.lang.Object> get5cS7c5cS2e2a5cS() {
+    public java.util.LinkedHashMap<java.lang.String,org.jsonx.JxObject> get5cS7c5cS2e2a5cS() {
       return _5cS7c5cS2e2a5cS;
     }
 
-    public Binding set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5cS7c5cS2e2a5cS) {
+    public Binding set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.JxObject> _5cS7c5cS2e2a5cS) {
       this._5cS7c5cS2e2a5cS = _5cS7c5cS2e2a5cS;
       return this;
     }
 
-    private java.util.LinkedHashMap<java.lang.String,java.lang.Object> _5cS7c5cS2e2a5cS;
+    private java.util.LinkedHashMap<java.lang.String,org.jsonx.JxObject> _5cS7c5cS2e2a5cS;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {

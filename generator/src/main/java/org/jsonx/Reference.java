@@ -192,14 +192,14 @@ final class Reference extends Member {
     return model.typeAnnotation();
   }
 
-  private AttributeMap getBindingAttributes(final Element owner, final AttributeMap attributes, final boolean toJx) {
-    final AttributeMap bindingAttributes = Bind.toBindingAttributes(model instanceof AnyModel || model instanceof ArrayModel && ((ArrayModel)model).classType() == null ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes, toJx);
+  private AttributeMap getBindingAttributes(final Element owner, final AttributeMap attributes, final boolean jsd) {
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(model instanceof AnyModel || model instanceof ArrayModel && ((ArrayModel)model).classType() == null ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes, jsd);
     if (bindingAttributes == null)
       return null;
 
-    bindingAttributes.remove(toJx(toJx, "type"));
-    bindingAttributes.remove(toJx(toJx, "decode"));
-    bindingAttributes.remove(toJx(toJx, "encode"));
+    bindingAttributes.remove(jsd(jsd, "type"));
+    bindingAttributes.remove(jsd(jsd, "decode"));
+    bindingAttributes.remove(jsd(jsd, "encode"));
     // If there's only lang="java", then remove the binding element
     return bindingAttributes.size() <= 2 ? null : bindingAttributes;
   }
@@ -209,11 +209,11 @@ final class Reference extends Member {
     return toXml(owner, packageName, cursor, pathToBinding, false);
   }
 
-  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean toJx) {
-    final AttributeMap attributes = toSchemaAttributes(owner, packageName, toJx);
+  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean jsd) {
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, jsd);
     cursor.pushName((String)attributes.get("name"));
 
-    final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, toJx);
+    final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, jsd);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
@@ -221,11 +221,11 @@ final class Reference extends Member {
     if (registry.isRootMember(model)) {
       if (model != null) {
         final String subName = Registry.getSubName(model.id().toString(), packageName);
-        attributes.put(toJx(toJx, "type"), subName);
+        attributes.put(jsd(jsd, "type"), subName);
       }
 
       if (owner instanceof ObjectModel) {
-        attributes.put(toJx ? "@" : "xsi:type", elementName());
+        attributes.put(jsd ? "@" : "xsi:type", elementName());
         element = new XmlElement("property", attributes);
       }
       else {
@@ -240,10 +240,10 @@ final class Reference extends Member {
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
       final Map<String,Object> attrs = element.getAttributes();
-      attrs.remove(toJx(toJx, "minOccurs"));
-      attrs.remove(toJx(toJx, "maxOccurs"));
-      attrs.remove(toJx(toJx, "nullable"));
-      attrs.remove(toJx(toJx, "use"));
+      attrs.remove(jsd(jsd, "minOccurs"));
+      attrs.remove(jsd(jsd, "maxOccurs"));
+      attrs.remove(jsd(jsd, "nullable"));
+      attrs.remove(jsd(jsd, "use"));
       attrs.putAll(attributes);
     }
 

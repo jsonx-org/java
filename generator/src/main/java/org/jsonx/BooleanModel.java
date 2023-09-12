@@ -37,7 +37,7 @@ import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class BooleanModel extends Model {
-  private static Schema.Boolean type(final schema.Boolean jsd, final String name) {
+  private static Schema.Boolean type(final String name) {
     final Schema.Boolean xsb = new Schema.Boolean();
     if (name != null)
       xsb.setName$(new Schema.Boolean.Name$(name));
@@ -92,7 +92,7 @@ final class BooleanModel extends Model {
     else if (jsd instanceof schema.BooleanElement)
       xsb = element((schema.BooleanElement)jsd);
     else if (name != null)
-      xsb = type(jsd, name);
+      xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
