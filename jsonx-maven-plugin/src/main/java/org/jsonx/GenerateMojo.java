@@ -42,6 +42,42 @@ public class GenerateMojo extends JxMojo {
   @Parameter(property="setBuilder", required=false)
   private boolean setBuilder = true;
 
+  @Parameter(property="defaultBinding", required=false)
+  private DefaultBinding defaultBinding; // FIXME: Remove this.
+
+  public static class DefaultBinding {
+    public static class Number {
+      private String integer;
+      private String real;
+
+      public String getInteger() {
+        return this.integer;
+      }
+
+      public void setInteger(String integer) {
+        this.integer = integer;
+      }
+
+      public String getReal() {
+        return this.real;
+      }
+
+      public void setReal(String real) {
+        this.real = real;
+      }
+    }
+
+    private Number number;
+
+    public Number getNumber() {
+      return this.number;
+    }
+
+    public void setNumber(Number number) {
+      this.number = number;
+    }
+  }
+
   private static void processConfiguration(final Settings.Builder builder, final Xpp3Dom root) throws MojoExecutionException {
     for (int i = 0, i$ = root.getChildCount(); i < i$; ++i) { // [RA]
       final Xpp3Dom child0 = root.getChild(i);
