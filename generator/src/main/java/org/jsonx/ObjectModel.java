@@ -435,7 +435,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     @Override
     void beforePut(final Method[] methods) {
-      Classes.sortDeclarativeOrder(methods);
+      try {
+        Classes.sortDeclarativeOrder(methods, true);
+      }
+      catch (final ClassNotFoundException e) {
+        System.err.println("Cannot sort methods in declarative order because Javassist is not present on the system classpath");
+      }
     }
   };
 

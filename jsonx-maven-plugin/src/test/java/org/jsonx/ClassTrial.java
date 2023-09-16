@@ -49,7 +49,12 @@ class ClassTrial extends Trial {
 
     @Override
     void beforePut(final Method[] methods) {
-      Classes.sortDeclarativeOrder(methods);
+      try {
+        Classes.sortDeclarativeOrder(methods, true);
+      }
+      catch (final ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
     }
   };
 
