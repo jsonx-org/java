@@ -1010,7 +1010,7 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [sample-cdc]: sample/cdc
 [sample-invoice]: sample/invoice
 [sample]: sample
-[schema]: ../../../schema
+[schema]: ../../../schema/
 
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html
 [oxygenxml]: https://www.oxygenxml.com/xml_editor/download_oxygenxml_editor.html

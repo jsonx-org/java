@@ -865,6 +865,6 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#anyproperty]: #51561-anyproperty
 [#anyelement]: #51562-anyelement
 
-[schema]: ../../../../schema
+[schema]: ../../../../schema/
 
 [interval-notation]: https://en.wikipedia.org/wiki/Interval_(mathematics)#Classification_of_intervals
