@@ -46,7 +46,7 @@ jobs:
     - name: Build
       env:
         GPG: ${{ secrets.GPG }}
-        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -58,7 +58,7 @@ jobs:
            [ "${{ github.ref }}" = "refs/heads/master" ] &&
            [ "${{ github.head_ref }}" = "" ]; then
           echo $GPG | base64 -d | gpg --import --no-tty --batch --yes &> /dev/null &&
-          mvn -e -U -B -s settings.xml -DskipRTests -DrepoToken=$REPO_TOKEN deploy -P javadoc,report,deploy;
+          mvn -e -U -B -s settings.xml -DskipRTests -DcoverallsRepoToken=$COVERALLS_REPO_TOKEN deploy -P javadoc,report,deploy;
         else
           mvn -e -U -B -s settings.xml -DskipRTests install;
         fi
