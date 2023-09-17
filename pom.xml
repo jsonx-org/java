@@ -80,7 +80,7 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.safris.maven</groupId>
+          <groupId>org.entinae</groupId>
           <artifactId>coverallsio-maven-plugin</artifactId>
           <configuration>
             <aggregateOnly>true</aggregateOnly>
