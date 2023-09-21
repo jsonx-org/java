@@ -63,8 +63,8 @@ The following illustrates example usage.
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema-0.3.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema-0.4.jsd",
   "id": { "jx:type": "string", "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}" },
   "email": { "jx:type": "string", "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}" },
   "sha256": {"jx:type": "string", "pattern": "[0-9a-f]{64}" },
@@ -86,9 +86,9 @@ The following illustrates example usage.
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <string name="id" pattern="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"/>
   <string name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}"/>
@@ -125,7 +125,7 @@ The following illustrates example usage.
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.2</version>
+  <version>0.4.0</version>
   <executions>
     <execution>
       <goals>

@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.4.0-SNAPSHOT</version>
+    <version>0.4.0</version>
   </parent>
   <properties>
     <powermock.version>2.0.2</powermock.version>
@@ -39,7 +39,7 @@
       <plugin>
         <groupId>org.jaxsb</groupId>
         <artifactId>jaxsb-maven-plugin</artifactId>
-        <version>2.2.0-SNAPSHOT</version>
+        <version>2.2.0</version>
         <executions>
           <execution>
             <goals>
@@ -81,17 +81,17 @@
     <dependency>
       <groupId>org.jaxsb</groupId>
       <artifactId>runtime</artifactId>
-      <version>2.2.0-SNAPSHOT</version>
+      <version>2.2.0</version>
     </dependency>
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>jci</artifactId>
-      <version>0.8.6-SNAPSHOT</version>
+      <version>0.8.6</version>
     </dependency>
     <dependency>
       <groupId>org.openjax.xml</groupId>
       <artifactId>api</artifactId>
-      <version>0.9.5-SNAPSHOT</version>
+      <version>0.9.5</version>
     </dependency>
     <dependency>
       <groupId>org.jsonx</groupId>
