@@ -37,8 +37,9 @@ This document specifies the <ins>JsonXml API</ins>, which offers utilities for c
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>6.2 [`paypal.xml`][#paypalxml]<br>
 <samp>&nbsp;&nbsp;</samp>7 [<ins>Related Resources for JsonXml</ins>][#resources]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1 [Schemas for JsonXml][#jsonxml-schemas]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.1 [JsonXml 0.3][#jsonxml-03]<br>
-<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.2 [JsonXml 0.2][#jsonxml-02]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.1 [JsonXml 0.4][#jsonxml-04]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.2 [JsonXml 0.3][#jsonxml-03]<br>
+<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</samp>7.1.3 [JsonXml 0.2][#jsonxml-02]<br>
 <samp>&nbsp;&nbsp;</samp>8 [<ins>Contributing</ins>](#8-contributing)<br>
 <samp>&nbsp;&nbsp;</samp>9 [<ins>Special Thanks</ins>](#9-special-thanks)<br>
 <samp>&nbsp;&nbsp;</samp>10 [<ins>License</ins>](#10-license)
@@ -187,9 +188,9 @@ This section provides a sample JSON and its JSONx alternative.
 
 ```xml
 <o
-  xmlns="http://www.jsonx.org/jsonxml-0.3.xsd"
+  xmlns="http://www.jsonx.org/jsonxml-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/jsonxml-0.3.xsd http://www.jsonx.org/jsonxml.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/jsonxml-0.4.xsd http://www.jsonx.org/jsonxml.xsd">
   <p n="id"> "WH-7YX49823S2290830K-0JE13296W68552352"</p>
   <p n="event_version"> "1.0"</p>
   <p n="create_time"> "2016-05-31T17:53:29Z"</p>
@@ -228,11 +229,15 @@ This section provides a sample JSON and its JSONx alternative.
 
 ### <b>7.1</b> Schemas for JsonXml
 
-#### <b>7.1.1</b> JsonXml Schema 0.3
+#### <b>7.1.1</b> JsonXml Schema 0.4
+
+* A JsonXml schema document XSD [jsonxml-0.4.xsd<sup>❐</sup>][jsonxml-04] for JsonXml documents.
+
+#### <b>7.1.2</b> JsonXml Schema 0.3
 
 * A JsonXml schema document XSD [jsonxml-0.3.xsd<sup>❐</sup>][jsonxml-03] for JsonXml documents.
 
-#### <b>7.1.2</b> JsonXml Schema 0.2
+#### <b>7.1.3</b> JsonXml Schema 0.2
 
 * A JsonXml schema document XSD [jsonxml-0.2.xsd<sup>❐</sup>][jsonxml-02] for JsonXml documents.
 
@@ -271,13 +276,15 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#paypalxml]: #62-paypalxml
 [#resources]: #7-related-resources-for-jsonxml
 [#jsonxml-schemas]: #71-schemas-for-jsonxml
-[#jsonxml-03]: #711-jsonxml-schema-03
-[#jsonxml-02]: #712-jsonxml-schema-02
+[#jsonxml-03]: #711-jsonxml-schema-04
+[#jsonxml-03]: #712-jsonxml-schema-03
+[#jsonxml-02]: #713-jsonxml-schema-02
 
 [api]: ../binding/
 
 [jsonxml-02]: http://www.jsonx.org/jsonxml-0.2.xsd
 [jsonxml-03]: http://www.jsonx.org/jsonxml-0.3.xsd
+[jsonxml-04]: http://www.jsonx.org/jsonxml-0.4.xsd
 [rfc2119]: https://www.ietf.org/rfc/rfc2119.txt
 [rfc4627]: https://www.ietf.org/rfc/rfc4627.txt
 [rfc7159]: https://www.ietf.org/rfc/rfc7159.txt

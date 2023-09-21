@@ -133,8 +133,8 @@ The schema that describes the **Response** contract is:
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "range": "[1,]", "scale": 0, "nullable": false},
@@ -152,9 +152,9 @@ The schema that describes the **Response** contract is:
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" range="[1,]" scale="0" nullable="false"/>
@@ -200,8 +200,8 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema.jsd",
 
   "product": { "jx:type": "object", "abstract": true, "properties": {
     "CatalogueID": { "jx:type": "number", "range": "[1,]", "scale": 0, "nullable": false},
@@ -223,9 +223,9 @@ To satisfy **Consumer2**'s request, the contract is updated to support version *
 
 ```diff
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <object name="product" abstract="true">
     <property name="CatalogueID" xsi:type="number" range="[1,]" scale="0" nullable="false"/>
@@ -289,8 +289,8 @@ Create `schema.jsd` or `schema.jsdx` with the following content:
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema.jsd",
 
   "myNumber": { "jx:type": "number", "range": "[-1,1)" },
   "myString": { "jx:type": "string", "pattern": "[a-z]+" },
@@ -318,9 +318,9 @@ Create `schema.jsd` or `schema.jsdx` with the following content:
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <number name="myNumber" range="[-1,1)"/>
   <string name="myString" pattern="[a-z]+"/>
@@ -414,8 +414,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema.jsd",
 
   "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
   "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
@@ -449,9 +449,9 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <number name="money" range="[0,]" scale="2"/>
   <number name="positiveInteger" range="[1,]" scale="0"/>
@@ -493,7 +493,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.2</version>
+  <version>0.4.0</version>
   <executions>
     <execution>
       <goals>
@@ -776,8 +776,8 @@ The following illustrates example usage.
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema.jsd",
 
   "uuid": { "jx:type": "string", "pattern": "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" },
   "id": { "jx:type": "object", "abstract": true, "properties": {
@@ -796,9 +796,9 @@ The following illustrates example usage.
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <string name="uuid" pattern="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
   <object name="id" abstract="true">
@@ -827,7 +827,7 @@ The following illustrates example usage.
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.2</version>
+  <version>0.4.0</version>
   <executions>
     <execution>
       <goals>
@@ -922,7 +922,7 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.2</version>
+  <version>0.4.0</version>
   <executions>
     <execution>
       <goals>

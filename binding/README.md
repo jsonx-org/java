@@ -109,8 +109,8 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
 ```json
 {
-  "jx:ns": "http://www.jsonx.org/schema-0.3.jsd",
-  "jx:schemaLocation": "http://www.jsonx.org/schema-0.3.jsd http://www.jsonx.org/schema.jsd",
+  "jx:ns": "http://www.jsonx.org/schema-0.4.jsd",
+  "jx:schemaLocation": "http://www.jsonx.org/schema-0.4.jsd http://www.jsonx.org/schema.jsd",
 
   "money": { "jx:type": "number", "range": "[0,]", "scale": 2},
   "positiveInteger": { "jx:type": "number", "range": "[1,]", "scale": 0},
@@ -144,9 +144,9 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 
 ```xml
 <schema
-  xmlns="http://www.jsonx.org/schema-0.3.xsd"
+  xmlns="http://www.jsonx.org/schema-0.4.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.3.xsd http://www.jsonx.org/schema.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd">
 
   <number name="money" range="[0,]" scale="2"/>
   <number name="positiveInteger" range="[1,]" scale="0"/>
@@ -188,7 +188,7 @@ The following illustrates usage of the <ins>binding API</ins> with an example of
 <plugin>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx-maven-plugin</artifactId>
-  <version>0.3.2</version>
+  <version>0.4.0</version>
   <executions>
     <execution>
       <goals>
