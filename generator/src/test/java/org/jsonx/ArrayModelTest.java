@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Number;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Number;
 import org.junit.Test;
 import org.libj.lang.WrappedArrayList;
 

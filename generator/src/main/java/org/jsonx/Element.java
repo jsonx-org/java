@@ -16,7 +16,7 @@
 
 package org.jsonx;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 
 abstract class Element {

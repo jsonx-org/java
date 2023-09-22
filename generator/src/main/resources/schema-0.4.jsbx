@@ -15,12 +15,12 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <binding
-  xmlns="http://www.jsonx.org/binding-0.4.xsd"
+  xmlns="http://www.jsonx.org/binding-0.5.xsd"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd http://www.jsonx.org/binding.xsd">
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd">
 
-  <xi:include href="/Users/seva/Work/org/jsonx/schema/schema-0.4/schema-0.4.jsdx"/>
+  <xi:include href="/Users/seva/Work/org/jsonx/schema/schema-0.5/schema-0.5.jsdx"/>
 
   <any path="schema[3]"><bind lang="java" field="declarations"/></any>
   <any path="object.properties[0]"><bind lang="java" field="declarations"/></any>

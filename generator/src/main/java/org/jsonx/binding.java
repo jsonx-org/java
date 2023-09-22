@@ -3,7 +3,7 @@ package org.jsonx;
 @java.lang.SuppressWarnings("all")
 @javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-12T12:53:53.926")
 public class binding {
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Any extends org.jsonx.binding.FieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="any", nullable=false)
     public java.lang.String get40() {
@@ -47,7 +47,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Array extends org.jsonx.binding.FieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="array", nullable=false)
     public java.lang.String get40() {
@@ -91,9 +91,9 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Binding implements org.jsonx.JxObject {
-    @org.jsonx.StringProperty(name="@ns", pattern="http://www.jsonx.org/binding-0.4.jsd", nullable=false)
+    @org.jsonx.StringProperty(name="@ns", pattern="http://www.jsonx.org/binding-0.5.jsd", nullable=false)
     public java.lang.String get40ns() {
       return _40ns;
     }
@@ -189,7 +189,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Boolean extends org.jsonx.binding.TypeFieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="boolean", nullable=false)
     public java.lang.String get40() {
@@ -234,7 +234,7 @@ public class binding {
   }
 
   /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class FieldBinding implements org.jsonx.JxObject {
     /** Specifies the "field" identifier. **/
     @org.jsonx.StringProperty(name="@field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -280,7 +280,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public abstract static class FieldBindings implements org.jsonx.JxObject {
     @org.jsonx.AnyProperty(name="\\S|\\S.*\\S", types=@org.jsonx.t(objects=org.jsonx.binding.FieldBinding.class), nullable=false)
     public java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> get5cS7c5cS2e2a5cS() {
@@ -324,7 +324,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Number extends org.jsonx.binding.TypeFieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="number", nullable=false)
     public java.lang.String get40() {
@@ -368,7 +368,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Object extends org.jsonx.binding.FieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="object", nullable=false)
     public java.lang.String get40() {
@@ -412,7 +412,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class Reference extends org.jsonx.binding.FieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="reference", nullable=false)
     public java.lang.String get40() {
@@ -456,7 +456,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class String extends org.jsonx.binding.TypeFieldBindings {
     @org.jsonx.StringProperty(name="@", pattern="string", nullable=false)
     public java.lang.String get40() {
@@ -501,7 +501,7 @@ public class binding {
   }
 
   /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class TypeBinding implements org.jsonx.JxObject {
     /** Specifies the "type" qualified identifier. **/
     @org.jsonx.StringProperty(name="@type", pattern="(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\[\\])?", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -588,7 +588,7 @@ public class binding {
   }
 
   /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public static class TypeFieldBinding extends org.jsonx.binding.TypeBinding {
     /** Specifies the "field" identifier. **/
     @org.jsonx.StringProperty(name="@field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -647,7 +647,7 @@ public class binding {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/binding-0.5.jsdx")
   public abstract static class TypeFieldBindings implements org.jsonx.JxObject {
     @org.jsonx.AnyProperty(name="\\S|\\S.*\\S", types=@org.jsonx.t(objects=org.jsonx.binding.TypeFieldBinding.class), nullable=false)
     public java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> get5cS7c5cS2e2a5cS() {

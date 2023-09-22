@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.Binding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.Binding;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.net.URLs;
 import org.libj.util.CollectionUtil;
 import org.libj.util.StringPaths;

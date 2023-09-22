@@ -22,11 +22,11 @@
   <parent>
     <groupId>org.entinae</groupId>
     <artifactId>pom</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
   </parent>
   <groupId>org.jsonx</groupId>
   <artifactId>jsonx</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>https://www.jsonx.org/</url>
   <name>JSONx</name>
@@ -93,12 +93,12 @@
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>logging</artifactId>
-      <version>0.4.6</version>
+      <version>0.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.libj</groupId>
       <artifactId>test</artifactId>
-      <version>0.7.2</version>
+      <version>0.7.3-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -15,16 +15,16 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <binding
-  xmlns="http://www.jsonx.org/binding-0.4.xsd"
+  xmlns="http://www.jsonx.org/binding-0.5.xsd"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.4.xsd http://www.jsonx.org/binding.xsd"
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd"
   targetNamespace="">
 
   <schema
-    xmlns="http://www.jsonx.org/schema-0.4.xsd"
+    xmlns="http://www.jsonx.org/schema-0.5.xsd"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd"
+    xsi:schemaLocation="http://www.jsonx.org/schema-0.5.xsd http://www.jsonx.org/schema.xsd"
     doc="Schema describing an invoice">
     <number name="money" scale="2" range="[0,]" doc="Non-negative number representing money with 2 digits past the decimal for cents"/>
     <number name="positiveInteger" scale="0" range="[1,]" doc="Positive integer"/>

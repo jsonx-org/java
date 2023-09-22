@@ -1,8 +1,8 @@
 {
-  "@ns": "http://www.jsonx.org/binding-0.4.jsd",
-  "@schemaLocation": "http://www.jsonx.org/binding-0.4.jsd http://www.jsonx.org/binding.jsd",
+  "@ns": "http://www.jsonx.org/binding-0.5.jsd",
+  "@schemaLocation": "http://www.jsonx.org/binding-0.5.jsd http://www.jsonx.org/binding.jsd",
   "@schema": {
-    "@ns": "http://www.jsonx.org/schema-0.4.jsd",
+    "@ns": "http://www.jsonx.org/schema-0.5.jsd",
     "primitiveBoolean": {
       "@": "boolean"
     },

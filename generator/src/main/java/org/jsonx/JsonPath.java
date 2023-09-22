@@ -19,7 +19,7 @@ package org.jsonx;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
 import org.libj.lang.Strings;
 import org.libj.util.primitive.ArrayBooleanList;
 import org.libj.util.primitive.ArrayIntList;

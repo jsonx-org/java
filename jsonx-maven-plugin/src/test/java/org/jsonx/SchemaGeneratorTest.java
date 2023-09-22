@@ -46,6 +46,6 @@ public class SchemaGeneratorTest {
 
   @Test
   public void test() throws IOException {
-    test("0.4");
+    test("0.5");
   }
 }

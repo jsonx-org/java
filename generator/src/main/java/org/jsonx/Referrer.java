@@ -25,10 +25,10 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 import org.jaxsb.runtime.Binding;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldBinding;
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;

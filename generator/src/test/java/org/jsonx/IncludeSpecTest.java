@@ -29,6 +29,6 @@ public class IncludeSpecTest extends SpecTest {
 
   @Test
   public void test04() throws IOException, SAXException {
-    test("include", "0.4");
+    test("include", "0.5");
   }
 }

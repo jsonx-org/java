@@ -23,7 +23,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.libj.lang.Identifiers;
 import org.libj.lang.ObjectUtil;
 import org.libj.util.ArrayUtil;

@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Object;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Object;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.Strings;
 

@@ -23,9 +23,9 @@ import java.lang.reflect.WildcardType;
 import java.util.Map;
 import java.util.Optional;
 
-import org.jsonx.www.binding_0_4.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA;
