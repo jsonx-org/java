@@ -24,18 +24,18 @@ import java.util.List;
 import java.util.RandomAccess;
 
 import org.jsonx.schema.TypeBinding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Array;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Boolean;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$BooleanMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$TypeFieldBinding;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$BooleanMember;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeBinding;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
 
 final class BooleanModel extends Model {

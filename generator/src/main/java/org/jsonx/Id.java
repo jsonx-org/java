@@ -21,7 +21,7 @@ import static org.libj.lang.Assertions.*;
 import java.util.Arrays;
 import java.util.zip.CRC32;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Binding;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 

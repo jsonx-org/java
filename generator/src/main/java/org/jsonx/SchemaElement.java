@@ -39,10 +39,10 @@ import javax.annotation.Generated;
 
 import org.jaxsb.runtime.Bindings;
 import org.jaxsb.runtime.QName;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Member;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$ObjectMember.Extends$;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember.Extends$;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.WrappedArrayList;

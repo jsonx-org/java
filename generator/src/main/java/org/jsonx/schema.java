@@ -3,7 +3,7 @@ package org.jsonx;
 @java.lang.SuppressWarnings("all")
 @javax.annotation.Generated(value="org.jsonx.Generator", date="2023-06-17T14:26:40.669")
 public class schema {
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Any extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="any", nullable=false)
     public java.lang.String getJx3aType() {
@@ -66,7 +66,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class AnyElement extends org.jsonx.schema.Any {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -157,7 +157,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class AnyProperty extends org.jsonx.schema.Any {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -248,7 +248,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class Array extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="array", nullable=false)
     public java.lang.String getJx3aType() {
@@ -358,7 +358,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ArrayElement extends org.jsonx.schema.Array {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -456,7 +456,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ArrayProperty extends org.jsonx.schema.Array {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -554,7 +554,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Binding implements org.jsonx.JxObject {
     /** Specifies the language to which this binding applies. **/
     @org.jsonx.StringProperty(name="lang", pattern="\\S|\\S.*\\S", nullable=false)
@@ -600,7 +600,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class Boolean extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="boolean", nullable=false)
     public java.lang.String getJx3aType() {
@@ -663,7 +663,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class BooleanElement extends org.jsonx.schema.Boolean {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -749,7 +749,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class BooleanProperty extends org.jsonx.schema.Boolean {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -822,7 +822,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Documented implements org.jsonx.JxObject {
     /** Defines text comments. Optional. **/
     @org.jsonx.StringProperty(name="doc")
@@ -869,7 +869,7 @@ public class schema {
   }
 
   /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class FieldBinding extends org.jsonx.schema.Binding {
     /** Specifies the "field" identifier. **/
     @org.jsonx.StringProperty(name="field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -917,14 +917,14 @@ public class schema {
   }
 
   /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
   @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.FieldBinding.class, nullable=false)
   @org.jsonx.ArrayType(elementIds={0})
   public static @interface FieldBindings {
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Member extends org.jsonx.schema.Documented {
     /** Defines text comments. Optional. **/
     public Member setDoc(final java.lang.String doc) {
@@ -949,7 +949,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class Number extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="number", nullable=false)
     public java.lang.String getJx3aType() {
@@ -1060,7 +1060,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class NumberElement extends org.jsonx.schema.Number {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -1162,7 +1162,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class NumberProperty extends org.jsonx.schema.Number {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -1251,9 +1251,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Object extends org.jsonx.schema.Member {
-    @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+    @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
     public static class Properties implements org.jsonx.JxObject {
       @org.jsonx.AnyProperty(name=".*", types={@org.jsonx.t(objects=org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects=org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects=org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects=org.jsonx.schema.StringProperty.class)}, nullable=false)
       public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getProperties() {
@@ -1378,7 +1378,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectElement extends org.jsonx.schema.Object {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -1475,7 +1475,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectProperty extends org.jsonx.schema.Object {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -1572,7 +1572,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectType extends org.jsonx.schema.Object {
     /** Specifies whether the object is abstract. Default: false. **/
     @org.jsonx.BooleanProperty(name="abstract", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -1635,7 +1635,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Reference extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="reference", nullable=false)
     public java.lang.String getJx3aType() {
@@ -1700,7 +1700,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ReferenceElement extends org.jsonx.schema.Reference {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -1792,7 +1792,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class ReferenceProperty extends org.jsonx.schema.Reference {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -1884,9 +1884,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class Schema extends org.jsonx.schema.Documented {
-    @org.jsonx.StringProperty(name="jx:ns", pattern="http://www.jsonx.org/schema-0.4.jsd", nullable=false)
+    @org.jsonx.StringProperty(name="jx:ns", pattern="http://www.jsonx.org/schema-0.5.jsd", nullable=false)
     public java.lang.String getJx3aNs() {
       return jx3aNs;
     }
@@ -1898,7 +1898,7 @@ public class schema {
 
     private java.lang.String jx3aNs;
 
-    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="http://www.jsonx.org/schema-0.4.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name="jx:schemaLocation", pattern="http://www.jsonx.org/schema-0.5.jsd [^ ]+", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.String getJx3aSchemaLocation() {
       return jx3aSchemaLocation;
     }
@@ -1983,7 +1983,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class String extends org.jsonx.schema.Member {
     @org.jsonx.StringProperty(name="jx:type", pattern="string", nullable=false)
     public java.lang.String getJx3aType() {
@@ -2064,7 +2064,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class StringElement extends org.jsonx.schema.String {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -2155,7 +2155,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class StringProperty extends org.jsonx.schema.String {
     @org.jsonx.BooleanProperty(name="nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
     public java.lang.Boolean getNullable() {
@@ -2234,7 +2234,7 @@ public class schema {
   }
 
   /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class TypeBinding extends org.jsonx.schema.Binding {
     /** Specifies the "type" qualified identifier. **/
     @org.jsonx.StringProperty(name="type", pattern="(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\[\\])?", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -2322,7 +2322,7 @@ public class schema {
   }
 
   /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
   @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.TypeBinding.class, nullable=false)
   @org.jsonx.ArrayType(elementIds={0})
@@ -2330,7 +2330,7 @@ public class schema {
   }
 
   /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   public static class TypeFieldBinding extends org.jsonx.schema.TypeBinding {
     /** Specifies the "field" identifier. **/
     @org.jsonx.StringProperty(name="field", pattern="[a-zA-Z_$][a-zA-Z\\d_$]*", use=org.jsonx.Use.OPTIONAL, nullable=false)
@@ -2396,7 +2396,7 @@ public class schema {
   }
 
   /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.4.jsdx")
+  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
   @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
   @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.TypeFieldBinding.class, nullable=false)
   @org.jsonx.ArrayType(elementIds={0})

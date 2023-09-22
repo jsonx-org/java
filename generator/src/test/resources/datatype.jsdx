@@ -15,9 +15,9 @@
   program. If not, see <http://opensource.org/licenses/MIT/>.
 -->
 <schema
-  xmlns="http://www.jsonx.org/schema-0.4.xsd"
+  xmlns="http://www.jsonx.org/schema-0.5.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.4.xsd http://www.jsonx.org/schema.xsd"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.5.xsd http://www.jsonx.org/schema.xsd"
   targetNamespace="http://www.jsonx.org/generator/test/datatype.jsdx"
   doc="Schema intended to express full variability of type declarations">
   <array name="arrayArr" doc="Array of arrays">

@@ -25,9 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.libj.util.CollectionUtil;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;

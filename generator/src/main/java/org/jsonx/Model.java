@@ -26,9 +26,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.$MaxOccurs;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
 import org.libj.util.CollectionUtil;
 import org.openjax.xml.api.XmlElement;

@@ -31,7 +31,7 @@ import java.util.Comparator;
 import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.schema_0_4.xL0gluGCXAA.Schema;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -93,7 +93,7 @@ public class SchemaTest {
 
   private static XmlElement toXml(final SchemaElement schema) {
     final XmlElement xml = schema.toXml();
-    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.4.xsd " + schemaXsd);
+    xml.getAttributes().put("xsi:schemaLocation", "http://www.jsonx.org/schema-0.5.xsd " + schemaXsd);
     return xml;
   }
 
