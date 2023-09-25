@@ -58,8 +58,8 @@ abstract class Codec {
       throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
   }
 
-  final Error validateUse(final Object value) {
-    return value == null && !nullable && use == Use.REQUIRED ? Error.PROPERTY_REQUIRED(name, value) : null;
+  final Error validateNull(final boolean explicit) {
+    return explicit ? (nullable ? null : Error.PROPERTY_NOT_NULLABLE(name, null)) : (nullable || use == Use.OPTIONAL ? null : Error.PROPERTY_REQUIRED(name, null));
   }
 
   final Object toNull() {
