@@ -91,7 +91,7 @@ class ObjectCodec extends Codec {
 
         final Object value;
         if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l') {
-          final Error error = codec.validateNull(true);
+          final Error error = codec.validateSetNull();
           if (error != null)
             return abort(error, reader, index);
 
@@ -148,7 +148,7 @@ class ObjectCodec extends Codec {
           continue;
 
         if (getMethod.invoke(object) == null) {
-          final Error error = codec.validateNull(false);
+          final Error error = codec.validateIsNull();
           if (error != null)
             return abort(error, reader, index);
         }
