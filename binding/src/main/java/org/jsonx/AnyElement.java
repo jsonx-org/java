@@ -27,8 +27,11 @@ import java.lang.annotation.Target;
 @Repeatable(AnyElements.class)
 public @interface AnyElement {
   int id();
+
   boolean nullable() default true;
+
   int minOccurs() default 1;
+
   int maxOccurs() default Integer.MAX_VALUE;
 
   t[] types() default {};

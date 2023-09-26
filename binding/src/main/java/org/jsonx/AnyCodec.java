@@ -45,7 +45,8 @@ class AnyCodec extends Codec {
     final int len = types.length;
     if (firstChar == '[') {
       t type = len > 0 ? types[0] : AnyType.arrays;
-      int i = 0; do {
+      int i = 0;
+      do {
         final Class<? extends Annotation> arrays = type.arrays();
         if (AnyType.isEnabled(arrays)) {
           final int index = reader.getIndex();
@@ -68,7 +69,8 @@ class AnyCodec extends Codec {
     }
     else if (firstChar == '{') {
       t type = len > 0 ? types[0] : AnyType.objects;
-      int i = 0; do {
+      int i = 0;
+      do {
         final Class<? extends JxObject> objects = type.objects();
         if (AnyType.isEnabled(objects)) {
           final Object value = ObjectCodec.decodeArray(objects, token, reader, validate, onPropertyDecode);
@@ -88,7 +90,8 @@ class AnyCodec extends Codec {
     }
     else {
       t type = len > 0 ? types[0] : AnyType.fromToken(token);
-      int i = 0; do {
+      int i = 0;
+      do {
         final BooleanType booleans;
         final NumberType numbers;
         final StringType strings;
@@ -124,7 +127,8 @@ class AnyCodec extends Codec {
     Error error = Error.NULL;
     final int len = types.length;
     t type = len > 0 ? types[0] : AnyType.fromObject(object);
-    int i = 0; do {
+    int i = 0;
+    do {
       final StringType strings;
       final NumberType numbers;
       final BooleanType booleans;
@@ -177,7 +181,8 @@ class AnyCodec extends Codec {
     StringBuilder builder = null;
     final int len = types.length;
     t type = len > 0 ? types[0] : AnyType.fromObject(object);
-    int i = 0; do {
+    int i = 0;
+    do {
       final StringType strings;
       final NumberType numbers;
       final BooleanType booleans;

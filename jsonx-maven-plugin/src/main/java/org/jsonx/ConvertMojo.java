@@ -31,8 +31,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.libj.net.URLs;
 import org.xml.sax.SAXException;
 
-@Mojo(name="convert", defaultPhase=LifecyclePhase.GENERATE_RESOURCES)
-@Execute(goal="convert")
+@Mojo(name = "convert", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
+@Execute(goal = "convert")
 public class ConvertMojo extends JxMojo {
   @Override
   public void execute(final Configuration configuration) throws MojoExecutionException, MojoFailureException {

@@ -56,13 +56,14 @@ import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 abstract class Member extends Element {
   private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
-  static <T extends $Binding>T getBinding(final List<T> bindings) {
+  static <T extends $Binding> T getBinding(final List<T> bindings) {
     final int i$;
     if (bindings == null || (i$ = bindings.size()) == 0)
       return null;
 
     if (bindings instanceof RandomAccess) {
-      int i = 0; do { // [RA]
+      int i = 0;
+      do { // [RA]
         final T binding = bindings.get(i);
         if ("java".equals(binding.getLang$().text()))
           return binding;
@@ -70,7 +71,8 @@ abstract class Member extends Element {
       while (++i < i$);
     }
     else {
-      final Iterator<T> i = bindings.iterator(); do { // [I]
+      final Iterator<T> i = bindings.iterator();
+      do { // [I]
         final T binding = i.next();
         if ("java".equals(binding.getLang$().text()))
           return binding;
@@ -230,7 +232,7 @@ abstract class Member extends Element {
         if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
 
-        if (logger.isWarnEnabled()) logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
+        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage()); }
       }
     }
 
@@ -244,7 +246,7 @@ abstract class Member extends Element {
         if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
 
-        if (logger.isWarnEnabled()) logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
+        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage()); }
       }
     }
 
@@ -445,8 +447,8 @@ abstract class Member extends Element {
   }
 
   /**
-   * Intended to be overridden by each concrete subclass, this method collects all {@link Registry.Type} declarations of elements
-   * that are members of this {@link Member}.
+   * Intended to be overridden by each concrete subclass, this method collects all {@link Registry.Type} declarations of elements that
+   * are members of this {@link Member}.
    *
    * @param types The {@link Set} into which the {@link Registry.Type} declarations must be added.
    */

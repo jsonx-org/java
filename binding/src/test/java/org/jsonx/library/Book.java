@@ -28,7 +28,7 @@ import org.jsonx.StringProperty;
 public class Book extends Publication {
   private String isbn;
 
-  @StringProperty(name="isbn", pattern="\\d{3}-\\d-\\d{2}-\\d{6}-\\d")
+  @StringProperty(name = "isbn", pattern = "\\d{3}-\\d-\\d{2}-\\d{6}-\\d")
   public String getIsbn() {
     return this.isbn;
   }
@@ -43,10 +43,10 @@ public class Book extends Publication {
    * [[1, "Part 1, Chapter 1"], [2, "Part 1, Chapter 2"], [3, "Part 1, Chapter 3"], [1, "Part 2, Chapter 1"], [2, "Part 2, Chapter
    * 2"], [3, "Part 2, Chapter 3"]...]
    */
-  @StringElement(id=3, pattern="\\S|\\S.*\\S", nullable=false, maxOccurs=1)
-  @NumberElement(id=2, range="[1,]", nullable=false, maxOccurs=1)
-  @ArrayElement(id=1, nullable=false, elementIds={2, 3})
-  @ArrayProperty(name="index", elementIds={1})
+  @StringElement(id = 3, pattern = "\\S|\\S.*\\S", nullable = false, maxOccurs = 1)
+  @NumberElement(id = 2, range = "[1,]", nullable = false, maxOccurs = 1)
+  @ArrayElement(id = 1, nullable = false, elementIds = {2, 3})
+  @ArrayProperty(name = "index", elementIds = {1})
   public List<Object> getIndex() {
     return this.index;
   }

@@ -32,11 +32,11 @@ import org.openjax.maven.mojo.FilterParameter;
 import org.openjax.maven.mojo.FilterType;
 import org.openjax.maven.mojo.PatternSetMojo;
 
-@Mojo(name="validate", defaultPhase=LifecyclePhase.COMPILE)
-@Execute(goal="validate")
+@Mojo(name = "validate", defaultPhase = LifecyclePhase.COMPILE)
+@Execute(goal = "validate")
 public class ValidateMojo extends PatternSetMojo {
   @FilterParameter(FilterType.URL)
-  @Parameter(property="schemas", required=true)
+  @Parameter(property = "schemas", required = true)
   private List<String> schemas;
 
   @Override

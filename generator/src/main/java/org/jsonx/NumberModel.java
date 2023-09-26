@@ -73,12 +73,14 @@ final class NumberModel extends Model {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           xsb.addBinding(typeBinding(bindings.get(i)));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.TypeBinding> i = bindings.iterator();
+        do // [I]
           xsb.addBinding(typeBinding(i.next()));
         while (i.hasNext());
       }
@@ -110,12 +112,14 @@ final class NumberModel extends Model {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.TypeBinding> i = bindings.iterator();
+        do // [I]
           addBinding(xsb, (schema.TypeFieldBinding)i.next());
         while (i.hasNext());
       }
@@ -166,12 +170,14 @@ final class NumberModel extends Model {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           xsb.addBinding(typeBinding(bindings.get(i)));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.TypeBinding> i = bindings.iterator();
+        do // [I]
           xsb.addBinding(typeBinding(i.next()));
         while (i.hasNext());
       }

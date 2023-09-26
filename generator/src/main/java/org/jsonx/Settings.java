@@ -56,14 +56,14 @@ public class Settings implements Serializable {
     private Class<?> integerPrimitive = long.class;
 
     /**
-     * Sets the name of the primitive {@link Class} to be used as default type binding for \"number\" types with scale=0 &&
-     * Use=REQUIRED && nullable=false, and returns {@code this} builder.
+     * Sets the name of the primitive {@link Class} to be used as default type binding for \"number\" types with scale=0 && Use=REQUIRED
+     * && nullable=false, and returns {@code this} builder.
      *
      * @param integerPrimitive The primitive {@link Class} to be used as default type binding for \"number\" types with scale=0 &&
      *          Use=REQUIRED && nullable=false.
      * @return {@code this} builder.
-     * @throws IllegalArgumentException If the provided {@code integerPrimitive} class name does not resolve to a {@link Class}, or
-     *           if the resolved {@link Class} is not primitive.
+     * @throws IllegalArgumentException If the provided {@code integerPrimitive} class name does not resolve to a {@link Class}, or if
+     *           the resolved {@link Class} is not primitive.
      */
     public Builder withIntegerPrimitive(final String integerPrimitive) {
       if (integerPrimitive == null) {
@@ -87,8 +87,8 @@ public class Settings implements Serializable {
      * @param integerObject The non-primitive {@link Class} to be used as default type binding for \"number\" types with scale=0 &&
      *          (Use=OPTIONAL || nullable=true).
      * @return {@code this} builder.
-     * @throws IllegalArgumentException If the provided {@code integerObject} class name does not resolve to a {@link Class}, or if
-     *           the resolved {@link Class} is primitive.
+     * @throws IllegalArgumentException If the provided {@code integerObject} class name does not resolve to a {@link Class}, or if the
+     *           resolved {@link Class} is primitive.
      */
     public Builder withIntegerObject(final String integerObject) {
       try {
@@ -107,14 +107,14 @@ public class Settings implements Serializable {
     private Class<?> realPrimitive = double.class;
 
     /**
-     * Sets the name of the primitive {@link Class} to be used as default type binding for \"number\" types with scale>0 &&
-     * Use=REQUIRED && nullable=false, and returns {@code this} builder.
+     * Sets the name of the primitive {@link Class} to be used as default type binding for \"number\" types with scale>0 && Use=REQUIRED
+     * && nullable=false, and returns {@code this} builder.
      *
      * @param realPrimitive The primitive {@link Class} to be used as default type binding for \"number\" types with scale>0 &&
      *          Use=REQUIRED && nullable=false.
      * @return {@code this} builder.
-     * @throws IllegalArgumentException If the provided {@code realPrimitive} class name does not resolve to a {@link Class}, or if
-     *           the resolved {@link Class} is not primitive.
+     * @throws IllegalArgumentException If the provided {@code realPrimitive} class name does not resolve to a {@link Class}, or if the
+     *           resolved {@link Class} is not primitive.
      */
     public Builder withRealPrimitive(final String realPrimitive) {
       if (realPrimitive == null) {

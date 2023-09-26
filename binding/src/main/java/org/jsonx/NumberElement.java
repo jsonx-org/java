@@ -27,13 +27,20 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberElement {
   int id();
+
   boolean nullable() default true;
+
   int scale() default Integer.MAX_VALUE;
+
   String range() default "";
+
   int minOccurs() default 1;
+
   int maxOccurs() default Integer.MAX_VALUE;
 
   Class<?> type() default Number.class;
+
   String decode() default "";
+
   String encode() default "";
 }

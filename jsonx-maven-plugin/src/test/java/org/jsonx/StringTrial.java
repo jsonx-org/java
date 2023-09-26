@@ -86,7 +86,7 @@ final class StringTrial extends PropertyTrial<String> {
   }
 
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final StringProperty property) {
-    if (logger.isDebugEnabled()) logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
+    if (logger.isDebugEnabled()) { logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()"); }
     trials.add(new StringTrial(ValidCase.CASE, getMethod, setMethod, object, createValid(JsdUtil.getRealType(getMethod), property.decode(), property.pattern()), property));
     if (property.pattern().length() > 0)
       trials.add(new StringTrial(PatternCase.CASE, getMethod, setMethod, object, createInvalid(JsdUtil.getRealType(getMethod), property.decode(), property.pattern()), property));

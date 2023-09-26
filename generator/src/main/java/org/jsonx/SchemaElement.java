@@ -60,7 +60,7 @@ import org.xml.sax.SAXException;
  * The root {@link Element} of a JSON Schema Document.
  */
 public final class SchemaElement extends Element implements Declarer {
-  private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
+  private static final String GENERATED = "(value = \"" + Generator.class.getName() + "\", date = \"" + LocalDateTime.now().toString() + "\")";
 
   private static Schema jsdToXsb(final schema.Schema jsd) {
     final Schema xsb = new Schema();
@@ -136,8 +136,8 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a {@link SchemaElement} from the contents of the specified {@code file}. The supported content formats are JSDx and
-   * JSD. If the supplied file is not in one of the supported formats, an {@link IllegalArgumentException} is thrown.
+   * Creates a {@link SchemaElement} from the contents of the specified {@code file}. The supported content formats are JSDx and JSD.
+   * If the supplied file is not in one of the supported formats, an {@link IllegalArgumentException} is thrown.
    *
    * @param url The file from which to read the contents.
    * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
@@ -306,8 +306,8 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader, filtered with the given
-   * class predicate.
+   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader, filtered with the given class
+   * predicate.
    *
    * @param pkg The package to be scanned for JSD bindings.
    * @param classLoader The {@link ClassLoader} containing the defined package.
@@ -441,7 +441,8 @@ public final class SchemaElement extends Element implements Declarer {
     final int i$ = members.size();
     if (i$ > 0) {
       elements = new ArrayList<>();
-      int i = 0; do // [RA]
+      int i = 0;
+      do // [RA]
         elements.add(members.get(i).toXml(this, packageName));
       while (++i < i$);
     }
@@ -548,7 +549,7 @@ public final class SchemaElement extends Element implements Declarer {
           b.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
 
         if (classSpec.referrer != null)
-          b.append("\n@").append(JxBinding.class.getName()).append("(targetNamespace=\"").append(registry.targetNamespace).append("\")");
+          b.append("\n@").append(JxBinding.class.getName()).append("(targetNamespace = \"").append(registry.targetNamespace).append("\")");
 
         b.append("\n@").append(Generated.class.getName()).append(GENERATED);
         b.append("\npublic ").append(classSpec);

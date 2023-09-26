@@ -25,7 +25,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AnyProperty {
   String name();
+
   boolean nullable() default true;
+
   Use use() default Use.REQUIRED;
 
   t[] types() default {};

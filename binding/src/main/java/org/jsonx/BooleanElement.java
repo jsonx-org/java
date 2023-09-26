@@ -27,11 +27,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BooleanElement {
   int id();
+
   boolean nullable() default true;
+
   int minOccurs() default 1;
+
   int maxOccurs() default Integer.MAX_VALUE;
 
   Class<?> type() default Boolean.class;
+
   String decode() default "";
+
   String encode() default "";
 }

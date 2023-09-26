@@ -71,12 +71,14 @@ final class AnyModel extends Referrer<AnyModel> {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           addBinding(xsb, bindings.get(i));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.FieldBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.FieldBinding> i = bindings.iterator();
+        do // [I]
           addBinding(xsb, i.next());
         while (i.hasNext());
       }
@@ -226,12 +228,14 @@ final class AnyModel extends Referrer<AnyModel> {
 
     final ArrayList<Member> types = new ArrayList<>(i$);
     if (idrefs instanceof RandomAccess) {
-      int i = 0; do // [RA]
+      int i = 0;
+      do // [RA]
         addReference(types, idrefs.get(i), nullable, use);
       while (++i < i$);
     }
     else {
-      final Iterator<String> i = idrefs.iterator(); do // [I]
+      final Iterator<String> i = idrefs.iterator();
+      do // [I]
         addReference(types, i.next(), nullable, use);
       while (i.hasNext());
     }
@@ -467,10 +471,10 @@ final class AnyModel extends Referrer<AnyModel> {
     for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
       final Member type = types.get(i);
       if (type instanceof ArrayModel) {
-        values.add("@" + t.class.getName() + "(arrays=" + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
+        values.add("@" + t.class.getName() + "(arrays = " + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
       }
       else if (type instanceof ObjectModel) {
-        values.add("@" + t.class.getName() + "(objects=" + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
+        values.add("@" + t.class.getName() + "(objects = " + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
       }
       else if (type instanceof BooleanModel || type instanceof NumberModel || type instanceof StringModel) {
         final Model model = (Model)type;
@@ -490,7 +494,7 @@ final class AnyModel extends Referrer<AnyModel> {
               b.append(", ");
 
             final Map.Entry<String,Object> entry = iterator.next();
-            b.append(entry.getKey()).append('=').append(entry.getValue());
+            b.append(entry.getKey()).append(" = ").append(entry.getValue());
           }
 
           b.append(')');

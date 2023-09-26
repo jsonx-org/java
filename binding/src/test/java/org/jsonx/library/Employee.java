@@ -21,7 +21,7 @@ import org.jsonx.ObjectProperty;
 public class Employee extends Individual {
   private Individual emergencyContact;
 
-  @ObjectProperty(name="emergencyContact")
+  @ObjectProperty(name = "emergencyContact")
   public Individual getEmergencyContact() {
     return this.emergencyContact;
   }

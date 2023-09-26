@@ -25,6 +25,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BooleanType {
   Class<?> type() default Boolean.class;
+
   String decode() default "";
+
   String encode() default "";
 }

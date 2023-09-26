@@ -39,8 +39,7 @@ public final class JxDecoder {
     private boolean validate;
 
     /**
-     * Sets the "validation" option for the {@link JxDecoder}, specifying whether validation is to occur while decoding JSON
-     * documents.
+     * Sets the "validation" option for the {@link JxDecoder}, specifying whether validation is to occur while decoding JSON documents.
      *
      * @param validation The "validation" option for the {@link JxDecoder}, specifying whether validation is to occur while decoding
      *          JSON documents.
@@ -54,8 +53,8 @@ public final class JxDecoder {
     private Function<DecodeException,String> messageFunction;
 
     /**
-     * Sets a {@link Function Function&lt;DecodeException,String&gt;} that is to be used by the {@link DecodeException} class for
-     * the construction of each new instance's detail {@linkplain DecodeException#getMessage() message}.
+     * Sets a {@link Function Function&lt;DecodeException,String&gt;} that is to be used by the {@link DecodeException} class for the
+     * construction of each new instance's detail {@linkplain DecodeException#getMessage() message}.
      *
      * @param messageFunction The {@link Function Function&lt;DecodeException,String&gt;} that is to be used by the
      *          {@link DecodeException} class for the construction of each new instance's detail
@@ -143,8 +142,8 @@ public final class JxDecoder {
   /**
    * Parses a JSON object from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
    * {@link JxObject} class defining the schema of the document. This method attempts to parse the supplied JSON document as per the
-   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException}
-   * if the provided {@link JxObject} class could parse the supplied document.
+   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException} if
+   * the provided {@link JxObject} class could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param reader The {@link JsonReader} containing the JSON object.
@@ -162,7 +161,7 @@ public final class JxDecoder {
    * @throws NullPointerException If {@code reader} or {@code type} is null.
    */
   @SuppressWarnings("unchecked")
-  public final <T extends JxObject>T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> type) throws DecodeException, IOException, JsonParseException {
+  public final <T extends JxObject> T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> type) throws DecodeException, IOException, JsonParseException {
     final Object result = parseObject(reader, onPropertyDecode, type, null);
     if (result instanceof DecodeException)
       throw (DecodeException)result;
@@ -173,8 +172,8 @@ public final class JxDecoder {
   /**
    * Parses a JSON object from the provided string supplying the JSON document as per the specification of the provided
    * {@link JxObject} class defining the schema of the document. This method attempts to parse the supplied JSON document as per the
-   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException}
-   * if the provided {@link JxObject} class could parse the supplied document.
+   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException} if
+   * the provided {@link JxObject} class could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param json The string document containing a JSON object.
@@ -191,7 +190,7 @@ public final class JxDecoder {
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If {@code json} or {@code type} is null.
    */
-  public final <T extends JxObject>T parseObject(final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> type) throws DecodeException, IOException, JsonParseException {
+  public final <T extends JxObject> T parseObject(final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> type) throws DecodeException, IOException, JsonParseException {
     try (final JsonReader in = new JsonReader(json)) {
       return parseObject(in, onPropertyDecode, type);
     }
@@ -200,8 +199,8 @@ public final class JxDecoder {
   /**
    * Parses a JSON object from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
    * {@link JxObject} class defining the schema of the document. This method attempts to parse the supplied JSON document as per the
-   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException}
-   * if the provided {@link JxObject} class could parse the supplied document.
+   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException} if
+   * the provided {@link JxObject} class could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param reader The {@link JsonReader} containing the JSON object.
@@ -211,15 +210,15 @@ public final class JxDecoder {
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If {@code reader} or {@code type} is null.
    */
-  public final <T extends JxObject>T parseObject(final JsonReader reader, final Class<? extends T> type) throws DecodeException, IOException {
+  public final <T extends JxObject> T parseObject(final JsonReader reader, final Class<? extends T> type) throws DecodeException, IOException {
     return parseObject(reader, null, type);
   }
 
   /**
    * Parses a JSON object from the provided string supplying the JSON document as per the specification of the provided
    * {@link JxObject} class defining the schema of the document. This method attempts to parse the supplied JSON document as per the
-   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException}
-   * if the provided {@link JxObject} class could parse the supplied document.
+   * specification of the provided {@link JxObject} class, and returns the parsed JSON object, or throws a {@link DecodeException} if
+   * the provided {@link JxObject} class could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param json The string document containing a JSON object.
@@ -229,7 +228,7 @@ public final class JxDecoder {
    * @throws IOException If an I/O error has occurred.
    * @throws NullPointerException If {@code json} or {@code type} is null.
    */
-  public final <T extends JxObject>T parseObject(final String json, final Class<? extends T> type) throws DecodeException, IOException {
+  public final <T extends JxObject> T parseObject(final String json, final Class<? extends T> type) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(json)) {
       return parseObject(in, type);
     }
@@ -237,9 +236,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON object from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param reader The {@link JsonReader} containing the JSON object.
@@ -259,7 +258,7 @@ public final class JxDecoder {
    */
   @SafeVarargs
   @SuppressWarnings({"null", "unchecked"})
-  public final <T extends JxObject>T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> ... types) throws DecodeException, IOException, JsonParseException {
+  public final <T extends JxObject> T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> ... types) throws DecodeException, IOException, JsonParseException {
     DecodeException exception = null;
     for (final Class<? extends T> type : assertNotEmpty(types)) { // [A]
       final Object result = parseObject(reader, onPropertyDecode, type, exception);
@@ -274,9 +273,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON object from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param reader The {@link JsonReader} containing the JSON object.
@@ -295,7 +294,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
   @SuppressWarnings({"null", "unchecked"})
-  public final <T extends JxObject>T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Collection<Class<? extends T>> types) throws DecodeException, IOException, JsonParseException {
+  public final <T extends JxObject> T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Collection<Class<? extends T>> types) throws DecodeException, IOException, JsonParseException {
     DecodeException exception = null;
     for (final Class<? extends T> type : assertNotEmpty(types)) { // [C]
       final Object result = parseObject(reader, onPropertyDecode, type, exception);
@@ -310,9 +309,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON object from the provided string supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param json The string document containing a JSON object.
@@ -331,7 +330,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
   @SafeVarargs
-  public final <T extends JxObject>T parseObject(final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> ... types) throws DecodeException, IOException, JsonParseException {
+  public final <T extends JxObject> T parseObject(final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> ... types) throws DecodeException, IOException, JsonParseException {
     try (final JsonReader in = new JsonReader(json)) {
       return parseObject(in, onPropertyDecode, types);
     }
@@ -339,9 +338,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON object from the provided string supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param json The string document containing a JSON object.
@@ -359,7 +358,7 @@ public final class JxDecoder {
    * @throws NullPointerException If {@code json} is null.
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
-  public final <T extends JxObject>T parseObject(final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Collection<Class<? extends T>> types) throws DecodeException, IOException, JsonParseException {
+  public final <T extends JxObject> T parseObject(final String json, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Collection<Class<? extends T>> types) throws DecodeException, IOException, JsonParseException {
     try (final JsonReader in = new JsonReader(json)) {
       return parseObject(in, onPropertyDecode, types);
     }
@@ -367,9 +366,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON object from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param reader The {@link JsonReader} containing the JSON object.
@@ -381,15 +380,15 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
   @SafeVarargs
-  public final <T extends JxObject>T parseObject(final JsonReader reader, final Class<? extends T> ... types) throws DecodeException, IOException {
+  public final <T extends JxObject> T parseObject(final JsonReader reader, final Class<? extends T> ... types) throws DecodeException, IOException {
     return parseObject(reader, null, types);
   }
 
   /**
    * Parses a JSON object from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param reader The {@link JsonReader} containing the JSON object.
@@ -400,15 +399,15 @@ public final class JxDecoder {
    * @throws NullPointerException If {@code reader} is null.
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
-  public final <T extends JxObject>T parseObject(final JsonReader reader, final Collection<Class<? extends T>> types) throws DecodeException, IOException {
+  public final <T extends JxObject> T parseObject(final JsonReader reader, final Collection<Class<? extends T>> types) throws DecodeException, IOException {
     return parseObject(reader, null, types);
   }
 
   /**
    * Parses a JSON object from the provided string supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param json The string document containing a JSON object.
@@ -420,7 +419,7 @@ public final class JxDecoder {
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
   @SafeVarargs
-  public final <T extends JxObject>T parseObject(final String json, final Class<? extends T> ... types) throws DecodeException, IOException {
+  public final <T extends JxObject> T parseObject(final String json, final Class<? extends T> ... types) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(json)) {
       return parseObject(in, types);
     }
@@ -428,9 +427,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON object from the provided string supplying the JSON document as per the specification of the provided
-   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per
-   * the specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or
-   * throws a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
+   * {@link JxObject} classes defining the schema of the document. This method attempts to parse the supplied JSON document as per the
+   * specification of the provided {@link JxObject} classes in order, and returns the first successfully parsed JSON object, or throws
+   * a {@link DecodeException} if none of the provided {@link JxObject} classes could parse the supplied document.
    *
    * @param <T> The type parameter for the return object of {@link JxObject} class.
    * @param json The string document containing a JSON object.
@@ -441,7 +440,7 @@ public final class JxDecoder {
    * @throws NullPointerException If {@code json} is null.
    * @throws IllegalArgumentException If {@code types} is null or empty.
    */
-  public final <T extends JxObject>T parseObject(final String json, final Collection<Class<? extends T>> types) throws DecodeException, IOException {
+  public final <T extends JxObject> T parseObject(final String json, final Collection<Class<? extends T>> types) throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(json)) {
       return parseObject(in, types);
     }
@@ -467,10 +466,9 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON array from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * annotation class that declares an {@link ArrayType} annotation defining the schema of the document. This
-   * method attempts to parse the supplied JSON document as per the specification of the provided annotation class, and
-   * returns the parsed JSON array, or throws a {@link DecodeException} if the provided annotation
-   * class could parse the supplied document.
+   * annotation class that declares an {@link ArrayType} annotation defining the schema of the document. This method attempts to parse
+   * the supplied JSON document as per the specification of the provided annotation class, and returns the parsed JSON array, or
+   * throws a {@link DecodeException} if the provided annotation class could parse the supplied document.
    *
    * @param reader The {@link JsonReader} containing the JSON array.
    * @param annotationType The annotation class declaring an {@link ArrayType} annotation defining the schema for the return
@@ -492,8 +490,8 @@ public final class JxDecoder {
   /**
    * Parses a JSON array from the provided string supplying the JSON document as per the specification of the provided annotation
    * class that declares an {@link ArrayType} annotation defining the schema of the document. This method attempts to parse the
-   * supplied JSON document as per the specification of the provided annotation class, and returns the parsed JSON array, or throws
-   * a {@link DecodeException} if the provided annotation class could parse the supplied document.
+   * supplied JSON document as per the specification of the provided annotation class, and returns the parsed JSON array, or throws a
+   * {@link DecodeException} if the provided annotation class could parse the supplied document.
    *
    * @param json The string document containing a JSON array.
    * @param annotationType The annotation class declaring an {@link ArrayType} annotation defining the schema for the return
@@ -512,10 +510,10 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON array from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * annotation classes that declare an {@link ArrayType} annotation defining the schema of the document. This
-   * method attempts to parse the supplied JSON document as per the specification of the provided annotation classes in order, and
-   * returns the first successfully parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation
-   * classes could parse the supplied document.
+   * annotation classes that declare an {@link ArrayType} annotation defining the schema of the document. This method attempts to
+   * parse the supplied JSON document as per the specification of the provided annotation classes in order, and returns the first
+   * successfully parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation classes could parse the
+   * supplied document.
    *
    * @param reader The {@link JsonReader} containing the JSON array.
    * @param annotationTypes The annotation classes declaring an {@link ArrayType} annotation defining the schema for the return
@@ -544,10 +542,10 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON array from the provided {@link JsonReader} supplying the JSON document as per the specification of the provided
-   * annotation classes that declare an {@link ArrayType} annotation defining the schema of the document. This
-   * method attempts to parse the supplied JSON document as per the specification of the provided annotation classes in order, and
-   * returns the first successfully parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation
-   * classes could parse the supplied document.
+   * annotation classes that declare an {@link ArrayType} annotation defining the schema of the document. This method attempts to
+   * parse the supplied JSON document as per the specification of the provided annotation classes in order, and returns the first
+   * successfully parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation classes could parse the
+   * supplied document.
    *
    * @param reader The {@link JsonReader} containing the JSON array.
    * @param annotationTypes The annotation classes declaring an {@link ArrayType} annotation defining the schema for the return
@@ -575,10 +573,10 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON array from the provided string supplying the JSON document as per the specification of the provided annotation
-   * classes that declare an {@link ArrayType} annotation defining the schema of the document. This method attempts
-   * to parse the supplied JSON document as per the specification of the provided annotation classes in order, and returns the first
-   * successfully parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation classes could parse the
-   * supplied document.
+   * classes that declare an {@link ArrayType} annotation defining the schema of the document. This method attempts to parse the
+   * supplied JSON document as per the specification of the provided annotation classes in order, and returns the first successfully
+   * parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation classes could parse the supplied
+   * document.
    *
    * @param json The string document containing a JSON array.
    * @param annotationTypes The annotation classes declaring an {@link ArrayType} annotation defining the schema for the return
@@ -599,10 +597,10 @@ public final class JxDecoder {
 
   /**
    * Parses a JSON array from the provided string supplying the JSON document as per the specification of the provided annotation
-   * classes that declare an {@link ArrayType} annotation defining the schema of the document. This method attempts
-   * to parse the supplied JSON document as per the specification of the provided annotation classes in order, and returns the first
-   * successfully parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation classes could parse the
-   * supplied document.
+   * classes that declare an {@link ArrayType} annotation defining the schema of the document. This method attempts to parse the
+   * supplied JSON document as per the specification of the provided annotation classes in order, and returns the first successfully
+   * parsed JSON array, or throws a {@link DecodeException} if none of the provided annotation classes could parse the supplied
+   * document.
    *
    * @param json The string document containing a JSON array.
    * @param annotationTypes The annotation classes declaring an {@link ArrayType} annotation defining the schema for the return

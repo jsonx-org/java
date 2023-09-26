@@ -22,11 +22,12 @@ import org.jsonx.JxEncoder;
 import org.jsonx.JxObject;
 import org.jsonx.NumberProperty;
 import org.jsonx.StringProperty;
+import org.jsonx.Use;
 
 public class Address implements JxObject {
   private BigInteger number;
 
-  @NumberProperty(name="number", scale=0, range="[0,]")
+  @NumberProperty(name = "number", scale = 0, range = "[0,]")
   public BigInteger getNumber() {
     return this.number;
   }
@@ -37,7 +38,7 @@ public class Address implements JxObject {
 
   private String street;
 
-  @StringProperty(name="street", pattern="\\S|\\S.*\\S")
+  @StringProperty(name = "street", pattern = "\\S|\\S.*\\S", nullable = false)
   public String getStreet() {
     return this.street;
   }
@@ -48,7 +49,7 @@ public class Address implements JxObject {
 
   private String city;
 
-  @StringProperty(name="city", pattern="(\\S)|(\\S.*\\S)")
+  @StringProperty(name = "city", pattern = "(\\S)|(\\S.*\\S)", nullable = false)
   public String getCity() {
     return this.city;
   }
@@ -59,7 +60,7 @@ public class Address implements JxObject {
 
   private String postalCode;
 
-  @StringProperty(name="postalCode", pattern="(\\S)|(\\S.*\\S)")
+  @StringProperty(name = "postalCode", pattern = "(\\S)|(\\S.*\\S)")
   public String getPostalCode() {
     return this.postalCode;
   }
@@ -70,7 +71,7 @@ public class Address implements JxObject {
 
   private String locality;
 
-  @StringProperty(name="locality", pattern="(\\S)|(\\S.*\\S)")
+  @StringProperty(name = "locality", pattern = "(\\S)|(\\S.*\\S)")
   public String getLocality() {
     return this.locality;
   }
@@ -81,7 +82,7 @@ public class Address implements JxObject {
 
   private String country;
 
-  @StringProperty(name="country", pattern="(\\S)|(\\S.*\\S)")
+  @StringProperty(name = "country", pattern = "(\\S)|(\\S.*\\S)", nullable = false, use = Use.OPTIONAL)
   public String getCountry() {
     return this.country;
   }

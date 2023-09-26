@@ -37,7 +37,7 @@ public class JxObjectProviderTest {
   public static class Message implements JxObject {
     private String content;
 
-    @StringProperty(name="content")
+    @StringProperty(name = "content")
     public String getContent() {
       return this.content;
     }
@@ -47,8 +47,8 @@ public class JxObjectProviderTest {
     }
   }
 
-  @ObjectElement(id=0, type=Message.class)
-  @ArrayType(elementIds={0})
+  @ObjectElement(id = 0, type = Message.class)
+  @ArrayType(elementIds = {0})
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Messages {
   }

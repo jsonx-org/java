@@ -28,12 +28,17 @@ import java.lang.annotation.Target;
 @Repeatable(ArrayElements.class)
 public @interface ArrayElement {
   int id();
+
   boolean nullable() default true;
+
   int minOccurs() default 1;
+
   int maxOccurs() default Integer.MAX_VALUE;
 
   int minIterate() default 1;
+
   int maxIterate() default 1;
+
   int[] elementIds() default {};
 
   Class<? extends Annotation> type() default ArrayType.class;

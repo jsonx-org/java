@@ -69,7 +69,7 @@ final class AnyTrial extends PropertyTrial<Object> {
   }
 
   static void add(final List<? super PropertyTrial<?>> trials, final Method getMethod, final Method setMethod, final Object object, final AnyProperty property) {
-    if (logger.isDebugEnabled()) logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()");
+    if (logger.isDebugEnabled()) { logger.debug("Adding: " + getMethod.getDeclaringClass() + "." + getMethod.getName() + "()"); }
     final PentaConsumer<Object,Class<?>,String,String,Annotation> typeDecode = new PentaConsumer<Object,Class<?>,String,String,Annotation>() {
       @Override
       public void accept(final Object value, final Class<?> type, final String decode, final String encode, final Annotation typeAnnotation) {

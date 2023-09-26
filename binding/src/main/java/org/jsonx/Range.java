@@ -54,7 +54,7 @@ public class Range implements Serializable {
     return range;
   }
 
-  private static <N extends Number>N parseNumber(final StringBuilder b, final String string, final int start, final boolean commaOk, final Class<N> type) throws ParseException {
+  private static <N extends Number> N parseNumber(final StringBuilder b, final String string, final int start, final boolean commaOk, final Class<N> type) throws ParseException {
     try {
       for (int i = start, end = string.length() - 1; i < end; ++i) { // [N]
         final char ch = string.charAt(i);
@@ -106,7 +106,7 @@ public class Range implements Serializable {
   private final int hashCode;
   private final String toString;
 
-  <N extends Number>Range(final N min, final boolean minInclusive, final N max, final boolean maxInclusive) {
+  <N extends Number> Range(final N min, final boolean minInclusive, final N max, final boolean maxInclusive) {
     this.min = min;
     this.minStr = toString(min);
     this.minInclusive = minInclusive;

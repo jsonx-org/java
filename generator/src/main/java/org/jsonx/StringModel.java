@@ -70,12 +70,14 @@ final class StringModel extends Model {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           xsb.addBinding(typeBinding(bindings.get(i)));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.TypeBinding> i = bindings.iterator();
+        do // [I]
           xsb.addBinding(typeBinding(i.next()));
         while (i.hasNext());
       }
@@ -107,12 +109,14 @@ final class StringModel extends Model {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.TypeBinding> i = bindings.iterator();
+        do // [I]
           addBinding(xsb, (schema.TypeFieldBinding)i.next());
         while (i.hasNext());
       }
@@ -163,12 +167,14 @@ final class StringModel extends Model {
     final int i$;
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (bindings instanceof RandomAccess) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           xsb.addBinding(typeBinding(bindings.get(i)));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator(); do // [I]
+        final Iterator<schema.TypeBinding> i = bindings.iterator();
+        do // [I]
           xsb.addBinding(typeBinding(i.next()));
         while (i.hasNext());
       }
@@ -180,11 +186,11 @@ final class StringModel extends Model {
   static $StringMember jsdToXsb(final schema.String jsd, final String name) {
     final $StringMember xsb;
     if (jsd instanceof schema.StringProperty)
-      xsb  = property((schema.StringProperty)jsd, name);
+      xsb = property((schema.StringProperty)jsd, name);
     else if (jsd instanceof schema.StringElement)
-      xsb  = element((schema.StringElement)jsd);
+      xsb = element((schema.StringElement)jsd);
     else if (name != null)
-      xsb  = type(jsd, name);
+      xsb = type(jsd, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 

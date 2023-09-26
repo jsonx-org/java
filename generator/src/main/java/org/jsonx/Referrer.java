@@ -63,7 +63,8 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
         while (++i < i$);
       }
       else {
-        final Iterator<? extends Member> it = members.iterator(); do // [I]
+        final Iterator<? extends Member> it = members.iterator();
+        do // [I]
           gct = getGreatestCommonSuperType(gct, it.next());
         while (it.hasNext());
       }

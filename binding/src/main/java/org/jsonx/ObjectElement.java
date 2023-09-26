@@ -27,8 +27,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectElement {
   int id();
+
   Class<? extends JxObject> type();
+
   boolean nullable() default true;
+
   int minOccurs() default 1;
+
   int maxOccurs() default Integer.MAX_VALUE;
 }

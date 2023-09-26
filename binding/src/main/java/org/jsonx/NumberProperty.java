@@ -25,11 +25,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberProperty {
   String name();
+
   boolean nullable() default true;
+
   Use use() default Use.REQUIRED;
+
   int scale() default Integer.MAX_VALUE;
+
   String range() default "";
 
   String decode() default "";
+
   String encode() default "";
 }

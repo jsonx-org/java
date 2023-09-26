@@ -93,12 +93,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final List<FieldBinding> bindings = jsd.getBindings();
     if (bindings != null && (i$ = bindings.size()) > 0) {
       if (CollectionUtil.isRandomAccess(bindings)) {
-        int i = 0; do // [RA]
+        int i = 0;
+        do // [RA]
           addBinding(xsb, bindings.get(i));
         while (++i < i$);
       }
       else {
-        final Iterator<schema.FieldBinding> it = bindings.iterator(); do // [I]
+        final Iterator<schema.FieldBinding> it = bindings.iterator();
+        do // [I]
           addBinding(xsb, it.next());
         while (it.hasNext());
       }
@@ -411,7 +413,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           property.setOverride(superProperty.member);
         else {
           superProperty.member.isAssignableFrom(property.member);
-          throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
+          throw new ValidationException("Object " + (name() != null ? name() : JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
         }
       }
     }

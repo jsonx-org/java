@@ -203,29 +203,29 @@ public class ArrayCodecTest {
     }
   }
 
-  @NumberElement(id=0, maxOccurs=1, range="xxxx")
-  @ArrayType(elementIds={0})
+  @NumberElement(id = 0, maxOccurs = 1, range = "xxxx")
+  @ArrayType(elementIds = {0})
   private @interface ArrayError1 {
   }
 
-  @BooleanElement(id=0, maxOccurs=0, nullable=false)
-  @ArrayType(elementIds={0})
+  @BooleanElement(id = 0, maxOccurs = 0, nullable = false)
+  @ArrayType(elementIds = {0})
   private @interface ArrayError2 {
   }
 
-  @BooleanElement(id=0, maxOccurs=-1, nullable=false)
-  @ArrayType(elementIds={-1})
+  @BooleanElement(id = 0, maxOccurs = -1, nullable = false)
+  @ArrayType(elementIds = {-1})
   private @interface ArrayError3 {
   }
 
-  @BooleanElement(id=0, maxOccurs=-1, nullable=false)
-  @ArrayType(elementIds={})
+  @BooleanElement(id = 0, maxOccurs = -1, nullable = false)
+  @ArrayType(elementIds = {})
   private @interface ArrayError4 {
   }
 
-  @BooleanElement(id=0, nullable=false)
-  @BooleanElement(id=0, nullable=false)
-  @ArrayType(elementIds={0})
+  @BooleanElement(id = 0, nullable = false)
+  @BooleanElement(id = 0, nullable = false)
+  @ArrayType(elementIds = {0})
   private @interface ArrayError5 {
   }
 
