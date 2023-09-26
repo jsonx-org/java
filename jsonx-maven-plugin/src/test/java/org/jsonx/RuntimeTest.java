@@ -38,7 +38,7 @@ public class RuntimeTest {
 
   @AfterClass
   public static void afterClass() {
-    if (logger.isInfoEnabled()) logger.info("Successful tests: " + count);
+    if (logger.isInfoEnabled()) { logger.info("Successful tests: " + count); }
   }
 
   @Test

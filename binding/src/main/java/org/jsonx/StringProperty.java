@@ -25,10 +25,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StringProperty {
   String name();
+
   boolean nullable() default true;
+
   Use use() default Use.REQUIRED;
+
   String pattern() default "";
 
   String decode() default "";
+
   String encode() default "";
 }

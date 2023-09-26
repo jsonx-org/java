@@ -22,7 +22,7 @@ import org.libj.net.URLs;
 public class OnlineArticle extends Publication {
   private String url;
 
-  @StringProperty(name="url", pattern=URLs.REGEX)
+  @StringProperty(name = "url", pattern = URLs.REGEX)
   public String getUrl() {
     return this.url;
   }

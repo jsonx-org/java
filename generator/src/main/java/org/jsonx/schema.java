@@ -1,11 +1,11 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-12T12:53:53.926")
+@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2023-09-12T12:53:53.926")
 public class schema {
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Any extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="@", pattern="any", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "any", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -17,7 +17,7 @@ public class schema {
 
     private java.lang.String _40;
 
-    @org.jsonx.StringProperty(name="@types", pattern="\\S|\\S.*\\S", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@types", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40types() {
       return _40types;
     }
@@ -66,9 +66,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class AnyElement extends org.jsonx.schema.Any {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -80,7 +80,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -92,7 +92,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -157,9 +157,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class AnyProperty extends org.jsonx.schema.Any {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -171,7 +171,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }
@@ -230,9 +230,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Array extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="@", pattern="array", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "array", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -245,7 +245,7 @@ public class schema {
     private java.lang.String _40;
 
     /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
-    @org.jsonx.StringProperty(name="@minIterate", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minIterate", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minIterate() {
       return _40minIterate;
     }
@@ -259,7 +259,7 @@ public class schema {
     private java.lang.String _40minIterate;
 
     /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
-    @org.jsonx.StringProperty(name="@maxIterate", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxIterate", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxIterate() {
       return _40maxIterate;
     }
@@ -272,14 +272,14 @@ public class schema {
 
     private java.lang.String _40maxIterate;
 
-    @org.jsonx.ObjectElement(id=6, type=org.jsonx.schema.ObjectElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ObjectElement(id=5, type=org.jsonx.schema.StringElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ObjectElement(id=4, type=org.jsonx.schema.ReferenceElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ObjectElement(id=3, type=org.jsonx.schema.NumberElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ObjectElement(id=2, type=org.jsonx.schema.BooleanElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ObjectElement(id=1, type=org.jsonx.schema.ArrayElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.AnyElement.class, minOccurs=0, nullable=false)
-    @org.jsonx.ArrayProperty(name="@elements", elementIds={0, 1, 2, 3, 4, 5, 6}, maxIterate=2147483647, nullable=false)
+    @org.jsonx.ObjectElement(id = 6, type = org.jsonx.schema.ObjectElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ObjectElement(id = 5, type = org.jsonx.schema.StringElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ObjectElement(id = 4, type = org.jsonx.schema.ReferenceElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ObjectElement(id = 3, type = org.jsonx.schema.NumberElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ObjectElement(id = 2, type = org.jsonx.schema.BooleanElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ObjectElement(id = 1, type = org.jsonx.schema.ArrayElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.AnyElement.class, minOccurs = 0, nullable = false)
+    @org.jsonx.ArrayProperty(name = "@elements", elementIds = {0, 1, 2, 3, 4, 5, 6}, maxIterate = 2147483647, nullable = false)
     public java.util.List<org.jsonx.schema.Member> get40elements() {
       return _40elements;
     }
@@ -340,9 +340,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ArrayElement extends org.jsonx.schema.Array {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -354,7 +354,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -366,7 +366,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -438,9 +438,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ArrayProperty extends org.jsonx.schema.Array {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -452,7 +452,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }
@@ -518,9 +518,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Boolean extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="@", pattern="boolean", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "boolean", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -563,9 +563,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class BooleanElement extends org.jsonx.schema.Boolean {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -577,7 +577,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -589,7 +589,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -649,9 +649,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class BooleanProperty extends org.jsonx.schema.Boolean {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -663,7 +663,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }
@@ -717,10 +717,10 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Documented implements org.jsonx.JxObject {
     /** Defines text comments. Optional. **/
-    @org.jsonx.StringProperty(name="@doc")
+    @org.jsonx.StringProperty(name = "@doc")
     public java.lang.String get40doc() {
       return _40doc;
     }
@@ -763,9 +763,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Import implements org.jsonx.JxObject {
-    @org.jsonx.StringProperty(name="@namespace", pattern="\\S|\\S.*\\S", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@namespace", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40namespace() {
       return _40namespace;
     }
@@ -777,7 +777,7 @@ public class schema {
 
     private java.lang.String _40namespace;
 
-    @org.jsonx.StringProperty(name="@schemaLocation", pattern="((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@schemaLocation", pattern = "((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40schemaLocation() {
       return _40schemaLocation;
     }
@@ -825,7 +825,7 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Member extends org.jsonx.schema.Documented {
     /** Defines text comments. Optional. **/
     public Member set40doc(final java.lang.String _40doc) {
@@ -850,9 +850,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Number extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="@", pattern="number", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "number", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -869,7 +869,7 @@ public class schema {
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
            Degenerate interval: [val] **/
-    @org.jsonx.StringProperty(name="@range", pattern="[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@range", pattern = "[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40range() {
       return _40range;
     }
@@ -887,7 +887,7 @@ public class schema {
     private java.lang.String _40range;
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    @org.jsonx.NumberProperty(name="@scale", scale=0, use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.NumberProperty(name = "@scale", scale = 0, use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Long get40scale() {
       return _40scale;
     }
@@ -943,9 +943,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class NumberElement extends org.jsonx.schema.Number {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -957,7 +957,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -969,7 +969,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -1045,9 +1045,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class NumberProperty extends org.jsonx.schema.Number {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -1059,7 +1059,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }
@@ -1129,11 +1129,11 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Object extends org.jsonx.schema.Member {
-    @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+    @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
     public static class _40properties implements org.jsonx.JxObject {
-      @org.jsonx.AnyProperty(name=".*", types={@org.jsonx.t(objects=org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects=org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects=org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects=org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects=org.jsonx.schema.StringProperty.class)}, nullable=false)
+      @org.jsonx.AnyProperty(name = ".*", types = {@org.jsonx.t(objects = org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects = org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects = org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects = org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects = org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects = org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects = org.jsonx.schema.StringProperty.class)}, nullable = false)
       public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> get2e2a() {
         return _2e2a;
       }
@@ -1175,7 +1175,7 @@ public class schema {
       }
     }
 
-    @org.jsonx.StringProperty(name="@", pattern="object", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "object", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -1188,7 +1188,7 @@ public class schema {
     private java.lang.String _40;
 
     /** Specifies the name of the type to extend. Optional. **/
-    @org.jsonx.StringProperty(name="@extends", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@extends", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40extends() {
       return _40extends;
     }
@@ -1201,7 +1201,7 @@ public class schema {
 
     private java.lang.String _40extends;
 
-    @org.jsonx.ObjectProperty(name="@properties", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.ObjectProperty(name = "@properties", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public org.jsonx.schema.Object._40properties get40properties() {
       return _40properties;
     }
@@ -1256,9 +1256,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectElement extends org.jsonx.schema.Object {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -1270,7 +1270,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -1282,7 +1282,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -1353,9 +1353,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectProperty extends org.jsonx.schema.Object {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -1367,7 +1367,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }
@@ -1432,10 +1432,10 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectType extends org.jsonx.schema.Object {
     /** Specifies whether the object is abstract. Default: false. **/
-    @org.jsonx.BooleanProperty(name="@abstract", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@abstract", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40abstract() {
       return _40abstract;
     }
@@ -1495,9 +1495,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Reference extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="@", pattern="reference", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "reference", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -1510,7 +1510,7 @@ public class schema {
     private java.lang.String _40;
 
     /** Specifies the name of the referenced type. Required. **/
-    @org.jsonx.StringProperty(name="@type", pattern="\\S|\\S.*\\S", nullable=false)
+    @org.jsonx.StringProperty(name = "@type", pattern = "\\S|\\S.*\\S", nullable = false)
     public java.lang.String get40type() {
       return _40type;
     }
@@ -1560,9 +1560,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ReferenceElement extends org.jsonx.schema.Reference {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -1574,7 +1574,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -1586,7 +1586,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -1652,9 +1652,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ReferenceProperty extends org.jsonx.schema.Reference {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -1666,7 +1666,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }
@@ -1726,9 +1726,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Schema extends org.jsonx.schema.Documented {
-    @org.jsonx.StringProperty(name="@ns", pattern="http://www.jsonx.org/schema-0.5.jsd", nullable=false)
+    @org.jsonx.StringProperty(name = "@ns", pattern = "http://www.jsonx.org/schema-0.5.jsd", nullable = false)
     public java.lang.String get40ns() {
       return _40ns;
     }
@@ -1740,7 +1740,7 @@ public class schema {
 
     private java.lang.String _40ns;
 
-    @org.jsonx.StringProperty(name="@schemaLocation", pattern="((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@schemaLocation", pattern = "((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40schemaLocation() {
       return _40schemaLocation;
     }
@@ -1752,7 +1752,7 @@ public class schema {
 
     private java.lang.String _40schemaLocation;
 
-    @org.jsonx.StringProperty(name="@targetNamespace", pattern="\\S|\\S.*\\S", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@targetNamespace", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40targetNamespace() {
       return _40targetNamespace;
     }
@@ -1764,8 +1764,8 @@ public class schema {
 
     private java.lang.String _40targetNamespace;
 
-    @org.jsonx.ObjectElement(id=0, type=org.jsonx.schema.Import.class)
-    @org.jsonx.ArrayProperty(name="@imports", elementIds={0}, use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.Import.class)
+    @org.jsonx.ArrayProperty(name = "@imports", elementIds = {0}, use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.util.List<org.jsonx.schema.Import> get40imports() {
       return _40imports;
     }
@@ -1777,7 +1777,7 @@ public class schema {
 
     private java.util.List<org.jsonx.schema.Import> _40imports;
 
-    @org.jsonx.AnyProperty(name="[a-zA-Z_][-a-zA-Z\\d_]*", types={@org.jsonx.t(objects=org.jsonx.schema.Array.class), @org.jsonx.t(objects=org.jsonx.schema.Boolean.class), @org.jsonx.t(objects=org.jsonx.schema.Number.class), @org.jsonx.t(objects=org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects=org.jsonx.schema.String.class)}, nullable=false)
+    @org.jsonx.AnyProperty(name = "[a-zA-Z_][-a-zA-Z\\d_]*", types = {@org.jsonx.t(objects = org.jsonx.schema.Array.class), @org.jsonx.t(objects = org.jsonx.schema.Boolean.class), @org.jsonx.t(objects = org.jsonx.schema.Number.class), @org.jsonx.t(objects = org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects = org.jsonx.schema.String.class)}, nullable = false)
     public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> get5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a() {
       return _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
     }
@@ -1844,9 +1844,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class String extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name="@", pattern="string", nullable=false)
+    @org.jsonx.StringProperty(name = "@", pattern = "string", nullable = false)
     public java.lang.String get40() {
       return _40;
     }
@@ -1858,7 +1858,7 @@ public class schema {
 
     private java.lang.String _40;
 
-    @org.jsonx.StringProperty(name="@pattern", pattern="\\S|\\S.*\\S", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@pattern", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40pattern() {
       return _40pattern;
     }
@@ -1907,9 +1907,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class StringElement extends org.jsonx.schema.String {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -1921,7 +1921,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@minOccurs", pattern="\\d+", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40minOccurs() {
       return _40minOccurs;
     }
@@ -1933,7 +1933,7 @@ public class schema {
 
     private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name="@maxOccurs", pattern="\\d+|unbounded", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40maxOccurs() {
       return _40maxOccurs;
     }
@@ -1998,9 +1998,9 @@ public class schema {
     }
   }
 
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/schema-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class StringProperty extends org.jsonx.schema.String {
-    @org.jsonx.BooleanProperty(name="@nullable", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.Boolean get40nullable() {
       return _40nullable;
     }
@@ -2012,7 +2012,7 @@ public class schema {
 
     private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name="@use", pattern="required|optional", use=org.jsonx.Use.OPTIONAL, nullable=false)
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40use() {
       return _40use;
     }

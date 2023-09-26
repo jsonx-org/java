@@ -25,7 +25,7 @@ class Spec<T> {
    * @param get The calculated value to be gotten from this {@link Spec}.
    * @return A new {@link Spec} with the specified {@code set} and {@code get} values.
    */
-  static <T>Spec<T> from(final T set, final T get) {
+  static <T> Spec<T> from(final T set, final T get) {
     return new Spec<>(set, get);
   }
 

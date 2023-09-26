@@ -27,12 +27,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StringElement {
   int id();
+
   boolean nullable() default true;
+
   String pattern() default "";
+
   int minOccurs() default 1;
+
   int maxOccurs() default Integer.MAX_VALUE;
 
   Class<?> type() default String.class;
+
   String decode() default "";
+
   String encode() default "";
 }

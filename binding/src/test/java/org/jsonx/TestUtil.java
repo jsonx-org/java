@@ -28,12 +28,12 @@ final class TestUtil {
   }
 
   @SafeVarargs
-  static <T>List<T> l(final T ... members) {
+  static <T> List<T> l(final T ... members) {
     return Arrays.asList(members);
   }
 
   @SafeVarargs
-  static <T>T[] a(final T ... members) {
+  static <T> T[] a(final T ... members) {
     return members;
   }
 

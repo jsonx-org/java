@@ -32,19 +32,19 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.libj.net.URLs;
 
-@Mojo(name="generate", defaultPhase=LifecyclePhase.GENERATE_SOURCES)
-@Execute(goal="generate")
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Execute(goal = "generate")
 public class GenerateMojo extends JxMojo {
-  @Parameter(property="templateThreshold", required=false)
+  @Parameter(property = "templateThreshold", required = false)
   private int templateThreshold = 1;
 
-  @Parameter(property="setBuilder", required=false)
+  @Parameter(property = "setBuilder", required = false)
   private boolean setBuilder = true;
 
-  @Parameter(property="namespacePackages", required=false)
+  @Parameter(property = "namespacePackages", required = false)
   private List namespacePackages;
 
-  @Parameter(property="defaultBinding", required=false)
+  @Parameter(property = "defaultBinding", required = false)
   private DefaultBinding defaultBinding; // FIXME: Remove this.
 
   public static class DefaultBinding {

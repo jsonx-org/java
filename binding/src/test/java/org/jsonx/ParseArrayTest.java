@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.openjax.json.JsonReader;
 
 public class ParseArrayTest {
-  @NumberElement(id=0, minOccurs=1, nullable=false)
-  @ArrayType(elementIds={0})
+  @NumberElement(id = 0, minOccurs = 1, nullable = false)
+  @ArrayType(elementIds = {0})
   @interface LongArray {
   }
 

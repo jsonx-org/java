@@ -110,7 +110,7 @@ public final class JxConverter {
       }
       else {
         appendValue(reader, off, len, b);
-//        CharacterDatas.escapeForElem(b, reader.buf(), off, len);
+        // CharacterDatas.escapeForElem(b, reader.buf(), off, len);
         prev = '\0';
         token = -1;
       }
@@ -337,7 +337,7 @@ public final class JxConverter {
               final String value = matcher.group("value");
               if (value != null)
                 b.append(value); // The SAXParser automatically unescapes the text
-                // CharacterDatas.unescapeFromElem(b, value);
+              // CharacterDatas.unescapeFromElem(b, value);
 
               final String ws = matcher.group("ws");
               if (ws != null && ws.length() > 0)
@@ -374,19 +374,19 @@ public final class JxConverter {
   }
 
   /**
-   * Converts a JSON document from the specified {@link JsonReader} to a JSONx
-   * document without declaring the XML namespace.
+   * Converts a JSON document from the specified {@link JsonReader} to a JSONx document without declaring the XML namespace.
    * <p>
    * This method is equivalent to calling
    *
    * <pre>
-   * {@code jsonToJsonx(reader, false)}
+   * {@code
+   * jsonToJsonx(reader, false)
+   * }
    * </pre>
    *
    * @implSpec This method is thread safe.
-   * @param reader The {@link JsonReader} for the JSON document to be converted.
-   *          declare the {@code xmlns} and {@code xsi:schemaLocation}
-   *          attributes in the root element.
+   * @param reader The {@link JsonReader} for the JSON document to be converted. declare the {@code xmlns} and
+   *          {@code xsi:schemaLocation} attributes in the root element.
    * @return A JSONx document equivalent of the JSON document.
    * @throws IOException If an I/O error has occurred.
    * @throws IllegalArgumentException If {@code reader} is null.

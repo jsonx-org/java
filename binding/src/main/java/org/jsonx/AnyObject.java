@@ -25,7 +25,7 @@ import java.util.Objects;
 public class AnyObject implements JxObject {
   private LinkedHashMap<String,Object> properties;
 
-  @AnyProperty(name=".*")
+  @AnyProperty(name = ".*")
   public LinkedHashMap<String,Object> getProperties() {
     return properties;
   }

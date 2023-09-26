@@ -25,9 +25,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NumberType {
   int scale() default Integer.MAX_VALUE;
+
   String range() default "";
 
   Class<?> type() default Number.class;
+
   String decode() default "";
+
   String encode() default "";
 }

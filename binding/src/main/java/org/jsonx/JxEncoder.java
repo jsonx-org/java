@@ -57,12 +57,12 @@ public class JxEncoder {
     public static final JxEncoder _8 = get(8);
 
     /**
-     * Returns the validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during
-     * serialization to JSON documents.
+     * Returns the validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization
+     * to JSON documents.
      *
      * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
-     * @return The validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during
-     *         serialization to JSON documents.
+     * @return The validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization
+     *         to JSON documents.
      * @throws IllegalArgumentException If {@code indent < 0}.
      */
     public static JxEncoder get(final int indent) {
@@ -160,8 +160,8 @@ public class JxEncoder {
   private final boolean validate;
 
   /**
-   * Creates a new {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization to
-   * JSON documents.
+   * Creates a new {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization to JSON
+   * documents.
    *
    * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
    * @throws IllegalArgumentException If {@code indent < 0}.
@@ -171,8 +171,8 @@ public class JxEncoder {
   }
 
   /**
-   * Creates a new {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization to
-   * JSON documents.
+   * Creates a new {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization to JSON
+   * documents.
    *
    * @param indent The number of spaces to be used when indenting values during serialization to JSON documents.
    * @param validate If {@code true}, the produced JSON is validated; if {@code false}, the produced JSON is not validated.

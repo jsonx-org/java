@@ -196,7 +196,7 @@ class ClassTrial extends Trial {
       ++count;
     }
     catch (final Throwable t) {
-      if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onEncode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
+      if (logger.isInfoEnabled()) { logger.info(String.format("%06d", count) + " onEncode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")"); }
       if (logger.isErrorEnabled()) {
         logger.error("  Value: " + Strings.indent(String.valueOf(value), 2));
         logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
@@ -250,7 +250,7 @@ class ClassTrial extends Trial {
       ++count;
     }
     catch (final Throwable t) {
-      if (logger.isInfoEnabled()) logger.info(String.format("%06d", count) + " onDecode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")");
+      if (logger.isInfoEnabled()) { logger.info(String.format("%06d", count) + " onDecode(" + trial.getMethod.getDeclaringClass().getSimpleName() + "." + trial.getMethod.getName() + "(), " + trial.kase.getClass().getSimpleName() + ")"); }
       logger.error("  Value: " + Strings.indent(String.valueOf(object[0]), 2));
       logger.error("  JSON: " + Strings.indent(String.valueOf(json), 2));
       logger.error(t.getMessage(), t);

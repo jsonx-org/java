@@ -52,14 +52,15 @@ class AnnotationType {
               continue;
           }
 
-          b.append(key).append('=');
+          b.append(key).append(" = ");
           if (i$ == 1) {
             b.append(items.get(0));
           }
           else {
             b.append('{');
             if (CollectionUtil.isRandomAccess(items)) {
-              int i = 0; do { // [RA]
+              int i = 0;
+              do { // [RA]
                 if (i > 0)
                   b.append(", ");
 
@@ -69,7 +70,8 @@ class AnnotationType {
             }
             else {
               final Iterator<Object> it = items.iterator();
-              int j = 0; do { // [RA]
+              int j = 0;
+              do { // [RA]
                 if (j > 0)
                   b.append(", ");
 
@@ -84,7 +86,7 @@ class AnnotationType {
         else {
           final Object fixedDefaultValue = defaultValue != null && value instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
           if (!Objects.equals(fixedDefaultValue, value))
-            b.append(key).append('=').append(value);
+            b.append(key).append(" = ").append(value);
         }
       }
     }

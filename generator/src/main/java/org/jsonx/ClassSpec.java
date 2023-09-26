@@ -117,7 +117,7 @@ class ClassSpec {
         if (memberDoc != null)
           b.append("\n  ").append(memberDoc);
 
-        b.append("\n  @").append(JxBinding.class.getName()).append("(targetNamespace=\"").append(registry.targetNamespace).append("\")");
+        b.append("\n  @").append(JxBinding.class.getName()).append("(targetNamespace = \"").append(registry.targetNamespace).append("\")");
 
         final StringBuilder annotation = memberClass.getAnnotation();
         if (annotation != null)

@@ -55,12 +55,12 @@ abstract class PrimitiveCodec extends Codec {
 
   @Override
   Class<?> type() {
-    return this.type;
+    return type;
   }
 
   @Override
   Executable decode() {
-    return this.decode;
+    return decode;
   }
 
   final Error matches(final String json, final JsonReader reader) {

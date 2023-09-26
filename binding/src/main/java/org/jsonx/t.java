@@ -22,9 +22,13 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface t {
-  BooleanType booleans() default @BooleanType(decode="\0");
-  NumberType numbers() default @NumberType(decode="\0");
-  StringType strings() default @StringType(decode="\0");
+  BooleanType booleans() default @BooleanType(decode = "\0");
+
+  NumberType numbers() default @NumberType(decode = "\0");
+
+  StringType strings() default @StringType(decode = "\0");
+
   Class<? extends Annotation> arrays() default Annotation.class;
+
   Class<? extends JxObject> objects() default JxObject.class;
 }

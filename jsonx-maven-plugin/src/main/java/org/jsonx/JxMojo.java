@@ -25,6 +25,6 @@ import org.openjax.maven.mojo.GeneratorMojo;
 
 public abstract class JxMojo extends GeneratorMojo {
   @FilterParameter(FilterType.URL)
-  @Parameter(property="schemas", required=true)
+  @Parameter(property = "schemas", required = true)
   List<String> schemas;
 }

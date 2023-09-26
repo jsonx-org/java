@@ -60,7 +60,8 @@ abstract class Member extends Element {
       return null;
 
     if (bindings instanceof RandomAccess) {
-      int i = 0; do { // [RA]
+      int i = 0;
+      do { // [RA]
         final T binding = bindings.get(i);
         if ("java".equals(binding.getLang$().text()))
           return binding;
@@ -68,7 +69,8 @@ abstract class Member extends Element {
       while (++i < i$);
     }
     else {
-      final Iterator<T> i = bindings.iterator(); do { // [I]
+      final Iterator<T> i = bindings.iterator();
+      do { // [I]
         final T binding = i.next();
         if ("java".equals(binding.getLang$().text()))
           return binding;
@@ -228,7 +230,7 @@ abstract class Member extends Element {
         if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
 
-        if (logger.isWarnEnabled()) logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage());
+        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage()); }
       }
     }
 
@@ -242,7 +244,7 @@ abstract class Member extends Element {
         if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
 
-        if (logger.isWarnEnabled()) logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage());
+        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage()); }
       }
     }
 
@@ -443,8 +445,8 @@ abstract class Member extends Element {
   }
 
   /**
-   * Intended to be overridden by each concrete subclass, this method collects all {@link Registry.Type} declarations of elements
-   * that are members of this {@link Member}.
+   * Intended to be overridden by each concrete subclass, this method collects all {@link Registry.Type} declarations of elements that
+   * are members of this {@link Member}.
    *
    * @param types The {@link Set} into which the {@link Registry.Type} declarations must be added.
    */

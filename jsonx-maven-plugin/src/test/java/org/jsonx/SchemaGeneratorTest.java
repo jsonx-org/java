@@ -36,8 +36,8 @@ public class SchemaGeneratorTest {
 
     final File controlJavaFile = new File("../generator/src/main/java", javaPath);
     final File testJavaFile = new File(destDir, javaPath);
-    final String controlSource = new String(Files.readAllBytes(controlJavaFile.toPath())).replaceFirst(", date=\"[^\"]+\"", ", date=\"\"");
-    final String testSource = new String(Files.readAllBytes(testJavaFile.toPath())).replaceFirst(", date=\"[^\"]+\"", ", date=\"\"");
+    final String controlSource = new String(Files.readAllBytes(controlJavaFile.toPath())).replaceFirst(", date = \"[^\"]+\"", ", date = \"\"");
+    final String testSource = new String(Files.readAllBytes(testJavaFile.toPath())).replaceFirst(", date = \"[^\"]+\"", ", date = \"\"");
     if (!controlSource.equals(testSource)) {
       System.out.println(testSource);
       fail();

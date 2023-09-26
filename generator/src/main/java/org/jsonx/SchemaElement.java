@@ -69,7 +69,7 @@ import org.w3.www._2001.XMLSchema.yAA.$AnyType;
  * The root {@link Element} of a JSON Schema Document.
  */
 public final class SchemaElement extends Element implements Declarer { // FIXME: Rename SchemaElement to something better
-  private static final String GENERATED = "(value=\"" + Generator.class.getName() + "\", date=\"" + LocalDateTime.now().toString() + "\")";
+  private static final String GENERATED = "(value = \"" + Generator.class.getName() + "\", date = \"" + LocalDateTime.now().toString() + "\")";
 
   private static <T extends $FieldBindings>T jsdToXsbField(final T xsb, final String path, final Map<String,binding.FieldBinding> bindings) {
     xsb.setPath$(path);
@@ -441,8 +441,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
   }
 
   /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader, filtered with the given
-   * class predicate.
+   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader, filtered with the given class
+   * predicate.
    *
    * @param pkg The package to be scanned for JSD bindings.
    * @param classLoader The {@link ClassLoader} containing the defined package.
@@ -583,7 +583,8 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     final int i$ = members.size();
     if (i$ > 0) {
       schemaElems = new ArrayList<>();
-      int i = 0; do // [RA]
+      int i = 0;
+      do // [RA]
         schemaElems.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
       while (++i < i$);
     }
@@ -729,7 +730,7 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
           b.append("\n@").append(SuppressWarnings.class.getName()).append("(\"all\")");
 
         if (classSpec.referrer != null)
-          b.append("\n@").append(JxBinding.class.getName()).append("(targetNamespace=\"").append(registry.targetNamespace).append("\")");
+          b.append("\n@").append(JxBinding.class.getName()).append("(targetNamespace = \"").append(registry.targetNamespace).append("\")");
 
         b.append("\n@").append(Generated.class.getName()).append(GENERATED);
         b.append("\npublic ").append(classSpec);

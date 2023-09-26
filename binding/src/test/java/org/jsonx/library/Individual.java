@@ -24,7 +24,7 @@ import org.jsonx.StringProperty;
 public class Individual implements JxObject {
   private String name;
 
-  @StringProperty(name="name", pattern="\\S+ \\S+")
+  @StringProperty(name = "name", pattern = "\\S+ \\S+")
   public String getName() {
     return this.name;
   }
@@ -35,7 +35,7 @@ public class Individual implements JxObject {
 
   private String gender;
 
-  @StringProperty(name="gender", pattern="[MF]")
+  @StringProperty(name = "gender", pattern = "[MF]")
   public String getGender() {
     return this.gender;
   }
@@ -46,7 +46,7 @@ public class Individual implements JxObject {
 
   private Address address;
 
-  @ObjectProperty(name="address")
+  @ObjectProperty(name = "address")
   public Address getAddress() {
     return this.address;
   }

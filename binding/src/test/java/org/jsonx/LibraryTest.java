@@ -126,8 +126,9 @@ public class LibraryTest {
     book.setTitle("Magical Book");
     book.setAuthors(Optional.of(Arrays.asList("Z&$GY 6-4si[1", "Billy Bob", "Jimmy James", "Wendy Woo")));
     book.setEditors(Optional.of(Arrays.asList("[&]$b |6)?f)A$", "Silly Willy", "Johnie John", "Randy Dandy")));
-    book.setIndex(Arrays.asList(Arrays.asList(1, "Part 1, Chapter 1"), Arrays.asList(2, "Part 1, Chapter 2"), Arrays.asList(3, "Part 1, Chapter 3"),
-                                Arrays.asList(1, "Part 2, Chapter 1"), Arrays.asList(2, "Part 2, Chapter 2"), Arrays.asList(3, "Part 2, Chapter 3")));
+    book.setIndex(Arrays.asList(Arrays.asList(1, "Part 1, Chapter 1"), Arrays.asList(2, "Part 1, Chapter 2"),
+      Arrays.asList(3, "Part 1, Chapter 3"), Arrays.asList(1, "Part 2, Chapter 1"),
+      Arrays.asList(2, "Part 2, Chapter 2"), Arrays.asList(3, "Part 2, Chapter 3")));
     book.setIsbn("978-3-16-148410-0");
     book.setPublishings(new ArrayList<>());
     book.getPublishings().add(bookPub1);
@@ -167,7 +168,8 @@ public class LibraryTest {
     library.setAddress(Optional.of(createAddress()));
     library.setHandicap(true);
     final List<List<String>> schedule = new ArrayList<>();
-    for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"08:00", "18:00"}, {"09:00", "19:00"}, {"10:00", "20:00"}, {"11:00", "21:00"}, {"12:00", "22:00"}, {"13:00", "23:00"}})
+    for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"08:00", "18:00"}, {"09:00", "19:00"},
+      {"10:00", "20:00"}, {"11:00", "21:00"}, {"12:00", "22:00"}, {"13:00", "23:00"}})
       schedule.add(Arrays.asList(slot));
 
     library.setSchedule(schedule);
@@ -179,7 +181,7 @@ public class LibraryTest {
     library.setStaff(Collections.singletonList(createEmployee()));
 
     final String json = encoder.toString(library);
-    if (logger.isInfoEnabled()) logger.info(json);
+    if (logger.isInfoEnabled()) { logger.info(json); }
     JxDecoder.VALIDATING.parseObject(json, Library.class);
   }
 
@@ -195,5 +197,17 @@ public class LibraryTest {
     }
 
     JxDecoder.VALIDATING.parseObject(json, (o, p, v) -> o instanceof Publishing, Publishing.class);
+  }
+
+  @Test
+  public void testNullValidateError() throws IOException {
+    final String json = "{\"number\":1894,\"street\":\"Welcome Circle\",\"city\":\"San Francisco\",\"postalCode\":\"94110\",\"locality\":\"San Francisco\",\"country\":null}";
+    try {
+      JxDecoder.VALIDATING.parseObject(json, Address.class);
+      fail("Expected DecodeException");
+    }
+    catch (final DecodeException e) {
+      assertTrue(e.getMessage().startsWith("Property \"country\" is not nullable: null"));
+    }
   }
 }

@@ -90,11 +90,11 @@ final class StringModel extends Model {
   static $StringMember jsdToXsb(final schema.String jsd, final String name) {
     final $StringMember xsb;
     if (jsd instanceof schema.StringProperty)
-      xsb  = property((schema.StringProperty)jsd, name);
+      xsb = property((schema.StringProperty)jsd, name);
     else if (jsd instanceof schema.StringElement)
-      xsb  = element((schema.StringElement)jsd);
+      xsb = element((schema.StringElement)jsd);
     else if (name != null)
-      xsb  = type(jsd, name);
+      xsb = type(jsd, name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 

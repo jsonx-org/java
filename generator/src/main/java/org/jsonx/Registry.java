@@ -50,7 +50,7 @@ class Registry {
       this.name = name;
     }
 
-    <T extends Model>T value(final T model, final Referrer<?> referrer) {
+    <T extends Model> T value(final T model, final Referrer<?> referrer) {
       refToModel.put(name, model);
       return reference(model, referrer);
     }
@@ -590,7 +590,7 @@ class Registry {
     return new Value(ObjectModel.getFullyQualifiedName(xsb));
   }
 
-  <T extends Member>T reference(final T model, final Referrer<?> referrer) {
+  <T extends Member> T reference(final T model, final Referrer<?> referrer) {
     deferredReferences.add(() -> {
       if (model instanceof Referrer)
         ((Referrer<?>)model).resolveReferences();

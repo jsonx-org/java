@@ -385,7 +385,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
         if (superProperty.member.isAssignableFrom(property.member))
           property.setOverride(superProperty.member);
         else
-          throw new ValidationException("Object " + (name() != null ? name(): JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
+          throw new ValidationException("Object " + (name() != null ? name() : JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
       }
     }
   }

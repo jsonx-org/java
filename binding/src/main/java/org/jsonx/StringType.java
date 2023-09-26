@@ -27,6 +27,8 @@ public @interface StringType {
   String pattern() default "";
 
   Class<?> type() default String.class;
+
   String decode() default "";
+
   String encode() default "";
 }
