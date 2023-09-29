@@ -44,42 +44,6 @@ public class GenerateMojo extends JxMojo {
   @Parameter(property = "namespacePackages", required = false)
   private List namespacePackages;
 
-  @Parameter(property = "defaultBinding", required = false)
-  private DefaultBinding defaultBinding; // FIXME: Remove this.
-
-  public static class DefaultBinding {
-    public static class Number {
-      private String integer;
-      private String real;
-
-      public String getInteger() {
-        return this.integer;
-      }
-
-      public void setInteger(String integer) {
-        this.integer = integer;
-      }
-
-      public String getReal() {
-        return this.real;
-      }
-
-      public void setReal(String real) {
-        this.real = real;
-      }
-    }
-
-    private Number number;
-
-    public Number getNumber() {
-      return this.number;
-    }
-
-    public void setNumber(Number number) {
-      this.number = number;
-    }
-  }
-
   private static void processConfiguration(final Settings.Builder builder, final Xpp3Dom root) throws MojoExecutionException {
     for (int i = 0, i$ = root.getChildCount(); i < i$; ++i) { // [RA]
       final Xpp3Dom child0 = root.getChild(i);
@@ -95,41 +59,6 @@ public class GenerateMojo extends JxMojo {
             builder.withNamespacePackage(namespace, pkg);
           else
             builder.withDefaultPackage(pkg);
-        }
-      }
-      else if ("defaultBinding".equals(child0.getName())) {
-        for (int j = 0, j$ = child0.getChildCount(); j < j$; ++j) { // [RA]
-          final Xpp3Dom child1 = child0.getChild(j);
-          if (!"number".equals(child1.getName()))
-            throw new MojoExecutionException("Unsupported element: configuration/defaultBinding/" + child1.getName());
-
-          for (int k = 0, k$ = child1.getChildCount(); k < k$; ++k) { // [RA]
-            final Xpp3Dom child2 = child1.getChild(k);
-            final String name = child2.getName();
-            if ("integer".equals(name)) {
-              final String p = child2.getAttribute("primitive");
-              builder.withIntegerPrimitive(p);
-
-              final String o = child2.getAttribute("object");
-              if (o != null)
-                builder.withIntegerObject(o);
-              else
-                throw new MojoExecutionException("configuration/defaultBinding/number/integer/@object is required");
-            }
-            else if ("real".equals(name)) {
-              final String p = child2.getAttribute("primitive");
-              builder.withRealPrimitive(p);
-
-              final String o = child2.getAttribute("object");
-              if (o != null)
-                builder.withRealObject(o);
-              else
-                throw new MojoExecutionException("configuration/defaultBinding/number/real/@object is required");
-            }
-            else {
-              throw new MojoExecutionException("Unsupported element: configuration/defaultBinding/number" + name);
-            }
-          }
         }
       }
     }

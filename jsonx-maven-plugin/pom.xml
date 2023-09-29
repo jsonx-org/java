@@ -99,12 +99,6 @@
                   <namespacePackages>
                     <namespacePackage package="org.jsonx."/>
                   </namespacePackages>
-                  <defaultBinding>
-                    <number>
-                      <integer primitive="long" object="java.lang.Long"/>
-                      <real primitive="double" object="java.lang.Double"/>
-                    </number>
-                  </defaultBinding>
                   <schemas>
                     <schema>src/test/resources/sensor.jsbx</schema>
                     <schema>src/test/resources/test.jsb</schema>

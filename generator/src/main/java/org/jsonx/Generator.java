@@ -92,15 +92,6 @@ public final class Generator {
         if (schemaFiles != null)
           trapPrintUsage();
       }
-      // FIXME: Remove these...
-      else if ("--defaultIntegerPrimitive".equals(args[i]))
-        settings.withIntegerPrimitive(args[++i]);
-      else if ("--defaultIntegerObject".equals(args[i]))
-        settings.withIntegerObject(args[++i]);
-      else if ("--defaultRealPrimitive".equals(args[i]))
-        settings.withRealPrimitive(args[++i]);
-      else if ("--defaultRealObject".equals(args[i]))
-        settings.withRealObject(args[++i]);
       else {
         if (schemaFiles == null)
           schemaFiles = new URL[len - i];
