@@ -609,7 +609,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
     if (reference instanceof ArrayModel) {
       final ArrayModel arrayModel = (ArrayModel)reference;
       int offset = 1;
-      final List<AnnotationType> inner = new ArrayList<>();
+      final ArrayList<AnnotationType> inner = new ArrayList<>();
       if (arrayModel.classType() == null) {
         final ArrayList<Member> members = arrayModel.members;
         final int size = members.size();
