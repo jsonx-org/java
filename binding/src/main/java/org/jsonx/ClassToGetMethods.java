@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.function.Predicate;
 
 abstract class ClassToGetMethods extends HashMap<Class<? extends JxObject>,Method[]> implements Predicate<Method> {
-  private static final Method[] emptyMethods = new Method[0];
+  private static final Method[] emptyMethods = {};
 
   private Method[] getGetMethods(final Method[] methods, final int length, final int index, final int depth) {
     if (index == length)

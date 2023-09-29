@@ -1,0 +1,145 @@
+<!--
+  Copyright (c) 2015 JSONx
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<binding
+  xmlns="http://www.jsonx.org/binding-0.5.xsd"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd">
+
+  <schema xmlns="http://www.jsonx.org/schema-0.5.xsd">
+
+    <boolean name="primitiveBoolean"/>
+    <string name="nonEmptyString" pattern="\S|\S.*\S"/>
+    <string name="currency" pattern="AUD|CAD|EUR|GBP|JPY|USD"/>
+    <string name="dateTime" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.{1,3})?"/>
+    <string name="url" pattern="(https?|ftp)://[\w\d:#@%/;$()~_?'\+-=\\\.&amp;]+"/>
+
+    <object name="xmldsig" abstract="true">
+      <property name="xmldsig" xsi:type="string"/>
+    </object>
+    <object name="pubRsa" abstract="true" extends="xmldsig">
+      <property name="pub_rsa" xsi:type="string"/>
+    </object>
+    <object name="signature" extends="pubRsa"/>
+
+    <object name="dsig" extends="xmldsig"/>
+
+    <object name="partialData" abstract="true">
+      <property name="1" xsi:type="string" pattern="[&quot;0-9A-F]*"/>
+      <property name="2" xsi:type="string" pattern="[\\0-9A-F]*"/>
+    </object>
+
+    <object name="message">
+      <property name="subject" xsi:type="string"/>
+      <property name="url" xsi:type="reference" type="url"/>
+      <property name="important" xsi:type="boolean"/>
+      <property name="requiredArray" xsi:type="array">
+        <reference type="primitiveBoolean" nullable="false"/>
+      </property>
+      <property name="notRequired" xsi:type="boolean" use="optional"/>
+      <property name="notRequiredArray" xsi:type="array" use="optional">
+        <reference type="primitiveBoolean" nullable="false"/>
+      </property>
+      <property name="recipients" xsi:type="array">
+        <string pattern=".+" nullable="false"/>
+      </property>
+      <property name="emptyarray" xsi:type="array">
+        <string pattern=".+" nullable="false"/>
+      </property>
+      <property name="attachment" xsi:type="array">
+        <reference type="attachment" nullable="false"/>
+      </property>
+      <property name="signature" xsi:type="reference" type="signature"/>
+    </object>
+
+    <object name="attachment">
+      <property name="filename" xsi:type="string" nullable="false"/>
+      <property name="data" xsi:type="object" extends="partialData">
+        <property name="c" xsi:type="string" pattern="[0-9A-F]*"/>
+      </property>
+      <property name="serial" xsi:type="number" nullable="false"/>
+    </object>
+
+    <object name="links">
+      <property name="href" xsi:type="reference" type="url" nullable="false"/>
+      <property name="rel" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+      <property name="method" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+      <property name="enc" xsi:type="string" use="optional"/>
+    </object>
+
+    <object name="payPalEvent">
+      <property name="id" xsi:type="string" nullable="false"/>
+      <property name="create_time" xsi:type="reference" type="dateTime" nullable="false"/>
+      <property name="event_type" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+      <property name="event_version" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+      <property name="summary" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+      <property name="resource_type" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+      <property xsi:type="object" name="resource">
+        <property name="id" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+        <property name="parent_payment" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+        <property name="update_time" xsi:type="reference" type="dateTime" nullable="false"/>
+        <property name="create_time" xsi:type="reference" type="dateTime" nullable="false"/>
+        <property name="state" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+        <property name="amount" xsi:type="object" nullable="false">
+          <property name="total" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+          <property name="currency" xsi:type="reference" type="currency" nullable="false"/>
+          <property name="details" xsi:type="object" use="optional" nullable="false">
+            <property name="subtotal" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+          </property>
+        </property>
+        <property name="links" xsi:type="array" nullable="false">
+          <reference type="links" nullable="false"/>
+        </property>
+        <property name="sale_id" xsi:type="reference" type="nonEmptyString" use="optional" nullable="false"/>
+        <property name="payment_mode" xsi:type="reference" type="nonEmptyString" use="optional" nullable="false"/>
+        <property name="protection_eligibility" xsi:type="reference" type="nonEmptyString" use="optional" nullable="false"/>
+        <property name="invoice_number" xsi:type="string" use="optional" nullable="false"/>
+        <property name="custom" xsi:type="string" use="optional" nullable="false"/>
+        <property name="refund_to_payer" xsi:type="object" use="optional" nullable="false">
+          <property name="value" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+          <property name="currency" xsi:type="reference" type="currency" nullable="false"/>
+        </property>
+        <property name="transaction_fee" xsi:type="object" use="optional" nullable="false">
+          <property name="value" xsi:type="reference" type="nonEmptyString" nullable="false"/>
+          <property name="currency" xsi:type="reference" type="currency" nullable="false"/>
+        </property>
+      </property>
+      <property name="links" xsi:type="array" nullable="false">
+        <reference type="links" nullable="false"/>
+      </property>
+    </object>
+
+    <object name="data">
+      <property name="id" xsi:type="string" nullable="false"/>
+      <property name="url" xsi:type="string" nullable="false"/>
+    </object>
+
+    <object name="giphy">
+      <property xsi:type="array" name="data">
+        <reference type="data" nullable="false"/>
+      </property>
+    </object>
+  </schema>
+
+  <boolean path="primitiveBoolean"><bind lang="java" type="boolean"/></boolean>
+  <string path="url"><bind lang="java" type="java.net.URL" decode="java.net.URL.&lt;init&gt;"/></string>
+  <string path="partialData.1"><bind lang="java" field="a"/></string>
+  <string path="partialData.2"><bind lang="java" field="b"/></string>
+  <reference path="message.url"><bind lang="java" field="location"/></reference>
+  <reference path="links.href"><bind lang="java" field="location"/></reference>
+
+</binding>

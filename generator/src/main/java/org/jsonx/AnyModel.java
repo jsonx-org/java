@@ -20,19 +20,19 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$AnyMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference;
@@ -41,7 +41,8 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
-import org.w3.www._2001.XMLSchema.yAA.$IDREFS;
+import org.openjax.xml.api.XmlElement;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class AnyModel extends Referrer<AnyModel> {
   private static $Any property(final schema.AnyProperty jsd, final String name) {
@@ -55,61 +56,37 @@ final class AnyModel extends Referrer<AnyModel> {
     if (name != null)
       xsb.setNames$(new $Any.Names$(JsonUtil.unescape(name).toString()));
 
-    final String types = jsd.getTypes();
+    final String types = jsd.get40types();
     if (types != null)
       xsb.setTypes$(new $Any.Types$(Strings.split(types, ' ')));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Any.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Any.Use$($Any.Use$.Enum.valueOf(use)));
 
-    final List<schema.FieldBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          addBinding(xsb, bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.FieldBinding> i = bindings.iterator();
-        do // [I]
-          addBinding(xsb, i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Any xsb, final schema.FieldBinding binding) {
-    final $Any.Binding bin = new $Any.Binding();
-    bin.setLang$(new $Binding.Lang$(binding.getLang()));
-    bin.setField$(new $Any.Binding.Field$(binding.getField()));
-    xsb.addBinding(bin);
   }
 
   private static $ArrayMember.Any element(final schema.AnyElement jsd) {
     final $ArrayMember.Any xsb = new $ArrayMember.Any();
 
-    final String types = jsd.getTypes();
+    final String types = jsd.get40types();
     if (types != null)
       xsb.setTypes$(new $ArrayMember.Any.Types$(Strings.split(types, ' ')));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Any.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Any.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Any.MaxOccurs$(maxOccurs));
 
@@ -127,7 +104,7 @@ final class AnyModel extends Referrer<AnyModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
@@ -137,7 +114,6 @@ final class AnyModel extends Referrer<AnyModel> {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyProperty property, final Method getMethod, final String fieldName) {
     final AnyModel model = new AnyModel(registry, referrer, property, getMethod, fieldName);
     final Id id = model.id();
-
     final AnyModel registered = (AnyModel)registry.getModel(id);
     return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -145,17 +121,16 @@ final class AnyModel extends Referrer<AnyModel> {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final AnyElement element) {
     final AnyModel model = new AnyModel(registry, referrer, element);
     final Id id = model.id();
-
     final AnyModel registered = (AnyModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb) {
-    return registry.reference(new AnyModel(registry, referrer, xsb), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
-  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb) {
-    return registry.reference(new AnyModel(registry, referrer, xsb, getBinding(xsb.getBinding())), referrer);
+  static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
   private static final Name$ anonymousReferenceName = new Name$("");
@@ -188,13 +163,13 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), binding);
     validateTypeBinding();
   }
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb) {
+  private AnyModel(final Registry registry, final Declarer declarer, final $Array.Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNullable$(), xsb.getMinOccurs$(), xsb.getMaxOccurs$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$());
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb));
     validateTypeBinding();
   }
 
@@ -220,7 +195,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   // FIXME: This can be converted to recursive algo
-  private ArrayList<Member> getTypes(final Boolean nullable, Use use, final $IDREFS refs) {
+  private ArrayList<Member> getTypes(final Boolean nullable, final Use use, final $AnyMember.Types$ refs, final $FieldBinding binding) {
     final List<String> idrefs;
     final int i$;
     if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
@@ -230,22 +205,22 @@ final class AnyModel extends Referrer<AnyModel> {
     if (idrefs instanceof RandomAccess) {
       int i = 0;
       do // [RA]
-        addReference(types, idrefs.get(i), nullable, use);
+        addReference(types, idrefs.get(i), nullable, use, binding);
       while (++i < i$);
     }
     else {
       final Iterator<String> i = idrefs.iterator();
       do // [I]
-        addReference(types, i.next(), nullable, use);
+        addReference(types, i.next(), nullable, use, binding);
       while (i.hasNext());
     }
 
     return types;
   }
 
-  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, Use use) {
+  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use, final $FieldBinding binding) {
     final Id id = Id.hashed(idref);
-    types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), () -> {
+    types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), binding, () -> {
       final Member model = registry.getModel(id);
       if (model == null)
         throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
@@ -259,21 +234,33 @@ final class AnyModel extends Referrer<AnyModel> {
     if (len == 0)
       return null;
 
-    final ArrayList<Class<?>> members = new ArrayList<>(len);
-    for (final t type : types) { // [A]
-      if (AnyType.isEnabled(type.arrays()))
-        members.add(List.class);
-      else if (AnyType.isEnabled(type.booleans()))
-        members.add(Boolean.class);
-      else if (AnyType.isEnabled(type.numbers()))
-        members.add(type.numbers().type());
-      else if (AnyType.isEnabled(type.objects()))
-        members.add(type.objects());
-      else if (AnyType.isEnabled(type.strings()))
-        members.add(type.strings().type());
+    boolean isObjectModel = true;
+    final Class<?>[] members = new Class<?>[len];
+    for (int i = 0; i < len; ++i) { // [A]
+      final t type = types[i];
+      if (AnyType.isEnabled(type.arrays())) {
+        members[i] = List.class;
+        isObjectModel = false;
+      }
+      else if (AnyType.isEnabled(type.booleans())) {
+        members[i] = Boolean.class;
+        isObjectModel = false;
+      }
+      else if (AnyType.isEnabled(type.numbers())) {
+        members[i] = type.numbers().type();
+        isObjectModel = false;
+      }
+      else if (AnyType.isEnabled(type.objects())) {
+        members[i] = type.objects();
+      }
+      else if (AnyType.isEnabled(type.strings())) {
+        members[i] = type.strings().type();
+        isObjectModel = false;
+      }
     }
 
-    return Classes.getGreatestCommonSuperclass(members.toArray(new Class[members.size()]));
+    final Class<?> gcc = Classes.getGreatestCommonSuperclass(members);
+    return gcc != Object.class ? gcc : isObjectModel ? JxObject.class : Object.class;
   }
 
   private ArrayList<Member> getMemberTypes(final t[] types) {
@@ -441,8 +428,22 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
+  }
+
+  @Override
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (types != null) {
       final StringBuilder b = new StringBuilder();
       for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
@@ -452,7 +453,7 @@ final class AnyModel extends Referrer<AnyModel> {
         b.append(Registry.getSubName(types.get(i).id().toString(), packageName));
       }
 
-      attributes.put("types", b.toString());
+      attributes.put(jsd(jsd, "types"), b.toString());
     }
 
     return attributes;

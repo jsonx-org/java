@@ -38,7 +38,7 @@ import org.openjax.json.JsonReader;
  */
 public class Validator {
   private static void trapPrintUsage() {
-    System.err.println("Usage: Validator <SCHEMA.jsd|SCHEMA.jsdx> <JSON>...");
+    System.err.println("Usage: Validator <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx> <JSON>...");
     System.exit(1);
   }
 
@@ -78,17 +78,20 @@ public class Validator {
 
   @SuppressWarnings("unchecked")
   static int validate(final String[] args) throws CompilationException, IOException, PackageNotFoundException {
-    final String prefix = "jsonx";
-    final Map<String,String> source = SchemaElement.parse(URLs.fromStringPath(args[0]), new Settings.Builder().withPrefix(prefix + ".").build()).toSource();
+    final String pkg = "jsonx";
+    final SchemaElement[] schemas = Generator.parse(new Settings.Builder().withNamespacePackage(t -> pkg + "._" + Integer.toHexString(t.hashCode())).build(), URLs.fromStringPath(args[0]));
     final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final Map.Entry<String,String> entry : source.entrySet()) // [S]
-      compiler.addSource(entry.getValue());
+    for (final SchemaElement schema : schemas) { // [A]
+      final Map<String,String> source = schema.toSource();
+      for (final Map.Entry<String,String> entry : source.entrySet()) // [S]
+        compiler.addSource(entry.getValue());
+    }
 
     final ClassLoader classLoader = compiler.compile();
 
     final HashSet<Class<? extends JxObject>> objectClasses = new HashSet<>();
     final HashSet<Class<? extends Annotation>> arrayClasses = new HashSet<>();
-    PackageLoader.getPackageLoader(classLoader).loadPackage(prefix, cls -> {
+    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, cls -> {
       if (cls.getDeclaringClass() == null) {
         if (Annotation.class.isAssignableFrom(cls))
           arrayClasses.add((Class<? extends Annotation>)cls);

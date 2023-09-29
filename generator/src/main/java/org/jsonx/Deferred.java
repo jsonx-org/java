@@ -17,7 +17,6 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.openjax.xml.api.XmlElement;
@@ -70,12 +69,12 @@ final class Deferred<T extends Member> extends Member {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     throw new UnsupportedOperationException();
   }
 }

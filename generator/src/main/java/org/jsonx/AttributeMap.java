@@ -16,47 +16,25 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.util.TreeMap;
 
-import org.libj.util.ObservableMap;
-
 /**
- * Map of attributes that guarantees attribute order as per {@link JsdUtil#ATTRIBUTES}.
+ * Map of attributes that guarantees attribute order as per {@link JsdUtil#ATTRIBUTES}, and disallows null keys or values.
  */
-class AttributeMap extends ObservableMap<String,Object> {
-  private final String prefix;
-
+class AttributeMap extends TreeMap<String,Object> {
   /**
-   * Creates a new {@link AttributeMap} with the specified prefix. For each invocation of {@link #put(String,Object)} and
-   * {@link #remove(Object)}, the provided {@code key} is prepended with {@code prefix} (if {@code prefix} is not null).
-   *
-   * @param prefix The prefix to prepend to each key.
-   */
-  AttributeMap(final String prefix) {
-    super(new TreeMap<>(JsdUtil.ATTRIBUTES));
-    this.prefix = prefix;
-  }
-
-  /**
-   * Creates a new {@link AttributeMap} with a null prefix.
+   * Creates a new {@link AttributeMap} instance.
    */
   AttributeMap() {
-    this(null);
+    super(JsdUtil.ATTRIBUTES);
   }
 
   @Override
-  protected boolean beforeRemove(final Object key, final Object value) {
-    target.remove(prefix != null ? prefix + key : key);
-    return false;
-  }
-
-  @Override
-  protected Object beforePut(final String key, final Object oldValue, final Object newValue, final Object preventDefault) {
-    // Commented out, because <binding field="..."> may end up being overwritten for non-root-based reference/model pairs
-    // if (oldValue != null && !oldValue.equals(newValue) && !"xsi:schemaLocation".equals(key))
-    // throw new IllegalArgumentException("Attribute overwrite: [" + key + "] from [" + oldValue + "] to [" + newValue + "]");
-
-    target.put(prefix != null ? prefix + key : key, newValue);
-    return preventDefault;
+  public Object put(final String key, final Object value) {
+    assertPositive(assertNotNull(key, "key cannot be null").length(), "key cannot be empty");
+    assertNotNull(value, "value cannot be null");
+    return super.put(key, value);
   }
 }

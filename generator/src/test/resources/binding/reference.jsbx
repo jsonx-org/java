@@ -1,0 +1,114 @@
+<!--
+  Copyright (c) 2018 JSONx
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<binding
+  xmlns="http://www.jsonx.org/binding-0.5.xsd"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd">
+
+  <schema
+    xmlns="http://www.jsonx.org/schema-0.5.xsd"
+    targetNamespace="urn:test:reference"
+    doc="Schema focusing on references">
+
+    <array name="arrayObj">
+      <reference type="objArr" maxOccurs="1"/>
+    </array>
+    <boolean name="bool"/>
+    <number name="num"/>
+    <number name="numPrimitive"/>
+    <number name="numInt" scale="0"/>
+    <number name="numIntPrimitive" scale="0"/>
+    <number name="numRange" range="[1E10,]"/>
+    <number name="numRangePrimitive" range="[7E-10,]"/>
+    <number name="numIntRange" scale="0" range="[-1E10,]"/>
+    <number name="numIntRangePrimitive" scale="0" range="[-1E10,]"/>
+    <number name="numScale" scale="2" range="[1.11E-213,]"/>
+    <number name="numScalePrimitive" scale="2" range="[1.11E-213,]"/>
+    <number name="numScaleRange" scale="3" range="[2.222E-19,]"/>
+    <number name="numScaleRangePrimitive" scale="3" range="[2.222E-19,]"/>
+    <string name="str" doc="1"/>
+    <string name="strDec" doc="2"/>
+    <string name="strDecEnc" doc="3"/>
+    <string name="strEnc" doc="4"/>
+    <string name="strPattern" pattern="[a-z]+" doc="1"/>
+    <string name="strPatternDec" pattern="[a-z]+" doc="2"/>
+    <string name="strPatternDecEnc" pattern="[a-z]+" doc="3"/>
+    <string name="strPatternEnc" pattern="[a-z]+" doc="4"/>
+    <object name="objArr">
+      <property name="bool" xsi:type="reference" type="bool"/>
+      <property name="boolOptional" xsi:type="reference" type="bool" use="optional"/>
+      <property name="boolOptionalNotNullable" xsi:type="reference" type="bool" use="optional" nullable="false"/>
+      <property name="numRequired" xsi:type="reference" type="num"/>
+      <property name="numOptional" xsi:type="reference" type="num" use="optional"/>
+      <property name="numRequiredNotNullable" xsi:type="reference" type="numPrimitive" nullable="false"/>
+      <property name="numOptionalNotNullable" xsi:type="reference" type="num" use="optional" nullable="false"/>
+      <property name="numIntRequired" xsi:type="reference" type="numInt"/>
+      <property name="numIntOptional" xsi:type="reference" type="numInt" use="optional"/>
+      <property name="numIntRequiredNotNullable" xsi:type="reference" type="numIntPrimitive" nullable="false"/>
+      <property name="numIntOptionalNotNullable" xsi:type="reference" type="numInt" use="optional" nullable="false"/>
+      <property name="numRangeRequired" xsi:type="reference" type="numRange"/>
+      <property name="numRangeOptional" xsi:type="reference" type="numRange" use="optional"/>
+      <property name="numRangeRequiredNotNullable" xsi:type="reference" type="numRangePrimitive" nullable="false"/>
+      <property name="numRangeOptionalNotNullable" xsi:type="reference" type="numRange" use="optional" nullable="false"/>
+      <property name="numIntRangeRequired" xsi:type="reference" type="numIntRange"/>
+      <property name="numIntRangeOptional" xsi:type="reference" type="numIntRange" use="optional"/>
+      <property name="numIntRangeRequiredNotNullable" xsi:type="reference" type="numIntRangePrimitive" nullable="false"/>
+      <property name="numIntRangeOptionalNotNullable" xsi:type="reference" type="numIntRange" use="optional" nullable="false"/>
+      <property name="numScaleRequired" xsi:type="reference" type="numScale"/>
+      <property name="numScaleOptional" xsi:type="reference" type="numScale" use="optional"/>
+      <property name="numScaleRequiredNotNullable" xsi:type="reference" type="numScalePrimitive" nullable="false"/>
+      <property name="numScaleOptionalNotNullable" xsi:type="reference" type="numScale" use="optional" nullable="false"/>
+      <property name="numScaleRangeRequired" xsi:type="reference" type="numScaleRange"/>
+      <property name="numScaleRangeOptional" xsi:type="reference" type="numScaleRange" use="optional"/>
+      <property name="numScaleRangeRequiredNotNullable" xsi:type="reference" type="numScaleRangePrimitive" nullable="false"/>
+      <property name="numScaleRangeOptionalNotNullable" xsi:type="reference" type="numScaleRange" use="optional" nullable="false"/>
+      <property name="str" xsi:type="reference" type="str"/>
+      <property name="strOptional" xsi:type="reference" type="str" use="optional"/>
+      <property name="strOptionalNotNullable" xsi:type="reference" type="str" use="optional" nullable="false"/>
+      <property name="strDec" xsi:type="reference" type="strDec"/>
+      <property name="strDecOptional" xsi:type="reference" type="strDec" use="optional"/>
+      <property name="strDecOptionalNotNullable" xsi:type="reference" type="strDec" use="optional" nullable="false"/>
+      <property name="strDecEnc" xsi:type="reference" type="strDecEnc"/>
+      <property name="strDecEncOptional" xsi:type="reference" type="strDecEnc" use="optional"/>
+      <property name="strDecEncOptionalNotNullable" xsi:type="reference" type="strDecEnc" use="optional" nullable="false"/>
+      <property name="strEnc" xsi:type="reference" type="strEnc"/>
+      <property name="strEncOptional" xsi:type="reference" type="strEnc" use="optional"/>
+      <property name="strEncOptionalNotNullable" xsi:type="reference" type="strEnc" use="optional" nullable="false"/>
+      <property name="strPattern" xsi:type="reference" type="strPattern"/>
+      <property name="strPatternOptional" xsi:type="reference" type="strPattern" use="optional"/>
+      <property name="strPatternOptionalNotNullable" xsi:type="reference" type="strPattern" use="optional" nullable="false"/>
+      <property name="strPatternDec" xsi:type="reference" type="strPatternDec"/>
+      <property name="strPatternDecOptional" xsi:type="reference" type="strPatternDec" use="optional"/>
+      <property name="strPatternDecOptionalNotNullable" xsi:type="reference" type="strPatternDec" use="optional" nullable="false"/>
+      <property name="strPatternDecEnc" xsi:type="reference" type="strPatternDecEnc"/>
+      <property name="strPatternDecEncOptional" xsi:type="reference" type="strPatternDecEnc" use="optional"/>
+      <property name="strPatternDecEncOptionalNotNullable" xsi:type="reference" type="strPatternDecEnc" use="optional" nullable="false"/>
+      <property name="strPatternEnc" xsi:type="reference" type="strPatternEnc"/>
+      <property name="strPatternEncOptional" xsi:type="reference" type="strPatternEnc" use="optional"/>
+      <property name="strPatternEncOptionalNotNullable" xsi:type="reference" type="strPatternEnc" use="optional" nullable="false"/>
+    </object>
+
+  </schema>
+
+  <number path="numPrimitive"><bind lang="java" type="double"/></number>
+  <number path="numIntPrimitive"><bind lang="java" type="long"/></number>
+  <number path="numRangePrimitive"><bind lang="java" type="double"/></number>
+  <number path="numIntRangePrimitive"><bind lang="java" type="long"/></number>
+  <number path="numScaleRangePrimitive"><bind lang="java" type="double"/></number>
+
+</binding>

@@ -20,57 +20,47 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.libj.lang.Classes;
-import org.libj.util.CollectionUtil;
 import org.openjax.xml.api.XmlElement;
-import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
-import org.w3.www._2001.XMLSchema.yAA.$Boolean;
-import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
-import org.w3.www._2001.XMLSchema.yAA.$String;
+import org.w3.www._2001.XMLSchema.yAA;
 
 abstract class Model extends Member implements Comparable<Model> {
   static Class<?> toClass(final Type type) {
-    if (type instanceof Class)
-      return (Class<?>)type;
-
-    if (type instanceof WildcardType)
-      return (Class<?>)((WildcardType)type).getUpperBounds()[0];
-
-    return null;
+    return type instanceof Class ? (Class<?>)type : type instanceof WildcardType ? (Class<?>)((WildcardType)type).getUpperBounds()[0] : null;
   }
 
   static boolean isAssignable(final Method getMethod, final boolean canWrap, final Class<?> cls, final boolean isRegex, final boolean nullable, final Use use) {
-    final Class<?> type = canWrap && getMethod.getReturnType().isPrimitive() ? Classes.box(getMethod.getReturnType()) : getMethod.getReturnType();
+    final Class<?> returnType = getMethod.getReturnType();
+    final Class<?> type = canWrap && returnType.isPrimitive() ? Classes.box(returnType) : returnType;
     if (isRegex) {
       if (!Map.class.isAssignableFrom(type))
         return false;
 
-      final Type genericType = getMethod.getGenericReturnType();
-      if (!(genericType instanceof ParameterizedType))
+      final Type genericReturnType = getMethod.getGenericReturnType();
+      if (!(genericReturnType instanceof ParameterizedType))
         return false;
 
-      final Type[] genericTypes = ((ParameterizedType)genericType).getActualTypeArguments();
+      final Type[] genericTypes = ((ParameterizedType)genericReturnType).getActualTypeArguments();
       if (genericTypes.length != 2)
         return false;
 
-      if (!(genericTypes[1] instanceof ParameterizedType))
-        return cls == null || toClass(genericTypes[1]).isAssignableFrom(cls);
+      final Type genericType = genericTypes[1];
+      if (!(genericType instanceof ParameterizedType))
+        return cls == null || toClass(genericType).isAssignableFrom(cls);
 
-      final Class<?> valueType = (Class<?>)((ParameterizedType)genericTypes[1]).getRawType();
-      if (valueType != Optional.class)
+      final ParameterizedType parameterizedType = (ParameterizedType)genericType;
+      if (parameterizedType.getRawType() != Optional.class)
         return false;
 
-      final Type[] args = ((ParameterizedType)genericTypes[1]).getActualTypeArguments();
-      return args.length == 1 && (cls == null || cls.isAssignableFrom(args[0] instanceof ParameterizedType ? (Class<?>)((ParameterizedType)args[0]).getRawType() : toClass(args[0])));
+      final Type[] args = parameterizedType.getActualTypeArguments();
+      final Type arg;
+      return args.length == 1 && (cls == null || cls.isAssignableFrom((arg = args[0]) instanceof ParameterizedType ? (Class<?>)((ParameterizedType)arg).getRawType() : toClass(arg)));
     }
 
     if (use != Use.OPTIONAL || !nullable)
@@ -80,17 +70,14 @@ abstract class Model extends Member implements Comparable<Model> {
       return false;
 
     final Class<?>[] genericTypes = Classes.getGenericParameters(getMethod);
-    if (genericTypes.length == 0 || genericTypes[0] == null)
-      return false;
-
-    return cls == null || cls.isAssignableFrom(genericTypes[0]);
+    return genericTypes.length != 0 && genericTypes[0] != null && (cls == null || cls.isAssignableFrom(genericTypes[0]));
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $AnySimpleType<?> name, final $Boolean nullable, final $String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, name, nullable, use, fieldName, typeBinding);
   }
 
-  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final $Boolean nullable, final $NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Bind.Type typeBinding) {
+  Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$Boolean nullable, final yAA.$NonNegativeInteger minOccurs, final $MaxOccurs maxOccurs, final Bind.Type typeBinding) {
     super(registry, declarer, true, id, doc, nullable, minOccurs, maxOccurs, typeBinding);
   }
 
@@ -112,39 +99,41 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
-    if (owner instanceof ObjectModel)
-      attributes.put("xsi:type", elementName());
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, false);
+    cursor.pushName((String)attributes.get("name"));
 
-    return attributes;
-  }
-
-  @Override
-  XmlElement toXml(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, false);
     if (bindingAttributes != null)
-      element.setElements(CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes)));
+      pathToBinding.put(cursor.toString(), bindingAttributes);
 
     return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
-    final Map<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jx:type", elementName());
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = new PropertyMap<>();
+    properties.put("@", elementName());
 
-    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, true);
+    cursor.pushName((String)attributes.get("name"));
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, true);
+    if (bindingAttributes != null)
+      pathToBinding.put(cursor.toString(), bindingAttributes);
+
     attributes.remove(nameName());
-    attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
-    if (bindingAttributes != null)
-      properties.put("bindings", Collections.singletonList(bindingAttributes));
-
     return properties;
+  }
+
+  @Override
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
+    if (owner instanceof ObjectModel)
+      attributes.put(jsd ? "@" : "xsi:type", elementName());
+
+    return attributes;
   }
 }

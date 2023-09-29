@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 JSONx
+/* Copyright (c) 2023 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,36 +16,19 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
-import java.net.URL;
 
 import org.junit.Test;
-import org.libj.net.URLs;
 import org.xml.sax.SAXException;
 
-public class SchemaSpecTest {
-  public static void test(String version) throws IOException, SAXException {
-    if (version.length() > 0)
-      version = "-" + version;
-
-    final URL testJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsdx");
-    final String testJsd = Converter.jsdxToJsd(testJsdUrl);
-
-    final URL controlJsdUrl = new URL("http://www.jsonx.org/schema" + version + ".jsd");
-    final String controlJsd = new String(URLs.readBytes(controlJsdUrl));
-
-    assertEquals(controlJsd, testJsd);
-  }
-
+public class SchemaSpecTest extends SpecTest {
   @Test
   public void test() throws IOException, SAXException {
-    test("");
+    test("schema", "");
   }
 
   @Test
   public void test04() throws IOException, SAXException {
-    test("0.5");
+    test("schema", "0.5");
   }
 }

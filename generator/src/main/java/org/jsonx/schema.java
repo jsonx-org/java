@@ -1,37 +1,37 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2023-09-26T17:08:33.194")
+@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2023-09-12T12:53:53.926")
 public class schema {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Any extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "any", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "any", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public Any setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public Any set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
+    private java.lang.String _40;
 
-    @org.jsonx.StringProperty(name = "types", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getTypes() {
-      return types;
+    @org.jsonx.StringProperty(name = "@types", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40types() {
+      return _40types;
     }
 
-    public Any setTypes(final java.lang.String types) {
-      this.types = types;
+    public Any set40types(final java.lang.String _40types) {
+      this._40types = _40types;
       return this;
     }
 
-    private java.lang.String types;
+    private java.lang.String _40types;
 
     /** Defines text comments. Optional. **/
-    public Any setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Any set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Any)this;
     }
 
@@ -44,10 +44,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Any that = (org.jsonx.schema.Any)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(types, that.types))
+      if (!org.libj.lang.ObjectUtil.equals(_40types, that._40types))
         return false;
 
       return true;
@@ -56,11 +56,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 188459569 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
-      if (types != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(types);
+      if (_40types != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40types);
 
       return hashCode;
     }
@@ -68,55 +68,55 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class AnyElement extends org.jsonx.schema.Any {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public AnyElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public AnyElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public AnyElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public AnyElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public AnyElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public AnyElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public AnyElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public AnyElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (AnyElement)this;
     }
 
-    public AnyElement setTypes(final java.lang.String types) {
-      super.setTypes(types);
+    public AnyElement set40types(final java.lang.String _40types) {
+      super.set40types(_40types);
       return (AnyElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public AnyElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public AnyElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (AnyElement)this;
     }
 
@@ -129,13 +129,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.AnyElement that = (org.jsonx.schema.AnyElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -144,14 +144,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1449550731 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -159,55 +159,43 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class AnyProperty extends org.jsonx.schema.Any {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public AnyProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public AnyProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public AnyProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public AnyProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.FieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public AnyProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
-    public AnyProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public AnyProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (AnyProperty)this;
     }
 
-    public AnyProperty setTypes(final java.lang.String types) {
-      super.setTypes(types);
+    public AnyProperty set40types(final java.lang.String _40types) {
+      super.set40types(_40types);
       return (AnyProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public AnyProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public AnyProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (AnyProperty)this;
     }
 
@@ -220,13 +208,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.AnyProperty that = (org.jsonx.schema.AnyProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -235,14 +220,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1001597734 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
     }
@@ -250,45 +232,45 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Array extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "array", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "array", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public Array setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public Array set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
+    private java.lang.String _40;
 
     /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
-    @org.jsonx.StringProperty(name = "minIterate", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinIterate() {
-      return minIterate;
+    @org.jsonx.StringProperty(name = "@minIterate", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minIterate() {
+      return _40minIterate;
     }
 
     /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
-    public Array setMinIterate(final java.lang.String minIterate) {
-      this.minIterate = minIterate;
+    public Array set40minIterate(final java.lang.String _40minIterate) {
+      this._40minIterate = _40minIterate;
       return this;
     }
 
-    private java.lang.String minIterate;
+    private java.lang.String _40minIterate;
 
     /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
-    @org.jsonx.StringProperty(name = "maxIterate", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxIterate() {
-      return maxIterate;
+    @org.jsonx.StringProperty(name = "@maxIterate", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxIterate() {
+      return _40maxIterate;
     }
 
     /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
-    public Array setMaxIterate(final java.lang.String maxIterate) {
-      this.maxIterate = maxIterate;
+    public Array set40maxIterate(final java.lang.String _40maxIterate) {
+      this._40maxIterate = _40maxIterate;
       return this;
     }
 
-    private java.lang.String maxIterate;
+    private java.lang.String _40maxIterate;
 
     @org.jsonx.ObjectElement(id = 6, type = org.jsonx.schema.ObjectElement.class, minOccurs = 0, nullable = false)
     @org.jsonx.ObjectElement(id = 5, type = org.jsonx.schema.StringElement.class, minOccurs = 0, nullable = false)
@@ -297,21 +279,21 @@ public class schema {
     @org.jsonx.ObjectElement(id = 2, type = org.jsonx.schema.BooleanElement.class, minOccurs = 0, nullable = false)
     @org.jsonx.ObjectElement(id = 1, type = org.jsonx.schema.ArrayElement.class, minOccurs = 0, nullable = false)
     @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.AnyElement.class, minOccurs = 0, nullable = false)
-    @org.jsonx.ArrayProperty(name = "elements", elementIds = {0, 1, 2, 3, 4, 5, 6}, maxIterate = 2147483647, nullable = false)
-    public java.util.List<org.jsonx.schema.Member> getElements() {
-      return elements;
+    @org.jsonx.ArrayProperty(name = "@elements", elementIds = {0, 1, 2, 3, 4, 5, 6}, maxIterate = 2147483647, nullable = false)
+    public java.util.List<org.jsonx.schema.Member> get40elements() {
+      return _40elements;
     }
 
-    public Array setElements(final java.util.List<org.jsonx.schema.Member> elements) {
-      this.elements = elements;
+    public Array set40elements(final java.util.List<org.jsonx.schema.Member> _40elements) {
+      this._40elements = _40elements;
       return this;
     }
 
-    private java.util.List<org.jsonx.schema.Member> elements;
+    private java.util.List<org.jsonx.schema.Member> _40elements;
 
     /** Defines text comments. Optional. **/
-    public Array setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Array set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Array)this;
     }
 
@@ -324,16 +306,16 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Array that = (org.jsonx.schema.Array)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minIterate, that.minIterate))
+      if (!org.libj.lang.ObjectUtil.equals(_40minIterate, that._40minIterate))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxIterate, that.maxIterate))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxIterate, that._40maxIterate))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(elements, that.elements))
+      if (!org.libj.lang.ObjectUtil.equals(_40elements, that._40elements))
         return false;
 
       return true;
@@ -342,17 +324,17 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 721134942 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
-      if (minIterate != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minIterate);
+      if (_40minIterate != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minIterate);
 
-      if (maxIterate != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxIterate);
+      if (_40maxIterate != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxIterate);
 
-      if (elements != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(elements);
+      if (_40elements != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40elements);
 
       return hashCode;
     }
@@ -360,62 +342,62 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ArrayElement extends org.jsonx.schema.Array {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public ArrayElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public ArrayElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public ArrayElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public ArrayElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public ArrayElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public ArrayElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public ArrayElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ArrayElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ArrayElement)this;
     }
 
     /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
-    public ArrayElement setMinIterate(final java.lang.String minIterate) {
-      super.setMinIterate(minIterate);
+    public ArrayElement set40minIterate(final java.lang.String _40minIterate) {
+      super.set40minIterate(_40minIterate);
       return (ArrayElement)this;
     }
 
     /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
-    public ArrayElement setMaxIterate(final java.lang.String maxIterate) {
-      super.setMaxIterate(maxIterate);
+    public ArrayElement set40maxIterate(final java.lang.String _40maxIterate) {
+      super.set40maxIterate(_40maxIterate);
       return (ArrayElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ArrayElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ArrayElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ArrayElement)this;
     }
 
@@ -428,13 +410,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ArrayElement that = (org.jsonx.schema.ArrayElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -443,14 +425,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -614798402 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -458,62 +440,50 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ArrayProperty extends org.jsonx.schema.Array {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public ArrayProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public ArrayProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public ArrayProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public ArrayProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.FieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public ArrayProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
-    public ArrayProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ArrayProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ArrayProperty)this;
     }
 
     /** Specifies the minimum inclusive number of iterations of child elements. Default: 1. **/
-    public ArrayProperty setMinIterate(final java.lang.String minIterate) {
-      super.setMinIterate(minIterate);
+    public ArrayProperty set40minIterate(final java.lang.String _40minIterate) {
+      super.set40minIterate(_40minIterate);
       return (ArrayProperty)this;
     }
 
     /** Specifies the maximum inclusive number of iterations of child elements. Default: 1. **/
-    public ArrayProperty setMaxIterate(final java.lang.String maxIterate) {
-      super.setMaxIterate(maxIterate);
+    public ArrayProperty set40maxIterate(final java.lang.String _40maxIterate) {
+      super.set40maxIterate(_40maxIterate);
       return (ArrayProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ArrayProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ArrayProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ArrayProperty)this;
     }
 
@@ -526,13 +496,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ArrayProperty that = (org.jsonx.schema.ArrayProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -541,94 +508,33 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1431284051 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
-    }
-  }
-
-  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  public abstract static class Binding implements org.jsonx.JxObject {
-    /** Specifies the language to which this binding applies. **/
-    @org.jsonx.StringProperty(name = "lang", pattern = "\\S|\\S.*\\S", nullable = false)
-    public java.lang.String getLang() {
-      return lang;
-    }
-
-    /** Specifies the language to which this binding applies. **/
-    public Binding setLang(final java.lang.String lang) {
-      this.lang = lang;
-      return this;
-    }
-
-    private java.lang.String lang;
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.Binding))
-        return false;
-
-      final org.jsonx.schema.Binding that = (org.jsonx.schema.Binding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(lang, that.lang))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = 2147169354;
-      if (lang != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(lang);
-
-      return hashCode;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
-      return org.jsonx.JxEncoder.get().toString(this);
     }
   }
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Boolean extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "boolean", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "boolean", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public Boolean setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public Boolean set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
-
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.TypeBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return bindings;
-    }
-
-    public Boolean setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
+    private java.lang.String _40;
 
     /** Defines text comments. Optional. **/
-    public Boolean setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Boolean set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Boolean)this;
     }
 
@@ -641,10 +547,7 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Boolean that = (org.jsonx.schema.Boolean)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
       return true;
@@ -653,11 +556,8 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1974865427 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
       return hashCode;
     }
@@ -665,50 +565,50 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class BooleanElement extends org.jsonx.schema.Boolean {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public BooleanElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public BooleanElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public BooleanElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public BooleanElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public BooleanElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public BooleanElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public BooleanElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public BooleanElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (BooleanElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public BooleanElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public BooleanElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (BooleanElement)this;
     }
 
@@ -721,13 +621,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.BooleanElement that = (org.jsonx.schema.BooleanElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -736,14 +636,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 677851215 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -751,43 +651,38 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class BooleanProperty extends org.jsonx.schema.Boolean {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public BooleanProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public BooleanProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public BooleanProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public BooleanProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.TypeFieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return super.getBindings();
-    }
-
-    public BooleanProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public BooleanProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (BooleanProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public BooleanProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public BooleanProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (BooleanProperty)this;
     }
 
@@ -800,10 +695,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.BooleanProperty that = (org.jsonx.schema.BooleanProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -812,11 +707,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1446250782 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
     }
@@ -825,18 +720,18 @@ public class schema {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Documented implements org.jsonx.JxObject {
     /** Defines text comments. Optional. **/
-    @org.jsonx.StringProperty(name = "doc")
-    public java.lang.String getDoc() {
-      return doc;
+    @org.jsonx.StringProperty(name = "@doc")
+    public java.lang.String get40doc() {
+      return _40doc;
     }
 
     /** Defines text comments. Optional. **/
-    public Documented setDoc(final java.lang.String doc) {
-      this.doc = doc;
+    public Documented set40doc(final java.lang.String _40doc) {
+      this._40doc = _40doc;
       return this;
     }
 
-    private java.lang.String doc;
+    private java.lang.String _40doc;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
@@ -847,7 +742,7 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Documented that = (org.jsonx.schema.Documented)obj;
-      if (!org.libj.lang.ObjectUtil.equals(doc, that.doc))
+      if (!org.libj.lang.ObjectUtil.equals(_40doc, that._40doc))
         return false;
 
       return true;
@@ -856,8 +751,8 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -955389163;
-      if (doc != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(doc);
+      if (_40doc != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40doc);
 
       return hashCode;
     }
@@ -868,39 +763,45 @@ public class schema {
     }
   }
 
-  /** Specifies language-specific binding. **/
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  public static class FieldBinding extends org.jsonx.schema.Binding {
-    /** Specifies the "field" identifier. **/
-    @org.jsonx.StringProperty(name = "field", pattern = "[a-zA-Z_$][a-zA-Z\\d_$]*", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getField() {
-      return field;
+  public static class Import implements org.jsonx.JxObject {
+    @org.jsonx.StringProperty(name = "@namespace", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40namespace() {
+      return _40namespace;
     }
 
-    /** Specifies the "field" identifier. **/
-    public FieldBinding setField(final java.lang.String field) {
-      this.field = field;
+    public Import set40namespace(final java.lang.String _40namespace) {
+      this._40namespace = _40namespace;
       return this;
     }
 
-    private java.lang.String field;
+    private java.lang.String _40namespace;
 
-    /** Specifies the language to which this binding applies. **/
-    public FieldBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (FieldBinding)this;
+    @org.jsonx.StringProperty(name = "@schemaLocation", pattern = "((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40schemaLocation() {
+      return _40schemaLocation;
     }
+
+    public Import set40schemaLocation(final java.lang.String _40schemaLocation) {
+      this._40schemaLocation = _40schemaLocation;
+      return this;
+    }
+
+    private java.lang.String _40schemaLocation;
 
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this)
         return true;
 
-      if (!(obj instanceof org.jsonx.schema.FieldBinding) || !super.equals(obj))
+      if (!(obj instanceof org.jsonx.schema.Import))
         return false;
 
-      final org.jsonx.schema.FieldBinding that = (org.jsonx.schema.FieldBinding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(field, that.field))
+      final org.jsonx.schema.Import that = (org.jsonx.schema.Import)obj;
+      if (!org.libj.lang.ObjectUtil.equals(_40namespace, that._40namespace))
+        return false;
+
+      if (!org.libj.lang.ObjectUtil.equals(_40schemaLocation, that._40schemaLocation))
         return false;
 
       return true;
@@ -908,27 +809,27 @@ public class schema {
 
     @java.lang.Override
     public int hashCode() {
-      int hashCode = -1808808570 * 31 + super.hashCode();
-      if (field != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(field);
+      int hashCode = 1104716096;
+      if (_40namespace != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40namespace);
+
+      if (_40schemaLocation != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40schemaLocation);
 
       return hashCode;
     }
-  }
 
-  /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.FieldBinding.class, nullable = false)
-  @org.jsonx.ArrayType(elementIds = {0})
-  public static @interface FieldBindings {
+    @java.lang.Override
+    public java.lang.String toString() {
+      return org.jsonx.JxEncoder.get().toString(this);
+    }
   }
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Member extends org.jsonx.schema.Documented {
     /** Defines text comments. Optional. **/
-    public Member setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Member set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Member)this;
     }
 
@@ -951,26 +852,26 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Number extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "number", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "number", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public Number setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public Number set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
+    private java.lang.String _40;
 
     /** Specifies the value range in interval notation:
            Open (exclusive) interval: (min,max)
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
            Degenerate interval: [val] **/
-    @org.jsonx.StringProperty(name = "range", pattern = "[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getRange() {
-      return range;
+    @org.jsonx.StringProperty(name = "@range", pattern = "[\\(\\[](-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?,(-?(0|[1-9]\\d*)(\\.\\d+)?([eE][+-]?([1-9]\\d*))?)?[\\)\\]]", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40range() {
+      return _40range;
     }
 
     /** Specifies the value range in interval notation:
@@ -978,42 +879,30 @@ public class schema {
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
            Degenerate interval: [val] **/
-    public Number setRange(final java.lang.String range) {
-      this.range = range;
+    public Number set40range(final java.lang.String _40range) {
+      this._40range = _40range;
       return this;
     }
 
-    private java.lang.String range;
+    private java.lang.String _40range;
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    @org.jsonx.NumberProperty(name = "scale", scale = 0, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Long getScale() {
-      return scale;
+    @org.jsonx.NumberProperty(name = "@scale", scale = 0, use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Long get40scale() {
+      return _40scale;
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public Number setScale(final java.lang.Long scale) {
-      this.scale = scale;
+    public Number set40scale(final java.lang.Long _40scale) {
+      this._40scale = _40scale;
       return this;
     }
 
-    private java.lang.Long scale;
-
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.TypeBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return bindings;
-    }
-
-    public Number setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
+    private java.lang.Long _40scale;
 
     /** Defines text comments. Optional. **/
-    public Number setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Number set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Number)this;
     }
 
@@ -1026,16 +915,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Number that = (org.jsonx.schema.Number)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(range, that.range))
+      if (!org.libj.lang.ObjectUtil.equals(_40range, that._40range))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(scale, that.scale))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40scale, that._40scale))
         return false;
 
       return true;
@@ -1044,17 +930,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1255147748 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
-      if (range != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(range);
+      if (_40range != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40range);
 
-      if (scale != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(scale);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40scale != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40scale);
 
       return hashCode;
     }
@@ -1062,44 +945,44 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class NumberElement extends org.jsonx.schema.Number {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public NumberElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public NumberElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public NumberElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public NumberElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public NumberElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public NumberElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public NumberElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public NumberElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (NumberElement)this;
     }
 
@@ -1108,20 +991,20 @@ public class schema {
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
            Degenerate interval: [val] **/
-    public NumberElement setRange(final java.lang.String range) {
-      super.setRange(range);
+    public NumberElement set40range(final java.lang.String _40range) {
+      super.set40range(_40range);
       return (NumberElement)this;
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public NumberElement setScale(final java.lang.Long scale) {
-      super.setScale(scale);
+    public NumberElement set40scale(final java.lang.Long _40scale) {
+      super.set40scale(_40scale);
       return (NumberElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public NumberElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public NumberElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (NumberElement)this;
     }
 
@@ -1134,13 +1017,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.NumberElement that = (org.jsonx.schema.NumberElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -1149,14 +1032,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 2034148728 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -1164,37 +1047,32 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class NumberProperty extends org.jsonx.schema.Number {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public NumberProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public NumberProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public NumberProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public NumberProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.TypeFieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return super.getBindings();
-    }
-
-    public NumberProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public NumberProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (NumberProperty)this;
     }
 
@@ -1203,20 +1081,20 @@ public class schema {
            Closed (inclusive) interval: [min,max]
            Half-open or half-closed interval: [min,max)
            Degenerate interval: [val] **/
-    public NumberProperty setRange(final java.lang.String range) {
-      super.setRange(range);
+    public NumberProperty set40range(final java.lang.String _40range) {
+      super.set40range(_40range);
       return (NumberProperty)this;
     }
 
     /** The number of digits to the right of the decimal point. If a value is not specified, the scale is unbounded. **/
-    public NumberProperty setScale(final java.lang.Long scale) {
-      super.setScale(scale);
+    public NumberProperty set40scale(final java.lang.Long _40scale) {
+      super.set40scale(_40scale);
       return (NumberProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public NumberProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public NumberProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (NumberProperty)this;
     }
 
@@ -1229,10 +1107,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.NumberProperty that = (org.jsonx.schema.NumberProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -1241,11 +1119,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1944266457 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
     }
@@ -1254,29 +1132,29 @@ public class schema {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Object extends org.jsonx.schema.Member {
     @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-    public static class Properties implements org.jsonx.JxObject {
+    public static class _40properties implements org.jsonx.JxObject {
       @org.jsonx.AnyProperty(name = ".*", types = {@org.jsonx.t(objects = org.jsonx.schema.AnyProperty.class), @org.jsonx.t(objects = org.jsonx.schema.ArrayProperty.class), @org.jsonx.t(objects = org.jsonx.schema.BooleanProperty.class), @org.jsonx.t(objects = org.jsonx.schema.NumberProperty.class), @org.jsonx.t(objects = org.jsonx.schema.ObjectProperty.class), @org.jsonx.t(objects = org.jsonx.schema.ReferenceProperty.class), @org.jsonx.t(objects = org.jsonx.schema.StringProperty.class)}, nullable = false)
-      public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getProperties() {
-        return properties;
+      public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> get2e2a() {
+        return _2e2a;
       }
 
-      public Properties setProperties(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> properties) {
-        this.properties = properties;
+      public _40properties set2e2a(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _2e2a) {
+        this._2e2a = _2e2a;
         return this;
       }
 
-      private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> properties;
+      private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _2e2a;
 
       @java.lang.Override
       public boolean equals(final java.lang.Object obj) {
         if (obj == this)
           return true;
 
-        if (!(obj instanceof org.jsonx.schema.Object.Properties))
+        if (!(obj instanceof org.jsonx.schema.Object._40properties))
           return false;
 
-        final org.jsonx.schema.Object.Properties that = (org.jsonx.schema.Object.Properties)obj;
-        if (!org.libj.lang.ObjectUtil.equals(properties, that.properties))
+        final org.jsonx.schema.Object._40properties that = (org.jsonx.schema.Object._40properties)obj;
+        if (!org.libj.lang.ObjectUtil.equals(_2e2a, that._2e2a))
           return false;
 
         return true;
@@ -1284,9 +1162,9 @@ public class schema {
 
       @java.lang.Override
       public int hashCode() {
-        int hashCode = -946499747;
-        if (properties != null)
-          hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(properties);
+        int hashCode = -1007110076;
+        if (_2e2a != null)
+          hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_2e2a);
 
         return hashCode;
       }
@@ -1297,47 +1175,47 @@ public class schema {
       }
     }
 
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "object", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "object", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public Object setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public Object set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
+    private java.lang.String _40;
 
     /** Specifies the name of the type to extend. Optional. **/
-    @org.jsonx.StringProperty(name = "extends", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getExtends() {
-      return _extends;
+    @org.jsonx.StringProperty(name = "@extends", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40extends() {
+      return _40extends;
     }
 
     /** Specifies the name of the type to extend. Optional. **/
-    public Object setExtends(final java.lang.String _extends) {
-      this._extends = _extends;
+    public Object set40extends(final java.lang.String _40extends) {
+      this._40extends = _40extends;
       return this;
     }
 
-    private java.lang.String _extends;
+    private java.lang.String _40extends;
 
-    @org.jsonx.ObjectProperty(name = "properties", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public org.jsonx.schema.Object.Properties getProperties() {
-      return properties;
+    @org.jsonx.ObjectProperty(name = "@properties", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public org.jsonx.schema.Object._40properties get40properties() {
+      return _40properties;
     }
 
-    public Object setProperties(final org.jsonx.schema.Object.Properties properties) {
-      this.properties = properties;
+    public Object set40properties(final org.jsonx.schema.Object._40properties _40properties) {
+      this._40properties = _40properties;
       return this;
     }
 
-    private org.jsonx.schema.Object.Properties properties;
+    private org.jsonx.schema.Object._40properties _40properties;
 
     /** Defines text comments. Optional. **/
-    public Object setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Object set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Object)this;
     }
 
@@ -1350,13 +1228,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Object that = (org.jsonx.schema.Object)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(_extends, that._extends))
+      if (!org.libj.lang.ObjectUtil.equals(_40extends, that._40extends))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(properties, that.properties))
+      if (!org.libj.lang.ObjectUtil.equals(_40properties, that._40properties))
         return false;
 
       return true;
@@ -1365,14 +1243,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1266143450 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
-      if (_extends != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_extends);
+      if (_40extends != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40extends);
 
-      if (properties != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(properties);
+      if (_40properties != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40properties);
 
       return hashCode;
     }
@@ -1380,61 +1258,61 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectElement extends org.jsonx.schema.Object {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public ObjectElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public ObjectElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public ObjectElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public ObjectElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public ObjectElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public ObjectElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public ObjectElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ObjectElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ObjectElement)this;
     }
 
     /** Specifies the name of the type to extend. Optional. **/
-    public ObjectElement setExtends(final java.lang.String _extends) {
-      super.setExtends(_extends);
+    public ObjectElement set40extends(final java.lang.String _40extends) {
+      super.set40extends(_40extends);
       return (ObjectElement)this;
     }
 
-    public ObjectElement setProperties(final org.jsonx.schema.Object.Properties properties) {
-      super.setProperties(properties);
+    public ObjectElement set40properties(final org.jsonx.schema.Object._40properties _40properties) {
+      super.set40properties(_40properties);
       return (ObjectElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ObjectElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ObjectElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ObjectElement)this;
     }
 
@@ -1447,13 +1325,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ObjectElement that = (org.jsonx.schema.ObjectElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -1462,14 +1340,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1694884670 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -1477,61 +1355,49 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectProperty extends org.jsonx.schema.Object {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public ObjectProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public ObjectProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public ObjectProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public ObjectProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.FieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public ObjectProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
-    public ObjectProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ObjectProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ObjectProperty)this;
     }
 
     /** Specifies the name of the type to extend. Optional. **/
-    public ObjectProperty setExtends(final java.lang.String _extends) {
-      super.setExtends(_extends);
+    public ObjectProperty set40extends(final java.lang.String _40extends) {
+      super.set40extends(_40extends);
       return (ObjectProperty)this;
     }
 
-    public ObjectProperty setProperties(final org.jsonx.schema.Object.Properties properties) {
-      super.setProperties(properties);
+    public ObjectProperty set40properties(final org.jsonx.schema.Object._40properties _40properties) {
+      super.set40properties(_40properties);
       return (ObjectProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ObjectProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ObjectProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ObjectProperty)this;
     }
 
@@ -1544,13 +1410,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ObjectProperty that = (org.jsonx.schema.ObjectProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -1559,14 +1422,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = -1986619185 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
     }
@@ -1575,38 +1435,38 @@ public class schema {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ObjectType extends org.jsonx.schema.Object {
     /** Specifies whether the object is abstract. Default: false. **/
-    @org.jsonx.BooleanProperty(name = "abstract", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getAbstract() {
-      return _abstract;
+    @org.jsonx.BooleanProperty(name = "@abstract", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40abstract() {
+      return _40abstract;
     }
 
     /** Specifies whether the object is abstract. Default: false. **/
-    public ObjectType setAbstract(final java.lang.Boolean _abstract) {
-      this._abstract = _abstract;
+    public ObjectType set40abstract(final java.lang.Boolean _40abstract) {
+      this._40abstract = _40abstract;
       return this;
     }
 
-    private java.lang.Boolean _abstract;
+    private java.lang.Boolean _40abstract;
 
-    public ObjectType setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ObjectType set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ObjectType)this;
     }
 
     /** Specifies the name of the type to extend. Optional. **/
-    public ObjectType setExtends(final java.lang.String _extends) {
-      super.setExtends(_extends);
+    public ObjectType set40extends(final java.lang.String _40extends) {
+      super.set40extends(_40extends);
       return (ObjectType)this;
     }
 
-    public ObjectType setProperties(final org.jsonx.schema.Object.Properties properties) {
-      super.setProperties(properties);
+    public ObjectType set40properties(final org.jsonx.schema.Object._40properties _40properties) {
+      super.set40properties(_40properties);
       return (ObjectType)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ObjectType setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ObjectType set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ObjectType)this;
     }
 
@@ -1619,7 +1479,7 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ObjectType that = (org.jsonx.schema.ObjectType)obj;
-      if (!org.libj.lang.ObjectUtil.equals(_abstract, that._abstract))
+      if (!org.libj.lang.ObjectUtil.equals(_40abstract, that._40abstract))
         return false;
 
       return true;
@@ -1628,8 +1488,8 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 926406452 * 31 + super.hashCode();
-      if (_abstract != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_abstract);
+      if (_40abstract != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40abstract);
 
       return hashCode;
     }
@@ -1637,35 +1497,35 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Reference extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "reference", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "reference", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public Reference setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public Reference set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
+    private java.lang.String _40;
 
     /** Specifies the name of the referenced type. Required. **/
-    @org.jsonx.StringProperty(name = "type", pattern = "\\S|\\S.*\\S", nullable = false)
-    public java.lang.String getType() {
-      return type;
+    @org.jsonx.StringProperty(name = "@type", pattern = "\\S|\\S.*\\S", nullable = false)
+    public java.lang.String get40type() {
+      return _40type;
     }
 
     /** Specifies the name of the referenced type. Required. **/
-    public Reference setType(final java.lang.String type) {
-      this.type = type;
+    public Reference set40type(final java.lang.String _40type) {
+      this._40type = _40type;
       return this;
     }
 
-    private java.lang.String type;
+    private java.lang.String _40type;
 
     /** Defines text comments. Optional. **/
-    public Reference setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Reference set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Reference)this;
     }
 
@@ -1678,10 +1538,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Reference that = (org.jsonx.schema.Reference)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(type, that.type))
+      if (!org.libj.lang.ObjectUtil.equals(_40type, that._40type))
         return false;
 
       return true;
@@ -1690,11 +1550,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1841260496 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
-      if (type != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(type);
+      if (_40type != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40type);
 
       return hashCode;
     }
@@ -1702,56 +1562,56 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ReferenceElement extends org.jsonx.schema.Reference {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public ReferenceElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public ReferenceElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public ReferenceElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public ReferenceElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public ReferenceElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public ReferenceElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public ReferenceElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ReferenceElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ReferenceElement)this;
     }
 
     /** Specifies the name of the referenced type. Required. **/
-    public ReferenceElement setType(final java.lang.String type) {
-      super.setType(type);
+    public ReferenceElement set40type(final java.lang.String _40type) {
+      super.set40type(_40type);
       return (ReferenceElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ReferenceElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ReferenceElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ReferenceElement)this;
     }
 
@@ -1764,13 +1624,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ReferenceElement that = (org.jsonx.schema.ReferenceElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -1779,14 +1639,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1837032716 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -1794,56 +1654,44 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class ReferenceProperty extends org.jsonx.schema.Reference {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public ReferenceProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public ReferenceProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public ReferenceProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public ReferenceProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.FieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.FieldBinding> getBindings() {
-      return bindings;
-    }
-
-    public ReferenceProperty setBindings(final java.util.List<org.jsonx.schema.FieldBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.FieldBinding> bindings;
-
-    public ReferenceProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public ReferenceProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (ReferenceProperty)this;
     }
 
     /** Specifies the name of the referenced type. Required. **/
-    public ReferenceProperty setType(final java.lang.String type) {
-      super.setType(type);
+    public ReferenceProperty set40type(final java.lang.String _40type) {
+      super.set40type(_40type);
       return (ReferenceProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public ReferenceProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public ReferenceProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (ReferenceProperty)this;
     }
 
@@ -1856,13 +1704,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.ReferenceProperty that = (org.jsonx.schema.ReferenceProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -1871,14 +1716,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 128637381 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
     }
@@ -1886,57 +1728,70 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class Schema extends org.jsonx.schema.Documented {
-    @org.jsonx.StringProperty(name = "jx:ns", pattern = "http://www.jsonx.org/schema-0.5.jsd", nullable = false)
-    public java.lang.String getJx3aNs() {
-      return jx3aNs;
+    @org.jsonx.StringProperty(name = "@ns", pattern = "http://www.jsonx.org/schema-0.5.jsd", nullable = false)
+    public java.lang.String get40ns() {
+      return _40ns;
     }
 
-    public Schema setJx3aNs(final java.lang.String jx3aNs) {
-      this.jx3aNs = jx3aNs;
+    public Schema set40ns(final java.lang.String _40ns) {
+      this._40ns = _40ns;
       return this;
     }
 
-    private java.lang.String jx3aNs;
+    private java.lang.String _40ns;
 
-    @org.jsonx.StringProperty(name = "jx:schemaLocation", pattern = "http://www.jsonx.org/schema-0.5.jsd [^ ]+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getJx3aSchemaLocation() {
-      return jx3aSchemaLocation;
+    @org.jsonx.StringProperty(name = "@schemaLocation", pattern = "((\\S|\\S.*\\S) (\\S|\\S.*\\S))+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40schemaLocation() {
+      return _40schemaLocation;
     }
 
-    public Schema setJx3aSchemaLocation(final java.lang.String jx3aSchemaLocation) {
-      this.jx3aSchemaLocation = jx3aSchemaLocation;
+    public Schema set40schemaLocation(final java.lang.String _40schemaLocation) {
+      this._40schemaLocation = _40schemaLocation;
       return this;
     }
 
-    private java.lang.String jx3aSchemaLocation;
+    private java.lang.String _40schemaLocation;
 
-    @org.jsonx.StringProperty(name = "jx:targetNamespace", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getJx3aTargetNamespace() {
-      return jx3aTargetNamespace;
+    @org.jsonx.StringProperty(name = "@targetNamespace", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40targetNamespace() {
+      return _40targetNamespace;
     }
 
-    public Schema setJx3aTargetNamespace(final java.lang.String jx3aTargetNamespace) {
-      this.jx3aTargetNamespace = jx3aTargetNamespace;
+    public Schema set40targetNamespace(final java.lang.String _40targetNamespace) {
+      this._40targetNamespace = _40targetNamespace;
       return this;
     }
 
-    private java.lang.String jx3aTargetNamespace;
+    private java.lang.String _40targetNamespace;
+
+    @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.Import.class)
+    @org.jsonx.ArrayProperty(name = "@imports", elementIds = {0}, use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.util.List<org.jsonx.schema.Import> get40imports() {
+      return _40imports;
+    }
+
+    public Schema set40imports(final java.util.List<org.jsonx.schema.Import> _40imports) {
+      this._40imports = _40imports;
+      return this;
+    }
+
+    private java.util.List<org.jsonx.schema.Import> _40imports;
 
     @org.jsonx.AnyProperty(name = "[a-zA-Z_][-a-zA-Z\\d_]*", types = {@org.jsonx.t(objects = org.jsonx.schema.Array.class), @org.jsonx.t(objects = org.jsonx.schema.Boolean.class), @org.jsonx.t(objects = org.jsonx.schema.Number.class), @org.jsonx.t(objects = org.jsonx.schema.ObjectType.class), @org.jsonx.t(objects = org.jsonx.schema.String.class)}, nullable = false)
-    public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> getDeclarations() {
-      return declarations;
+    public java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> get5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a() {
+      return _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
     }
 
-    public Schema setDeclarations(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> declarations) {
-      this.declarations = declarations;
+    public Schema set5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a(final java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a) {
+      this._5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a = _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
       return this;
     }
 
-    private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> declarations;
+    private java.util.LinkedHashMap<java.lang.String,org.jsonx.schema.Member> _5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a;
 
     /** Defines text comments. Optional. **/
-    public Schema setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public Schema set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (Schema)this;
     }
 
@@ -1949,16 +1804,19 @@ public class schema {
         return false;
 
       final org.jsonx.schema.Schema that = (org.jsonx.schema.Schema)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aNs, that.jx3aNs))
+      if (!org.libj.lang.ObjectUtil.equals(_40ns, that._40ns))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(jx3aSchemaLocation, that.jx3aSchemaLocation))
+      if (!org.libj.lang.ObjectUtil.equals(_40schemaLocation, that._40schemaLocation))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(jx3aTargetNamespace, that.jx3aTargetNamespace))
+      if (!org.libj.lang.ObjectUtil.equals(_40targetNamespace, that._40targetNamespace))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(declarations, that.declarations))
+      if (!org.libj.lang.ObjectUtil.equals(_40imports, that._40imports))
+        return false;
+
+      if (!org.libj.lang.ObjectUtil.equals(_5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a, that._5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a))
         return false;
 
       return true;
@@ -1967,17 +1825,20 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1381524284 * 31 + super.hashCode();
-      if (jx3aNs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aNs);
+      if (_40ns != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40ns);
 
-      if (jx3aSchemaLocation != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aSchemaLocation);
+      if (_40schemaLocation != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40schemaLocation);
 
-      if (jx3aTargetNamespace != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aTargetNamespace);
+      if (_40targetNamespace != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40targetNamespace);
 
-      if (declarations != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(declarations);
+      if (_40imports != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40imports);
+
+      if (_5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_5ba2dZA2dZ__5d5b2dA2dZA2dZ5cD__5d2a);
 
       return hashCode;
     }
@@ -1985,45 +1846,33 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class String extends org.jsonx.schema.Member {
-    @org.jsonx.StringProperty(name = "jx:type", pattern = "string", nullable = false)
-    public java.lang.String getJx3aType() {
-      return jx3aType;
+    @org.jsonx.StringProperty(name = "@", pattern = "string", nullable = false)
+    public java.lang.String get40() {
+      return _40;
     }
 
-    public String setJx3aType(final java.lang.String jx3aType) {
-      this.jx3aType = jx3aType;
+    public String set40(final java.lang.String _40) {
+      this._40 = _40;
       return this;
     }
 
-    private java.lang.String jx3aType;
+    private java.lang.String _40;
 
-    @org.jsonx.StringProperty(name = "pattern", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getPattern() {
-      return pattern;
+    @org.jsonx.StringProperty(name = "@pattern", pattern = "\\S|\\S.*\\S", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40pattern() {
+      return _40pattern;
     }
 
-    public String setPattern(final java.lang.String pattern) {
-      this.pattern = pattern;
+    public String set40pattern(final java.lang.String _40pattern) {
+      this._40pattern = _40pattern;
       return this;
     }
 
-    private java.lang.String pattern;
-
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.TypeBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return bindings;
-    }
-
-    public String setBindings(final java.util.List<org.jsonx.schema.TypeBinding> bindings) {
-      this.bindings = bindings;
-      return this;
-    }
-
-    private java.util.List<org.jsonx.schema.TypeBinding> bindings;
+    private java.lang.String _40pattern;
 
     /** Defines text comments. Optional. **/
-    public String setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public String set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (String)this;
     }
 
@@ -2036,13 +1885,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.String that = (org.jsonx.schema.String)obj;
-      if (!org.libj.lang.ObjectUtil.equals(jx3aType, that.jx3aType))
+      if (!org.libj.lang.ObjectUtil.equals(_40, that._40))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(pattern, that.pattern))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(bindings, that.bindings))
+      if (!org.libj.lang.ObjectUtil.equals(_40pattern, that._40pattern))
         return false;
 
       return true;
@@ -2051,14 +1897,11 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1397525932 * 31 + super.hashCode();
-      if (jx3aType != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(jx3aType);
+      if (_40 != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40);
 
-      if (pattern != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(pattern);
-
-      if (bindings != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(bindings);
+      if (_40pattern != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40pattern);
 
       return hashCode;
     }
@@ -2066,55 +1909,55 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class StringElement extends org.jsonx.schema.String {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public StringElement setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public StringElement set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMinOccurs() {
-      return minOccurs;
+    @org.jsonx.StringProperty(name = "@minOccurs", pattern = "\\d+", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40minOccurs() {
+      return _40minOccurs;
     }
 
-    public StringElement setMinOccurs(final java.lang.String minOccurs) {
-      this.minOccurs = minOccurs;
+    public StringElement set40minOccurs(final java.lang.String _40minOccurs) {
+      this._40minOccurs = _40minOccurs;
       return this;
     }
 
-    private java.lang.String minOccurs;
+    private java.lang.String _40minOccurs;
 
-    @org.jsonx.StringProperty(name = "maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getMaxOccurs() {
-      return maxOccurs;
+    @org.jsonx.StringProperty(name = "@maxOccurs", pattern = "\\d+|unbounded", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40maxOccurs() {
+      return _40maxOccurs;
     }
 
-    public StringElement setMaxOccurs(final java.lang.String maxOccurs) {
-      this.maxOccurs = maxOccurs;
+    public StringElement set40maxOccurs(final java.lang.String _40maxOccurs) {
+      this._40maxOccurs = _40maxOccurs;
       return this;
     }
 
-    private java.lang.String maxOccurs;
+    private java.lang.String _40maxOccurs;
 
-    public StringElement setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public StringElement set40(final java.lang.String _40) {
+      super.set40(_40);
       return (StringElement)this;
     }
 
-    public StringElement setPattern(final java.lang.String pattern) {
-      super.setPattern(pattern);
+    public StringElement set40pattern(final java.lang.String _40pattern) {
+      super.set40pattern(_40pattern);
       return (StringElement)this;
     }
 
     /** Defines text comments. Optional. **/
-    public StringElement setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public StringElement set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (StringElement)this;
     }
 
@@ -2127,13 +1970,13 @@ public class schema {
         return false;
 
       final org.jsonx.schema.StringElement that = (org.jsonx.schema.StringElement)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(minOccurs, that.minOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40minOccurs, that._40minOccurs))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(maxOccurs, that.maxOccurs))
+      if (!org.libj.lang.ObjectUtil.equals(_40maxOccurs, that._40maxOccurs))
         return false;
 
       return true;
@@ -2142,14 +1985,14 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1884336048 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (minOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(minOccurs);
+      if (_40minOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40minOccurs);
 
-      if (maxOccurs != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(maxOccurs);
+      if (_40maxOccurs != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40maxOccurs);
 
       return hashCode;
     }
@@ -2157,48 +2000,43 @@ public class schema {
 
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public static class StringProperty extends org.jsonx.schema.String {
-    @org.jsonx.BooleanProperty(name = "nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.Boolean getNullable() {
-      return nullable;
+    @org.jsonx.BooleanProperty(name = "@nullable", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.Boolean get40nullable() {
+      return _40nullable;
     }
 
-    public StringProperty setNullable(final java.lang.Boolean nullable) {
-      this.nullable = nullable;
+    public StringProperty set40nullable(final java.lang.Boolean _40nullable) {
+      this._40nullable = _40nullable;
       return this;
     }
 
-    private java.lang.Boolean nullable;
+    private java.lang.Boolean _40nullable;
 
-    @org.jsonx.StringProperty(name = "use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getUse() {
-      return use;
+    @org.jsonx.StringProperty(name = "@use", pattern = "required|optional", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    public java.lang.String get40use() {
+      return _40use;
     }
 
-    public StringProperty setUse(final java.lang.String use) {
-      this.use = use;
+    public StringProperty set40use(final java.lang.String _40use) {
+      this._40use = _40use;
       return this;
     }
 
-    private java.lang.String use;
+    private java.lang.String _40use;
 
-    @org.jsonx.ArrayProperty(name = "bindings", type = org.jsonx.schema.TypeFieldBindings.class, use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.util.List<org.jsonx.schema.TypeBinding> getBindings() {
-      return super.getBindings();
-    }
-
-    public StringProperty setJx3aType(final java.lang.String jx3aType) {
-      super.setJx3aType(jx3aType);
+    public StringProperty set40(final java.lang.String _40) {
+      super.set40(_40);
       return (StringProperty)this;
     }
 
-    public StringProperty setPattern(final java.lang.String pattern) {
-      super.setPattern(pattern);
+    public StringProperty set40pattern(final java.lang.String _40pattern) {
+      super.set40pattern(_40pattern);
       return (StringProperty)this;
     }
 
     /** Defines text comments. Optional. **/
-    public StringProperty setDoc(final java.lang.String doc) {
-      super.setDoc(doc);
+    public StringProperty set40doc(final java.lang.String _40doc) {
+      super.set40doc(_40doc);
       return (StringProperty)this;
     }
 
@@ -2211,10 +2049,10 @@ public class schema {
         return false;
 
       final org.jsonx.schema.StringProperty that = (org.jsonx.schema.StringProperty)obj;
-      if (!org.libj.lang.ObjectUtil.equals(nullable, that.nullable))
+      if (!org.libj.lang.ObjectUtil.equals(_40nullable, that._40nullable))
         return false;
 
-      if (!org.libj.lang.ObjectUtil.equals(use, that.use))
+      if (!org.libj.lang.ObjectUtil.equals(_40use, that._40use))
         return false;
 
       return true;
@@ -2223,183 +2061,13 @@ public class schema {
     @java.lang.Override
     public int hashCode() {
       int hashCode = 1595040673 * 31 + super.hashCode();
-      if (nullable != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(nullable);
+      if (_40nullable != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40nullable);
 
-      if (use != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(use);
-
-      return hashCode;
-    }
-  }
-
-  /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  public static class TypeBinding extends org.jsonx.schema.Binding {
-    /** Specifies the "type" qualified identifier. **/
-    @org.jsonx.StringProperty(name = "type", pattern = "(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\[\\])?", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getType() {
-      return type;
-    }
-
-    /** Specifies the "type" qualified identifier. **/
-    public TypeBinding setType(final java.lang.String type) {
-      this.type = type;
-      return this;
-    }
-
-    private java.lang.String type;
-
-    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    @org.jsonx.StringProperty(name = "decode", pattern = "(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\.<init>)?", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getDecode() {
-      return decode;
-    }
-
-    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    public TypeBinding setDecode(final java.lang.String decode) {
-      this.decode = decode;
-      return this;
-    }
-
-    private java.lang.String decode;
-
-    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    @org.jsonx.StringProperty(name = "encode", pattern = "(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\.<init>)?", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getEncode() {
-      return encode;
-    }
-
-    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    public TypeBinding setEncode(final java.lang.String encode) {
-      this.encode = encode;
-      return this;
-    }
-
-    private java.lang.String encode;
-
-    /** Specifies the language to which this binding applies. **/
-    public TypeBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (TypeBinding)this;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.TypeBinding) || !super.equals(obj))
-        return false;
-
-      final org.jsonx.schema.TypeBinding that = (org.jsonx.schema.TypeBinding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(type, that.type))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(decode, that.decode))
-        return false;
-
-      if (!org.libj.lang.ObjectUtil.equals(encode, that.encode))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = 559947056 * 31 + super.hashCode();
-      if (type != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(type);
-
-      if (decode != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(decode);
-
-      if (encode != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(encode);
+      if (_40use != null)
+        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(_40use);
 
       return hashCode;
     }
-  }
-
-  /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.TypeBinding.class, nullable = false)
-  @org.jsonx.ArrayType(elementIds = {0})
-  public static @interface TypeBindings {
-  }
-
-  /** Specifies language-specific binding. **/
-  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  public static class TypeFieldBinding extends org.jsonx.schema.TypeBinding {
-    /** Specifies the "field" identifier. **/
-    @org.jsonx.StringProperty(name = "field", pattern = "[a-zA-Z_$][a-zA-Z\\d_$]*", use = org.jsonx.Use.OPTIONAL, nullable = false)
-    public java.lang.String getField() {
-      return field;
-    }
-
-    /** Specifies the "field" identifier. **/
-    public TypeFieldBinding setField(final java.lang.String field) {
-      this.field = field;
-      return this;
-    }
-
-    private java.lang.String field;
-
-    /** Specifies the "type" qualified identifier. **/
-    public TypeFieldBinding setType(final java.lang.String type) {
-      super.setType(type);
-      return (TypeFieldBinding)this;
-    }
-
-    /** Specifies the "decode" qualified function identifier that accepts input as a string, or as the native JSON type of this property, and returns an output of the specified "type" (or the default type if "type" is unspecified). **/
-    public TypeFieldBinding setDecode(final java.lang.String decode) {
-      super.setDecode(decode);
-      return (TypeFieldBinding)this;
-    }
-
-    /** Specifies the "encode" qualified function identifier that accepts input of the type specified in "type" (or the default type if "type" is unspecified), and returns an output as a string, or as the native JSON type of this property. **/
-    public TypeFieldBinding setEncode(final java.lang.String encode) {
-      super.setEncode(encode);
-      return (TypeFieldBinding)this;
-    }
-
-    /** Specifies the language to which this binding applies. **/
-    public TypeFieldBinding setLang(final java.lang.String lang) {
-      super.setLang(lang);
-      return (TypeFieldBinding)this;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this)
-        return true;
-
-      if (!(obj instanceof org.jsonx.schema.TypeFieldBinding) || !super.equals(obj))
-        return false;
-
-      final org.jsonx.schema.TypeFieldBinding that = (org.jsonx.schema.TypeFieldBinding)obj;
-      if (!org.libj.lang.ObjectUtil.equals(field, that.field))
-        return false;
-
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      int hashCode = -1642693536 * 31 + super.hashCode();
-      if (field != null)
-        hashCode = 31 * hashCode + org.libj.lang.ObjectUtil.hashCode(field);
-
-      return hashCode;
-    }
-  }
-
-  /** Specifies language-specific bindings. **/
-  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
-  @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-  @org.jsonx.ObjectElement(id = 0, type = org.jsonx.schema.TypeFieldBinding.class, nullable = false)
-  @org.jsonx.ArrayType(elementIds = {0})
-  public static @interface TypeFieldBindings {
   }
 }

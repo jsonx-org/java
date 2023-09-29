@@ -130,6 +130,9 @@ public class Range implements Serializable {
     final StringBuilder b = new StringBuilder();
     this.min = parseNumber(b, string, 1, true, type);
     this.minStr = toString(min);
+    if ("1.0E100".equals(minStr))
+      toString(min);
+
     final int length = b.length() + 1;
     if (string.charAt(length) != ',')
       throw new ParseException("Missing ',' in string: \"" + string + "\"", length + 1);

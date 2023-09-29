@@ -30,36 +30,28 @@ import org.junit.Test;
 import org.libj.jci.CompilationException;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.Strings;
-import org.libj.util.function.Throwing;
 
 public class ValidatorTest {
   private static File getFile(final String fileName) {
-    final File dir = new File("target/generated-test-resources");
-    dir.mkdirs();
-    final File jsdFile = new File(dir, "account.jsdx");
+    final File jsdxFile = new File("target/generated-test-resources", fileName);
+    jsdxFile.getParentFile().mkdirs();
     try (final InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(fileName)) {
-      Files.copy(in, jsdFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      return jsdFile;
+      Files.copy(in, jsdxFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      return jsdxFile;
     }
     catch (final IOException e) {
       throw new UncheckedIOException(e);
     }
   }
 
-  private static File schemaFile = getFile("account.jsdx");
-  private static Runnable onFinished;
+  private static File schemaFile = getFile("schema/account.jsdx");
 
   @AfterClass
-  public static void afterClass() {
-    onFinished.run();
-  }
-
-  @Test
-  public void testUsage() throws Throwable {
-    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
+  public static void afterClass() throws Throwable {
+    RuntimeUtil.onExit(() -> {
       Validator.main(Strings.EMPTY_ARRAY);
       fail("Expected System.exit()");
-    }));
+    });
   }
 
   private static void testFile(final File file, final boolean isValid) throws CompilationException, IOException, PackageNotFoundException {

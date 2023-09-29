@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import java.util.Map;
-
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
 import org.openjax.xml.api.XmlElement;
 
@@ -27,8 +25,15 @@ abstract class Element {
 
   Element(final String name, final $Documented.Doc$ doc) {
     this.name = name;
-    final String str;
-    this.doc = doc == null || doc.text() == null || (str = doc.text().trim()).length() == 0 ? null : str;
+    String str;
+    this.doc = doc == null || (str = doc.text()) == null || (str = str.trim()).length() == 0 ? null : str;
+  }
+
+  abstract XmlElement toXml(Element owner, String packageName, JsonPath.Cursor cursor, PropertyMap<AttributeMap> pathToBinding);
+  abstract Object toJson(Element owner, String packageName, JsonPath.Cursor cursor, PropertyMap<AttributeMap> pathToBinding);
+
+  static String jsd(final boolean jsd, final String name) {
+    return jsd ? "@" + name : name;
   }
 
   /**
@@ -37,12 +42,13 @@ abstract class Element {
    *
    * @param owner The {@link Element} that owns (contains) {@code this} element.
    * @param packageName The package name declared in the schema element.
+   * @param jsd When {@code true}, property names will comply to JSD format; when {@code false}, property names will comply to JSDx format.
    * @return The non-null {@code Map<String,String>} of name/value attributes.
    */
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
     final AttributeMap attributes = new AttributeMap();
     if (doc != null)
-      attributes.put("doc", doc);
+      attributes.put(jsd(jsd, "doc"), doc);
 
     return attributes;
   }
@@ -50,7 +56,4 @@ abstract class Element {
   public final String name() {
     return name;
   }
-
-  abstract XmlElement toXml(Element owner, String packageName);
-  abstract Object toJson(Element owner, String packageName);
 }

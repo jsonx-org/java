@@ -72,7 +72,9 @@ The <ins>JSONx Maven Plugin</ins> implements a Maven MOJO that can be used in a 
       <phase>generate-sources</phase>
       <configuration>
         <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-        <prefix>com.example.json.</prefix>
+        <namespacePackages>
+          <namespacePackage package="com.example.json."/>
+        </namespacePackages>
         <schemas>
           <schema>src/main/resources/schema.jsd</schema> <!-- or schema.jsdx -->
         </schemas>
@@ -98,12 +100,13 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
 
 ##### <b>5.2.1.1</b> Configuration Parameters
 
-| Name                          | Type    | Use      | Description                             |
-|:------------------------------|:--------|:---------|:----------------------------------------|
-| <samp>/destDir¹</samp>        | String  | Required | Destination path of generated bindings. |
-| <samp>/prefix¹</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | String<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Required<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Prefix to be prepended to the class names of generated bindings.<br>The prefix represents a:<ul><li>Package name if it ends with an unescaped <samp>.</samp> character.</li><li>Declaring class name if it ends with an unescaped <samp>$</samp> character.</li></ul> |
-| <samp>/schemas¹</samp>        | List    | Required | List of <samp>schema</samp> elements.   |
-| <samp>/schemas/schemaⁿ</samp> | String  | Required | File path or URL of JSD or JSDx schema. |
+| Name                             | Type    | Use      | Description                             |
+|:---------------------------------|:--------|:---------|:----------------------------------------|
+| <samp>/destDir¹</samp>           | String  | Required | Destination path of generated bindings. |
+| <samp>/namespacePackages¹</samp> | List  | Optional | List of <samp>namespacePackage</samp> elements.   |
+| <samp>/namespacePackages/namespacePackageⁿ</samp><br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | String<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;  | Optional<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp; | Package prefix to be prepended to the class<br>names of generated bindings.<br>The value represents a:<ul><li>Package name if it ends with an<br>unescaped <samp>.</samp> character.</li><li>Declaring class name if it ends with an<br>unescaped <samp>$</samp> character.</li></ul> |
+| <samp>/schemas¹</samp>           | List    | Required | List of <samp>schema</samp> elements.   |
+| <samp>/schemas/schemaⁿ</samp>    | String  | Required | File path or URL of JSD or JSDx schema. |
 
 ##### <b>5.2.1.2</b> Example
 
@@ -120,7 +123,9 @@ The `jsonx:generate` goal is bound to the `generate-sources` phase, and is used 
       </goals>
       <configuration>
         <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-        <prefix>com.example.json.</prefix>
+        <namespacePackages>
+          <namespacePackage package="com.example.json."/>
+        </namespacePackages>
         <schemas>
           <schema>src/main/resources/schema1.jsd</schema>
           <schema>src/main/resources/schema2.jsdx</schema>

@@ -1,0 +1,67 @@
+{
+  "@ns": "http://www.jsonx.org/schema-0.5.jsd",
+  "@schemaLocation": "http://www.jsonx.org/schema-0.5.jsd http://www.jsonx.org/schema-0.5.jsd",
+  "@targetNamespace": "urn:test:account",
+  "id": {
+    "@": "string",
+    "@pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+  },
+  "email": {
+    "@": "string",
+    "@pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}"
+  },
+  "sha256": {
+    "@": "string",
+    "@pattern": "[0-9a-f]{64}"
+  },
+  "ids": {
+    "@": "array",
+    "@elements": [{
+        "@": "reference",
+        "@type": "id"
+      }]
+  },
+  "credentials": {
+    "@": "object",
+    "@properties": {
+      "email": {
+        "@": "reference",
+        "@nullable": false,
+        "@type": "email"
+      },
+      "password": {
+        "@": "reference",
+        "@nullable": false,
+        "@type": "sha256",
+        "@use": "optional"
+      }
+    }
+  },
+  "account": {
+    "@": "object",
+    "@extends": "credentials",
+    "@properties": {
+      "id": {
+        "@": "reference",
+        "@nullable": false,
+        "@type": "id",
+        "@use": "optional"
+      },
+      "firstName": {
+        "@": "string",
+        "@nullable": false
+      },
+      "lastName": {
+        "@": "string",
+        "@nullable": false
+      }
+    }
+  },
+  "accounts": {
+    "@": "array",
+    "@elements": [{
+        "@": "reference",
+        "@type": "account"
+      }]
+  }
+}

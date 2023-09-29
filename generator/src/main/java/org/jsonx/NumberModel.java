@@ -19,72 +19,33 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.RandomAccess;
+import java.util.IdentityHashMap;
 
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.schema.TypeBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Number;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$NumberMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$NumberMember.Range$;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
+import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class NumberModel extends Model {
-  private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
-    final $TypeBinding xsb = new $ArrayMember.Number.Binding();
-    xsb.setLang$(new $Binding.Lang$(jsd.getLang()));
-    final String type = jsd.getType();
-    if (type != null)
-      xsb.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = jsd.getDecode();
-    if (decode != null)
-      xsb.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = jsd.getEncode();
-    if (encode != null)
-      xsb.setEncode$(new $TypeBinding.Encode$(encode));
-
-    return xsb;
-  }
-
   private static Schema.Number type(final schema.Number jsd, final String name) {
     final Schema.Number xsb = new Schema.Number();
     if (name != null)
       xsb.setName$(new Schema.Number.Name$(name));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -100,88 +61,31 @@ final class NumberModel extends Model {
     if (name != null)
       xsb.setName$(new $Number.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Number.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Number.Use$($Number.Use$.Enum.valueOf(use)));
 
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          addBinding(xsb, (schema.TypeFieldBinding)i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Number xsb, final schema.TypeFieldBinding binding) {
-    final $TypeFieldBinding bind = new $Number.Binding();
-    bind.setLang$(new $Binding.Lang$(binding.getLang()));
-
-    final String type = binding.getType();
-    if (type != null)
-      bind.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = binding.getDecode();
-    if (decode != null)
-      bind.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = binding.getEncode();
-    if (encode != null)
-      bind.setEncode$(new $TypeBinding.Encode$(encode));
-
-    final String field = binding.getField();
-    if (field != null)
-      bind.setField$(new $TypeFieldBinding.Field$(field));
-
-    xsb.addBinding(bind);
   }
 
   private static $ArrayMember.Number element(final schema.NumberElement jsd) {
     final $ArrayMember.Number xsb = new $ArrayMember.Number();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Number.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Number.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Number.MaxOccurs$(maxOccurs));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -197,37 +101,37 @@ final class NumberModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final Long scale = jsd.getScale();
+    final Long scale = jsd.get40scale();
     if (scale != null)
       xsb.setScale$(new $NumberMember.Scale$(scale));
 
-    final String range = jsd.getRange();
+    final String range = jsd.get40range();
     if (range != null)
       xsb.setRange$(new $NumberMember.Range$(range));
 
     return xsb;
   }
 
-  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
-    return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb), null);
+  static NumberModel declare(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.declare(xsb).value(new NumberModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     try {
-      return registry.reference(newNumberModel(registry, referrer, xsb), referrer);
+      return registry.reference(newNumberModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
     }
   }
 
-  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb) {
+  static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
+      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
@@ -238,7 +142,6 @@ final class NumberModel extends Model {
     try {
       final NumberModel model = newNumberModel(registry, referrer, property, getMethod, fieldName);
       final Id id = model.id();
-
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
@@ -251,7 +154,6 @@ final class NumberModel extends Model {
     try {
       final NumberModel model = new NumberModel(registry, referrer, element.nullable(), element.scale(), element.range(), Bind.Type.from(registry, element.type(), element.decode(), element.encode(), typeDefault(element.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
-
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
     }
@@ -265,7 +167,6 @@ final class NumberModel extends Model {
       // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
       final NumberModel model = new NumberModel(registry, referrer, false, type.scale(), type.range(), Bind.Type.from(registry, type.type(), type.decode(), type.encode(), typeDefault(type.scale(), false, registry.settings), Number.class));
       final Id id = model.id();
-
       final NumberModel registered = (NumberModel)registry.getModel(id);
       return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
     }
@@ -297,8 +198,8 @@ final class NumberModel extends Model {
   final int scale;
   final Range range;
 
-  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
+  private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();
     final Range$ range$ = xsb.getRange$();
@@ -310,8 +211,7 @@ final class NumberModel extends Model {
     }
   }
 
-  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb) throws ParseException {
-    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $TypeFieldBinding binding) throws ParseException {
     if (binding == null)
       return new NumberModel(registry, declarer, xsb, null, null);
 
@@ -415,13 +315,27 @@ final class NumberModel extends Model {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
+  }
+
+  @Override
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (scale != Integer.MAX_VALUE)
-      attributes.put("scale", scale);
+      attributes.put(jsd(jsd, "scale"), scale);
 
     if (range != null)
-      attributes.put("range", range.toString());
+      attributes.put(jsd(jsd, "range"), range.toString());
 
     return attributes;
   }

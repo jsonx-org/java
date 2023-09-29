@@ -48,7 +48,7 @@
             <configuration>
               <destDir>${project.build.directory}/generated-sources/jaxsb</destDir>
               <schemas>
-                <schema>http://www.jsonx.org/schema.xsd</schema>
+                <schema>http://www.jsonx.org/binding.xsd</schema>
               </schemas>
             </configuration>
           </execution>

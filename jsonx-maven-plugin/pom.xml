@@ -82,9 +82,9 @@
                 <configuration>
                   <destDir>${project.build.directory}/generated-test-resources/jsonx</destDir>
                   <schemas>
-                    <schema>src/test/resources/test.jsd</schema>
-                    <schema>src/test/resources/test.jsdx</schema>
-                    <schema>src/test/resources/sensor.jsdx</schema>
+                    <schema>src/test/resources/test.jsbx</schema>
+                    <schema>src/test/resources/test.jsb</schema>
+                    <schema>src/test/resources/sensor.jsbx</schema>
                   </schemas>
                 </configuration>
               </execution>
@@ -96,7 +96,9 @@
                 </goals>
                 <configuration>
                   <destDir>${project.build.directory}/generated-test-sources/jsonx</destDir>
-                  <prefix>org.jsonx.</prefix>
+                  <namespacePackages>
+                    <namespacePackage package="org.jsonx."/>
+                  </namespacePackages>
                   <defaultBinding>
                     <number>
                       <integer primitive="long" object="java.lang.Long"/>
@@ -104,9 +106,9 @@
                     </number>
                   </defaultBinding>
                   <schemas>
-                    <schema>src/test/resources/test.jsd</schema>
-                    <schema>src/test/resources/test.jsdx</schema>
-                    <schema>src/test/resources/sensor.jsdx</schema>
+                    <schema>src/test/resources/sensor.jsbx</schema>
+                    <schema>src/test/resources/test.jsb</schema>
+                    <schema>src/test/resources/test.jsbx</schema>
                   </schemas>
                 </configuration>
               </execution>
@@ -118,9 +120,9 @@
                 </goals>
                 <configuration>
                   <schemas>
-                    <schema>src/test/resources/test.jsd</schema>
-                    <schema>src/test/resources/test.jsdx</schema>
-                    <schema>src/test/resources/sensor.jsdx</schema>
+                    <schema>src/test/resources/test.jsb</schema>
+                    <schema>src/test/resources/test.jsbx</schema>
+                    <schema>src/test/resources/sensor.jsbx</schema>
                   </schemas>
                 </configuration>
               </execution>

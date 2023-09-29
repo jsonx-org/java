@@ -18,28 +18,20 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import org.jsonx.Registry.Type;
-import org.jsonx.schema.FieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ReferenceMember;
-import org.libj.util.CollectionUtil;
-import org.libj.util.Iterators;
 import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
 import org.w3.www._2001.XMLSchema.yAA.$NonNegativeInteger;
@@ -48,15 +40,15 @@ final class Reference extends Member {
   private static $ArrayMember.Reference element(final schema.ReferenceElement jsd) {
     final $ArrayMember.Reference xsb = new $ArrayMember.Reference();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Reference.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Reference.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Reference.MaxOccurs$(maxOccurs));
 
@@ -76,39 +68,15 @@ final class Reference extends Member {
     if (name != null)
       xsb.setName$(new $Reference.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Reference.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Reference.Use$($Reference.Use$.Enum.valueOf(use)));
 
-    final List<FieldBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (CollectionUtil.isRandomAccess(bindings)) {
-        int i = 0;
-        do // [RA]
-          addBinding(xsb, bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.FieldBinding> it = bindings.iterator();
-        do // [I]
-          addBinding(xsb, it.next());
-        while (it.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Reference xsb, final schema.FieldBinding binding) {
-    final $Reference.Binding bin = new $Reference.Binding();
-    bin.setLang$(new $Binding.Lang$(binding.getLang()));
-    bin.setField$(new $Reference.Binding.Field$(binding.getField()));
-    xsb.addBinding(bin);
   }
 
   static $ReferenceMember jsdToXsb(final schema.Reference jsd, final String name) {
@@ -120,11 +88,11 @@ final class Reference extends Member {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final String type = jsd.getType();
+    final String type = jsd.get40type();
     if (type != null)
       xsb.setType$(new $ReferenceMember.Type$(type));
 
@@ -142,8 +110,8 @@ final class Reference extends Member {
     this.model = model;
   }
 
-  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Reference xsb, final Supplier<? extends Model> model) {
-    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get(), getBinding(xsb.getBinding())));
+  static Deferred<Reference> defer(final Registry registry, final Declarer declarer, final $Reference xsb, final $FieldBinding binding, final Supplier<? extends Model> model) {
+    return new Deferred<>(true, null, null, () -> new Reference(registry, declarer, xsb, model.get(), binding));
   }
 
   private Reference(final Registry registry, final Declarer declarer, final $Reference xsb, final Model model, final $FieldBinding binding) {
@@ -224,82 +192,75 @@ final class Reference extends Member {
     return model.typeAnnotation();
   }
 
-  private Map<String,Object> getBindingAttributes(final Element owner) {
-    final Map<String,Object> bindingAttributes = Bind.toXmlAttributes(owner, typeBinding, fieldBinding);
+  private AttributeMap getBindingAttributes(final Element owner, final AttributeMap attributes, final boolean jsd) {
+    final AttributeMap bindingAttributes = Bind.toBindingAttributes(model instanceof AnyModel || model instanceof ArrayModel && ((ArrayModel)model).classType() == null ? model.elementName() : elementName(), owner, typeBinding, fieldBinding, attributes, jsd);
     if (bindingAttributes == null)
       return null;
 
-    bindingAttributes.remove("type");
-    bindingAttributes.remove("decode");
-    bindingAttributes.remove("encode");
+    bindingAttributes.remove(jsd(jsd, "type"));
+    bindingAttributes.remove(jsd(jsd, "decode"));
+    bindingAttributes.remove(jsd(jsd, "encode"));
     // If there's only lang="java", then remove the binding element
-    return bindingAttributes.size() <= 1 ? null : bindingAttributes;
+    return bindingAttributes.size() <= 2 ? null : bindingAttributes;
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  XmlElement toXml(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = toXmlAttributes(owner, packageName);
-    final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
-    if (!registry.isRootMember(model)) {
-      final XmlElement element = model.toXml(owner, packageName);
-      if (element.getElements() != null) {
-        final XmlElement lastElement = Iterators.<XmlElement>lastElement(element.getElements().iterator());
-        if ("binding".equals(lastElement.getName())) {
-          // Remove "field", because the type of the reference cannot define a "field"
-          lastElement.getAttributes().remove("field");
-          if (bindingAttributes != null)
-            lastElement.getAttributes().putAll(bindingAttributes);
-        }
-        else if (bindingAttributes != null) {
-          element.getElements().add(new XmlElement("binding", bindingAttributes));
-        }
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    return toXml(owner, packageName, cursor, pathToBinding, false);
+  }
+
+  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean jsd) {
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, jsd);
+    cursor.pushName((String)attributes.get("name"));
+
+    final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, jsd);
+    if (bindingAttributes != null)
+      pathToBinding.put(cursor.toString(), bindingAttributes);
+
+    final XmlElement element;
+    if (registry.isRootMember(model)) {
+      if (model != null) {
+        final String subName = Registry.getSubName(model.id().toString(), packageName);
+        attributes.put(jsd(jsd, "type"), subName);
       }
-      else if (bindingAttributes != null) {
-        element.setElements(CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes)));
+
+      if (owner instanceof ObjectModel) {
+        attributes.put(jsd ? "@" : "xsi:type", elementName());
+        element = new XmlElement("property", attributes);
       }
+      else {
+        element = new XmlElement(elementName(), attributes);
+      }
+    }
+    else {
+      element = model.toXml(owner, packageName, cursor, pathToBinding);
 
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
       final Map<String,Object> attrs = element.getAttributes();
-      attrs.remove("minOccurs");
-      attrs.remove("maxOccurs");
-      attrs.remove("nullable");
-      attrs.remove("use");
+      attrs.remove(jsd(jsd, "minOccurs"));
+      attrs.remove(jsd(jsd, "maxOccurs"));
+      attrs.remove(jsd(jsd, "nullable"));
+      attrs.remove(jsd(jsd, "use"));
       attrs.putAll(attributes);
-
-      return element;
     }
 
-    if (model != null) {
-      final String subName = Registry.getSubName(model.id().toString(), packageName);
-      attributes.put("type", subName);
-    }
-
-    final List<XmlElement> bindingXmls = bindingAttributes == null ? null : CollectionUtil.asCollection(new ArrayList<>(), new XmlElement("binding", bindingAttributes));
-    if (!(owner instanceof ObjectModel))
-      return new XmlElement(elementName(), attributes, bindingXmls);
-
-    attributes.put("xsi:type", elementName());
-    return new XmlElement("property", attributes, bindingXmls);
+    cursor.popName();
+    return element;
   }
 
   @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
-    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>();
-    properties.put("jx:type", elementName());
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = new PropertyMap<>();
+    properties.put("@", elementName());
 
-    final Map<String,Object> attributes = toXml(owner, packageName).getAttributes();
+    final AttributeMap attributes = (AttributeMap)toXml(owner, packageName, cursor, pathToBinding, true).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 
     properties.putAll(attributes);
-    final Map<String,Object> bindingAttributes = getBindingAttributes(owner);
-    if (bindingAttributes != null)
-      properties.put("bindings", Collections.singletonList(bindingAttributes));
-
     return properties;
   }
 

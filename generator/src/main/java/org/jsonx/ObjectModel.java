@@ -24,21 +24,19 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.jsonx.Registry.Type;
-import org.jsonx.schema.FieldBinding;
-import org.jsonx.schema.Object.Properties;
+import org.jsonx.schema.Object._40properties;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Number;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Object;
@@ -50,9 +48,9 @@ import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.ObjectUtil;
 import org.libj.lang.Strings;
-import org.libj.util.CollectionUtil;
 import org.libj.util.Iterators;
 import org.openjax.xml.api.XmlElement;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class ObjectModel extends Referrer<ObjectModel> {
   private static Schema.Object type(final schema.ObjectType jsd, final String name) {
@@ -60,8 +58,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new Schema.Object.Name$(name));
 
-    if (jsd.getAbstract() != null)
-      xsb.setAbstract$(new Schema.Object.Abstract$(jsd.getAbstract()));
+    if (jsd.get40abstract() != null)
+      xsb.setAbstract$(new Schema.Object.Abstract$(jsd.get40abstract()));
 
     return xsb;
   }
@@ -77,43 +75,19 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (name != null)
       xsb.setName$(new $Object.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Object.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Object.Use$($Object.Use$.Enum.valueOf(use)));
 
-    final String extends$ = jsd.getExtends();
+    final String extends$ = jsd.get40extends();
     if (extends$ != null)
       xsb.setExtends$(new $ObjectMember.Extends$(extends$));
 
-    final int i$;
-    final List<FieldBinding> bindings = jsd.getBindings();
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (CollectionUtil.isRandomAccess(bindings)) {
-        int i = 0;
-        do // [RA]
-          addBinding(xsb, bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.FieldBinding> it = bindings.iterator();
-        do // [I]
-          addBinding(xsb, it.next());
-        while (it.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Object xsb, final schema.FieldBinding binding) {
-    final $Object.Binding bin = new $Object.Binding();
-    bin.setLang$(new $Binding.Lang$(binding.getLang()));
-    bin.setField$(new $Object.Binding.Field$(binding.getField()));
-    xsb.addBinding(bin);
   }
 
   static $ObjectMember jsdToXsb(final schema.Object jsd, final String name) {
@@ -125,17 +99,17 @@ final class ObjectModel extends Referrer<ObjectModel> {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    final String extends$ = jsd.getExtends();
+    final String extends$ = jsd.get40extends();
     if (extends$ != null)
       xsb.setExtends$(new $ObjectMember.Extends$(extends$));
 
-    final Properties properties$ = jsd.getProperties();
+    final _40properties properties$ = jsd.get40properties();
     if (properties$ != null) {
-      final LinkedHashMap<String,? extends schema.Member> properties = properties$.getProperties();
+      final LinkedHashMap<String,? extends schema.Member> properties = properties$.get2e2a();
       if (properties != null && properties.size() > 0) {
         for (final Map.Entry<String,? extends schema.Member> entry : properties.entrySet()) { // [S]
           final String propertyName = entry.getKey();
@@ -163,12 +137,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
     return xsb;
   }
 
-  static ObjectModel declare(final Registry registry, final Declarer declarer, final Schema.Object xsb) {
-    return registry.declare(xsb).value(new ObjectModel(registry, declarer, xsb), null);
+  static ObjectModel declare(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.declare(xsb).value(new ObjectModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb) {
-    return registry.declare(xsb).value(new ObjectModel(registry, referrer, xsb, getBinding(xsb.getBinding())), referrer);
+  static ObjectModel declare(final Registry registry, final ObjectModel referrer, final $Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.declare(xsb).value(new ObjectModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Class<?> cls, final String name, final String fieldName) {
@@ -239,52 +213,50 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
   }
 
-  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel) {
-    final LinkedHashMap<String,Member> members = new LinkedHashMap<>();
+  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
     final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
     while (iterator.hasNext()) {
-      final $Member member = ($Member)iterator.next();
-      if (member instanceof $Any) {
-        final $Any any = ($Any)member;
-        members.put(any.getNames$().text(), AnyModel.reference(registry, objectModel, any));
+      final $Member next = ($Member)iterator.next();
+      if (next instanceof $Any) {
+        final $Any member = ($Any)next;
+        members.put(member.getNames$().text(), AnyModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Array) {
-        final $Array array = ($Array)member;
-        final ArrayModel child = ArrayModel.reference(registry, objectModel, array);
-        members.put(array.getName$().text(), child);
+      else if (next instanceof $Array) {
+        final $Array member = ($Array)next;
+        members.put(member.getName$().text(), ArrayModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Boolean) {
-        final $Boolean bool = ($Boolean)member;
-        members.put(bool.getName$().text(), BooleanModel.reference(registry, objectModel, bool));
+      else if (next instanceof $Boolean) {
+        final $Boolean member = ($Boolean)next;
+        members.put(member.getName$().text(), BooleanModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Number) {
-        final $Number number = ($Number)member;
-        members.put(number.getName$().text(), NumberModel.reference(registry, objectModel, number));
+      else if (next instanceof $Number) {
+        final $Number member = ($Number)next;
+        members.put(member.getName$().text(), NumberModel.reference(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Object) {
-        final $Object object = ($Object)member;
-        final ObjectModel child = declare(registry, objectModel, object);
-        members.put(object.getName$().text(), child);
+      else if (next instanceof $Object) {
+        final $Object member = ($Object)next;
+        members.put(member.getName$().text(), declare(registry, objectModel, member, xsbToBinding));
       }
-      else if (member instanceof $Reference) {
-        final $Reference reference = ($Reference)member;
-        final Id id = Id.named(reference.getType$());
+      else if (next instanceof $Reference) {
+        final $Reference member = ($Reference)next;
+        final Id id = Id.named(member.getType$());
         final Member child = registry.getModel(id);
-        members.put(reference.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, reference, () -> registry.reference(registry.getModel(id), objectModel)));
+        members.put(member.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, member, xsbToBinding == null ? null : xsbToBinding.get(member), () -> registry.reference(registry.getModel(id), objectModel)));
       }
-      else if (member instanceof $String) {
-        final $String string = ($String)member;
-        members.put(string.getName$().text(), StringModel.reference(registry, objectModel, string));
+      else if (next instanceof $String) {
+        final $String member = ($String)next;
+        members.put(member.getName$().text(), StringModel.reference(registry, objectModel, member, xsbToBinding));
       }
       else {
-        throw new UnsupportedOperationException("Unsupported " + member.getClass().getSimpleName() + " member type: " + member.getClass().getName());
+        throw new UnsupportedOperationException("Unsupported " + next.getClass().getSimpleName() + " member type: " + next.getClass().getName());
       }
     }
 
     return members;
   }
 
-  class Property {
+  private class Property {
     private final Member member;
     private boolean overrideSet;
     private Member override;
@@ -305,16 +277,17 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    public XmlElement toXml(final ObjectModel owner, final String packageName) {
-      final XmlElement element = member.toXml(owner, packageName);
+    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+      final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
-        if (element.getElements() != null) {
-          final Iterator<?> iterator = element.getElements().iterator();
+        final Collection<?> elements = element.getElements();
+        if (elements != null && elements.size() > 0) {
+          final Iterator<?> iterator = elements.iterator();
           while (iterator.hasNext()) {
             final XmlElement child = (XmlElement)iterator.next();
-            if ("binding".equals(child.getName()))
-              iterator.remove();
+            if ("binding".equals(child.getName())) // FIXME:...!!
+              throw new RuntimeException("...Remove this code");
           }
         }
 
@@ -329,33 +302,33 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     @SuppressWarnings("unchecked")
-    public Object toJson(final ObjectModel owner, final String packageName) {
-      final Map<String,Object> object = (Map<String,Object>)member.toJson(owner, packageName);
+    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+      final PropertyMap<Object> object = (PropertyMap<Object>)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
         // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
-        object.remove("bindings");
-        object.remove("nullable");
-        object.remove("use");
-        object.remove("minOccurs");
-        object.remove("maxOccurs");
+        object.remove("@bindings");
+        object.remove("@nullable");
+        object.remove("@use");
+        object.remove("@minOccurs");
+        object.remove("@maxOccurs");
       }
 
       return object;
     }
   }
 
-  final LinkedHashMap<String,Property> properties;
+  private final LinkedHashMap<String,Property> properties;
   private Member superObject;
   final boolean isAbstract;
 
   private final Class<?> cls;
   private final Map<String,PropertySpec> getMethodToPropertySpec;
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb) {
-    super(registry, declarer, registry.getType(registry.packageName, registry.classPrefix + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text());
+  private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    super(registry, declarer, registry.getType(registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text());
     this.isAbstract = xsb.getAbstract$().text();
     this.superObject = getReference(xsb.getExtends$());
-    this.properties = parseProperties(xsb);
+    this.properties = parseProperties(xsb, xsbToBinding);
 
     this.cls = null;
     this.getMethodToPropertySpec = null;
@@ -363,13 +336,13 @@ final class ObjectModel extends Referrer<ObjectModel> {
     validateTypeBinding();
   }
 
-  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb) {
-    final LinkedHashMap<String,Member> members = parseMembers(xsb, this);
+  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    final LinkedHashMap<String,Member> members = parseMembers(xsb, this, xsbToBinding);
     if (members == null)
       return null;
 
     final int size = members.size();
-    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size);
+    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size); // FIXME: Does this need to be a LinkedHashMap?
     if (size > 0)
       for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
         properties.put(entry.getKey(), new Property(entry.getValue()));
@@ -411,10 +384,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
         if (superProperty.member.isAssignableFrom(property.member))
           property.setOverride(superProperty.member);
-        else {
-          superProperty.member.isAssignableFrom(property.member);
+        else
           throw new ValidationException("Object " + (name() != null ? name() : JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
-        }
       }
     }
   }
@@ -427,11 +398,11 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this(registry, declarer, element.type(), element.nullable(), null, null);
   }
 
-  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final $FieldBinding binding) {
-    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classPrefix + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classPrefix + JsdUtil.flipName(xsb.getExtends$().text()) : null), binding == null ? null : binding.getField$(), null);
+  private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classBasePath + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding, xsb), null);
     this.superObject = getReference(xsb.getExtends$());
     this.isAbstract = false;
-    this.properties = parseProperties(xsb);
+    this.properties = parseProperties(xsb, xsbToBinding);
 
     this.cls = null;
     this.getMethodToPropertySpec = null;
@@ -478,7 +449,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     final Class<?> superClass = cls.getSuperclass();
     this.isAbstract = Modifier.isAbstract(cls.getModifiers());
     this.superObject = superClass == null || !JxObject.class.isAssignableFrom(superClass) ? null : referenceOrDeclare(registry, declarer, superClass);
-    this.properties = new LinkedHashMap<>();
+    this.properties = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
 
     this.cls = cls;
     this.getMethodToPropertySpec = new HashMap<>();
@@ -622,9 +593,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private PropertySpec getSuperObjectProperty(final Method method) {
     final String methodName = method.getName();
     for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
-      final PropertySpec annotation = parent.getMethodToPropertySpec.get(methodName);
-      if (annotation != null)
-        return annotation;
+      final PropertySpec propertySpec = parent.getMethodToPropertySpec.get(methodName);
+      if (propertySpec != null)
+        return propertySpec;
     }
 
     return null;
@@ -704,53 +675,54 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    final int size;
+    if (properties != null && (size = properties.size()) > 0) {
+      final Collection superElements = element.getElements();
+      final ArrayList<XmlElement> elements = new ArrayList<>(size + (superElements != null ? superElements.size() : 0));
+      for (final Property property : properties.values()) // [C]
+        elements.add(property.toXml(this, packageName, cursor, pathToBinding));
+
+      if (superElements != null)
+        elements.addAll(superElements);
+
+      element.setElements(elements);
+    }
+
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+    final int size;
+    if (properties != null && (size = properties.size()) > 0) {
+      final PropertyMap<Object> properties = new PropertyMap<>(size);
+      element.put("@properties", properties);
+      for (final Property property : this.properties.values()) // [C]
+        properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
+    }
+
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     final String name = name();
     attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
 
     if (superObject != null)
-      attributes.put("extends", JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
+      attributes.put(jsd(jsd, "extends"), JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
 
     if (isAbstract)
-      attributes.put("abstract", isAbstract);
+      attributes.put(jsd(jsd, "abstract"), isAbstract);
 
     return attributes;
-  }
-
-  @Override
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName) {
-    final XmlElement element = super.toXml(owner, packageName);
-    final int i$;
-    if (properties == null || (i$ = properties.size()) == 0)
-      return element;
-
-    final Collection superElements = element.getElements();
-    final ArrayList<XmlElement> elements = new ArrayList<>(i$ + (superElements != null ? superElements.size() : 0));
-    for (final Property property : properties.values()) // [C]
-      elements.add(property.toXml(this, packageName));
-
-    if (superElements != null)
-      elements.addAll(superElements);
-
-    element.setElements(elements);
-    return element;
-  }
-
-  @Override
-  Map<String,Object> toJson(final Element owner, final String packageName) {
-    final Map<String,Object> element = super.toJson(owner, packageName);
-    final int size;
-    if (properties == null || (size = properties.size()) == 0)
-      return element;
-
-    final LinkedHashMap<String,Object> properties = new LinkedHashMap<>(size);
-    for (final Property property : this.properties.values()) // [C]
-      properties.put(property.member.name(), property.toJson(this, packageName));
-
-    element.put("properties", properties);
-    return element;
   }
 
   @Override
@@ -844,9 +816,9 @@ final class ObjectModel extends Referrer<ObjectModel> {
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
           final Type memberType = member.type();
           final String instanceCase = member.fieldBinding.instanceCase;
-          if (!isOptionalType && memberType.isArray())
+          if (!isOptionalType && memberType.isArray)
             b.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
-          else if (!isOptionalType && memberType.isPrimitive())
+          else if (!isOptionalType && memberType.isPrimitive)
             b.append("\n  if (").append(instanceCase).append(" != that.").append(instanceCase);
           else
             b.append("\n  if (!").append(ObjectUtil.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
@@ -869,10 +841,10 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
           final Member member = property.member;
           final Type memberType = member.type();
-          final boolean isPrimitive = memberType.isPrimitive();
+          final boolean isPrimitive = memberType.isPrimitive;
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
 
-          final boolean isArray = memberType.isArray();
+          final boolean isArray = memberType.isArray;
           final String indent = !isPrimitive || isArray ? "    " : "  ";
           final String header = "\n" + indent + "hashCode = 31 * hashCode + ";
 
@@ -884,7 +856,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
           if (!isOptionalType && isArray)
             b.append(Arrays.class.getName()).append(".hashCode(").append(instanceCase).append(");");
           else if (!isOptionalType && isPrimitive)
-            b.append(memberType.getWrapper()).append(".hashCode(").append(instanceCase).append(");");
+            b.append(memberType.wrapper).append(".hashCode(").append(instanceCase).append(");");
           else
             b.append(ObjectUtil.class.getName()).append(".hashCode(").append(instanceCase).append(");");
 

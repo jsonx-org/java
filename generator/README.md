@@ -60,10 +60,10 @@ The <ins>JSONx Binding Generator</ins> provides convenience utilities for genera
 
 ### <b>4.1</b> `Generator`
 
-The following example generates binding classes (`.java` files) in `target/generated-sources/jsonx` for the <ins>schema document</ins> at `src/main/resources/example.jsd`, with prefix `org.example$`.
+The following example generates binding classes (`.java` files) in `target/generated-sources/jsonx` for the <ins>schema document</ins> at `src/main/resources/example.jsd`, with package prefix `org.example$`.
 
 ```bash
-java -cp ... org.jsonx.Generator --prefix org.example$ -d target/generated-sources/jsonx src/main/resources/example.jsd
+java -cp ... org.jsonx.Generator -p org.example$ -d target/generated-sources/jsonx src/main/resources/example.jsd
 ```
 
 ### <b>4.2</b> `Converter`
@@ -85,16 +85,14 @@ A distinction has to be made between "normative scope" and "non-normative scope"
 The `Generator` is a utility class that can be used on the CLI to generate Java binding classes from a JSD schema. The `Generator` class has the following usage specification:
 
 ```
-Usage: Generator [OPTIONS] <-d DEST_DIR> <SCHEMA_FILE>
+Usage: Generator <-p [NAMESPACE] PREFIX>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx>...
 
 Mandatory arguments:
-  -d <destDir>       Specify the destination directory.
-
-Optional arguments:
-  --prefix <PREFIX>  Package prefix for generated classes.
+  -p [NAMESPACE] <PREFIX>  Package prefix of generated classes for provided namespace, recurrable.
+  -d <DEST_DIR>            The destination directory.
 
 Supported SCHEMA_FILE formats:
-                 <JSD|JSDx>
+                 <JSD|JSDx|JSB|JSBx>
 ```
 
 ### <b>5.2</b> `Converter`
@@ -102,10 +100,11 @@ Supported SCHEMA_FILE formats:
 The `Converter` is a utility class that can be used on the CLI to convert JSD files to JSDx, and vice versa. The `Converter` class has the following usage specification:
 
 ```
-Usage: Converter <SCHEMA_IN> [SCHEMA_OUT]
+Usage: Converter <SCHEMA_IN.jsd|SCHEMA_IN.jsdx> [SCHEMA_OUT.jsd|SCHEMA_OUT.jsdx]
+            (or) <BINDING_IN.jsb|BINDING_IN.jsbx> [BINDING_OUT.jsb|BINDING_OUT.jsbx]
 
 Supported SCHEMA_IN|OUT formats:
-                 <JSD|JSDx>
+                 <JSD|JSDx|JSB|JSBx>
 ```
 
 If a `SCHEMA_OUT` argument is not provided, the `Converter` will output the converted content to stdout.

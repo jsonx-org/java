@@ -45,7 +45,9 @@
         </executions>
         <configuration>
           <destDir>${project.build.directory}/generated-sources/jsonx</destDir>
-          <prefix>org.jsonx.sample.bank.</prefix>
+          <namespacePackages>
+            <namespacePackage package="org.jsonx.sample.bank."/>
+          </namespacePackages>
           <schemas>
             <schema>src/main/resources/message.jsdx</schema>
           </schemas>

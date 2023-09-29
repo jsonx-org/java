@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.function.Function;
@@ -31,17 +30,16 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Bindings;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Number;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Object;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$String;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.Classes;
 import org.libj.lang.Strings;
@@ -56,7 +54,7 @@ import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 abstract class Member extends Element {
   private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
-  static <T extends $Binding> T getBinding(final List<T> bindings) {
+  static <T extends $TypeFieldBinding>T getBinding(final List<T> bindings) {
     final int i$;
     if (bindings == null || (i$ = bindings.size()) == 0)
       return null;
@@ -83,12 +81,12 @@ abstract class Member extends Element {
     return null;
   }
 
-  static Bind.Type getBinding(final Registry registry, final $TypeBinding binding) {
+  static Bind.Type getBinding(final Registry registry, final $TypeFieldBinding binding) {
     return binding == null ? null : Bind.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$());
   }
 
-  static Bind.Type getBinding(final Registry registry, final List<? extends $TypeBinding> bindings) {
-    final $TypeBinding binding = getBinding(bindings);
+  static Bind.Type getBinding(final Registry registry, final List<? extends $TypeFieldBinding> bindings) {
+    final $TypeFieldBinding binding = getBinding(bindings);
     return getBinding(registry, binding);
   }
 
@@ -186,7 +184,7 @@ abstract class Member extends Element {
     this.minOccurs = Spec.from(minOccurs, minOccurs == null || minOccurs == 1 ? null : minOccurs);
     this.maxOccurs = Spec.from(maxOccurs, maxOccurs == null || maxOccurs == Integer.MAX_VALUE ? null : maxOccurs);
     checkMinMaxOccurs(name, minOccurs, maxOccurs);
-    this.fieldBinding = Bind.Field.from(name, fieldName);
+    this.fieldBinding = new Bind.Field(name, fieldName);
     this.typeBinding = typeBinding;
   }
 
@@ -208,7 +206,7 @@ abstract class Member extends Element {
       return null;
 
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
-    if (typeBinding.type.isPrimitive() && !typeBinding.type.isArray() && !hasDecodeBinding) {
+    if (typeBinding.type.isPrimitive && !typeBinding.type.isArray && !hasDecodeBinding) {
       if (use.set == Use.OPTIONAL)
         throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
@@ -296,8 +294,8 @@ abstract class Member extends Element {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (name() != null)
       attributes.put(nameName(), name());
     else if (owner instanceof SchemaElement && !(this instanceof Referrer))
@@ -305,17 +303,17 @@ abstract class Member extends Element {
 
     if (!(owner instanceof SchemaElement)) {
       if (nullable.get != null)
-        attributes.put("nullable", nullable.get);
+        attributes.put(jsd(jsd, "nullable"), nullable.get);
 
       if (use.get != null)
-        attributes.put("use", use.get.toString().toLowerCase());
+        attributes.put(jsd(jsd, "use"), use.get.toString().toLowerCase());
     }
 
     if (minOccurs.get != null)
-      attributes.put("minOccurs", String.valueOf(minOccurs.get));
+      attributes.put(jsd(jsd, "minOccurs"), String.valueOf(minOccurs.get));
 
     if (maxOccurs.get != null)
-      attributes.put("maxOccurs", String.valueOf(maxOccurs.get));
+      attributes.put(jsd(jsd, "maxOccurs"), String.valueOf(maxOccurs.get));
 
     return attributes;
   }

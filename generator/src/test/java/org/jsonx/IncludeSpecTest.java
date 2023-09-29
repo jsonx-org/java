@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 JSONx
+/* Copyright (c) 2023 JSONx
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,30 +16,19 @@
 
 package org.jsonx;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
 
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
-public class DigraphTest {
+public class IncludeSpecTest extends SpecTest {
   @Test
-  public void testDigraph() {
-    final StrictDigraph<String> digraph = new StrictDigraph<>("hello");
-    try {
-      digraph.add("a", "a");
-      fail("Expected ValidationException");
-    }
-    catch (final ValidationException e) {
-    }
+  public void test() throws IOException, SAXException {
+    test("include", "");
   }
 
   @Test
-  public void testRefDigraph() {
-    final StrictRefDigraph<String,String> digraph = new StrictRefDigraph<>("hello", s -> s);
-    try {
-      digraph.add("a", "a");
-      fail("Expected ValidationException");
-    }
-    catch (final ValidationException e) {
-    }
+  public void test04() throws IOException, SAXException {
+    test("include", "0.5");
   }
 }

@@ -50,11 +50,11 @@ public class ValidateMojo extends PatternSetMojo {
 
       if (fileSets.size() > 0)
         for (final URI schema : fileSets) // [S]
-          SchemaElement.parse(schema.toURL(), Settings.DEFAULT);
+          Generator.parse(Settings.DEFAULT, schema.toURL());
 
       if (schemas.size() > 0)
         for (final String schema : new LinkedHashSet<>(schemas)) // [S]
-          SchemaElement.parse(new URL(schema), Settings.DEFAULT);
+          Generator.parse(Settings.DEFAULT, new URL(schema));
     }
     catch (final IOException e) {
       throw new MojoExecutionException(e.getClass().getSimpleName() + ": " + e.getMessage(), e);

@@ -21,17 +21,17 @@ import java.util.function.Function;
 import org.libj.util.RefDigraph;
 
 class StrictRefDigraph<T,R> extends RefDigraph<T,R> {
-  private final String selfLinkErrorPrefix;
+  private final String selfLinkErrorHeading;
 
-  StrictRefDigraph(final String selfLinkErrorPrefix, final Function<T,R> reference) {
+  StrictRefDigraph(final String selfLinkErrorHeading, final Function<T,R> reference) {
     super(reference);
-    this.selfLinkErrorPrefix = selfLinkErrorPrefix;
+    this.selfLinkErrorHeading = selfLinkErrorHeading;
   }
 
   @Override
   public boolean add(final T from, final R to) {
     if (reference.apply(from).equals(to))
-      throw new ValidationException(selfLinkErrorPrefix + ": " + reference.apply(from) + " -> " + to);
+      throw new ValidationException(selfLinkErrorHeading + ": " + reference.apply(from) + " -> " + to);
 
     return super.add(from, to);
   }

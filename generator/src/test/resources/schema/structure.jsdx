@@ -17,8 +17,10 @@
 <schema
   xmlns="http://www.jsonx.org/schema-0.5.xsd"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/schema-0.5.xsd http://www.jsonx.org/schema.xsd"
+  xsi:schemaLocation="http://www.jsonx.org/schema-0.5.xsd http://www.jsonx.org/schema-0.5.xsd"
+  targetNamespace="urn:test:structure"
   doc="Schema expressing complex nested structures">
+
   <array name="array">
     <boolean minOccurs="1" maxOccurs="unbounded" nullable="true"/>
     <number scale="5" range="[-1,1)" minOccurs="1" maxOccurs="unbounded" nullable="true"/>
@@ -74,4 +76,5 @@
     </property>
     <property names=".*" xsi:type="any" types="boolean number string array object" nullable="true" use="optional"/>
   </object>
+
 </schema>

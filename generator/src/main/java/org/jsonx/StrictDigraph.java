@@ -19,16 +19,16 @@ package org.jsonx;
 import org.libj.util.Digraph;
 
 class StrictDigraph<T> extends Digraph<T> {
-  private final String selfLinkErrorPrefix;
+  private final String selfLinkErrorHeading;
 
-  StrictDigraph(final String selfLinkErrorPrefix) {
-    this.selfLinkErrorPrefix = selfLinkErrorPrefix;
+  StrictDigraph(final String selfLinkErrorHeading) {
+    this.selfLinkErrorHeading = selfLinkErrorHeading;
   }
 
   @Override
   public boolean add(final T from, final T to) {
     if (from.equals(to))
-      throw new ValidationException(selfLinkErrorPrefix + ": " + from + " -> " + to);
+      throw new ValidationException(selfLinkErrorHeading + ": " + from + " -> " + to);
 
     return super.add(from, to);
   }

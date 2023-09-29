@@ -27,35 +27,27 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.libj.lang.Strings;
 import org.libj.net.MemoryURLStreamHandler;
-import org.libj.util.function.Throwing;
 
 public class ConverterTest {
-  private static Runnable onFinished;
-
   @AfterClass
-  public static void afterClass() {
-    onFinished.run();
-  }
-
-  @Test
-  public void testUsage() throws Throwable {
-    onFinished = RuntimeUtil.onExit(Throwing.rethrow(() -> {
+  public static void afterClass() throws Throwable {
+    RuntimeUtil.onExit(() -> {
       Converter.main(Strings.EMPTY_ARRAY);
       fail("Expected System.exit()");
-    }));
+    });
   }
 
   @Test
   public void testConvertSchema() throws IOException {
-    Converter.convert(new URL("http://www.jsonx.org/schema.jsd"));
     Converter.convert(new URL("http://www.jsonx.org/schema.jsdx"));
+    Converter.convert(new URL("http://www.jsonx.org/schema.jsd"));
   }
 
   @Test
   public void testMain() throws Exception {
     final File jsdFile = Files.createTempFile("jsd", null).toFile();
     jsdFile.deleteOnExit();
-    Converter.main(new String[] {"src/test/resources/account.jsdx", jsdFile.getAbsolutePath()});
+    Converter.main(new String[] {"src/test/resources/schema/account.jsdx", jsdFile.getAbsolutePath()});
     final String jsd1 = new String(Files.readAllBytes(jsdFile.toPath()));
     final String jsdx = Converter.convert(jsdFile.toURI().toURL());
     final URL jsdxUrl = MemoryURLStreamHandler.createURL(jsdx.getBytes());

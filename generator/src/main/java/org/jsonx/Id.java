@@ -21,7 +21,6 @@ import static org.libj.lang.Assertions.*;
 import java.util.Arrays;
 import java.util.zip.CRC32;
 
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.libj.lang.Strings;
 import org.w3.www._2001.XMLSchema.yAA.$String;
 
@@ -33,11 +32,11 @@ final class Id {
     return Long.toString(crc.getValue(), 16);
   }
 
-  static Id hashed(final String prefix, final Object ... variables) {
-    if (!"!".equals(prefix) && !"a".equals(prefix) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Bind.Type || variables[0] instanceof $Binding))
+  static Id hashed(final String designation, final Object ... variables) {
+    if (!"!".equals(designation) && !"a".equals(designation) && variables != null && variables.length > 1 && variables[0] != null && !(variables[0] instanceof Bind.Type))
       throw new IllegalArgumentException("First variable expected to be Binding, but was: " + Arrays.toString(variables));
 
-    return variables == null || variables.length == 0 ? new Id(prefix) : new Id(prefix + hash(variables));
+    return variables == null || variables.length == 0 ? new Id(designation) : new Id(designation + hash(variables));
   }
 
   static Id named(final Registry.Type type) {
@@ -60,6 +59,16 @@ final class Id {
 
   private Id(final char id) {
     this.id = String.valueOf(id);
+  }
+
+  String getPrefix() {
+    final int c = id.indexOf(':');
+    return c < 0 ? null : id.substring(0, c);
+  }
+
+  String getLocalName() {
+    final int c = id.indexOf(':');
+    return c < 0 ? id : id.substring(c + 1);
   }
 
   @Override

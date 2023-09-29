@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.libj.lang.Assertions.*;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
@@ -204,6 +207,10 @@ class Registry {
       return OBJECT;
     }
 
+    Type filterJxObjectType(final boolean isObjectModel) {
+      return Object.class != cls ? this : isObjectModel ? JX_OBJECT : OBJECT;
+    }
+
     private Type withCommonGeneric(final Type b) {
       if (genericTypes == null)
         return this;
@@ -284,24 +291,12 @@ class Registry {
 
     String getNativeName() {
       if (!isArray)
-        return isPrimitive() ? getWrapper().getName() : getName();
+        return isPrimitive ? wrapper.getName() : getName();
 
       if (!isPrimitive)
         return "[L" + getName() + ";";
 
       return "[" + getName().substring(0, 1).toUpperCase();
-    }
-
-    boolean isPrimitive() {
-      return isPrimitive;
-    }
-
-    public boolean isArray() {
-      return isArray;
-    }
-
-    public Type getWrapper() {
-      return wrapper;
     }
 
     public boolean isAssignableFrom(Type type) {
@@ -443,41 +438,51 @@ class Registry {
     return getType(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), Classes.getCompositeName(cls), cls.getSuperclass() == null ? null : cls.getSuperclass().getPackage().getName(), cls.getSuperclass() == null ? null : Classes.getCompositeName(cls.getSuperclass()));
   }
 
-  private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>();
-  private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>();
+  private final HashMap<String,Registry> namespaceToRegistry;
+  private final HashMap<String,String> prefixToNamespace;
+  private final LinkedHashMap<String,Model> refToModel = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
+  private final LinkedHashMap<String,ReferrerManifest> refToReferrers = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
 
   final String targetNamespace;
   final Settings settings;
   final boolean isFromJsd;
   final String packageName;
-  final String classPrefix;
+  final String classBasePath;
 
-  Registry(final String targetNamespace, final Settings settings) {
-    this.targetNamespace = targetNamespace;
+  Registry(final HashMap<String,Registry> namespaceToRegistry, final HashMap<String,String> prefixToNamespace, final String targetNamespace, final Settings settings) {
+    this.namespaceToRegistry = namespaceToRegistry;
+    this.prefixToNamespace = prefixToNamespace;
+    this.targetNamespace = assertNotNull(targetNamespace);
+    if (namespaceToRegistry.put(targetNamespace, this) != null)
+      throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
+
     this.settings = settings;
     this.isFromJsd = true;
 
-    final String prefix = settings.getPrefix();
-    final int length = prefix.length();
+    final String basePath = settings.getPackage(targetNamespace);
+    final int length = basePath.length();
     if (length > 0) {
-      final char lastChar = prefix.charAt(length - 1);
+      final char lastChar = basePath.charAt(length - 1);
       if (lastChar == '.') {
-        this.packageName = prefix.substring(0, length - 1);
-        this.classPrefix = "";
+        this.packageName = basePath.substring(0, length - 1);
+        this.classBasePath = "";
       }
       else {
-        final int index = prefix.lastIndexOf('.');
-        this.packageName = prefix.substring(0, index);
-        this.classPrefix = prefix.substring(index + 1);
+        final int index = basePath.lastIndexOf('.');
+        this.packageName = basePath.substring(0, index);
+        this.classBasePath = basePath.substring(index + 1);
       }
     }
     else {
       this.packageName = "";
-      this.classPrefix = "";
+      this.classBasePath = "";
     }
   }
 
   private static String detectTargetNamespace(final Collection<Class<?>> classes) {
+    if (classes.size() == 0)
+      return null;
+
     String targetNamespace = null;
     for (final Class<?> cls : classes) { // [C]
       final JxBinding annotation = cls.getAnnotation(JxBinding.class);
@@ -494,8 +499,13 @@ class Registry {
   }
 
   @SuppressWarnings("unchecked")
-  Registry(final Declarer declarer, final Collection<Class<?>> classes) {
+  Registry(final HashMap<String,Registry> namespaceToRegistry, final Declarer declarer, final Collection<Class<?>> classes) {
+    this.namespaceToRegistry = namespaceToRegistry;
+    this.prefixToNamespace = null;
     this.targetNamespace = detectTargetNamespace(classes);
+    if (namespaceToRegistry.put(targetNamespace, this) != null)
+      throw new IllegalStateException("TargetNamespace specified multiple times: " + targetNamespace);
+
     this.settings = Settings.DEFAULT;
     this.isFromJsd = false;
     if (classes.size() > 0) {
@@ -507,18 +517,26 @@ class Registry {
       }
     }
 
-    this.packageName = getClassPrefix();
-    this.classPrefix = "";
+    this.packageName = getPackageName();
+    this.classBasePath = "";
   }
 
-  private String getClassPrefix() {
-    final HashSet<Registry.Type> types = new HashSet<>();
+  private String getPackageName() {
     final Collection<Model> models = getModels();
-    if (models != null && models.size() > 0)
-      for (final Model member : models) // [C]
-        member.getDeclaredTypes(types);
+    if (models == null || models.size() == 0)
+      return null;
 
-    return Strings.getCommonPrefix(types.stream().map(Registry.Type::getPackage).toArray(String[]::new));
+    final HashSet<Registry.Type> types = new HashSet<>();
+    for (final Model model : models) // [C]
+      model.getDeclaredTypes(types);
+
+    final int size = types.size();
+    final String[] packages = new String[size];
+    final Iterator<Registry.Type> iterator = types.iterator();
+    for (int i = 0; i < size; ++i) // [S]
+      packages[i] = iterator.next().getPackage();
+
+    return Strings.getCommonPrefix(packages);
   }
 
   private static class ReferrerManifest {
@@ -542,6 +560,7 @@ class Registry {
   private final HashMap<String,Type> qualifiedNameToType = new HashMap<>();
   private final ArrayList<Runnable> deferredReferences = new ArrayList<>();
   final Type OBJECT = getType(Object.class);
+  private final Type JX_OBJECT = getType(JxObject.class);
 
   Value declare(final Schema.Boolean xsb) {
     return new Value(xsb.getName$().text());
@@ -584,6 +603,7 @@ class Registry {
       if (referrer != null)
         referrers.add(referrer);
     });
+
     return model;
   }
 
@@ -595,11 +615,33 @@ class Registry {
   }
 
   boolean isPending(final Id id) {
-    return refToModel.get(id.toString()) == null && refToModel.containsKey(id.toString());
+    final String prefix = id.getPrefix();
+    final String localName = id.toString();
+    if (prefix == null)
+      return refToModel.get(localName) == null && refToModel.containsKey(localName);
+
+    final String namespace = prefixToNamespace.get(prefix);
+    if (namespace == null)
+      throw new IllegalStateException("Namespace is null for prefix: " + prefix);
+
+    final Registry registry = namespaceToRegistry.get(namespace);
+    return registry.refToModel.get(localName) == null && registry.refToModel.containsKey(localName);
   }
 
   Model getModel(final Id id) {
-    return refToModel.get(id.toString());
+    final String prefix = id.getPrefix();
+    if (prefix == null)
+      return refToModel.get(id.toString());
+
+    final String namespace = prefixToNamespace.get(prefix);
+    if (namespace == null)
+      throw new IllegalStateException("Namespace is null for prefix: " + prefix);
+
+    final Registry registry = namespaceToRegistry.get(namespace);
+    if (registry == null)
+      throw new IllegalStateException("Unable to find Registry for namespace \"" + namespace + "\"");
+
+    return registry.refToModel.get(id.getLocalName());
   }
 
   Collection<Model> getModels() {

@@ -19,65 +19,28 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
-import java.util.RandomAccess;
+import java.util.IdentityHashMap;
 
-import org.jsonx.schema.TypeBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$BooleanMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
+import org.openjax.xml.api.XmlElement;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class BooleanModel extends Model {
-  private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
-    final $TypeBinding xsb = new $ArrayMember.Boolean.Binding();
-    xsb.setLang$(new $Binding.Lang$(jsd.getLang()));
-    final String type = jsd.getType();
-    if (type != null)
-      xsb.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = jsd.getDecode();
-    if (decode != null)
-      xsb.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = jsd.getEncode();
-    if (encode != null)
-      xsb.setEncode$(new $TypeBinding.Encode$(encode));
-
-    return xsb;
-  }
-
-  private static Schema.Boolean type(final schema.Boolean jsd, final String name) {
+  private static Schema.Boolean type(final String name) {
     final Schema.Boolean xsb = new Schema.Boolean();
     if (name != null)
       xsb.setName$(new Schema.Boolean.Name$(name));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -93,88 +56,31 @@ final class BooleanModel extends Model {
     if (name != null)
       xsb.setName$(new $Boolean.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $Boolean.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $Boolean.Use$($Boolean.Use$.Enum.valueOf(use)));
 
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          addBinding(xsb, (schema.TypeFieldBinding)i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $Boolean xsb, final schema.TypeFieldBinding binding) {
-    final $TypeFieldBinding bind = new $Boolean.Binding();
-    bind.setLang$(new $Binding.Lang$(binding.getLang()));
-
-    final String type = binding.getType();
-    if (type != null)
-      bind.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = binding.getDecode();
-    if (decode != null)
-      bind.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = binding.getEncode();
-    if (encode != null)
-      bind.setEncode$(new $TypeBinding.Encode$(encode));
-
-    final String field = binding.getField();
-    if (field != null)
-      bind.setField$(new $TypeFieldBinding.Field$(field));
-
-    xsb.addBinding(bind);
   }
 
   private static $ArrayMember.Boolean element(final schema.BooleanElement jsd) {
     final $ArrayMember.Boolean xsb = new $ArrayMember.Boolean();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.Boolean.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.Boolean.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.Boolean.MaxOccurs$(maxOccurs));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -186,25 +92,24 @@ final class BooleanModel extends Model {
     else if (jsd instanceof schema.BooleanElement)
       xsb = element((schema.BooleanElement)jsd);
     else if (name != null)
-      xsb = type(jsd, name);
+      xsb = type(name);
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
     return xsb;
   }
 
-  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb) {
-    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb), null);
+  static BooleanModel declare(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.declare(xsb).value(new BooleanModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb) {
-    final BooleanModel model = new BooleanModel(registry, referrer, xsb);
+  static BooleanModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    final BooleanModel model = new BooleanModel(registry, referrer, xsb, xsbToBinding);
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
@@ -212,7 +117,6 @@ final class BooleanModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanProperty property, final Method getMethod, final String fieldName) {
     final BooleanModel model = newBooleanModel(registry, referrer, property, getMethod, fieldName);
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -220,7 +124,6 @@ final class BooleanModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final BooleanElement element) {
     final BooleanModel model = new BooleanModel(registry, referrer, element.nullable(), Bind.Type.from(registry, element.type(), element.decode(), element.encode(), Boolean.class));
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -229,26 +132,24 @@ final class BooleanModel extends Model {
     // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
     final BooleanModel model = new BooleanModel(registry, referrer, false, Bind.Type.from(registry, type.type(), type.decode(), type.encode(), Boolean.class));
     final Id id = model.id();
-
     final BooleanModel registered = (BooleanModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb) {
-    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
   }
 
-  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb) {
-    return registry.reference(newBooleanModel(registry, referrer, xsb), referrer);
+  static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.reference(newBooleanModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
-  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
+  private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
     validateTypeBinding();
   }
 
-  private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb) {
-    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+  private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb, final $TypeFieldBinding binding) {
     if (binding == null)
       return new BooleanModel(registry, declarer, xsb, null, null);
 
@@ -319,5 +220,19 @@ final class BooleanModel extends Model {
   @Override
   Class<? extends Annotation> typeAnnotation() {
     return BooleanType.class;
+  }
+
+  @Override
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
   }
 }

@@ -16,20 +16,21 @@
 
 package org.jsonx;
 
+import static org.jsonx.Element.*;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.libj.lang.Identifiers;
 import org.libj.lang.ObjectUtil;
 import org.libj.util.ArrayUtil;
 
 final class Bind {
   static class Type {
-    static Type from(final Registry registry, final $TypeBinding.Type$ type, final $TypeBinding.Decode$ decode, final $TypeBinding.Encode$ encode) {
+    static Type from(final Registry registry, final $TypeFieldBinding.Type$ type, final $TypeFieldBinding.Decode$ decode, final $TypeFieldBinding.Encode$ encode) {
       return type == null && decode == null && encode == null ? null : new Type(registry, type == null ? null : type.text(), decode == null ? null : decode.text(), encode == null ? null : encode.text());
     }
 
@@ -82,7 +83,7 @@ final class Bind {
       this.id = Id.hashed("!", String.valueOf(type), decode, encode);
     }
 
-    private Type(final Type binding, final $TypeBinding.Decode$ decode, final $TypeBinding.Encode$ encode) {
+    private Type(final Type binding, final $TypeFieldBinding.Decode$ decode, final $TypeFieldBinding.Encode$ encode) {
       this.type = binding == null ? null : binding.type;
       this.decode = decode == null ? null : decode.text();
       this.encode = encode == null ? null : encode.text();
@@ -135,15 +136,11 @@ final class Bind {
   }
 
   static class Field {
-    static Field from(final String propertyName, final String fieldName) {
-      return new Field(propertyName, fieldName);
-    }
-
     final String instanceCase;
     final String classCase;
     final String field;
 
-    private Field(final String propertyName, final String fieldName) {
+    Field(final String propertyName, final String fieldName) {
       this.field = fieldName;
       if (propertyName == null) {
         this.instanceCase = null;
@@ -220,27 +217,35 @@ final class Bind {
     }
   }
 
-  public static Map<String,Object> toXmlAttributes(final Element owner, final Type type, final Field field) {
-    final AttributeMap attributes = new AttributeMap();
+  static AttributeMap toBindingAttributes(final String elementName, final Element owner, final Type type, final Field field, final AttributeMap attributes, final boolean jsd) {
+    final AttributeMap bindingAttrs = new AttributeMap();
     if (type != null) {
       if (type.type != null)
-        attributes.put("type", type.type.toString());
+        bindingAttrs.put(jsd(jsd, "type"), type.type.toString());
 
       if (type.decode != null)
-        attributes.put("decode", type.decode);
+        bindingAttrs.put(jsd(jsd, "decode"), type.decode);
 
       if (type.encode != null)
-        attributes.put("encode", type.encode);
+        bindingAttrs.put(jsd(jsd, "encode"), type.encode);
     }
 
-    if (!(owner instanceof SchemaElement) && !(owner instanceof ArrayModel) && field != null && field.field != null)
-      attributes.put("field", field.field);
+    if (!(owner instanceof SchemaElement) && !(owner instanceof ArrayModel) && field != null && field.field != null) {
+      Object name = attributes.get("name");
+      if (name == null)
+        name = attributes.get("names");
 
-    if (attributes.size() == 0)
+      if (!field.field.equals(JsdUtil.getFieldName(JsdUtil.fixReserved((String)name))))
+        bindingAttrs.put(jsd(jsd, "field"), field.field);
+    }
+
+    if (bindingAttrs.size() == 0)
       return null;
 
-    attributes.put("lang", "java");
-    return attributes;
+    bindingAttrs.put(jsd(jsd, "lang"), "java");
+    bindingAttrs.put("@", elementName);
+
+    return bindingAttrs;
   }
 
   private Bind() {

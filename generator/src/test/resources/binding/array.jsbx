@@ -1,0 +1,108 @@
+<!--
+  Copyright (c) 2017 JSONx
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  You should have received a copy of The MIT License (MIT) along with this
+  program. If not, see <http://opensource.org/licenses/MIT/>.
+-->
+<binding
+  xmlns="http://www.jsonx.org/binding-0.5.xsd"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd">
+
+  <schema
+    xmlns="http://www.jsonx.org/schema-0.5.xsd"
+    targetNamespace="urn:test:array">
+    
+    <array name="coordinates">
+      <number minOccurs="2" maxOccurs="2" nullable="false"/>
+    </array>
+    <array name="multiCoordinates">
+      <reference type="coordinates" nullable="false"/>
+    </array>
+    <array name="bar-rootArray1">
+      <reference type="rootBoolean" minOccurs="5" maxOccurs="6"/>
+    </array>
+    <array name="bar-rootArray2" maxIterate="21">
+      <reference type="bar-rootArray1" nullable="false" minOccurs="1" maxOccurs="2"/>
+      <reference type="rootBoolean"/>
+    </array>
+    <array name="rootArray3" minIterate="2" maxIterate="unbounded">
+      <reference type="bar-rootArray2" minOccurs="3" maxOccurs="4"/>
+      <reference type="rootNumber" nullable="false"/>
+      <reference type="rootString"/>
+      <reference type="rootArray3" minOccurs="3" maxOccurs="4"/>
+    </array>
+    <array name="rootArray4" minIterate="4" maxIterate="11">
+      <reference type="rootArray3" minOccurs="9" maxOccurs="10"/>
+      <reference type="bar-rootArray2" minOccurs="7" maxOccurs="8"/>
+      <any types="rootBoolean rootNumber rootArray4" minOccurs="2" maxOccurs="3"/>
+      <reference type="rootArray4"/>
+      <reference type="rootBoolean" nullable="false"/>
+    </array>
+    <boolean name="rootBoolean"/>
+    <number name="rootNumber" scale="0" range="[2,9]"/>
+    <string name="rootString" pattern="[a-z]+"/>
+    <object name="objectWithArray">
+      <property name="arrayArray" xsi:type="array" minIterate="4" maxIterate="7">
+        <array minIterate="2" maxIterate="9" nullable="false">
+          <string maxOccurs="3" nullable="false"/>
+          <any types="rootNumber rootBoolean objectWithArray" minOccurs="3" maxOccurs="4"/>
+          <reference type="objectWithArray" minOccurs="2"/>
+          <boolean nullable="false"/>
+          <array minIterate="0" maxIterate="3" minOccurs="3" maxOccurs="5">
+            <string nullable="false" minOccurs="2" maxOccurs="7"/>
+            <reference type="rootNumber"/>
+            <array maxIterate="2" maxOccurs="1">
+              <reference type="bar-rootArray2"/>
+              <array maxOccurs="2">
+                <array nullable="false">
+                  <any types="rootString rootBoolean objectWithArray" minOccurs="5" maxOccurs="6"/>
+                </array>
+              </array>
+              <boolean minOccurs="5"/>
+              <string/>
+            </array>
+            <reference type="rootBoolean"/>
+            <number maxOccurs="7"/>
+          </array>
+          <any types="rootBoolean rootString" minOccurs="6" maxOccurs="7"/>
+          <reference type="rootArray4"/>
+          <number nullable="false"/>
+        </array>
+        <string/>
+        <reference type="rootArray3"/>
+        <boolean nullable="false"/>
+      </property>
+      <property name="arrayDirectOptional" xsi:type="array" use="optional" maxIterate="unbounded">
+        <string nullable="false"/>
+        <number nullable="false" maxOccurs="3"/>
+      </property>
+      <property name="arrayOne" xsi:type="reference" type="bar-rootArray1" use="optional"/>
+      <property names="any1" xsi:type="any" types="rootString rootNumber" use="optional"/>
+      <property name="arrayTwo" xsi:type="reference" type="bar-rootArray2"/>
+      <property name="arrayThree" xsi:type="reference" type="rootArray3"/>
+      <property names="any2" xsi:type="any" nullable="false"/>
+      <property name="arrayFour" xsi:type="reference" type="rootArray4" use="optional"/>
+    </object>
+    <object name="geometry">
+      <property name="coordinates" xsi:type="array" nullable="false">
+        <any types="coordinates multiCoordinates" nullable="false"/>
+      </property>
+    </object>
+    
+  </schema>
+
+  <number path="coordinates[0]"><bind lang="java" type="java.lang.Float"/></number>
+
+</binding>

@@ -53,11 +53,19 @@ public class ConvertMojo extends JxMojo {
         final String converted;
         if ("jsd".equals(ext)) {
           destName = shortName + "jsdx";
-          converted = Converter.jsdToJsdx(url);
+          converted = Converter.jsonToXml(url);
+        }
+        else if ("jsb".equals(ext)) {
+          destName = shortName + "jsbx";
+          converted = Converter.jsonToXml(url);
         }
         else if ("jsdx".equals(ext)) {
           destName = shortName + "jsd";
-          converted = Converter.jsdxToJsd(url);
+          converted = Converter.xmlToJson(url);
+        }
+        else if ("jsbx".equals(ext)) {
+          destName = shortName + "jsb";
+          converted = Converter.xmlToJson(url);
         }
         else {
           throw new MojoExecutionException("File extension not recognized as JSD or JSDx: " + schema);

@@ -36,7 +36,7 @@ import org.libj.util.ArrayUtil;
 import org.libj.util.Comparators;
 
 final class JsdUtil {
-  static final Comparator<String> ATTRIBUTES = Comparators.newFixedOrderComparator("id", "name", "names", "xsi:type", "abstract", "extends", "lang", "type", "field", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable", "decode", "encode");
+  static final Comparator<String> ATTRIBUTES = Comparators.newFixedOrderComparator("jx:ns", "jx:type", "id", "name", "names", "xsi:type", "abstract", "extends", "lang", "type", "field", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable", "decode", "encode");
   private static final char prefix = '_';
   private static final Function<Character,String> classSubs = c -> c == null ? "_" : c != '_' ? Integer.toHexString(c) : "__";
   private static final Function<Character,String> camelSubs = c -> c == null ? "_" : c == '-' ? "-" : c != '_' ? Integer.toHexString(c) : "__";
@@ -65,7 +65,7 @@ final class JsdUtil {
       return str.charAt(0) == prefix && name.charAt(0) != prefix ? str.substring(1) : str;
     }
 
-    return Identifiers.toInstanceCase(name, prefix, classSubs);
+    return getFieldName(name);
   }
 
   static String toIdentifier(final String name) {
@@ -81,8 +81,12 @@ final class JsdUtil {
     return Arrays.binarySearch(reservedWords, name) < 0 ? name : "_" + name;
   }
 
+  static String getFieldName(final String name) {
+    return Identifiers.toInstanceCase(name, prefix, classSubs);
+  }
+
   static String getFieldName(final Method getMethod) {
-    return Identifiers.toInstanceCase(getMethod.getName().substring(3));
+    return getFieldName(getMethod.getName().substring(3));
   }
 
   static Class<?> getRealType(final Method getMethod) {

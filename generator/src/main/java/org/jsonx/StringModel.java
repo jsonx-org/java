@@ -19,69 +19,30 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.RandomAccess;
+import java.util.IdentityHashMap;
 
-import org.jsonx.schema.TypeBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Binding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$String;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$StringMember;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeBinding;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
+import org.openjax.xml.api.XmlElement;
 import org.w3.www._2001.XMLSchema.yAA;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 final class StringModel extends Model {
-  private static $TypeBinding typeBinding(final schema.TypeBinding jsd) {
-    final $TypeBinding xsb = new $ArrayMember.String.Binding();
-    final String lang = jsd.getLang();
-    xsb.setLang$(new $Binding.Lang$(lang));
-    final String type = jsd.getType();
-    if (type != null)
-      xsb.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = jsd.getDecode();
-    if (decode != null)
-      xsb.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = jsd.getEncode();
-    if (encode != null)
-      xsb.setEncode$(new $TypeBinding.Encode$(encode));
-
-    return xsb;
-  }
-
   private static Schema.String type(final schema.String jsd, final String name) {
     final Schema.String xsb = new Schema.String();
     if (name != null)
       xsb.setName$(new Schema.String.Name$(name));
-
-    final List<schema.TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -97,88 +58,31 @@ final class StringModel extends Model {
     if (name != null)
       xsb.setName$(new $String.Name$(name));
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $String.Nullable$(nullable));
 
-    final String use = jsd.getUse();
+    final String use = jsd.get40use();
     if (use != null)
       xsb.setUse$(new $String.Use$($String.Use$.Enum.valueOf(use)));
 
-    final List<schema.TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          addBinding(xsb, (schema.TypeFieldBinding)bindings.get(i));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          addBinding(xsb, (schema.TypeFieldBinding)i.next());
-        while (i.hasNext());
-      }
-    }
-
     return xsb;
-  }
-
-  private static void addBinding(final $String xsb, final schema.TypeFieldBinding binding) {
-    final $TypeFieldBinding bind = new $String.Binding();
-    bind.setLang$(new $Binding.Lang$(binding.getLang()));
-
-    final String type = binding.getType();
-    if (type != null)
-      bind.setType$(new $TypeBinding.Type$(type));
-
-    final String decode = binding.getDecode();
-    if (decode != null)
-      bind.setDecode$(new $TypeBinding.Decode$(decode));
-
-    final String encode = binding.getEncode();
-    if (encode != null)
-      bind.setEncode$(new $TypeBinding.Encode$(encode));
-
-    final String field = binding.getField();
-    if (field != null)
-      bind.setField$(new $TypeFieldBinding.Field$(field));
-
-    xsb.addBinding(bind);
   }
 
   private static $ArrayMember.String element(final schema.StringElement jsd) {
     final $ArrayMember.String xsb = new $ArrayMember.String();
 
-    final Boolean nullable = jsd.getNullable();
+    final Boolean nullable = jsd.get40nullable();
     if (nullable != null)
       xsb.setNullable$(new $ArrayMember.String.Nullable$(nullable));
 
-    final String minOccurs = jsd.getMinOccurs();
+    final String minOccurs = jsd.get40minOccurs();
     if (minOccurs != null)
       xsb.setMinOccurs$(new $ArrayMember.String.MinOccurs$(new BigInteger(minOccurs)));
 
-    final String maxOccurs = jsd.getMaxOccurs();
+    final String maxOccurs = jsd.get40maxOccurs();
     if (maxOccurs != null)
       xsb.setMaxOccurs$(new $ArrayMember.String.MaxOccurs$(maxOccurs));
-
-    final List<TypeBinding> bindings = jsd.getBindings();
-    final int i$;
-    if (bindings != null && (i$ = bindings.size()) > 0) {
-      if (bindings instanceof RandomAccess) {
-        int i = 0;
-        do // [RA]
-          xsb.addBinding(typeBinding(bindings.get(i)));
-        while (++i < i$);
-      }
-      else {
-        final Iterator<schema.TypeBinding> i = bindings.iterator();
-        do // [I]
-          xsb.addBinding(typeBinding(i.next()));
-        while (i.hasNext());
-      }
-    }
 
     return xsb;
   }
@@ -194,24 +98,24 @@ final class StringModel extends Model {
     else
       throw new UnsupportedOperationException("Unsupported type: " + jsd.getClass().getName());
 
-    final String doc = jsd.getDoc();
+    final String doc = jsd.get40doc();
     if (doc != null && doc.length() > 0)
       xsb.setDoc$(new $Documented.Doc$(doc));
 
-    if (jsd.getPattern() != null)
-      xsb.setPattern$(new $StringMember.Pattern$(jsd.getPattern()));
+    final String pattern = jsd.get40pattern();
+    if (pattern != null)
+      xsb.setPattern$(new $StringMember.Pattern$(pattern));
 
     return xsb;
   }
 
-  static StringModel declare(final Registry registry, final Declarer declarer, final Schema.String xsb) {
-    return registry.declare(xsb).value(new StringModel(registry, declarer, xsb), null);
+  static StringModel declare(final Registry registry, final Declarer declarer, final Schema.String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.declare(xsb).value(new StringModel(registry, declarer, xsb, xsbToBinding), null);
   }
 
-  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.String xsb) {
-    final StringModel model = new StringModel(registry, referrer, xsb);
+  static StringModel referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final Schema.String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    final StringModel model = new StringModel(registry, referrer, xsb, xsbToBinding);
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
@@ -219,7 +123,6 @@ final class StringModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringProperty property, final Method getMethod, final String fieldName) {
     final StringModel model = newStringModel(registry, referrer, property, getMethod, fieldName);
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return new Reference(registry, referrer, property.name(), property.nullable(), property.use(), fieldName, model.typeBinding, registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -227,7 +130,6 @@ final class StringModel extends Model {
   static Reference referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final StringElement element) {
     final StringModel model = new StringModel(registry, referrer, element.nullable(), element.pattern(), Bind.Type.from(registry, element.type(), element.decode(), element.encode(), String.class));
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return new Reference(registry, referrer, element.nullable(), element.minOccurs(), element.maxOccurs(), registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer));
   }
@@ -236,17 +138,16 @@ final class StringModel extends Model {
     // Note: Explicitly setting nullable=false, because nullable for *Type annotations is set at the AnyElement/AnyProperty level
     final StringModel model = new StringModel(registry, referrer, false, type.pattern(), Bind.Type.from(registry, type.type(), type.decode(), type.encode(), String.class));
     final Id id = model.id();
-
     final StringModel registered = (StringModel)registry.getModel(id);
     return registered == null ? registry.declare(id).value(model, referrer) : registry.reference(registered, referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String xsb) {
-    return registry.reference(new StringModel(registry, referrer, xsb, getBinding(registry, xsb.getBinding())), referrer);
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.reference(new StringModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
   }
 
-  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String xsb) {
-    return registry.reference(newStringModel(registry, referrer, xsb), referrer);
+  static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    return registry.reference(newStringModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
   private static String parseString(final String str) {
@@ -259,15 +160,14 @@ final class StringModel extends Model {
 
   final String pattern;
 
-  private StringModel(final Registry registry, final Declarer declarer, final Schema.String xsb) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsb.getBinding()));
+  private StringModel(final Registry registry, final Declarer declarer, final Schema.String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
     this.pattern = parseString(xsb.getPattern$());
 
     validateTypeBinding();
   }
 
-  private static StringModel newStringModel(final Registry registry, final Declarer declarer, final $String xsb) {
-    final $TypeFieldBinding binding = getBinding(xsb.getBinding());
+  private static StringModel newStringModel(final Registry registry, final Declarer declarer, final $String xsb, final $TypeFieldBinding binding) {
     if (binding == null)
       return new StringModel(registry, declarer, xsb, null, null);
 
@@ -297,7 +197,7 @@ final class StringModel extends Model {
     final boolean hasDecode = typeBinding != null && typeBinding.decode != null;
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
     if (!isAssignable(getMethod, true, hasDecode ? null : CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
-      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + StringProperty.class.getSimpleName() + " can only be applied to fields of Object types with use=\"required\" or nullable=false, of Optional<Object> type with use=\"optional\" and nullable=true");
+      throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + StringProperty.class.getSimpleName() + " can only be applied to fields of Object types with use=\"required\" or nullable=false, or Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.pattern = parseString(property.pattern());
     validateTypeBinding();
@@ -345,10 +245,24 @@ final class StringModel extends Model {
   }
 
   @Override
-  Map<String,Object> toXmlAttributes(final Element owner, final String packageName) {
-    final Map<String,Object> attributes = super.toXmlAttributes(owner, packageName);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return element;
+  }
+
+  @Override
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    cursor.popName();
+    return properties;
+  }
+
+  @Override
+  AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
+    final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (pattern != null)
-      attributes.put("pattern", pattern);
+      attributes.put(jsd(jsd, "pattern"), pattern);
 
     return attributes;
   }
