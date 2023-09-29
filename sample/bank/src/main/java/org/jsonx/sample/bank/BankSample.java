@@ -17,7 +17,6 @@
 package org.jsonx.sample.bank;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jsonx.JxEncoder;
 
@@ -28,8 +27,8 @@ public class BankSample {
     }
   }
 
-  private static List<Message> createMessages() {
-    final List<Message> messages = new ArrayList<>();
+  private static ArrayList<Message> createMessages() {
+    final ArrayList<Message> messages = new ArrayList<>();
 
     final Swift swift = new Swift();
     swift.setType("swift");

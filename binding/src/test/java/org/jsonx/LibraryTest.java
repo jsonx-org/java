@@ -100,7 +100,7 @@ public class LibraryTest {
 
   @Test
   public void testStaff() throws DecodeException, IOException {
-    final List<Employee> staff = new ArrayList<>();
+    final ArrayList<Employee> staff = new ArrayList<>();
     for (int i = 0; i < 12; ++i) // [N]
       staff.add(createEmployee());
 
@@ -167,7 +167,7 @@ public class LibraryTest {
     final Library library = new Library();
     library.setAddress(Optional.of(createAddress()));
     library.setHandicap(true);
-    final List<List<String>> schedule = new ArrayList<>();
+    final ArrayList<List<String>> schedule = new ArrayList<>();
     for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"08:00", "18:00"}, {"09:00", "19:00"},
       {"10:00", "20:00"}, {"11:00", "21:00"}, {"12:00", "22:00"}, {"13:00", "23:00"}})
       schedule.add(Arrays.asList(slot));
