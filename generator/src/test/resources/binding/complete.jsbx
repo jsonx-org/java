@@ -24,7 +24,7 @@
     xmlns="http://www.jsonx.org/schema-0.5.xsd"
     targetNamespace="urn:test:complete"
     doc="Schema intended to provide a complete set of variations of declarations">
-    
+
     <array name="rootArrayBool" doc="Root array boolean">
       <boolean doc="Plain boolean"/>
     </array>

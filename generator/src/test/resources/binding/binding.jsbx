@@ -926,7 +926,7 @@
   <string path="objDir.iso8601"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601" field="objDirIso8601"/></string>
   <string path="objDir.uuid"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull" field="objDirUuid"/></string>
   <object path="objDir.object"><bind lang="java" field="objDirObject"/></object>
-  
+
   <string path="a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
   <number path="a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="short"/></number>
   <boolean path="a[0][0][0][0][0][0][0][0][2]"><bind lang="java" type="boolean" decode="java.lang.Boolean.parseBoolean"/></boolean>
@@ -954,7 +954,7 @@
   <string path="a[1]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
   <number path="a[2]"><bind lang="java" type="short"/></number>
   <boolean path="a[3]"><bind lang="java" type="boolean"/></boolean>
-  
+
   <array path="o.a"><bind lang="java" field="oa"/></array>
   <string path="o.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -984,7 +984,7 @@
   <number path="o.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <any path="o[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.s"><bind lang="java" field="os" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.n"><bind lang="java" field="on" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.b"><bind lang="java" field="ob" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
@@ -1019,7 +1019,7 @@
   <number path="o.p0.a[2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.a[3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
   <any path="o.p0[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.s"><bind lang="java" field="ops" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.b"><bind lang="java" field="opb" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
@@ -1054,7 +1054,7 @@
   <number path="o.p0.p1.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <any path="o.p0.p1[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.p1.s"><bind lang="java" field="opps" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.n"><bind lang="java" field="oppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.b"><bind lang="java" field="oppb" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
@@ -1089,7 +1089,7 @@
   <number path="o.p0.p1.p2.a[2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.a[3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
   <any path="o.p0.p1.p2[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.p1.p2.s"><bind lang="java" field="oppps" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.b"><bind lang="java" field="opppb" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
@@ -1124,7 +1124,7 @@
   <number path="o.p0.p1.p2.p3.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <any path="o.p0.p1.p2.p3[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.p1.p2.p3.s"><bind lang="java" field="opppps" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.n"><bind lang="java" field="oppppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.b"><bind lang="java" field="oppppb" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
@@ -1159,7 +1159,7 @@
   <number path="o.p0.p1.p2.p3.p4.a[2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.a[3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
   <any path="o.p0.p1.p2.p3.p4[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.p1.p2.p3.p4.s"><bind lang="java" field="oppppps" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.p1.p2.p3.p4.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.b"><bind lang="java" field="opppppb" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
@@ -1194,7 +1194,7 @@
   <number path="o.p0.p1.p2.p3.p4.p5.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <any path="o.p0.p1.p2.p3.p4.p5[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.p1.p2.p3.p4.p5.s"><bind lang="java" field="opppppps" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.n"><bind lang="java" field="oppppppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.b"><bind lang="java" field="oppppppb" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
@@ -1229,7 +1229,7 @@
   <number path="o.p0.p1.p2.p3.p4.p5.p6.a[2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
   <any path="o.p0.p1.p2.p3.p4.p5.p6[1]"><bind lang="java" field="a1"/></any>
-  
+
   <string path="o.p0.p1.p2.p3.p4.p5.p6.s"><bind lang="java" field="oppppppps" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.p6.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.p6.b"><bind lang="java" field="opppppppb" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
