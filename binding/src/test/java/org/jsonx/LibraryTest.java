@@ -67,9 +67,11 @@ public class LibraryTest {
     return items[(int)(Math.random() * items.length)];
   }
 
-  private static Address createAddress() {
+  private static Address createAddress(final boolean withNumber) {
     final Address address = new Address();
-    address.setNumber(BigInteger.valueOf((int)(Math.random() * 1000)));
+    if (withNumber)
+      address.setNumber((int)(Math.random() * 1000));
+
     address.setStreet(r("Welcome Cir.", "Sukhumvit Soi 13", "Fillmore St.", "Lake Ave.", "12th St."));
     address.setCity(r("Salt Lake City", "San Franciso", "Minneapolis", "New York", "Wattana"));
     address.setPostalCode(String.valueOf((int)(Math.random() * 100000)));
@@ -82,12 +84,12 @@ public class LibraryTest {
     final Individual emergencyContact = new Individual();
     emergencyContact.setName(r("John Doe", "Mark Taylor", "Stan Kolev", "Jeremy Olander", "Laird Smith"));
     emergencyContact.setGender("M");
-    emergencyContact.setAddress(createAddress());
+    emergencyContact.setAddress(createAddress(true));
 
     final Employee employee = new Employee();
     employee.setName(r("Joanne Mazzella", "Aura Dantin", "Candis Kivi", "Era Gilmer", "Hisako Hunt"));
     employee.setGender("F");
-    employee.setAddress(createAddress());
+    employee.setAddress(createAddress(true));
     employee.setEmergencyContact(emergencyContact);
 
     return employee;
@@ -95,7 +97,18 @@ public class LibraryTest {
 
   @Test
   public void testAddress() throws DecodeException, IOException {
-    testObject(createAddress(), Book.class, Employee.class, Address.class, Library.class);
+    testObject(createAddress(true), Book.class, Employee.class, Address.class, Library.class);
+  }
+
+  @Test
+  public void testAddressDecodeException() throws IOException {
+    try {
+      final String json = "{\"street\":\"Sukhumvit Soi 13\",\"city\":\"Salt Lake City\",\"postalCode\":\"19207\",\"locality\":\"Minnesota\",\"country\":\"Thailand\"}";
+      JxDecoder.VALIDATING.parseObject(json, Address.class);
+      fail("Expected DecodeException due to missing \"number\"");
+    }
+    catch (final DecodeException e) {
+    }
   }
 
   @Test
@@ -165,7 +178,7 @@ public class LibraryTest {
     journal.getPublishings().add(journalPub);
 
     final Library library = new Library();
-    library.setAddress(Optional.of(createAddress()));
+    library.setAddress(Optional.of(createAddress(true)));
     library.setHandicap(true);
     final ArrayList<List<String>> schedule = new ArrayList<>();
     for (final String[] slot : new String[][] {{"07:00", "17:00"}, {"08:00", "18:00"}, {"09:00", "19:00"},

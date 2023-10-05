@@ -23,6 +23,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.IdentityHashMap;
 
 import org.jsonx.ArrayValidator.Relation;
@@ -30,6 +31,7 @@ import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Throwables;
+import org.libj.util.Comparators;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonReader;
 
@@ -55,6 +57,7 @@ class ObjectCodec extends Codec {
     try {
       final JxObject object = type.getConstructor().newInstance();
       final PropertyToCodec propertyToCodec = getPropertyCodec(type);
+      Codec[] unvisitedCodecs = null;
       for (long point; (point = reader.readToken()) != '}';) { // [ST]
         int off = Composite.decodeInt(point, 0);
         int len = Composite.decodeInt(point, 1);
@@ -68,7 +71,7 @@ class ObjectCodec extends Codec {
         if (c0 == '}')
           break;
 
-        if (reader.bufToChar(Composite.decodeInt(reader.readToken(), 0)) != ':')
+        if (reader.bufToChar(Composite.decodeInt(reader.readToken(), 0)) != ':') // FIXME: Remove this
           throw new IllegalStateException("Should have been caught by JsonReader: " + reader.bufToString(off, len));
 
         final char[] buf = reader.buf();
@@ -91,7 +94,7 @@ class ObjectCodec extends Codec {
 
         final Object value;
         if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l') {
-          final Error error = codec.validateSetNull();
+          final Error error = codec.nullable ? null : Error.PROPERTY_NOT_NULLABLE(propertyName, null);
           if (error != null)
             return abort(error, reader, index);
 
@@ -136,21 +139,17 @@ class ObjectCodec extends Codec {
           return abort((Error)value, reader, index);
 
         codec.set(object, propertyName, value, onPropertyDecode);
+        if (unvisitedCodecs == null)
+          unvisitedCodecs = propertyToCodec.allCodecs.clone();
+
+        unvisitedCodecs[Arrays.binarySearch(propertyToCodec.allCodecs, codec, Comparators.IDENTITY_HASHCODE_COMPARATOR)] = null;
       }
 
-      // If this {...} contained properties, check each method of the target object
-      // to ensure that no properties are missing (i.e. use=required).
-      for (final Method getMethod : classToGetMethods.get(type)) { // [A]
-        final Codec codec = propertyToCodec.getMethodToCodec.get(getMethod);
-        if (codec == null)
-          continue;
-
-        if (getMethod.invoke(object) == null) {
-          final Error error = codec.validateIsNull();
-          if (error != null)
-            return abort(error, reader, index);
-        }
-      }
+      // If this {...} contained properties, ensure that no properties are missing (i.e. use=required).
+      if (unvisitedCodecs != null)
+        for (final Codec unvisitedCodec : unvisitedCodecs) // [A]
+          if (unvisitedCodec != null && unvisitedCodec.use == Use.REQUIRED)
+            return abort(Error.PROPERTY_REQUIRED(unvisitedCodec.name, null), reader, index);
 
       return object;
     }
@@ -192,31 +191,51 @@ class ObjectCodec extends Codec {
     if (propertyToCodec != null)
       return propertyToCodec;
 
-    propertyToCodec = new PropertyToCodec();
     final Method[] methods = cls.getMethods();
-    for (final Method getMethod : classToGetMethods.get(cls)) { // [A]
-      for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
-        if (annotation instanceof StringProperty)
-          propertyToCodec.add(new StringCodec((StringProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof NumberProperty)
-          propertyToCodec.add(new NumberCodec((NumberProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof ObjectProperty)
-          propertyToCodec.add(new ObjectCodec((ObjectProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof ArrayProperty)
-          propertyToCodec.add(new ArrayCodec((ArrayProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof BooleanProperty)
-          propertyToCodec.add(new BooleanCodec((BooleanProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else if (annotation instanceof AnyProperty)
-          propertyToCodec.add(new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod)));
-        else
-          continue;
-
-        break;
-      }
-    }
-
+    final Method[] getMethods = classToGetMethods.get(cls);
+    propertyToCodec = getPropertyCodec(methods, getMethods, getMethods.length, 0, 0, 0);
+    Arrays.sort(propertyToCodec.allCodecs, Comparators.IDENTITY_HASHCODE_COMPARATOR);
     typeToCodecs.put(cls, propertyToCodec);
     return propertyToCodec;
+  }
+
+  private static PropertyToCodec getPropertyCodec(final Method[] methods, final Method[] getMethods, final int length, final int index, final int depthAll, final int depthAny) {
+    if (index == length)
+      return new PropertyToCodec(depthAll, depthAny);
+
+    final Method getMethod = getMethods[index];
+    final Codec codec;
+    int depthAny1 = depthAny;
+    for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
+      if (annotation instanceof StringProperty) {
+        codec = new StringCodec((StringProperty)annotation, getMethod, findSetMethod(methods, getMethod));
+      }
+      else if (annotation instanceof NumberProperty) {
+        codec = new NumberCodec((NumberProperty)annotation, getMethod, findSetMethod(methods, getMethod));
+      }
+      else if (annotation instanceof ObjectProperty) {
+        codec = new ObjectCodec((ObjectProperty)annotation, getMethod, findSetMethod(methods, getMethod));
+      }
+      else if (annotation instanceof ArrayProperty) {
+        codec = new ArrayCodec((ArrayProperty)annotation, getMethod, findSetMethod(methods, getMethod));
+      }
+      else if (annotation instanceof BooleanProperty) {
+        codec = new BooleanCodec((BooleanProperty)annotation, getMethod, findSetMethod(methods, getMethod));
+      }
+      else if (annotation instanceof AnyProperty) {
+        codec = new AnyCodec((AnyProperty)annotation, getMethod, findSetMethod(methods, getMethod));
+        ++depthAny1;
+      }
+      else {
+        continue;
+      }
+
+      final PropertyToCodec propertyToCodec = getPropertyCodec(methods, getMethods, length, index + 1, depthAll + 1, depthAny1);
+      propertyToCodec.set(codec, depthAll, depthAny);
+      return propertyToCodec;
+    }
+
+    return getPropertyCodec(methods, getMethods, length, index + 1, depthAll, depthAny);
   }
 
   private final Class<? extends JxObject> type;

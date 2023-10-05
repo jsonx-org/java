@@ -16,8 +16,6 @@
 
 package org.jsonx.library;
 
-import java.math.BigInteger;
-
 import org.jsonx.JxEncoder;
 import org.jsonx.JxObject;
 import org.jsonx.NumberProperty;
@@ -25,14 +23,14 @@ import org.jsonx.StringProperty;
 import org.jsonx.Use;
 
 public class Address implements JxObject {
-  private BigInteger number;
+  private int number;
 
-  @NumberProperty(name = "number", scale = 0, range = "[0,]")
-  public BigInteger getNumber() {
+  @NumberProperty(name = "number", scale = 0, range = "[0,]", nullable = false)
+  public int getNumber() {
     return this.number;
   }
 
-  public void setNumber(BigInteger number) {
+  public void setNumber(final int number) {
     this.number = number;
   }
 
@@ -43,7 +41,7 @@ public class Address implements JxObject {
     return this.street;
   }
 
-  public void setStreet(String street) {
+  public void setStreet(final String street) {
     this.street = street;
   }
 
@@ -54,7 +52,7 @@ public class Address implements JxObject {
     return this.city;
   }
 
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -65,7 +63,7 @@ public class Address implements JxObject {
     return this.postalCode;
   }
 
-  public void setPostalCode(String postalCode) {
+  public void setPostalCode(final String postalCode) {
     this.postalCode = postalCode;
   }
 
@@ -76,7 +74,7 @@ public class Address implements JxObject {
     return this.locality;
   }
 
-  public void setLocality(String locality) {
+  public void setLocality(final String locality) {
     this.locality = locality;
   }
 
@@ -87,12 +85,12 @@ public class Address implements JxObject {
     return this.country;
   }
 
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (obj == this)
       return true;
 
@@ -100,7 +98,7 @@ public class Address implements JxObject {
       return false;
 
     final Address that = (Address)obj;
-    if (number != null ? !number.equals(that.number) : that.number != null)
+    if (number != that.number)
       return false;
 
     if (street != null ? !street.equals(that.street) : that.street != null)
@@ -124,8 +122,7 @@ public class Address implements JxObject {
   @Override
   public int hashCode() {
     int hashCode = 1;
-    if (number != null)
-      hashCode = 31 * hashCode + number.hashCode();
+    hashCode = 31 * hashCode + java.lang.Integer.hashCode(number);
 
     if (street != null)
       hashCode = 31 * hashCode + street.hashCode();

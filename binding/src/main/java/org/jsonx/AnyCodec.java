@@ -60,7 +60,7 @@ class AnyCodec extends Codec {
           reader.setIndex(index);
         }
 
-        if (++i == len)
+        if (++i >= len)
           break;
 
         type = types[i];
@@ -81,7 +81,7 @@ class AnyCodec extends Codec {
             error = (Error)value;
         }
 
-        if (++i == len)
+        if (++i >= len)
           break;
 
         type = types[i];
@@ -111,7 +111,7 @@ class AnyCodec extends Codec {
             return value;
         }
 
-        if (++i == len)
+        if (++i >= len)
           break;
 
         type = types[i];
@@ -159,7 +159,7 @@ class AnyCodec extends Codec {
           return null;
       }
 
-      if (++i == len)
+      if (++i >= len)
         break;
 
       type = types[i];
@@ -227,7 +227,7 @@ class AnyCodec extends Codec {
           return relations;
       }
 
-      if (++i == len)
+      if (++i >= len)
         break;
 
       type = types[i];

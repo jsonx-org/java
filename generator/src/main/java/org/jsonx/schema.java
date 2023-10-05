@@ -720,7 +720,7 @@ public class schema {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/schema-0.5.jsdx")
   public abstract static class Documented implements org.jsonx.JxObject {
     /** Defines text comments. Optional. **/
-    @org.jsonx.StringProperty(name = "@doc")
+    @org.jsonx.StringProperty(name = "@doc", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40doc() {
       return _40doc;
     }
