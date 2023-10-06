@@ -105,9 +105,21 @@ public class LibraryTest {
     try {
       final String json = "{\"street\":\"Sukhumvit Soi 13\",\"city\":\"Salt Lake City\",\"postalCode\":\"19207\",\"locality\":\"Minnesota\",\"country\":\"Thailand\"}";
       JxDecoder.VALIDATING.parseObject(json, Address.class);
-      fail("Expected DecodeException due to missing \"number\"");
+      fail("Expected DecodeException");
     }
     catch (final DecodeException e) {
+      assertEquals("Property \"number\" is required: null", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testAddressDecodeExceptionEmpty() throws IOException {
+    try {
+      JxDecoder.VALIDATING.parseObject("{}", Address.class);
+      fail("Expected DecodeException");
+    }
+    catch (final DecodeException e) {
+      assertEquals("Property \"number\" is required: null", e.getMessage());
     }
   }
 

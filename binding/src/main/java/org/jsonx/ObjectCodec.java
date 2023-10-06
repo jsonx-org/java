@@ -94,9 +94,8 @@ class ObjectCodec extends Codec {
 
         final Object value;
         if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l') {
-          final Error error = codec.nullable ? null : Error.PROPERTY_NOT_NULLABLE(propertyName, null);
-          if (error != null)
-            return abort(error, reader, index);
+          if (!codec.nullable)
+            return abort(Error.PROPERTY_NOT_NULLABLE(propertyName, null), reader, index);
 
           value = codec.decode() == null ? codec.toNull() : JsdUtil.invoke(codec.decode(), null);
         }
@@ -146,10 +145,16 @@ class ObjectCodec extends Codec {
       }
 
       // If this {...} contained properties, ensure that no properties are missing (i.e. use=required).
-      if (unvisitedCodecs != null)
+      if (unvisitedCodecs != null) {
         for (final Codec unvisitedCodec : unvisitedCodecs) // [A]
           if (unvisitedCodec != null && unvisitedCodec.use == Use.REQUIRED)
             return abort(Error.PROPERTY_REQUIRED(unvisitedCodec.name, null), reader, index);
+      }
+      else {
+        for (final Codec unvisitedCodec : propertyToCodec.allCodecs) // [A]
+          if (unvisitedCodec.use == Use.REQUIRED)
+            return abort(Error.PROPERTY_REQUIRED(unvisitedCodec.name, null), reader, index);
+      }
 
       return object;
     }
