@@ -82,11 +82,11 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   }
 
   /**
-   * Creates a new {@link JxObjectProvider} with a null encoder and decoder.
+   * Creates a new {@link JxObjectProvider} with global encoder and decoder.
    */
-  protected JxObjectProvider() {
-    this.encoder = null;
-    this.decoder = null;
+  public JxObjectProvider() {
+    this.encoder = JxEncoder.get();
+    this.decoder = JxDecoder.get();
   }
 
   public JxEncoder getEncoder() {

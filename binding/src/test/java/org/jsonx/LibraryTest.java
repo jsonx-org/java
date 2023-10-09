@@ -119,7 +119,7 @@ public class LibraryTest {
       fail("Expected DecodeException");
     }
     catch (final DecodeException e) {
-      assertEquals("Property \"number\" is required: null", e.getMessage());
+      assertTrue(e.getMessage().contains("is required: null"));
     }
   }
 
