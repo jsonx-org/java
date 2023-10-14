@@ -41,6 +41,7 @@ public class GenerateMojo extends JxMojo {
   @Parameter(property = "setBuilder", required = false)
   private boolean setBuilder = true;
 
+  @SuppressWarnings("rawtypes")
   @Parameter(property = "namespacePackages", required = false)
   private List namespacePackages;
 
@@ -65,13 +66,16 @@ public class GenerateMojo extends JxMojo {
   }
 
   private boolean scanPluginConfiguration(final Settings.Builder builder) throws MojoExecutionException {
-    for (final Plugin plugin : project.getBuildPlugins()) { // [L]
-      if (plugin.getId().equals(execution.getPlugin().getId())) {
-        final Xpp3Dom configuration = (Xpp3Dom)plugin.getConfiguration();
-        if (configuration != null)
-          processConfiguration(builder, configuration);
+    final List<Plugin> buildPlugins = getProject().getBuildPlugins();
+    if (buildPlugins.size() > 0) {
+      for (final Plugin plugin : buildPlugins) { // [L]
+        if (plugin.getId().equals(getExecution().getPlugin().getId())) {
+          final Xpp3Dom configuration = (Xpp3Dom)plugin.getConfiguration();
+          if (configuration != null)
+            processConfiguration(builder, configuration);
 
-        return true;
+          return true;
+        }
       }
     }
 
@@ -89,7 +93,7 @@ public class GenerateMojo extends JxMojo {
     if (!scanPluginConfiguration(builder))
       throw new IllegalStateException();
 
-    processConfiguration(builder, execution.getConfiguration());
+    processConfiguration(builder, getExecution().getConfiguration());
     final Settings settings = builder.withTemplateThreshold(templateThreshold).withSetBuilder(setBuilder).build();
 
     try {

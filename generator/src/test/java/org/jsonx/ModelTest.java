@@ -33,7 +33,6 @@ import java.util.Map;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.Binding;
-import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.libj.jci.CompilationException;
@@ -102,26 +101,18 @@ abstract class ModelTest {
     }
   }
 
-  private static SchemaElement testParseSchema(final URL location, final Schema schema, final Binding binding, final String namespace, final String pkg, final String fileName) throws IOException, SAXException {
+  private static SchemaElement testParseSchema(final URL location, final $AnyType<?> control, final String namespace, final String pkg, final String fileName) throws IOException, SAXException {
     if (logger.isInfoEnabled()) { logger.info("  Parse XML..."); }
     if (logger.isInfoEnabled()) { logger.info("    a) XML(1) -> Schema"); }
     final Settings settings = new Settings.Builder().withNamespacePackage(namespace, pkg).build();
-    final SchemaElement model = binding != null ? new SchemaElement(new HashMap<>(), location, binding, settings) : new SchemaElement(new HashMap<>(), location, schema, settings);
+    final SchemaElement model = new SchemaElement(new HashMap<>(), location, control, settings);
+
     if (logger.isInfoEnabled()) { logger.info("    b) Schema -> XML(2)"); }
     final String xml = model.toXml().toString();
     if (logger.isInfoEnabled()) { logger.info("    c) Validate XML: c-" + fileName); }
     validate(xml, "c-" + fileName);
 
-    final $AnyType<?> control;
-    final $AnyType<?> test;
-    if (binding != null) {
-      control = binding;
-      test = Bindings.parse(xml);
-    }
-    else {
-      control = schema;
-      test = Bindings.parse(xml);
-    }
+    final $AnyType<?> test = Bindings.parse(xml);
 
     if (logger.isInfoEnabled()) { logger.info("    d) XML(1) == XML(2)"); }
     AssertXml.compare(control.toDOM(), test.toDOM()).assertEqual(true);
@@ -245,26 +236,14 @@ abstract class ModelTest {
     final String packageName = namespacePackage + StringPaths.getSimpleName(fileName);
     final String pkg = packageName + ".";
 
-    final Binding controlBinding;
-    final Schema controlSchema;
+    final $AnyType<?> control = Bindings.parse(resource);
     if (logger.isInfoEnabled()) { logger.info(fileName + "..."); }
-    if (fileName.endsWith(".jsbx")) {
-      controlBinding = (Binding)Bindings.parse(resource);
-      controlSchema = controlBinding.getJxSchema();
-    }
-    else if (fileName.endsWith(".jsdx")) {
-      controlBinding = null;
-      controlSchema = (Schema)Bindings.parse(resource);
-    }
-    else {
-      throw new IllegalArgumentException(resource.toString());
-    }
 
     if (testJson)
-      testConverter(testJson(resource, fileName, controlSchema, controlBinding, new Settings.Builder().withNamespacePackage(namespace, pkg).build()));
+      testConverter(testJson(resource, fileName, control, new Settings.Builder().withNamespacePackage(namespace, pkg).build()));
 
     if (logger.isInfoEnabled()) { logger.info("  4) Schema -> Java(1)"); }
-    final SchemaElement schema = testParseSchema(resource, controlSchema, controlBinding, namespace, pkg, fileName);
+    final SchemaElement schema = testParseSchema(resource, control, namespace, pkg, fileName);
     final Map<String,String> test1Sources = schema.toSource(generatedSourcesDir);
     if (test1Sources.size() > 0) {
       final InMemoryCompiler compiler = new InMemoryCompiler();
@@ -281,14 +260,7 @@ abstract class ModelTest {
       if (logger.isInfoEnabled()) { logger.info("  8) Validate XML: 8-" + fileName); }
       validate(xml, "8-" + fileName);
 
-      final SchemaElement test2Schema;
-      if (controlBinding != null) {
-        final Binding binding = (Binding)Bindings.parse(xml);
-        test2Schema = testParseSchema(resource, binding.getJxSchema(), binding, namespace, pkg, fileName);
-      }
-      else {
-        test2Schema = testParseSchema(resource, (Schema)Bindings.parse(xml), null, namespace, pkg, fileName);
-      }
+      final SchemaElement test2Schema = testParseSchema(resource, Bindings.parse(xml), namespace, pkg, fileName);
 
       if (logger.isInfoEnabled()) { logger.info("  9) Schema -> Java(2)"); }
       final Map<String,String> test2Sources = test2Schema.toSource();
@@ -310,21 +282,9 @@ abstract class ModelTest {
       final String outFile1 = "sa-" + outFile;
       final String outFile2 = "sb-" + outFile;
       if (logger.isInfoEnabled()) { logger.info("   testSettings(\"" + fileName + "\", new Settings(" + templateThreshold + ")): " + outFile1 + " " + outFile2); }
-      final Binding controlBinding;
-      final Schema controlSchema;
-      if (fileName.endsWith(".jsbx")) {
-        controlBinding = (Binding)Bindings.parse(resource);
-        controlSchema = controlBinding.getJxSchema();
-      }
-      else if (fileName.endsWith(".jsdx")) {
-        controlBinding = null;
-        controlSchema = (Schema)Bindings.parse(resource);
-      }
-      else {
-        throw new IllegalArgumentException(resource.toString());
-      }
+      final $AnyType<?> control = Bindings.parse(resource);
+      final SchemaElement schema = new SchemaElement(new HashMap<>(), resource, control, settings);
 
-      final SchemaElement schema = controlBinding != null ? new SchemaElement(new HashMap<>(), resource, controlBinding, settings) : new SchemaElement(new HashMap<>(), resource, controlSchema, settings);
       final String xml1 = schema.toXml().toString();
       validate(xml1, outFile1);
 
@@ -341,14 +301,13 @@ abstract class ModelTest {
         final String xml2 = test1Schema.toXml().toString();
         validate(xml2, outFile2);
 
-        final SchemaElement test2Schema = controlBinding != null ? new SchemaElement(new HashMap<>(), resource, (Binding)Bindings.parse(xml2), settings) : new SchemaElement(new HashMap<>(), resource, (Schema)Bindings.parse(xml2), settings);
-
+        final SchemaElement test2Schema = new SchemaElement(new HashMap<>(), resource, Bindings.parse(xml2), settings);
         final Map<String,String> test2Sources = test2Schema.toSource();
         assertSources(test1Sources, test2Sources, false);
       }
 
       if (testJson)
-        testJson(resource, fileName, controlSchema, controlBinding, settings);
+        testJson(resource, fileName, control, settings);
     }
   }
 
@@ -363,57 +322,32 @@ abstract class ModelTest {
     assertEquals(null, expected, actual);
   }
 
-  private static String testJson(final URL location, final String fileName, final Schema controlSchema, final Binding controlBinding, final Settings settings) throws DecodeException, IOException, SAXException {
-    final SchemaElement model = controlBinding != null ? new SchemaElement(new HashMap<>(), location, controlBinding, settings) : new SchemaElement(new HashMap<>(), location, controlSchema, settings);
+  private static String testJson(final URL location, final String fileName, final $AnyType<?> control, final Settings settings) throws DecodeException, IOException, SAXException {
+    final SchemaElement model = new SchemaElement(new HashMap<>(), location, control, settings);
     if (logger.isInfoEnabled()) { logger.info("     testJson..."); }
-    final String outFile = fileName + (controlBinding != null ? ".jsb" : ".jsd");
+    final String outFile = fileName + (control instanceof Binding ? ".jsb" : ".jsd");
     if (logger.isInfoEnabled()) { logger.info("       a) Schema -> JSON " + outFile); }
     final String json = JSON.toString(model.toJson(), 2);
     writeJsonFile(outFile, json);
     if (logger.isInfoEnabled()) { logger.info("       b) JSON -> Schema"); }
 
-    if (controlBinding != null) {
-      final binding.Binding binding = testParseBinding(json, true);
 
-      if (logger.isInfoEnabled()) { logger.info("       c) Schema -> XML(3)"); }
-      final String jsbx = new SchemaElement(new HashMap<>(), location, binding, settings).toXml().toString();
-      final Binding xsb = (Binding)Bindings.parse(jsbx);
-      AssertXml.compare(controlBinding.toDOM(), xsb.toDOM()).assertEqual(true);
-    }
-    else {
-      final schema.Schema schema = testParseSchema(json, true);
+    final JxObject binding = testXml(control instanceof Binding ? binding.Binding.class : schema.Schema.class, json, true);
 
-      if (logger.isInfoEnabled()) { logger.info("       c) Schema -> XML(3)"); }
-      final String jsdx = new SchemaElement(new HashMap<>(), location, schema, settings).toXml().toString();
-      final Schema xsb = (Schema)Bindings.parse(jsdx);
-      AssertXml.compare(controlSchema.toDOM(), xsb.toDOM()).assertEqual(true);
-    }
+    if (logger.isInfoEnabled()) { logger.info("       c) Schema -> XML(3)"); }
+    final String xml = new SchemaElement(new HashMap<>(), location, binding, settings).toXml().toString();
+    final $AnyType<?> xsb = Bindings.parse(xml);
+    AssertXml.compare(control.toDOM(), xsb.toDOM()).assertEqual(true);
 
     return json;
   }
 
-  private static schema.Schema testParseSchema(final String jsd, final boolean test) throws DecodeException, IOException {
-    try (final JsonReader reader = new JsonReader(jsd)) {
-      final schema.Schema schema1 = JxDecoder.VALIDATING.parseObject(reader, schema.Schema.class);
-      if (test) {
-        final String jsd1 = schema1.toString();
-        final schema.Schema schema2 = testParseSchema(jsd1, false);
-        final String jsd2 = schema2.toString();
-
-        assertEquals(schema1, schema2);
-        assertEquals(jsd1, jsd2);
-      }
-
-      return schema1;
-    }
-  }
-
-  private static binding.Binding testParseBinding(final String jsb, final boolean test) throws DecodeException, IOException {
-    try (final JsonReader reader = new JsonReader(jsb)) {
-      final binding.Binding binding1 = JxDecoder.VALIDATING.parseObject(reader, binding.Binding.class);
+  private static <T extends JxObject>T testXml(final Class<? extends T> type, final String json, final boolean test) throws DecodeException, IOException {
+    try (final JsonReader reader = new JsonReader(json)) {
+      final T binding1 = JxDecoder.VALIDATING.parseObject(reader, type);
       if (test) {
         final String jsb1 = binding1.toString();
-        final binding.Binding binding2 = testParseBinding(jsb1, false);
+        final T binding2 = testXml(type, jsb1, false);
         final String jsb2 = binding2.toString();
 
         assertEquals(binding1, binding2);

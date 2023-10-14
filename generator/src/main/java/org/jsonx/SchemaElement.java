@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -56,8 +55,6 @@ import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema.TargetNamespace$;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
 import org.libj.lang.WrappedArrayList;
-import org.libj.util.CollectionUtil;
-import org.libj.util.IdentityHashSet;
 import org.libj.util.Iterators;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
@@ -68,32 +65,37 @@ import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 /**
  * The root {@link Element} of a JSON Schema Document.
  */
-public final class SchemaElement extends Element implements Declarer { // FIXME: Rename SchemaElement to something better
+public final class SchemaElement extends Element implements Declarer {
   private static final String GENERATED = "(value = \"" + Generator.class.getName() + "\", date = \"" + LocalDateTime.now().toString() + "\")";
+  private static final Id ID = Id.named(SchemaElement.class);
 
-  private static <T extends $FieldBindings>T jsdToXsbField(final T xsb, final String path, final Map<String,binding.FieldBinding> bindings) {
+  private static <T extends $FieldBindings> T jsdToXsbField(final T xsb, final String path, final Map<String,binding.FieldBinding> bindings) {
     xsb.setPath$(path);
-    for (final Map.Entry<String,binding.FieldBinding> entry : bindings.entrySet()) { // [S]
-      final $FieldBindings.Bind bind = new $FieldBindings.Bind();
-      bind.setLang$(entry.getKey());
-      bind.setField$(entry.getValue().get40field());
-      xsb.addBind(bind);
+    if (bindings.size() > 0) {
+      for (final Map.Entry<String,binding.FieldBinding> entry : bindings.entrySet()) { // [S]
+        final $FieldBindings.Bind bind = new $FieldBindings.Bind();
+        bind.setLang$(entry.getKey());
+        bind.setField$(entry.getValue().get40field());
+        xsb.addBind(bind);
+      }
     }
 
     return xsb;
   }
 
-  private static <T extends $TypeFieldBindings>T jsdToXsbTypeField(final T xsb, final String path, final Map<String,binding.TypeFieldBinding> bindings) {
+  private static <T extends $TypeFieldBindings> T jsdToXsbTypeField(final T xsb, final String path, final Map<String,binding.TypeFieldBinding> bindings) {
     xsb.setPath$(path);
-    for (final Map.Entry<String,binding.TypeFieldBinding> entry : bindings.entrySet()) { // [S]
-      final $TypeFieldBindings.Bind bind = new $TypeFieldBindings.Bind();
-      bind.setLang$(entry.getKey());
-      final TypeFieldBinding value = entry.getValue();
-      bind.setField$(value.get40field());
-      bind.setDecode$(value.get40decode());
-      bind.setEncode$(value.get40encode());
-      bind.setType$(value.get40type());
-      xsb.addBind(bind);
+    if (bindings.size() > 0) {
+      for (final Map.Entry<String,binding.TypeFieldBinding> entry : bindings.entrySet()) { // [S]
+        final $TypeFieldBindings.Bind bind = new $TypeFieldBindings.Bind();
+        bind.setLang$(entry.getKey());
+        final TypeFieldBinding value = entry.getValue();
+        bind.setField$(value.get40field());
+        bind.setDecode$(value.get40decode());
+        bind.setEncode$(value.get40encode());
+        bind.setType$(value.get40type());
+        xsb.addBind(bind);
+      }
     }
 
     return xsb;
@@ -228,34 +230,6 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return xsbToBinding;
   }
 
-  private final URL location;
-  private final Registry registry;
-  private final String version;
-
-  /**
-   * Creates a new {@link SchemaElement} from the specified XML binding.
-   *
-   * @param schema JSDx as a JAX-SB object.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @throws ValidationException If a cycle is detected in the object hierarchy.
-   * @throws NullPointerException If {@code schema} or {@code settings} is null.
-   */
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final Schema schema, final Settings settings) throws ValidationException {
-    this(namespaceToRegistry, location, schema, null, settings);
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} from the specified XML binding.
-   *
-   * @param binding JSBx as a JAX-SB object.
-   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
-   * @throws ValidationException If a cycle is detected in the object hierarchy.
-   * @throws NullPointerException If {@code schema} or {@code settings} is null.
-   */
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final Binding binding, final Settings settings) throws ValidationException {
-    this(namespaceToRegistry, location, binding.getJxSchema(), binding, settings);
-  }
-
   private static HashMap<String,String> initPrefixNamespaceMap(final Iterator<$AnySimpleType<?>> attributes) {
     final HashMap<String,String> prefixToNamespace = new HashMap<>();
     while (attributes.hasNext()) {
@@ -268,7 +242,122 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
     return prefixToNamespace;
   }
 
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, Schema schema, final Binding binding, final Settings settings) throws ValidationException {
+  private static String getName(final $Member obj) {
+    if (obj instanceof Schema.Array)
+      return ((Schema.Array)obj).getName$().text();
+
+    if (obj instanceof Schema.Boolean)
+      return ((Schema.Boolean)obj).getName$().text();
+
+    if (obj instanceof Schema.Number)
+      return ((Schema.Number)obj).getName$().text();
+
+    if (obj instanceof Schema.String)
+      return ((Schema.String)obj).getName$().text();
+
+    if (obj instanceof Schema.Object)
+      return ((Schema.Object)obj).getName$().text();
+
+    throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
+  };
+
+  private static void assertNoCycle(final Schema schema) throws ValidationException {
+    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::getName);
+
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
+    while (elementIterator.hasNext()) {
+      final $Member member = ($Member)elementIterator.next();
+      if (member instanceof Schema.Object) {
+        final Schema.Object object = (Schema.Object)member;
+        final $ObjectMember.Extends$ extends$ = object.getExtends$();
+        if (extends$ != null)
+          digraph.add(object, extends$.text());
+        else
+          digraph.add(object);
+      }
+      else {
+        digraph.add(member);
+      }
+    }
+
+    final List<$Member> cycle = digraph.getCycle();
+    if (cycle != null)
+      throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::getName).collect(Collectors.joining(" -> ")));
+  }
+
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final URL location, final $AnyType<?> obj, final Settings settings) {
+    return new SchemaElement(namespaceToRegistry, location, obj, settings);
+  }
+
+  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final URL location, final JxObject obj, final Settings settings) throws DecodeException, IOException, ValidationException {
+    return new SchemaElement(namespaceToRegistry, location, obj, settings);
+  }
+
+  private static HashSet<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
+    final HashSet<Class<?>> classes = new HashSet<>();
+    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
+      if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
+        classes.add(c);
+        return true;
+      }
+
+      return false;
+    });
+
+    return classes;
+  }
+
+  private final URL location;
+  private final Registry registry;
+  private final String version;
+
+  /**
+   * Creates a new {@link SchemaElement} from the specified XML binding.
+   *
+   * @param namespaceToRegistry Mapping of namespace to {@link Registry}.
+   * @param location The {@link URL} of the resource providing the contents of the document.
+   * @param object JSDx or JSBx as a JAX-SB object.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
+   * @throws DecodeException If a decode error has occurred.
+   * @throws IOException If an I/O error has occurred.
+   * @throws ValidationException If a cycle is detected in the object hierarchy.
+   * @throws NullPointerException If {@code schema} or {@code settings} is null.
+   */
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final JxObject object, final Settings settings) throws DecodeException, IOException, ValidationException {
+    this(namespaceToRegistry, location, object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb(location, (binding.Binding)object) : null, settings);
+  }
+
+  /**
+   * Creates a new {@link SchemaElement} from the specified XML binding.
+   *
+   * @param namespaceToRegistry Mapping of namespace to {@link Registry}.
+   * @param location The {@link URL} of the resource providing the contents of the document.
+   * @param object JSDx or JSBx as a JAX-SB object.
+   * @param settings The {@link Settings} to be used for the parsed {@link SchemaElement}.
+   * @throws ValidationException If a cycle is detected in the object hierarchy.
+   * @throws NullPointerException If {@code schema} or {@code settings} is null.
+   */
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final $AnyType<?> object, final Settings settings) {
+    this(namespaceToRegistry, location, object instanceof Schema ? (Schema)object : null, object instanceof Binding ? (Binding)object : null, settings);
+  }
+
+  /**
+   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader, filtered with the given class
+   * predicate.
+   *
+   * @param namespaceToRegistry Mapping of namespace to {@link Registry}.
+   * @param pkg The package to be scanned for JSD bindings.
+   * @param classLoader The {@link ClassLoader} containing the defined package.
+   * @param filter The class {@link Predicate} allowing filtration of scanned classes.
+   * @throws IOException If an I/O error has occurred.
+   * @throws PackageNotFoundException If the specified package is not found.
+   * @throws NullPointerException If {@code pkg} or {@code settings} is null.
+   */
+  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
+    this(namespaceToRegistry, findClasses(pkg, classLoader, filter));
+  }
+
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, Schema schema, final Binding binding, final Settings settings) throws ValidationException {
     super(null, (schema == null ? schema = binding.getJxSchema() : schema).getDoc$());
     this.location = location;
     final TargetNamespace$ targetNamespace = schema.getTargetNamespace$();
@@ -311,225 +400,12 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
           ((Referrer<?>)model).resolveOverrides();
   }
 
-  private static String memberToName(final $Member obj) {
-    if (obj instanceof Schema.Array)
-      return ((Schema.Array)obj).getName$().text();
-
-    if (obj instanceof Schema.Boolean)
-      return ((Schema.Boolean)obj).getName$().text();
-
-    if (obj instanceof Schema.Number)
-      return ((Schema.Number)obj).getName$().text();
-
-    if (obj instanceof Schema.String)
-      return ((Schema.String)obj).getName$().text();
-
-    if (obj instanceof Schema.Object)
-      return ((Schema.Object)obj).getName$().text();
-
-    throw new UnsupportedOperationException("Unsupported member type: " + obj.getClass().getName());
-  };
-
-  private static void assertNoCycle(final Schema schema) throws ValidationException {
-    final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::memberToName);
-
-    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
-    while (elementIterator.hasNext()) {
-      final $Member member = ($Member)elementIterator.next();
-      if (member instanceof Schema.Object) {
-        final Schema.Object object = (Schema.Object)member;
-        final $ObjectMember.Extends$ extends$ = object.getExtends$();
-        if (extends$ != null)
-          digraph.add(object, extends$.text());
-        else
-          digraph.add(object);
-      }
-      else {
-        digraph.add(member);
-      }
-    }
-
-    final List<$Member> cycle = digraph.getCycle();
-    if (cycle != null)
-      throw new ValidationException("Cycle detected in object hierarchy: " + cycle.stream().map(SchemaElement::memberToName).collect(Collectors.joining(" -> ")));
-  }
-
-  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final URL location, final $AnyType<?> obj, final Settings settings) {
-    if (obj instanceof Schema)
-      return new SchemaElement(namespaceToRegistry, location, (Schema)obj, settings);
-
-    if (obj instanceof Binding)
-      return new SchemaElement(namespaceToRegistry, location, (Binding)obj, settings);
-
-    throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
-  }
-
-  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final URL location, final JxObject obj, final Settings settings) throws DecodeException, IOException, ValidationException {
-    if (obj instanceof schema.Schema)
-      return new SchemaElement(namespaceToRegistry, location, (schema.Schema)obj, settings);
-
-    if (obj instanceof binding.Binding)
-      return new SchemaElement(namespaceToRegistry, location, (binding.Binding)obj, settings);
-
-    throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
-  }
-
-  static SchemaElement parse(final HashMap<String,Registry> namespaceToRegistry, final URL location, final Object obj, final Settings settings) throws DecodeException, IOException, ValidationException {
-    if (obj instanceof JxObject)
-      return parse(namespaceToRegistry, location, (JxObject)obj, settings);
-
-    if (obj instanceof $AnyType<?>)
-      return parse(namespaceToRegistry, location, ($AnyType<?>)obj, settings);
-
-    throw new IllegalArgumentException("Unsupported object of class: " + obj.getClass().getName());
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} from the specified JSD binding.
-   *
-   * @param schema JSD as a JSONx object.
-   * @param settings The {@link Settings} to be used for the generated bindings.
-   * @throws ValidationException If a validation error has occurred.
-   * @throws NullPointerException If {@code schema} or {@code settings} is null.
-   */
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final schema.Schema schema, final Settings settings) throws ValidationException {
-    this(namespaceToRegistry, location, jxToXsb(schema), null, settings);
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} from the specified JSD binding.
-   *
-   * @param binding JSB as a JSONx object.
-   * @param settings The {@link Settings} to be used for the generated bindings.
-   * @throws ValidationException If a validation error has occurred.
-   * @throws IOException
-   * @throws DecodeException
-   * @throws NullPointerException If {@code schema} or {@code settings} is null.
-   */
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final binding.Binding binding, final Settings settings) throws DecodeException, IOException, ValidationException {
-    this(namespaceToRegistry, location, (Schema)null, jxToXsb(location, binding), settings);
-  }
-
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final $AnyType<?> object, final Settings settings) {
-    this(namespaceToRegistry, location, object instanceof Schema ? (Schema)object : null, object instanceof Binding ? (Binding)object : null, settings);
-  }
-
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final URL location, final JxObject object, final Settings settings) throws DecodeException, IOException, ValidationException {
-    this(namespaceToRegistry, location, object instanceof schema.Schema ? jxToXsb((schema.Schema)object) : null, object instanceof binding.Binding ? jxToXsb(location, (binding.Binding)object) : null, settings);
-  }
-
-  private static Collection<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
-    final HashSet<Class<?>> classes = new HashSet<>();
-    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
-      if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
-        classes.add(c);
-        return true;
-      }
-
-      return false;
-    });
-
-    // FIXME: Remove this...
-    if (false)
-      return classes;
-
-    final TreeMap<String,Class<?>> x = new TreeMap<>();
-    for (final Class<?> cls : classes)
-      x.put(cls.getName(), cls);
-
-    return x.values();
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader, filtered with the given class
-   * predicate.
-   *
-   * @param pkg The package to be scanned for JSD bindings.
-   * @param classLoader The {@link ClassLoader} containing the defined package.
-   * @param filter The class {@link Predicate} allowing filtration of scanned classes.
-   * @throws IOException If an I/O error has occurred.
-   * @throws PackageNotFoundException If the specified package is not found.
-   * @throws NullPointerException If {@code pkg} or {@code settings} is null.
-   */
-  SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
-    this(namespaceToRegistry, findClasses(pkg, classLoader, filter));
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} by scanning the specified package in the provided class loader.
-   * <p>
-   * This constructor is equivalent to calling:
-   *
-   * <pre>
-   * {@code
-   * new Schema(pkg, classLoader, null)
-   * }
-   * </pre>
-   *
-   * @param pkg The package to be scanned for JSD bindings.
-   * @param classLoader The {@link ClassLoader} containing the defined package.
-   * @throws IOException If an I/O error has occurred.
-   * @throws PackageNotFoundException If the specified package is not found.
-   * @throws NullPointerException If {@code pkg} or {@code settings} is null.
-   */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final ClassLoader classLoader) throws IOException, PackageNotFoundException {
-    this(namespaceToRegistry, findClasses(pkg, classLoader, null));
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} by scanning the specified package, filtered with the given class predicate.
-   * <p>
-   * This constructor is equivalent to calling:
-   *
-   * <pre>
-   * {@code
-   * new Schema(pkg, Thread.currentThread().getContextClassLoader(), filter)
-   * }
-   * </pre>
-   *
-   * @param pkg The package to be scanned for JSD bindings.
-   * @param filter The class {@link Predicate} allowing filtration of scanned classes.
-   * @throws IOException If an I/O error has occurred.
-   * @throws PackageNotFoundException If the specified package is not found.
-   */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg, final Predicate<Class<?>> filter) throws IOException, PackageNotFoundException {
-    this(namespaceToRegistry, pkg, Thread.currentThread().getContextClassLoader(), filter);
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} by scanning the specified package.
-   * <p>
-   * This constructor is equivalent to calling:
-   *
-   * <pre>
-   * {@code
-   * new Schema(pkg, Thread.currentThread().getContextClassLoader(), null)
-   * }
-   * </pre>
-   *
-   * @param pkg The package to be scanned for JSD bindings.
-   * @throws IOException If an I/O error has occurred.
-   * @throws PackageNotFoundException If the specified package is not found.
-   */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Package pkg) throws IOException, PackageNotFoundException {
-    this(namespaceToRegistry, pkg, Thread.currentThread().getContextClassLoader(), null);
-  }
-
   /**
    * Creates a new {@link SchemaElement} by scanning the provided classes.
    *
    * @param classes The classes to scan.
    */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Class<?> ... classes) {
-    this(namespaceToRegistry, CollectionUtil.asCollection(new IdentityHashSet<>(classes.length), classes));
-  }
-
-  /**
-   * Creates a new {@link SchemaElement} by scanning the provided classes.
-   *
-   * @param classes The classes to scan.
-   */
-  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final Collection<Class<?>> classes) {
+  private SchemaElement(final HashMap<String,Registry> namespaceToRegistry, final HashSet<Class<?>> classes) {
     super(null, null);
     this.location = null;
     this.registry = new Registry(namespaceToRegistry, this, classes);
@@ -564,8 +440,6 @@ public final class SchemaElement extends Element implements Declarer { // FIXME:
 
     return members;
   }
-
-  private static final Id ID = Id.named(SchemaElement.class);
 
   @Override
   public Id id() {
