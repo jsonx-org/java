@@ -24,15 +24,15 @@
     <artifactId>jsonx</artifactId>
     <version>0.5.0-SNAPSHOT</version>
   </parent>
-  <artifactId>binding</artifactId>
-  <name>JSONx Binding</name>
+  <artifactId>runtime</artifactId>
+  <name>JSONx Runtime</name>
   <description>
-    The JSON/Java Binding API is designed to bind JSON documents to Java objects. More specifically,
-    the JSON/Java Binding API provides a way for JSON objects whose structure is expressed in the
+    The JSON/Java Runtime API is designed to bind JSON documents to Java objects. More specifically,
+    the JSON/Java Runtime API provides a way for JSON objects whose structure is expressed in the
     JSON Schema Definition Language to be parsed and marshaled, to and from Java objects of
-    strongly-typed classes. The JSON/Java Binding API can also be used to validate JSON documents as
+    strongly-typed classes. The JSON/Java Runtime API can also be used to validate JSON documents as
     they are parsed from text or marshaled from Java objects against a JSD. Thus, the JSON/Java
-    Binding API is a reference implementation of the validation and binding functionalities of the
+    Runtime API is a reference implementation of the validation and binding functionalities of the
     JSON Schema Definition Language.
   </description>
   <dependencies>

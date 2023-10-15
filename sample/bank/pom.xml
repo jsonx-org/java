@@ -58,7 +58,7 @@
   <dependencies>
     <dependency>
       <groupId>org.jsonx</groupId>
-      <artifactId>binding</artifactId>
+      <artifactId>runtime</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

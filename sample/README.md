@@ -28,7 +28,7 @@ The following are sample applications for the <ins>JSONx Framework</ins>.
 
 This sample showcases the familiar **invoice** use-case, and introduces the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSONx Binding API</ins>][#binding-api].
+1. [<ins>JSONx Runtime API</ins>][#runtime-api].
 
 _For the application code, see **[<ins>Invoice</ins>](invoice)**._
 
@@ -36,7 +36,7 @@ _For the application code, see **[<ins>Invoice</ins>](invoice)**._
 
 This sample showcases JSON object inheritence in a use-case regarding bank account transactions, and introduces the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSONx Binding API</ins>][#binding-api].
+1. [<ins>JSONx Runtime API</ins>][#runtime-api].
 
 _For the application code, see **[<ins>Bank</ins>](bank)**._
 
@@ -61,7 +61,7 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding-api]: ../../#4-jsonx-binding-api
+[#runtime-api]: ../../#4-jsonx-runtime-api
 [#jsd]: ../../#3-json-schema-definition-language
 
 [cdc]: http://martinfowler.com/articles/consumerDrivenContracts.html

@@ -10,7 +10,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSONx Binding API][binding].
+This document specifies the <ins>JSONx Maven Plugin</ins>, which offers facilities for for generating JSONx and JSD bindings with the [JSONx Runtime API][runtime].
 
 ## Table of Contents
 
@@ -224,5 +224,5 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[binding]: ../../binding/
+[runtime]: ../../runtime/
 [jsonx]: ../../

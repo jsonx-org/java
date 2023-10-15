@@ -32,7 +32,7 @@ This document specifies the <ins>JSONx Binding Generator</ins>, which offers fac
 
 This document presents the functionality of the <ins>JSONx Binding Generator</ins>. It also contains a directory of links to related resources.
 
-The <ins>JSONx Binding Generator</ins> consumes a JSD schema, and produces Java classes in the form of `.java` files. The generated classes have code that relies on the <ins>JSONx Binding API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
+The <ins>JSONx Binding Generator</ins> consumes a JSD schema, and produces Java classes in the form of `.java` files. The generated classes have code that relies on the <ins>JSONx Runtime API</ins> to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
 ### <b>1.1</b> Conventions Used in This Document
 
@@ -44,9 +44,9 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 ## <b>3</b> <ins>Requirements</ins>
 
-1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>binding API</ins>.
+1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>runtime API</ins>.
 
-1. The <ins>binding generator</ins> MUST be able to consume Java class definitions (`.class` files) utilizing the <ins>binding API</ins>, and produce a <ins>schema document</ins>.
+1. The <ins>binding generator</ins> MUST be able to consume Java class definitions (`.class` files) utilizing the <ins>runtime API</ins>, and produce a <ins>schema document</ins>.
 
 1. The <ins>binding generator</ins> MUST create Java classes (`.java` files) that encode the full normative scope of the <ins>schema document</ins>.
 

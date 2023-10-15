@@ -10,17 +10,17 @@
 
 | **Submodule** | **Summary** |
 |:-|:-|
-| [binding][binding] | API to bind Java classes to JSON objects whose structure is expressed in the<br>[<ins>JSON Schema Definition Language</ins>][schema]. |
+| [runtime][runtime] | API to bind Java classes to JSON objects whose structure is expressed in the<br>[<ins>JSON Schema Definition Language</ins>][schema]. |
 | [generator][generator] | Utility to generate Java binding classes from a JSD(x) schema. |
 | [validator][validator] | Utility to validate JSON documents against a JSD(x) schema. |
 | [jsonx-maven-plugin][jsonx-maven-plugin] | Maven plugin to generate and convert JSONx and JSD(x) bindings. |
-| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [<ins>JSONx Binding API</ins>][#binding]. |
+| [jaxrs][jaxrs] | JAX-RS `@Provider` to read and write JSON documents with the [<ins>JSONx Runtime API</ins>][#runtime]. |
 | [jsonxml][jsonxml] | Utility to convert and validate JSON and JSONx documents. |
 | [sample][sample] | Sample applications. |
 
 ## Abstract
 
-The <ins>JSONx Framework for Java</ins> provides a reference implementation processor, validator, and binding API for the [<ins>JSON Schema Definition Language (JSD)</ins>][schema], which is a <ins>schema language</ins> for JSON designed in close resemblance to the [XMLSchema<sup>❐</sup>][xmlschema] specification. The framework also provides a collection of <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON documents.
+The <ins>JSONx Framework for Java</ins> provides a reference implementation processor, validator, and runtime API for the [<ins>JSON Schema Definition Language (JSD)</ins>][schema], which is a <ins>schema language</ins> for JSON designed in close resemblance to the [XMLSchema<sup>❐</sup>][xmlschema] specification. The framework also provides a collection of <ins>structural</ins> and <ins>functional</ins> patterns intended to help developers work with JSON documents.
 
 This document introduces the <ins>JSONx Framework for Java</ins>, and presents a directory of links to its constituent parts and related resources.
 
@@ -36,7 +36,7 @@ This document introduces the <ins>JSONx Framework for Java</ins>, and presents a
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.3 [Getting Started](#33-getting-started)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.4 [JSD vs JSDx](#34-jsd-vs-jsdx)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>3.5 [<ins>Specification</ins>](#35-specification)<br>
-<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Binding API</ins>][#binding]<br>
+<samp>&nbsp;&nbsp;</samp>4 [<ins>JSONx Runtime API</ins>][#runtime]<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.1 [Purpose](#41-purpose)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.2 [Requirements](#42-requirements)<br>
 <samp>&nbsp;&nbsp;&nbsp;&nbsp;</samp>4.3 [Getting Started][#invoice-example]<br>
@@ -82,7 +82,7 @@ The <ins>JSONx Framework for Java</ins> was created to help developers address c
 
 1. Definition of a normative contract between a producer and consumer of JSON documents.
 1. Validation of JSON documents conforming to a respective <ins>schema document</ins>.
-1. Java class binding API for JSON documents conforming to a respective <ins>schema document</ins>.
+1. Java class runtime API for JSON documents conforming to a respective <ins>schema document</ins>.
 
 ### <b>1.1</b> Conventions Used in This Document
 
@@ -376,35 +376,35 @@ When using the <ins>JSDx</ins> format with the [oXygen XML Editor<sup>❐</sup>]
 
 _For a detailed specification of the <ins>schema language</ins>, see **[<ins>JSON Schema Definition Language</ins>][schema]**._
 
-## <b>4</b> <ins>JSONx Binding API</ins>
+## <b>4</b> <ins>JSONx Runtime API</ins>
 
 Provides a way for JSON objects whose structure is expressed in the [<ins>JSON Schema Definition Language</ins>][schema] to be <ins>validated</ins>, <ins>parsed</ins> and <ins>marshaled</ins>, to and from Java objects of strongly-typed classes.
 
 ### <b>4.1</b> Purpose
 
-Provide a <ins>binding API</ins> for parsing and marshaling JSON documents to and from strongly-typed Java classes.
+Provide a <ins>runtime API</ins> for parsing and marshaling JSON documents to and from strongly-typed Java classes.
 
 ### <b>4.2</b> Requirements
 
-1. The <ins>binding API</ins> MUST be able to model the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable with the <ins>schema language</ins>.
+1. The <ins>runtime API</ins> MUST be able to model the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable with the <ins>schema language</ins>.
 
-1. The <ins>binding API</ins> MUST enforce (via validation) the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable in the <ins>schema language</ins>.
+1. The <ins>runtime API</ins> MUST enforce (via validation) the full scope of normative meaning, usage, constraints and relationships of the constituent parts of a JSON document as specifiable in the <ins>schema language</ins>.
 
-1. The <ins>binding API</ins> MUST produce clear and useful error messages when exception of <ins>schema document</ins> constraints are encountered during validation of JSON documents.
+1. The <ins>runtime API</ins> MUST produce clear and useful error messages when exception of <ins>schema document</ins> constraints are encountered during validation of JSON documents.
 
-1. The <ins>binding API</ins> MUST constrain the constituent parts of a <ins>schema document</ins> to Java type bindings that are as lightweight as necessary to retain the full normative scope of specification of the <ins>schema language</ins>.
+1. The <ins>runtime API</ins> MUST constrain the constituent parts of a <ins>schema document</ins> to Java type bindings that are as lightweight as necessary to retain the full normative scope of specification of the <ins>schema language</ins>.
 
-1. The <ins>binding API</ins> MUST use light coupling, not imposing requirements for exclusionary patterns onto a class model of binding classes.
+1. The <ins>runtime API</ins> MUST use light coupling, not imposing requirements for exclusionary patterns onto a class model of binding classes.
 
-1. The <ins>binding API</ins> MUST offer easy patterns for manual description of bindings.
+1. The <ins>runtime API</ins> MUST offer easy patterns for manual description of bindings.
 
-1. The <ins>binding API</ins> MUST be straightforward, intuitive, and resilient to human error.
+1. The <ins>runtime API</ins> MUST be straightforward, intuitive, and resilient to human error.
 
 ### <b>4.3</b> Getting Started
 
-The <ins>JSONx Binding API</ins> uses annotations to bind class definitions to usage, constraints and relationships specifiable in the <ins>schema language</ins>.
+The <ins>JSONx Runtime API</ins> uses annotations to bind class definitions to usage, constraints and relationships specifiable in the <ins>schema language</ins>.
 
-The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
+The following illustrates usage of the <ins>runtime API</ins> with an example of an **invoice**.
 
 &nbsp;&nbsp;1.&nbsp;Create `invoice.jsd` or `invoice.jsdx` in `src/main/resources/`:
 
@@ -649,11 +649,11 @@ _For the application code, see **[<ins>Sample: Invoice</ins>][sample-invoice]**.
 
 ### <b>4.4</b> Specification
 
-_For a detailed specification of the <ins>binding API</ins>, see **[<ins>JSONx Binding API</ins>][binding]**._
+_For a detailed specification of the <ins>runtime API</ins>, see **[<ins>JSONx Runtime API</ins>][runtime]**._
 
 ## <b>5</b> <ins>JSONx Binding Generator</ins>
 
-Consumes a JSD schema, and generates classes that use the [<ins>JSONx Binding API</ins>][#binding] to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
+Consumes a JSD schema, and generates classes that use the [<ins>JSONx Runtime API</ins>][#runtime] to achieve binding between JSON documents conforming to a JSD schema, and Java object represetations of these documents.
 
 ### <b>5.1</b> Purpose
 
@@ -661,9 +661,9 @@ Provide a <ins>binding generator</ins> utility for automatic generation of bindi
 
 ### <b>5.2</b> Requirements
 
-1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>binding API</ins>.
+1. The <ins>binding generator</ins> MUST be able to consume a <ins>schema document</ins>, and produce Java class definitions (`.java` files) that use the <ins>runtime API</ins>.
 
-1. The <ins>binding generator</ins> MUST be able to consume Java class definitions (`.class` files) utilizing the <ins>binding API</ins>, and produce a <ins>schema document</ins>.
+1. The <ins>binding generator</ins> MUST be able to consume Java class definitions (`.class` files) utilizing the <ins>runtime API</ins>, and produce a <ins>schema document</ins>.
 
 1. The <ins>binding generator</ins> MUST create Java classes (`.java` files) that encode the full normative scope of the <ins>schema document</ins>.
 
@@ -996,12 +996,12 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding]: #4-jsonx-binding-api
+[#runtime]: #4-jsonx-runtime-api
 [#converter]: #532-converter
 [#invoice-example]: #43-getting-started
 [#jsd]: #3-json-schema-definition-language
 
-[binding]: binding
+[runtime]: runtime
 [generator]: generator
 [validator]: validator
 [jaxrs]: jaxrs

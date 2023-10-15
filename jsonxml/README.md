@@ -280,8 +280,6 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#jsonxml-03]: #712-jsonxml-schema-03
 [#jsonxml-02]: #713-jsonxml-schema-02
 
-[api]: ../binding/
-
 [jsonxml-02]: http://www.jsonx.org/jsonxml-0.2.xsd
 [jsonxml-03]: http://www.jsonx.org/jsonxml-0.3.xsd
 [jsonxml-04]: http://www.jsonx.org/jsonxml-0.4.xsd

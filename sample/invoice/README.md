@@ -23,9 +23,9 @@ This document presents the <ins>Invoice</ins> sample application.
 
 This sample is an introduction to the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSONx Binding API</ins>][#binding-api].
+1. [<ins>JSONx Runtime API</ins>][#runtime-api].
 
-The following illustrates usage of the <ins>binding API</ins> with an example of an **invoice**.
+The following illustrates usage of the <ins>runtime API</ins> with an example of an **invoice**.
 
 &nbsp;&nbsp;1.&nbsp;Create `invoice.jsd` or `invoice.jsdx` in `src/main/resources/`:
 
@@ -285,7 +285,7 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding-api]: ../../../../#4-jsonx-binding-api
+[#runtime-api]: ../../../../#4-jsonx-runtime-api
 [#converter]: ../../../../#532-converter
 [#jsd]: ../../../../#3-json-schema-definition-language
 [jsonx-maven-plugin]: ../../jsonx-maven-plugin/

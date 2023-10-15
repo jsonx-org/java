@@ -10,7 +10,7 @@
 
 ## Abstract
 
-This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSONx Binding API][binding].
+This document specifies the <ins>JSONx Integration for JAX-RS</ins>, which offers facilities for reading and writing JSON documents from a JAX-RS runtime via the [JSONx Runtime API][runtime].
 
 ## Table of Contents
 
@@ -248,4 +248,4 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 [#badrequestexceptionmapper]: #52-badrequestexceptionmapper
 [#usage]: #6-usage
 
-[binding]: ../binding
+[runtime]: ../runtime

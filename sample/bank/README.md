@@ -23,7 +23,7 @@ This document presents the <ins>Bank Message</ins> sample application.
 
 This sample is an introduction to the following JSONx technologies:
 1. [<ins>JSON Schema Definition Language (JSD)</ins>][#jsd].
-1. [<ins>JSONx Binding API</ins>][#binding-api].
+1. [<ins>JSONx Runtime API</ins>][#runtime-api].
 
 This example presents a simple schema that represents a message with a bank account number. The message can have one of three account number types: **SWIFT**, **IBAN**, and **ACH**. To help banking systems reduce software risk, organizations governing the **SWIFT**, **IBAN** and **ACH** code standards define simple test functions to determine the logical correctness of identifiers.
 
@@ -251,7 +251,7 @@ Please make sure to update tests as appropriate.
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
 
-[#binding-api]: ../../../../#4-jsonx-binding-api
+[#runtime-api]: ../../../../#4-jsonx-runtime-api
 [#converter]: ../../../../#532-converter
 [#jsd]: ../../../../#3-json-schema-definition-language
 [jsonx-maven-plugin]: ../../jsonx-maven-plugin/
