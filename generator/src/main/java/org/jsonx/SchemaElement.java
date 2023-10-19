@@ -40,7 +40,10 @@ import javax.annotation.Generated;
 import javax.xml.namespace.QName;
 
 import org.jaxsb.runtime.BindingList;
+import org.jsonx.binding.CodecTypeFieldBinding;
 import org.jsonx.binding.TypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBindings;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBindings;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$Path;
@@ -90,10 +93,26 @@ public final class SchemaElement extends Element implements Declarer {
         final $TypeFieldBindings.Bind bind = new $TypeFieldBindings.Bind();
         bind.setLang$(entry.getKey());
         final TypeFieldBinding value = entry.getValue();
+        bind.setType$(value.get40type());
         bind.setField$(value.get40field());
+        xsb.addBind(bind);
+      }
+    }
+
+    return xsb;
+  }
+
+  private static <T extends $CodecTypeFieldBindings> T jsdToXsbCodecTypeField(final T xsb, final String path, final Map<String,binding.CodecTypeFieldBinding> bindings) {
+    xsb.setPath$(path);
+    if (bindings.size() > 0) {
+      for (final Map.Entry<String,binding.CodecTypeFieldBinding> entry : bindings.entrySet()) { // [S]
+        final $CodecTypeFieldBindings.Bind bind = new $CodecTypeFieldBindings.Bind();
+        bind.setLang$(entry.getKey());
+        final CodecTypeFieldBinding value = entry.getValue();
         bind.setDecode$(value.get40decode());
         bind.setEncode$(value.get40encode());
         bind.setType$(value.get40type());
+        bind.setField$(value.get40field());
         xsb.addBind(bind);
       }
     }
@@ -143,13 +162,13 @@ public final class SchemaElement extends Element implements Declarer {
         else if (member instanceof binding.Array)
           xsb.addArray(jsdToXsbField(new Binding.Array(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Object)
-          xsb.addObject(jsdToXsbField(new Binding.Object(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addObject(jsdToXsbTypeField(new Binding.Object(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Boolean)
-          xsb.addBoolean(jsdToXsbTypeField(new Binding.Boolean(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addBoolean(jsdToXsbCodecTypeField(new Binding.Boolean(), path, ((binding.CodecTypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Number)
-          xsb.addNumber(jsdToXsbTypeField(new Binding.Number(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addNumber(jsdToXsbCodecTypeField(new Binding.Number(), path, ((binding.CodecTypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.String)
-          xsb.addString(jsdToXsbTypeField(new Binding.String(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addString(jsdToXsbCodecTypeField(new Binding.String(), path, ((binding.CodecTypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else
           throw new UnsupportedOperationException("Unsupported type: " + member.getClass().getName());
       }
@@ -212,6 +231,18 @@ public final class SchemaElement extends Element implements Declarer {
       }
       else if (bindings instanceof $TypeFieldBindings) {
         final BindingList<$TypeFieldBinding> b = (($TypeFieldBindings)bindings).getBind();
+        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
+          final $FieldBinding fieldBinding = b.get(i);
+          if ("java".equals(fieldBinding.getLang$().text())) {
+            if (xsbToBinding.put(element, fieldBinding) != null)
+              throw new IllegalStateException();
+
+            break;
+          }
+        }
+      }
+      else if (bindings instanceof $CodecTypeFieldBindings) {
+        final BindingList<$CodecTypeFieldBinding> b = (($CodecTypeFieldBindings)bindings).getBind();
         for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
           final $FieldBinding fieldBinding = b.get(i);
           if ("java".equals(fieldBinding.getLang$().text())) {

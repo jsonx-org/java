@@ -31,7 +31,7 @@ import java.util.regex.PatternSyntaxException;
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
@@ -54,7 +54,7 @@ import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 abstract class Member extends Element {
   private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
-  static <T extends $TypeFieldBinding>T getBinding(final List<T> bindings) {
+  static <T extends $CodecTypeFieldBinding>T getBinding(final List<T> bindings) {
     final int i$;
     if (bindings == null || (i$ = bindings.size()) == 0)
       return null;
@@ -81,12 +81,12 @@ abstract class Member extends Element {
     return null;
   }
 
-  static Bind.Type getBinding(final Registry registry, final $TypeFieldBinding binding) {
+  static Bind.Type getBinding(final Registry registry, final $CodecTypeFieldBinding binding) {
     return binding == null ? null : Bind.Type.from(registry, binding.getType$(), binding.getDecode$(), binding.getEncode$());
   }
 
-  static Bind.Type getBinding(final Registry registry, final List<? extends $TypeFieldBinding> bindings) {
-    final $TypeFieldBinding binding = getBinding(bindings);
+  static Bind.Type getBinding(final Registry registry, final List<? extends $CodecTypeFieldBinding> bindings) {
+    final $CodecTypeFieldBinding binding = getBinding(bindings);
     return getBinding(registry, binding);
   }
 

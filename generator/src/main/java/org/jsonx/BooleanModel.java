@@ -23,7 +23,7 @@ import java.util.IdentityHashMap;
 
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
@@ -137,19 +137,19 @@ final class BooleanModel extends Model {
   }
 
   static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
+    return registry.reference(new BooleanModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb))), referrer);
   }
 
   static BooleanModel reference(final Registry registry, final Referrer<?> referrer, final $Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    return registry.reference(newBooleanModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
+    return registry.reference(newBooleanModel(registry, referrer, xsb, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
   private BooleanModel(final Registry registry, final Declarer declarer, final Schema.Boolean xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb)));
     validateTypeBinding();
   }
 
-  private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb, final $TypeFieldBinding binding) {
+  private static BooleanModel newBooleanModel(final Registry registry, final Declarer declarer, final $Boolean xsb, final $CodecTypeFieldBinding binding) {
     if (binding == null)
       return new BooleanModel(registry, declarer, xsb, null, null);
 

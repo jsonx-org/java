@@ -23,7 +23,7 @@ import java.util.IdentityHashMap;
 
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
@@ -143,11 +143,11 @@ final class StringModel extends Model {
   }
 
   static StringModel reference(final Registry registry, final Referrer<?> referrer, final $Array.String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    return registry.reference(new StringModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
+    return registry.reference(new StringModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb))), referrer);
   }
 
   static StringModel reference(final Registry registry, final Referrer<?> referrer, final $String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    return registry.reference(newStringModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
+    return registry.reference(newStringModel(registry, referrer, xsb, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb)), referrer);
   }
 
   private static String parseString(final String str) {
@@ -161,13 +161,13 @@ final class StringModel extends Model {
   final String pattern;
 
   private StringModel(final Registry registry, final Declarer declarer, final Schema.String xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb)));
     this.pattern = parseString(xsb.getPattern$());
 
     validateTypeBinding();
   }
 
-  private static StringModel newStringModel(final Registry registry, final Declarer declarer, final $String xsb, final $TypeFieldBinding binding) {
+  private static StringModel newStringModel(final Registry registry, final Declarer declarer, final $String xsb, final $CodecTypeFieldBinding binding) {
     if (binding == null)
       return new StringModel(registry, declarer, xsb, null, null);
 

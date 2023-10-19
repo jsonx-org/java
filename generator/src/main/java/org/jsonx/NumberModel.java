@@ -24,7 +24,7 @@ import java.util.IdentityHashMap;
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
@@ -122,7 +122,7 @@ final class NumberModel extends Model {
 
   static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     try {
-      return registry.reference(newNumberModel(registry, referrer, xsb, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)), referrer);
+      return registry.reference(newNumberModel(registry, referrer, xsb, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb)), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
@@ -131,7 +131,7 @@ final class NumberModel extends Model {
 
   static NumberModel reference(final Registry registry, final Referrer<?> referrer, final $Array.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     try {
-      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb))), referrer);
+      return registry.reference(new NumberModel(registry, referrer, xsb, getBinding(registry, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb))), referrer);
     }
     catch (final ParseException e) {
       throw createValidationException(xsb, xsb.getRange$().text(), e);
@@ -199,7 +199,7 @@ final class NumberModel extends Model {
   final Range range;
 
   private NumberModel(final Registry registry, final Declarer declarer, final Schema.Number xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($TypeFieldBinding)xsbToBinding.get(xsb)));
+    super(registry, declarer, Id.named(xsb.getName$()), xsb.getDoc$(), xsb.getName$().text(), getBinding(registry, xsbToBinding == null ? null : ($CodecTypeFieldBinding)xsbToBinding.get(xsb)));
     this.scale = parseScale(xsb.getScale$());
     final Class<?> type = validateTypeBinding();
     final Range$ range$ = xsb.getRange$();
@@ -211,7 +211,7 @@ final class NumberModel extends Model {
     }
   }
 
-  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $TypeFieldBinding binding) throws ParseException {
+  private static NumberModel newNumberModel(final Registry registry, final Declarer declarer, final $Number xsb, final $CodecTypeFieldBinding binding) throws ParseException {
     if (binding == null)
       return new NumberModel(registry, declarer, xsb, null, null);
 

@@ -1,11 +1,11 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value="org.jsonx.Generator", date="2023-09-12T12:53:53.926")
+@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2023-10-18T13:46:54.136")
 public class include {
-  @org.jsonx.JxBinding(targetNamespace="http://www.jsonx.org/include-0.5.jsdx")
+  @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/include-0.5.jsdx")
   public static class Include implements org.jsonx.JxObject {
-    @org.jsonx.StringProperty(name="@ns", pattern="http://www.jsonx.org/include-0.5.jsd", nullable=false)
+    @org.jsonx.StringProperty(name = "@ns", pattern = "http://www.jsonx.org/include-0.5.jsd", nullable = false)
     public java.lang.String get40ns() {
       return _40ns;
     }
@@ -17,7 +17,7 @@ public class include {
 
     private java.lang.String _40ns;
 
-    @org.jsonx.StringProperty(name="href", nullable=false)
+    @org.jsonx.StringProperty(name = "href", nullable = false)
     public java.lang.String getHref() {
       return href;
     }
