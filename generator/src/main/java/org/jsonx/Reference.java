@@ -148,6 +148,11 @@ final class Reference extends Member {
   }
 
   @Override
+  Registry.Type type() {
+    return model instanceof ObjectModel ? model.type() : super.type();
+  }
+
+  @Override
   Registry.Type typeDefault(final boolean primitive) {
     return model.type();
   }

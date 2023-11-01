@@ -40,7 +40,7 @@ final class Id {
   }
 
   static Id named(final Registry.Type type) {
-    return new Id(type != null ? JsdUtil.flipName(type.getName()) : Strings.getRandomAlphaNumeric(6));
+    return new Id(type != null ? JsdUtil.flipName(type.name) : Strings.getRandomAlphaNumeric(6));
   }
 
   static Id named(final Class<?> type) {

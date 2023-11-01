@@ -101,7 +101,7 @@ public class GenerateMojo extends JxMojo {
       final int size = set.size();
       final URL[] urls = new URL[size];
       final Iterator<String> iterator = set.iterator();
-      for (int i = 0; i < size; ++i)
+      for (int i = 0; i < size; ++i) // [I]
         urls[i] = URLs.create(iterator.next());
 
       Generator.generate(configuration.getDestDir(), settings, urls);

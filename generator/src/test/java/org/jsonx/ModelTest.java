@@ -244,31 +244,31 @@ abstract class ModelTest {
 
     if (logger.isInfoEnabled()) { logger.info("  4) Schema -> Java(1)"); }
     final SchemaElement schema = testParseSchema(resource, control, namespace, pkg, fileName);
-    final Map<String,String> test1Sources = schema.toSource(generatedSourcesDir);
-    if (test1Sources.size() > 0) {
+    final Map<String,String> sources1 = schema.toSource(generatedSourcesDir);
+    if (sources1.size() > 0) {
       final InMemoryCompiler compiler = new InMemoryCompiler();
-      for (final Map.Entry<String,String> entry : test1Sources.entrySet()) // [S]
+      for (final Map.Entry<String,String> entry : sources1.entrySet()) // [S]
         compiler.addSource(entry.getValue());
 
       if (logger.isInfoEnabled()) { logger.info("  5) -- Java(1) Compile --"); }
       final ClassLoader classLoader = compiler.compile(compiledClassesDir, "-g");
 
       if (logger.isInfoEnabled()) { logger.info("  6) Java(1) -> Schema"); }
-      final SchemaElement test1Schema = newSchema(classLoader, packageName);
+      final SchemaElement schema1 = newSchema(classLoader, packageName);
       if (logger.isInfoEnabled()) { logger.info("  7) Schema -> XML"); }
-      final String xml = test1Schema.toXml().toString();
+      final String xml = schema1.toXml().toString();
       if (logger.isInfoEnabled()) { logger.info("  8) Validate XML: 8-" + fileName); }
       validate(xml, "8-" + fileName);
 
-      final SchemaElement test2Schema = testParseSchema(resource, Bindings.parse(xml), namespace, pkg, fileName);
+      final SchemaElement schema2 = testParseSchema(resource, Bindings.parse(xml), namespace, pkg, fileName);
 
       if (logger.isInfoEnabled()) { logger.info("  9) Schema -> Java(2)"); }
-      final Map<String,String> test2Sources = test2Schema.toSource();
+      final Map<String,String> sources2 = schema2.toSource();
       if (logger.isInfoEnabled()) { logger.info("  10) Java(1) == Java(2)"); }
-      assertSources(test1Sources, test2Sources, false);
+      assertSources(sources1, sources2, false);
     }
 
-    testSettings(resource, fileName, namespace, packageName, test1Sources);
+    testSettings(resource, fileName, namespace, packageName, sources1);
   }
 
   private static void testSettings(final URL resource, final String fileName, final String namespace, final String packageName, final Map<String,String> originalSources) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
@@ -323,15 +323,15 @@ abstract class ModelTest {
   }
 
   private static String testJson(final URL location, final String fileName, final $AnyType<?> control, final Settings settings) throws DecodeException, IOException, SAXException {
-    final SchemaElement model = new SchemaElement(new HashMap<>(), location, control, settings);
+    final SchemaElement schema = new SchemaElement(new HashMap<>(), location, control, settings);
     if (logger.isInfoEnabled()) { logger.info("     testJson..."); }
     final String outFile = fileName + (control instanceof Binding ? ".jsb" : ".jsd");
+
     if (logger.isInfoEnabled()) { logger.info("       a) Schema -> JSON " + outFile); }
-    final String json = JSON.toString(model.toJson(), 2);
+    final String json = JSON.toString(schema.toJson(), 2);
     writeJsonFile(outFile, json);
+    
     if (logger.isInfoEnabled()) { logger.info("       b) JSON -> Schema"); }
-
-
     final JxObject binding = testXml(control instanceof Binding ? binding.Binding.class : schema.Schema.class, json, true);
 
     if (logger.isInfoEnabled()) { logger.info("       c) Schema -> XML(3)"); }

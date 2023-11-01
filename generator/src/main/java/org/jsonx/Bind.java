@@ -24,13 +24,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.libj.lang.Identifiers;
 import org.libj.lang.ObjectUtil;
 import org.libj.util.ArrayUtil;
 
 final class Bind {
   static class Type {
-    static Type from(final Registry registry, final $CodecTypeFieldBinding.Type$ type, final $CodecTypeFieldBinding.Decode$ decode, final $CodecTypeFieldBinding.Encode$ encode) {
+    static Type from(final Registry registry, final $TypeFieldBinding.Type$ type, final $CodecTypeFieldBinding.Decode$ decode, final $CodecTypeFieldBinding.Encode$ encode) {
       return type == null && decode == null && encode == null ? null : new Type(registry, type == null ? null : type.text(), decode == null ? null : decode.text(), encode == null ? null : encode.text());
     }
 

@@ -80,7 +80,7 @@ public final class Converter {
    */
   public static String xmlToJson(final URL url) throws IOException, SAXException {
     final SchemaElement[] schemaElements = Generator.parse(settings, url);
-    for (final SchemaElement schemaElement : schemaElements)
+    for (final SchemaElement schemaElement : schemaElements) // [A]
       if (schemaElement.getLocation() == url)
         return JSON.toString(schemaElement.toJson(), 2);
 

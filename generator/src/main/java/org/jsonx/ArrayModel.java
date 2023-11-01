@@ -320,7 +320,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final Schema.Array xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$(), xsb.getName$().text());
+    super(registry, declarer, registry.getType(Registry.Kind.ANNOTATION, registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text())), xsb.getDoc$(), xsb.getName$().text(), null);
     this.members = parseMembers(registry, this, xsb, xsbToBinding);
     final MinIterate$ minIterate$ = xsb.getMinIterate$();
     this.minIterate = parseIterate(minIterate$.text());
@@ -422,7 +422,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private ArrayModel(final Registry registry, final Declarer declarer, final ArrayElement arrayElement, final Map<Integer,Annotation> idToElement, final String declaringTypeName) {
-    super(registry, declarer, arrayElement.nullable(), null, null, null);
+    super(registry, declarer, arrayElement.nullable(), null, null, null, null);
     if (arrayElement.type() != ArrayType.class)
       throw new IllegalArgumentException("This constructor is only for elementIds");
 
@@ -563,7 +563,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     if (classType() != null) {
-      attributes.put("type", classType().getCanonicalName() + ".class");
+      attributes.put("type", classType().canonicalName + ".class");
       writeIterateClauses(attributes);
     }
     else {

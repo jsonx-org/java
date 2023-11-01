@@ -113,17 +113,16 @@ abstract class Model extends Member implements Comparable<Model> {
 
   @Override
   PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final PropertyMap<Object> properties = new PropertyMap<>();
-    properties.put("@", elementName());
-
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, true);
     cursor.pushName((String)attributes.get("name"));
+
     final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, true);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
     attributes.remove(nameName());
-
+    final PropertyMap<Object> properties = new PropertyMap<>();
+    properties.put("@", elementName());
     properties.putAll(attributes);
     return properties;
   }

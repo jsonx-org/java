@@ -925,7 +925,7 @@
   <string path="objDir.stringBigDecimal"><bind lang="java" type="java.math.BigDecimal" decode="java.math.BigDecimal.&lt;init&gt;" encode="this.toPlainString" field="objDirStringBigDecimal"/></string>
   <string path="objDir.iso8601"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601" field="objDirIso8601"/></string>
   <string path="objDir.uuid"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull" field="objDirUuid"/></string>
-  <object path="objDir.object"><bind lang="java" field="objDirObject"/></object>
+  <object path="objDir.object"><bind lang="java" field="objDirObject" type="org.jsonx.test.binding.ObjIface"/></object>
 
   <string path="a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.StringBuilder" decode="java.lang.StringBuilder.&lt;init&gt;"/></string>
   <number path="a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="short"/></number>
@@ -989,7 +989,7 @@
   <number path="o.n"><bind lang="java" field="on" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.b"><bind lang="java" field="ob" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <reference path="o.r"><bind lang="java" field="or"/></reference>
-  <object path="o.p0"><bind lang="java" field="op"/></object>
+  <object path="o.p0"><bind lang="java" field="op" type="java.util.RandomAccess"/></object>
   <array path="o.p0.a"><bind lang="java" field="opa"/></array>
   <string path="o.p0.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
@@ -1024,7 +1024,7 @@
   <number path="o.p0.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.b"><bind lang="java" field="opb" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
   <reference path="o.p0.r"><bind lang="java" field="opr"/></reference>
-  <object path="o.p0.p1"><bind lang="java" field="opp"/></object>
+  <object path="o.p0.p1"><bind lang="java" field="opp" type="java.lang.Cloneable"/></object>
   <array path="o.p0.p1.a"><bind lang="java" field="oppa"/></array>
   <string path="o.p0.p1.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1059,7 +1059,7 @@
   <number path="o.p0.p1.n"><bind lang="java" field="oppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.b"><bind lang="java" field="oppb" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <reference path="o.p0.p1.r"><bind lang="java" field="oppr"/></reference>
-  <object path="o.p0.p1.p2"><bind lang="java" field="oppp"/></object>
+  <object path="o.p0.p1.p2"><bind lang="java" field="oppp" type="java.util.EventListener"/></object>
   <array path="o.p0.p1.p2.a"><bind lang="java" field="opppa"/></array>
   <string path="o.p0.p1.p2.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
@@ -1094,7 +1094,7 @@
   <number path="o.p0.p1.p2.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.b"><bind lang="java" field="opppb" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
   <reference path="o.p0.p1.p2.r"><bind lang="java" field="opppr"/></reference>
-  <object path="o.p0.p1.p2.p3"><bind lang="java" field="opppp"/></object>
+  <object path="o.p0.p1.p2.p3"><bind lang="java" field="opppp" type="java.rmi.Remote"/></object>
   <array path="o.p0.p1.p2.p3.a"><bind lang="java" field="oppppa"/></array>
   <string path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1129,7 +1129,7 @@
   <number path="o.p0.p1.p2.p3.n"><bind lang="java" field="oppppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.b"><bind lang="java" field="oppppb" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <reference path="o.p0.p1.p2.p3.r"><bind lang="java" field="oppppr"/></reference>
-  <object path="o.p0.p1.p2.p3.p4"><bind lang="java" field="oppppp"/></object>
+  <object path="o.p0.p1.p2.p3.p4"><bind lang="java" field="oppppp" type="java.io.Serializable"/></object>
   <array path="o.p0.p1.p2.p3.p4.a"><bind lang="java" field="opppppa"/></array>
   <string path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.p1.p2.p3.p4.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
@@ -1164,7 +1164,7 @@
   <number path="o.p0.p1.p2.p3.p4.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.b"><bind lang="java" field="opppppb" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
   <reference path="o.p0.p1.p2.p3.p4.r"><bind lang="java" field="opppppr"/></reference>
-  <object path="o.p0.p1.p2.p3.p4.p5"><bind lang="java" field="opppppp"/></object>
+  <object path="o.p0.p1.p2.p3.p4.p5"><bind lang="java" field="opppppp" type="java.util.RandomAccess"/></object>
   <array path="o.p0.p1.p2.p3.p4.p5.a"><bind lang="java" field="oppppppa"/></array>
   <string path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1199,7 +1199,7 @@
   <number path="o.p0.p1.p2.p3.p4.p5.n"><bind lang="java" field="oppppppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.b"><bind lang="java" field="oppppppb" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
   <reference path="o.p0.p1.p2.p3.p4.p5.r"><bind lang="java" field="oppppppr"/></reference>
-  <object path="o.p0.p1.p2.p3.p4.p5.p6"><bind lang="java" field="oppppppp"/></object>
+  <object path="o.p0.p1.p2.p3.p4.p5.p6"><bind lang="java" field="oppppppp" type="java.lang.Cloneable"/></object>
   <array path="o.p0.p1.p2.p3.p4.p5.p6.a"><bind lang="java" field="opppppppa"/></array>
   <string path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][0][0]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.p6.a[0][0][0][0][0][0][0][0][1]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
@@ -1234,6 +1234,6 @@
   <number path="o.p0.p1.p2.p3.p4.p5.p6.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.p6.b"><bind lang="java" field="opppppppb" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
   <reference path="o.p0.p1.p2.p3.p4.p5.p6.r"><bind lang="java" field="opppppppr"/></reference>
-  <object path="o.p0.p1.p2.p3.p4.p5.p6.p7"><bind lang="java" field="opppppppp"/></object>
+  <object path="o.p0.p1.p2.p3.p4.p5.p6.p7"><bind lang="java" field="opppppppp" type="java.util.EventListener"/></object>
 
 </binding>

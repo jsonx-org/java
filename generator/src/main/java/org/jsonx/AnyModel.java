@@ -174,7 +174,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Method getMethod, final String fieldName) {
-    super(registry, declarer, property.nullable(), property.use(), null, null);
+    super(registry, declarer, property.nullable(), property.use(), null, null, null);
     final t[] types = property.types();
     this.types = getMemberTypes(types);
     final Class<?> requiredFieldType = types.length == 0 ? defaultClass() : getFieldType(types);
@@ -189,7 +189,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyElement element) {
-    super(registry, declarer, element.nullable(), null, null, null);
+    super(registry, declarer, element.nullable(), null, null, null, null);
     this.types = getMemberTypes(element.types());
     validateTypeBinding();
   }
@@ -472,10 +472,10 @@ final class AnyModel extends Referrer<AnyModel> {
     for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
       final Member type = types.get(i);
       if (type instanceof ArrayModel) {
-        values.add("@" + t.class.getName() + "(arrays = " + ((ArrayModel)type).classType().getCanonicalName() + ".class)");
+        values.add("@" + t.class.getName() + "(arrays = " + ((ArrayModel)type).classType().canonicalName + ".class)");
       }
       else if (type instanceof ObjectModel) {
-        values.add("@" + t.class.getName() + "(objects = " + ((ObjectModel)type).classType().getCanonicalName() + ".class)");
+        values.add("@" + t.class.getName() + "(objects = " + ((ObjectModel)type).classType().canonicalName + ".class)");
       }
       else if (type instanceof BooleanModel || type instanceof NumberModel || type instanceof StringModel) {
         final Model model = (Model)type;

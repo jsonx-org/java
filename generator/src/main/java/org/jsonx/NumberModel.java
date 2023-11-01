@@ -22,9 +22,9 @@ import java.math.BigInteger;
 import java.util.IdentityHashMap;
 
 import org.jaxsb.runtime.Bindings;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ArrayMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
@@ -278,7 +278,7 @@ final class NumberModel extends Model {
 
     final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
     if (cls != null && defaultClass().isAssignableFrom(cls) && Numbers.isWholeNumberType((Class<? extends Number>)cls))
-      return "The decimal \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id()) + "\" cannot be represented with the whole numeric type: " + typeBinding.type.getName();
+      return "The decimal \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id()) + "\" cannot be represented with the whole numeric type: " + typeBinding.type.name;
 
     return null;
   }

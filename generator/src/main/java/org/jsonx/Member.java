@@ -208,13 +208,13 @@ abstract class Member extends Element {
     final boolean hasDecodeBinding = typeBinding != null && typeBinding.decode != null;
     if (typeBinding.type.isPrimitive && !typeBinding.type.isArray && !hasDecodeBinding) {
       if (use.set == Use.OPTIONAL)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.compositeName + "\" and use=optional: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
       if (!(declarer instanceof SchemaElement) && nullable.get == null && !hasDecodeBinding)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.compositeName + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
       if (declarer instanceof AnyModel)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.getCompositeName() + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
+        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.compositeName + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
     }
 
     // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence
@@ -256,12 +256,12 @@ abstract class Member extends Element {
     if (cls != null) {
       if (decodeMethod != null) {
         if (!Classes.isAssignableFrom(cls, JsdUtil.getReturnType(decodeMethod))) {
-          error = "The return type of \"decode\" method \"" + decodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to: " + typeBinding.type.getName();
+          error = "The return type of \"decode\" method \"" + decodeMethod + "\" in " + JsdUtil.flipName(id().toString()) + " is not assignable to: " + typeBinding.type.name;
         }
       }
       else if (encodeMethod == null) {
         if (!Classes.isAssignableFrom(defaultClass(), cls) && !Classes.isAssignableFrom(CharSequence.class, cls)) {
-          error = "The type binding \"" + typeBinding.type.getName() + "\" in " + JsdUtil.flipName(id().toString()) + " is not \"encode\" compatible with " + defaultClass().getName() + " or " + CharSequence.class.getName();
+          error = "The type binding \"" + typeBinding.type.name + "\" in " + JsdUtil.flipName(id().toString()) + " is not \"encode\" compatible with " + defaultClass().getName() + " or " + CharSequence.class.getName();
         }
       }
     }
@@ -386,6 +386,8 @@ abstract class Member extends Element {
         b.append(annotationType).append('\n');
 
       final String arrayOverrideSafeTypeName = override != null && isArrayOverride(override) ? override.type().toCanonicalString() : typeName;
+      if ("java.util.EventListener".equals(arrayOverrideSafeTypeName))
+        registry.getOptionalType(type().asGeneric(null));
 
       b.append("public ").append(arrayOverrideSafeTypeName).append(" get").append(classCase).append("() {\n  return ");
       if (override == null)
@@ -403,7 +405,7 @@ abstract class Member extends Element {
         if (doc != null)
           b.append(doc).append('\n');
 
-        final String classSimpleName = classType.getSimpleName();
+        final String classSimpleName = classType.simpleName;
         b.append("public ").append(setBuilder ? classSimpleName : "void").append(" set").append(classCase).append("(final ").append(typeName).append(' ').append(instanceCase).append(") {\n  ");
         if (override != null)
           b.append("super.set").append(classCase).append('(').append(instanceCase).append(')');
@@ -412,7 +414,7 @@ abstract class Member extends Element {
         b.append(";\n");
         if (setBuilder) {
           b.append("  return ");
-          if (!declarer.classType().getSimpleName().equals(classSimpleName))
+          if (!declarer.classType().simpleName.equals(classSimpleName))
             b.append('(').append(classSimpleName).append(')');
 
           b.append("this;\n");
@@ -465,7 +467,7 @@ abstract class Member extends Element {
     return typeBinding == null ? null : typeBinding.type;
   }
 
-  final Registry.Type type() {
+  Registry.Type type() {
     final Registry.Type typeBinding = typeBinding();
     return typeBinding != null ? typeBinding : typeDefault(!(declarer instanceof ArrayModel) && use.get == null && Boolean.FALSE.equals(nullable.get)); // FIXME: Note that this line says: "if it's a list, it's always an object member" What about primitive arrays?!
   }

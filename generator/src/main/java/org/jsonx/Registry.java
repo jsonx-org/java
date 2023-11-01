@@ -187,7 +187,7 @@ class Registry {
 
     Type getDeclaringType() {
       final String declaringClassName = Classes.getDeclaringClassName(compositeName);
-      return compositeName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, null, null, (GenericType[])null);
+      return compositeName.length() == declaringClassName.length() ? null : getType(Kind.CLASS, packageName, declaringClassName, (GenericType[])null);
     }
 
     Type getGreatestCommonSuperType(final Type type) {
@@ -229,38 +229,6 @@ class Registry {
       return new Type(this, result);
     }
 
-    Kind getKind() {
-      return kind;
-    }
-
-    String getPackage() {
-      return packageName;
-    }
-
-    String getCanonicalPackage() {
-      return canonicalPackageName;
-    }
-
-    String getName() {
-      return name;
-    }
-
-    String getSimpleName() {
-      return simpleName;
-    }
-
-    String getCanonicalName() {
-      return canonicalName;
-    }
-
-    String getCompositeName() {
-      return compositeName;
-    }
-
-    String getCanonicalCompositeName() {
-      return canonicalCompositeName;
-    }
-
     String getRelativeName(final String packageName) {
       return packageName.length() == 0 ? name : name.substring(packageName.length() + 1);
     }
@@ -291,12 +259,12 @@ class Registry {
 
     String getNativeName() {
       if (!isArray)
-        return isPrimitive ? wrapper.getName() : getName();
+        return isPrimitive ? wrapper.name : name;
 
       if (!isPrimitive)
-        return "[L" + getName() + ";";
+        return "[L" + name + ";";
 
-      return "[" + getName().substring(0, 1).toUpperCase();
+      return "[" + name.substring(0, 1).toUpperCase();
     }
 
     public boolean isAssignableFrom(Type type) {
@@ -390,22 +358,22 @@ class Registry {
     return getType(kind, packageName, compositeName, null, null, genericTypes);
   }
 
-  Type getType(final String packageName, final String compositeName, final String supercompositeName, final GenericType ... genericTypes) {
-    return getType(Kind.CLASS, packageName, compositeName, packageName, supercompositeName, genericTypes);
+  Type getType(final String packageName, final String compositeName, final String superCompositeName, final GenericType ... genericTypes) {
+    return getType(Kind.CLASS, packageName, compositeName, packageName, superCompositeName, genericTypes);
   }
 
   Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName) {
     return getType(kind, packageName, compositeName, superPackageName, supercompositeName, (GenericType[])null);
   }
 
-  Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String supercompositeName, final GenericType ... genericTypes) {
+  Type getType(final Kind kind, final String packageName, final String compositeName, final String superPackageName, final String superCompositeName, final GenericType ... genericTypes) {
     final StringBuilder className = new StringBuilder();
     if (packageName.length() > 0)
       className.append(packageName).append('.');
 
     className.append(compositeName);
     final Type type = qualifiedNameToType.get(className.toString());
-    return type != null ? type : new Type(kind, packageName, compositeName, supercompositeName == null ? null : getType(Kind.CLASS, superPackageName, supercompositeName, null, null, (GenericType[])null), genericTypes);
+    return type != null ? type : new Type(kind, packageName, compositeName, superCompositeName == null ? null : getType(Kind.CLASS, superPackageName, superCompositeName, null, null, (GenericType[])null), genericTypes);
   }
 
   Type getOptionalType(final GenericType genericType) {
@@ -534,7 +502,7 @@ class Registry {
     final String[] packages = new String[size];
     final Iterator<Registry.Type> iterator = types.iterator();
     for (int i = 0; i < size; ++i) // [S]
-      packages[i] = iterator.next().getPackage();
+      packages[i] = iterator.next().packageName;
 
     return Strings.getCommonPrefix(packages);
   }

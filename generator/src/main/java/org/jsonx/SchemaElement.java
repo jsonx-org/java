@@ -210,6 +210,17 @@ public final class SchemaElement extends Element implements Declarer {
     return xsb;
   }
 
+  private static boolean add(final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding, final $Documented element, final $FieldBinding fieldBinding) {
+    if ("java".equals(fieldBinding.getLang$().text())) {
+      if (xsbToBinding.put(element, fieldBinding) != null)
+        throw new IllegalStateException();
+
+      return true;
+    }
+
+    return false;
+  }
+
   private static IdentityHashMap<$AnyType<?>,$FieldBinding> initBindingMap(final Schema schema, final Binding binding) {
     final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding = new IdentityHashMap<>();
     final Iterator<$AnyType<?>> iterator = binding.elementIterator();
@@ -218,40 +229,22 @@ public final class SchemaElement extends Element implements Declarer {
       final $Path bindings = ($Path)iterator.next();
       final $Documented element = new JsonPath(bindings.getPath$().text()).resolve(schema);
       if (bindings instanceof $FieldBindings) {
-        final BindingList<$FieldBinding> b = (($FieldBindings)bindings).getBind();
-        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final $FieldBinding fieldBinding = b.get(i);
-          if ("java".equals(fieldBinding.getLang$().text())) {
-            if (xsbToBinding.put(element, fieldBinding) != null)
-              throw new IllegalStateException();
-
+        final BindingList<$FieldBinding> list = (($FieldBindings)bindings).getBind();
+        for (int i = 0, i$ = list.size(); i < i$; ++i) // [RA]
+          if (add(xsbToBinding, element, list.get(i)))
             break;
-          }
-        }
       }
       else if (bindings instanceof $TypeFieldBindings) {
-        final BindingList<$TypeFieldBinding> b = (($TypeFieldBindings)bindings).getBind();
-        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final $FieldBinding fieldBinding = b.get(i);
-          if ("java".equals(fieldBinding.getLang$().text())) {
-            if (xsbToBinding.put(element, fieldBinding) != null)
-              throw new IllegalStateException();
-
+        final BindingList<$TypeFieldBinding> list = (($TypeFieldBindings)bindings).getBind();
+        for (int i = 0, i$ = list.size(); i < i$; ++i) // [RA]
+          if (add(xsbToBinding, element, list.get(i)))
             break;
-          }
-        }
       }
       else if (bindings instanceof $CodecTypeFieldBindings) {
-        final BindingList<$CodecTypeFieldBinding> b = (($CodecTypeFieldBindings)bindings).getBind();
-        for (int i = 0, i$ = b.size(); i < i$; ++i) { // [RA]
-          final $FieldBinding fieldBinding = b.get(i);
-          if ("java".equals(fieldBinding.getLang$().text())) {
-            if (xsbToBinding.put(element, fieldBinding) != null)
-              throw new IllegalStateException();
-
+        final BindingList<$CodecTypeFieldBinding> list = (($CodecTypeFieldBindings)bindings).getBind();
+        for (int i = 0, i$ = list.size(); i < i$; ++i) // [RA]
+          if (add(xsbToBinding, element, list.get(i)))
             break;
-          }
-        }
       }
       else {
         throw new ValidationException("Unexpected element type: " + bindings.name());
@@ -294,7 +287,6 @@ public final class SchemaElement extends Element implements Declarer {
 
   private static void assertNoCycle(final Schema schema) throws ValidationException {
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::getName);
-
     final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
     while (elementIterator.hasNext()) {
       final $Member member = ($Member)elementIterator.next();
@@ -619,7 +611,7 @@ public final class SchemaElement extends Element implements Declarer {
       for (final Map.Entry<Registry.Type,ClassSpec> entry : typeToJavaClass.entrySet()) { // [S]
         final Registry.Type type = entry.getKey();
         final ClassSpec classSpec = entry.getValue();
-        final String canonicalPackageName = type.getCanonicalPackage();
+        final String canonicalPackageName = type.canonicalPackageName;
         if (canonicalPackageName != null)
           b.append("package ").append(canonicalPackageName).append(";\n");
 
@@ -639,7 +631,7 @@ public final class SchemaElement extends Element implements Declarer {
 
         b.append("\n@").append(Generated.class.getName()).append(GENERATED);
         b.append("\npublic ").append(classSpec);
-        sources.put(type.getName(), b.toString());
+        sources.put(type.name, b.toString());
         b.setLength(0);
       }
     }

@@ -30,9 +30,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jsonx.Registry.Type;
 import org.jsonx.schema.Object._40properties;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
@@ -204,56 +204,16 @@ final class ObjectModel extends Referrer<ObjectModel> {
       throw new IllegalArgumentException("Class " + cls.getName() + " does not implement " + JxObject.class.getName());
   }
 
-  private void recurseInnerClasses(final Registry registry, final Class<?> cls) {
-    for (final Class<?> innerClass : cls.getClasses()) { // [A]
-      if (!JxObject.class.isAssignableFrom(innerClass))
-        recurseInnerClasses(registry, innerClass);
-      else
-        referenceOrDeclare(registry, this, innerClass);
-    }
-  }
+  private static Bind.Type getType(final Registry registry, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding, final $ObjectMember xsb) {
+    if (xsbToBinding == null)
+      return null;
 
-  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    final LinkedHashMap<String,Member> members = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
-    final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
-    while (iterator.hasNext()) {
-      final $Member next = ($Member)iterator.next();
-      if (next instanceof $Any) {
-        final $Any member = ($Any)next;
-        members.put(member.getNames$().text(), AnyModel.reference(registry, objectModel, member, xsbToBinding));
-      }
-      else if (next instanceof $Array) {
-        final $Array member = ($Array)next;
-        members.put(member.getName$().text(), ArrayModel.reference(registry, objectModel, member, xsbToBinding));
-      }
-      else if (next instanceof $Boolean) {
-        final $Boolean member = ($Boolean)next;
-        members.put(member.getName$().text(), BooleanModel.reference(registry, objectModel, member, xsbToBinding));
-      }
-      else if (next instanceof $Number) {
-        final $Number member = ($Number)next;
-        members.put(member.getName$().text(), NumberModel.reference(registry, objectModel, member, xsbToBinding));
-      }
-      else if (next instanceof $Object) {
-        final $Object member = ($Object)next;
-        members.put(member.getName$().text(), declare(registry, objectModel, member, xsbToBinding));
-      }
-      else if (next instanceof $Reference) {
-        final $Reference member = ($Reference)next;
-        final Id id = Id.named(member.getType$());
-        final Member child = registry.getModel(id);
-        members.put(member.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, member, xsbToBinding == null ? null : xsbToBinding.get(member), () -> registry.reference(registry.getModel(id), objectModel)));
-      }
-      else if (next instanceof $String) {
-        final $String member = ($String)next;
-        members.put(member.getName$().text(), StringModel.reference(registry, objectModel, member, xsbToBinding));
-      }
-      else {
-        throw new UnsupportedOperationException("Unsupported " + next.getClass().getSimpleName() + " member type: " + next.getClass().getName());
-      }
-    }
+    final $TypeFieldBinding binding = ($TypeFieldBinding)xsbToBinding.get(xsb);
+    if (binding == null)
+      return null;
 
-    return members;
+    final $TypeFieldBinding.Type$ type = binding.getType$();
+    return type == null ? null : Bind.Type.from(registry, type, null, null);
   }
 
   private class Property {
@@ -280,17 +240,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
     private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
       final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
-        // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
-        final Collection<?> elements = element.getElements();
-        if (elements != null && elements.size() > 0) {
-          final Iterator<?> iterator = elements.iterator();
-          while (iterator.hasNext()) {
-            final XmlElement child = (XmlElement)iterator.next();
-            if ("binding".equals(child.getName())) // FIXME:...!!
-              throw new RuntimeException("...Remove this code");
-          }
-        }
-
         final Map<?,?> attrs = element.getAttributes();
         attrs.remove("nullable");
         attrs.remove("use");
@@ -305,8 +254,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
     private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
       final PropertyMap<Object> object = (PropertyMap<Object>)member.toJson(owner, packageName, cursor, pathToBinding);
       if (getOverride() != null) {
-        // FIXME: Removing the whole binding element... but what about "decode" and "encode"? Should these be overridable?
-        object.remove("@bindings");
         object.remove("@nullable");
         object.remove("@use");
         object.remove("@minOccurs");
@@ -325,7 +272,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   private final Map<String,PropertySpec> getMethodToPropertySpec;
 
   private ObjectModel(final Registry registry, final Declarer declarer, final Schema.Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, registry.getType(registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text());
+    super(registry, declarer, registry.getType(registry.packageName, registry.classBasePath + JsdUtil.flipName(xsb.getName$().text()), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), xsb.getDoc$(), xsb.getName$().text(), getType(registry, xsbToBinding, xsb));
     this.isAbstract = xsb.getAbstract$().text();
     this.superObject = getReference(xsb.getExtends$());
     this.properties = parseProperties(xsb, xsbToBinding);
@@ -334,60 +281,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
     this.getMethodToPropertySpec = null;
 
     validateTypeBinding();
-  }
-
-  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    final LinkedHashMap<String,Member> members = parseMembers(xsb, this, xsbToBinding);
-    if (members == null)
-      return null;
-
-    final int size = members.size();
-    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size); // FIXME: Does this need to be a LinkedHashMap?
-    if (size > 0)
-      for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
-        properties.put(entry.getKey(), new Property(entry.getValue()));
-
-    return properties;
-  }
-
-  /**
-   * Returns the {@link Property} matching the provided name in the inheritance chain of this {@link ObjectModel}.
-   *
-   * @implNote This method is intended to be called after {@link #resolveReferences()} is called. Otherwise, {@link #superObject}
-   *           values may be instances of {@link Deferred}.
-   * @param name The name of {@link Property} to get.
-   * @return The {@link Property} matching the provided name in the inheritance chain of this {@link ObjectModel}.
-   * @throws IllegalStateException If this method is called before {@link #resolveReferences()}.
-   */
-  private Property getSuperProperty(final String name) {
-    if (referencesResolved != null && !referencesResolved)
-      throw new IllegalStateException();
-
-    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
-      final Property property = parent.properties.get(name);
-      if (property != null)
-        return property;
-    }
-
-    return null;
-  }
-
-  private void resolveProperties() {
-    if (properties.size() > 0) {
-      for (final Map.Entry<String,Property> entry : properties.entrySet()) { // [S]
-        final Property superProperty = superObject == null ? null : getSuperProperty(entry.getKey());
-        final Property property = entry.getValue();
-        if (superProperty == null) {
-          property.setOverride(null);
-          continue;
-        }
-
-        if (superProperty.member.isAssignableFrom(property.member))
-          property.setOverride(superProperty.member);
-        else
-          throw new ValidationException("Object " + (name() != null ? name() : JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
-      }
-    }
   }
 
   private ObjectModel(final Registry registry, final Declarer declarer, final Class<?> cls, final String fieldName, final ObjectProperty property) {
@@ -399,7 +292,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   private ObjectModel(final Registry registry, final Declarer declarer, final $Object xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classBasePath + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding, xsb), null);
+    super(registry, declarer, xsb.getDoc$(), xsb.getName$(), xsb.getNullable$(), xsb.getUse$(), registry.getType(registry.packageName, registry.classBasePath + getFullyQualifiedName(xsb), xsb.getExtends$() != null ? registry.classBasePath + JsdUtil.flipName(xsb.getExtends$().text()) : null), getField(xsbToBinding, xsb), getType(registry, xsbToBinding, xsb));
     this.superObject = getReference(xsb.getExtends$());
     this.isAbstract = false;
     this.properties = parseProperties(xsb, xsbToBinding);
@@ -410,42 +303,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     validateTypeBinding();
   }
 
-  private class PropertySpec {
-    final Annotation annotation;
-    final String propertyName;
-    final String fieldName;
-
-    private PropertySpec(final Annotation annotation, final String propertyName, final String fieldName) {
-      this.annotation = annotation;
-      this.propertyName = propertyName;
-      this.fieldName = fieldName;
-    }
-  }
-
-  private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
-    @Override
-    Method[] getMethods(final Class<? extends JxObject> cls) {
-      return cls.getDeclaredMethods();
-    }
-
-    @Override
-    public boolean test(final Method method) {
-      return Modifier.isPublic(method.getModifiers()) && !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
-    }
-
-    @Override
-    void beforePut(final Method[] methods) {
-      try {
-        Classes.sortDeclarativeOrder(methods, true);
-      }
-      catch (final ClassNotFoundException e) {
-        System.err.println("Cannot sort methods in declarative order because Javassist is not present on the system classpath");
-      }
-    }
-  };
-
   private ObjectModel(final Registry registry, final Declarer declarer, final Class<?> cls, final Boolean nullable, final Use use, final String fieldName) {
-    super(registry, declarer, nullable, use, fieldName, registry.getType(cls));
+    super(registry, declarer, nullable, use, fieldName, registry.getType(cls), getTypeBinding(registry, cls));
     final Class<?> superClass = cls.getSuperclass();
     this.isAbstract = Modifier.isAbstract(cls.getModifiers());
     this.superObject = superClass == null || !JxObject.class.isAssignableFrom(superClass) ? null : referenceOrDeclare(registry, declarer, superClass);
@@ -494,6 +353,162 @@ final class ObjectModel extends Referrer<ObjectModel> {
     recurseInnerClasses(registry, cls);
 
     validateTypeBinding();
+  }
+
+  private void recurseInnerClasses(final Registry registry, final Class<?> cls) {
+    for (final Class<?> innerClass : cls.getClasses()) { // [A]
+      if (!JxObject.class.isAssignableFrom(innerClass))
+        recurseInnerClasses(registry, innerClass);
+      else
+        referenceOrDeclare(registry, this, innerClass);
+    }
+  }
+
+  private LinkedHashMap<String,Property> parseProperties(final $ObjectMember xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    final LinkedHashMap<String,Member> members = parseMembers(xsb, this, xsbToBinding);
+    if (members == null)
+      return null;
+
+    final int size = members.size();
+    final LinkedHashMap<String,Property> properties = new LinkedHashMap<>(size); // FIXME: Does this need to be a LinkedHashMap?
+    if (size > 0)
+      for (final Map.Entry<String,Member> entry : members.entrySet()) // [S]
+        properties.put(entry.getKey(), new Property(entry.getValue()));
+
+    return properties;
+  }
+
+  private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    final LinkedHashMap<String,Member> members = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
+    final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
+    while (iterator.hasNext()) {
+      final $Member next = ($Member)iterator.next();
+      if (next instanceof $Any) {
+        final $Any member = ($Any)next;
+        members.put(member.getNames$().text(), AnyModel.reference(registry, objectModel, member, xsbToBinding));
+      }
+      else if (next instanceof $Array) {
+        final $Array member = ($Array)next;
+        members.put(member.getName$().text(), ArrayModel.reference(registry, objectModel, member, xsbToBinding));
+      }
+      else if (next instanceof $Boolean) {
+        final $Boolean member = ($Boolean)next;
+        members.put(member.getName$().text(), BooleanModel.reference(registry, objectModel, member, xsbToBinding));
+      }
+      else if (next instanceof $Number) {
+        final $Number member = ($Number)next;
+        members.put(member.getName$().text(), NumberModel.reference(registry, objectModel, member, xsbToBinding));
+      }
+      else if (next instanceof $Object) {
+        final $Object member = ($Object)next;
+        members.put(member.getName$().text(), declare(registry, objectModel, member, xsbToBinding));
+      }
+      else if (next instanceof $Reference) {
+        final $Reference member = ($Reference)next;
+        final Id id = Id.named(member.getType$());
+        final Member child = registry.getModel(id);
+        members.put(member.getName$().text(), child instanceof Reference ? child : Reference.defer(registry, objectModel, member, xsbToBinding == null ? null : xsbToBinding.get(member), () -> registry.reference(registry.getModel(id), objectModel)));
+      }
+      else if (next instanceof $String) {
+        final $String member = ($String)next;
+        members.put(member.getName$().text(), StringModel.reference(registry, objectModel, member, xsbToBinding));
+      }
+      else {
+        throw new UnsupportedOperationException("Unsupported " + next.getClass().getSimpleName() + " member type: " + next.getClass().getName());
+      }
+    }
+
+    return members;
+  }
+
+  /**
+   * Returns the {@link Property} matching the provided name in the inheritance chain of this {@link ObjectModel}.
+   *
+   * @implNote This method is intended to be called after {@link #resolveReferences()} is called. Otherwise, {@link #superObject}
+   *           values may be instances of {@link Deferred}.
+   * @param name The name of {@link Property} to get.
+   * @return The {@link Property} matching the provided name in the inheritance chain of this {@link ObjectModel}.
+   * @throws IllegalStateException If this method is called before {@link #resolveReferences()}.
+   */
+  private Property getSuperProperty(final String name) {
+    if (referencesResolved != null && !referencesResolved)
+      throw new IllegalStateException();
+
+    for (ObjectModel parent = (ObjectModel)superObject; parent != null; parent = (ObjectModel)parent.superObject) { // [X]
+      final Property property = parent.properties.get(name);
+      if (property != null)
+        return property;
+    }
+
+    return null;
+  }
+
+  private void resolveProperties() {
+    if (properties.size() > 0) {
+      for (final Map.Entry<String,Property> entry : properties.entrySet()) { // [S]
+        final Property superProperty = superObject == null ? null : getSuperProperty(entry.getKey());
+        final Property property = entry.getValue();
+        if (superProperty == null) {
+          property.setOverride(null);
+          continue;
+        }
+
+        if (superProperty.member.isAssignableFrom(property.member))
+          property.setOverride(superProperty.member);
+        else
+          throw new ValidationException("Object " + (name() != null ? name() : JsdUtil.flipName(id().toString())) + "." + entry.getKey() + " overrides " + property.member.name() + "." + entry.getKey() + " with incompatible type");
+      }
+    }
+  }
+
+  private class PropertySpec {
+    final Annotation annotation;
+    final String propertyName;
+    final String fieldName;
+
+    private PropertySpec(final Annotation annotation, final String propertyName, final String fieldName) {
+      this.annotation = annotation;
+      this.propertyName = propertyName;
+      this.fieldName = fieldName;
+    }
+  }
+
+  private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
+    @Override
+    Method[] getMethods(final Class<? extends JxObject> cls) {
+      return cls.getDeclaredMethods();
+    }
+
+    @Override
+    public boolean test(final Method method) {
+      return Modifier.isPublic(method.getModifiers()) && !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
+    }
+
+    @Override
+    void beforePut(final Method[] methods) {
+      try {
+        Classes.sortDeclarativeOrder(methods, true);
+      }
+      catch (final ClassNotFoundException e) {
+        System.err.println("Cannot sort methods in declarative order because Javassist is not present on the system classpath");
+      }
+    }
+  };
+
+  private static Bind.Type getTypeBinding(final Registry registry, final Class<?> cls) {
+    final Class<?>[] interfaces = cls.getInterfaces();
+    final int length = interfaces.length;
+    if (length == 0)
+      return null;
+
+    final Class<?> interface0 = interfaces[0];
+    if (length == 1)
+      return interface0 == JxObject.class ? null : Bind.Type.from(registry, interface0, null, null);
+
+    if (length > 2)
+      throw new ValidationException(cls.getName() + " implements more than 1 type interface: " + Arrays.toString(interfaces));
+
+    return Bind.Type.from(registry, interface0 == JxObject.class ? interfaces[1] : interface0, null, null);
   }
 
   @Override
@@ -602,13 +617,18 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
+  Registry.Type type() {
+    return classType();
+  }
+
+  @Override
   Registry.Type typeDefault(final boolean primitive) {
     return classType();
   }
 
   @Override
   String isValid(final Bind.Type typeBinding) {
-    return typeBinding.type == null ? null : "Cannot override the type for \"object\"";
+    return null;
   }
 
   @Override
@@ -623,12 +643,12 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   Class<?> defaultClass() {
-    return JxObject.class;
+    return Object.class;
   }
 
   @Override
   String sortKey() {
-    return "z" + type().getName();
+    return "z" + type().name;
   }
 
   @Override
@@ -714,7 +734,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   AttributeMap toSchemaAttributes(final Element owner, final String packageName, final boolean jsd) {
     final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     final String name = name();
-    attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().getName()) : classType().getSubName(packageName)));
+    attributes.put(owner instanceof ArrayModel ? "type" : "name", name != null ? name : JsdUtil.flipName(owner instanceof ObjectModel ? classType().getSubName(((ObjectModel)owner).type().name) : classType().getSubName(packageName)));
 
     if (superObject != null)
       attributes.put(jsd(jsd, "extends"), JsdUtil.flipName(superObject.type().getRelativeName(packageName)));
@@ -729,7 +749,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   void toAnnotationAttributes(final AttributeMap attributes, final Member owner) {
     super.toAnnotationAttributes(attributes, owner);
     if (owner instanceof ArrayModel)
-      attributes.put("type", classType().getCanonicalName() + ".class");
+      attributes.put("type", classType().canonicalName + ".class");
   }
 
   @Override
@@ -754,8 +774,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
   String toSource(final Settings settings) {
     final StringBuilder b = new StringBuilder();
     final HashSet<String> overridden = superObject == null ? null : new HashSet<>();
-    boolean appended = b.length() > 0;
-    final Type classType = classType();
+    boolean appended = false;
+    final Registry.Type classType = classType();
     final boolean setBuilder = settings.getSetBuilder();
     if (properties != null && properties.size() > 0) {
       for (final Property property : properties.values()) { // [C]
@@ -797,8 +817,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     b.append("\npublic boolean equals(final ").append(Object.class.getName()).append(" obj) {");
     b.append("\n  if (obj == this)");
     b.append("\n    return true;");
-    b.append("\n\n  if (!(obj instanceof ").append(classType.getCanonicalName()).append(')');
-    final Type superType = classType.getSuperType();
+    b.append("\n\n  if (!(obj instanceof ").append(classType.canonicalName).append(')');
+    final Registry.Type superType = classType.getSuperType();
     if (superType != null)
       b.append(" || !super.equals(obj)");
 
@@ -806,7 +826,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
     final boolean hasMembers = numNonOverrideMembers() > 0;
     if (hasMembers) {
-      b.append("\n  final ").append(classType.getCanonicalName()).append(" that = (").append(classType.getCanonicalName()).append(")obj;");
+      b.append("\n  final ").append(classType.canonicalName).append(" that = (").append(classType.canonicalName).append(")obj;");
       if (properties.size() > 0) {
         for (final Property property : properties.values()) { // [C]
           if (property.getOverride() != null)
@@ -814,7 +834,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
           final Member member = property.member;
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
-          final Type memberType = member.type();
+          final Registry.Type memberType = member.type();
           final String instanceCase = member.fieldBinding.instanceCase;
           if (!isOptionalType && memberType.isArray)
             b.append("\n  if (!").append(Arrays.class.getName()).append(".equals(").append(instanceCase).append(", that.").append(instanceCase).append(')');
@@ -833,14 +853,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     b.append("\n\n@").append(Override.class.getName());
     b.append("\npublic int hashCode() {");
     if (hasMembers) {
-      b.append("\n  int hashCode = ").append(classType.getName().hashCode()).append(superType != null ? " * 31 + super.hashCode()" : "").append(';');
+      b.append("\n  int hashCode = ").append(classType.name.hashCode()).append(superType != null ? " * 31 + super.hashCode()" : "").append(';');
       if (properties.size() > 0) {
         for (final Property property : properties.values()) { // [C]
           if (property.getOverride() != null)
             continue;
 
           final Member member = property.member;
-          final Type memberType = member.type();
+          final Registry.Type memberType = member.type();
           final boolean isPrimitive = memberType.isPrimitive;
           final boolean isOptionalType = member.use.get == Use.OPTIONAL && member.nullable.get == null;
 
@@ -868,7 +888,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
       b.append("\n  return hashCode;");
     }
     else {
-      b.append("\n  return ").append(classType.getName().hashCode());
+      b.append("\n  return ").append(classType.name.hashCode());
       if (superType != null)
         b.append(" * 31 + super.hashCode()");
 

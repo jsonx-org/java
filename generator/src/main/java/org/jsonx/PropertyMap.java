@@ -45,8 +45,9 @@ class PropertyMap<V> extends LinkedHashMap<String,V> {
    * @throws IllegalArgumentException If any key or value contained in the specified map is null.
    */
   PropertyMap(final Map<String,V> m) {
-    for (final Map.Entry<String,V> entry : m.entrySet())
-      put(entry.getKey(), entry.getValue());
+    if (m.size() > 0)
+      for (final Map.Entry<String,V> entry : m.entrySet()) // [S]
+        put(entry.getKey(), entry.getValue());
   }
 
   /**

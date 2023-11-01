@@ -40,17 +40,20 @@ class ClassSpec {
   final Referrer<?> referrer;
   private final Registry registry;
   private final Registry.Type type;
+  private final Bind.Type typeBinding;
 
   ClassSpec(final Referrer<?> referrer) {
     this.referrer = referrer;
     this.registry = referrer.registry;
     this.type = referrer.classType();
+    this.typeBinding = referrer.typeBinding;
   }
 
   ClassSpec(final ClassSpec parent, final Registry.Type type) {
     this.referrer = null;
     this.registry = parent.registry;
     this.type = type;
+    this.typeBinding = null;
   }
 
   String getDoc() {
@@ -58,31 +61,31 @@ class ClassSpec {
   }
 
   StringBuilder getAnnotation() {
-    StringBuilder builder = null;
-    if (type.getKind() == Registry.Kind.ANNOTATION) {
-      builder = new StringBuilder();
-      builder.append('@').append(Retention.class.getName()).append('(').append(RetentionPolicy.class.getName()).append('.').append(RetentionPolicy.RUNTIME).append(')');
+    StringBuilder b = null;
+    if (type.kind == Registry.Kind.ANNOTATION) {
+      b = new StringBuilder();
+      b.append('@').append(Retention.class.getName()).append('(').append(RetentionPolicy.class.getName()).append('.').append(RetentionPolicy.RUNTIME).append(')');
     }
 
     if (referrer == null || referrer.getClassAnnotation() == null || referrer.getClassAnnotation().size() == 0)
-      return builder;
+      return b;
 
-    if (builder == null)
-      builder = new StringBuilder();
+    if (b == null)
+      b = new StringBuilder();
 
     final ArrayList<AnnotationType> annotations = referrer.getClassAnnotation();
     for (int i = 0, i$ = annotations.size(); i < i$; ++i) { // [RA]
-      if (builder.length() > 0)
-        builder.append('\n');
+      if (b.length() > 0)
+        b.append('\n');
 
-      builder.append(annotations.get(i));
+      b.append(annotations.get(i));
     }
 
-    return builder.length() == 0 ? null : builder;
+    return b.length() == 0 ? null : b;
   }
 
   void add(final ClassSpec classSpec) {
-    nameToClassSpec.put(classSpec.type.getName(), classSpec);
+    nameToClassSpec.put(classSpec.type.name, classSpec);
   }
 
   private String toString(final ClassSpec parent) {
@@ -93,13 +96,19 @@ class ClassSpec {
     if (parent != null)
       b.append("static ");
 
-    b.append(type.getKind()).append(' ').append(type.getSimpleName());
-    if (type.getKind() == Registry.Kind.CLASS && referrer != null) {
+    b.append(type.kind).append(' ').append(type.simpleName);
+    if (type.kind == Registry.Kind.CLASS && referrer != null) {
       final Type superType = type.getSuperType();
-      if (superType != null)
-        b.append(" extends ").append(superType.getCanonicalName());
-      else
+      if (superType != null) {
+        b.append(" extends ").append(superType.canonicalName);
+        if (typeBinding != null)
+          b.append(" implements ").append(typeBinding.type.canonicalName);
+      }
+      else {
         b.append(" implements ").append(JxObject.class.getCanonicalName());
+        if (typeBinding != null)
+          b.append(", ").append(typeBinding.type.canonicalName);
+      }
     }
 
     b.append(" {");
