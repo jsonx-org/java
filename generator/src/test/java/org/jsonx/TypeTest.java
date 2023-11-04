@@ -84,8 +84,8 @@ public class TypeTest {
 
     final Registry.Type type = registry.getType(Integer.class);
     assertEquals(Integer.class.getName(), type.toString());
-    assertEquals(Number.class.getName(), type.getSuperType().toString());
-    assertNull(type.getSuperType().getSuperType());
+    assertEquals(Number.class.getName(), type.superType.toString());
+    assertNull(type.superType.superType);
   }
 
   @Test
@@ -94,8 +94,8 @@ public class TypeTest {
 
     final Registry.Type type = registry.getType(TypeTest.class);
     assertEquals(TypeTest.class.getName(), type.toString());
-    assertEquals(Object.class.getName(), type.getSuperType().toString());
-    assertNull(type.getSuperType().getSuperType());
+    assertEquals(Object.class.getName(), type.superType.toString());
+    assertNull(type.superType.superType);
   }
 
   @Test
@@ -121,12 +121,12 @@ public class TypeTest {
     assertEquals(packageName + ".One", type.getDeclaringType().getDeclaringType().toString());
     assertNull(type.getDeclaringType().getDeclaringType().getDeclaringType());
 
-    assertEquals(superPackageName + ".Foo", type.getSuperType().getDeclaringType().toString());
-    assertNull(type.getSuperType().getDeclaringType().getDeclaringType());
+    assertEquals(superPackageName + ".Foo", type.superType.getDeclaringType().toString());
+    assertNull(type.superType.getDeclaringType().getDeclaringType());
 
     assertEquals(packageName + "." + name, type.toString());
-    assertEquals(superPackageName + "." + superName, type.getSuperType().toString());
-    assertNull(type.getSuperType().getSuperType());
+    assertEquals(superPackageName + "." + superName, type.superType.toString());
+    assertNull(type.superType.superType);
   }
 
   @Test

@@ -330,7 +330,7 @@ abstract class ModelTest {
     if (logger.isInfoEnabled()) { logger.info("       a) Schema -> JSON " + outFile); }
     final String json = JSON.toString(schema.toJson(), 2);
     writeJsonFile(outFile, json);
-    
+
     if (logger.isInfoEnabled()) { logger.info("       b) JSON -> Schema"); }
     final JxObject binding = testXml(control instanceof Binding ? binding.Binding.class : schema.Schema.class, json, true);
 

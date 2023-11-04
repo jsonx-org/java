@@ -181,8 +181,8 @@ class Registry {
       this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (GenericType[])null), genericTypes);
     }
 
-    Type getSuperType() {
-      return superType;
+    boolean hasJxSuperType() {
+      return superType != null && (superType.cls == null || JxObject.class.isAssignableFrom(superType.cls));
     }
 
     Type getDeclaringType() {

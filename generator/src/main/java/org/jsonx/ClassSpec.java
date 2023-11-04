@@ -98,16 +98,17 @@ class ClassSpec {
 
     b.append(type.kind).append(' ').append(type.simpleName);
     if (type.kind == Registry.Kind.CLASS && referrer != null) {
-      final Type superType = type.getSuperType();
-      if (superType != null) {
+      final Type superType = type.superType;
+      if (superType != null && (superType.cls == null || JxObject.class.isAssignableFrom(superType.cls))) {
         b.append(" extends ").append(superType.canonicalName);
         if (typeBinding != null)
           b.append(" implements ").append(typeBinding.type.canonicalName);
       }
       else {
-        b.append(" implements ").append(JxObject.class.getCanonicalName());
         if (typeBinding != null)
-          b.append(", ").append(typeBinding.type.canonicalName);
+          b.append(" extends ").append(typeBinding.type.canonicalName);
+
+        b.append(" implements ").append(JxObject.class.getCanonicalName());
       }
     }
 

@@ -501,14 +501,15 @@ final class ObjectModel extends Referrer<ObjectModel> {
     if (length == 0)
       return null;
 
+    final Class<?> superClass = cls.getSuperclass();
+    if (superClass == null || Object.class.equals(superClass))
+      return null;
+
     final Class<?> interface0 = interfaces[0];
-    if (length == 1)
-      return interface0 == JxObject.class ? null : Bind.Type.from(registry, interface0, null, null);
+    if (interface0 != JxObject.class)
+      return Bind.Type.from(registry, interface0, null, null);
 
-    if (length > 2)
-      throw new ValidationException(cls.getName() + " implements more than 1 type interface: " + Arrays.toString(interfaces));
-
-    return Bind.Type.from(registry, interface0 == JxObject.class ? interfaces[1] : interface0, null, null);
+    return Bind.Type.from(registry, superClass, null, null);
   }
 
   @Override
@@ -818,8 +819,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     b.append("\n  if (obj == this)");
     b.append("\n    return true;");
     b.append("\n\n  if (!(obj instanceof ").append(classType.canonicalName).append(')');
-    final Registry.Type superType = classType.getSuperType();
-    if (superType != null)
+    final boolean hasJxSuperType = classType.hasJxSuperType();
+    if (hasJxSuperType)
       b.append(" || !super.equals(obj)");
 
     b.append(")\n    return false;\n");
@@ -853,7 +854,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
     b.append("\n\n@").append(Override.class.getName());
     b.append("\npublic int hashCode() {");
     if (hasMembers) {
-      b.append("\n  int hashCode = ").append(classType.name.hashCode()).append(superType != null ? " * 31 + super.hashCode()" : "").append(';');
+      b.append("\n  int hashCode = ").append(classType.name.hashCode()).append(hasJxSuperType ? " * 31 + super.hashCode()" : "").append(';');
       if (properties.size() > 0) {
         for (final Property property : properties.values()) { // [C]
           if (property.getOverride() != null)
@@ -889,14 +890,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
     else {
       b.append("\n  return ").append(classType.name.hashCode());
-      if (superType != null)
+      if (hasJxSuperType)
         b.append(" * 31 + super.hashCode()");
 
       b.append(';');
     }
     b.append("\n}");
 
-    if (superType == null) {
+    if (!hasJxSuperType) {
       b.append("\n\n@").append(Override.class.getName());
       b.append("\npublic ").append(String.class.getName()).append(" toString() {");
       b.append("\n  return ").append(JxEncoder.class.getName()).append(".get().toString(this);");
