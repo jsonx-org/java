@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.libj.lang.Strings;
+import org.openjax.json.JsonUtil;
 
 /**
  * A JAX-RS {@link Provider} that implements an {@link ExceptionMapper} to present a JSON error body in case of a
@@ -40,32 +40,41 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestExce
   }
 
   public BadRequestExceptionMapper() {
-    this(true);
+    this.verbose = true;
   }
 
   @Override
   public Response toResponse(final BadRequestException exception) {
     try (final Response response = exception.getResponse()) {
       final int status = response.getStatus();
-      final StringBuilder b = new StringBuilder("{\"status\":").append(status);
+      final StringBuilder builder = new StringBuilder("{\"status\":").append(status);
       final String message = exception.getMessage();
       if (message != null) {
         final String prefix = "HTTP " + status + " ";
-        b.append(",\"message\":\"").append(message.startsWith(prefix) ? message.substring(prefix.length()) : message).append('"');
-        final Throwable cause = exception.getCause();
-        if (cause instanceof DecodeException) {
-          b.append(",\"cause\":\"").append(Strings.escapeForJava(cause.getMessage())).append('"');
-          if (verbose) {
-            final String content = ((DecodeException)cause).getContent();
-            if (content != null)
-              b.append(",\"json\":\"").append(Strings.escapeForJava(content)).append('"');
+        builder.append(",\"message\":\"");
+        JsonUtil.escape(builder, message.startsWith(prefix) ? message.substring(prefix.length()) : message);
+        builder.append('"');
+      }
+
+      final Throwable cause = exception.getCause();
+      final String causeMessage;
+      if (cause instanceof DecodeException && (causeMessage = cause.getMessage()) != null) {
+        builder.append(",\"cause\":\"");
+        JsonUtil.escape(builder, causeMessage);
+        builder.append('"');
+        if (verbose) {
+          final String content = ((DecodeException)cause).getContent();
+          if (content != null) {
+            builder.append(",\"json\":\"");
+            JsonUtil.escape(builder, content);
+            builder.append('"');
           }
         }
       }
 
       return Response
         .fromResponse(response)
-        .entity(b.append('}').toString())
+        .entity(builder.append('}').toString())
         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         .build();
     }
