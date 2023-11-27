@@ -28,7 +28,7 @@ public class Publishing implements JxObject {
 
   @NumberProperty(name = "year", scale = 0)
   public BigInteger getYear() {
-    return this.year;
+    return year;
   }
 
   public void setYear(final BigInteger year) {
@@ -39,7 +39,7 @@ public class Publishing implements JxObject {
 
   @StringProperty(name = "publisher", pattern = "\\S+ \\S+")
   public String getPublisher() {
-    return this.publisher;
+    return publisher;
   }
 
   public void setPublisher(final String publisher) {

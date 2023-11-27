@@ -39,7 +39,7 @@ public class JxObjectProviderTest {
 
     @StringProperty(name = "content")
     public String getContent() {
-      return this.content;
+      return content;
     }
 
     public void setContent(String content) {

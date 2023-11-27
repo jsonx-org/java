@@ -27,7 +27,7 @@ public class Address implements JxObject {
 
   @NumberProperty(name = "number", scale = 0, range = "[0,]", nullable = false)
   public int getNumber() {
-    return this.number;
+    return number;
   }
 
   public void setNumber(final int number) {
@@ -38,7 +38,7 @@ public class Address implements JxObject {
 
   @StringProperty(name = "street", pattern = "\\S|\\S.*\\S", nullable = false)
   public String getStreet() {
-    return this.street;
+    return street;
   }
 
   public void setStreet(final String street) {
@@ -49,7 +49,7 @@ public class Address implements JxObject {
 
   @StringProperty(name = "city", pattern = "(\\S)|(\\S.*\\S)", nullable = false)
   public String getCity() {
-    return this.city;
+    return city;
   }
 
   public void setCity(final String city) {
@@ -60,7 +60,7 @@ public class Address implements JxObject {
 
   @StringProperty(name = "postalCode", pattern = "(\\S)|(\\S.*\\S)")
   public String getPostalCode() {
-    return this.postalCode;
+    return postalCode;
   }
 
   public void setPostalCode(final String postalCode) {
@@ -71,7 +71,7 @@ public class Address implements JxObject {
 
   @StringProperty(name = "locality", pattern = "(\\S)|(\\S.*\\S)")
   public String getLocality() {
-    return this.locality;
+    return locality;
   }
 
   public void setLocality(final String locality) {
@@ -82,7 +82,7 @@ public class Address implements JxObject {
 
   @StringProperty(name = "country", pattern = "(\\S)|(\\S.*\\S)", nullable = false, use = Use.OPTIONAL)
   public String getCountry() {
-    return this.country;
+    return country;
   }
 
   public void setCountry(final String country) {

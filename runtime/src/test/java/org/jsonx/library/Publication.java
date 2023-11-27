@@ -32,7 +32,7 @@ public abstract class Publication implements JxObject {
 
   @StringProperty(name = "title")
   public String getTitle() {
-    return this.title;
+    return title;
   }
 
   public void setTitle(final String title) {
@@ -44,7 +44,7 @@ public abstract class Publication implements JxObject {
   @StringElement(id = 1, pattern = "\\S+ \\S+", nullable = false)
   @ArrayProperty(name = "authors", use = Use.OPTIONAL, elementIds = 1)
   public Optional<List<String>> getAuthors() {
-    return this.authors;
+    return authors;
   }
 
   public void setAuthors(final Optional<List<String>> authors) {
@@ -56,7 +56,7 @@ public abstract class Publication implements JxObject {
   @StringElement(id = 1, pattern = "\\S+ \\S+", nullable = false)
   @ArrayProperty(name = "editors", use = Use.OPTIONAL, elementIds = 1)
   public Optional<List<String>> getEditors() {
-    return this.editors;
+    return editors;
   }
 
   public void setEditors(final Optional<List<String>> editors) {
@@ -68,7 +68,7 @@ public abstract class Publication implements JxObject {
   @ObjectElement(id = 1, type = Publishing.class, nullable = false)
   @ArrayProperty(name = "publishings", elementIds = 1)
   public List<Publishing> getPublishings() {
-    return this.publishings;
+    return publishings;
   }
 
   public void setPublishings(final List<Publishing> publishings) {

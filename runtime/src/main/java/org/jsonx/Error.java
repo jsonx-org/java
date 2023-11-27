@@ -156,7 +156,7 @@ final class Error {
   }
 
   public int getOffset() {
-    return this.offset;
+    return offset;
   }
 
   public Throwable getException() {

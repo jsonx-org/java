@@ -47,15 +47,15 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
     return binding == null ? null : binding.getField$();
   }
 
-  static Registry.Type getGreatestCommonSuperType(final ArrayList<? extends Member> members) {
-    final int i$ = assertPositive(members.size());
+  static Registry.Type getGreatestCommonSuperType(final Member[] members) {
+    final int i$ = assertPositive(members.length);
 
     boolean isObjectModel = true;
     final Set<Member> visited = Referrer.visited.get();
     try {
       count.set(count.get() + 1);
       int start = 0;
-      final Member member0 = members.get(0);
+      final Member member0 = members[0];
       isObjectModel &= member0 instanceof ObjectModel;
       if (!visited.add(member0))
         start = 1;
@@ -65,11 +65,11 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
 
       int i = start + 1;
       if (i$ == i)
-        return members.get(start).type();
+        return members[start].type();
 
-      Registry.Type gct = members.get(start).type();
-      do { // [RA]
-        final Member member = members.get(i);
+      Registry.Type gct = members[start].type();
+      do { // [A]
+        final Member member = members[i];
         isObjectModel &= member instanceof ObjectModel;
         gct = getGreatestCommonSuperType(gct, member);
       }

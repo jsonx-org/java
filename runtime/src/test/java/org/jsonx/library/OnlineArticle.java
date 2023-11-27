@@ -24,7 +24,7 @@ public class OnlineArticle extends Publication {
 
   @StringProperty(name = "url", pattern = URLs.REGEX)
   public String getUrl() {
-    return this.url;
+    return url;
   }
 
   public void setUrl(final String url) {

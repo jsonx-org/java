@@ -23,7 +23,6 @@ import java.util.HashMap;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Number;
 import org.junit.Test;
-import org.libj.lang.WrappedArrayList;
 
 public class ArrayModelTest {
   private static class Number extends $Number {
@@ -54,6 +53,6 @@ public class ArrayModelTest {
     number2.setScale$(new $Number.Scale$(0L));
     final NumberModel model2 = NumberModel.reference(registry, null, number2, null);
 
-    assertEquals(registry.getType(Long.class), ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(model1, model2)));
+    assertEquals(registry.getType(Long.class), ArrayModel.getGreatestCommonSuperType(new Member[] {model1, model2}));
   }
 }

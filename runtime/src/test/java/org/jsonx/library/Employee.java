@@ -23,7 +23,7 @@ public class Employee extends Individual {
 
   @ObjectProperty(name = "emergencyContact")
   public Individual getEmergencyContact() {
-    return this.emergencyContact;
+    return emergencyContact;
   }
 
   public void setEmergencyContact(final Individual emergencyContact) {

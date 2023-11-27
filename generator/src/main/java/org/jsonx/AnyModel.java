@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.RandomAccess;
 
@@ -159,7 +158,7 @@ final class AnyModel extends Referrer<AnyModel> {
     };
   }
 
-  private final ArrayList<Member> types;
+  private final Member[] types;
 
   private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
     super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
@@ -194,39 +193,38 @@ final class AnyModel extends Referrer<AnyModel> {
     validateTypeBinding();
   }
 
-  // FIXME: This can be converted to recursive algo
-  private ArrayList<Member> getTypes(final Boolean nullable, final Use use, final $AnyMember.Types$ refs, final $FieldBinding binding) {
+  private Member[] getTypes(final Boolean nullable, final Use use, final $AnyMember.Types$ refs, final $FieldBinding binding) {
     final List<String> idrefs;
-    final int i$;
-    if (refs == null || (i$ = (idrefs = refs.text()).size()) == 0)
+    final int size;
+    if (refs == null || (size = (idrefs = refs.text()).size()) == 0)
       return null;
 
-    final ArrayList<Member> types = new ArrayList<>(i$);
+    final Member[] types = new Member[size];
+    int i = 0;
     if (idrefs instanceof RandomAccess) {
-      int i = 0;
       do // [RA]
-        addReference(types, idrefs.get(i), nullable, use, binding);
-      while (++i < i$);
+        types[i] = addReference(idrefs.get(i), nullable, use, binding);
+      while (++i < size);
     }
     else {
-      final Iterator<String> i = idrefs.iterator();
+      final Iterator<String> it = idrefs.iterator();
       do // [I]
-        addReference(types, i.next(), nullable, use, binding);
-      while (i.hasNext());
+        types[i] = addReference(it.next(), nullable, use, binding);
+      while (++i < size);
     }
 
     return types;
   }
 
-  private void addReference(final ArrayList<Member> types, final String idref, final Boolean nullable, final Use use, final $FieldBinding binding) {
+  private Member addReference(final String idref, final Boolean nullable, final Use use, final $FieldBinding binding) {
     final Id id = Id.hashed(idref);
-    types.add(Reference.defer(registry, this, newRnonymousReference(nullable, use), binding, () -> {
+    return Reference.defer(registry, this, newRnonymousReference(nullable, use), binding, () -> {
       final Member model = registry.getModel(id);
       if (model == null)
         throw new IllegalStateException("Type id=\"" + id + "\" in <any> not found");
 
       return (Model)registry.reference(model, this);
-    }));
+    });
   }
 
   private static Class<?> getFieldType(final t[] types) {
@@ -263,13 +261,14 @@ final class AnyModel extends Referrer<AnyModel> {
     return gcc != Object.class ? gcc : isObjectModel ? JxObject.class : Object.class;
   }
 
-  private ArrayList<Member> getMemberTypes(final t[] types) {
+  private Member[] getMemberTypes(final t[] types) {
     final int len = types.length;
     if (len == 0)
       return null;
 
-    final ArrayList<Member> members = new ArrayList<>(len);
-    for (final t type : types) { // [A]
+    final Member[] members = new Member[len];
+    for (int i = 0; i < len; ++i) { // [A]
+      final t type = types[i];
       Member member = null;
       if (AnyType.isEnabled(type.arrays()))
         member = ArrayModel.referenceOrDeclare(registry, this, type.arrays());
@@ -380,7 +379,7 @@ final class AnyModel extends Referrer<AnyModel> {
       if (member == null)
         throw new ValidationException("@" + t.class.getName() + " does not specify a type");
 
-      members.add(member);
+      members[i] = member;
     }
 
     return members;
@@ -446,11 +445,11 @@ final class AnyModel extends Referrer<AnyModel> {
     final AttributeMap attributes = super.toSchemaAttributes(owner, packageName, jsd);
     if (types != null) {
       final StringBuilder b = new StringBuilder();
-      for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
+      for (int i = 0, i$ = types.length; i < i$; ++i) { // [A]
         if (i > 0)
           b.append(' ');
 
-        b.append(Registry.getSubName(types.get(i).id().toString(), packageName));
+        b.append(Registry.getSubName(types[i].id().toString(), packageName));
       }
 
       attributes.put(jsd(jsd, "types"), b.toString());
@@ -469,8 +468,8 @@ final class AnyModel extends Referrer<AnyModel> {
     attributes.put("types", values);
 
     StringBuilder b = null;
-    for (int i = 0, i$ = types.size(); i < i$; ++i) { // [RA]
-      final Member type = types.get(i);
+    for (int i = 0, i$ = types.length; i < i$; ++i) { // [A]
+      final Member type = types[i];
       if (type instanceof ArrayModel) {
         values.add("@" + t.class.getName() + "(arrays = " + ((ArrayModel)type).classType().canonicalName + ".class)");
       }
@@ -530,16 +529,15 @@ final class AnyModel extends Referrer<AnyModel> {
     if (types == null)
       return;
 
-    final ListIterator<Member> iterator = types.listIterator();
-    while (iterator.hasNext()) {
-      Member member = iterator.next();
+    for (int i = 0, i$ = types.length; i < i$; ++i) { // [A]
+      Member member = types[i];
       if (member instanceof Deferred)
         member = ((Deferred<?>)member).resolve();
 
       if (member instanceof Reference)
         member = ((Reference)member).model;
 
-      iterator.set(member);
+      types[i] = member;
     }
   }
 }

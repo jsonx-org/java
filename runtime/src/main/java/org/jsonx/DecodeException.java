@@ -125,7 +125,7 @@ public class DecodeException extends ParseException {
    * @return The {@link JsonReader} which was being read that instigated the exception.
    */
   public JsonReader getReader() {
-    return this.reader;
+    return reader;
   }
 
   /**

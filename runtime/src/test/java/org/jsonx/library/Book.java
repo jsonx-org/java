@@ -30,7 +30,7 @@ public class Book extends Publication {
 
   @StringProperty(name = "isbn", pattern = "\\d{3}-\\d-\\d{2}-\\d{6}-\\d")
   public String getIsbn() {
-    return this.isbn;
+    return isbn;
   }
 
   public void setIsbn(final String isbn) {
@@ -48,7 +48,7 @@ public class Book extends Publication {
   @ArrayElement(id = 1, nullable = false, elementIds = {2, 3})
   @ArrayProperty(name = "index", elementIds = {1})
   public List<Object> getIndex() {
-    return this.index;
+    return index;
   }
 
   public void setIndex(final List<Object> index) {

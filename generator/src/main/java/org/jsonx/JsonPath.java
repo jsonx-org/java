@@ -24,8 +24,8 @@ import org.libj.lang.Strings;
 import org.libj.util.primitive.ArrayBooleanList;
 import org.libj.util.primitive.ArrayIntList;
 import org.openjax.json.JsonUtil;
-import org.w3.www._2001.XMLSchema.yAA;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
+import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 class JsonPath implements Iterable<Object> {
   private static String escapeTerm(final String term) {
@@ -136,7 +136,7 @@ class JsonPath implements Iterable<Object> {
 
   $Documented resolve($Documented element) {
     final Iterator<Object> pathIterator = iterator();
-    Iterator<yAA.$AnyType<?>> xsbIterator;
+    Iterator<$AnyType<?>> xsbIterator;
 
     OUT:
     while (pathIterator.hasNext()) {

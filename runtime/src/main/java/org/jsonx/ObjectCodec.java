@@ -71,8 +71,8 @@ class ObjectCodec extends Codec {
         if (c0 == '}')
           break;
 
-        if (reader.bufToChar(Composite.decodeInt(reader.readToken(), 0)) != ':') // FIXME: Remove this
-          throw new IllegalStateException("Should have been caught by JsonReader: " + reader.bufToString(off, len));
+        point = reader.readToken();
+        assert (reader.bufToChar(Composite.decodeInt(point, 0)) == ':'); // Should have been caught by JsonReader
 
         final char[] buf = reader.buf();
         final String propertyName = new String(buf, off + 1, len - 2);

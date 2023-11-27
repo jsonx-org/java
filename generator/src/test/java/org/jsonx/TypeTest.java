@@ -23,7 +23,6 @@ import java.util.HashMap;
 
 import org.jsonx.Registry.Kind;
 import org.junit.Test;
-import org.libj.lang.WrappedArrayList;
 import org.openjax.json.JSON;
 import org.openjax.xml.api.XmlElement;
 
@@ -171,11 +170,11 @@ public class TypeTest {
 
     assertEquals(registry.OBJECT, type2.getGreatestCommonSuperType(type3));
 
-    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0))));
-    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0), toElement(type2))));
-    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0), toElement(type1), toElement(type2))));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(new Member[] {toElement(type0)}));
+    assertEquals(type0, ArrayModel.getGreatestCommonSuperType(new Member[] {toElement(type0), toElement(type2)}));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(new Member[] {toElement(type0), toElement(type1), toElement(type2)}));
 
-    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type1), toElement(type3))));
-    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(new WrappedArrayList<>(toElement(type0), toElement(type1), toElement(type2), toElement(type3))));
+    assertEquals(type1, ArrayModel.getGreatestCommonSuperType(new Member[] {toElement(type1), toElement(type3)}));
+    assertEquals(registry.getType(Object.class), ArrayModel.getGreatestCommonSuperType(new Member[] {toElement(type0), toElement(type1), toElement(type2), toElement(type3)}));
   }
 }

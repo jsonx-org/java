@@ -31,7 +31,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "arrayAny", type = ArrayAny.class, use = Use.OPTIONAL)
   public Optional<List<Boolean>> getArrayAny() {
-    return this.arrayAny;
+    return arrayAny;
   }
 
   public TestArray setArrayAny(final Optional<List<Boolean>> arrayAny) {
@@ -55,7 +55,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "arrayLoop", type = ArrayLoop.class, use = Use.OPTIONAL)
   public Optional<List<Boolean>> getArrayLoop() {
-    return this.arrayLoop;
+    return arrayLoop;
   }
 
   public TestArray setArrayLoop(final Optional<List<Boolean>> arrayLoop) {
@@ -77,7 +77,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "array1d1", type = Array1d1.class, use = Use.OPTIONAL)
   public Optional<List<Boolean>> getArray1d1() {
-    return this.array1d1;
+    return array1d1;
   }
 
   public TestArray setArray1d1(final Optional<List<Boolean>> array1d1) {
@@ -100,7 +100,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "array1d2", type = Array1d2.class, use = Use.OPTIONAL)
   public Optional<List<Boolean>> getArray1d2() {
-    return this.array1d2;
+    return array1d2;
   }
 
   public TestArray setArray1d2(final Optional<List<Boolean>> array1d2) {
@@ -126,7 +126,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "array1d3", type = Array1d3.class, use = Use.OPTIONAL)
   public Optional<List<Object>> getArray1d3() {
-    return this.array1d3;
+    return array1d3;
   }
 
   public TestArray setArray1d3(final Optional<List<Object>> array1d3) {
@@ -148,7 +148,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "array2d1", type = Array2d1.class, use = Use.OPTIONAL)
   public Optional<List<Object>> getArray2d1() {
-    return this.array2d1;
+    return array2d1;
   }
 
   public TestArray setArray2d1(final Optional<List<Object>> array2d1) {
@@ -179,7 +179,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "array2d2", type = Array2d2.class, use = Use.OPTIONAL)
   public Optional<List<Object>> getArray2d2() {
-    return this.array2d2;
+    return array2d2;
   }
 
   public TestArray setArray2d2(final Optional<List<Object>> array2d2) {
@@ -202,7 +202,7 @@ public class TestArray implements JxObject {
 
   @ArrayProperty(name = "array3d", type = Array3d.class, use = Use.OPTIONAL)
   public Optional<List<Object>> getArray3d() {
-    return this.array3d;
+    return array3d;
   }
 
   public TestArray setArray3d(final Optional<List<Object>> array3d) {

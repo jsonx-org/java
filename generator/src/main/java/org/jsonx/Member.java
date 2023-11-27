@@ -19,7 +19,6 @@ package org.jsonx;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,7 +48,6 @@ import org.libj.util.Patterns;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3.www._2001.XMLSchema.yAA;
-import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 
 abstract class Member extends Element {
   private static final Logger logger = LoggerFactory.getLogger(Model.class);
@@ -90,7 +88,7 @@ abstract class Member extends Element {
     return getBinding(registry, binding);
   }
 
-  static final Function<$AnyType<?>,String> elementXPath = t -> {
+  static final Function<yAA.$AnyType<?>,String> elementXPath = t -> {
     final String name;
     if (t instanceof $Array)
       name = (($Array)t).getName$().text();
@@ -509,14 +507,14 @@ abstract class Member extends Element {
       if (!(m instanceof ArrayModel))
         return false;
 
-      final ArrayList<Member> aMembers = ((ArrayModel)this).members;
-      final ArrayList<Member> bMembers = ((ArrayModel)m).members;
-      final int i$ = aMembers.size();
-      if (i$ != bMembers.size())
+      final Member[] aMembers = ((ArrayModel)this).members;
+      final Member[] bMembers = ((ArrayModel)m).members;
+      final int i$ = aMembers.length;
+      if (i$ != bMembers.length)
         return false;
 
       for (int i = 0; i < i$; ++i) // [RA]
-        if (!aMembers.get(i).isAssignableFrom(bMembers.get(i)))
+        if (!aMembers[i].isAssignableFrom(bMembers[i]))
           return false;
 
       return true;

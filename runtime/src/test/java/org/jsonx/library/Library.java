@@ -37,7 +37,7 @@ public class Library implements JxObject {
 
     @StringProperty(name = "subject")
     public Optional<String> getSubject() {
-      return this.subject;
+      return subject;
     }
 
     public void setSubject(final Optional<String> subject) {
@@ -48,7 +48,7 @@ public class Library implements JxObject {
 
     @BooleanProperty(name = "openAccess", use = Use.OPTIONAL)
     public Optional<Boolean> getOpenAccess() {
-      return this.openAccess;
+      return openAccess;
     }
 
     public void setOpenAccess(final Optional<Boolean> openAccess) {
@@ -60,7 +60,7 @@ public class Library implements JxObject {
 
   @ObjectProperty(name = "address", use = Use.OPTIONAL)
   public Optional<Address> getAddress() {
-    return this.address;
+    return address;
   }
 
   public void setAddress(final Optional<Address> address) {
@@ -71,7 +71,7 @@ public class Library implements JxObject {
 
   @BooleanProperty(name = "handicap", use = Use.OPTIONAL, nullable = false)
   public Boolean getHandicap() {
-    return this._handicap;
+    return _handicap;
   }
 
   public void setHandicap(final Boolean handicap) {
@@ -84,7 +84,7 @@ public class Library implements JxObject {
   @ArrayElement(id = 1, nullable = false, elementIds = 2, minOccurs = 7, maxOccurs = 7)
   @ArrayProperty(name = "schedule", elementIds = 1)
   public List<List<String>> getSchedule() {
-    return this.schedule;
+    return schedule;
   }
 
   public void setSchedule(final List<List<String>> schedule) {
@@ -96,7 +96,7 @@ public class Library implements JxObject {
   @ObjectElement(id = 1, type = Book.class, nullable = false)
   @ArrayProperty(name = "books", elementIds = 1)
   public List<Book> getBooks() {
-    return this.books;
+    return books;
   }
 
   public void setBooks(final List<Book> books) {
@@ -108,7 +108,7 @@ public class Library implements JxObject {
   @ObjectElement(id = 1, type = OnlineArticle.class, nullable = false)
   @ArrayProperty(name = "article", elementIds = 1)
   public List<OnlineArticle> getArticles() {
-    return this.articles;
+    return articles;
   }
 
   public void setArticles(final List<OnlineArticle> articles) {
@@ -120,7 +120,7 @@ public class Library implements JxObject {
   @ObjectElement(id = 1, type = Journal.class, nullable = false)
   @ArrayProperty(name = "journals", elementIds = 1)
   public List<Journal> getJournals() {
-    return this.journals;
+    return journals;
   }
 
   public void setJournals(final List<Journal> journals) {
@@ -136,7 +136,7 @@ public class Library implements JxObject {
 
   @ArrayProperty(name = "staff", type = Staff.class)
   public List<Employee> getStaff() {
-    return this.staff;
+    return staff;
   }
 
   public void setStaff(final List<Employee> staff) {

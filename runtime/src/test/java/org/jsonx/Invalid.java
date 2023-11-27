@@ -25,7 +25,7 @@ public class Invalid {
     private Boolean noProperty;
 
     public Boolean getNoProperty() {
-      return this.noProperty;
+      return noProperty;
     }
 
     public void setNoProperty(final Boolean noProperty) {
@@ -38,7 +38,7 @@ public class Invalid {
 
     @BooleanProperty(name = "foo")
     public Boolean getInvalidName() {
-      return this.invalidName;
+      return invalidName;
     }
 
     public void setInvalidName(final Boolean invalidName) {
@@ -51,7 +51,7 @@ public class Invalid {
 
     @BooleanProperty(name = "invalidType", use = Use.OPTIONAL)
     public Boolean getInvalidType() {
-      return this.invalidType;
+      return invalidType;
     }
 
     public void setInvalidType(final Boolean invalidType) {
@@ -64,7 +64,7 @@ public class Invalid {
 
     @BooleanProperty(name = "invalidType", use = Use.OPTIONAL, nullable = false)
     public Number getInvalidType() {
-      return this.invalidType;
+      return invalidType;
     }
 
     public void setInvalidType(final Number invalidType) {
@@ -75,7 +75,7 @@ public class Invalid {
 
     @NumberProperty(name = "invalidAnnotation", use = Use.OPTIONAL, nullable = false)
     public Boolean getInvalidAnnotation() {
-      return this.invalidAnnotation;
+      return invalidAnnotation;
     }
 
     public void setInvalidAnnotation(final Boolean invalidAnnotation) {
@@ -88,7 +88,7 @@ public class Invalid {
 
     @NumberProperty(name = "invalidRange", use = Use.OPTIONAL, scale = 0, range = "[-3,")
     public Optional<Byte> getInvalidRange() {
-      return this.invalidRange;
+      return invalidRange;
     }
 
     public void setInvalidRange(final Optional<Byte> invalidRange) {
@@ -101,7 +101,7 @@ public class Invalid {
 
     @NumberProperty(name = "number", use = Use.OPTIONAL, nullable = false)
     public byte getNumber() {
-      return this.number;
+      return number;
     }
 
     public void setNumber(final byte number) {
@@ -114,7 +114,7 @@ public class Invalid {
 
     @NumberProperty(name = "number")
     public int getNumber() {
-      return this.number;
+      return number;
     }
 
     public void setNumber(final int number) {
@@ -127,7 +127,7 @@ public class Invalid {
 
     @NumberProperty(name = "number", nullable = false, scale = 1)
     public long getNumber() {
-      return this.number;
+      return number;
     }
 
     public void setNumber(final long number) {
@@ -140,7 +140,7 @@ public class Invalid {
 
     @NumberProperty(name = "invalidType", use = Use.OPTIONAL, nullable = false)
     public Boolean getInvalidType() {
-      return this.invalidType;
+      return invalidType;
     }
 
     public void setInvalidType(final Boolean invalidType) {
@@ -151,7 +151,7 @@ public class Invalid {
 
     @StringProperty(name = "invalidAnnotation", use = Use.OPTIONAL, nullable = false)
     public Number getInvalidAnnotation() {
-      return this.invalidAnnotation;
+      return invalidAnnotation;
     }
 
     public void setInvalidAnnotation(final Number invalidAnnotation) {
@@ -162,7 +162,7 @@ public class Invalid {
 
     @NumberProperty(name = "invalidScale", use = Use.OPTIONAL, scale = -1)
     public Optional<BigDecimal> getInvalidScale() {
-      return this.invalidScale;
+      return invalidScale;
     }
 
     public void setInvalidScale(final Optional<BigDecimal> invalidScale) {
@@ -175,7 +175,7 @@ public class Invalid {
 
     @StringProperty(name = "invalidType", use = Use.OPTIONAL)
     public Optional<Number> getInvalidType() {
-      return this.invalidType;
+      return invalidType;
     }
 
     public void setInvalidType(final Optional<Number> invalidType) {
@@ -186,7 +186,7 @@ public class Invalid {
 
     @BooleanProperty(name = "invalidAnnotation", use = Use.OPTIONAL)
     public Optional<String> getInvalidAnnotation() {
-      return this.invalidAnnotation;
+      return invalidAnnotation;
     }
 
     public void setInvalidAnnotation(final Optional<String> invalidAnnotation) {
@@ -197,7 +197,7 @@ public class Invalid {
 
     @StringProperty(name = "invalidPattern", use = Use.OPTIONAL, pattern = "[0-9]{{2,4}")
     public Optional<String> getInvalidPattern() {
-      return this.invalidPattern;
+      return invalidPattern;
     }
 
     public void setInvalidPattern(final Optional<String> invalidPattern) {
@@ -210,7 +210,7 @@ public class Invalid {
 
     @ArrayProperty(name = "invalidAnnotationType", use = Use.OPTIONAL, type = Override.class)
     public Optional<List<?>> getInvalidAnnotationType() {
-      return this.invalidAnnotationType;
+      return invalidAnnotationType;
     }
 
     public void setInvalidAnnotationType(final Optional<List<?>> invalidAnnotationType) {
@@ -224,7 +224,7 @@ public class Invalid {
     @StringElement(id = 0)
     @ArrayProperty(name = "invalidType", use = Use.OPTIONAL, elementIds = {0})
     public Optional<Number> getInvalidType() {
-      return this.invalidType;
+      return invalidType;
     }
 
     public void setInvalidType(final Optional<Number> invalidType) {
@@ -235,7 +235,7 @@ public class Invalid {
 
     @BooleanProperty(name = "invalidAnnotation", use = Use.OPTIONAL, nullable = false)
     public List<?> getInvalidAnnotation() {
-      return this.invalidAnnotation;
+      return invalidAnnotation;
     }
 
     public void setInvalidAnnotation(final List<?> invalidAnnotation) {

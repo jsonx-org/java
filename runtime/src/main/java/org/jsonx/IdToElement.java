@@ -49,7 +49,7 @@ class IdToElement extends ObservableMap<Integer,Annotation> {
   }
 
   int getMinIterate() {
-    return this.minIterate;
+    return minIterate;
   }
 
   void setMinIterate(final int minIterate) {
@@ -57,7 +57,7 @@ class IdToElement extends ObservableMap<Integer,Annotation> {
   }
 
   int getMaxIterate() {
-    return this.maxIterate;
+    return maxIterate;
   }
 
   void setMaxIterate(final int maxIterate) {

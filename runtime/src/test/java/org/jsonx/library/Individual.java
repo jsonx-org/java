@@ -26,7 +26,7 @@ public class Individual implements JxObject {
 
   @StringProperty(name = "name", pattern = "\\S+ \\S+")
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setName(final String name) {
@@ -37,7 +37,7 @@ public class Individual implements JxObject {
 
   @StringProperty(name = "gender", pattern = "[MF]")
   public String getGender() {
-    return this.gender;
+    return gender;
   }
 
   public void setGender(final String gender) {
@@ -48,7 +48,7 @@ public class Individual implements JxObject {
 
   @ObjectProperty(name = "address")
   public Address getAddress() {
-    return this.address;
+    return address;
   }
 
   public void setAddress(final Address address) {

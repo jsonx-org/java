@@ -42,7 +42,7 @@ public class JsdUtilTest {
 
     @AnyProperty(name = "any")
     public Object getAny() {
-      return this._any;
+      return _any;
     }
 
     public void setAny(final Object _any) {
@@ -53,7 +53,7 @@ public class JsdUtilTest {
 
     @ArrayProperty(name = "array")
     public List<?> getArray() {
-      return this._array;
+      return _array;
     }
 
     public void setArray(final List<?> _array) {
@@ -64,7 +64,7 @@ public class JsdUtilTest {
 
     @BooleanProperty(name = "boolean")
     public Boolean getBoolean() {
-      return this._boolean;
+      return _boolean;
     }
 
     public void setBoolean(final Boolean _boolean) {
@@ -75,7 +75,7 @@ public class JsdUtilTest {
 
     @NumberProperty(name = "number")
     public BigInteger getNumber() {
-      return this._number;
+      return _number;
     }
 
     public void setNumber(final BigInteger _number) {
@@ -86,7 +86,7 @@ public class JsdUtilTest {
 
     @ObjectProperty(name = "object")
     public TestObject1 getObject() {
-      return this._object;
+      return _object;
     }
 
     public void setObject(final TestObject1 _object) {
@@ -97,7 +97,7 @@ public class JsdUtilTest {
 
     @StringProperty(name = "string")
     public String getString() {
-      return this._string;
+      return _string;
     }
 
     public void setString(final String _string) {
@@ -111,7 +111,7 @@ public class JsdUtilTest {
 
     @AnyProperty(name = "any")
     public Object any() {
-      return this._any;
+      return _any;
     }
 
     public void any(final Object _any) {
@@ -122,7 +122,7 @@ public class JsdUtilTest {
 
     @ArrayProperty(name = "array")
     public List<?> array() {
-      return this._array;
+      return _array;
     }
 
     public void array(final List<?> _array) {
@@ -133,7 +133,7 @@ public class JsdUtilTest {
 
     @BooleanProperty(name = "boolean")
     public Boolean _boolean() {
-      return this._boolean;
+      return _boolean;
     }
 
     public void _boolean(final Boolean _boolean) {
@@ -144,7 +144,7 @@ public class JsdUtilTest {
 
     @NumberProperty(name = "number")
     public BigInteger number() {
-      return this._number;
+      return _number;
     }
 
     public void number(final BigInteger _number) {
@@ -155,7 +155,7 @@ public class JsdUtilTest {
 
     @ObjectProperty(name = "object")
     public TestObject2 object() {
-      return this._object;
+      return _object;
     }
 
     public void object(final TestObject2 _object) {
@@ -166,7 +166,7 @@ public class JsdUtilTest {
 
     @StringProperty(name = "string")
     public String string() {
-      return this._string;
+      return _string;
     }
 
     public void string(final String _string) {
