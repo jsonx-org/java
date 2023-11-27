@@ -35,7 +35,7 @@ jobs:
     - name: Set up JDK ${{ matrix.jdk }}
       uses: actions/setup-java@v3
       with:
-        distribution: 'zulu'
+        distribution: 'adopt'
         java-version: ${{ matrix.jdk }}
         cache: 'maven'
 
