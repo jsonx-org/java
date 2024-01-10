@@ -70,11 +70,11 @@ public class JxObjectProviderTest {
     final JxObject jxObject = (JxObject)provider.readFrom((Class<Object>)Class.forName(Message.class.getName()), null, null, null, null, new ByteArrayInputStream(data.getBytes()));
 
     assertTrue(provider.isWriteable(Message.class, Message.class, null, null));
-    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    assertEquals(-1, provider.getSize(jxObject, Message.class, Message.class, null, null));
-    provider.writeTo(jxObject, Message.class, Message.class, null, null, new MultivaluedHashMap<>(), out);
-
-    assertEquals(data, new String(out.toByteArray()));
+    try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+      assertEquals(-1, provider.getSize(jxObject, Message.class, Message.class, null, null));
+      provider.writeTo(jxObject, Message.class, Message.class, null, null, new MultivaluedHashMap<>(), out);
+      assertEquals(data, new String(out.toByteArray()));
+    }
   }
 
   private static boolean isBadRequestException(final RuntimeException e) {
@@ -112,9 +112,9 @@ public class JxObjectProviderTest {
     final List<?> jxObject = (List<?>)provider.readFrom((Class<Object>)Class.forName(List.class.getName()), null, annotations, null, null, new ByteArrayInputStream(data.getBytes()));
 
     assertTrue(provider.isWriteable(List.class, Message.class, annotations, null));
-    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    provider.writeTo(jxObject, List.class, List.class, annotations, null, new MultivaluedHashMap<>(), out);
-
-    assertEquals(data, new String(out.toByteArray()));
+    try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+      provider.writeTo(jxObject, List.class, List.class, annotations, null, new MultivaluedHashMap<>(), out);
+      assertEquals(data, new String(out.toByteArray()));
+    }
   }
 }

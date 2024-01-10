@@ -142,19 +142,18 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
 
   private boolean marshal(final OutputStream entityStream, final Charset charset, final Object t, final Annotation[] annotations) throws IOException {
     if (t instanceof JxObject) {
-      try (final OutputStreamWriter writer = new OutputStreamWriter(entityStream, charset)) {
-        getEncoder().toStream(writer, (JxObject)t);
-      }
+      final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
+      getEncoder().toStream(out, (JxObject)t);
+      out.flush();
     }
     else if (t instanceof List) {
       final JxEncoder encoder = getEncoder();
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
         if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null) {
-          try (final OutputStreamWriter writer = new OutputStreamWriter(entityStream, charset)) {
-            encoder.toStream(writer, (List<?>)t, annotationType);
-          }
-
+          final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
+          encoder.toStream(out, (List<?>)t, annotationType);
+          out.flush();
           break;
         }
       }
