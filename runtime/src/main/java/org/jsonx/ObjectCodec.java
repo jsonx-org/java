@@ -26,7 +26,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.lang.Numbers.Composite;
@@ -185,7 +184,7 @@ class ObjectCodec extends Codec {
     if (!(object instanceof JxObject))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
-    relations.set(index, new Relation(object, annotation));
+    relations.set(index, object, annotation);
     return null;
   }
 

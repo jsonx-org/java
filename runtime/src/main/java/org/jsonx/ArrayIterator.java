@@ -19,17 +19,12 @@ package org.jsonx;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Strings;
 import org.libj.util.function.TriPredicate;
 
 abstract class ArrayIterator {
   Object current;
-
-  final Relation currentRelate(final Annotation annotation) {
-    return new Relation(current, annotation);
-  }
 
   final boolean nextIsNull() throws IOException {
     next();

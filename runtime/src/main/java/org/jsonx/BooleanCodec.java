@@ -16,11 +16,11 @@
 
 package org.jsonx;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.openjax.json.JsonReader;
@@ -42,32 +42,32 @@ class BooleanCodec extends PrimitiveCodec {
     if (method != null)
       object = JsdUtil.invoke(method, object);
 
-    relations.set(index, new Relation(object, annotation));
+    relations.set(index, object, annotation);
     return null;
   }
 
-  static Object encodeObject(final Class<?> type, final String encode, Object object) throws EncodeException, ValidationException {
+  static Error encodeObject(final Appendable out, final Class<?> type, final String encode, Object object) throws EncodeException, IOException, ValidationException {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
-    return encodeObjectUnsafe(type, encode, object);
+    return encodeObjectUnsafe(out, type, encode, object);
   }
 
-  static Object encodeObjectUnsafe(final Class<?> type, final String encode, Object object) throws EncodeException, ValidationException {
+  static Error encodeObjectUnsafe(final Appendable out, final Class<?> type, final String encode, final Object object) throws EncodeException, IOException, ValidationException {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
     final Executable method = getMethod(encodeToMethod, encode, object.getClass());
     if (method != null)
-      return JsdUtil.invoke(method, object);
+      out.append(JsdUtil.invoke(method, object).toString());
+    else if (object instanceof Boolean)
+      out.append(String.valueOf(object));
+    else if (object instanceof String)
+      out.append((String)object);
+    else
+      throw new IllegalArgumentException("Illegal argument class: " + object.getClass().getName());
 
-    if (object instanceof Boolean)
-      return String.valueOf(object);
-
-    if (object instanceof String)
-      return object;
-
-    throw new IllegalArgumentException("Illegal argument class: " + object.getClass().getName());
+    return null;
   }
 
   BooleanCodec(final BooleanProperty property, final Method getMethod, final Method setMethod) {

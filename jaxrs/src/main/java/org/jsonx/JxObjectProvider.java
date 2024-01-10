@@ -20,10 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Writer;
+import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -34,14 +33,12 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.libj.io.Streams;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 
@@ -54,7 +51,6 @@ import org.openjax.json.JsonReader;
 @Consumes({"application/*+json", "text/json"})
 @Produces({"application/*+json", "text/json"})
 public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
-  private static final int bufferSize = Streams.DEFAULT_SOCKET_BUFFER_SIZE;
   private static final Charset defaultCharset = StandardCharsets.UTF_8;
 
   protected static Charset getCharset(final MediaType mediaType) {
@@ -144,40 +140,36 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
     return -1;
   }
 
-  private String marshal(final Object t, final Annotation[] annotations) {
-    if (t instanceof JxObject)
-      return getEncoder().toString((JxObject)t);
-
-    if (t instanceof List) {
+  private boolean marshal(final OutputStream entityStream, final Charset charset, final Object t, final Annotation[] annotations) throws IOException {
+    if (t instanceof JxObject) {
+      try (final OutputStreamWriter writer = new OutputStreamWriter(entityStream, charset)) {
+        getEncoder().toStream(writer, (JxObject)t);
+      }
+    }
+    else if (t instanceof List) {
       final JxEncoder encoder = getEncoder();
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
-        if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null)
-          return encoder.toString((List<?>)t, annotationType);
+        if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null) {
+          try (final OutputStreamWriter writer = new OutputStreamWriter(entityStream, charset)) {
+            encoder.toStream(writer, (List<?>)t, annotationType);
+          }
+
+          break;
+        }
       }
     }
+    else {
+      return false;
+    }
 
-    return null;
+    return true;
   }
 
   @Override
   public void writeTo(final Object t, final Class<?> rawType, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,Object> httpHeaders, final OutputStream entityStream) throws IOException {
-    final String json = marshal(t, annotations);
-    if (json == null)
-      throw new ProcessingException("Unknown type: " + rawType.getName());
-
     final Charset charset = getCharset(mediaType);
-    if (bufferSize / 2 < json.length()) { // FIXME: This is just an estimate, because UTF-8 can be 1, 2, 3, and 4 bytes; UTF-16 can be 2 or 4 bytes; UTF-32 is 4 bytes. To do
-                                          // this right, we need to count the bytes without encoding them.
-      final Writer writer = Channels.newWriter(Channels.newChannel(entityStream), charset.newEncoder(), bufferSize);
-      writer.write(json);
-      writer.flush();
-    }
-    else {
-      final byte[] bytes = json.getBytes(charset);
-      httpHeaders.putSingle(HttpHeaders.CONTENT_LENGTH, bytes.length);
-      entityStream.write(bytes);
-      entityStream.flush();
-    }
+    if (!marshal(entityStream, charset, t, annotations))
+      throw new ProcessingException("Unknown type: " + rawType.getName());
   }
 }

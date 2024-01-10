@@ -19,7 +19,6 @@ package org.jsonx;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Numbers.Composite;
 import org.libj.lang.Strings;
@@ -136,7 +135,7 @@ class ArrayDecodeIterator extends ArrayIterator {
       return (Error)value;
 
     current = value;
-    relations.set(index, new Relation(current, annotation));
+    relations.set(index, current, annotation);
     return null;
   }
 }

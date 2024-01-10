@@ -31,8 +31,8 @@ interface OnEncode {
    * @param getMethod The "get" method whose return value is to be encoded.
    * @param name The name of the property, or {@code null} for array members.
    * @param relations The {@link Relations} if encoded in an array.
-   * @param start The starting index of the encoded value in the JSON document.
-   * @param end The ending index of the encoded value in the JSON document.
+   * @param start The starting position of the encoded value in the JSON document.
+   * @param end The ending position of the encoded value in the JSON document.
    */
-  void accept(Method getMethod, String name, Relations relations, int start, int end);
+  void accept(Method getMethod, String name, Relations relations, long start, long end);
 }

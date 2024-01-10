@@ -144,10 +144,10 @@ class ClassTrial extends Trial {
   private class Bounds {
     private Method getMethod;
     private String name;
-    private int start;
-    private int end;
+    private long start;
+    private long end;
 
-    private Bounds(final Method getMethod, final String name, final int start, final int end) {
+    private Bounds(final Method getMethod, final String name, final long start, final long end) {
       this.getMethod = getMethod;
       this.name = name;
       this.start = start;
@@ -163,7 +163,8 @@ class ClassTrial extends Trial {
     Exception exception = null;
     try {
       final AtomicReference<Bounds> bounds = new AtomicReference<>();
-      json = validEncoder.toString(binding, (g, n, r, s, e) -> {
+      final StringBuilder b = new StringBuilder();
+      validEncoder.encodeObject(b, binding, (g, n, r, s, e) -> {
         if (g.equals(trial.getMethod) && trial.name.equals(n)) {
           if (bounds.get() != null)
             throw new IllegalStateException(String.valueOf(bounds.get()));
@@ -180,9 +181,10 @@ class ClassTrial extends Trial {
         }
       });
 
+      json = b.toString();
       testJsonx(json);
 
-      value = bounds.get() == null ? null : json.substring(bounds.get().start, bounds.get().end);
+      value = bounds.get() == null ? null : json.substring((int)bounds.get().start, (int)bounds.get().end);
     }
     catch (final Exception e) {
       exception = e;

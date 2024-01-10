@@ -50,6 +50,7 @@ final class ArrayValidator {
     }
   }
 
+  // FIXME: Make this directly extend ArrayList<Relation>
   static class Relations extends DelegateRandomAccessList<Relation,ArrayList<Relation>> {
     Relations() {
       super(new ArrayList<>());
@@ -57,6 +58,10 @@ final class ArrayValidator {
 
     private Relations(final ArrayList<Relation> target) {
       super(target);
+    }
+
+    void set(final int index, final Object member, final Annotation annotation) {
+      set(index, new Relation(member, annotation));
     }
 
     @Override
@@ -83,11 +88,12 @@ final class ArrayValidator {
 
     @Override
     public String toString() {
-      if (size() == 0)
+      final int size = size();
+      if (size == 0)
         return "[]";
 
       final StringBuilder b = new StringBuilder("[");
-      for (int i = 0, i$ = size(); i < i$; ++i) { // [RA]
+      for (int i = 0; i < size; ++i) { // [RA]
         if (i > 0)
           b.append(", ");
 
@@ -219,7 +225,7 @@ final class ArrayValidator {
       if (iterator.nextIsNull()) {
         if (nullable || !validate) {
           error = null;
-          relations.set(index, iterator.currentRelate(annotation));
+          relations.set(index, iterator.current, annotation);
         }
         else {
           error = Error.ILLEGAL_VALUE_NULL();
@@ -301,7 +307,7 @@ final class ArrayValidator {
   // }
 
   @SuppressWarnings("unchecked")
-  static Error validate(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  static Error encode(final List<?> members, final IdToElement idToElement, final int[] elementIds, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final Annotation[] annotations = idToElement.get(elementIds);
     try {
       return validate(new ArrayEncodeIterator((ListIterator<Object>)members.listIterator()), 1, false, annotations, 0, idToElement.getMinIterate(), idToElement.getMaxIterate(), 1, idToElement, relations, validate, onPropertyDecode, -1);
@@ -311,10 +317,10 @@ final class ArrayValidator {
     }
   }
 
-  static Error validate(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  static Error encode(final Class<? extends Annotation> annotationType, final List<?> members, final Relations relations, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
-    return validate(members, idToElement, elementIds, relations, validate, onPropertyDecode);
+    return encode(members, idToElement, elementIds, relations, validate, onPropertyDecode);
   }
 
   private ArrayValidator() {

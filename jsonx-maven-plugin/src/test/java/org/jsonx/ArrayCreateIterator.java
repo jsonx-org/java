@@ -108,7 +108,7 @@ class ArrayCreateIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
     }
 
-    relations.set(index, currentRelate(annotation));
+    relations.set(index, current, annotation);
     return null;
   }
 }

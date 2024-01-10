@@ -109,9 +109,10 @@ public class Validator {
       }
     }
 
-    for (int i = 0, i$ = errors.size(); i < i$; ++i) // [RA]
+    final int size = errors.size();
+    for (int i = 0; i < size; ++i) // [RA]
       System.err.println(errors.get(i));
 
-    return errors.size() == 0 ? 0 : 1;
+    return size == 0 ? 0 : 1;
   }
 }

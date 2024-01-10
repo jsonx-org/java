@@ -131,19 +131,19 @@ public class ArrayCodecTest {
     }
 
     final Annotation[] selected = annotations.toArray(new Annotation[annotations.size()]);
-    test(selected, annotationType, members, null);
+    testEncode(selected, annotationType, members, null);
     testDecode(annotationType, jxObject, members, null);
   }
 
   private static void test(final Class<? extends Annotation> annotationType, final JxObject jxObject, final List<Object> members, final String expected) throws DecodeException, IOException {
-    test(null, annotationType, members, expected);
+    testEncode(null, annotationType, members, expected);
     testDecode(annotationType, jxObject, members, expected);
   }
 
   @SuppressWarnings("unused")
-  private static void test(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) {
+  private static void testEncode(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) throws IOException {
     final Relations relations = new Relations();
-    final Error error = ArrayValidator.validate(annotationType, members, relations, true, null);
+    final Error error = ArrayValidator.encode(annotationType, members, relations, true, null);
     final Relations flatRelations = CollectionUtil.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
     final String errorString = error == null ? null : error.toString();
     if (expected != null && errorString != null && !expected.equals(errorString) && logger.isErrorEnabled()) {

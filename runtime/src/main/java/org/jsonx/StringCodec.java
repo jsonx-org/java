@@ -16,6 +16,7 @@
 
 package org.jsonx;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +24,6 @@ import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.util.Patterns;
@@ -90,7 +90,7 @@ class StringCodec extends PrimitiveCodec {
     if (validate && pattern.length() > 0 && !Patterns.compile(pattern, Pattern.DOTALL).matcher(string).matches())
       return Error.PATTERN_NOT_MATCHED(pattern, string, null);
 
-    relations.set(index, new Relation(encodeObject(string), annotation));
+    relations.set(index, encodeObject(string), annotation);
     return null;
   }
 
@@ -98,14 +98,14 @@ class StringCodec extends PrimitiveCodec {
     return JsonUtil.escape(value).insert(0, '"').append('"').toString();
   }
 
-  static Object encodeObject(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException {
+  static Error encodeObject(final Appendable out, final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, IOException {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
-    return encodeObjectUnsafe(annotation, getMethod, pattern, type, encode, object, validate);
+    return encodeObjectUnsafe(out, annotation, getMethod, pattern, type, encode, object, validate);
   }
 
-  static Object encodeObjectUnsafe(final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException {
+  static Error encodeObjectUnsafe(final Appendable out, final Annotation annotation, final Method getMethod, final String pattern, final Class<?> type, final String encode, Object object, final boolean validate) throws EncodeException, IOException {
     if (!Classes.isInstance(type, object))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
@@ -120,7 +120,8 @@ class StringCodec extends PrimitiveCodec {
         return error;
     }
 
-    return encodeObject(str);
+    out.append(encodeObject(str));
+    return null;
   }
 
   private static Error validate(final Annotation annotation, final Method getMethod, final String object, final String pattern) {

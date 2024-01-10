@@ -29,6 +29,7 @@ import org.libj.util.CollectionUtil;
 class AnnotationType {
   @SuppressWarnings("unchecked")
   private StringBuilder render() {
+    // FIXME: Use the StringBuilder from the caller.
     final StringBuilder b = new StringBuilder();
     if (attributes.size() > 0) {
       for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]

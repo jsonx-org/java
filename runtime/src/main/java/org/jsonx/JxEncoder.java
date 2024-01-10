@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,6 +30,7 @@ import java.util.regex.Pattern;
 import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
+import org.libj.lang.CountingAppendable;
 import org.libj.util.Patterns;
 
 /**
@@ -225,17 +228,17 @@ public class JxEncoder {
     }
   }
 
-  private Error encodeNonArray(final Method getMethod, final Annotation annotation, final Object object, final StringBuilder b, final int depth) {
+  private Error encodeNonArray(final Appendable out, final Method getMethod, final Annotation annotation, final Object object, final int depth) throws IOException {
     if (getMethod == null && object == null) {
       if (validate && !JsdUtil.isNullable(annotation))
         return Error.MEMBER_NOT_NULLABLE(annotation);
 
-      b.append("null");
+      out.append("null");
       return null;
     }
 
     if (annotation instanceof StringElement || annotation instanceof BooleanElement || annotation instanceof NumberElement) {
-      b.append(object);
+      out.append(String.valueOf(object));
       return null;
     }
 
@@ -243,21 +246,21 @@ public class JxEncoder {
     final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
 
     if (annotation instanceof ObjectProperty || annotation instanceof ObjectElement) {
-      return toString((JxObject)value, null, b, depth + 1);
+      return encodeObject(out, (JxObject)value, null, depth + 1);
     }
 
-    final Object encoded;
+    final Error error;
     if (annotation instanceof BooleanProperty) {
       final BooleanProperty property = (BooleanProperty)annotation;
-      encoded = BooleanCodec.encodeObject(JsdUtil.getRealType(getMethod), property.encode(), value);
+      error = BooleanCodec.encodeObject(out, JsdUtil.getRealType(getMethod), property.encode(), value);
     }
     else if (annotation instanceof NumberProperty) {
       final NumberProperty property = (NumberProperty)annotation;
-      encoded = NumberCodec.encodeObject(annotation, property.scale(), property.range(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
+      error = NumberCodec.encodeObject(out, annotation, property.scale(), property.range(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
     }
     else if (annotation instanceof StringProperty) {
       final StringProperty property = (StringProperty)annotation;
-      encoded = StringCodec.encodeObject(annotation, getMethod, property.pattern(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
+      error = StringCodec.encodeObject(out, annotation, getMethod, property.pattern(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
     }
     else {
       @SuppressWarnings("null")
@@ -265,52 +268,19 @@ public class JxEncoder {
       throw new UnsupportedOperationException("Unsupported type: " + type.getName());
     }
 
-    if (encoded instanceof Error)
-      return (Error)encoded;
-
-    b.append(encoded);
-    return null;
+    return error;
   }
 
   @SuppressWarnings("unchecked")
-  private Error encodeProperty(final Method getMethod, final Annotation annotation, final String name, final Object object, final OnEncode onEncode, final StringBuilder b, final int depth) {
+  private Error encodeProperty(final Appendable out, final Method getMethod, final Annotation annotation, final String name, final Object object, final OnEncode onEncode, final int depth) {
     try {
-      if (annotation instanceof ArrayProperty) {
-        final Object encoded = ArrayCodec.encodeObject(getMethod, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, validate);
-        if (encoded instanceof Error)
-          return (Error)encoded;
+      if (annotation instanceof ArrayProperty)
+        return ArrayCodec.encodeObject(this, out, new Relations(), name, getMethod, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, onEncode, depth, validate);
 
-        final Relations relations = (Relations)encoded;
-        if (onEncode != null)
-          onEncode.accept(getMethod, name, relations, -1, -1);
+      if (annotation instanceof AnyProperty)
+        return AnyCodec.encodeObject(this, out, annotation, name, getMethod, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, onEncode, depth, validate);
 
-        final Error error = encodeArray(getMethod, relations, b, depth);
-        if (error != null)
-          return error;
-      }
-      else if (annotation instanceof AnyProperty) {
-        final Object encoded = AnyCodec.encodeObject(annotation, getMethod, ((AnyProperty)annotation).types(), object instanceof Optional ? ((Optional<?>)object).orElse(null) : object, this, depth, validate);
-        if (encoded instanceof Error)
-          return (Error)encoded;
-
-        if (encoded instanceof Relations) {
-          final Relations relations = (Relations)encoded;
-          if (onEncode != null)
-            onEncode.accept(getMethod, name, relations, -1, -1);
-
-          final Error error = encodeArray(getMethod, relations, b, depth);
-          if (error != null)
-            return error;
-        }
-        else {
-          b.append(encoded);
-        }
-      }
-      else {
-        final Error error = encodeNonArray(getMethod, annotation, object, b, depth);
-        if (error != null)
-          return error;
-      }
+      return encodeNonArray(out, getMethod, annotation, object, depth);
     }
     catch (final EncodeException | ValidationException e) {
       throw e;
@@ -318,37 +288,35 @@ public class JxEncoder {
     catch (final Exception e) {
       throw new ValidationException("Invalid method: " + JsdUtil.getFullyQualifiedMethodName(getMethod), e);
     }
-
-    return null;
   }
 
-  private Error encodeArray(final Method getMethod, final Relations relations, final StringBuilder b, final int depth) {
-    b.append('[');
+  Error encodeArray(final Appendable out, final Method getMethod, final Relations relations, final int depth) throws IOException {
+    out.append('[');
     for (int i = 0, i$ = relations.size(); i < i$; ++i) { // [RA]
       if (i > 0)
-        b.append(comma);
+        out.append(comma);
 
       final Relation relation = relations.get(i);
       final Annotation annotation = relation.annotation;
       final Object member = relation.member;
       final Error error;
       if (annotation instanceof ArrayElement || annotation instanceof ArrayType || annotation instanceof AnyElement && member instanceof Relations) {
-        error = encodeArray(getMethod, (Relations)member, b, depth);
+        error = encodeArray(out, getMethod, (Relations)member, depth);
         if (error != null)
           return error;
       }
       else if (annotation instanceof AnyElement) {
         error = null;
-        b.append(member);
+        out.append(String.valueOf(member));
       }
       else {
-        error = encodeNonArray(null, annotation, member, b, depth);
+        error = encodeNonArray(out, null, annotation, member, depth);
         if (error != null)
           return error;
       }
     }
 
-    b.append(']');
+    out.append(']');
     return null;
   }
 
@@ -373,8 +341,8 @@ public class JxEncoder {
     }
   };
 
-  Error toString(final JxObject object, final OnEncode onEncode, final StringBuilder b, final int depth) {
-    b.append('{');
+  Error encodeObject(final Appendable out, final JxObject object, final OnEncode onEncode, final int depth) throws IOException {
+    out.append('{');
     boolean hasProperties = false;
     Annotation[] annotations;
     Annotation annotation = null;
@@ -445,9 +413,9 @@ public class JxEncoder {
       if (value != null || nullable && use == Use.REQUIRED) {
         if (isNotMap) {
           if (hasProperties)
-            b.append(comma);
+            out.append(comma);
 
-          final Error error = appendValue(b, name, value, getMethod, annotation, onEncode, depth);
+          final Error error = appendValue(out, name, value, getMethod, annotation, onEncode, depth);
           if (error != null)
             return error;
 
@@ -461,9 +429,9 @@ public class JxEncoder {
                 return Error.PROPERTY_NOT_NULLABLE((String)entry.getKey(), annotation);
 
               if (hasProperties)
-                b.append(comma);
+                out.append(comma);
 
-              final Error error = appendValue(b, (String)entry.getKey(), entry.getValue(), getMethod, annotation, onEncode, depth);
+              final Error error = appendValue(out, (String)entry.getKey(), entry.getValue(), getMethod, annotation, onEncode, depth);
               if (error != null)
                 return error;
 
@@ -481,66 +449,87 @@ public class JxEncoder {
     }
 
     if (indent > 0) {
-      b.append('\n');
+      out.append('\n');
       for (int i = 0, i$ = (depth - 1) * 2; i < i$; ++i) // [N]
-        b.append(' ');
+        out.append(' ');
     }
 
-    b.append('}');
+    out.append('}');
     return null;
   }
 
-  private Error appendValue(final StringBuilder b, final String name, final Object value, final Method getMethod, final Annotation annotation, final OnEncode onEncode, final int depth) {
+  private Error appendValue(final Appendable out, final String name, final Object value, final Method getMethod, final Annotation annotation, final OnEncode onEncode, final int depth) throws IOException {
     if (indent > 0) {
-      b.append('\n');
+      out.append('\n');
       for (int i = 0, i$ = depth * 2; i < i$; ++i) // [N]
-        b.append(' ');
+        out.append(' ');
     }
 
-    b.append('"').append(name).append('"').append(colon);
-    final int start = b.length();
+    out.append('"').append(name).append('"').append(colon);
+    final long start = onEncode != null ? ((CountingAppendable)out).getCount() : 0;
     if (value == null || Optional.empty().equals(value)) {
-      b.append("null");
+      out.append("null");
     }
     else {
-      final Error error = encodeProperty(getMethod, annotation, name, value, onEncode, b, depth);
+      final Error error = encodeProperty(out, getMethod, annotation, name, value, onEncode, depth);
       if (error != null)
         return error;
     }
 
     if (onEncode != null)
-      onEncode.accept(getMethod, name, null, start, b.length());
+      onEncode.accept(getMethod, name, null, start, ((CountingAppendable)out).getCount());
 
     return null;
   }
 
   /**
-   * Marshals the specified {@link JxObject} to a {@link String}, performing callbacks to the provided {@link OnEncode} for each
-   * encoded field.
+   * Marshals the specified {@link JxObject} to the given {@link Appendable}, invoking callbacks to the provided {@link OnEncode} for
+   * each encoded field.
    *
-   * @param object The {@link JxObject}.
+   * @param out The {@link Appendable} to which output is to be appended.
+   * @param object The {@link JxObject} to marshal.
    * @param onEncode The {@link OnEncode} to be called for each encoded property.
-   * @return The {@link String} form of the marshaled {@link JxObject} JSON document.
+   * @throws IOException If an I/O error has occurred.
    * @throws EncodeException If an encode error has occurred.
    */
-  String toString(final JxObject object, final OnEncode onEncode) {
-    final StringBuilder b = new StringBuilder();
-    final Error error = toString(object, onEncode, b, 1);
+  void encodeObject(Appendable out, final JxObject object, final OnEncode onEncode) throws IOException {
+    if (onEncode != null)
+      out = new CountingAppendable(out);
+
+    final Error error = encodeObject(out, object, onEncode, 1);
     if (validate && error != null)
       throw new EncodeException(error.toString());
-
-    return b.toString();
   }
 
   /**
    * Marshals the specified {@link JxObject} to a {@link String}.
    *
-   * @param object The {@link JxObject}.
+   * @param object The {@link JxObject} to marshal.
    * @return The {@link String} form of the marshaled {@link JxObject} JSON document.
    * @throws EncodeException If an encode error has occurred.
    */
   public String toString(final JxObject object) {
-    return toString(object, null);
+    final StringBuilder b = new StringBuilder();
+    try {
+      encodeObject(b, object, null);
+    }
+    catch (final IOException e) {
+      throw new UncheckedIOException(e);
+    }
+
+    return b.toString();
+  }
+
+  /**
+   * Marshals the specified {@link JxObject} to the given {@link Appendable}.
+   *
+   * @param out The {@link Appendable} to which the marshaled output is to be appended.
+   * @param object The {@link JxObject}.
+   * @throws IOException If an I/O error has occurred.
+   * @throws EncodeException If an encode error has occurred.
+   */
+  public void toStream(final Appendable out, final JxObject object) throws IOException {
+    encodeObject(out, object, null);
   }
 
   /**
@@ -548,22 +537,50 @@ public class JxEncoder {
    * provided annotation type must declare an annotation of type {@link ArrayType} that specifies the model of the list being
    * marshaled.
    *
-   * @param list The {@link List}.
+   * @param list The {@link List} to marshal.
    * @param arrayAnnotationType The annotation type that declares an {@link ArrayType} annotation.
    * @return The {@link String} form of the marshaled {@link JxObject} JSON document.
    * @throws EncodeException If an encode error has occurred.
    */
   public String toString(final List<?> list, final Class<? extends Annotation> arrayAnnotationType) {
-    final StringBuilder b = new StringBuilder();
     final Relations relations = new Relations();
-    Error error = ArrayValidator.validate(arrayAnnotationType, list, relations, validate, null);
+    Error error = ArrayValidator.encode(arrayAnnotationType, list, relations, validate, null);
     if (validate && error != null)
       throw new EncodeException(error);
 
-    error = encodeArray(null, relations, b, 0);
+    final StringBuilder b = new StringBuilder();
+    try {
+      error = encodeArray(b, null, relations, 0);
+    }
+    catch (final IOException e) {
+      throw new UncheckedIOException(e);
+    }
+
     if (validate && error != null)
       throw new EncodeException(error);
 
     return b.toString();
+  }
+
+  /**
+   * Marshals the given {@link List list} to the given {@link Appendable}, based on the specification of the provided annotation type.
+   * The provided annotation type must declare an annotation of type {@link ArrayType} that specifies the model of the list being
+   * marshaled.
+   *
+   * @param out The {@link Appendable} to which the marshaled output is to be appended.
+   * @param list The {@link List} to marshal.
+   * @param arrayAnnotationType The annotation type that declares an {@link ArrayType} annotation.
+   * @throws IOException If an I/O error has occurred.
+   * @throws EncodeException If an encode error has occurred.
+   */
+  public void toStream(final Appendable out, final List<?> list, final Class<? extends Annotation> arrayAnnotationType) throws IOException {
+    final Relations relations = new Relations();
+    Error error = ArrayValidator.encode(arrayAnnotationType, list, relations, validate, null);
+    if (validate && error != null)
+      throw new EncodeException(error);
+
+    error = encodeArray(out, null, relations, 0);
+    if (validate && error != null)
+      throw new EncodeException(error);
   }
 }

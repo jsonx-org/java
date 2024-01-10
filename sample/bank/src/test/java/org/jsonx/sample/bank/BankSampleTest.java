@@ -18,6 +18,8 @@ package org.jsonx.sample.bank;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.jsonx.EncodeException;
 import org.jsonx.JxEncoder;
 import org.junit.Test;
@@ -28,7 +30,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testSwiftTypeRequired() {
+  public void testSwiftTypeRequired() throws IOException {
     final Swift swift = new Swift();
     try {
       JxEncoder.get().toString(swift);
@@ -41,7 +43,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testSwiftCodeRequired() {
+  public void testSwiftCodeRequired() throws IOException {
     final Swift swift = new Swift();
     swift.setType("swift");
     try {
@@ -55,7 +57,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testSwiftCodeInvalid() {
+  public void testSwiftCodeInvalid() throws IOException {
     final Swift swift = new Swift();
     swift.setType("swift");
     swift.setCode("invalid");
@@ -70,7 +72,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testSwiftValid() {
+  public void testSwiftValid() throws IOException {
     final Swift swift = new Swift();
     swift.setType("swift");
     swift.setCode("CTBAAU2S");
@@ -78,7 +80,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testIbanTypeRequired() {
+  public void testIbanTypeRequired() throws IOException {
     final Iban iban = new Iban();
     try {
       JxEncoder.get().toString(iban);
@@ -91,7 +93,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testIbanCodeRequired() {
+  public void testIbanCodeRequired() throws IOException {
     final Iban iban = new Iban();
     iban.setType("iban");
     try {
@@ -105,7 +107,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testIbanCodeInvalid() {
+  public void testIbanCodeInvalid() throws IOException {
     final Iban iban = new Iban();
     iban.setType("iban");
     iban.setCode("invalid");
@@ -120,7 +122,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testIbanValid() {
+  public void testIbanValid() throws IOException {
     final Iban iban = new Iban();
     iban.setType("iban");
     iban.setCode("DE91 1000 0000 0123 4567 89");
@@ -128,7 +130,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testAchTypeRequired() {
+  public void testAchTypeRequired() throws IOException {
     final Ach ach = new Ach();
     try {
       JxEncoder.get().toString(ach);
@@ -141,7 +143,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testAchCodeRequired() {
+  public void testAchCodeRequired() throws IOException {
     final Ach ach = new Ach();
     ach.setType("ach");
     try {
@@ -155,7 +157,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testAchRoutingRequired() {
+  public void testAchRoutingRequired() throws IOException {
     final Ach ach = new Ach();
     ach.setType("ach");
     ach.setCode("379272957729384");
@@ -170,7 +172,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testAchCodeInvalid() {
+  public void testAchCodeInvalid() throws IOException {
     final Ach ach = new Ach();
     ach.setType("ach");
     ach.setCode("");
@@ -186,7 +188,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testAchRoutingInvalid() {
+  public void testAchRoutingInvalid() throws IOException {
     final Ach ach = new Ach();
     ach.setType("ach");
     ach.setCode("379272957729384");
@@ -202,7 +204,7 @@ public class BankSampleTest {
   }
 
   @Test
-  public void testAchValid() {
+  public void testAchValid() throws IOException {
     final Ach ach = new Ach();
     ach.setType("ach");
     ach.setCode("379272957729384");

@@ -22,7 +22,6 @@ import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Numbers.Composite;
 import org.libj.util.function.TriPredicate;
@@ -86,25 +85,27 @@ class ArrayCodec extends Codec {
 
     // Special case when annotation == null, which happens only from AnyCodec
     final Relations subRelations = annotation == null ? relations : new Relations();
-    final Error subError = ArrayValidator.validate((List<?>)object, idToElement, elementIds, subRelations, validate, onPropertyDecode);
+    final Error subError = ArrayValidator.encode((List<?>)object, idToElement, elementIds, subRelations, validate, onPropertyDecode);
     if (validate && subError != null)
       return subError;
 
     if (annotation != null)
-      relations.set(index, new Relation(subRelations, annotation));
+      relations.set(index, subRelations, annotation);
 
     return null;
   }
 
-  static Object encodeObject(final Method getMethod, final List<Object> value, final boolean validate) throws EncodeException {
-    final Relations relations = new Relations();
+  static Error encodeObject(final JxEncoder encoder, final Appendable out, final Relations relations, final String name, final Method getMethod, final List<Object> value, final OnEncode onEncode, final int depth, final boolean validate) throws EncodeException, IOException {
     final IdToElement idToElement = new IdToElement();
     final int[] elementIds = JsdUtil.digest(getMethod, idToElement);
-    final Error error = ArrayValidator.validate(value, idToElement, elementIds, relations, validate, null);
+    Error error = ArrayValidator.encode(value, idToElement, elementIds, relations, validate, null);
     if (validate && error != null)
       return Error.INVALID_FIELD(getMethod, error);
 
-    return relations;
+    if (onEncode != null)
+      onEncode.accept(getMethod, name, relations, -1, -1);
+
+    return encoder.encodeArray(out, getMethod, relations, depth);
   }
 
   final Annotation[] annotations;

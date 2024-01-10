@@ -122,7 +122,7 @@ class AnyCodec extends Codec {
     return error != null ? error : Error.CONTENT_NOT_EXPECTED(token, reader, null);
   }
 
-  static Error encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
+  static Error encodeArray(final AnyElement annotation, final Object object, final int index, final Relations relations, final IdToElement idToElement, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws EncodeException {
     final t[] types = annotation.types();
     Error error = Error.NULL;
     final int len = types.length;
@@ -172,13 +172,17 @@ class AnyCodec extends Codec {
     return error;
   }
 
-  static Object encodeObject(final Annotation annotation, final Method getMethod, final t[] types, final Object object, final JxEncoder jxEncoder, final int depth, final boolean validate) throws EncodeException, ValidationException {
+  static Error encodeObject(final JxEncoder encoder, final Appendable out, final Annotation annotation, final String name, final Method getMethod, final t[] types, final Object object, final OnEncode onEncode, final int depth, final boolean validate) throws EncodeException, IOException, ValidationException {
     Error error = null;
-    if (object == null)
-      return !validate || JsdUtil.isNullable(annotation) ? "null" : Error.ILLEGAL_VALUE_NULL();
+    if (object == null) {
+      if (validate && !JsdUtil.isNullable(annotation))
+        return Error.ILLEGAL_VALUE_NULL();
+
+      out.append("null");
+      return null;
+    }
 
     Relations relations = null;
-    StringBuilder builder = null;
     final int len = types.length;
     t type = len > 0 ? types[0] : AnyType.fromObject(object);
     int i = 0;
@@ -188,34 +192,24 @@ class AnyCodec extends Codec {
       final BooleanType booleans;
       final Class<? extends Annotation> arrays;
       if (AnyType.isEnabled(strings = type.strings()) && Classes.isAssignableFrom(strings.type(), object.getClass())) {
-        final Object encoded = StringCodec.encodeObjectUnsafe(annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
-        if (encoded instanceof Error)
-          error = (Error)encoded;
-        else
-          return encoded;
+        error = StringCodec.encodeObjectUnsafe(out, annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
+        if (error == null)
+          return null;
       }
       else if (AnyType.isEnabled(numbers = type.numbers()) && Number.class.isAssignableFrom(numbers.type()) && object instanceof Number) {
-        final Object encoded = NumberCodec.encodeObjectUnsafe(annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
-        if (encoded instanceof Error)
-          error = (Error)encoded;
-        else
-          return encoded;
+        error = NumberCodec.encodeObjectUnsafe(out, annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
+        if (error == null)
+          return null;
       }
       else if (AnyType.isEnabled(booleans = type.booleans()) && Classes.isAssignableFrom(booleans.type(), object.getClass())) {
-        final Object encoded = BooleanCodec.encodeObjectUnsafe(booleans.type(), booleans.encode(), object);
-        if (encoded instanceof Error)
-          error = (Error)encoded;
-        else
-          return encoded;
+        error = BooleanCodec.encodeObjectUnsafe(out, booleans.type(), booleans.encode(), object);
+        if (error == null)
+          return null;
       }
       else if (object instanceof JxObject && AnyType.isEnabled(type.objects())) {
-        if (builder == null)
-          builder = new StringBuilder();
-        else
-          builder.setLength(0);
-
-        if ((error = jxEncoder.toString((JxObject)object, null, builder, depth)) == null)
-          return builder.toString();
+        error = encoder.encodeObject(out, (JxObject)object, null, depth);
+        if (error == null)
+          return null;
       }
       else if (object instanceof List && AnyType.isEnabled(arrays = type.arrays())) {
         if (relations == null)
@@ -223,8 +217,13 @@ class AnyCodec extends Codec {
         else
           relations.clear();
 
-        if ((error = ArrayCodec.encodeArray(null, arrays, object, arrays.getAnnotation(ArrayType.class).elementIds()[0], relations, null, validate, null)) == null)
-          return relations;
+        error = ArrayCodec.encodeArray(null, arrays, object, arrays.getAnnotation(ArrayType.class).elementIds()[0], relations, null, validate, null);
+        if (error == null) {
+          if (onEncode != null)
+            onEncode.accept(getMethod, name, relations, -1, -1);
+
+          return encoder.encodeArray(out, getMethod, relations, depth);
+        }
       }
 
       if (++i >= len)

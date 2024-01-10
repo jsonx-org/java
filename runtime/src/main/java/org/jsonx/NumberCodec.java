@@ -16,6 +16,7 @@
 
 package org.jsonx;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
@@ -24,7 +25,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Annotations;
 import org.libj.lang.Classes;
@@ -112,19 +112,19 @@ class NumberCodec extends PrimitiveCodec {
     // The logic here is a it mixed. Double and Float objects are converted to
     // String, and everything else stays as is (to be turned into String later).
     // I kept it like this to satisfy ArrayCodecTest
-    relations.set(index, new Relation(method != null ? JsdUtil.invoke(method, object) : object instanceof Double ? format((double)object) : object instanceof Float ? format((float)object) : object, annotation));
+    relations.set(index, method != null ? JsdUtil.invoke(method, object) : object instanceof Double ? format((double)object) : object instanceof Float ? format((float)object) : object, annotation);
     return null;
   }
 
-  static Object encodeObject(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, ValidationException {
+  static Error encodeObject(final Appendable out, final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, IOException, ValidationException {
     final Class<?> cls = object.getClass();
     if (!Classes.isAssignableFrom(type, cls, true))
       return Error.CONTENT_NOT_EXPECTED(object, null, null);
 
-    return encodeObjectUnsafe(annotation, scale, range, type, encode, object, validate);
+    return encodeObjectUnsafe(out, annotation, scale, range, type, encode, object, validate);
   }
 
-  static Object encodeObjectUnsafe(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, ValidationException {
+  static Error encodeObjectUnsafe(final Appendable out, final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, IOException, ValidationException {
     final Class<?> cls = object.getClass();
     if (validate && object instanceof Number) {
       final Error error = validate(annotation, (Number)object, scale, range, type);
@@ -133,7 +133,8 @@ class NumberCodec extends PrimitiveCodec {
     }
 
     final Executable method = getMethod(encodeToMethod, encode, cls);
-    return method != null ? String.valueOf(JsdUtil.invoke(method, object)) : format(object);
+    out.append(method != null ? String.valueOf(JsdUtil.invoke(method, object)) : format(object));
+    return null;
   }
 
   private static Error validate(final Annotation annotation, final Number object, final int scale, final String range, final Class<?> type) {
