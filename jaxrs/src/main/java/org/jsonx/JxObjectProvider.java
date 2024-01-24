@@ -147,12 +147,11 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       out.flush();
     }
     else if (t instanceof List) {
-      final JxEncoder encoder = getEncoder();
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
         if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null) {
           final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
-          encoder.toStream(out, (List<?>)t, annotationType);
+          getEncoder().toStream(out, (List<?>)t, annotationType);
           out.flush();
           break;
         }

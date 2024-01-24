@@ -56,7 +56,7 @@ class NumberCodec extends PrimitiveCodec {
    * @implNote This method mimicks JavaScript's Double.toString() algorithm.
    */
   static String format(final double value) {
-    return 0.000001 <= value && value <= 9.999999999999999E20 ? decimalFormatLocal.get().format(value) : Numbers.stripTrailingZeros(String.valueOf(value));
+    return 0.000001 <= value && value <= 9.999999999999999E20 ? decimalFormatLocal.get().format(value) : Numbers.stripTrailingZeros(new StringBuilder(String.valueOf(value))).toString();
   }
 
   static Class<? extends Number> getDefaultClass(final int scale) {
@@ -117,22 +117,17 @@ class NumberCodec extends PrimitiveCodec {
   }
 
   static Error encodeObject(final Appendable out, final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, IOException, ValidationException {
-    final Class<?> cls = object.getClass();
-    if (!Classes.isAssignableFrom(type, cls, true))
-      return Error.CONTENT_NOT_EXPECTED(object, null, null);
-
-    return encodeObjectUnsafe(out, annotation, scale, range, type, encode, object, validate);
+    return Classes.isAssignableFrom(type, object.getClass(), true) ? encodeObjectUnsafe(out, annotation, scale, range, type, encode, object, validate) : Error.CONTENT_NOT_EXPECTED(object, null, null);
   }
 
   static Error encodeObjectUnsafe(final Appendable out, final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final boolean validate) throws EncodeException, IOException, ValidationException {
-    final Class<?> cls = object.getClass();
     if (validate && object instanceof Number) {
       final Error error = validate(annotation, (Number)object, scale, range, type);
       if (error != null)
         return error;
     }
 
-    final Executable method = getMethod(encodeToMethod, encode, cls);
+    final Executable method = getMethod(encodeToMethod, encode, object.getClass());
     out.append(method != null ? String.valueOf(JsdUtil.invoke(method, object)) : format(object));
     return null;
   }

@@ -242,33 +242,30 @@ public class JxEncoder {
       return null;
     }
 
-    final boolean isOptional = getMethod != null && getMethod.getReturnType() == Optional.class;
-    final Object value = object == null ? null : isOptional ? ((Optional<?>)object).orElse(null) : object;
+    final Object value = object == null ? null : (getMethod != null && getMethod.getReturnType() == Optional.class) ? ((Optional<?>)object).orElse(null) : object;
 
     if (annotation instanceof ObjectProperty || annotation instanceof ObjectElement) {
       return encodeObject(out, (JxObject)value, null, depth + 1);
     }
 
-    final Error error;
     if (annotation instanceof BooleanProperty) {
       final BooleanProperty property = (BooleanProperty)annotation;
-      error = BooleanCodec.encodeObject(out, JsdUtil.getRealType(getMethod), property.encode(), value);
-    }
-    else if (annotation instanceof NumberProperty) {
-      final NumberProperty property = (NumberProperty)annotation;
-      error = NumberCodec.encodeObject(out, annotation, property.scale(), property.range(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
-    }
-    else if (annotation instanceof StringProperty) {
-      final StringProperty property = (StringProperty)annotation;
-      error = StringCodec.encodeObject(out, annotation, getMethod, property.pattern(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
-    }
-    else {
-      @SuppressWarnings("null")
-      final Class<?> type = getMethod == null ? object.getClass() : isOptional ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
-      throw new UnsupportedOperationException("Unsupported type: " + type.getName());
+      return BooleanCodec.encodeObject(out, JsdUtil.getRealType(getMethod), property.encode(), value);
     }
 
-    return error;
+    if (annotation instanceof NumberProperty) {
+      final NumberProperty property = (NumberProperty)annotation;
+      return NumberCodec.encodeObject(out, annotation, property.scale(), property.range(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
+    }
+
+    if (annotation instanceof StringProperty) {
+      final StringProperty property = (StringProperty)annotation;
+      return StringCodec.encodeObject(out, annotation, getMethod, property.pattern(), JsdUtil.getRealType(getMethod), property.encode(), value, validate);
+    }
+
+    @SuppressWarnings("null")
+    final Class<?> type = getMethod == null ? object.getClass() : getMethod.getReturnType() == Optional.class ? Classes.getGenericParameters(getMethod)[0] : getMethod.getReturnType();
+    throw new UnsupportedOperationException("Unsupported type: " + type.getName());
   }
 
   @SuppressWarnings("unchecked")

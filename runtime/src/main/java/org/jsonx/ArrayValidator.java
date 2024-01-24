@@ -16,8 +16,6 @@
 
 package org.jsonx;
 
-import static org.libj.lang.Assertions.*;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -31,17 +29,28 @@ import org.libj.util.DelegateRandomAccessList;
 import org.libj.util.function.TriPredicate;
 
 final class ArrayValidator {
+  static class RelationsRelation extends Relation {
+    RelationsRelation(final Relations member, final Annotation annotation) {
+      super(member, annotation);
+    }
+
+    @Override
+    Object deflate() {
+      return ((Relations)member).deflate();
+    }
+  }
+
   static class Relation {
     final Object member;
     final Annotation annotation;
 
     Relation(final Object member, final Annotation annotation) {
       this.member = member;
-      this.annotation = assertNotNull(annotation);
+      this.annotation = annotation;
     }
 
-    private Object deflate() {
-      return member instanceof Relations ? ((Relations)member).deflate() : member;
+    Object deflate() {
+      return member;
     }
 
     @Override
@@ -62,6 +71,10 @@ final class ArrayValidator {
 
     void set(final int index, final Object member, final Annotation annotation) {
       set(index, new Relation(member, annotation));
+    }
+
+    void set(final int index, final Relations member, final Annotation annotation) {
+      set(index, new RelationsRelation(member, annotation));
     }
 
     @Override
