@@ -150,10 +150,20 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
         if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null) {
-          final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
-          getEncoder().toStream(out, (List<?>)t, annotationType);
-          out.flush();
-          break;
+          try {
+            final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
+            getEncoder().toStream(out, (List<?>)t, annotationType);
+            out.flush();
+            break;
+          }
+          catch (final RuntimeException e) {
+            Throwable cause = e;
+            while ((cause = e.getCause()) != null)
+              if (cause instanceof IOException)
+                throw (IOException)cause;
+
+            throw e;
+          }
         }
       }
     }
