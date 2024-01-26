@@ -128,7 +128,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
           return getDecoder().parseArray(new JsonReader(new InputStreamReader(entityStream)), annotationType);
       }
     }
-    catch (final JsonParseException | DecodeException e) {
+    catch (final DecodeException | JsonParseException e) {
       throw new BadRequestException(e);
     }
 
@@ -145,33 +145,22 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
       final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
       getEncoder().toStream(out, (JxObject)t);
       out.flush();
+      return true;
     }
-    else if (t instanceof List) {
+
+    if (t instanceof List) {
       for (final Annotation annotation : annotations) { // [A]
         final Class<? extends Annotation> annotationType = annotation.annotationType();
         if (ArrayProperty.class.equals(annotationType) || annotationType.getDeclaredAnnotation(ArrayType.class) != null) {
-          try {
-            final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
-            getEncoder().toStream(out, (List<?>)t, annotationType);
-            out.flush();
-            break;
-          }
-          catch (final RuntimeException e) {
-            Throwable cause = e;
-            while ((cause = e.getCause()) != null)
-              if (cause instanceof IOException)
-                throw (IOException)cause;
-
-            throw e;
-          }
+          final OutputStreamWriter out = new OutputStreamWriter(entityStream, charset);
+          getEncoder().toStream(out, (List<?>)t, annotationType);
+          out.flush();
+          return true;
         }
       }
     }
-    else {
-      return false;
-    }
 
-    return true;
+    return false;
   }
 
   @Override

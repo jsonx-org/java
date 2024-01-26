@@ -269,7 +269,7 @@ public class JxEncoder {
   }
 
   @SuppressWarnings("unchecked")
-  private Error encodeProperty(final Appendable out, final Method getMethod, final Annotation annotation, final String name, final Object object, final OnEncode onEncode, final int depth) {
+  private Error encodeProperty(final Appendable out, final Method getMethod, final Annotation annotation, final String name, final Object object, final OnEncode onEncode, final int depth) throws IOException {
     try {
       if (annotation instanceof ArrayProperty)
         return ArrayCodec.encodeObject(this, out, new Relations(), name, getMethod, object instanceof Optional ? ((Optional<List<Object>>)object).orElse(null) : (List<Object>)object, onEncode, depth, validate);
@@ -279,7 +279,7 @@ public class JxEncoder {
 
       return encodeNonArray(out, getMethod, annotation, object, depth);
     }
-    catch (final EncodeException | ValidationException e) {
+    catch (final EncodeException | IOException | ValidationException e) {
       throw e;
     }
     catch (final Exception e) {
