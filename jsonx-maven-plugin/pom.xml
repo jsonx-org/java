@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jsonx</groupId>
     <artifactId>jsonx</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.5.0</version>
   </parent>
   <artifactId>jsonx-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
@@ -177,7 +177,7 @@
     <dependency>
       <groupId>org.openjax.maven</groupId>
       <artifactId>mojo</artifactId>
-      <version>0.5.0-SNAPSHOT</version>
+      <version>0.5.0</version>
     </dependency>
     <dependency>
       <groupId>org.jsonx</groupId>
