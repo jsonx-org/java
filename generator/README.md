@@ -85,11 +85,9 @@ A distinction has to be made between "normative scope" and "non-normative scope"
 The `Generator` is a utility class that can be used on the CLI to generate Java binding classes from a JSD schema. The `Generator` class has the following usage specification:
 
 ```
-Usage: Generator <-p [NAMESPACE] PREFIX>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx>...
-
-Mandatory arguments:
-  -p [NAMESPACE] <PREFIX>  Package prefix of generated classes for provided namespace, recurrable.
-  -d <DEST_DIR>            The destination directory.
+Usage: Generator <-p [NAMESPACE] PACKAGE>... <-d DEST_DIR> <SCHEMA.jsd|SCHEMA.jsdx|BINDING.jsb|BINDING.jsbx>...
+  -p [NAMESPACE] <PACKAGE>  Package prefix of generated classes for provided namespace, recurrable.
+  -d <DEST_DIR>             The destination directory.
 
 Supported SCHEMA_FILE formats:
                  <JSD|JSDx|JSB|JSBx>
