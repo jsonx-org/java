@@ -138,7 +138,7 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.2.11</version> <!-- All versions higher than 1.2.11 don't compile for jdk8 (not even 1.2.12 is working due to google-cloud-logging-logback) -->
+        <version>1.2.13</version> <!-- All versions higher than 1.2.13 don't compile for jdk8 (not even 1.2.12 is working due to google-cloud-logging-logback) -->
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
