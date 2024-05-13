@@ -189,7 +189,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ArrayProperty property, final Method getMethod, final String fieldName) {
     final String declaringTypeName = getMethod.getDeclaringClass().getName() + "." + fieldName;
-    if (!isAssignable(getMethod, true, List.class, false, property.nullable(), property.use()))
+    if (!isAssignable(getMethod, true, false, property.nullable(), property.use(), true, List.class))
       throw new IllegalAnnotationException(property, declaringTypeName + ": @" + ArrayProperty.class.getSimpleName() + " can only be applied to fields of List<?> type with use=\"required\" or nullable=false, or of Optional<? extends List<?>> type with use=\"optional\" and nullable=true");
 
     return referenceOrDeclare(registry, referrer, property, fieldName, Classes.getAnnotations(getMethod), declaringTypeName);
@@ -506,15 +506,15 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
     final int size = members.length;
     if (size > 0) {
       final Collection superElements = element.getElements();
       final ArrayList<XmlElement> elements = new ArrayList<>(size + (superElements != null ? superElements.size() : 0));
       cursor.inArray();
       for (int i = 0; i < size; ++i) // [A]
-        elements.add(members[i].toXml(this, packageName, cursor, pathToBinding));
+        elements.add(members[i].toXml(this, packageName, cursor, pathToBinding, false));
 
       if (superElements != null)
         elements.addAll(superElements);
@@ -527,14 +527,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
     final int len = members.length;
     if (len > 0) {
       final ArrayList<Object> elements = new ArrayList<>();
       cursor.inArray();
       for (int i = 0; i < len; ++i) // [A]
-        elements.add(members[i].toJson(this, packageName, cursor, pathToBinding));
+        elements.add(members[i].toJson(this, packageName, cursor, pathToBinding, false));
 
       element.put("@elements", elements);
     }

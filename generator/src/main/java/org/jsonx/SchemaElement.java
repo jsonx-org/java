@@ -156,7 +156,7 @@ public final class SchemaElement extends Element implements Declarer {
         final String path = CharacterDatas.escapeForAttr(entry.getKey().replace("\\\\", "\\"), '"').toString();
         final JxObject member = entry.getValue();
         if (member instanceof binding.Any)
-          xsb.addAny(jsdToXsbField(new Binding.Any(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
+          xsb.addAny(jsdToXsbTypeField(new Binding.Any(), path, ((binding.TypeFieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Reference)
           xsb.addReference(jsdToXsbField(new Binding.Reference(), path, ((binding.FieldBindings)member).get5cS7c5cS2e2a5cS()));
         else if (member instanceof binding.Array)
@@ -474,7 +474,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
     final ArrayList<XmlElement> schemaElems;
     final ArrayList<Model> members = rootMembers();
     final int i$ = members.size();
@@ -482,7 +482,7 @@ public final class SchemaElement extends Element implements Declarer {
       schemaElems = new ArrayList<>();
       int i = 0;
       do // [RA]
-        schemaElems.add(members.get(i).toXml(this, packageName, cursor, pathToBinding));
+        schemaElems.add(members.get(i).toXml(this, packageName, cursor, pathToBinding, false));
       while (++i < i$);
     }
     else {
@@ -523,11 +523,11 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   public XmlElement toXml() {
-    return toXml(this, registry.packageName, new JsonPath.Cursor(), new PropertyMap<>());
+    return toXml(this, registry.packageName, new JsonPath.Cursor(), new PropertyMap<>(), false);
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
     final List<Model> members = rootMembers();
     final int size = members.size();
     if (size == 0)
@@ -546,7 +546,7 @@ public final class SchemaElement extends Element implements Declarer {
       final Model member = members.get(i);
       final String id = member.id().toString();
       final String name = len > 0 && id.startsWith(packageName) ? id.substring(len + 1) : id;
-      schema.put(name, member.toJson(this, packageName, cursor, pathToBinding));
+      schema.put(name, member.toJson(this, packageName, cursor, pathToBinding, false));
     }
 
     if (pathToBinding.size() == 0)
@@ -569,7 +569,7 @@ public final class SchemaElement extends Element implements Declarer {
   }
 
   public PropertyMap<Object> toJson() {
-    return toJson(this, registry.packageName, new JsonPath.Cursor(), new PropertyMap<>());
+    return toJson(this, registry.packageName, new JsonPath.Cursor(), new PropertyMap<>(), false);
   }
 
   private static void addParents(final Registry.Type type, final ClassSpec classSpec, final Map<Registry.Type,ClassSpec> typeToJavaClass, final Map<Registry.Type,ClassSpec> all) {

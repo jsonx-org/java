@@ -20,6 +20,8 @@ import static org.jsonx.Element.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ final class Bind {
     }
 
     static Type from(final Registry registry, final Method getMethod, final boolean nullable, final Use use, final String decode, final String encode, final Class<?> defaultClass) {
-      final String typeName = Model.isAssignable(getMethod, false, defaultClass, false, nullable, use) ? null : getClassName(getMethod, nullable, use);
+      final String typeName = Model.isAssignable(getMethod, false, false, nullable, use, true, defaultClass) ? null : getClassName(getMethod, nullable, use);
       return typeName == null && (encode == null || encode.length() == 0) && (decode == null || decode.length() == 0) ? null : new Type(registry, typeName, decode, encode);
     }
 
@@ -52,17 +54,32 @@ final class Bind {
         return getClassName(returnType);
 
       final java.lang.reflect.Type genericType = getMethod.getGenericReturnType();
-      if (!expectOptional)
-        return genericType.getTypeName();
+      if (!(genericType instanceof ParameterizedType)) {
+        if (!expectOptional)
+          return genericType.getTypeName();
 
-      if (!(genericType instanceof ParameterizedType))
         throw new ValidationException("Expected " + Optional.class.getName() + " return type from method: " + getMethod.getName());
+      }
 
       final java.lang.reflect.Type[] genericTypes = ((ParameterizedType)genericType).getActualTypeArguments();
+
+      if (Map.class.isAssignableFrom(returnType)) {
+        if (genericTypes.length != 2)
+          throw new ValidationException("Expected " + Map.class.getName() + " return type from method: " + getMethod.getName());
+
+        return getClassName((Class<?>)genericTypes[1]);
+      }
+
       if (genericTypes.length != 1)
         throw new ValidationException("Expected " + Optional.class.getName() + " return type from method: " + getMethod.getName());
 
-      return getClassName((Class<?>)genericTypes[0]);
+      if (genericTypes[0] instanceof Class)
+        return getClassName((Class<?>)genericTypes[0]);
+
+      if (List.class.equals(returnType))
+        return genericType.getTypeName();
+
+      return genericTypes[0].getTypeName();
     }
 
     static String getClassName(final Class<?> cls) {

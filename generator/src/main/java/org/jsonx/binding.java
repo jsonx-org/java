@@ -1,10 +1,10 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2023-10-18T13:46:54.136")
+@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2024-05-14T00:06:34.171")
 public class binding {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/binding-0.5.jsdx")
-  public static class Any extends org.jsonx.binding.FieldBindings {
+  public static class Any extends org.jsonx.binding.TypeFieldBindings {
     @org.jsonx.StringProperty(name = "@", pattern = "any", nullable = false)
     public java.lang.String get40() {
       return _40;
@@ -17,7 +17,7 @@ public class binding {
 
     private java.lang.String _40;
 
-    public Any set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.FieldBinding> _5cS7c5cS2e2a5cS) {
+    public Any set5cS7c5cS2e2a5cS(final java.util.LinkedHashMap<java.lang.String,org.jsonx.binding.TypeFieldBinding> _5cS7c5cS2e2a5cS) {
       super.set5cS7c5cS2e2a5cS(_5cS7c5cS2e2a5cS);
       return (Any)this;
     }
@@ -622,7 +622,7 @@ public class binding {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/binding-0.5.jsdx")
   public static class TypeFieldBinding extends org.jsonx.binding.FieldBinding {
     /** Specifies the "type" qualified identifier. **/
-    @org.jsonx.StringProperty(name = "@type", pattern = "(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(\\[\\])?", use = org.jsonx.Use.OPTIONAL, nullable = false)
+    @org.jsonx.StringProperty(name = "@type", pattern = "(([a-zA-Z_$][a-zA-Z\\d_$]*)\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*(<.*>)?(\\[\\])?", use = org.jsonx.Use.OPTIONAL, nullable = false)
     public java.lang.String get40type() {
       return _40type;
     }

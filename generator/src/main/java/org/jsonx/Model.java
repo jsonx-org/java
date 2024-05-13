@@ -35,7 +35,15 @@ abstract class Model extends Member implements Comparable<Model> {
     return type instanceof Class ? (Class<?>)type : type instanceof WildcardType ? (Class<?>)((WildcardType)type).getUpperBounds()[0] : null;
   }
 
-  static boolean isAssignable(final Method getMethod, final boolean canWrap, final Class<?> cls, final boolean isRegex, final boolean nullable, final Use use) {
+  private static boolean isAssignable(final Class<?> source, final boolean producerOrConsumer, final Class<?> ... targets) {
+    for (final Class<?> target : targets)
+      if (target != null && !(producerOrConsumer ? target.isAssignableFrom(source) : source.isAssignableFrom(target)))
+        return false;
+
+    return true;
+  }
+
+  static boolean isAssignable(final Method getMethod, final boolean canWrap, final boolean isRegex, final boolean nullable, final Use use, final boolean producerOrConsumer, final Class<?> ... classes) {
     final Class<?> returnType = getMethod.getReturnType();
     final Class<?> type = canWrap && returnType.isPrimitive() ? Classes.box(returnType) : returnType;
     if (isRegex) {
@@ -52,7 +60,7 @@ abstract class Model extends Member implements Comparable<Model> {
 
       final Type genericType = genericTypes[1];
       if (!(genericType instanceof ParameterizedType))
-        return cls == null || toClass(genericType).isAssignableFrom(cls);
+        return isAssignable(toClass(genericType), producerOrConsumer, classes);
 
       final ParameterizedType parameterizedType = (ParameterizedType)genericType;
       if (parameterizedType.getRawType() != Optional.class)
@@ -60,17 +68,17 @@ abstract class Model extends Member implements Comparable<Model> {
 
       final Type[] args = parameterizedType.getActualTypeArguments();
       final Type arg;
-      return args.length == 1 && (cls == null || cls.isAssignableFrom((arg = args[0]) instanceof ParameterizedType ? (Class<?>)((ParameterizedType)arg).getRawType() : toClass(arg)));
+      return args.length == 1 && isAssignable((arg = args[0]) instanceof ParameterizedType ? (Class<?>)((ParameterizedType)arg).getRawType() : toClass(arg), producerOrConsumer, classes);
     }
 
     if (use != Use.OPTIONAL || !nullable)
-      return cls == null || cls.isAssignableFrom(type);
+      return isAssignable(type, producerOrConsumer, classes);
 
     if (type != Optional.class)
       return false;
 
     final Class<?>[] genericTypes = Classes.getGenericParameters(getMethod);
-    return genericTypes.length != 0 && genericTypes[0] != null && (cls == null || cls.isAssignableFrom(genericTypes[0]));
+    return genericTypes.length != 0 && genericTypes[0] != null && isAssignable(genericTypes[0], producerOrConsumer, classes);
   }
 
   Model(final Registry registry, final Declarer declarer, final Id id, final $Documented.Doc$ doc, final yAA.$AnySimpleType<?> name, final yAA.$Boolean nullable, final yAA.$String use, final $FieldIdentifier fieldName, final Bind.Type typeBinding) {
@@ -99,12 +107,14 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, false);
-    cursor.pushName((String)attributes.get("name"));
+    final String name = (String)attributes.get(nameName());
+    if (name != null || !isFromReference || !(this instanceof AnyModel))
+      cursor.pushName((String)attributes.get(nameName()));
 
     final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, false);
+    final AttributeMap bindingAttributes = name != null || !isFromReference || !(this instanceof AnyModel) ? Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, false) : null;
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
@@ -112,9 +122,9 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, true);
-    cursor.pushName((String)attributes.get("name"));
+    cursor.pushName((String)attributes.get(nameName()));
 
     final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, true);
     if (bindingAttributes != null)

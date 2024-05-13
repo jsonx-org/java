@@ -27,8 +27,10 @@ import java.util.Set;
 import org.jaxsb.runtime.Binding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$MaxOccurs;
+import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.w3.www._2001.XMLSchema.yAA.$AnySimpleType;
 import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 import org.w3.www._2001.XMLSchema.yAA.$Boolean;
@@ -45,6 +47,18 @@ abstract class Referrer<T extends Referrer<?>> extends Model implements Declarer
 
     final $FieldBinding binding = xsbToBinding.get(xsb);
     return binding == null ? null : binding.getField$();
+  }
+
+  static Bind.Type getType(final Registry registry, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding, final $Member xsb) {
+    if (xsbToBinding == null)
+      return null;
+
+    final $TypeFieldBinding binding = ($TypeFieldBinding)xsbToBinding.get(xsb);
+    if (binding == null)
+      return null;
+
+    final $TypeFieldBinding.Type$ type = binding.getType$();
+    return type == null ? null : Bind.Type.from(registry, type, null, null);
   }
 
   static Registry.Type getGreatestCommonSuperType(final Member[] members) {

@@ -205,7 +205,7 @@
   <string path="uuid"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
   <string path="url"><bind lang="java" type="java.net.URL" decode="org.jsonx.TestHelper.stringToUrlOrNull"/></string>
   <string path="StringBigDecimal"><bind lang="java" type="java.math.BigDecimal" decode="org.jsonx.TestHelper.stringToBigDecimalOrNull"/></string>
-  <any path="objArr[0]"><bind lang="java" field="any2"/></any>
+  <any path="objArr.anyNumStr"><bind lang="java" field="any2"/></any>
   <reference path="objArr.arrayBool"><bind lang="java" field="ab"/></reference>
   <reference path="objArr.arrayBoolOptional"><bind lang="java" field="abO"/></reference>
   <reference path="objArr.arrayBoolOptionalNotNullable"><bind lang="java" field="abONN"/></reference>
@@ -215,12 +215,13 @@
   <reference path="objArr.arrayStr"><bind lang="java" field="as"/></reference>
   <reference path="objArr.arrayStrOptional"><bind lang="java" field="asO"/></reference>
   <reference path="objArr.arrayStrOptionalNotNullable"><bind lang="java" field="asONN"/></reference>
-  <any path="objArr[10]"><bind lang="java" field="any1"/></any>
+  <any path="objArr.\.*"><bind lang="java" field="any1"/></any>
   <reference path="objBool.bo+l"><bind lang="java" field="bool1"/></reference>
-  <any path="objBool[1]"><bind lang="java" field="any"/></any>
+  <any path="objBool.\.*"><bind lang="java" field="any" type="java.io.Serializable"/></any>
   <reference path="objBool.bo+lOptional"><bind lang="java" field="bool2"/></reference>
   <reference path="objBool.boolOptionalNotNullable"><bind lang="java" field="bool3"/></reference>
   <reference path="objNum.num\.+"><bind lang="java" field="regexNum"/></reference>
+  <any path="objNum.any"><bind lang="java" field="anyField"/></any>
   <reference path="objObj.objOptional"><bind lang="java" field="obj1"/></reference>
   <reference path="objObj.objOptionalNotNullable"><bind lang="java" field="obj2"/></reference>
   <object path="objObj.objExtends1"><bind lang="java" field="obj3"/></object>

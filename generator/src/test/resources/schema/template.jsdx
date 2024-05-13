@@ -53,14 +53,14 @@
     <property name="arrayFour" xsi:type="reference" type="arrayDepthFour" use="optional" doc="Reference to arrayDepthFour"/>
     <property names="any2\*" xsi:type="any" types="rootString rootNumber" doc="Property with regex name and type 'rootString' or 'rootNumber'"/>
     <property name="booleanDirectOptional" xsi:type="boolean" use="optional" doc="Property of boolean type"/>
-    <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false" doc="Property preferencing rootBoolean"/>
+    <property name="booleanRequiredNotNullable" xsi:type="reference" type="rootBoolean" nullable="false" doc="Property referencing rootBoolean"/>
     <property names="any3*" xsi:type="any" types="rootNumber rootBoolean" nullable="false" doc="Property with regex name accepting type 'rootNumber' or 'rootBoolean'"/>
     <property names="any4+" xsi:type="any" types="rootString arrayDepthOne" nullable="false" doc="Property with regex name accepting type 'rootString' or 'arrayDepthOne'"/>
-    <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional" doc="Propery preferencing rootBoolean"/>
-    <property name="numberDirectOptional" xsi:type="number" range="[5e-1,8]" use="optional" doc="Propery with number type"/>
+    <property name="booleanOptional" xsi:type="reference" type="rootBoolean" use="optional" doc="Property referencing rootBoolean"/>
+    <property name="numberDirectOptional" xsi:type="number" range="[5e-1,8]" use="optional" doc="Property with number type"/>
     <property names="any5" xsi:type="any" types="arrayDepthOne arrayDepthTwo" use="optional" doc="Property named 'any5' accepting type 'arrayDepthOne' or 'arrayDepthTwo'"/>
-    <property name="numberOptional" xsi:type="reference" type="rootNumber" use="optional" doc="Propery preferencing rootNumber"/>
-    <property name="stringDirectOptional" xsi:type="string" use="optional" doc="Propery of string type"/>
+    <property name="numberOptional" xsi:type="reference" type="rootNumber" use="optional" doc="Property referencing rootNumber"/>
+    <property name="stringDirectOptional" xsi:type="string" use="optional" doc="Property of string type"/>
     <property name="stringOptional" xsi:type="reference" type="rootString" use="optional" doc="Optional property referencing rootString"/>
     <property names="any6" xsi:type="any" types="arrayDepthTwo arrayDepthThree" doc="Property named 'any6' accepting type 'arrayDepthTwo' or 'arrayDepthTree'"/>
   </object>

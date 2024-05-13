@@ -54,6 +54,7 @@ import org.xml.sax.SAXException;
 
 abstract class ModelTest {
   static final Logger logger = LoggerFactory.getLogger(ModelTest.class);
+  private static final boolean testValidate = true;
   private static final boolean testJson = true;
   private static final String namespacePackage = "org.jsonx.test.";
   static final File generatedSourcesDir = new File("target/generated-test-sources/jsonx");
@@ -91,11 +92,15 @@ abstract class ModelTest {
   }
 
   private static void validate(final String xml, final String fileName) throws IOException, SAXException {
+    if (!testValidate)
+      return;
+
     writeXmlFile(fileName, xml);
     try {
       Validator.validate(xml);
     }
     catch (final SAXException e) {
+      System.err.println(xml);
       if (logger.isErrorEnabled()) { logger.error(xml); }
       throw e;
     }

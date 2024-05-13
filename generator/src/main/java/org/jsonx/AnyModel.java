@@ -36,7 +36,6 @@ import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference.Name$;
-import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
@@ -129,7 +128,7 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   static AnyModel reference(final Registry registry, final Referrer<?> referrer, final $Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding == null ? null : ($FieldBinding)xsbToBinding.get(xsb)), referrer);
+    return registry.reference(new AnyModel(registry, referrer, xsb, xsbToBinding), referrer);
   }
 
   private static final Name$ anonymousReferenceName = new Name$("");
@@ -160,9 +159,9 @@ final class AnyModel extends Referrer<AnyModel> {
 
   private final Member[] types;
 
-  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final $FieldBinding binding) {
-    super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, binding == null ? null : binding.getField$(), null);
-    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), binding);
+  private AnyModel(final Registry registry, final Declarer declarer, final $Any xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
+    super(registry, declarer, xsb.getDoc$(), xsb.getNames$(), xsb.getNullable$(), xsb.getUse$(), null, getField(xsbToBinding, xsb), getType(registry, xsbToBinding, xsb));
+    this.types = getTypes(nullable.get, use.get, xsb.getTypes$(), xsbToBinding == null ? null : xsbToBinding.get(xsb));
     validateTypeBinding();
   }
 
@@ -173,15 +172,14 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   private AnyModel(final Registry registry, final Declarer declarer, final AnyProperty property, final Method getMethod, final String fieldName) {
-    super(registry, declarer, property.nullable(), property.use(), null, null, null);
+    super(registry, declarer, property.nullable(), property.use(), null, null, Bind.Type.from(registry, getMethod, property.nullable(), property.use(), null, null, Void.class));
     final t[] types = property.types();
     this.types = getMemberTypes(types);
-    final Class<?> requiredFieldType = types.length == 0 ? defaultClass() : getFieldType(types);
     final boolean isRegex = isMultiRegex(property.name());
     if (isRegex && !Map.class.isAssignableFrom(getMethod.getReturnType()))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Bind.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
 
-    if (!isAssignable(getMethod, true, requiredFieldType, isRegex, property.nullable(), property.use()))
+    if (!isAssignable(getMethod, true, isRegex, property.nullable(), property.use(), false, types.length > 0 ? getFieldTypes(types) : new Class<?>[] { defaultClass() }))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Bind.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
 
     validateTypeBinding();
@@ -227,38 +225,27 @@ final class AnyModel extends Referrer<AnyModel> {
     });
   }
 
-  private static Class<?> getFieldType(final t[] types) {
+  private static Class<?>[] getFieldTypes(final t[] types) {
     final int len = types.length;
     if (len == 0)
       return null;
 
-    boolean isObjectModel = true;
     final Class<?>[] members = new Class<?>[len];
     for (int i = 0; i < len; ++i) { // [A]
       final t type = types[i];
-      if (AnyType.isEnabled(type.arrays())) {
+      if (AnyType.isEnabled(type.arrays()))
         members[i] = List.class;
-        isObjectModel = false;
-      }
-      else if (AnyType.isEnabled(type.booleans())) {
+      else if (AnyType.isEnabled(type.booleans()))
         members[i] = Boolean.class;
-        isObjectModel = false;
-      }
-      else if (AnyType.isEnabled(type.numbers())) {
+      else if (AnyType.isEnabled(type.numbers()))
         members[i] = type.numbers().type();
-        isObjectModel = false;
-      }
-      else if (AnyType.isEnabled(type.objects())) {
+      else if (AnyType.isEnabled(type.objects()))
         members[i] = type.objects();
-      }
-      else if (AnyType.isEnabled(type.strings())) {
+      else if (AnyType.isEnabled(type.strings()))
         members[i] = type.strings().type();
-        isObjectModel = false;
-      }
     }
 
-    final Class<?> gcc = Classes.getGreatestCommonSuperclass(members);
-    return gcc != Object.class ? gcc : isObjectModel ? JxObject.class : Object.class;
+    return members;
   }
 
   private Member[] getMemberTypes(final t[] types) {
@@ -398,7 +385,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
   @Override
   String isValid(final Bind.Type typeBinding) {
-    return typeBinding.type == null ? null : "Cannot override the type for \"any\"";
+    return null;
   }
 
   @Override
@@ -427,16 +414,18 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
-    cursor.popName();
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
+    if (!isFromReference)
+      cursor.popName();
     return element;
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
-    cursor.popName();
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
+    if (!isFromReference)
+      cursor.popName();
     return properties;
   }
 
@@ -478,6 +467,7 @@ final class AnyModel extends Referrer<AnyModel> {
       }
       else if (type instanceof BooleanModel || type instanceof NumberModel || type instanceof StringModel) {
         final Model model = (Model)type;
+
         final AttributeMap attrs = new AttributeMap();
         model.toAnnotationAttributes(attrs, this);
         if (b == null)

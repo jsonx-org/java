@@ -393,10 +393,10 @@
   <reference path="cls-abstractObject.emptyArray"><bind lang="java" field="arrayEmpty"/></reference>
   <reference path="simple-booleans.booleanRefDefault"><bind lang="java" field="boolRefDef"/></reference>
   <reference path="simple-booleans.intBoolean"><bind lang="java" field="simpleIntBoolean"/></reference>
-  <any path="simple-booleans[5]"><bind lang="java" field="anyNumberInteger"/></any>
+  <any path="simple-booleans.any\\s"><bind lang="java" field="anyNumberInteger"/></any>
   <array path="simple-booleansArray.booleanArrayDefault"><bind lang="java" field="boolArray"/></array>
   <array path="simple-booleansArray.booleanArrayOptional"><bind lang="java" field="boolArrayOpt"/></array>
-  <any path="simple-numbers[4]"><bind lang="java" field="anyRootNum"/></any>
+  <any path="simple-numbers.any\[a-z\]+"><bind lang="java" field="anyRootNum"/></any>
   <number path="simple-numbers.numberDefault"><bind lang="java" field="numDef" type="short"/></number>
   <number path="simple-numbers.numberMin"><bind lang="java" field="numMin" type="double"/></number>
   <number path="simple-numbers.numberMax"><bind lang="java" field="numMax" type="java.lang.Integer"/></number>
@@ -415,8 +415,8 @@
   <array path="simple-numbersArray.arrayStringBoolean"><bind lang="java" field="anotherArray"/></array>
   <array path="simple-numbersArray.arrayArray"><bind lang="java" field="arrArr"/></array>
   <reference path="simple-strings.stringRefDefault"><bind lang="java" field="uuid"/></reference>
-  <any path="simple-strings[5]"><bind lang="java" field="anyAny2"/></any>
-  <any path="simple-strings[6]"><bind lang="java" field="anyAny1"/></any>
+  <any path="simple-strings.any\\\\d"><bind lang="java" field="anyAny2"/></any>
+  <any path="simple-strings.any\[0-9a-f\]+"><bind lang="java" field="anyAny1"/></any>
   <string path="simple-strings.stringUrlDecode"><bind lang="java" field="strUrlDec" decode="org.libj.net.URIComponent.decode"/></string>
   <string path="simple-strings.stringUrlEncode"><bind lang="java" field="strUrlEnc" decode="org.libj.net.URIComponent.encode"/></string>
   <array path="simple-stringsArray.stringArrayRefOptional"><bind lang="java" field="strArrRefOpt"/></array>

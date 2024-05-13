@@ -240,7 +240,7 @@ final class NumberModel extends Model {
   private NumberModel(final Registry registry, final Declarer declarer, final NumberProperty property, final Method getMethod, final String fieldName, final Bind.Type typeBinding) throws ParseException {
     super(registry, declarer, Id.hashed("n", typeBinding, property.scale(), parseRange(property.range(), property.scale(), null)), property.nullable(), property.use(), fieldName, typeBinding);
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
-    if (!isAssignable(getMethod, true, defaultClass(), false, property.nullable(), property.use()) && !isAssignable(getMethod, true, CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
+    if (!isAssignable(getMethod, true, false, property.nullable(), property.use(), true, defaultClass()) && !isAssignable(getMethod, true, false, property.nullable(), property.use(), true, CharSequence.class) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + NumberProperty.class.getSimpleName() + " can only be applied to fields of Object type with use=\"required\" or nullable=false, or of Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.scale = property.scale();
@@ -309,15 +309,15 @@ final class NumberModel extends Model {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
     cursor.popName();
     return element;
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
     cursor.popName();
     return properties;
   }

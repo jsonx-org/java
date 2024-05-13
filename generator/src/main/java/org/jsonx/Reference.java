@@ -202,7 +202,9 @@ final class Reference extends Member {
     if (bindingAttributes == null)
       return null;
 
-    bindingAttributes.remove(jsd(jsd, "type"));
+    if (!(model instanceof AnyModel))
+      bindingAttributes.remove(jsd(jsd, "type"));
+
     bindingAttributes.remove(jsd(jsd, "decode"));
     bindingAttributes.remove(jsd(jsd, "encode"));
     // If there's only lang="java", then remove the binding element
@@ -210,13 +212,13 @@ final class Reference extends Member {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    return toXml(owner, packageName, cursor, pathToBinding, false);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    return toXml(false, owner, packageName, cursor, pathToBinding);
   }
 
-  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean jsd) {
+  private XmlElement toXml(final boolean jsd, final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, jsd);
-    cursor.pushName((String)attributes.get("name"));
+    cursor.pushName((String)attributes.get(nameName()));
 
     final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, jsd);
     if (bindingAttributes != null)
@@ -238,7 +240,7 @@ final class Reference extends Member {
       }
     }
     else {
-      element = model.toXml(owner, packageName, cursor, pathToBinding);
+      element = model.toXml(owner, packageName, cursor, pathToBinding, true);
 
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
@@ -257,11 +259,11 @@ final class Reference extends Member {
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
     final PropertyMap<Object> properties = new PropertyMap<>();
     properties.put("@", elementName());
 
-    final AttributeMap attributes = (AttributeMap)toXml(owner, packageName, cursor, pathToBinding, true).getAttributes();
+    final AttributeMap attributes = (AttributeMap)toXml(true, owner, packageName, cursor, pathToBinding).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

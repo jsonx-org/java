@@ -30,15 +30,17 @@ import org.w3.www._2001.XMLSchema.yAA.$AnyType;
 class JsonPath implements Iterable<Object> {
   private static String escapeTerm(final String term) {
     final StringBuilder b = JsonUtil.escape(term);
-    Strings.replace(b, "\\", "\\\\");
+    Strings.replace(b, "[", "\\[");
+    Strings.replace(b, "]", "\\]");
     Strings.replace(b, ".", "\\.");
     return b.toString();
   }
 
   private static String unescapeTerm(final String term) {
     final StringBuilder b = new StringBuilder(term);
+    Strings.replace(b, "\\[", "[");
+    Strings.replace(b, "\\]", "]");
     Strings.replace(b, "\\.", ".");
-    Strings.replace(b, "\\\\", "\\");
     return JsonUtil.unescape(b).toString();
   }
 
@@ -49,7 +51,7 @@ class JsonPath implements Iterable<Object> {
 
     void pushName(final String name) {
       final boolean nextWillBeIndex = this.nextWillBeIndex.peek();
-      if (nextWillBeIndex || name == null) // Name can be null for <any>
+      if (nextWillBeIndex || name == null)
         terms.add(nextIndex.peek());
       else
         terms.add(name);
@@ -112,21 +114,21 @@ class JsonPath implements Iterable<Object> {
       }
       else if (escape) {
         escape = false;
-        if (ch == '\\')
-          ++i;
+//        if (ch == '\\')
+//          ++i;
       }
       else if (ch == '.') {
         path.add(unescapeTerm(str.substring(start, i)).toString());
-        start = ++i;
+        start = i + 1;
       }
       else if (ch == '[') {
         path.add(unescapeTerm(str.substring(start, i)).toString());
-        start = ++i;
+        start = i + 1;
         indexes = true;
       }
       else if (ch == ']') {
         path.add(Integer.valueOf(str.substring(start, i)));
-        start = i += 2;
+        start = ++i + 1;
       }
     }
 
@@ -144,16 +146,19 @@ class JsonPath implements Iterable<Object> {
       element = null;
       final Object term = pathIterator.next();
       if (term instanceof String) {
-        final String name = (String)term;
+        final String name = ((String)term);
         while (xsbIterator.hasNext()) {
           element = ($Documented)xsbIterator.next();
           final Iterator<$AnySimpleType<?>> attributeIterator = element.attributeIterator();
           while (attributeIterator.hasNext()) {
             final $AnySimpleType<?> attribute = attributeIterator.next();
-            if ("name".equals(attribute.name().getLocalPart()) && attribute.text().equals(name))
+            final String attrName = attribute.name().getLocalPart();
+            if (("name".equals(attrName) || "names".equals(attrName)) && attribute.text().equals(name))
               continue OUT;
           }
         }
+
+        throw new IllegalStateException("JsonPath not found: " + this.str);
       }
       else if (term instanceof Integer) {
         final int index = (int)term;
@@ -162,6 +167,8 @@ class JsonPath implements Iterable<Object> {
           if (i == index)
             continue OUT;
         }
+
+        throw new IllegalStateException("JsonPath not found: " + this.str);
       }
       else {
         throw new IllegalStateException("Unknown term class: " + term.getClass().getName());

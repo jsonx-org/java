@@ -333,17 +333,27 @@ class Registry {
 
   Type getType(final Kind kind, final String className) {
     final int lt;
-    // FIXME: What about "? extends" and "? super"?
     final int gt = className.lastIndexOf('>');
     final GenericType genericType;
     if (gt > -1) {
-      int i = lt = className.indexOf('<');
+      final int i = lt = className.indexOf('<');
       // FIXME: This does not handle multiple generic type parameters (i.e. with `,`).
-      final Wildcard wildcard = className.charAt(lt + 1) != '?' ? null : className.charAt(lt + 3) == 'e' ? Wildcard.EXTENDS : Wildcard.SUPER;
-      if (wildcard != null)
-        i = className.indexOf(' ', i + 7);
+      final Wildcard wildcard;
+      final String genericClassName;
+      if (className.charAt(lt + 1) != '?') {
+        wildcard = null;
+        genericClassName = className.substring(i + 1, gt);
+      }
+      else if (className.length() > lt + 3) {
+        wildcard = className.charAt(lt + 3) == 'e' ? Wildcard.EXTENDS : Wildcard.SUPER;
+        genericClassName = className.substring(className.indexOf(' ', i + 7) + 1, gt);
+      }
+      else {
+        wildcard = Wildcard.EXTENDS;
+        genericClassName = Object.class.getName();
+      }
 
-      genericType = getType(Kind.CLASS, className.substring(i + 1, gt), null).asGeneric(wildcard);
+      genericType = getType(Kind.CLASS, "", genericClassName).asGeneric(wildcard);
     }
     else {
       lt = className.length();

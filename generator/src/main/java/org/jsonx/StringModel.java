@@ -195,7 +195,7 @@ final class StringModel extends Model {
     // If there is a "decode" spec, then skip the check to verify field<-->{CharSequence,char[]} compatibility
     final boolean hasDecode = typeBinding != null && typeBinding.decode != null;
     // TODO: Can this be parameterized and moved to Model#validateTypeBinding?
-    if (!isAssignable(getMethod, true, hasDecode ? null : CharSequence.class, false, property.nullable(), property.use()) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
+    if (!isAssignable(getMethod, true, false, property.nullable(), property.use(), true, hasDecode ? null : CharSequence.class) || getMethod.getReturnType().isPrimitive() && (property.use() == Use.OPTIONAL || property.nullable()))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + getMethod.getName() + "(): @" + StringProperty.class.getSimpleName() + " can only be applied to fields of Object types with use=\"required\" or nullable=false, or Optional<Object> type with use=\"optional\" and nullable=true");
 
     this.pattern = parseString(property.pattern());
@@ -244,15 +244,15 @@ final class StringModel extends Model {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
     cursor.popName();
     return element;
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
     cursor.popName();
     return properties;
   }

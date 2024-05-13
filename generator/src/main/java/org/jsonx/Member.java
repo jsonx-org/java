@@ -194,7 +194,7 @@ abstract class Member extends Element {
     this(registry, declarer, isFromSchema, id, doc, (String)name.text(), nullable == null || nullable.isDefault() ? null : nullable.text(), use == null || use.isDefault() ? null : Use.valueOf(use.text().toUpperCase()), null, null, fieldName == null ? null : fieldName.text(), typeBinding);
   }
 
-  private String nameForException() {
+  String nameForException() {
     final String displayName = displayName();
     return displayName.length() > 0 ? "\"" + displayName + "\"" : "member";
   }
@@ -211,8 +211,9 @@ abstract class Member extends Element {
       if (!(declarer instanceof SchemaElement) && nullable.get == null && !hasDecodeBinding)
         throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.compositeName + "\" and nullable=true: Either change to an Object type, or declare a \"decode\" binding to handle null values.");
 
-      if (declarer instanceof AnyModel)
-        throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.compositeName + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
+      // This is now handled in AnyModel.toAnnotationAttributes
+      // if (declarer instanceof AnyModel)
+      // throw new ValidationException("\"" + fullyQualifiedDisplayName(declarer) + "\" cannot declare " + nameForException() + " (" + elementName() + ") with primitive type \"" + typeBinding.type.compositeName + "\" as an \"any\" property type: Either change to an Object type, or change to a property type other than \"any\".");
     }
 
     // Check that we have: ? super CharSequence -> decode -> [type] -> encode -> ? extends CharSequence

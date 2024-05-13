@@ -1,7 +1,7 @@
 package org.jsonx;
 
 @java.lang.SuppressWarnings("all")
-@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2023-10-18T13:46:54.136")
+@javax.annotation.Generated(value = "org.jsonx.Generator", date = "2024-05-14T00:06:34.171")
 public class include {
   @org.jsonx.JxBinding(targetNamespace = "http://www.jsonx.org/include-0.5.jsdx")
   public static class Include implements org.jsonx.JxObject {

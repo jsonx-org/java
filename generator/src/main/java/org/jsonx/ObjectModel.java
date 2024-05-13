@@ -32,7 +32,6 @@ import java.util.Set;
 
 import org.jsonx.schema.Object._40properties;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$TypeFieldBinding;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Any;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
@@ -158,7 +157,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   static Member referenceOrDeclare(final Registry registry, final Referrer<?> referrer, final ObjectProperty property, final Method getMethod, final String fieldName) {
-    if (!isAssignable(getMethod, true, JxObject.class, false, property.nullable(), property.use()))
+    if (!isAssignable(getMethod, true, false, property.nullable(), property.use(), true, JxObject.class))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + ObjectProperty.class.getSimpleName() + " can only be applied to fields of JxObject type with use=\"required\" or nullable=false, or of Optional<? extends JxObject> type with use=\"optional\" and nullable=true");
 
     final Class<?> cls = JsdUtil.getRealType(getMethod);
@@ -204,18 +203,6 @@ final class ObjectModel extends Referrer<ObjectModel> {
       throw new IllegalArgumentException("Class " + cls.getName() + " does not implement " + JxObject.class.getName());
   }
 
-  private static Bind.Type getType(final Registry registry, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding, final $ObjectMember xsb) {
-    if (xsbToBinding == null)
-      return null;
-
-    final $TypeFieldBinding binding = ($TypeFieldBinding)xsbToBinding.get(xsb);
-    if (binding == null)
-      return null;
-
-    final $TypeFieldBinding.Type$ type = binding.getType$();
-    return type == null ? null : Bind.Type.from(registry, type, null, null);
-  }
-
   private class Property {
     private final Member member;
     private boolean overrideSet;
@@ -237,8 +224,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
       return override;
     }
 
-    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-      final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding);
+    private XmlElement toXml(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+      final XmlElement element = member.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
       if (getOverride() != null) {
         final Map<?,?> attrs = element.getAttributes();
         attrs.remove("nullable");
@@ -251,8 +238,8 @@ final class ObjectModel extends Referrer<ObjectModel> {
     }
 
     @SuppressWarnings("unchecked")
-    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-      final PropertyMap<Object> object = (PropertyMap<Object>)member.toJson(owner, packageName, cursor, pathToBinding);
+    private Object toJson(final ObjectModel owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+      final PropertyMap<Object> object = (PropertyMap<Object>)member.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
       if (getOverride() != null) {
         object.remove("@nullable");
         object.remove("@use");
@@ -697,14 +684,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
     final int size;
     if (properties != null && (size = properties.size()) > 0) {
       final Collection superElements = element.getElements();
       final ArrayList<XmlElement> elements = new ArrayList<>(size + (superElements != null ? superElements.size() : 0));
       for (final Property property : properties.values()) // [C]
-        elements.add(property.toXml(this, packageName, cursor, pathToBinding));
+        elements.add(property.toXml(this, packageName, cursor, pathToBinding, false));
 
       if (superElements != null)
         elements.addAll(superElements);
@@ -717,14 +704,14 @@ final class ObjectModel extends Referrer<ObjectModel> {
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
     final int size;
     if (properties != null && (size = properties.size()) > 0) {
       final PropertyMap<Object> properties = new PropertyMap<>(size);
       element.put("@properties", properties);
       for (final Property property : this.properties.values()) // [C]
-        properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding));
+        properties.put(property.member.name(), property.toJson(this, packageName, cursor, pathToBinding, false));
     }
 
     cursor.popName();
