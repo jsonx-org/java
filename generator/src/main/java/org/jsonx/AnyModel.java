@@ -179,7 +179,7 @@ final class AnyModel extends Referrer<AnyModel> {
     if (isRegex && !Map.class.isAssignableFrom(getMethod.getReturnType()))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Bind.Type.getClassName(getMethod, property.nullable(), property.use()) + " with regex name=\"" + property.name() + "\" must be of type that extends " + Map.class.getName());
 
-    if (!isAssignable(getMethod, true, isRegex, property.nullable(), property.use(), false, types.length > 0 ? getFieldTypes(types) : new Class<?>[] { defaultClass() }))
+    if (!isAssignable(getMethod, true, isRegex, property.nullable(), property.use(), false, getFieldClasses(types)))
       throw new IllegalAnnotationException(property, getMethod.getDeclaringClass().getName() + "." + fieldName + ": @" + AnyProperty.class.getSimpleName() + " of type " + Bind.Type.getClassName(getMethod, property.nullable(), property.use()) + " is not assignable for the specified types attribute");
 
     validateTypeBinding();
@@ -225,27 +225,29 @@ final class AnyModel extends Referrer<AnyModel> {
     });
   }
 
-  private static Class<?>[] getFieldTypes(final t[] types) {
+  private Class<?>[] getFieldClasses(final t[] types) {
     final int len = types.length;
     if (len == 0)
-      return null;
+      return new Class[] { defaultClass() };
 
-    final Class<?>[] members = new Class<?>[len];
-    for (int i = 0; i < len; ++i) { // [A]
+    final Class<?>[] classes = new Class<?>[len];
+    int i = 0;
+    do { // [A]
       final t type = types[i];
       if (AnyType.isEnabled(type.arrays()))
-        members[i] = List.class;
+        classes[i] = List.class;
       else if (AnyType.isEnabled(type.booleans()))
-        members[i] = Boolean.class;
+        classes[i] = type.booleans().type();
       else if (AnyType.isEnabled(type.numbers()))
-        members[i] = type.numbers().type();
+        classes[i] = type.numbers().type();
       else if (AnyType.isEnabled(type.objects()))
-        members[i] = type.objects();
+        classes[i] = type.objects();
       else if (AnyType.isEnabled(type.strings()))
-        members[i] = type.strings().type();
+        classes[i] = type.strings().type();
     }
+    while (++i < len);
 
-    return members;
+    return classes;
   }
 
   private Member[] getMemberTypes(final t[] types) {
@@ -254,7 +256,8 @@ final class AnyModel extends Referrer<AnyModel> {
       return null;
 
     final Member[] members = new Member[len];
-    for (int i = 0; i < len; ++i) { // [A]
+    int i = 0;
+    do { // [A]
       final t type = types[i];
       Member member = null;
       if (AnyType.isEnabled(type.arrays()))
@@ -368,6 +371,7 @@ final class AnyModel extends Referrer<AnyModel> {
 
       members[i] = member;
     }
+    while (++i < len);
 
     return members;
   }
@@ -414,18 +418,20 @@ final class AnyModel extends Referrer<AnyModel> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
-    if (!isFromReference)
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
+    if (cursor != null)
       cursor.popName();
+
     return element;
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
-    if (!isFromReference)
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
+    if (cursor != null)
       cursor.popName();
+
     return properties;
   }
 

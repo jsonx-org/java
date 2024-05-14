@@ -177,6 +177,10 @@ class Registry {
       qualifiedNameToType.put(toCanonicalString(), this);
     }
 
+    Class<?> getJavaClass() {
+      return cls;
+    }
+
     private Type(final Class<?> cls, final GenericType[] genericTypes) {
       this(cls.isAnnotation() ? Kind.ANNOTATION : Kind.CLASS, getPackageName(cls), cls.getSimpleName(), cls.getSuperclass() == null ? null : cls.getSuperclass() == Object.class ? null : new Type(cls.getSuperclass(), (GenericType[])null), genericTypes);
     }

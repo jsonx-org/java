@@ -244,15 +244,15 @@ final class StringModel extends Model {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return element;
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> properties = super.toJson(owner, packageName, cursor, pathToBinding);
     cursor.popName();
     return properties;
   }

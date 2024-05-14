@@ -212,15 +212,15 @@ final class Reference extends Member {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    return toXml(false, owner, packageName, cursor, pathToBinding);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    return toXml(owner, packageName, cursor, pathToBinding, false);
   }
 
-  private XmlElement toXml(final boolean jsd, final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
-    final AttributeMap attributes = toSchemaAttributes(owner, packageName, jsd);
+  private XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isJsd) {
+    final AttributeMap attributes = toSchemaAttributes(owner, packageName, isJsd);
     cursor.pushName((String)attributes.get(nameName()));
 
-    final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, jsd);
+    final AttributeMap bindingAttributes = getBindingAttributes(owner, attributes, isJsd);
     if (bindingAttributes != null)
       pathToBinding.put(cursor.toString(), bindingAttributes);
 
@@ -228,11 +228,11 @@ final class Reference extends Member {
     if (registry.isRootMember(model)) {
       if (model != null) {
         final String subName = Registry.getSubName(model.id().toString(), packageName);
-        attributes.put(jsd(jsd, "type"), subName);
+        attributes.put(jsd(isJsd, "type"), subName);
       }
 
       if (owner instanceof ObjectModel) {
-        attributes.put(jsd ? "@" : "xsi:type", elementName());
+        attributes.put(isJsd ? "@" : "xsi:type", elementName());
         element = new XmlElement("property", attributes);
       }
       else {
@@ -240,17 +240,17 @@ final class Reference extends Member {
       }
     }
     else {
-      element = model.toXml(owner, packageName, cursor, pathToBinding, true);
+      element = model.toXml(owner, packageName, model instanceof AnyModel ? null : cursor, pathToBinding);
 
       // It is necessary to remove the nullable, use, minOccurs and maxOccurs attributes,
       // because the template object is responsible for these attributes, and it may have happened
       // that when the reflection mechanism constructed the model, it used a declaration that had
       // these attributes set as well
       final Map<String,Object> attrs = element.getAttributes();
-      attrs.remove(jsd(jsd, "minOccurs"));
-      attrs.remove(jsd(jsd, "maxOccurs"));
-      attrs.remove(jsd(jsd, "nullable"));
-      attrs.remove(jsd(jsd, "use"));
+      attrs.remove(jsd(isJsd, "minOccurs"));
+      attrs.remove(jsd(isJsd, "maxOccurs"));
+      attrs.remove(jsd(isJsd, "nullable"));
+      attrs.remove(jsd(isJsd, "use"));
       attrs.putAll(attributes);
     }
 
@@ -259,11 +259,11 @@ final class Reference extends Member {
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final PropertyMap<Object> properties = new PropertyMap<>();
     properties.put("@", elementName());
 
-    final AttributeMap attributes = (AttributeMap)toXml(true, owner, packageName, cursor, pathToBinding).getAttributes();
+    final AttributeMap attributes = (AttributeMap)toXml(owner, packageName, cursor, pathToBinding, true).getAttributes();
     attributes.remove(nameName());
     attributes.remove("xsi:type");
 

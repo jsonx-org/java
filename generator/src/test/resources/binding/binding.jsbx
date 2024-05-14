@@ -357,7 +357,7 @@
         <boolean/>
         <any/>
       </property>
-      <property names="x\\.*" xsi:type="any"/>
+      <property names="x\\.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
       <property name="s" xsi:type="string"/>
       <property name="n" xsi:type="number" scale="0"/>
       <property name="b" xsi:type="boolean"/>
@@ -417,7 +417,7 @@
           <boolean/>
           <any/>
         </property>
-        <property names="x.*" xsi:type="any"/>
+        <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
         <property name="s" xsi:type="string"/>
         <property name="n" xsi:type="number" scale="0"/>
         <property name="b" xsi:type="boolean"/>
@@ -477,7 +477,7 @@
             <boolean/>
             <any/>
           </property>
-          <property names="x.*" xsi:type="any"/>
+          <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
           <property name="s" xsi:type="string"/>
           <property name="n" xsi:type="number" scale="0"/>
           <property name="b" xsi:type="boolean"/>
@@ -537,7 +537,7 @@
               <boolean/>
               <any/>
             </property>
-            <property names="x.*" xsi:type="any"/>
+            <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
             <property name="s" xsi:type="string"/>
             <property name="n" xsi:type="number" scale="0"/>
             <property name="b" xsi:type="boolean"/>
@@ -597,7 +597,7 @@
                 <boolean/>
                 <any/>
               </property>
-              <property names="x.*" xsi:type="any"/>
+              <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
               <property name="s" xsi:type="string"/>
               <property name="n" xsi:type="number" scale="0"/>
               <property name="b" xsi:type="boolean"/>
@@ -657,7 +657,7 @@
                   <boolean/>
                   <any/>
                 </property>
-                <property names="x.*" xsi:type="any"/>
+                <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
                 <property name="s" xsi:type="string"/>
                 <property name="n" xsi:type="number" scale="0"/>
                 <property name="b" xsi:type="boolean"/>
@@ -717,7 +717,7 @@
                     <boolean/>
                     <any/>
                   </property>
-                  <property names="x.*" xsi:type="any"/>
+                  <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
                   <property name="s" xsi:type="string"/>
                   <property name="n" xsi:type="number" scale="0"/>
                   <property name="b" xsi:type="boolean"/>
@@ -777,7 +777,7 @@
                       <boolean/>
                       <any/>
                     </property>
-                    <property names="x.*" xsi:type="any"/>
+                    <property names="x.*" xsi:type="any" types="StringBoolean StringDecimal CharSequenceDecimal"/>
                     <property name="s" xsi:type="string"/>
                     <property name="n" xsi:type="number" scale="0"/>
                     <property name="b" xsi:type="boolean"/>
@@ -843,7 +843,7 @@
   <string path="arrayDirect[22]"><bind lang="java" type="long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <string path="arrayDirect[24]"><bind lang="java" type="java.util.UUID" decode="org.libj.lang.Strings.toUuidOrNull"/></string>
 
-  <any path="objRefs.any\.*"><bind lang="java" field="objRefAny"/></any>
+  <any path="objRefs.any\.*"><bind lang="java" field="objRefAny" type="java.lang.Number"/></any>
   <reference path="objRefs.arrayDirect"><bind lang="java" field="objRefArrayDirect"/></reference>
   <reference path="objRefs.arrayReferences"><bind lang="java" field="objRefArrayReferences"/></reference>
   <reference path="objRefs.bo\.ol"><bind lang="java" field="objRefDefaultBoolean"/></reference>
@@ -983,7 +983,7 @@
   <string path="o.a[1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <any path="o.x\\\\\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.x\\\\\.*"><bind lang="java" field="a1" type="java.lang.CharSequence"/></any>
 
   <string path="o.s"><bind lang="java" field="os" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.n"><bind lang="java" field="on" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1018,7 +1018,7 @@
   <string path="o.p0.a[1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.a[2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.a[3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <any path="o.p0.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.x\.*"><bind lang="java" field="a1" type="java.lang.Object"/></any>
 
   <string path="o.p0.s"><bind lang="java" field="ops" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
@@ -1053,7 +1053,7 @@
   <string path="o.p0.p1.a[1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <any path="o.p0.p1.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.p1.x\.*"><bind lang="java" field="a1" type="java.lang.CharSequence"/></any>
 
   <string path="o.p0.p1.s"><bind lang="java" field="opps" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.n"><bind lang="java" field="oppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1088,7 +1088,7 @@
   <string path="o.p0.p1.p2.a[1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.a[2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.a[3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <any path="o.p0.p1.p2.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.p1.p2.x\.*"><bind lang="java" field="a1" type="java.lang.Object"/></any>
 
   <string path="o.p0.p1.p2.s"><bind lang="java" field="oppps" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
@@ -1123,7 +1123,7 @@
   <string path="o.p0.p1.p2.p3.a[1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <any path="o.p0.p1.p2.p3.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.p1.p2.p3.x\.*"><bind lang="java" field="a1" type="java.lang.CharSequence"/></any>
 
   <string path="o.p0.p1.p2.p3.s"><bind lang="java" field="opppps" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.n"><bind lang="java" field="oppppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1158,7 +1158,7 @@
   <string path="o.p0.p1.p2.p3.p4.a[1]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.p1.p2.p3.p4.a[2]"><bind lang="java" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.a[3]"><bind lang="java" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></boolean>
-  <any path="o.p0.p1.p2.p3.p4.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.p1.p2.p3.p4.x\.*"><bind lang="java" field="a1" type="java.lang.Object"/></any>
 
   <string path="o.p0.p1.p2.p3.p4.s"><bind lang="java" field="oppppps" type="char[]" decode="org.libj.lang.Characters.valueOf" encode="java.util.Arrays.toString"/></string>
   <number path="o.p0.p1.p2.p3.p4.n"><bind lang="java" field="bd" type="java.math.BigDecimal" decode="org.libj.lang.BigDecimals.intern" encode="this.toPlainString"/></number>
@@ -1193,7 +1193,7 @@
   <string path="o.p0.p1.p2.p3.p4.p5.a[1]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.a[2]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.a[3]"><bind lang="java" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></boolean>
-  <any path="o.p0.p1.p2.p3.p4.p5.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.p1.p2.p3.p4.p5.x\.*"><bind lang="java" field="a1" type="java.lang.CharSequence"/></any>
 
   <string path="o.p0.p1.p2.p3.p4.p5.s"><bind lang="java" field="opppppps" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.n"><bind lang="java" field="oppppppn" type="java.lang.Long" decode="org.libj.util.Dates.iso8601ToEpochMilli" encode="org.libj.util.Dates.epochMilliToIso8601"/></number>
@@ -1228,7 +1228,7 @@
   <string path="o.p0.p1.p2.p3.p4.p5.p6.a[1]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.p6.a[2]"><bind lang="java" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>
   <boolean path="o.p0.p1.p2.p3.p4.p5.p6.a[3]"><bind lang="java" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></boolean>
-  <any path="o.p0.p1.p2.p3.p4.p5.p6.x\.*"><bind lang="java" field="a1"/></any>
+  <any path="o.p0.p1.p2.p3.p4.p5.p6.x\.*"><bind lang="java" field="a1" type="java.lang.Object"/></any>
 
   <string path="o.p0.p1.p2.p3.p4.p5.p6.s"><bind lang="java" field="oppppppps" type="byte[]" decode="this.getBytes" encode="java.lang.String.&lt;init&gt;"/></string>
   <number path="o.p0.p1.p2.p3.p4.p5.p6.n"><bind lang="java" field="bi" type="java.math.BigInteger" decode="org.libj.lang.BigIntegers.intern" encode="this.toString"/></number>

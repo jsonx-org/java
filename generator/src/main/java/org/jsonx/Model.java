@@ -107,22 +107,20 @@ abstract class Model extends Member implements Comparable<Model> {
   }
 
   @Override
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, false);
-    final String name = (String)attributes.get(nameName());
-    if (name != null || !isFromReference || !(this instanceof AnyModel))
+    if (cursor != null) {
       cursor.pushName((String)attributes.get(nameName()));
+      final AttributeMap bindingAttributes = Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, false);
+      if (bindingAttributes != null)
+        pathToBinding.put(cursor.toString(), bindingAttributes);
+    }
 
-    final XmlElement element = new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
-    final AttributeMap bindingAttributes = name != null || !isFromReference || !(this instanceof AnyModel) ? Bind.toBindingAttributes(elementName(), owner, typeBinding, fieldBinding, attributes, false) : null;
-    if (bindingAttributes != null)
-      pathToBinding.put(cursor.toString(), bindingAttributes);
-
-    return element;
+    return new XmlElement(owner instanceof ObjectModel ? "property" : elementName(), attributes, null);
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
     final AttributeMap attributes = toSchemaAttributes(owner, packageName, true);
     cursor.pushName((String)attributes.get(nameName()));
 

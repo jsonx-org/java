@@ -506,15 +506,15 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   @Override
   @SuppressWarnings({"rawtypes", "unchecked"})
-  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding, isFromReference);
+  XmlElement toXml(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final XmlElement element = super.toXml(owner, packageName, cursor, pathToBinding);
     final int size = members.length;
     if (size > 0) {
       final Collection superElements = element.getElements();
       final ArrayList<XmlElement> elements = new ArrayList<>(size + (superElements != null ? superElements.size() : 0));
       cursor.inArray();
       for (int i = 0; i < size; ++i) // [A]
-        elements.add(members[i].toXml(this, packageName, cursor, pathToBinding, false));
+        elements.add(members[i].toXml(this, packageName, cursor, pathToBinding));
 
       if (superElements != null)
         elements.addAll(superElements);
@@ -527,14 +527,14 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   @Override
-  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding, final boolean isFromReference) {
-    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding, isFromReference);
+  PropertyMap<Object> toJson(final Element owner, final String packageName, final JsonPath.Cursor cursor, final PropertyMap<AttributeMap> pathToBinding) {
+    final PropertyMap<Object> element = super.toJson(owner, packageName, cursor, pathToBinding);
     final int len = members.length;
     if (len > 0) {
       final ArrayList<Object> elements = new ArrayList<>();
       cursor.inArray();
       for (int i = 0; i < len; ++i) // [A]
-        elements.add(members[i].toJson(this, packageName, cursor, pathToBinding, false));
+        elements.add(members[i].toJson(this, packageName, cursor, pathToBinding));
 
       element.put("@elements", elements);
     }
