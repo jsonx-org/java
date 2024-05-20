@@ -18,9 +18,11 @@ package org.jsonx;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.libj.lang.Numbers;
 
+@Ignore("Intended for debug study")
 public class NumberCodecTest {
   @Test
   public void testPerformance() {

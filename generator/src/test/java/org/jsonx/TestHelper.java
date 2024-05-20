@@ -35,6 +35,10 @@ public final class TestHelper {
     return str == null ? null : new URL(str);
   }
 
+  public static Object toNull(final Object obj) {
+    return null;
+  }
+
   private TestHelper() {
   }
 }

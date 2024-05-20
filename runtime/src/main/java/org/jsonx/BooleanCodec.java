@@ -27,11 +27,15 @@ import org.openjax.json.JsonReader;
 
 class BooleanCodec extends PrimitiveCodec {
   static Object decodeArray(final Class<?> type, final String decode, final String token) {
-    return decodeObject(type, decode == null || decode.length() == 0 ? null : getMethod(decodeToMethod, decode, String.class), token);
+    return decodeObject(type, decode == null || decode.length() == 0 ? null : getMethod(decodeToMethod, decode, String.class), token, NULL);
   }
 
-  private static Object decodeObject(final Class<?> type, final Executable decode, final String json) {
-    return decode != null ? JsdUtil.invoke(decode, json) : Classes.isAssignableFrom(type, String.class) ? json : "true".equals(json) ? Boolean.TRUE : "false".equals(json) ? Boolean.FALSE : null;
+  private static Object decodeObject(final Class<?> type, final Executable decode, final String json, final Object nullValue) {
+    final char ch = json.charAt(0);
+    if (ch != 't' && ch != 'f')
+      return nullValue;
+
+    return decode != null ? JsdUtil.invoke(decode, json) : Classes.isAssignableFrom(type, String.class) ? json : "true".equals(json) ? Boolean.TRUE : "false".equals(json) ? Boolean.FALSE : nullValue;
   }
 
   static Error encodeArray(final Annotation annotation, final Class<?> type, final String encode, Object object, final int index, final Relations relations) {
@@ -86,7 +90,7 @@ class BooleanCodec extends PrimitiveCodec {
 
   @Override
   Object parseValue(final String json, final boolean strict) {
-    return decodeObject(type(), decode(), json);
+    return decodeObject(type(), decode(), json, null);
   }
 
   @Override

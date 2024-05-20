@@ -68,7 +68,7 @@ class NumberCodec extends PrimitiveCodec {
       return JsonUtil.parseNumber(getDefaultClass(scale), json, strict);
     }
     catch (final JsonParseException | NumberFormatException e) {
-      return null;
+      return Codec.NULL;
     }
   }
 
@@ -77,7 +77,7 @@ class NumberCodec extends PrimitiveCodec {
       return type.isPrimitive() || !Modifier.isAbstract(type.getModifiers()) ? JsonUtil.parseNumber(type, json, strict) : parseDefaultNumber(scale, json, strict);
     }
     catch (final JsonParseException | NumberFormatException e) {
-      return null;
+      return Codec.NULL;
     }
   }
 
@@ -86,12 +86,12 @@ class NumberCodec extends PrimitiveCodec {
     return decode != null ? JsdUtil.invoke(decode, json) : type.isAssignableFrom(String.class) ? json : parseNumber((Class<? extends Number>)type, scale, json, strict);
   }
 
-  static Object decodeArray(final Class<?> type, final int scale, final String decode, final String token, final boolean strict) {
-    final char ch = token.charAt(0);
+  static Object decodeArray(final Class<?> type, final int scale, final String decode, final String json, final boolean strict) {
+    final char ch = json.charAt(0);
     if (ch != '-' && (ch < '0' || '9' < ch))
-      return null;
+      return NULL;
 
-    return decodeObject(type, scale, getMethod(decodeToMethod, decode, String.class), token, strict);
+    return decodeObject(type, scale, getMethod(decodeToMethod, decode, String.class), json, strict);
   }
 
   static Error encodeArray(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final int index, final Relations relations, final boolean validate) {
@@ -174,8 +174,8 @@ class NumberCodec extends PrimitiveCodec {
       }
     }
 
-    if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type()))
-      throw new ValidationException("Invalid property: " + property + ": Conditions can only be defined if return type of " + getMethod + " is a subclass of: " + Number.class.getName());
+//    if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type()))
+//      throw new ValidationException("Invalid property: " + property + ": Conditions can only be defined if return type of " + getMethod + " is a subclass of: " + Number.class.getName());
   }
 
   @Override

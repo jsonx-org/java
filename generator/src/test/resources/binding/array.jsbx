@@ -24,6 +24,10 @@
     xmlns="http://www.jsonx.org/schema-0.5.xsd"
     targetNamespace="urn:test:array">
 
+    <boolean name="booleanNull"/>
+    <number name="numberNull"/>
+    <string name="stringNull"/>
+
     <array name="coordinates">
       <number minOccurs="2" maxOccurs="2" nullable="false"/>
     </array>
@@ -100,9 +104,19 @@
         <any types="coordinates multiCoordinates" nullable="false"/>
       </property>
     </object>
+    <array name="arrayNull">
+      <reference type="booleanNull" nullable="false"/>
+      <reference type="numberNull" nullable="false"/>
+      <reference type="stringNull" nullable="false"/>
+      <any types="booleanNull numberNull stringNull" nullable="false"/>
+      <reference type="arrayNull" minOccurs="0"/>
+    </array>
 
   </schema>
 
+  <boolean path="booleanNull"><bind lang="java" decode="org.jsonx.TestHelper.toNull"/></boolean>
+  <number path="numberNull"><bind lang="java" decode="org.jsonx.TestHelper.toNull"/></number>
+  <string path="stringNull"><bind lang="java" decode="org.jsonx.TestHelper.toNull"/></string>
   <number path="coordinates[0]"><bind lang="java" type="java.lang.Float"/></number>
 
 </binding>

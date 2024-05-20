@@ -51,7 +51,7 @@ class AnyCodec extends Codec {
         if (AnyType.isEnabled(arrays)) {
           final int index = reader.getIndex();
           final Object value = ArrayCodec.decodeArray(null, arrays, null, token, reader, validate, onPropertyDecode);
-          if (!(value instanceof Error))
+          if (!(value instanceof Error) && value != NULL)
             return value;
 
           if (error == null || error.isBefore((Error)value))
@@ -74,7 +74,7 @@ class AnyCodec extends Codec {
         final Class<? extends JxObject> objects = type.objects();
         if (AnyType.isEnabled(objects)) {
           final Object value = ObjectCodec.decodeArray(objects, token, reader, validate, onPropertyDecode);
-          if (!(value instanceof Error))
+          if (!(value instanceof Error) && value != NULL)
             return value;
 
           if (error == null || error.isBefore((Error)value))
@@ -97,17 +97,17 @@ class AnyCodec extends Codec {
         final StringType strings;
         if (AnyType.isEnabled(strings = type.strings())) {
           final Object value = StringCodec.decodeArray(strings.type(), strings.decode(), token);
-          if (value != null)
+          if (value != NULL)
             return value;
         }
         else if (AnyType.isEnabled(numbers = type.numbers())) {
           final Object value = NumberCodec.decodeArray(numbers.type(), numbers.scale(), numbers.decode(), token, reader.isStrict());
-          if (value != null)
+          if (value != NULL)
             return value;
         }
         else if (AnyType.isEnabled(booleans = type.booleans())) {
           final Object value = BooleanCodec.decodeArray(booleans.type(), booleans.decode(), token);
-          if (value != null)
+          if (value != NULL)
             return value;
         }
 

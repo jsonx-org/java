@@ -75,7 +75,7 @@ class StringCodec extends PrimitiveCodec {
   }
 
   static Object decodeArray(final Class<?> type, final String decode, final String token) {
-    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decodeObject(type, getMethod(decodeToMethod, decode, String.class), token) : null;
+    return token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"' ? StringCodec.decodeObject(type, getMethod(decodeToMethod, decode, String.class), token) : NULL;
   }
 
   static Error encodeArray(final Annotation annotation, final String pattern, final Class<?> type, final String encode, Object object, final int index, final Relations relations, final boolean validate) {

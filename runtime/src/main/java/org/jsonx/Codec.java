@@ -29,6 +29,28 @@ import org.libj.lang.Classes;
 import org.libj.util.function.TriPredicate;
 
 abstract class Codec {
+  static final Number NULL = new Number() {
+    @Override
+    public int intValue() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long longValue() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public float floatValue() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public double doubleValue() {
+      throw new UnsupportedOperationException();
+    }
+  };
+
   private final boolean isMap;
   final Method getMethod;
   final Method setMethod;

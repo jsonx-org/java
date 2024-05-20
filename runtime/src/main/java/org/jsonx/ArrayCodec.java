@@ -30,7 +30,7 @@ import org.openjax.json.JsonReader;
 class ArrayCodec extends Codec {
   static Object decodeArray(final ArrayElement element, final Class<? extends Annotation> type, IdToElement idToElement, final String token, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     if (!"[".equals(token))
-      return null;
+      return NULL;
 
     final int[] elementIds;
     final int minIterate;

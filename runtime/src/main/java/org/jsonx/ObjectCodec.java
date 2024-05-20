@@ -48,7 +48,7 @@ class ObjectCodec extends Codec {
   };
 
   static Object decodeArray(final Class<? extends JxObject> type, final String token, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    return !"{".equals(token) ? null : ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
+    return !"{".equals(token) ? NULL : ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
   }
 
   static Object decodeObject(final Class<? extends JxObject> type, final JsonReader reader, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
