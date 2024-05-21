@@ -28,71 +28,65 @@ import org.libj.util.CollectionUtil;
 
 class AnnotationType {
   @SuppressWarnings("unchecked")
-  private StringBuilder render() {
-    // FIXME: Use the StringBuilder from the caller.
-    final StringBuilder b = new StringBuilder();
-    if (attributes.size() > 0) {
-      for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
-        if (b.length() > 0)
-          b.append(", ");
+  private void render(final StringBuilder b) {
+    final int len = b.length();
+    for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
+      if (b.length() > len)
+        b.append(", ");
 
-        final String key = entry.getKey();
-        final Object value = entry.getValue();
+      final String key = entry.getKey();
+      final Object value = entry.getValue();
 
-        final Method method = Classes.getMethod(annotationType, key);
-        final Object defaultValue = method.getDefaultValue();
-        if (value instanceof List) {
-          final Object[] defaultArray = (Object[])defaultValue;
-          final List<Object> items = (List<Object>)value;
-          final int i$ = items.size();
-          if (defaultArray != null) {
-            if (i$ == 0 && defaultArray.length == 0)
-              continue;
+      final Method method = Classes.getMethod(annotationType, key);
+      final Object defaultValue = method.getDefaultValue();
+      if (value instanceof List) {
+        final Object[] defaultArray = (Object[])defaultValue;
+        final List<Object> items = (List<Object>)value;
+        final int i$ = items.size();
+        if (defaultArray != null) {
+          if (i$ == 0 && defaultArray.length == 0)
+            continue;
 
-            if (defaultArray.equals(items.toArray()))
-              continue;
-          }
+          if (defaultArray.equals(items.toArray()))
+            continue;
+        }
 
-          b.append(key).append(" = ");
-          if (i$ == 1) {
-            b.append(items.get(0));
-          }
-          else {
-            b.append('{');
-            if (CollectionUtil.isRandomAccess(items)) {
-              int i = 0;
-              do { // [RA]
-                if (i > 0)
-                  b.append(", ");
-
-                b.append(items.get(i));
-              }
-              while (++i < i$);
-            }
-            else {
-              final Iterator<Object> it = items.iterator();
-              int j = 0;
-              do { // [RA]
-                if (j > 0)
-                  b.append(", ");
-
-                b.append(it.next());
-              }
-              while (it.hasNext());
-            }
-
-            b.append('}');
-          }
+        b.append(key).append(" = ");
+        if (i$ == 1) {
+          b.append(items.get(0));
         }
         else {
-          final Object fixedDefaultValue = defaultValue != null && value instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
-          if (!Objects.equals(fixedDefaultValue, value))
-            b.append(key).append(" = ").append(value);
+          b.append('{');
+          int i = 0;
+          if (CollectionUtil.isRandomAccess(items)) {
+            do { // [RA]
+              if (i > 0)
+                b.append(", ");
+
+              b.append(items.get(i));
+            }
+            while (++i < i$);
+          }
+          else {
+            final Iterator<Object> it = items.iterator();
+            do { // [I]
+              if (++i > 1)
+                b.append(", ");
+
+              b.append(it.next());
+            }
+            while (it.hasNext());
+          }
+
+          b.append('}');
         }
       }
+      else {
+        final Object fixedDefaultValue = defaultValue != null && value instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
+        if (!Objects.equals(fixedDefaultValue, value))
+          b.append(key).append(" = ").append(value);
+      }
     }
-
-    return b;
   }
 
   private final Class<? extends Annotation> annotationType;
@@ -107,8 +101,11 @@ class AnnotationType {
   public String toString() {
     final StringBuilder b = new StringBuilder();
     b.append('@').append(annotationType.getName());
-    if (attributes.size() > 0)
-      b.append('(').append(render()).append(')');
+    if (attributes.size() > 0) {
+      b.append('(');
+      render(b);
+      b.append(')');
+    }
 
     return b.toString();
   }
