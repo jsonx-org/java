@@ -45,7 +45,8 @@ final class AnyType {
     if (Numbers.isNumber(token))
       return numbers;
 
-    if (token.length() > 1 && token.charAt(0) == '"' && token.charAt(token.length() - 1) == '"')
+    final int len = token.length();
+    if (len > 1 && token.charAt(0) == '"' && token.charAt(len - 1) == '"')
       return strings;
 
     throw new UnsupportedOperationException("Unsupported token: " + token);
