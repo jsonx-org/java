@@ -116,7 +116,7 @@ public class JxObjectProvider implements MessageBodyReader<Object>, MessageBodyW
   }
 
   @Override
-  @SuppressWarnings({"rawtypes", "resource", "unchecked"})
+  @SuppressWarnings({"rawtypes", "unchecked"})
   public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType, final MultivaluedMap<String,String> httpHeaders, final InputStream entityStream) throws IOException {
     try {
       if (JxObject.class.isAssignableFrom(type))
