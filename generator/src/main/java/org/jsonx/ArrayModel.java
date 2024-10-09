@@ -243,7 +243,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   }
 
   private static Member[] parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
-    return parseMembers(registry, referrer, xsb, xsbToBinding, Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member), 0);
+    return parseMembers(registry, referrer, xsb, xsbToBinding, Iterators.filter(xsb.elementIterator(), (final $AnyType<?> m) -> m instanceof $Member), 0);
   }
 
   private static Member[] parseMembers(final Registry registry, final ArrayModel referrer, final $ArrayMember xsb, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding, final Iterator<? super $Member> iterator, final int depth) {
@@ -362,7 +362,7 @@ final class ArrayModel extends Referrer<ArrayModel> {
   private static LinkedHashMap<Integer,Annotation> parseIdToElement(final Annotation[] annotations, final String declaringTypeName) {
     final HashMap<Integer,Annotation> idToElement = new HashMap<>();
     final StrictDigraph<Integer> digraph = new StrictDigraph<>("Element cannot include itself as a member");
-    JsdUtil.forEach(annotations, annotation -> {
+    JsdUtil.forEach(annotations, (final Annotation annotation) -> {
       if (annotation instanceof ArrayProperty || annotation instanceof ArrayType || annotation instanceof Retention)
         return;
 

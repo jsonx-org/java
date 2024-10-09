@@ -77,7 +77,7 @@ abstract class ModelTest {
           .walk(generatedSourcesDir.toPath())
           .sorted(Comparator.reverseOrder())
           .map(Path::toFile)
-          .filter(f -> !f.equals(generatedSourcesDir))
+          .filter((final File f) -> !f.equals(generatedSourcesDir))
           .forEach(File::delete);
       }
       catch (final IOException e) {
@@ -193,7 +193,7 @@ abstract class ModelTest {
   }
 
   private static SchemaElement newSchema(final ClassLoader classLoader, final String packageName) throws IOException, PackageNotFoundException {
-    return new SchemaElement(new HashMap<>(), getPackage(classLoader, packageName), classLoader, c -> c.getClassLoader() == classLoader);
+    return new SchemaElement(new HashMap<>(), getPackage(classLoader, packageName), classLoader, (final Class<?> c) -> c.getClassLoader() == classLoader);
   }
 
   /**

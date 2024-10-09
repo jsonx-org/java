@@ -367,7 +367,7 @@ final class ObjectModel extends Referrer<ObjectModel> {
 
   private LinkedHashMap<String,Member> parseMembers(final $ObjectMember xsb, final ObjectModel objectModel, final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding) {
     final LinkedHashMap<String,Member> members = new LinkedHashMap<>(); // FIXME: Does this need to be a LinkedHashMap?
-    final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), m -> m instanceof $Member);
+    final Iterator<? super $Member> iterator = Iterators.filter(xsb.elementIterator(), (final $AnyType<?> m) -> m instanceof $Member);
     while (iterator.hasNext()) {
       final $Member next = ($Member)iterator.next();
       if (next instanceof $Any) {

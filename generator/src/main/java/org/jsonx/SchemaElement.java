@@ -287,7 +287,7 @@ public final class SchemaElement extends Element implements Declarer {
 
   private static void assertNoCycle(final Schema schema) throws ValidationException {
     final StrictRefDigraph<$Member,String> digraph = new StrictRefDigraph<>("Object cannot inherit from itself", SchemaElement::getName);
-    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), (final $AnyType<?> m) -> m instanceof $Member);
     while (elementIterator.hasNext()) {
       final $Member member = ($Member)elementIterator.next();
       if (member instanceof Schema.Object) {
@@ -318,7 +318,7 @@ public final class SchemaElement extends Element implements Declarer {
 
   private static HashSet<Class<?>> findClasses(final Package pkg, final ClassLoader classLoader, final Predicate<? super Class<?>> filter) throws IOException, PackageNotFoundException {
     final HashSet<Class<?>> classes = new HashSet<>();
-    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, c -> {
+    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, (final Class<?> c) -> {
       if ((JxObject.class.isAssignableFrom(c) || c.isAnnotationPresent(ArrayType.class)) && (filter == null || filter.test(c))) {
         classes.add(c);
         return true;
@@ -391,7 +391,7 @@ public final class SchemaElement extends Element implements Declarer {
     assertNoCycle(schema);
 
     final IdentityHashMap<$AnyType<?>,$FieldBinding> xsbToBinding = binding == null ? null : initBindingMap(schema, binding);
-    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), m -> m instanceof $Member);
+    final Iterator<? super $Member> elementIterator = Iterators.filter(schema.elementIterator(), (final $AnyType<?> m) -> m instanceof $Member);
     while (elementIterator.hasNext()) {
       final $Member member = ($Member)elementIterator.next();
       if (member instanceof Schema.Array)

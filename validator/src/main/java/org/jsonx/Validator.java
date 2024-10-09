@@ -79,7 +79,7 @@ public class Validator {
   @SuppressWarnings("unchecked")
   static int validate(final String[] args) throws CompilationException, IOException, PackageNotFoundException {
     final String pkg = "jsonx";
-    final SchemaElement[] schemas = Generator.parse(new Settings.Builder().withNamespacePackage(t -> pkg + "._" + Integer.toHexString(t.hashCode())).build(), URLs.fromStringPath(args[0]));
+    final SchemaElement[] schemas = Generator.parse(new Settings.Builder().withNamespacePackage((final String s) -> pkg + "._" + Integer.toHexString(s.hashCode())).build(), URLs.fromStringPath(args[0]));
     final InMemoryCompiler compiler = new InMemoryCompiler();
     for (final SchemaElement schema : schemas) { // [A]
       final Map<String,String> source = schema.toSource();
@@ -91,7 +91,7 @@ public class Validator {
 
     final HashSet<Class<? extends JxObject>> objectClasses = new HashSet<>();
     final HashSet<Class<? extends Annotation>> arrayClasses = new HashSet<>();
-    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, cls -> {
+    PackageLoader.getPackageLoader(classLoader).loadPackage(pkg, (final Class<?> cls) -> {
       if (cls.getDeclaringClass() == null) {
         if (Annotation.class.isAssignableFrom(cls))
           arrayClasses.add((Class<? extends Annotation>)cls);

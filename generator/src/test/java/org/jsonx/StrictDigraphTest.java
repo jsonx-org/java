@@ -34,7 +34,7 @@ public class StrictDigraphTest {
 
   @Test
   public void testStrictRefDigraph() {
-    final StrictRefDigraph<String,String> digraph = new StrictRefDigraph<>("hello", s -> s);
+    final StrictRefDigraph<String,String> digraph = new StrictRefDigraph<>("hello", (final String s) -> s);
     try {
       digraph.add("a", "a");
       fail("Expected ValidationException");

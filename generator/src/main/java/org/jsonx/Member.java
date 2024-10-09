@@ -29,8 +29,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jaxsb.runtime.Attribute;
 import org.jaxsb.runtime.Bindings;
-import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
+import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Array;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Boolean;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Documented;
@@ -88,7 +88,7 @@ abstract class Member extends Element {
     return getBinding(registry, binding);
   }
 
-  static final Function<yAA.$AnyType<?>,String> elementXPath = t -> {
+  static final Function<yAA.$AnyType<?>,String> elementXPath = (final yAA.$AnyType<?> t) -> {
     final String name;
     if (t instanceof $Array)
       name = (($Array)t).getName$().text();

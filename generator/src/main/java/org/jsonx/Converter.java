@@ -38,7 +38,7 @@ public final class Converter {
     System.exit(1);
   }
 
-  private static final Settings settings = new Settings.Builder().withNamespacePackage(ns -> "").build();
+  private static final Settings settings = new Settings.Builder().withNamespacePackage((final String ns) -> "").build();
 
   public static void main(final String[] args) throws IOException {
     if (args.length != 1 && args.length != 2)

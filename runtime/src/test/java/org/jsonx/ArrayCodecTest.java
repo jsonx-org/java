@@ -144,7 +144,7 @@ public class ArrayCodecTest {
   private static void testEncode(final Annotation[] annotations, final Class<? extends Annotation> annotationType, final List<Object> members, final String expected) throws IOException {
     final Relations relations = new Relations();
     final Error error = ArrayValidator.encode(annotationType, members, relations, true, null);
-    final Relations flatRelations = CollectionUtil.flatten(relations, new Relations(), m -> m.member instanceof Relations ? (Relations)m.member : null, true);
+    final Relations flatRelations = CollectionUtil.flatten(relations, new Relations(), (final Relation r) -> r.member instanceof Relations ? (Relations)r.member : null, true);
     final String errorString = error == null ? null : error.toString();
     if (expected != null && errorString != null && !expected.equals(errorString) && logger.isErrorEnabled()) {
       String msg = "\"" + Strings.escapeForJava(errorString) + "\"";

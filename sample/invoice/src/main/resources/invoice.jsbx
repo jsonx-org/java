@@ -18,8 +18,7 @@
   xmlns="http://www.jsonx.org/binding-0.5.xsd"
   xmlns:xi="http://www.w3.org/2001/XInclude"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd"
-  targetNamespace="">
+  xsi:schemaLocation="http://www.jsonx.org/binding-0.5.xsd http://www.jsonx.org/binding.xsd">
 
   <schema
     xmlns="http://www.jsonx.org/schema-0.5.xsd"
