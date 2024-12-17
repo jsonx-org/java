@@ -28,7 +28,7 @@ public class SchemaSpecTest extends SpecTest {
   }
 
   @Test
-  public void test04() throws IOException, SAXException {
+  public void test05() throws IOException, SAXException {
     test("schema", "0.5");
   }
 }

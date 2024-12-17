@@ -447,6 +447,9 @@ final class ArrayModel extends Referrer<ArrayModel> {
 
   @Override
   Registry.Type typeDefault(final boolean primitive) {
+    if (members.length == 0)
+      return registry.OBJECT;
+
     // type can be null if there is a loop in the type graph
     Registry.Type type = getGreatestCommonSuperType(members);
     type = type == null ? registry.OBJECT : !type.isArray && type.isPrimitive ? type.wrapper : type;

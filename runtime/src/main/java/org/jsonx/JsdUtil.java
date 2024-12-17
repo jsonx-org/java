@@ -150,7 +150,7 @@ final class JsdUtil {
     return elementIds;
   }
 
-  static int[] digest(Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
+  static int[] digest(final Annotation[] annotations, final String declarerName, final IdToElement idToElement) {
     idToElement.putAll(annotations);
     final int[] elementIds = (int[])JsdUtil.forEach(annotations, (final Annotation annotation) -> {
       if (annotation instanceof ArrayProperty) {

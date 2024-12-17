@@ -23,6 +23,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
 
@@ -38,12 +39,23 @@ class ObjectCodec extends Codec {
   private static final ClassToGetMethods classToGetMethods = new ClassToGetMethods() {
     @Override
     Method[] getMethods(final Class<? extends JxObject> cls) {
-      return cls.getMethods();
+      return Classes.getDeclaredMethodsDeep(cls);
     }
 
     @Override
     public boolean test(final Method method) {
-      return !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
+      if (method.isBridge() || method.isSynthetic() || method.getReturnType() == void.class || method.getParameterCount() > 0)
+        return false;
+
+      if (!Modifier.isPublic(method.getModifiers())) {
+        if ("clone".equals(method.getName()))
+          return false;
+
+        if (!method.isAccessible())
+          method.setAccessible(true);
+      }
+
+      return true;
     }
   };
 
@@ -197,17 +209,17 @@ class ObjectCodec extends Codec {
 
     final Method[] methods = cls.getMethods();
     final Method[] getMethods = classToGetMethods.get(cls);
-    propertyToCodec = getPropertyCodec(methods, getMethods, getMethods.length, 0, 0, 0);
+    propertyToCodec = getPropertyCodec(methods, getMethods, getMethods.length, 0, 0);
     Arrays.sort(propertyToCodec.allCodecs, Comparators.IDENTITY_HASHCODE_COMPARATOR);
     typeToCodecs.put(cls, propertyToCodec);
     return propertyToCodec;
   }
 
-  private static PropertyToCodec getPropertyCodec(final Method[] methods, final Method[] getMethods, final int length, final int index, final int depthAll, final int depthAny) {
-    if (index == length)
+  private static PropertyToCodec getPropertyCodec(final Method[] methods, final Method[] getMethods, int index, final int depthAll, final int depthAny) {
+    if (index == 0)
       return new PropertyToCodec(depthAll, depthAny);
 
-    final Method getMethod = getMethods[index];
+    final Method getMethod = getMethods[--index];
     final Codec codec;
     int depthAny1 = depthAny;
     for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
@@ -234,12 +246,12 @@ class ObjectCodec extends Codec {
         continue;
       }
 
-      final PropertyToCodec propertyToCodec = getPropertyCodec(methods, getMethods, length, index + 1, depthAll + 1, depthAny1);
+      final PropertyToCodec propertyToCodec = getPropertyCodec(methods, getMethods, index, depthAll + 1, depthAny1);
       propertyToCodec.set(codec, depthAll, depthAny);
       return propertyToCodec;
     }
 
-    return getPropertyCodec(methods, getMethods, length, index + 1, depthAll, depthAny);
+    return getPropertyCodec(methods, getMethods, index, depthAll, depthAny);
   }
 
   private final Class<? extends JxObject> type;

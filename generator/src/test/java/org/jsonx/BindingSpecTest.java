@@ -28,7 +28,7 @@ public class BindingSpecTest extends SpecTest {
   }
 
   @Test
-  public void test04() throws IOException, SAXException {
+  public void test05() throws IOException, SAXException {
     test("binding", "0.5");
   }
 }

@@ -45,7 +45,6 @@ public class LibraryTest {
   @SafeVarargs
   private static void testArray(final Object obj, final Class<? extends Annotation> annotationType, final Class<? extends Annotation> ... annotationTypes) throws DecodeException, IOException {
     final String json = encoder.toString((List<?>)obj, annotationType);
-    System.err.println(json);
     try {
       JxDecoder.VALIDATING.parseArray(json);
     }

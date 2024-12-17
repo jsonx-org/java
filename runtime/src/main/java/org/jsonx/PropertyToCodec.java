@@ -18,7 +18,12 @@ package org.jsonx;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class PropertyToCodec {
+  private static final Logger logger = LoggerFactory.getLogger(PropertyToCodec.class);
+
   private final AnyCodec[] anyCodecs;
   private final HashMap<String,Codec> nameToCodec = new HashMap<>();
   final Codec[] allCodecs;
@@ -29,10 +34,14 @@ class PropertyToCodec {
   }
 
   void set(final Codec codec, final int allIndex, final int anyIndex) {
-    if (codec instanceof AnyCodec)
+    if (codec instanceof AnyCodec) {
       anyCodecs[anyIndex] = (AnyCodec)codec;
-    else if (nameToCodec.put(codec.name, codec) != null)
-      throw new IllegalStateException();
+    }
+    else {
+      final Codec other = nameToCodec.put(codec.name, codec);
+      if (other != null)
+        if (logger.isWarnEnabled()) { logger.warn("Property \"" + codec.name + "\" in \"" + codec.getMethod.getDeclaringClass().getName() + "\" is masking property \"" + codec.name + "\" in \"" + other.getMethod.getDeclaringClass().getName() + "\""); }
+    }
 
     allCodecs[allIndex] = codec;
   }
@@ -42,9 +51,11 @@ class PropertyToCodec {
     if (codec != null)
       return codec;
 
-    for (final AnyCodec anyCodec : anyCodecs) // [A]
+    for (int i = anyCodecs.length - 1; i >= 0; --i) { // [A]
+      final AnyCodec anyCodec = anyCodecs[i];
       if (anyCodec.pattern().matcher(name).matches())
         return anyCodec;
+    }
 
     return null;
   }

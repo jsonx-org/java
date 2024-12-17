@@ -21,6 +21,7 @@ import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -320,12 +321,23 @@ public class JxEncoder {
   private static final ClassToGetMethods classToOrderedMethods = new ClassToGetMethods() {
     @Override
     Method[] getMethods(final Class<? extends JxObject> cls) {
-      return cls.getMethods();
+      return Classes.getDeclaredMethodsDeep(cls);
     }
 
     @Override
     public boolean test(final Method method) {
-      return !method.isSynthetic() && method.getReturnType() != void.class && method.getParameterCount() == 0;
+      if (method.isBridge() || method.isSynthetic() || method.getReturnType() == void.class || method.getParameterCount() > 0)
+        return false;
+
+      if (!Modifier.isPublic(method.getModifiers())) {
+        if ("clone".equals(method.getName()))
+          return false;
+
+        if (!method.isAccessible())
+          method.setAccessible(true);
+      }
+
+      return true;
     }
 
     @Override
@@ -346,57 +358,62 @@ public class JxEncoder {
     String name;
     boolean nullable = false;
     Use use = null;
-    for (final Method getMethod : classToOrderedMethods.get(object.getClass())) { // [A]
-      annotations = Classes.getAnnotations(getMethod);
-      name = null;
-      for (int i = 0, i$ = annotations.length; i < i$; ++i) { // [A]
-        annotation = annotations[i];
-        if (annotation instanceof StringProperty) {
-          final StringProperty property = (StringProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
+    OUT:
+    for (Method getMethod : classToOrderedMethods.get(object.getClass())) { // [A]
+      IN:
+      while (true) {
+        annotations = Classes.getAnnotations(getMethod);
+        name = null;
+        for (int i = annotations.length - 1; i >= 0; --i) { // [A]
+          annotation = annotations[i];
+          if (annotation instanceof StringProperty) {
+            final StringProperty property = (StringProperty)annotation;
+            name = property.name();
+            nullable = property.nullable();
+            use = property.use();
+            break IN;
+          }
+          else if (annotation instanceof NumberProperty) {
+            final NumberProperty property = (NumberProperty)annotation;
+            name = property.name();
+            nullable = property.nullable();
+            use = property.use();
+            break IN;
+          }
+          else if (annotation instanceof ObjectProperty) {
+            final ObjectProperty property = (ObjectProperty)annotation;
+            name = property.name();
+            nullable = property.nullable();
+            use = property.use();
+            break IN;
+          }
+          else if (annotation instanceof ArrayProperty) {
+            final ArrayProperty property = (ArrayProperty)annotation;
+            name = property.name();
+            nullable = property.nullable();
+            use = property.use();
+            break IN;
+          }
+          else if (annotation instanceof BooleanProperty) {
+            final BooleanProperty property = (BooleanProperty)annotation;
+            name = property.name();
+            nullable = property.nullable();
+            use = property.use();
+            break IN;
+          }
+          else if (annotation instanceof AnyProperty) {
+            final AnyProperty property = (AnyProperty)annotation;
+            name = property.name();
+            nullable = property.nullable();
+            use = property.use();
+            break IN;
+          }
         }
-        else if (annotation instanceof NumberProperty) {
-          final NumberProperty property = (NumberProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof ObjectProperty) {
-          final ObjectProperty property = (ObjectProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof ArrayProperty) {
-          final ArrayProperty property = (ArrayProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof BooleanProperty) {
-          final BooleanProperty property = (BooleanProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-        else if (annotation instanceof AnyProperty) {
-          final AnyProperty property = (AnyProperty)annotation;
-          name = property.name();
-          nullable = property.nullable();
-          use = property.use();
-          break;
-        }
-      }
 
-      if (name == null)
-        continue;
+        final Class<?> superClass = getMethod.getDeclaringClass().getSuperclass();
+        if (superClass == null || (getMethod = Classes.getDeclaredMethod(superClass, getMethod.getName(), getMethod.getParameterTypes())) == null)
+          continue OUT;
+      }
 
       final Class<?> returnType = getMethod.getReturnType();
       final boolean isNotMap = !Map.class.isAssignableFrom(returnType);

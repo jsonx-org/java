@@ -49,14 +49,14 @@ class NumberCodec extends PrimitiveCodec {
   }
 
   /**
-   * Returns the provided provided {@code double} as a string.
+   * Returns the provided {@code double} as a string.
    *
    * @param value The {@code double} to return as a string.
-   * @return The provided provided {@code double} as a string.
+   * @return The provided {@code double} as a string.
    * @implNote This method mimicks JavaScript's Double.toString() algorithm.
    */
   static String format(final double value) {
-    return 0.000001 <= value && value <= 9.999999999999999E20 ? decimalFormatLocal.get().format(value) : Numbers.stripTrailingZeros(new StringBuilder(String.valueOf(value))).toString();
+    return !Double.isFinite(value) ? "null" : 0.000001 <= value && value <= 9.999999999999999E20 ? decimalFormatLocal.get().format(value) : Numbers.stripTrailingZeros(new StringBuilder(String.valueOf(value))).toString();
   }
 
   static Class<? extends Number> getDefaultClass(final int scale) {
@@ -174,8 +174,9 @@ class NumberCodec extends PrimitiveCodec {
       }
     }
 
-//    if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type()))
-//      throw new ValidationException("Invalid property: " + property + ": Conditions can only be defined if return type of " + getMethod + " is a subclass of: " + Number.class.getName());
+    // if (this.scale != Integer.MAX_VALUE && this.range != null && !Classes.isAssignableFrom(Number.class, type()))
+    // throw new ValidationException("Invalid property: " + property + ": Conditions can only be defined if return type of " + getMethod
+    // + " is a subclass of: " + Number.class.getName());
   }
 
   @Override
