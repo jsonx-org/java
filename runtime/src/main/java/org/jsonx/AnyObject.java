@@ -30,8 +30,9 @@ public class AnyObject implements JxObject {
     return properties;
   }
 
-  public void setProperties(final LinkedHashMap<String,Object> properties) {
+  public AnyObject setProperties(final LinkedHashMap<String,Object> properties) {
     this.properties = properties;
+    return this;
   }
 
   @Override

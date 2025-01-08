@@ -237,8 +237,8 @@ abstract class ModelTest {
 
   static void test(final URL resource) throws CompilationException, DecodeException, IOException, PackageNotFoundException, SAXException {
     final String fileName = URLs.getName(resource);
-    final String namespace = "urn:test:" + StringPaths.getSimpleName(fileName);
-    final String packageName = namespacePackage + StringPaths.getSimpleName(fileName);
+    final String namespace = "urn:test:" + StringPaths.getNameWithoutExtension(fileName);
+    final String packageName = namespacePackage + StringPaths.getNameWithoutExtension(fileName);
     final String pkg = packageName + ".";
 
     final $AnyType<?> control = Bindings.parse(resource);

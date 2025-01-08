@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -63,35 +64,46 @@ class NumberCodec extends PrimitiveCodec {
     return scale == 0 ? Long.class : Double.class;
   }
 
+  private static boolean isWholeNumber(final String json) {
+    for (int i = 0, len = json.length(); i < len; ++i) {
+      final char ch = json.charAt(i);
+      if (ch == '.' || ch == 'e' || ch == 'E')
+        return false;
+    }
+
+    return true;
+  }
+
   private static Number parseDefaultNumber(final int scale, final String json, final boolean strict) {
     try {
-      return JsonUtil.parseNumber(getDefaultClass(scale), json, strict);
+      final Class<? extends Number> defaultClass = scale != Integer.MIN_VALUE ? getDefaultClass(scale) : isWholeNumber(json) ? Long.class : Double.class;
+      return JsonUtil.parseNumber(defaultClass, json, strict);
     }
     catch (final JsonParseException | NumberFormatException e) {
       return Codec.NULL;
     }
   }
 
-  private static Number parseNumber(final Class<? extends Number> type, final int scale, final String json, final boolean strict) {
+  private static Object parseNumber(final Class<? extends Number> type, final int scale, final String json, final JsonReader reader) {
     try {
-      return type.isPrimitive() || !Modifier.isAbstract(type.getModifiers()) ? JsonUtil.parseNumber(type, json, strict) : parseDefaultNumber(scale, json, strict);
+      return type.isPrimitive() || !Modifier.isAbstract(type.getModifiers()) ? JsonUtil.parseNumber(type, json, reader.isStrict()) : parseDefaultNumber(scale, json, reader.isStrict());
     }
     catch (final JsonParseException | NumberFormatException e) {
-      return Codec.NULL;
+      return Error.DECODE_EXCEPTION(reader, e);
     }
   }
 
   @SuppressWarnings("unchecked")
-  private static Object decodeObject(final Class<?> type, final int scale, final Executable decode, final String json, final boolean strict) {
-    return decode != null ? JsdUtil.invoke(decode, json) : type.isAssignableFrom(String.class) ? json : parseNumber((Class<? extends Number>)type, scale, json, strict);
+  private static Object decodeObject(final Class<?> type, final int scale, final Executable decode, final String json, final JsonReader reader) {
+    return decode != null ? JsdUtil.invoke(decode, json) : type.isAssignableFrom(String.class) ? json : parseNumber((Class<? extends Number>)type, scale, json, reader);
   }
 
-  static Object decodeArray(final Class<?> type, final int scale, final String decode, final String json, final boolean strict) {
+  static Object decodeArray(final Class<?> type, final int scale, final String decode, final String json, final JsonReader reader) {
     final char ch = json.charAt(0);
     if (ch != '-' && (ch < '0' || '9' < ch))
       return NULL;
 
-    return decodeObject(type, scale, getMethod(decodeToMethod, decode, String.class), json, strict);
+    return decodeObject(type, scale, getMethod(decodeToMethod, decode, String.class), json, reader);
   }
 
   static Error encodeArray(final Annotation annotation, final int scale, final String range, final Class<?> type, final String encode, final Object object, final int index, final Relations relations, final boolean validate) {
@@ -138,7 +150,7 @@ class NumberCodec extends PrimitiveCodec {
       if (error != null)
         return error;
     }
-    else if (object.longValue() != object.doubleValue()) {
+    else if (!(object instanceof Long) && !(object instanceof Integer) && !(object instanceof BigInteger) && !(object instanceof Short) && !(object instanceof Byte) && object.toString().indexOf('.') > -1) {
       return Error.SCALE_NOT_VALID(scale, object, null);
     }
 
@@ -185,7 +197,7 @@ class NumberCodec extends PrimitiveCodec {
   }
 
   private static Error isScaleValid(final String value, final int scale, final Class<?> type, final JsonReader reader, final Object source) {
-    if (scale == Integer.MAX_VALUE)
+    if (scale == Integer.MAX_VALUE || scale == Integer.MIN_VALUE)
       return null;
 
     if (scale > 0 && (type.isPrimitive() ? type == byte.class || type == short.class || type == int.class || type == long.class : type == Byte.class || type == Short.class || type == Integer.class || type == Long.class))
@@ -199,20 +211,19 @@ class NumberCodec extends PrimitiveCodec {
   }
 
   @Override
-  Error validate(final String json, final JsonReader reader) {
+  Object parseAndValidate(final String json, final JsonReader reader) {
     final Error error = isScaleValid(json, scale, type(), reader, getMethod);
     if (error != null)
       return error;
 
-    if (range != null && !range.isValid(parseDefaultNumber(scale, json, reader.isStrict())))
+    final Object object = decodeObject(type(), scale, decode(), json, reader);
+    if (object instanceof Error)
+      return object;
+
+    if (range != null && !range.isValid((Number)object))
       return Error.RANGE_NOT_MATCHED(range, json, reader);
 
-    return null;
-  }
-
-  @Override
-  Object parseValue(final String json, final boolean strict) {
-    return decodeObject(type(), scale, decode(), json, strict);
+    return object;
   }
 
   @Override

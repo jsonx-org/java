@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.libj.lang.Classes;
+import org.libj.lang.Numbers;
 import org.libj.lang.ParseException;
 import org.libj.math.SafeMath;
 
@@ -74,33 +75,62 @@ final class NumberTrial extends PropertyTrial<Number> {
   }
 
   private static Double makeValid(final Range range) {
+//    if (range != null && range.toString().equals("[10000000000,]"))
+//      System.err.println();
+//    System.err.println("Range: " + range);
     if (range == null)
       return null;
 
-    if (range.getMax() == null) {
-      final double x = range.getMin().doubleValue() + 1d;
-      return x;
-    }
+    if (range.getMax() == null)
+      return ensureHasFraction(ensureNotTooBig(range.getMin().doubleValue()) + 1d);
 
     if (range.getMin() == null)
-      return range.getMax().doubleValue() - 1d;
+      return ensureHasFraction(ensureNotTooBig(range.getMax().doubleValue()) - 1d);
 
-    return ((range.getMax().doubleValue() - range.getMin().doubleValue()) * random.nextDouble()) + range.getMin().doubleValue();
+    return ensureHasFraction(((range.getMax().doubleValue() - range.getMin().doubleValue()) * random.nextDouble()) + range.getMin().doubleValue());
   }
 
   private static Double makeInvalid(final Range range) {
-    return range.getMin() != null ? range.getMin().doubleValue() - 1d : range.getMax().doubleValue() + 1d;
+    double ensureHasFraction = range.getMin() != null ? range.getMin().doubleValue() - 1d : ensureNotTooBig(range.getMax().doubleValue()) + 1d;
+//    System.err.println(ensureHasFraction);
+    return ensureHasFraction;
   }
 
   private static Number setScale(final Double value, final int scale) {
-    return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.longValue() : SafeMath.round(value, scale, RoundingMode.FLOOR);
+    return scale == Integer.MAX_VALUE || scale == Integer.MIN_VALUE ? value : scale == 0 ? value.longValue() : SafeMath.round(value, scale, RoundingMode.FLOOR);
   }
 
   private static Number setScale(final BigDecimal value, final int scale) {
-    return scale == Integer.MAX_VALUE ? value : scale == 0 ? value.longValue() : value.setScale(scale, RoundingMode.FLOOR);
+    return scale == Integer.MAX_VALUE || scale == Integer.MIN_VALUE ? value : scale == 0 ? value.longValue() : value.setScale(scale, RoundingMode.FLOOR);
+  }
+
+  private static float ensureNotTooBig(final float value) {
+    return value % 1000000000;
+  }
+
+  private static double ensureNotTooBig(final double value) {
+    return value % 1000000000;
+  }
+
+  private static float ensureHasFraction(final float value) {
+    return ensureHasFraction(Numbers.isWhole(value) ? value + Math.ulp(value) : value);
+  }
+
+  private static double ensureHasFraction(final double value) {
+    return Numbers.isWhole(value) ? value + Math.ulp(value) : value;
   }
 
   private static Object toProperForm(final Class<?> type, final String decode, final int scale, final Double value) {
+    final Object properForm2 = toProperForm2(type, decode, scale, value);
+    if (properForm2 instanceof Number && ((Number)properForm2).doubleValue() > 100000) {
+      toProperForm2(type, decode, scale, value);
+//      System.err.println("Proper form: " + properForm2);
+    }
+
+    return properForm2;
+  }
+
+  private static Object toProperForm2(final Class<?> type, final String decode, final int scale, final Double value) {
     final Number result;
     if (BigInteger.class.isAssignableFrom(type))
       result = BigInteger.valueOf(value == null ? random.nextLong() : value.longValue());
@@ -113,11 +143,11 @@ final class NumberTrial extends PropertyTrial<Number> {
     else if (type == Byte.class || type == byte.class)
       result = value == null ? (byte)random.nextInt() : value.byteValue();
     else if (type == Float.class || type == float.class)
-      result = value == null ? random.nextFloat() * random.nextInt() : value.floatValue();
+      result = ensureHasFraction(value == null ? ensureNotTooBig(random.nextFloat() * random.nextInt()) : value.floatValue());
     else if (BigDecimal.class.isAssignableFrom(type))
-      result = setScale(value == null ? BigDecimal.valueOf(random.nextDouble() * random.nextLong()) : BigDecimal.valueOf(value), scale);
+      result = setScale(value == null ? BigDecimal.valueOf(ensureHasFraction(ensureNotTooBig(random.nextDouble() * random.nextLong()))) : BigDecimal.valueOf(ensureHasFraction(value)), scale);
     else
-      result = setScale(value == null ? random.nextDouble() * random.nextLong() : value, scale);
+      result = ensureHasFraction((double)setScale(value == null ? ensureNotTooBig(random.nextDouble() * random.nextLong()) : value, scale));
 
     if (decode != null && decode.length() > 0)
       return JsdUtil.invoke(JsdUtil.parseExecutable(decode, String.class), String.valueOf(result));

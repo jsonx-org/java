@@ -162,12 +162,13 @@ class ClassTrial extends Trial {
     String value = null;
     Exception exception = null;
     try {
-      final AtomicReference<Bounds> bounds = new AtomicReference<>();
+      final AtomicReference<Bounds> boundsRef = new AtomicReference<>();
       final StringBuilder b = new StringBuilder();
       validEncoder.encodeObject(b, binding, (g, n, r, s, e) -> {
         if (g.equals(trial.getMethod) && trial.name.equals(n)) {
-          if (bounds.get() != null)
-            throw new IllegalStateException(String.valueOf(bounds.get()));
+          final Bounds bounds = boundsRef.get();
+          if (bounds != null)
+            throw new IllegalStateException(String.valueOf(bounds));
 
           if (r != null) {
             if (relations[0] != null)
@@ -177,14 +178,15 @@ class ClassTrial extends Trial {
           }
 
           if (s != -1)
-            bounds.set(new Bounds(g, n, s, e));
+            boundsRef.set(new Bounds(g, n, s, e));
         }
       });
 
       json = b.toString();
       testJsonx(json);
 
-      value = bounds.get() == null ? null : json.substring((int)bounds.get().start, (int)bounds.get().end);
+      final Bounds bounds = boundsRef.get();
+      value = bounds == null ? null : json.substring((int)bounds.start, (int)bounds.end);
     }
     catch (final Exception e) {
       exception = e;
@@ -268,8 +270,8 @@ class ClassTrial extends Trial {
     final Relations[] relations = {null};
     final String json = testEncode(trial, relations);
     final JxObject decoded = testDecode(trial, relations, json);
-    if (decoded != null)
-      assertEquals(binding, decoded);
+    if (decoded != null && !assertEquals(binding, decoded))
+      testDecode(trial, relations, json); // For debugging
 
     trial.setMethod.invoke(trial.object, before);
     return count;

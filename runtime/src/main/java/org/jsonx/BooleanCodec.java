@@ -84,13 +84,8 @@ class BooleanCodec extends PrimitiveCodec {
   }
 
   @Override
-  Error validate(final String json, final JsonReader reader) {
-    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json, reader) : null;
-  }
-
-  @Override
-  Object parseValue(final String json, final boolean strict) {
-    return decodeObject(type(), decode(), json, null);
+  Object parseAndValidate(final String json, final JsonReader reader) {
+    return !"true".equals(json) && !"false".equals(json) ? Error.BOOLEAN_NOT_VALID(json, reader) : decodeObject(type(), decode(), json, null);
   }
 
   @Override

@@ -16,6 +16,8 @@
 
 package org.jsonx;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 import org.junit.Test;
@@ -25,7 +27,14 @@ public class SensorITest {
   private static final String json = "{\"sensors\":[{\"index\":0,\"mode\":\"auto\",\"facets\":5,\"x\":0.0,\"y\":0.0,\"z\":1.0},{\"index\":1,\"mode\":\"auto\",\"facets\":5}],\"sequences\":[[1619506964,60]],\"delay\":0}";
 
   @Test
-  public void test() throws IOException, DecodeException {
+  public void testNull() throws IOException, DecodeException {
+    try (final JsonReader in = new JsonReader("null")) {
+      assertNull(JxDecoder.VALIDATING.parseObject(in, stub.Assembly.class));
+    }
+  }
+
+  @Test
+  public void testNotNull() throws IOException, DecodeException {
     final stub.Assembly assembly;
     try (final JsonReader in = new JsonReader(json)) {
       assembly = JxDecoder.VALIDATING.parseObject(in, stub.Assembly.class);

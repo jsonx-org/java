@@ -229,7 +229,7 @@ abstract class Member extends Element {
         if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
 
-        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getCause().getMessage()); }
+        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"decode\": " + typeBinding.decode + " due to: " + e.getMessage()); }
       }
     }
 
@@ -243,7 +243,7 @@ abstract class Member extends Element {
         if (!(e.getCause() instanceof ClassNotFoundException))
           throw e;
 
-        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getCause().getMessage()); }
+        if (logger.isWarnEnabled()) { logger.warn("Unable to validate \"encode\": " + typeBinding.encode + " due to: " + e.getMessage()); }
       }
     }
 

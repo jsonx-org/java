@@ -47,7 +47,7 @@ class ArrayCreateIterator extends ArrayIterator {
 
   @Override
   void next() throws IOException {
-    current = this;
+    offLen0 = this;
     ++cursor;
   }
 
@@ -68,38 +68,38 @@ class ArrayCreateIterator extends ArrayIterator {
   Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
     lastIndex = index;
     if (trialType == TrialType.NULLABLE) {
-      current = null;
+      offLen0 = null;
     }
     else if (annotation instanceof StringElement) {
       final StringElement element = (StringElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : StringTrial.createValid(element.type(), element.decode(), element.pattern());
+      offLen0 = element.nullable() && Math.random() < 0.5 ? null : StringTrial.createValid(element.type(), element.decode(), element.pattern());
     }
     else if (annotation instanceof NumberElement) {
       final NumberElement element = (NumberElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : NumberTrial.createValid(element.type(), element.decode(), element.range(), element.scale());
+      offLen0 = element.nullable() && Math.random() < 0.5 ? null : NumberTrial.createValid(element.type(), element.decode(), element.range(), element.scale());
     }
     else if (annotation instanceof ObjectElement) {
       final ObjectElement element = (ObjectElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : ObjectTrial.createValid(element.type());
+      offLen0 = element.nullable() && Math.random() < 0.5 ? null : ObjectTrial.createValid(element.type());
     }
     else if (annotation instanceof ArrayElement) {
       final ArrayElement element = (ArrayElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : ArrayTrial.createValid(element.type(), element.minIterate(), element.maxIterate(), element.elementIds(), idToElement);
+      offLen0 = element.nullable() && Math.random() < 0.5 ? null : ArrayTrial.createValid(element.type(), element.minIterate(), element.maxIterate(), element.elementIds(), idToElement);
     }
     else if (annotation instanceof BooleanElement) {
       final BooleanElement element = (BooleanElement)annotation;
-      current = element.nullable() && Math.random() < 0.5 ? null : BooleanTrial.createValid(element.type(), element.decode());
+      offLen0 = element.nullable() && Math.random() < 0.5 ? null : BooleanTrial.createValid(element.type(), element.decode());
     }
     else if (annotation instanceof AnyElement) {
       final AnyElement element = (AnyElement)annotation;
       if (element.nullable() && Math.random() < 0.5) {
-        current = null;
+        offLen0 = null;
       }
       else {
         AnyTrial.createValid(element, new PentaConsumer<Object,Class<?>,String,String,Annotation>() {
           @Override
           public void accept(final Object value, final Class<?> type, final String decode, final String encode, final Annotation typeAnnotation) {
-            ArrayCreateIterator.this.current = value;
+            ArrayCreateIterator.this.offLen0 = value;
           }
         });
       }
@@ -108,7 +108,7 @@ class ArrayCreateIterator extends ArrayIterator {
       throw new UnsupportedOperationException("Unsupported annotation type: " + annotation.annotationType().getName());
     }
 
-    relations.set(index, current, annotation);
+    relations.set(index, offLen0, annotation);
     return null;
   }
 }

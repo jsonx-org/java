@@ -50,8 +50,8 @@ class ArrayDecodeIterator extends ArrayIterator {
   @Override
   boolean hasNext() throws IOException {
     final int index = reader.getIndex();
-    final long point = reader.readToken();
-    final int off = Composite.decodeInt(point, 0);
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
     final char c0 = reader.bufToChar(off);
     // If the token is ',', then advance and check if there is another token following it
     if (c0 == ',')
@@ -72,13 +72,13 @@ class ArrayDecodeIterator extends ArrayIterator {
     if (cursor++ == indexes.size())
       indexes.add(reader.getIndex());
 
-    final long point = reader.readToken();
-    final int off = Composite.decodeInt(point, 0);
-    final int len = Composite.decodeInt(point, 1);
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
     if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
-      current = null;
+      offLen0 = null;
     else
-      current = point;
+      offLen0 = offLen;
   }
 
   @Override
@@ -96,7 +96,7 @@ class ArrayDecodeIterator extends ArrayIterator {
 
   @Override
   Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final long offLen = (long)current;
+    final long offLen = (long)offLen0;
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
     final String token = new String(reader.buf(), off, len);
@@ -113,7 +113,7 @@ class ArrayDecodeIterator extends ArrayIterator {
     }
     else if (codecType == NumberCodec.class) {
       final NumberElement element = (NumberElement)annotation;
-      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), token, reader.isStrict());
+      value = NumberCodec.decodeArray(element.type(), element.scale(), element.decode(), token, reader);
     }
     else if (codecType == ObjectCodec.class) {
       value = ObjectCodec.decodeArray(((ObjectElement)annotation).type(), token, reader, validate, onPropertyDecode);
@@ -132,8 +132,8 @@ class ArrayDecodeIterator extends ArrayIterator {
     if (value instanceof Error)
       return (Error)value;
 
-    current = value;
-    relations.set(index, current, annotation);
+    offLen0 = value;
+    relations.set(index, offLen0, annotation);
     return null;
   }
 }

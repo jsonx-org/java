@@ -80,10 +80,6 @@ abstract class Codec {
       throw new ValidationException("Invalid field: " + JsdUtil.getFullyQualifiedMethodName(getMethod) + ": Field with (nullable=true & use=" + Use.class.getSimpleName() + ".OPTIONAL) must be of type: " + Optional.class.getName());
   }
 
-  final Object toNull() {
-    return use == Use.OPTIONAL && nullable ? Optional.empty() : null;
-  }
-
   @SuppressWarnings("unchecked")
   final void set(final JxObject object, final String name, final Object value, final TriPredicate<? super JxObject,? super String,Object> onPropertyDecode) {
     try {

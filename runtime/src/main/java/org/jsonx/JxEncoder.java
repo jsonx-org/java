@@ -60,6 +60,11 @@ public class JxEncoder {
     /** Validating {@link JxEncoder} that indents JSON values with 8 spaces */
     public static final JxEncoder _8 = get(8);
 
+    static {
+      // Keep this, because there is an issue with the class initialization order that causes `global` to be null.
+      JxEncoder.global = _0;
+    }
+
     /**
      * Returns the validating {@link JxEncoder} for the specified number of spaces to be used when indenting values during serialization
      * to JSON documents.
@@ -113,8 +118,6 @@ public class JxEncoder {
     }
   }
 
-  private static JxEncoder global = VALIDATING._0;
-
   /**
    * Returns the validating or non-validating {@link JxEncoder} for the specified number of spaces to be used when indenting values
    * during serialization to JSON documents.
@@ -135,6 +138,13 @@ public class JxEncoder {
       instances.put(key, encoder = new JxEncoder(indent, validate));
 
     return encoder;
+  }
+
+  private static JxEncoder global = null;
+
+  static {
+    // Keep this, because it causes the `static` block of VALIDATING to run, which actually sets `global`.
+    global = VALIDATING._0;
   }
 
   /**

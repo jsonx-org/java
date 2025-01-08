@@ -147,19 +147,14 @@ class StringCodec extends PrimitiveCodec {
   }
 
   @Override
-  Error validate(final String json, final JsonReader reader) {
+  Object parseAndValidate(final String json, final JsonReader reader) {
     final char ch = json.charAt(0);
     final int len1 = json.length() - 1;
     if ((ch != '"' || json.charAt(len1) != '"') && (ch != '\'' || json.charAt(len1) != '\''))
       return Error.NOT_A_STRING();
 
     final String value;
-    return pattern == null || pattern.matcher(value = json.substring(1, len1)).matches() ? null : Error.PATTERN_NOT_MATCHED(pattern.pattern(), value, reader);
-  }
-
-  @Override
-  Object parseValue(final String json, final boolean strict) {
-    return decodeObject(type(), decode(), json);
+    return pattern == null || pattern.matcher(value = json.substring(1, len1)).matches() ? decodeObject(type(), decode(), json) : Error.PATTERN_NOT_MATCHED(pattern.pattern(), value, reader);
   }
 
   @Override

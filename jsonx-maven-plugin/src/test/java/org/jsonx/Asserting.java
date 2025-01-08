@@ -26,12 +26,12 @@ import org.slf4j.LoggerFactory;
 abstract class Asserting {
   static final Logger logger = LoggerFactory.getLogger(Asserting.class);
 
-  static void assertEquals(final String message, final Object expected, final Object actual) {
+  static boolean assertEquals(final String message, final Object expected, final Object actual) {
     if ((expected == null) != (actual == null))
       Assert.assertEquals(message, expected, actual);
 
     if (expected == null || actual == null)
-      return;
+      return true;
 
     final boolean equals = ObjectUtil.equals(expected, actual);
     if (!equals) {
@@ -42,8 +42,20 @@ abstract class Asserting {
       System.err.println(ObjectUtil.toString(actual));
       if (expected.getClass().isArray())
         Assert.assertTrue(message, equals);
-      else
+      else {
+        if (!expected.equals(actual)) {
+          expected.equals(actual);
+          expected.equals(actual);
+          expected.equals(actual);
+          expected.equals(actual);
+          expected.equals(actual);
+          expected.equals(actual);
+          expected.equals(actual);
+          return false;
+        }
+
         Assert.assertEquals(message, expected, actual);
+      }
     }
 
     final int expectedHashCode = ObjectUtil.hashCode(expected);
@@ -56,10 +68,12 @@ abstract class Asserting {
       System.err.println(ObjectUtil.toString(actual));
       Assert.assertEquals(message, expectedHashCode, actualHashCode);
     }
+
+    return true;
   }
 
-  static void assertEquals(final Object expected, final Object actual) {
-    assertEquals(null, expected, actual);
+  static boolean assertEquals(final Object expected, final Object actual) {
+    return assertEquals(null, expected, actual);
   }
 
   static void assertNotEquals(final String message, final Object expected, final Object actual) {

@@ -81,8 +81,8 @@
     <number name="byte" scale="0" range="[-64,63]" doc="Primitive byte type"/>
     <number name="Short" scale="0" range="[-16384,16383]" doc="Short number type"/>
     <number name="StringDecimal"/>
-    <number name="numRange" range="[10000000000,]" doc="Template for number type with range"/>
-    <number name="numRangePrimitive" range="[10000000000,]" doc="Template for number type with range"/>
+    <number name="numRange" range="[100000,]" doc="Template for number type with range"/>
+    <number name="numRangePrimitive" range="[100000,]" doc="Template for number type with range"/>
     <number name="cachedInteger" scale="0" range="[1,]" doc="Template for integer number type with range"/>
     <number name="cachedIntegerPrimitive" scale="0" range="[1,]" doc="Template for integer number type with range"/>
     <number name="plainDecimal" scale="2" doc="Template cached BigDecimal"/>

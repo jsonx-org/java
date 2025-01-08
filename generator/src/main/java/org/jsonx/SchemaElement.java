@@ -57,7 +57,7 @@ import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.Schema.TargetNamespace$;
 import org.libj.lang.PackageLoader;
 import org.libj.lang.PackageNotFoundException;
-import org.libj.lang.WrappedArrayList;
+import org.libj.lang.ToArrayList;
 import org.libj.util.Iterators;
 import org.openjax.json.JsonReader;
 import org.openjax.xml.api.CharacterDatas;
@@ -451,7 +451,7 @@ public final class SchemaElement extends Element implements Declarer {
   private ArrayList<Model> rootMembers() {
     final Collection<Model> models = registry.getModels();
     if (models.size() == 0)
-      return WrappedArrayList.EMPTY_LIST;
+      return ToArrayList.EMPTY_LIST;
 
     final ArrayList<Model> members = new ArrayList<>();
     for (final Model model : models) // [C]

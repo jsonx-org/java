@@ -38,6 +38,7 @@
     <property name="firstName" xsi:type="string" nullable="false"/>
     <property name="lastName" xsi:type="string" nullable="false"/>
   </object>
+
   <array name="accounts">
     <reference type="account"/>
   </array>

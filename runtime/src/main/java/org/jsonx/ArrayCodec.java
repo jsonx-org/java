@@ -59,11 +59,11 @@ class ArrayCodec extends Codec {
     if (error != null)
       return error;
 
-    final long point = reader.readToken();
-    final int off = Composite.decodeInt(point, 0);
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
     final char c0 = reader.bufToChar(off);
     if (c0 != ']')
-      return Error.EXPECTED_ARRAY(reader.bufToString(off, Composite.decodeInt(point, 1)), reader);
+      return Error.EXPECTED_ARRAY(reader.bufToString(off, Composite.decodeInt(offLen, 1)), reader);
 
     return relations.deflate();
   }

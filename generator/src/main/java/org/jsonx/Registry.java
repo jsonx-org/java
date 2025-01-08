@@ -158,10 +158,11 @@ class Registry {
       this.canonicalPackageName = canonicalPackageName.length() == 0 ? null : canonicalPackageName;
       this.compositeName = compositeName;
       this.name = isDefaultPackage ? compositeName : packageName + "." + compositeName;
+
       this.canonicalCompositeName = Classes.toCanonicalClassName(compositeName);
       this.simpleName = canonicalCompositeName.substring(canonicalCompositeName.lastIndexOf('.') + 1);
       this.canonicalName = isDefaultPackage ? canonicalCompositeName : packageName + "." + canonicalCompositeName;
-      this.cls = Classes.forNameOrNull(name, false, ClassLoader.getSystemClassLoader());
+      this.cls = Classes.forNameOrNull(name, false, Thread.currentThread().getContextClassLoader());
       if (superType == null && this.cls != null && this.cls != Object.class) {
         superType = cls.getSuperclass() == null ? null : getType(cls.getSuperclass());
         this.superType = OBJECT.equals(superType) ? null : superType;

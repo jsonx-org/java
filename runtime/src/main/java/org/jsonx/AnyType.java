@@ -18,6 +18,7 @@ package org.jsonx;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Map;
 
 import org.libj.lang.Numbers;
 
@@ -66,6 +67,9 @@ final class AnyType {
       return arrays;
 
     if (obj instanceof JxObject)
+      return objects;
+
+    if (obj instanceof Map)
       return objects;
 
     throw new UnsupportedOperationException("Unsupported type: " + obj.getClass().getName());
@@ -209,7 +213,7 @@ final class AnyType {
 
     @Override
     public int scale() {
-      return Integer.MAX_VALUE;
+      return Integer.MIN_VALUE;
     }
 
     @Override

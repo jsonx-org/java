@@ -22,13 +22,14 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.function.Function;
 
 import org.libj.lang.Numbers.Composite;
-import org.libj.lang.Throwables;
 import org.libj.util.function.TriPredicate;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
+import org.openjax.json.JsonUtil;
 
 /**
  * Decoder that deserializes JSON documents to objects of {@link JxObject} classes, or to lists conforming to a provided annotation
@@ -123,20 +124,27 @@ public final class JxDecoder {
     this(validate, null);
   }
 
-  private Object parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends JxObject> type, final DecodeException exception) throws IOException, JsonParseException {
-    reader.setIndex(-1);
-    final long point = reader.readToken();
-    final int off = Composite.decodeInt(point, 0);
+  private Object parseObject0(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends JxObject> type) throws IOException, JsonParseException {
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
     final char c0 = reader.bufToChar(off);
-    if (c0 != '{')
-      return Throwables.addSuppressed(exception, new DecodeException("Expected '{', but got '" + point + "\"", reader, null, messageFunction));
+    if (len == 1) {
+      if (c0 != '{')
+        return new DecodeException("Expected '{', but got '" + c0 + "'", reader, null, messageFunction);
 
-    final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
-    if (!(object instanceof Error))
-      return object;
+      final Object object = ObjectCodec.decodeObject(type, reader, validate, onPropertyDecode);
+      if (!(object instanceof Error))
+        return object;
 
-    final Error error = (Error)object;
-    return Throwables.addSuppressed(exception, new DecodeException(error, reader, error.getException(), messageFunction));
+      final Error error = (Error)object;
+      return new DecodeException(error, reader, error.getException(), messageFunction);
+    }
+
+    if (len == 4 && c0 == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
+      return null;
+
+    return new DecodeException("Expected '{', but got '" + reader.bufToString(off, len) + "'", reader, null, messageFunction);
   }
 
   /**
@@ -162,7 +170,7 @@ public final class JxDecoder {
    */
   @SuppressWarnings("unchecked")
   public final <T extends JxObject> T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> type) throws DecodeException, IOException, JsonParseException {
-    final Object result = parseObject(reader, onPropertyDecode, type, null);
+    final Object result = parseObject0(reader, onPropertyDecode, type);
     if (result instanceof DecodeException)
       throw (DecodeException)result;
 
@@ -259,13 +267,24 @@ public final class JxDecoder {
   @SafeVarargs
   @SuppressWarnings({"null", "unchecked"})
   public final <T extends JxObject> T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends T> ... types) throws DecodeException, IOException, JsonParseException {
+    assertNotEmpty(types);
+    final int index = reader.getIndex();
     DecodeException exception = null;
-    for (final Class<? extends T> type : assertNotEmpty(types)) { // [A]
-      final Object result = parseObject(reader, onPropertyDecode, type, exception);
-      if (result instanceof DecodeException)
-        exception = (DecodeException)result;
-      else
+    for (int i = 0, i$ = types.length; i < i$; ++i) { // [A]
+      if (i > 0)
+        reader.setIndex(index);
+
+      final Class<? extends T> type = types[i];
+      final Object result = parseObject0(reader, onPropertyDecode, type);
+      if (result instanceof DecodeException) {
+        if (exception == null)
+          exception = (DecodeException)result;
+        else if (exception != result)
+          exception.addSuppressed((DecodeException)result);
+      }
+      else {
         return (T)result;
+      }
     }
 
     throw exception;
@@ -295,13 +314,25 @@ public final class JxDecoder {
    */
   @SuppressWarnings({"null", "unchecked"})
   public final <T extends JxObject> T parseObject(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Collection<Class<? extends T>> types) throws DecodeException, IOException, JsonParseException {
+    assertNotEmpty(types);
+    final int index = reader.getIndex();
     DecodeException exception = null;
-    for (final Class<? extends T> type : assertNotEmpty(types)) { // [C]
-      final Object result = parseObject(reader, onPropertyDecode, type, exception);
-      if (result instanceof DecodeException)
-        exception = (DecodeException)result;
-      else
+    final Iterator<Class<? extends T>> it = types.iterator();
+    for (int i = 0; it.hasNext(); ++i) { // [A]
+      if (i > 0)
+        reader.setIndex(index);
+
+      final Class<? extends T> type = it.next();
+      final Object result = parseObject0(reader, onPropertyDecode, type);
+      if (result instanceof DecodeException) {
+        if (exception == null)
+          exception = (DecodeException)result;
+        else if (exception != result)
+          exception.addSuppressed((DecodeException)result);
+      }
+      else {
         return (T)result;
+      }
     }
 
     throw exception;
@@ -446,22 +477,34 @@ public final class JxDecoder {
     }
   }
 
-  private Object parseArray(final JsonReader reader, final Class<? extends Annotation> annotationType, final DecodeException exception) throws JsonParseException, IOException {
+  private Object parseArray0(final JsonReader reader, final Class<? extends Annotation> annotationType) throws JsonParseException, IOException {
     reader.setIndex(-1);
-    final long point = reader.readToken();
-    final int off = Composite.decodeInt(point, 0);
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
     final char c0 = reader.bufToChar(off);
-    if (c0 != '[')
-      return Throwables.addSuppressed(exception, new DecodeException("Expected '[', but got '" + reader.bufToString(off, Composite.decodeInt(point, 1)) + "'", reader, null, messageFunction));
+    if (len == 1) {
+      if (c0 != '[')
+        return new DecodeException("Expected '[', but got '" + c0 + "'", reader, null, messageFunction);
 
-    final IdToElement idToElement = new IdToElement();
-    final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
+      final IdToElement idToElement = new IdToElement();
+      final int[] elementIds = JsdUtil.digest(annotationType.getAnnotations(), annotationType.getName(), idToElement);
+      return parseArray(reader, idToElement, elementIds);
+    }
+
+    if (len == 4 && c0 == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
+      return null;
+
+    return new DecodeException("Expected '[', but got '" + reader.bufToString(off, len) + "'", reader, null, messageFunction);
+  }
+
+  Object parseArray(final JsonReader reader, final IdToElement idToElement, final int[] elementIds) throws JsonParseException, IOException {
     final Object array = ArrayCodec.decodeObject(idToElement.get(elementIds), idToElement.getMinIterate(), idToElement.getMaxIterate(), idToElement, reader, validate, null);
     if (!(array instanceof Error))
       return array;
 
     final Error error = (Error)array;
-    return Throwables.addSuppressed(exception, new DecodeException(error, reader, error.getException(), messageFunction));
+    return new DecodeException(error, reader, error.getException(), messageFunction);
   }
 
   /**
@@ -480,7 +523,7 @@ public final class JxDecoder {
    * @throws NullPointerException If {@code reader} or {@code type} is null.
    */
   public final ArrayList<?> parseArray(final JsonReader reader, final Class<? extends Annotation> annotationType) throws DecodeException, JsonParseException, IOException {
-    final Object result = parseArray(reader, annotationType, null);
+    final Object result = parseArray0(reader, annotationType);
     if (result instanceof DecodeException)
       throw (DecodeException)result;
 
@@ -528,13 +571,24 @@ public final class JxDecoder {
   @SafeVarargs
   @SuppressWarnings("null")
   public final ArrayList<?> parseArray(final JsonReader reader, final Class<? extends Annotation> ... annotationTypes) throws DecodeException, JsonParseException, IOException {
+    assertNotEmpty(annotationTypes);
+    final int index = reader.getIndex();
     DecodeException exception = null;
-    for (final Class<? extends Annotation> annotationType : assertNotEmpty(annotationTypes)) { // [A]
-      final Object result = parseArray(reader, annotationType, exception);
-      if (result instanceof DecodeException)
-        exception = (DecodeException)result;
-      else
+    for (int i = 0, i$ = annotationTypes.length; i < i$; ++i) { // [A]
+      if (i > 0)
+        reader.setIndex(index);
+
+      final Class<? extends Annotation> annotationType = annotationTypes[i];
+      final Object result = parseArray0(reader, annotationType);
+      if (result instanceof DecodeException) {
+        if (exception == null)
+          exception = (DecodeException)result;
+        else if (exception != result)
+          exception.addSuppressed((DecodeException)result);
+      }
+      else {
         return (ArrayList<?>)result;
+      }
     }
 
     throw exception;
@@ -559,13 +613,25 @@ public final class JxDecoder {
    */
   @SuppressWarnings("null")
   public final ArrayList<?> parseArray(final JsonReader reader, final Collection<Class<? extends Annotation>> annotationTypes) throws DecodeException, JsonParseException, IOException {
+    assertNotEmpty(annotationTypes);
+    final int index = reader.getIndex();
     DecodeException exception = null;
-    for (final Class<? extends Annotation> annotationType : assertNotEmpty(annotationTypes)) { // [C]
-      final Object result = parseArray(reader, annotationType, exception);
-      if (result instanceof DecodeException)
-        exception = (DecodeException)result;
-      else
+    final Iterator<Class<? extends Annotation>> it = annotationTypes.iterator();
+    for (int i = 0; it.hasNext(); ++i) { // [A]
+      if (i > 0)
+        reader.setIndex(index);
+
+      final Class<? extends Annotation> annotationType = it.next();
+      final Object result = parseArray0(reader, annotationType);
+      if (result instanceof DecodeException) {
+        if (exception == null)
+          exception = (DecodeException)result;
+        else if (exception != result)
+          exception.addSuppressed((DecodeException)result);
+      }
+      else {
         return (ArrayList<?>)result;
+      }
     }
 
     throw exception;
@@ -616,5 +682,125 @@ public final class JxDecoder {
     try (final JsonReader in = new JsonReader(json)) {
       return parseArray(in, annotationTypes);
     }
+  }
+
+  public final Object parse(final JsonReader reader, final Class cls) throws DecodeException, IOException {
+    final Object result = parse0(reader, cls);
+    if (result instanceof DecodeException)
+      throw (DecodeException)result;
+
+    return result;
+  }
+
+  private final Object parse0(final JsonReader reader, final Class cls) throws DecodeException, IOException {
+    if (JxObject.class.isAssignableFrom(cls))
+      return parseObject0(reader, null, (Class<? extends JxObject>)cls);
+
+    if (Annotation.class.isAssignableFrom(cls))
+      return parseArray0(reader, (Class<? extends Annotation>)cls);
+
+    if (CharSequence.class.isAssignableFrom(cls))
+      return parseString(reader);
+
+    if (Number.class.isAssignableFrom(cls))
+      return parseNumber(reader, (Class<? extends Number>)cls);
+
+    if (Boolean.class.isAssignableFrom(cls))
+      return parseBoolean(reader);
+
+    throw new IllegalArgumentException("Illegal JSON type: " + cls.getName());
+  }
+
+  @SuppressWarnings("null")
+  public final Object parse(final JsonReader reader, final Class<?> ... types) throws DecodeException, IOException {
+    assertNotEmpty(types);
+    final int index = reader.getIndex();
+    RuntimeException exception = null;
+    for (int i = 0, i$ = types.length; i < i$; ++i) { // [A]
+      if (i > 0)
+        reader.setIndex(index);
+
+      final Class<?> type = types[i];
+      Object result = null;
+      try {
+        result = parse0(reader, type);
+        if (!(result instanceof DecodeException) && !(result instanceof JsonParseException))
+          return result;
+      }
+      catch (final DecodeException | JsonParseException e) {
+        result = e;
+      }
+
+      if (exception == null)
+        exception = (RuntimeException)result;
+      else if (exception != result)
+        exception.addSuppressed((RuntimeException)result);
+    }
+
+    throw exception;
+  }
+
+  @SuppressWarnings("null")
+  public final Object parse(final JsonReader reader, final Collection<? extends Class<?>> types) throws DecodeException, IOException {
+    assertNotEmpty(types);
+    final int index = reader.getIndex();
+    RuntimeException exception = null;
+    final Iterator<? extends Class<?>> it = types.iterator();
+    for (int i = 0; it.hasNext(); ++i) { // [A]
+      if (i > 0)
+        reader.setIndex(index);
+
+      final Class<?> type = it.next();
+      Object result = null;
+      try {
+        result = parse0(reader, type);
+        if (!(result instanceof DecodeException) && !(result instanceof JsonParseException))
+          return result;
+      }
+      catch (final DecodeException | JsonParseException e) {
+        result = e;
+      }
+
+      if (exception == null)
+        exception = (RuntimeException)result;
+      else if (exception != result)
+        exception.addSuppressed((RuntimeException)result);
+    }
+
+    throw exception;
+  }
+
+  private static String toString(final JsonReader reader) throws IOException {
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
+    if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
+      return null;
+
+    return new String(reader.buf(), off, len);
+  }
+
+  public static Boolean parseBoolean(final JsonReader reader) throws JsonParseException, IOException {
+    final String token = toString(reader);
+    return token == null ? null : "true".equals(token) ? Boolean.TRUE : "false".equals(token) ? Boolean.FALSE : null;
+  }
+
+  public static <T extends Number> T parseNumber(final JsonReader reader, final Class<? extends T> cls) throws JsonParseException, IOException {
+    final String token = toString(reader);
+    return token == null ? null : JsonUtil.parseNumber((Class<T>)cls, token, false);
+  }
+
+  public static String parseString(final JsonReader reader) throws JsonParseException, IOException {
+    final long offLen = reader.readToken();
+    final int off = Composite.decodeInt(offLen, 0);
+    final int len = Composite.decodeInt(offLen, 1);
+    if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
+      return null;
+
+    final char[] buf = reader.buf();
+    if (buf[off] != '"' || buf[off + len - 1] != '"')
+      throw new DecodeException(Error.NOT_A_STRING().toString() + ": " + new String(buf, off, len), reader, null);
+
+    return new String(buf, off + 1, len - 2);
   }
 }

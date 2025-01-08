@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
+import java.util.Optional;
 
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
@@ -69,31 +70,31 @@ class ObjectCodec extends Codec {
       final JxObject object = type.getConstructor().newInstance();
       final PropertyToCodec propertyToCodec = getPropertyCodec(type);
       Codec[] unvisitedCodecs = null;
-      for (long point; (point = reader.readToken()) != '}';) { // [ST]
-        int off = Composite.decodeInt(point, 0);
-        int len = Composite.decodeInt(point, 1);
+      for (long offLen; (offLen = reader.readToken()) != '}';) { // [ST]
+        int off = Composite.decodeInt(offLen, 0);
+        int len = Composite.decodeInt(offLen, 1);
         char c0 = reader.bufToChar(off);
         if (c0 == ',') {
-          point = reader.readToken();
-          off = Composite.decodeInt(point, 0);
-          len = Composite.decodeInt(point, 1);
+          offLen = reader.readToken();
+          off = Composite.decodeInt(offLen, 0);
+          len = Composite.decodeInt(offLen, 1);
         }
 
         if (c0 == '}')
           break;
 
-        point = reader.readToken();
-        assert (reader.bufToChar(Composite.decodeInt(point, 0)) == ':'); // Should have been caught by JsonReader
+        offLen = reader.readToken();
+        assert (reader.bufToChar(Composite.decodeInt(offLen, 0)) == ':'); // Should have been caught by JsonReader
 
         final char[] buf = reader.buf();
         final String propertyName = new String(buf, off + 1, len - 2);
 
-        point = reader.readToken();
-        if (point == -1)
+        offLen = reader.readToken();
+        if (offLen == -1)
           return abort(Error.UNEXPECTED_END_OF_DOCUMENT(reader), reader, index);
 
-        off = Composite.decodeInt(point, 0);
-        len = Composite.decodeInt(point, 1);
+        off = Composite.decodeInt(offLen, 0);
+        len = Composite.decodeInt(offLen, 1);
 
         final Codec codec = propertyToCodec.get(propertyName);
         if (codec == null) {
@@ -105,18 +106,19 @@ class ObjectCodec extends Codec {
 
         final Object value;
         if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l') {
-          if (!codec.nullable)
+          final Executable decode;
+          if (codec.nullable)
+            value = codec.isOptional ? Optional.empty() : null;
+          else if ((decode = codec.decode()) != null)
+            value = JsdUtil.invoke(decode, null);
+          else
             return abort(Error.PROPERTY_NOT_NULLABLE(propertyName, null), reader, index);
-
-          value = codec.decode() == null ? codec.toNull() : JsdUtil.invoke(codec.decode(), null);
         }
         else if (codec instanceof PrimitiveCodec) {
           final PrimitiveCodec primitiveCodec = (PrimitiveCodec)codec;
-          final Error error = validate ? primitiveCodec.matches(new String(buf, off, len), reader) : null;
-          if (error != null)
-            return abort(error, reader, index);
-
-          value = primitiveCodec.parse(new String(buf, off, len), reader.isStrict());
+          value = primitiveCodec.parse(new String(buf, off, len), reader);
+          if (value instanceof Error)
+            return abort((Error)value, reader, index);
         }
         else if (codec instanceof AnyCodec) {
           final AnyCodec anyCodec = (AnyCodec)codec;

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,29 +44,38 @@ public class Validator {
   }
 
   private static void validate(final JsonReader reader, final Set<Class<? extends JxObject>> objectClasses, final Set<Class<? extends Annotation>> arrayClasses, final ArrayList<String> errors) throws IOException {
+    final int index = reader.getIndex();
     final long i = reader.readToken();
     final int off = Numbers.Composite.decodeInt(i, 0);
+    final int len = Numbers.Composite.decodeInt(i, 1);
     final char token = reader.bufToChar(off);
-    try {
-      if (token == '{') {
-        if (objectClasses.size() > 0)
-          JxDecoder.VALIDATING.parseObject(reader, objectClasses);
-        else
-          errors.add("No object definition present in schema");
+    reader.setIndex(index);
+    if (len == 1) {
+      try {
+        if (token == '{') {
+          if (objectClasses.size() > 0)
+            JxDecoder.VALIDATING.parse(reader, objectClasses);
+          else
+            errors.add("No object definition present in schema");
+
+          return;
+        }
+        else if (token == '[') {
+          if (arrayClasses.size() > 0)
+            JxDecoder.VALIDATING.parseArray(reader, arrayClasses);
+          else
+            errors.add("No array definition present in schema");
+
+          return;
+        }
       }
-      else if (token == '[') {
-        if (arrayClasses.size() > 0)
-          JxDecoder.VALIDATING.parseArray(reader, arrayClasses);
-        else
-          errors.add("No array definition present in schema");
-      }
-      else {
-        throw new IllegalArgumentException("Unable to parse JSON document");
+      catch (final DecodeException e) {
+        errors.add(e.getMessage());
+        return;
       }
     }
-    catch (final DecodeException e) {
-      errors.add(e.getMessage());
-    }
+
+    throw new IllegalArgumentException("Unable to parse JSON document");
   }
 
   public static void main(final String[] args) throws CompilationException, IOException, PackageNotFoundException {
@@ -81,11 +91,9 @@ public class Validator {
     final String pkg = "jsonx";
     final SchemaElement[] schemas = Generator.parse(new Settings.Builder().withNamespacePackage((final String s) -> pkg + "._" + Integer.toHexString(s.hashCode())).build(), URLs.fromStringPath(args[0]));
     final InMemoryCompiler compiler = new InMemoryCompiler();
-    for (final SchemaElement schema : schemas) { // [A]
-      final Map<String,String> source = schema.toSource();
-      for (final Map.Entry<String,String> entry : source.entrySet()) // [S]
+    for (final SchemaElement schema : schemas) // [A]
+      for (final Map.Entry<String,String> entry : schema.toSource().entrySet()) // [S]
         compiler.addSource(entry.getValue());
-    }
 
     final ClassLoader classLoader = compiler.compile();
 
@@ -103,7 +111,7 @@ public class Validator {
     });
 
     final ArrayList<String> errors = new ArrayList<>();
-    for (int i = 1, i$ = args.length; i < i$; ++i) {// [A]
+    for (int i = 1, i$ = args.length; i < i$; ++i) { // [A]
       try (final JsonReader reader = new JsonReader(new InputStreamReader(URLs.fromStringPath(args[i]).openStream()))) {
         validate(reader, objectClasses, arrayClasses, errors);
       }

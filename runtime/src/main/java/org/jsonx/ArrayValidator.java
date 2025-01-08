@@ -172,7 +172,7 @@ final class ArrayValidator {
         }
 
         iterator.next();
-        final Object object = iterator.preview(iterator.current);
+        final Object object = iterator.preview(iterator.offLen0);
         iterator.previous();
         return Error.INVALID_CONTENT_MEMBERS_NOT_EXPECTED(index, annotations[a - 1], object);
       }
@@ -238,7 +238,7 @@ final class ArrayValidator {
       if (iterator.nextIsNull()) {
         if (nullable || !validate) {
           error = null;
-          relations.set(index, iterator.current, annotation);
+          relations.set(index, iterator.offLen0, annotation);
         }
         else {
           error = Error.ILLEGAL_VALUE_NULL();
@@ -282,7 +282,7 @@ final class ArrayValidator {
         // If `minOccurs` has already been satisfied, then let's first try to skip the next member
         if (minOccurs < occurrence) {
           // before = iterator.nextIndex();
-          final Object prevCurrent = iterator.current;
+          final Object prevCurrent = iterator.offLen0;
           final int prevIndex = iterator.previous();
           final Relation prevRelation = error != null ? null : relations.get(index);
           if (rewind(iterator, iterator.nextIndex(), validate(iterator, 1, false, annotations, a + 1, minIterate, maxIterate, iteration, idToElement, relations, validate, onPropertyDecode, lastIterSig)) == null)
@@ -292,7 +292,7 @@ final class ArrayValidator {
             relations.set(index, prevRelation);
 
           iterator.next(prevIndex - 1);
-          iterator.current = prevCurrent;
+          iterator.offLen0 = prevCurrent;
           // assertIndex(before, iterator);
         }
 

@@ -36,6 +36,13 @@ public class SpecificTest {
 
   @Test
   public void testArrayNull() throws DecodeException, IOException {
+    try (final JsonReader in = new JsonReader(new StringReader("null"))) {
+      assertNull(JxDecoder.VALIDATING.parseArray(in, ArrayNull.class));
+    }
+  }
+
+  @Test
+  public void testArrayNulls() throws DecodeException, IOException {
     try (final JsonReader in = new JsonReader(new StringReader("[false,0,\"a\",true,[true,1,\"b\",2],[false,3,\"c\",\"d\",[true,4,\"e\",true,[false,5,\"f\",1,[true,6,\"g\",\"h\"]]],[false,7,\"i\",true]]]"))) {
       final ArrayList<?> array = JxDecoder.VALIDATING.parseArray(in, ArrayNull.class);
       assertEquals("[null, null, null, null, [null, null, null, null], [null, null, null, null, [null, null, null, null, [null, null, null, null, [null, null, null, null]]], [null, null, null, null]]]", array.toString());

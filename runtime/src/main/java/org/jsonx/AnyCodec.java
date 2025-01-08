@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.jsonx.ArrayValidator.Relations;
@@ -101,7 +103,7 @@ class AnyCodec extends Codec {
             return value;
         }
         else if (AnyType.isEnabled(numbers = type.numbers())) {
-          final Object value = NumberCodec.decodeArray(numbers.type(), numbers.scale(), numbers.decode(), token, reader.isStrict());
+          final Object value = NumberCodec.decodeArray(numbers.type(), numbers.scale(), numbers.decode(), token, reader);
           if (value != NULL)
             return value;
         }
@@ -149,7 +151,8 @@ class AnyCodec extends Codec {
           return null;
       }
       else if (AnyType.isEnabled(type.objects())) {
-        error = ObjectCodec.encodeArray(annotation, object, index, relations);
+        // Hack to accommodate AnyObject properties with Map values
+        error = ObjectCodec.encodeArray(annotation, object instanceof JxObject ? object : new AnyObject().setProperties(object instanceof LinkedHashMap ? (LinkedHashMap<String,Object>)object : new LinkedHashMap<>((Map<String,Object>)object)), index, relations);
         if (error == null)
           return null;
       }

@@ -59,7 +59,7 @@ public class IncludeModelTest extends ModelTest {
 
   @Test
   public void test() throws IOException {
-    final String name = URLs.getSimpleName(resource);
+    final String name = URLs.getNameWithoutExtension(resource);
     final URL jsb = URLs.create(URLs.getCanonicalParent(resource), name + ".jsb");
     test(name, resource, jsb);
   }

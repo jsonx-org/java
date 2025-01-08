@@ -22,6 +22,7 @@ import java.math.BigInteger;
 import java.util.IdentityHashMap;
 
 import org.jaxsb.runtime.Bindings;
+import org.jsonx.Registry.Type;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$CodecTypeFieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldBinding;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.$FieldIdentifier;
@@ -267,18 +268,21 @@ final class NumberModel extends Model {
   @Override
   @SuppressWarnings("unchecked")
   String isValid(final Bind.Type typeBinding) {
-    if (typeBinding.type == null)
+    final Type type = typeBinding.type;
+    if (type == null)
       return null;
 
-    if ((scale != Integer.MAX_VALUE || range != null) && !registry.getType(Number.class).isAssignableFrom(typeBinding.type))
-      return "Constraint definitions in \"" + (name() != null ? name() : id()) + "\" are not enforcable with type binding \"" + typeBinding.type + "\" for \"" + elementName() + "\"; either choose a type binding that is assignable to " + defaultClass() + ", or remove the constraint definitions";
+    if ((scale != Integer.MAX_VALUE || range != null) && !registry.getType(Number.class).isAssignableFrom(type)) {
+      final boolean x = registry.getType(Number.class).isAssignableFrom(type);
+      return "Constraint definitions in \"" + (name() != null ? name() : id()) + "\" are not enforcable with type binding \"" + type + "\" for \"" + elementName() + "\"; either choose a type binding that is assignable to " + defaultClass() + ", or remove the constraint definitions";
+    }
 
     if (scale == 0)
       return null;
 
-    final Class<?> cls = Classes.forNameOrNull(typeBinding.type.getNativeName(), false, getClass().getClassLoader());
+    final Class<?> cls = Classes.forNameOrNull(type.getNativeName(), false, getClass().getClassLoader());
     if (cls != null && defaultClass().isAssignableFrom(cls) && Numbers.isWholeNumberType((Class<? extends Number>)cls))
-      return "The decimal \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id()) + "\" cannot be represented with the whole numeric type: " + typeBinding.type.name;
+      return "The decimal \"number\" with scale=" + scale + " in \"" + (name() != null ? name() : id()) + "\" cannot be represented with the whole numeric type: " + type.name;
 
     return null;
   }
