@@ -194,22 +194,7 @@ class AnyCodec extends Codec {
       final NumberType numbers;
       final BooleanType booleans;
       final Class<? extends Annotation> arrays;
-      if (AnyType.isEnabled(strings = type.strings()) && Classes.isAssignableFrom(strings.type(), object.getClass())) {
-        error = StringCodec.encodeObjectUnsafe(out, annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
-        if (error == null)
-          return null;
-      }
-      else if (AnyType.isEnabled(numbers = type.numbers()) && Number.class.isAssignableFrom(numbers.type()) && object instanceof Number) {
-        error = NumberCodec.encodeObjectUnsafe(out, annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
-        if (error == null)
-          return null;
-      }
-      else if (AnyType.isEnabled(booleans = type.booleans()) && Classes.isAssignableFrom(booleans.type(), object.getClass())) {
-        error = BooleanCodec.encodeObjectUnsafe(out, booleans.type(), booleans.encode(), object);
-        if (error == null)
-          return null;
-      }
-      else if (object instanceof JxObject && AnyType.isEnabled(type.objects())) {
+      if (object instanceof JxObject && AnyType.isEnabled(type.objects())) {
         error = encoder.encodeObject(out, (JxObject)object, null, depth);
         if (error == null)
           return null;
@@ -227,6 +212,21 @@ class AnyCodec extends Codec {
 
           return encoder.encodeArray(out, getMethod, relations, depth);
         }
+      }
+      else if (AnyType.isEnabled(booleans = type.booleans()) && Classes.isAssignableFrom(booleans.type(), object.getClass())) {
+        error = BooleanCodec.encodeObjectUnsafe(out, booleans.type(), booleans.encode(), object);
+        if (error == null)
+          return null;
+      }
+      else if (AnyType.isEnabled(numbers = type.numbers()) && Number.class.isAssignableFrom(numbers.type()) && object instanceof Number) {
+        error = NumberCodec.encodeObjectUnsafe(out, annotation, numbers.scale(), numbers.range(), numbers.type(), numbers.encode(), object, validate);
+        if (error == null)
+          return null;
+      }
+      else if (AnyType.isEnabled(strings = type.strings()) && Classes.isAssignableFrom(strings.type(), object.getClass())) {
+        error = StringCodec.encodeObjectUnsafe(out, annotation, getMethod, strings.pattern(), strings.type(), strings.encode(), object, validate);
+        if (error == null)
+          return null;
       }
 
       if (++i >= len)

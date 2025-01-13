@@ -41,7 +41,7 @@ class ArrayEncodeIterator extends ArrayIterator {
 
   @Override
   void next() {
-    offLen0 = listIterator.next();
+    current = listIterator.next();
   }
 
   @Override
@@ -52,7 +52,7 @@ class ArrayEncodeIterator extends ArrayIterator {
 
   @Override
   int previous() {
-    offLen0 = listIterator.previous();
+    current = listIterator.previous();
     return listIterator.nextIndex();
   }
 
@@ -60,27 +60,27 @@ class ArrayEncodeIterator extends ArrayIterator {
   Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) {
     if (codecType == BooleanCodec.class) {
       final BooleanElement element = (BooleanElement)annotation;
-      return BooleanCodec.encodeArray(annotation, element.type(), element.encode(), offLen0, index, relations);
+      return BooleanCodec.encodeArray(annotation, element.type(), element.encode(), current, index, relations);
     }
 
     if (codecType == NumberCodec.class) {
       final NumberElement element = (NumberElement)annotation;
-      return NumberCodec.encodeArray(annotation, element.scale(), element.range(), element.type(), element.encode(), offLen0, index, relations, validate);
+      return NumberCodec.encodeArray(annotation, element.scale(), element.range(), element.type(), element.encode(), current, index, relations, validate);
     }
 
     if (codecType == StringCodec.class) {
       final StringElement element = (StringElement)annotation;
-      return StringCodec.encodeArray(annotation, element.pattern(), element.type(), element.encode(), offLen0, index, relations, validate);
+      return StringCodec.encodeArray(annotation, element.pattern(), element.type(), element.encode(), current, index, relations, validate);
     }
 
     if (codecType == AnyCodec.class)
-      return AnyCodec.encodeArray((AnyElement)annotation, offLen0, index, relations, idToElement, validate, onPropertyDecode);
+      return AnyCodec.encodeArray((AnyElement)annotation, current, index, relations, idToElement, validate, onPropertyDecode);
 
     if (codecType == ArrayCodec.class)
-      return ArrayCodec.encodeArray(annotation, ((ArrayElement)annotation).type(), offLen0, index, relations, idToElement, validate, onPropertyDecode);
+      return ArrayCodec.encodeArray(annotation, ((ArrayElement)annotation).type(), current, index, relations, idToElement, validate, onPropertyDecode);
 
     if (codecType == ObjectCodec.class)
-      return ObjectCodec.encodeArray(annotation, offLen0, index, relations);
+      return ObjectCodec.encodeArray(annotation, current, index, relations);
 
     throw new UnsupportedOperationException("Unsupported " + Codec.class.getSimpleName() + " type: " + codecType.getName());
   }

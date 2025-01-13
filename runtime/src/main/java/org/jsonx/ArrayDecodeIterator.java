@@ -75,10 +75,7 @@ class ArrayDecodeIterator extends ArrayIterator {
     final long offLen = reader.readToken();
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
-    if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
-      offLen0 = null;
-    else
-      offLen0 = offLen;
+    current = len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l' ? null : offLen;
   }
 
   @Override
@@ -96,7 +93,7 @@ class ArrayDecodeIterator extends ArrayIterator {
 
   @Override
   Error validate(final Annotation annotation, final int index, final Relations relations, final IdToElement idToElement, final Class<? extends Codec> codecType, final boolean validate, final TriPredicate<JxObject,String,Object> onPropertyDecode) throws IOException {
-    final long offLen = (long)offLen0;
+    final long offLen = (long)current;
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
     final String token = new String(reader.buf(), off, len);
@@ -132,8 +129,8 @@ class ArrayDecodeIterator extends ArrayIterator {
     if (value instanceof Error)
       return (Error)value;
 
-    offLen0 = value;
-    relations.set(index, offLen0, annotation);
+    current = value;
+    relations.set(index, current, annotation);
     return null;
   }
 }

@@ -114,9 +114,9 @@
 
   </schema>
 
-  <boolean path="booleanNull"><bind lang="java" decode="org.jsonx.TestHelper.toNull"/></boolean>
-  <number path="numberNull"><bind lang="java" decode="org.jsonx.TestHelper.toNull"/></number>
-  <string path="stringNull"><bind lang="java" decode="org.jsonx.TestHelper.toNull"/></string>
+  <boolean path="booleanNull"><bind lang="java" decode="org.jsonx.TestHelper.toNullBoolean"/></boolean>
+  <number path="numberNull"><bind lang="java" decode="org.jsonx.TestHelper.toNullNumber"/></number>
+  <string path="stringNull"><bind lang="java" decode="org.jsonx.TestHelper.toNullString"/></string>
   <number path="coordinates[0]"><bind lang="java" type="java.lang.Float"/></number>
 
 </binding>

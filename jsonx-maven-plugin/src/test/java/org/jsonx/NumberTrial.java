@@ -75,9 +75,6 @@ final class NumberTrial extends PropertyTrial<Number> {
   }
 
   private static Double makeValid(final Range range) {
-//    if (range != null && range.toString().equals("[10000000000,]"))
-//      System.err.println();
-//    System.err.println("Range: " + range);
     if (range == null)
       return null;
 
@@ -91,9 +88,7 @@ final class NumberTrial extends PropertyTrial<Number> {
   }
 
   private static Double makeInvalid(final Range range) {
-    double ensureHasFraction = range.getMin() != null ? range.getMin().doubleValue() - 1d : ensureNotTooBig(range.getMax().doubleValue()) + 1d;
-//    System.err.println(ensureHasFraction);
-    return ensureHasFraction;
+    return range.getMin() != null ? range.getMin().doubleValue() - 1d : ensureNotTooBig(range.getMax().doubleValue()) + 1d;
   }
 
   private static Number setScale(final Double value, final int scale) {
@@ -121,13 +116,7 @@ final class NumberTrial extends PropertyTrial<Number> {
   }
 
   private static Object toProperForm(final Class<?> type, final String decode, final int scale, final Double value) {
-    final Object properForm2 = toProperForm2(type, decode, scale, value);
-    if (properForm2 instanceof Number && ((Number)properForm2).doubleValue() > 100000) {
-      toProperForm2(type, decode, scale, value);
-//      System.err.println("Proper form: " + properForm2);
-    }
-
-    return properForm2;
+    return toProperForm2(type, decode, scale, value);
   }
 
   private static Object toProperForm2(final Class<?> type, final String decode, final int scale, final Double value) {

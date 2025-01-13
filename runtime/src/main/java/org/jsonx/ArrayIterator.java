@@ -24,11 +24,11 @@ import org.libj.lang.Strings;
 import org.libj.util.function.TriPredicate;
 
 abstract class ArrayIterator {
-  Object offLen0;
+  Object current;
 
   final boolean nextIsNull() throws IOException {
     next();
-    return offLen0 == null;
+    return current == null;
   }
 
   Object preview(final Object object) {

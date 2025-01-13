@@ -17,7 +17,6 @@
 package org.jsonx;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,18 +26,26 @@ import org.libj.lang.Classes;
 import org.libj.util.CollectionUtil;
 
 class AnnotationType {
+  static boolean appendAttribute(final StringBuilder b, final String key, final Object value, final Object defaultValue, final boolean addComma) {
+    final Object fixedDefaultValue = defaultValue != null && value instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
+    if (Objects.equals(fixedDefaultValue, value))
+      return false;
+
+    if (addComma)
+      b.append(", ");
+
+    b.append(key).append(" = ").append(value instanceof Class ? ((Class<?>)value).getName() + ".class" : value);
+    return true;
+  }
+
   @SuppressWarnings("unchecked")
   private void render(final StringBuilder b) {
-    final int len = b.length();
+    boolean addComma = false;
     for (final Map.Entry<String,Object> entry : attributes.entrySet()) { // [S]
-      if (b.length() > len)
-        b.append(", ");
-
       final String key = entry.getKey();
       final Object value = entry.getValue();
 
-      final Method method = Classes.getMethod(annotationType, key);
-      final Object defaultValue = method.getDefaultValue();
+      final Object defaultValue = Classes.getMethod(annotationType, key).getDefaultValue();
       if (value instanceof List) {
         final Object[] defaultArray = (Object[])defaultValue;
         final List<Object> items = (List<Object>)value;
@@ -51,6 +58,10 @@ class AnnotationType {
             continue;
         }
 
+        if (addComma)
+          b.append(", ");
+
+        addComma = true;
         b.append(key).append(" = ");
         if (i$ == 1) {
           b.append(items.get(0));
@@ -82,9 +93,7 @@ class AnnotationType {
         }
       }
       else {
-        final Object fixedDefaultValue = defaultValue != null && value instanceof String ? "\"" + defaultValue + "\"" : defaultValue;
-        if (!Objects.equals(fixedDefaultValue, value))
-          b.append(key).append(" = ").append(value);
+        addComma = appendAttribute(b, key, value, defaultValue, addComma);
       }
     }
   }

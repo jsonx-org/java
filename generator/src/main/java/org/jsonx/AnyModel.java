@@ -36,6 +36,7 @@ import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Member;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$ObjectMember;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference;
 import org.jsonx.www.schema_0_5.xL0gluGCXAA.$Reference.Name$;
+import org.libj.lang.Classes;
 import org.libj.lang.IllegalAnnotationException;
 import org.libj.lang.Strings;
 import org.openjax.json.JsonUtil;
@@ -481,16 +482,18 @@ final class AnyModel extends Referrer<AnyModel> {
         else
           b.setLength(0);
 
-        b.append('@').append(type.typeAnnotation().getName());
+        final Class<? extends Annotation> annotationType = type.typeAnnotation();
+        b.append('@').append(annotationType.getName());
         if (attrs.size() > 0) {
           b.append('(');
           final Iterator<Map.Entry<String,Object>> iterator = attrs.entrySet().iterator();
-          for (int j = 0; iterator.hasNext(); ++j) { // [I]
-            if (j > 0)
-              b.append(", ");
-
+          boolean addComma = false;
+          while (iterator.hasNext()) { // [I]
             final Map.Entry<String,Object> entry = iterator.next();
-            b.append(entry.getKey()).append(" = ").append(entry.getValue());
+            final String key = entry.getKey();
+            final Object value = entry.getValue();
+            final Object defaultValue = Classes.getMethod(annotationType, key).getDefaultValue();
+            addComma = AnnotationType.appendAttribute(b, key, value, defaultValue, addComma);
           }
 
           b.append(')');

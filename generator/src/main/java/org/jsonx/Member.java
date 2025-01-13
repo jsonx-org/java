@@ -344,8 +344,10 @@ abstract class Member extends Element {
       attributes.put("encode", "\"" + typeBinding.encode + "\"");
 
     // Only put "type" in root object definitions, array members, and not references
-    if ((declarer instanceof SchemaElement || declarer instanceof ArrayModel) && !(owner instanceof Reference) && typeBinding() != null)
-      attributes.put("type", typeBinding().toCanonicalString() + ".class");
+    if ((declarer instanceof SchemaElement || declarer instanceof ArrayModel) && !(owner instanceof Reference) && typeBinding() != null) {
+      final Class<?> cls = typeBinding().getJavaClass();
+      attributes.put("type", cls != null ? cls : typeBinding().toCanonicalString() + ".class"); // typeBinding().toCanonicalString() + ".class"
+    }
   }
 
   private static boolean isArrayOverride(final Member override) {

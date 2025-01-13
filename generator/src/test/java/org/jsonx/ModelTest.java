@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jaxsb.runtime.Bindings;
 import org.jsonx.www.binding_0_5.xL1gluGCXAA.Binding;
@@ -318,7 +319,14 @@ abstract class ModelTest {
 
   static void assertEquals(final String message, final Object expected, final Object actual) {
     Assert.assertNotNull(message, actual);
-    Assert.assertEquals(message, expected, actual);
+    if (!Objects.equals(expected, actual)) {
+      System.out.println(expected);
+      System.out.flush();
+      System.err.println(actual);
+      System.err.flush();
+      Assert.assertEquals(message, expected, actual);
+    }
+
     if (expected != null)
       Assert.assertEquals(message, expected.hashCode(), actual.hashCode());
   }
