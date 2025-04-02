@@ -16,13 +16,12 @@
 
 package org.jsonx.sample.bank;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.jsonx.JxEncoder;
 
 public class BankSample {
-  public static void main(final String[] args) throws IOException {
+  public static void main(final String[] args) {
     for (final Message message : createMessages()) { // [L]
       System.out.println(JxEncoder.VALIDATING._2.toString(message));
     }

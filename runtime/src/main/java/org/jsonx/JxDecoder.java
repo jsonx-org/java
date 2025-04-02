@@ -22,11 +22,14 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.function.Function;
 
 import org.libj.lang.Numbers.Composite;
+import org.libj.util.function.ThrowingFunction;
 import org.libj.util.function.TriPredicate;
+import org.openjax.asm.AnnotationUtil;
 import org.openjax.json.JsonParseException;
 import org.openjax.json.JsonReader;
 import org.openjax.json.JsonUtil;
@@ -126,6 +129,9 @@ public final class JxDecoder {
 
   private Object parseObject0(final JsonReader reader, final TriPredicate<JxObject,String,Object> onPropertyDecode, final Class<? extends JxObject> type) throws IOException, JsonParseException {
     final long offLen = reader.readToken();
+    if (offLen == -1)
+      return null;
+
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
     final char c0 = reader.bufToChar(off);
@@ -412,7 +418,7 @@ public final class JxDecoder {
    */
   @SafeVarargs
   public final <T extends JxObject> T parseObject(final JsonReader reader, final Class<? extends T> ... types) throws DecodeException, IOException {
-    return parseObject(reader, null, types);
+    return parseObject(reader, (TriPredicate<JxObject,String,Object>)null, types);
   }
 
   /**
@@ -480,6 +486,9 @@ public final class JxDecoder {
   private Object parseArray0(final JsonReader reader, final Class<? extends Annotation> annotationType) throws JsonParseException, IOException {
     reader.setIndex(-1);
     final long offLen = reader.readToken();
+    if (offLen == -1)
+      return null;
+
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
     final char c0 = reader.bufToChar(off);
@@ -711,8 +720,9 @@ public final class JxDecoder {
     throw new IllegalArgumentException("Illegal JSON type: " + cls.getName());
   }
 
+  @SafeVarargs
   @SuppressWarnings("null")
-  public final Object parse(final JsonReader reader, final Class<?> ... types) throws DecodeException, IOException {
+  public final <T>T parse(final JsonReader reader, final Class<T> ... types) throws DecodeException, IOException {
     assertNotEmpty(types);
     final int index = reader.getIndex();
     RuntimeException exception = null;
@@ -725,7 +735,7 @@ public final class JxDecoder {
       try {
         result = parse0(reader, type);
         if (!(result instanceof DecodeException) && !(result instanceof JsonParseException))
-          return result;
+          return (T)result;
       }
       catch (final DecodeException | JsonParseException e) {
         result = e;
@@ -772,6 +782,9 @@ public final class JxDecoder {
 
   private static String toString(final JsonReader reader) throws IOException {
     final long offLen = reader.readToken();
+    if (offLen == -1)
+      return null;
+
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
     if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
@@ -792,6 +805,9 @@ public final class JxDecoder {
 
   public static String parseString(final JsonReader reader) throws JsonParseException, IOException {
     final long offLen = reader.readToken();
+    if (offLen == -1)
+      return null;
+
     final int off = Composite.decodeInt(offLen, 0);
     final int len = Composite.decodeInt(offLen, 1);
     if (len == 4 && reader.bufToChar(off) == 'n' && reader.bufToChar(off + 1) == 'u' && reader.bufToChar(off + 2) == 'l' && reader.bufToChar(off + 3) == 'l')
@@ -802,5 +818,130 @@ public final class JxDecoder {
       throw new DecodeException(Error.NOT_A_STRING().toString() + ": " + new String(buf, off, len), reader, null);
 
     return new String(buf, off + 1, len - 2);
+  }
+
+  private static boolean matches(final char[] buf, final int start, final int len, final String name) {
+    if (name.length() != len)
+      return false;
+
+    for (int i = 0; i < len; ++i)
+      if (name.charAt(i) != buf[start + i])
+        return false;
+
+    return true;
+  }
+
+  private static int matches(final int start, final int len, final char[] buf, final String[] names) {
+    for (int i = 0, i$ = names.length; i < i$; ++i) // [A]
+      if (matches(buf, start, len, names[i]))
+        return i;
+
+    return -1;
+  }
+
+  private static void debug(final long startLen, final JsonReader reader) {
+    final int start = Composite.decodeInt(startLen, 0);
+    final int len = Composite.decodeInt(startLen, 1);
+    System.err.println(new String(reader.buf(), start, len));
+  }
+
+  public static Object parseObject(final JsonReader reader, final String[] propertyNames, final ThrowingFunction[] propertyHandlers) throws IOException {
+    long startLen = reader.readToken(); // '{'
+    int start = Composite.decodeInt(startLen, 0);
+    int len = Composite.decodeInt(startLen, 1);
+    assertTrue(len == 1);
+    assertTrue(reader.buf()[start] == '{');
+
+    Object obj = null;
+    for (int i = 0; i < propertyNames.length; ++i) {
+      startLen = reader.readToken();
+      if (startLen == -1)
+        break;
+
+      start = Composite.decodeInt(startLen, 0);
+      len = Composite.decodeInt(startLen, 1);
+      // debug(startLen, reader);
+      final int j = matches(start, len, reader.buf(), propertyNames);
+      if (j == -1)
+        throw new ValidationException("Unexpected JSON: " + reader.bufToString(startLen));
+
+      startLen = reader.readToken();
+      start = Composite.decodeInt(startLen, 0);
+      len = Composite.decodeInt(startLen, 1);
+      assertTrue(len == 1);
+      assertTrue(reader.buf()[start] == ':');
+
+      obj = propertyHandlers[j].apply(obj);
+      reader.readToken(); /* ',' or '}' */
+    }
+
+    return obj;
+  }
+
+  @SafeVarargs
+  @SuppressWarnings("unchecked")
+  public final <T> ArrayList<T> parseArray(final JsonReader reader, final boolean nullable, final int minOccurs, final int maxOccurs, final Class<? extends T> ... classes) throws JsonParseException, IOException {
+    long offLen = reader.readToken();
+    int off = Composite.decodeInt(offLen, 0);
+    int len = Composite.decodeInt(offLen, 1);
+    assertTrue(len == 1);
+    assertTrue(reader.buf()[off] == '[');
+
+    final int index = reader.getIndex();
+    DecodeException exception = null;
+    final int[] elementIds = new int[] {0};
+    final HashMap<String,Object> map = new HashMap<>();
+    map.put("id", 0);
+    map.put("nullable", nullable);
+    map.put("minOccurs", minOccurs);
+    map.put("maxOccurs", maxOccurs);
+    final IdToElement idToElement = new IdToElement();
+    int j = 0;
+    Class<? extends T> cls;
+    final int length = classes.length;
+    do {
+      cls = classes[j++];
+
+      map.put("type", cls);
+      if (JxObject.class.isAssignableFrom(cls)) {
+        idToElement.put(AnnotationUtil.annotationForMap(ObjectElement.class, map));
+      }
+      else {
+        map.put("encode", "");
+        map.put("decode", "");
+        if (Number.class.isAssignableFrom(cls)) {
+          map.put("pattern", "");
+          map.put("scale", Integer.MAX_VALUE);
+          map.put("range", "");
+          idToElement.put(AnnotationUtil.annotationForMap(NumberElement.class, map));
+        }
+        else if (CharSequence.class.isAssignableFrom(cls)) {
+          map.put("pattern", "");
+          idToElement.put(AnnotationUtil.annotationForMap(StringElement.class, map));
+        }
+        else if (Boolean.class.isAssignableFrom(cls)) {
+          idToElement.put(AnnotationUtil.annotationForMap(BooleanElement.class, map));
+        }
+      }
+
+      final Object result = parseArray(reader, idToElement, elementIds);
+      if (result instanceof DecodeException) {
+        idToElement.clear();
+
+        if (exception == null)
+          exception = (DecodeException)result;
+        else if (exception != result)
+          exception.addSuppressed((DecodeException)result);
+
+        if (j == length)
+          throw exception;
+
+        reader.setIndex(index);
+      }
+      else {
+        return (ArrayList<T>)result;
+      }
+    }
+    while (true);
   }
 }

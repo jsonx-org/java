@@ -16,14 +16,13 @@
 
 package org.jsonx.sample.invoice;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 
 import org.jsonx.JxEncoder;
 
 public class InvoiceSample {
-  public static void main(final String[] args) throws IOException {
+  public static void main(final String[] args) {
     System.out.println(JxEncoder.VALIDATING._2.toString(createInvoice()));
   }
 

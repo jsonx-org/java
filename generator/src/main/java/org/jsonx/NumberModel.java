@@ -272,10 +272,8 @@ final class NumberModel extends Model {
     if (type == null)
       return null;
 
-    if ((scale != Integer.MAX_VALUE || range != null) && !registry.getType(Number.class).isAssignableFrom(type)) {
-      final boolean x = registry.getType(Number.class).isAssignableFrom(type);
+    if ((scale != Integer.MAX_VALUE || range != null) && !registry.getType(Number.class).isAssignableFrom(type))
       return "Constraint definitions in \"" + (name() != null ? name() : id()) + "\" are not enforcable with type binding \"" + type + "\" for \"" + elementName() + "\"; either choose a type binding that is assignable to " + defaultClass() + ", or remove the constraint definitions";
-    }
 
     if (scale == 0)
       return null;

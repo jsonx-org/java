@@ -22,6 +22,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import org.jsonx.ArrayValidator.Relation;
 import org.jsonx.ArrayValidator.Relations;
 import org.libj.lang.Classes;
 import org.libj.lang.CountingAppendable;
+import org.libj.util.CollectionUtil;
 import org.libj.util.Patterns;
 
 /**
@@ -298,7 +300,7 @@ public class JxEncoder {
     }
   }
 
-  Error encodeArray(final Appendable out, final Method getMethod, final Relations relations, final int depth) throws IOException {
+  Error encodeArray(final Appendable out, final Method getMethod, final Relations relations, final OnEncode onEncode, final int depth) throws IOException {
     out.append('[');
     for (int i = 0, i$ = relations.size(); i < i$; ++i) { // [RA]
       if (i > 0)
@@ -309,13 +311,18 @@ public class JxEncoder {
       final Object member = relation.member;
       final Error error;
       if (annotation instanceof ArrayElement || annotation instanceof ArrayType || annotation instanceof AnyElement && member instanceof Relations) {
-        error = encodeArray(out, getMethod, (Relations)member, depth);
+        error = encodeArray(out, getMethod, (Relations)member, onEncode, depth);
         if (error != null)
           return error;
       }
       else if (annotation instanceof AnyElement) {
         error = null;
-        out.append(String.valueOf(member));
+        if (member instanceof JxObject)
+          encodeObject(out, (JxObject)member, onEncode);
+        else if (member instanceof Collection)
+          toStream(out, (Collection<?>)member);
+        else
+          out.append(String.valueOf(member));
       }
       else {
         error = encodeNonArray(out, null, annotation, member, depth);
@@ -574,7 +581,7 @@ public class JxEncoder {
 
     final StringBuilder b = new StringBuilder();
     try {
-      error = encodeArray(b, null, relations, 0);
+      error = encodeArray(b, null, relations, null, 0);
     }
     catch (final IOException e) {
       throw new UncheckedIOException(e);
@@ -603,8 +610,69 @@ public class JxEncoder {
     if (validate && error != null)
       throw new EncodeException(error);
 
-    error = encodeArray(out, null, relations, 0);
+    error = encodeArray(out, null, relations, null, 0);
     if (validate && error != null)
       throw new EncodeException(error);
+  }
+
+  public String toString(final Collection<?> c) {
+    try {
+      final StringBuilder b = new StringBuilder();
+      toStream(b, c);
+      return b.toString();
+    }
+    catch (final IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  private void addMember(final Appendable out, final boolean added, final Object member) throws IOException {
+    if (added)
+      out.append(comma);
+
+    if (member == null)
+      out.append("null");
+    else if (member instanceof JxObject)
+      toStream(out, (JxObject)member);
+    else if (member instanceof List)
+      toStream(out, (List<?>)member);
+    else if (member instanceof Number)
+      out.append(NumberCodec.format(member));
+    else if (member instanceof Boolean || member instanceof CharSequence)
+      out.append(member.toString());
+    else
+      throw new IllegalArgumentException("Unknown member calss: " + member.getClass().getName());
+  }
+
+  public void toStream(final Appendable out, final Collection<?> c) throws IOException {
+    if (c == null) {
+      out.append("null");
+      return;
+    }
+
+    final int size = c.size();
+    if (size == 0) {
+      out.append("[]");
+      return;
+    }
+
+    out.append('[');
+
+    boolean added = false;
+    final List<?> l;
+    if (c instanceof List && CollectionUtil.isRandomAccess(l = (List<?>)c)) {
+      for (int i = 0, i$ = l.size(); i < i$; ++i) { // [RA]
+        addMember(out, added, l.get(i));
+        added = true;
+      }
+    }
+    else {
+      for (final Object m : c) { // [C]
+        addMember(out, added, m);
+        added = true;
+      }
+    }
+
+    out.append(']');
   }
 }

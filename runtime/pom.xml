@@ -48,6 +48,11 @@
     </dependency>
     <dependency>
       <groupId>org.openjax</groupId>
+      <artifactId>asm</artifactId>
+      <version>0.1.1-SNAPSHOT</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.openjax</groupId>
       <artifactId>json</artifactId>
       <version>1.0.1-SNAPSHOT</version>
     </dependency>

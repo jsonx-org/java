@@ -210,7 +210,7 @@ class AnyCodec extends Codec {
           if (onEncode != null)
             onEncode.accept(getMethod, name, relations, -1, -1);
 
-          return encoder.encodeArray(out, getMethod, relations, depth);
+          return encoder.encodeArray(out, getMethod, relations, onEncode, depth);
         }
       }
       else if (AnyType.isEnabled(booleans = type.booleans()) && Classes.isAssignableFrom(booleans.type(), object.getClass())) {

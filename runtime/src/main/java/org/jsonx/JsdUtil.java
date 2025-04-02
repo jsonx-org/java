@@ -35,7 +35,7 @@ import org.libj.lang.Strings;
 import org.libj.util.ArrayUtil;
 import org.libj.util.Comparators;
 
-final class JsdUtil {
+public final class JsdUtil {
   static final Comparator<String> ATTRIBUTES = Comparators.newFixedOrderComparator("jx:ns", "jx:type", "id", "name", "names", "xsi:type", "abstract", "extends", "lang", "type", "field", "types", "booleans", "numbers", "objects", "strings", "elementIds", "scale", "range", "pattern", "use", "minIterate", "maxIterate", "minOccurs", "maxOccurs", "nullable", "decode", "encode");
   private static final char prefix = '_';
   private static final Function<Character,String> classSubs = (final Character c) -> c == null ? "_" : c != '_' ? Integer.toHexString(c) : "__";
@@ -277,7 +277,7 @@ final class JsdUtil {
     return null;
   }
 
-  static String getName(final Method getMethod) {
+  public static String getName(final Method getMethod) {
     for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
       if (annotation instanceof StringProperty)
         return ((StringProperty)annotation).name();
@@ -296,6 +296,36 @@ final class JsdUtil {
 
       if (annotation instanceof AnyProperty)
         return ((AnyProperty)annotation).name();
+    }
+
+    return null;
+  }
+
+  public static String getDecode(final Method getMethod) {
+    for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
+      if (annotation instanceof StringProperty)
+        return ((StringProperty)annotation).decode();
+
+      if (annotation instanceof NumberProperty)
+        return ((NumberProperty)annotation).decode();
+
+      if (annotation instanceof BooleanProperty)
+        return ((BooleanProperty)annotation).decode();
+    }
+
+    return null;
+  }
+
+  public static String getEncode(final Method getMethod) {
+    for (final Annotation annotation : Classes.getAnnotations(getMethod)) { // [A]
+      if (annotation instanceof StringProperty)
+        return ((StringProperty)annotation).encode();
+
+      if (annotation instanceof NumberProperty)
+        return ((NumberProperty)annotation).encode();
+
+      if (annotation instanceof BooleanProperty)
+        return ((BooleanProperty)annotation).encode();
     }
 
     return null;
@@ -366,7 +396,7 @@ final class JsdUtil {
     }
   }
 
-  static Executable parseExecutable(final String identifier, final Class<?> parameterType) {
+  public static Executable parseExecutable(final String identifier, final Class<?> parameterType) {
     try {
       final int i = identifier.lastIndexOf('.');
       final String className = identifier.substring(0, i);
@@ -406,7 +436,7 @@ final class JsdUtil {
     return ((Method)executable).getReturnType();
   }
 
-  static Object invoke(final Executable executable, final Object arg) {
+  public static Object invoke(final Executable executable, final Object arg) {
     try {
       if (executable instanceof Constructor)
         return ((Constructor<?>)executable).newInstance(arg);
